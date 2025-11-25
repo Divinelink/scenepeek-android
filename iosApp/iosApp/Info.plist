@@ -15,5 +15,13 @@
       </array>
     </dict>
   </array>
+  <key>TMDBBaseURL</key>
+  <string>$(TMDB_BASE_URL)</string>
+  <key>TMDBAuthToken</key>
+  <string>$(TMDB_AUTH_TOKEN)</string>
+  <key>TraktAPIKey</key>
+  <string>$(TRAKT_API_KEY)</string>
+  <key>OMDBAPIKey</key>
+  <string>$(OMDB_API_KEY)</string>
 </dict>
 </plist>

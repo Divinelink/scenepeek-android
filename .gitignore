@@ -180,3 +180,5 @@ cinterop/
 kotlin-native/
 *.klib
 *.cinteropLibraries.json
+
+iosApp/Config/Secret.xcconfig

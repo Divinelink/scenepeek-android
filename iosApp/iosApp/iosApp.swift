@@ -28,3 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
+
+private func isDebug() -> Bool {
+    #if DEBUG
+    return true
+    #else
+    return false
+    #endif
+}

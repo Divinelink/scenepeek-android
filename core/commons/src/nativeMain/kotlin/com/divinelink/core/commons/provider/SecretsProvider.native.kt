@@ -1,10 +1,16 @@
 package com.divinelink.core.commons.provider
 
+import platform.Foundation.NSBundle
+
 class NativeSecretsProvider(
-  override val tmdbUrl: String = "BuildConfig.TMDB_BASE_URL", // Todo
-  override val tmdbAuth: String = "BuildConfig.TMDB_AUTH_TOKEN", // Todo
-  override val traktApiKey: String = "BuildConfig.TRAKT_API_KEY", // Todo
-  override val omdbApiKey: String = "BuildConfig.OMDB_API_KEY", // Todo
+  override val tmdbUrl: String =
+    NSBundle.mainBundle.infoDictionary?.get("TMDBBaseURL") as? String ?: "",
+  override val tmdbAuth: String =
+    NSBundle.mainBundle.infoDictionary?.get("TMDBAuthToken") as? String ?: "",
+  override val traktApiKey: String =
+    NSBundle.mainBundle.infoDictionary?.get("TraktAPIKey") as? String ?: "",
+  override val omdbApiKey: String =
+    NSBundle.mainBundle.infoDictionary?.get("OMDBAPIKey") as? String ?: "",
 ) : SecretProvider
 
 actual fun getConfigProvider(): SecretProvider = NativeSecretsProvider()
