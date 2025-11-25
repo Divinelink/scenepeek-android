@@ -18,6 +18,8 @@ kotlin {
 
       implementation(libs.kotlinx.coroutines.core)
 
+      implementation(libs.cryptography.core)
+
       implementation(libs.datastore)
       implementation(libs.datastore.core)
       implementation(libs.datastore.preferences)
@@ -30,6 +32,8 @@ kotlin {
     }
 
     nativeMain.dependencies {
+      implementation(libs.cryptography.ios)
+
       implementation(libs.datastore)
       implementation(libs.datastore.preferences)
     }
@@ -44,20 +48,3 @@ kotlin {
     }
   }
 }
-
-//dependencies {
-//  implementation(libs.datastore)
-//  implementation(libs.datastore.core)
-//  implementation(libs.datastore.preferences)
-//  implementation(libs.datastore.preferences.core)
-//  implementation(libs.encrypted.preferences)
-//  api(projects.core.model)
-//
-//  implementation(projects.core.designsystem)
-//
-//  implementation(projects.core.commons)
-//
-//  testImplementation(libs.kotlinx.coroutines.test)
-//  testImplementation(projects.core.testing)
-//  testImplementation(libs.robolectric)
-//}

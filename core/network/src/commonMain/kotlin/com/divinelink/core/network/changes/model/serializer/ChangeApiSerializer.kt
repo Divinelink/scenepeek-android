@@ -32,7 +32,7 @@ import com.divinelink.core.network.changes.model.api.ChangeItemApi.Companion.Jso
 
 object ChangeApiSerializer : KSerializer<ChangeApi> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor(
-    serialName = ChangeApi::class.simpleName.toString(), // TODO KMP
+    serialName = ChangeApi::class.simpleName.toString(),
   )
 
   override fun deserialize(decoder: Decoder): ChangeApi {

@@ -11,5 +11,3 @@ interface DataEncryptor {
     ciphertext: String,
   ): String
 }
-
-expect class EncryptionProvider : DataEncryptor

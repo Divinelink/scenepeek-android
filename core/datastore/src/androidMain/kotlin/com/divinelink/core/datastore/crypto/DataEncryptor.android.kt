@@ -10,7 +10,9 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import kotlin.io.encoding.Base64
 
-actual class EncryptionProvider(private val storage: KeystoreSecretsStorage) : DataEncryptor {
+internal class AndroidEncryptionProvider(
+  private val storage: KeystoreSecretsStorage,
+) : DataEncryptor {
 
   companion object {
     private const val AES_TRANSFORMATION = "AES/GCM/NoPadding"

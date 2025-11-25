@@ -7,15 +7,14 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.datastore.auth.DataStoreSavedStateStorage
 import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.datastore.crypto.AndroidEncryptionProvider
 import com.divinelink.core.datastore.crypto.DataEncryptor
 import com.divinelink.core.datastore.crypto.DataStoreKeystoreSecretsStorage
-import com.divinelink.core.datastore.crypto.EncryptionProvider
 import com.divinelink.core.datastore.crypto.KeystoreSecretsStorage
 import com.divinelink.core.datastore.onboarding.DataStoreOnboardingStorage
 import com.divinelink.core.datastore.onboarding.OnboardingStorage
 import com.divinelink.core.datastore.ui.DatastoreUiStorage
 import com.divinelink.core.datastore.ui.UiSettingsStorage
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -66,7 +65,11 @@ actual val storageModule = module {
     )
   }
 
-  singleOf(::EncryptionProvider) { bind<DataEncryptor>() }
+  single<DataEncryptor> {
+    AndroidEncryptionProvider(
+      storage = get(),
+    )
+  }
 
   singleOf(::SessionStorage)
 }
