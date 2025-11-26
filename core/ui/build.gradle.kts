@@ -15,6 +15,8 @@ kotlin {
       implementation(libs.coil)
       implementation(libs.coil.ktor)
 
+      implementation(libs.kotlinx.datetime)
+
       implementation(projects.core.fixtures)
 
       api(libs.compose.shimmer)

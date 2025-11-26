@@ -1,6 +1,5 @@
 package com.divinelink.core.commons.extensions
 
-import com.divinelink.core.commons.Constants
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -27,14 +26,13 @@ fun String.formatTo(
     byUnicodePattern(outputFormat)
   }
   dateTime.format(outputFormatter)
-} catch (e: Exception) {
+} catch (_: Exception) {
   null
 }
 
-fun String.localizeIsoDate() = this.formatTo(
-  inputFormat = Constants.ISO_8601,
-  outputFormat = Constants.MMMM_DD_YYYY,
-) ?: this
+fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime = Instant
+  .parse(this)
+  .toLocalDateTime(timeZone)
 
 fun String?.extractDetailsFromDeepLink(): Pair<Int, String>? {
   // Example URL format: "https://www.themoviedb.org/tv/693134-dune-part-two"

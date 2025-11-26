@@ -32,11 +32,13 @@ import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.SeasonPill
 import com.divinelink.core.ui.core_ui_season
 import com.divinelink.core.ui.core_ui_status
+import com.divinelink.core.ui.extension.localizeIsoDate
 import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.skeleton.RequestItemSkeleton
 import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.Res
 import com.divinelink.feature.requests.feature_requests_profile
+import com.divinelink.feature.requests.feature_requests_request_by
 import com.divinelink.feature.requests.feature_requests_requested
 import com.divinelink.feature.requests.ui.buttons.ApprovedActionButtons
 import com.divinelink.feature.requests.ui.buttons.DeclinedActionButtons
@@ -143,8 +145,11 @@ fun LazyItemScope.RequestMediaItem(
               text = stringResource(Res.string.feature_requests_requested),
             )
             Text(
-              // TODO Localize
-              text = "${item.request.requestDate} by ${item.request.requester.displayName}",
+              text = stringResource(
+                Res.string.feature_requests_request_by,
+                item.request.requestDate.localizeIsoDate(),
+                item.request.requester.displayName,
+              ),
               style = MaterialTheme.typography.bodyMedium,
             )
           }

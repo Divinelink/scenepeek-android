@@ -1,7 +1,8 @@
 package com.divinelink.core.model.jellyseerr
 
-import com.divinelink.core.commons.extensions.localizeIsoDate
+import com.divinelink.core.commons.extensions.toLocalDateTime
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,6 +14,7 @@ data class JellyseerrProfile(
   val requestCount: Int,
   val createdAt: String,
   val permissions: List<ProfilePermission>,
-) {
-  val formattedCreatedAt: String = createdAt.localizeIsoDate()
-}
+)
+
+val JellyseerrProfile.createdAtLocalDateTime: LocalDateTime
+  get() = createdAt.toLocalDateTime()

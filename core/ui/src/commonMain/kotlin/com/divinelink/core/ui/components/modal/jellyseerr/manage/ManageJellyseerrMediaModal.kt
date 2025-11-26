@@ -71,6 +71,7 @@ import com.divinelink.core.ui.core_ui_remove_from_sonarr_description
 import com.divinelink.core.ui.core_ui_requests
 import com.divinelink.core.ui.core_ui_season
 import com.divinelink.core.ui.extension.format
+import com.divinelink.core.ui.extension.localizeIsoDate
 import com.divinelink.core.ui.getString
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
@@ -349,8 +350,9 @@ private fun LazyItemScope.RequestItem(
             imageVector = Icons.Default.CalendarToday,
             contentDescription = null,
           )
+
           Text(
-            text = request.requestDate,
+            text = request.requestDate.localizeIsoDate(),
             style = MaterialTheme.typography.bodyMedium,
           )
         }

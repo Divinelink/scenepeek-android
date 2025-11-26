@@ -22,8 +22,8 @@ import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
-import com.divinelink.core.model.UIText
 import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.createdAtLocalDateTime
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.SharedTransitionScopeProvider
@@ -31,7 +31,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.core_ui_logout
-import com.divinelink.core.ui.getString
+import com.divinelink.core.ui.extension.localizeIsoDate
 import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.feature_settings_jellyseerr_joined_on
 import com.divinelink.feature.settings.feature_settings_jellyseerr_total_requests
@@ -105,11 +105,11 @@ fun JellyseerrLoggedInContent(
                   start = MaterialTheme.dimensions.keyline_16,
                   top = MaterialTheme.dimensions.keyline_8,
                 ),
-              text = UIText.ResourceText(
+              text = stringResource(
                 Res.string.feature_settings_jellyseerr_joined_on,
-                jellyseerrState.accountDetails.formattedCreatedAt,
+                jellyseerrState.accountDetails.createdAtLocalDateTime.localizeIsoDate(),
                 jellyseerrState.accountDetails.id,
-              ).getString(),
+              ),
               color = MaterialTheme.colorScheme.onSurface,
               fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
               style = MaterialTheme.typography.bodySmall,

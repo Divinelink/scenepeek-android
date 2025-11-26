@@ -11,6 +11,8 @@ kotlin {
       implementation(projects.core.commons)
       implementation(projects.core.domain)
 
+      implementation(libs.kotlinx.datetime)
+
       implementation(projects.core.fixtures)
     }
 

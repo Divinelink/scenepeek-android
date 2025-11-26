@@ -10,6 +10,7 @@ import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.toStub
+import kotlinx.datetime.LocalDateTime
 
 object JellyseerrRequestFactory {
 
@@ -18,7 +19,7 @@ object JellyseerrRequestFactory {
     jellyseerrMediaId = 5,
     mediaStatus = JellyseerrStatus.Media.AVAILABLE,
     requestStatus = JellyseerrStatus.Request.PENDING,
-    requestDate = "June 22, 2025",
+    requestDate = LocalDateTime.parse("2025-06-22T12:00:00"),
     requester = JellyseerrRequesterFactory.bob(),
     seasons = emptyList(),
     media = MediaReference(
@@ -37,7 +38,7 @@ object JellyseerrRequestFactory {
       mediaStatus = JellyseerrStatus.Media.DELETED,
       requestStatus = JellyseerrStatus.Request.PENDING,
       requester = JellyseerrRequesterFactory.rhea(),
-      requestDate = "June 22, 2025",
+      requestDate = LocalDateTime.parse("2025-06-22T12:00:00"),
       seasons = listOf(
         SeasonRequest(seasonNumber = 2, status = JellyseerrStatus.Season.PENDING),
         SeasonRequest(seasonNumber = 3, status = JellyseerrStatus.Season.PENDING),
@@ -57,7 +58,7 @@ object JellyseerrRequestFactory {
       mediaStatus = JellyseerrStatus.Media.PENDING,
       requestStatus = JellyseerrStatus.Request.APPROVED,
       requester = JellyseerrRequesterFactory.rhea(),
-      requestDate = "June 21, 2025",
+      requestDate = LocalDateTime.parse("2025-06-21T12:00:00"),
       seasons = listOf(
         SeasonRequest(seasonNumber = 5, status = JellyseerrStatus.Season.PROCESSING),
       ),
@@ -76,7 +77,7 @@ object JellyseerrRequestFactory {
       mediaStatus = JellyseerrStatus.Media.AVAILABLE,
       requestStatus = JellyseerrStatus.Request.DECLINED,
       requester = JellyseerrRequesterFactory.bob(),
-      requestDate = "June 23, 2025",
+      requestDate = LocalDateTime.parse("2025-06-23T12:00:00"),
       seasons = listOf(
         SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Season.PROCESSING),
         SeasonRequest(seasonNumber = 6, status = JellyseerrStatus.Season.PENDING),
@@ -97,7 +98,7 @@ object JellyseerrRequestFactory {
       mediaStatus = JellyseerrStatus.Media.PENDING,
       requestStatus = JellyseerrStatus.Request.APPROVED,
       requester = JellyseerrRequesterFactory.scenepeek,
-      requestDate = "Sept 25, 2025",
+      requestDate = LocalDateTime.parse("2025-09-25T12:00:00"),
       seasons = listOf(
         SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Season.PENDING),
         SeasonRequest(seasonNumber = 6, status = JellyseerrStatus.Season.PENDING),

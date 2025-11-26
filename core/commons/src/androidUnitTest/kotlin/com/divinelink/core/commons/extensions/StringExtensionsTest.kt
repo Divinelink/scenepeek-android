@@ -35,7 +35,7 @@ class StringExtensionsTest {
   fun `test localizeIsoDate with valid iso date`() {
     val date = "2025-06-22T13:00:22.000Z"
 
-    val result = date.localizeIsoDate()
+    val result = date.toLocalDateTime()
 
     assertThat(result).isEqualTo("June 22, 2025")
   }
@@ -44,7 +44,7 @@ class StringExtensionsTest {
   fun `test localizeIsoDate with invalid iso date`() {
     val date = "2025-06-22T13:00:22"
 
-    val result = date.localizeIsoDate()
+    val result = date.toLocalDateTime()
 
     assertThat(result).isEqualTo("2025-06-22T13:00:22")
   }

@@ -7,6 +7,7 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import kotlinx.datetime.LocalDateTime
 
 object JellyseerrRequestsFactory {
 
@@ -29,7 +30,7 @@ object JellyseerrRequestsFactory {
           mediaStatus = JellyseerrStatus.Media.PROCESSING,
           requestStatus = JellyseerrStatus.Request.APPROVED,
           requester = JellyseerrRequesterFactory.scenepeek,
-          requestDate = "September 21, 2025",
+          requestDate = LocalDateTime.parse("2025-09-21T12:00:00"),
           seasons = emptyList(),
           profileName = "SD",
           profileId = 2,
@@ -47,7 +48,7 @@ object JellyseerrRequestsFactory {
           mediaStatus = JellyseerrStatus.Media.PENDING,
           requestStatus = JellyseerrStatus.Request.PENDING,
           requester = JellyseerrRequesterFactory.scenepeek,
-          requestDate = "September 20, 2025",
+          requestDate = LocalDateTime.parse("2025-09-20T12:00:00"),
           seasons = emptyList(),
           profileName = null,
           profileId = null,
@@ -63,7 +64,7 @@ object JellyseerrRequestsFactory {
           mediaStatus = JellyseerrStatus.Media.PENDING,
           requestStatus = JellyseerrStatus.Request.PENDING,
           requester = JellyseerrRequesterFactory.scenepeek,
-          requestDate = "September 20, 2025",
+          requestDate = LocalDateTime.parse("2025-09-20T12:00:00"),
           seasons = emptyList(),
           profileName = null,
           profileId = null,
@@ -79,7 +80,7 @@ object JellyseerrRequestsFactory {
           mediaStatus = JellyseerrStatus.Media.PROCESSING,
           requestStatus = JellyseerrStatus.Request.APPROVED,
           requester = JellyseerrRequesterFactory.scenepeek,
-          requestDate = "September 20, 2025",
+          requestDate = LocalDateTime.parse("2025-09-20T12:00:00"),
           seasons = emptyList(),
           profileName = null,
           profileId = null,
@@ -95,7 +96,7 @@ object JellyseerrRequestsFactory {
           mediaStatus = JellyseerrStatus.Media.PENDING,
           requestStatus = JellyseerrStatus.Request.PENDING,
           requester = JellyseerrRequesterFactory.scenepeek,
-          requestDate = "September 20, 2025",
+          requestDate = LocalDateTime.parse("2025-09-20T12:00:00"),
           seasons = emptyList(),
           profileName = null,
           profileId = null,

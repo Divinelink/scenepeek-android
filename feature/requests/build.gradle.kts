@@ -13,6 +13,8 @@ kotlin {
       implementation(projects.core.fixtures)
 
       implementation(projects.feature.requestMedia)
+
+      implementation(libs.kotlinx.datetime)
     }
 
     commonTest.dependencies {

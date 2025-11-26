@@ -1,6 +1,6 @@
 package com.divinelink.core.network.jellyseerr.mapper
 
-import com.divinelink.core.commons.extensions.localizeIsoDate
+import com.divinelink.core.commons.extensions.toLocalDateTime
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
@@ -26,7 +26,7 @@ fun MediaInfoRequestResponse.map() = JellyseerrRequest(
       status = JellyseerrStatus.Media.from(it.status),
     )
   },
-  requestDate = createdAt.localizeIsoDate(),
+  requestDate = createdAt.toLocalDateTime(),
   profileId = profileId,
   serverId = serverId,
   rootFolder = rootFolder,

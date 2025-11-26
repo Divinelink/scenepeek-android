@@ -1,6 +1,7 @@
 package com.divinelink.core.model.jellyseerr.media
 
 import com.divinelink.core.model.media.MediaReference
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,7 +12,7 @@ data class JellyseerrRequest(
   val mediaStatus: JellyseerrStatus.Media,
   val requestStatus: JellyseerrStatus.Request,
   val requester: JellyseerrRequester,
-  val requestDate: String,
+  val requestDate: LocalDateTime,
   val seasons: List<SeasonRequest>,
   val profileName: String?,
   val canRemove: Boolean,
