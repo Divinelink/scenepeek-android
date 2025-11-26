@@ -11,10 +11,12 @@ import androidx.compose.material.icons.outlined.Link
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.commons.platform.Platform
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.rememberCurrentPlatform
 import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
@@ -32,6 +34,8 @@ fun SettingsScreen(
   animatedVisibilityScope: AnimatedVisibilityScope,
   onNavigate: (Navigation) -> Unit,
 ) {
+  val currentPlatform = rememberCurrentPlatform()
+
   SettingsScaffold(
     title = stringResource(Res.string.settings),
     onNavigationClick = { onNavigate(Navigation.Back) },
@@ -77,16 +81,18 @@ fun SettingsScreen(
         SettingsDivider()
       }
 
-      item {
-        SettingsClickItem(
-          icon = IconWrapper.Vector(Icons.Outlined.Link),
-          text = stringResource(Res.string.feature_settings_link_handling),
-          onClick = { onNavigate(Navigation.LinkHandlingSettingsRoute) },
-        )
-      }
+      if (currentPlatform == Platform.Android) {
+        item {
+          SettingsClickItem(
+            icon = IconWrapper.Vector(Icons.Outlined.Link),
+            text = stringResource(Res.string.feature_settings_link_handling),
+            onClick = { onNavigate(Navigation.LinkHandlingSettingsRoute) },
+          )
+        }
 
-      item {
-        SettingsDivider()
+        item {
+          SettingsDivider()
+        }
       }
 
       item {

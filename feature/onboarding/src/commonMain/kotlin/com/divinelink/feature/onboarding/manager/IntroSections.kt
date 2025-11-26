@@ -1,5 +1,7 @@
 package com.divinelink.feature.onboarding.manager
 
+import com.divinelink.core.commons.platform.Platform
+import com.divinelink.core.commons.platform.currentPlatform
 import com.divinelink.core.model.Res
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.core_model_ic_tmdb
@@ -61,18 +63,22 @@ object IntroSections {
     action = OnboardingAction.NavigateToLinkHandling,
   )
 
-  val onboardingSections = listOf(
-    IntroSection.Header(
-      title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
-      description = UIText.ResourceText(R.string.feature_onboarding_welcome_page_description),
-    ),
-    IntroSection.Spacer,
-    IntroSection.SecondaryHeader.Features,
-    tmdb,
-    jellyseerr,
-    linkHandling,
-    IntroSection.GetStartedButton,
-  )
+  val onboardingSections = buildList {
+    add(
+      IntroSection.Header(
+        title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
+        description = UIText.ResourceText(R.string.feature_onboarding_welcome_page_description),
+      ),
+    )
+    add(IntroSection.Spacer)
+    add(IntroSection.SecondaryHeader.Features)
+    add(tmdb)
+    add(jellyseerr)
+    if (currentPlatform == Platform.Android) {
+      add(linkHandling)
+    }
+    add(IntroSection.GetStartedButton)
+  }
 
   val v23 = listOf(
     IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),

@@ -8,6 +8,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.commons.platform.Platform
+import com.divinelink.core.commons.platform.currentPlatform
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.commons.provider.ConstantsProvider
 import com.divinelink.core.commons.provider.getBuildConfigProvider
@@ -36,4 +38,9 @@ fun rememberConstants(): ConstantsProvider {
 @Composable
 fun rememberConfigProvider(): BuildConfigProvider {
   return remember { getBuildConfigProvider() }
+}
+
+@Composable
+fun rememberCurrentPlatform(): Platform {
+  return remember { currentPlatform }
 }
