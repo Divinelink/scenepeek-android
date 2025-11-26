@@ -16,7 +16,7 @@
   <string name="feature_onboarding_jellyseerr_page_description">Connect to your Jellyseerr instance to request movies and TV shows instantly.</string>
 
   <string name="feature_onboarding_link_handling_page_title">IMDb &amp; TMDB Link Handling</string>
-  <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> &amp; <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and people directly in the app.]]></string>
+  <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> & <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and people directly in the app.]]></string>
 
   <string name="feature_onboarding_v22_feature_tmdb_lists">- TMDB Lists: Create and edit custom lists, add movies and TV shows</string>
   <string name="feature_onboarding_v22_feature_profile">- Watchlist tab has been renamed to Profile, now includes watchlist, lists, and ratings</string>
