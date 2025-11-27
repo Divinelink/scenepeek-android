@@ -52,7 +52,7 @@ import com.divinelink.core.testing.service.TestTraktService
 import com.divinelink.factories.api.DetailsResponseApiFactory
 import com.divinelink.factories.api.ReviewsResultsApiFactory
 import com.divinelink.factories.api.account.states.AccountMediaDetailsResponseApiFactory
-import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first

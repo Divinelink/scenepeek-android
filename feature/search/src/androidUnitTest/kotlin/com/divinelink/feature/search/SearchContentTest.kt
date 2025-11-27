@@ -13,21 +13,25 @@ import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.MEDIA_LIST_TAG
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
+import com.divinelink.core.ui.core_ui_offline_description
+import com.divinelink.core.ui.core_ui_offline_title
 import com.divinelink.feature.search.ui.SearchContent
 import com.divinelink.feature.search.ui.SearchUiState
 import com.google.common.truth.Truth.assertThat
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 
 class SearchContentTest : ComposeTest() {
 
   @Test
-  fun `test initial state`() {
+  fun `test initial state`() = uiTest {
     val uiState = SearchUiState.initial()
 
     setContentWithTheme {
@@ -40,13 +44,11 @@ class SearchContentTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.feature_search__initial_description)).assertIsDisplayed()
-    }
+    onNodeWithText(getString(Res.string.feature_search__initial_description)).assertIsDisplayed()
   }
 
   @Test
-  fun `test search content with data`() {
+  fun `test search content with data`() = uiTest {
     val uiState = SearchUiState.initial().copy(
       searchResults = MediaSection(
         data = MediaItemFactory.MoviesList(),
@@ -65,13 +67,11 @@ class SearchContentTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(MEDIA_LIST_TAG).assertIsDisplayed()
-    }
+    onNodeWithTag(MEDIA_LIST_TAG).assertIsDisplayed()
   }
 
   @Test
-  fun `test long click on media card`() {
+  fun `test long click on media card`() = uiTest {
     var route: Navigation? = null
 
     val uiState = SearchUiState.initial().copy(
@@ -92,48 +92,45 @@ class SearchContentTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
-        .performTouchInput {
-          longClick()
-        }
+    onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+      .performTouchInput {
+        longClick()
+      }
 
-      assertThat(route).isEqualTo(
-        Navigation.ActionMenuRoute.Media(MediaItemFactory.MoviesList().first().encodeToString()),
-      )
-    }
+    assertThat(route).isEqualTo(
+      Navigation.ActionMenuRoute.Media(MediaItemFactory.MoviesList().first().encodeToString()),
+    )
   }
 
   @Test
-  fun `test empty search blank slate is displayed on empty search result without other error`() {
-    val uiState = SearchUiState.initial().copy(
-      searchResults = MediaSection(
-        data = emptyList(),
-        shouldLoadMore = false,
-      ),
-    )
-
-    setContentWithTheme {
-      SearchContent(
-        onNavigate = {},
-        uiState = uiState,
-        onLoadNextPage = {},
-        onRetryClick = {},
-        scrollState = rememberLazyGridState(),
+  fun `test empty search blank slate is displayed on empty search result without other error`() =
+    uiTest {
+      val uiState = SearchUiState.initial().copy(
+        searchResults = MediaSection(
+          data = emptyList(),
+          shouldLoadMore = false,
+        ),
       )
-    }
 
-    with(composeTestRule) {
+      setContentWithTheme {
+        SearchContent(
+          onNavigate = {},
+          uiState = uiState,
+          onLoadNextPage = {},
+          onRetryClick = {},
+          scrollState = rememberLazyGridState(),
+        )
+      }
+
       onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-      onNodeWithText(getString(R.string.search__empty_result_title)).assertIsDisplayed()
+      onNodeWithText(getString(Res.string.search__empty_result_title)).assertIsDisplayed()
       onNodeWithText(
-        getString(R.string.search__empty_result_description),
+        getString(Res.string.search__empty_result_description),
       ).assertIsDisplayed()
     }
-  }
 
   @Test
-  fun `test search blank slate when is empty and search mode but has other error`() {
+  fun `test search blank slate when is empty and search mode but has other error`() = uiTest {
     val uiState = SearchUiState.initial().copy(
       error = BlankSlateState.Offline,
       searchResults = MediaSection(
@@ -152,15 +149,13 @@ class SearchContentTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-      onNodeWithText(
-        getString(com.divinelink.core.ui.UiString.core_ui_offline_title),
-      ).assertIsDisplayed()
-      onNodeWithText(
-        getString(com.divinelink.core.ui.UiString.core_ui_offline_description),
-      ).assertIsDisplayed()
-      onNodeWithContentDescription("Blank slate illustration").assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+    onNodeWithText(
+      getString(UiString.core_ui_offline_title),
+    ).assertIsDisplayed()
+    onNodeWithText(
+      getString(UiString.core_ui_offline_description),
+    ).assertIsDisplayed()
+    onNodeWithContentDescription("Blank slate illustration").assertIsDisplayed()
   }
 }

@@ -1,6 +1,8 @@
 package com.divinelink.core.network.client
 
 import JvmUnitTestDemoAssetManager
+import com.divinelink.core.commons.provider.BuildConfigProvider
+import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
@@ -14,6 +16,7 @@ import io.ktor.client.engine.mock.respond
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.test.runTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
@@ -21,6 +24,12 @@ class JellyseerrRestClientTest {
 
   private lateinit var client: JellyseerrRestClient
   private lateinit var engine: HttpClientEngine
+  private lateinit var config: BuildConfigProvider
+
+  @BeforeTest
+  fun setup() {
+    config = PreviewBuildConfigProvider()
+  }
 
   @Test
   fun `test unauthorized request triggers reAuthentication`() = runTest {
@@ -64,6 +73,7 @@ class JellyseerrRestClientTest {
 
       client = JellyseerrRestClient(
         engine = engine,
+        config = config,
         savedStateStorage = TestSavedStateStorage().apply {
           setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
         },
@@ -111,6 +121,7 @@ class JellyseerrRestClientTest {
 
     client = JellyseerrRestClient(
       engine = engine,
+      config = config,
       savedStateStorage = TestSavedStateStorage().apply {
         setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
       },
@@ -138,6 +149,7 @@ class JellyseerrRestClientTest {
 
     client = JellyseerrRestClient(
       engine = engine,
+      config = config,
       savedStateStorage = TestSavedStateStorage().apply {
         setJellyseerrCredentials(JellyseerrAccountFactory.cup10())
       },
@@ -162,6 +174,7 @@ class JellyseerrRestClientTest {
 
     client = JellyseerrRestClient(
       engine = engine,
+      config = config,
       savedStateStorage = TestSavedStateStorage(),
     )
 

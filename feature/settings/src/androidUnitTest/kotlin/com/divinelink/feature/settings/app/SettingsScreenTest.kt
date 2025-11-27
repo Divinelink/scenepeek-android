@@ -5,16 +5,22 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
-import com.divinelink.feature.settings.R
-import com.google.common.truth.Truth.assertThat
+import com.divinelink.core.testing.uiTest
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_navigate_up_button_content_description
+import com.divinelink.feature.settings.Res
+import com.divinelink.feature.settings.feature_settings_details_preferences
+import com.divinelink.feature.settings.feature_settings_link_handling
+import com.divinelink.feature.settings.preferences__appearance
+import io.kotest.matchers.shouldBe
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 
 class SettingsScreenTest : ComposeTest() {
 
   @Test
-  fun `test navigate to account screen and navigate up`() {
+  fun `test navigate to account screen and navigate up`() = uiTest {
     var navigatedToAccountSettings = false
     var navigatedUp = false
     setVisibilityScopeContent {
@@ -30,25 +36,22 @@ class SettingsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("Account").assertExists()
-      onNodeWithText("Account").performClick()
-    }
 
-    assertThat(navigatedToAccountSettings).isTrue()
+    onNodeWithText("Account").assertExists()
+    onNodeWithText("Account").performClick()
 
-    val navigateUpContentDescription = composeTestRule.activity
-      .getString(UiString.core_ui_navigate_up_button_content_description)
+    navigatedToAccountSettings shouldBe true
 
-    with(composeTestRule) {
-      onNodeWithContentDescription(navigateUpContentDescription).performClick()
-    }
+    val navigateUpContentDescription = getString(
+      UiString.core_ui_navigate_up_button_content_description,
+    )
 
-    assertThat(navigatedUp).isTrue()
+    onNodeWithContentDescription(navigateUpContentDescription).performClick()
+    navigatedUp shouldBe true
   }
 
   @Test
-  fun `test navigate to appearance screen`() {
+  fun `test navigate to appearance screen`() = uiTest {
     var navigatedToAppearanceSettings = false
     setVisibilityScopeContent {
       SettingsScreen(
@@ -61,18 +64,16 @@ class SettingsScreenTest : ComposeTest() {
       )
     }
 
-    val appearanceString = composeTestRule.activity.getString(R.string.preferences__appearance)
+    val appearanceString = getString(Res.string.preferences__appearance)
 
-    with(composeTestRule) {
-      onNodeWithText(appearanceString).assertExists()
-      onNodeWithText(appearanceString).performClick()
-    }
+    onNodeWithText(appearanceString).assertExists()
+    onNodeWithText(appearanceString).performClick()
 
-    assertThat(navigatedToAppearanceSettings).isTrue()
+    navigatedToAppearanceSettings shouldBe true
   }
 
   @Test
-  fun `test navigate to link handling screen`() {
+  fun `test navigate to link handling screen`() = uiTest {
     var navigatedToLinkHandling = false
     setVisibilityScopeContent {
       SettingsScreen(
@@ -85,18 +86,16 @@ class SettingsScreenTest : ComposeTest() {
       )
     }
 
-    val linkHandlingSetting = getString(R.string.feature_settings_link_handling)
+    val linkHandlingSetting = getString(Res.string.feature_settings_link_handling)
 
-    with(composeTestRule) {
-      onNodeWithText(linkHandlingSetting).assertExists()
-      onNodeWithText(linkHandlingSetting).performClick()
-    }
+    onNodeWithText(linkHandlingSetting).assertExists()
+    onNodeWithText(linkHandlingSetting).performClick()
 
-    assertThat(navigatedToLinkHandling).isTrue()
+    navigatedToLinkHandling shouldBe true
   }
 
   @Test
-  fun `test navigate to details preference screen`() {
+  fun `test navigate to details preference screen`() = uiTest {
     var navigatedToDetailPreferencesSettings = false
     setVisibilityScopeContent {
       SettingsScreen(
@@ -109,14 +108,11 @@ class SettingsScreenTest : ComposeTest() {
       )
     }
 
-    val detailsPreferencesString = getString(R.string.feature_settings_details_preferences)
+    val detailsPreferencesString = getString(Res.string.feature_settings_details_preferences)
 
-    with(composeTestRule) {
-      onNodeWithText(detailsPreferencesString).assertExists()
+    onNodeWithText(detailsPreferencesString).assertExists()
 
-      onNodeWithText(detailsPreferencesString).performClick()
-    }
-
-    assertThat(navigatedToDetailPreferencesSettings).isTrue()
+    onNodeWithText(detailsPreferencesString).performClick()
+    navigatedToDetailPreferencesSettings shouldBe true
   }
 }

@@ -1,7 +1,9 @@
 package com.divinelink.scenepeek.navigation
 
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -22,6 +24,7 @@ import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUse
 import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
 import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.navigation.route.Navigation.AboutSettingsRoute
@@ -39,36 +42,46 @@ import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.domain.SystemThemeProviderFactory
+import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
+import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
+import com.divinelink.core.testing.uiTest
+import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
+import com.divinelink.core.testing.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
+import com.divinelink.core.testing.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
+import com.divinelink.core.testing.usecase.FakeLogoutUseCase
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
-import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
-import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.PreviewLocalProvider
-import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
+import com.divinelink.feature.settings.feature_settings_about
+import com.divinelink.feature.settings.feature_settings_account
+import com.divinelink.feature.settings.feature_settings_details_preferences
+import com.divinelink.feature.settings.feature_settings_jellyseerr_integration
+import com.divinelink.feature.settings.feature_settings_link_handling
+import com.divinelink.feature.settings.login
+import com.divinelink.feature.settings.preferences__appearance
+import com.divinelink.feature.settings.settings
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.scenepeek.di.appModule
 import com.divinelink.scenepeek.di.navigationModule
-import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
-import com.divinelink.scenepeek.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import com.divinelink.scenepeek.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.test.runTest
+import io.kotest.matchers.shouldBe
+import org.jetbrains.compose.resources.getString
 import org.junit.Rule
-import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.get
@@ -76,6 +89,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import com.divinelink.feature.settings.Res as R
 
 class ScenePeekSettingsNavHostTest : ComposeTest() {
 
@@ -93,9 +107,8 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   @BeforeTest
-  fun setup() {
+  override fun setUp() {
     startKoin {
-      androidContext(composeTestRule.activity)
       modules(
         appModule,
         navigationModule,
@@ -120,12 +133,26 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    composeTestRule.setContent {
+    declare {
+      TMDBAuthViewModel(
+        createRequestTokenUseCase = FakeCreateRequestTokenUseCase().mock,
+        createSessionUseCase = TestCreateSessionUseCase().mock,
+      )
+    }
+  }
+
+  @AfterTest
+  fun tearDown() {
+    stopKoin()
+  }
+
+  private fun ComposeUiTest.setupContent() {
+    setContentWithTheme {
       navController = TestNavHostController(LocalContext.current)
       navController.navigatorProvider.addNavigator(ComposeNavigator())
       navController.navigatorProvider.addNavigator(DialogNavigator())
       val state = rememberScenePeekAppState(
-        networkMonitor = com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor(),
+        networkMonitor = TestNetworkMonitor(),
         onboardingManager = TestOnboardingManager(),
         navController = navController,
         preferencesRepository = TestPreferencesRepository(),
@@ -146,13 +173,10 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     }
   }
 
-  @AfterTest
-  fun tearDown() {
-    stopKoin()
-  }
-
   @Test
-  fun `test navigate to AccountSettingsScreen`() = runTest {
+  fun `test navigate to AccountSettingsScreen`() = uiTest {
+    setupContent()
+
     navController.navigate(SettingsRoute)
 
     declare {
@@ -163,24 +187,24 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-      assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isFalse()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
+    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isFalse()
 
-      onNodeWithText(getString(R.string.feature_settings_account)).assertExists().performClick()
+    onNodeWithText(getString(R.string.feature_settings_account)).assertExists().performClick()
 
-      onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-      assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
+    onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
+    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
 
-      onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isFalse()
-    }
+    onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isFalse()
   }
 
   @Test
-  fun `test navigate to JellyseerrAccountSettings`() = runTest {
+  fun `test navigate to JellyseerrAccountSettings`() = uiTest {
+    setupContent()
+
     navController.navigate(SettingsRoute)
     navController.navigate(AccountSettingsRoute)
 
@@ -200,36 +224,38 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.feature_settings_account)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
-      assertThat(
-        navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
-      ).isFalse()
+    onNodeWithText(getString(R.string.feature_settings_account)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
+    assertThat(
+      navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
+    ).isFalse()
 
-      onNodeWithText(getString(R.string.feature_settings_jellyseerr_integration))
-        .assertExists()
-        .performClick()
+    onNodeWithText(getString(R.string.feature_settings_jellyseerr_integration)).assertExists()
+      .performClick()
 
-      onNodeWithText(getString(R.string.feature_settings_account)).assertDoesNotExist()
-      assertThat(
-        navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
-      ).isTrue()
+    onNodeWithText(getString(R.string.feature_settings_account)).assertDoesNotExist()
+    assertThat(
+      navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
+    ).isTrue()
 
-      onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
-      onNodeWithText(getString(R.string.feature_settings_account)).assertIsDisplayed()
-      assertThat(
-        navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
-      ).isFalse()
-    }
+    onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
+    onNodeWithText(getString(R.string.feature_settings_account)).assertIsDisplayed()
+    assertThat(
+      navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
+    ).isFalse()
   }
 
   @Test
-  fun `test navigate to AppearanceSettingsScreen`() {
+  fun `test navigate to AppearanceSettingsScreen`() = uiTest {
+    setupContent()
+
     navController.navigate(SettingsRoute)
 
     fakePreferenceStorage = FakePreferenceStorage()
-    val fakeGetMaterialYouVisibleUseCase = FakeGetMaterialYouVisibleUseCase(testDispatcher)
+    val fakeGetMaterialYouVisibleUseCase = FakeGetMaterialYouVisibleUseCase(
+      materialYouProvider = MaterialYouProviderFactory.available,
+      dispatcher = testDispatcher,
+    )
 
     fakeGetMaterialYouVisibleUseCase.mockMaterialYouVisible(true)
 
@@ -237,7 +263,10 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       AppearanceSettingsViewModel(
         setThemeUseCase = SetThemeUseCase(fakePreferenceStorage, testDispatcher),
         getThemeUseCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher),
-        getAvailableThemesUseCase = GetAvailableThemesUseCase(testDispatcher),
+        getAvailableThemesUseCase = GetAvailableThemesUseCase(
+          systemThemeProvider = SystemThemeProviderFactory.available,
+          dispatcher = testDispatcher,
+        ),
         setMaterialYouUseCase = SetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
         getMaterialYouUseCase = GetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
         setBlackBackgroundsUseCase = SetBlackBackgroundsUseCase(
@@ -252,29 +281,29 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-      assertThat(
-        navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
-      ).isFalse()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
+    assertThat(
+      navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
+    ).isFalse()
 
-      onNodeWithText(getString(R.string.preferences__appearance)).assertExists().performClick()
+    onNodeWithText(getString(R.string.preferences__appearance)).assertExists().performClick()
 
-      assertThat(
-        navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
-      ).isTrue()
+    assertThat(
+      navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
+    ).isTrue()
 
-      onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(
-        navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
-      ).isFalse()
-    }
+    onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(
+      navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
+    ).isFalse()
   }
 
   @Test
-  fun `test navigate to Details Preferences`() {
+  fun `test navigate to Details Preferences`() = uiTest {
+    setupContent()
+
     navController.navigate(SettingsRoute)
 
     fakePreferenceStorage = FakePreferenceStorage()
@@ -288,95 +317,95 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-      assertThat(
-        navController.currentDestination?.hasRoute(
-          DetailsPreferencesSettingsRoute::class,
-        ),
-      ).isFalse()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
+    assertThat(
+      navController.currentDestination?.hasRoute(
+        DetailsPreferencesSettingsRoute::class,
+      ),
+    ).isFalse()
 
-      onNodeWithText(
-        getString(R.string.feature_settings_details_preferences),
-      ).assertExists().performClick()
+    onNodeWithText(
+      getString(R.string.feature_settings_details_preferences),
+    ).assertExists().performClick()
 
-      onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-      assertThat(
-        navController.currentDestination?.hasRoute(DetailsPreferencesSettingsRoute::class),
-      ).isTrue()
+    onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
+    assertThat(
+      navController.currentDestination?.hasRoute(DetailsPreferencesSettingsRoute::class),
+    ).isTrue()
 
-      onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(
-        navController.currentDestination?.hasRoute(DetailsPreferencesSettingsRoute::class),
-      ).isFalse()
-    }
+    onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(
+      navController.currentDestination?.hasRoute(DetailsPreferencesSettingsRoute::class),
+    ).isFalse()
   }
 
   @Test
-  fun `test navigate to Link Handling`() {
+  fun `test navigate to Link Handling`() = uiTest {
+    setupContent()
+
     navController.navigate(SettingsRoute)
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-      assertThat(
-        navController.currentDestination?.hasRoute(
-          DetailsPreferencesSettingsRoute::class,
-        ),
-      ).isFalse()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
+    assertThat(
+      navController.currentDestination?.hasRoute(
+        DetailsPreferencesSettingsRoute::class,
+      ),
+    ).isFalse()
 
-      onNodeWithText(
-        getString(R.string.feature_settings_link_handling),
-      ).assertExists().performClick()
+    onNodeWithText(
+      getString(R.string.feature_settings_link_handling),
+    ).assertExists().performClick()
 
-      onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-      assertThat(
-        navController.currentDestination?.hasRoute(LinkHandlingSettingsRoute::class),
-      ).isTrue()
+    onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
+    assertThat(
+      navController.currentDestination?.hasRoute(LinkHandlingSettingsRoute::class),
+    ).isTrue()
 
-      onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(
-        navController.currentDestination?.hasRoute(LinkHandlingSettingsRoute::class),
-      ).isFalse()
-    }
+    onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(
+      navController.currentDestination?.hasRoute(LinkHandlingSettingsRoute::class),
+    ).isFalse()
   }
 
   @Test
-  fun `test navigate to AboutSettingsScreen`() {
+  fun `test navigate to AboutSettingsScreen`() = uiTest {
+    setupContent()
+
     navController.navigate(SettingsRoute)
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-      assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
+    assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
 
-      onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToNode(
-        hasText(getString(R.string.feature_settings_about)),
+    onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToNode(
+      hasText(getString(R.string.feature_settings_about)),
+    )
+
+    onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performTouchInput {
+      swipeUp(
+        startY = 100f,
+        endY = 50f,
       )
-
-      onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performTouchInput {
-        swipeUp(
-          startY = 100f,
-          endY = 50f,
-        )
-      }
-
-      onNodeWithText(getString(R.string.feature_settings_about)).assertExists().performClick()
-
-      onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-      assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isTrue()
-
-      onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
-      onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-      assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
     }
+
+    onNodeWithText(getString(R.string.feature_settings_about)).assertExists().performClick()
+
+    onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
+    assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isTrue()
+
+    onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
+    onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
+    assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
   }
 
   @Test
-  fun `test navigate to TMDBAuthScreen`() {
+  fun `test navigate to TMDBAuthScreen`() = uiTest {
+    setupContent()
+
     declare {
       AccountSettingsViewModel(
         getAccountDetailsUseCase = FakeGetAccountDetailsUseCase().mock,
@@ -385,23 +414,14 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    declare {
-      TMDBAuthViewModel(
-        createRequestTokenUseCase = FakeCreateRequestTokenUseCase().mock,
-        createSessionUseCase = TestCreateSessionUseCase().mock,
-      )
-    }
-
     navController.navigate(AccountSettingsRoute)
 
-    with(composeTestRule) {
-      assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
-      assertThat(navController.currentDestination?.hasRoute(TMDBAuthRoute::class)).isFalse()
+    navController.currentDestination?.hasRoute(AccountSettingsRoute::class) shouldBe true
+    navController.currentDestination?.hasRoute(TMDBAuthRoute::class) shouldBe false
 
-      onNodeWithText(getString(R.string.login)).assertExists().performClick()
+    onNodeWithText(getString(R.string.login)).assertExists().performClick()
 
-      onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-      assertThat(navController.currentDestination?.hasRoute(TMDBAuthRoute::class)).isTrue()
-    }
+    onNodeWithText(getString(R.string.settings)).assertIsNotDisplayed()
+    navController.currentDestination?.hasRoute(TMDBAuthRoute::class) shouldBe true
   }
 }

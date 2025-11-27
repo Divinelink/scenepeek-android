@@ -3,12 +3,16 @@ package com.divinelink.scenepeek.settings.appearance.ui
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.domain.theme.GetThemeUseCase
+import com.divinelink.core.domain.theme.ProdSystemThemeProvider
 import com.divinelink.core.domain.theme.SetThemeUseCase
+import com.divinelink.core.domain.theme.SystemThemeProvider
 import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
 import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.domain.SystemThemeProviderFactory
+import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.UpdateSettingsState
@@ -29,18 +33,27 @@ class AppearanceSettingsViewModelTest {
 
   private lateinit var viewModel: AppearanceSettingsViewModel
 
-  private val fakeGetMaterialYouVisibleUseCase = FakeGetMaterialYouVisibleUseCase(testDispatcher)
+  private val fakeGetMaterialYouVisibleUseCase = FakeGetMaterialYouVisibleUseCase(
+    materialYouProvider = MaterialYouProviderFactory.available,
+    dispatcher = testDispatcher,
+  )
 
   @Before
   fun setup() {
     fakeGetMaterialYouVisibleUseCase.mockMaterialYouVisible(false)
   }
 
-  private fun buildViewModel(fakePreferenceStorage: FakePreferenceStorage) = apply {
+  private fun buildViewModel(
+    fakePreferenceStorage: FakePreferenceStorage,
+    systemThemeProvider: SystemThemeProvider = ProdSystemThemeProvider(),
+  ) = apply {
     viewModel = AppearanceSettingsViewModel(
       setThemeUseCase = SetThemeUseCase(fakePreferenceStorage, testDispatcher),
       getThemeUseCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher),
-      getAvailableThemesUseCase = GetAvailableThemesUseCase(testDispatcher),
+      getAvailableThemesUseCase = GetAvailableThemesUseCase(
+        systemThemeProvider = systemThemeProvider,
+        dispatcher = testDispatcher,
+      ),
       setMaterialYouUseCase = SetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
       getMaterialYouUseCase = GetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
       setBlackBackgroundsUseCase = SetBlackBackgroundsUseCase(

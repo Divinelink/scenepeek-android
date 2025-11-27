@@ -101,11 +101,11 @@
 
   <plurals name="core_ui_request_series_button">
     <item quantity="one">Request 1 season</item>
-    <item quantity="other">Request %d seasons</item>
+    <item quantity="other">Request %1$s seasons</item>
   </plurals>
 
   <string name="core_ui_select_seasons_button">Select season(s)</string>
-  <string name="core_ui_season_number">Season %d</string>
+  <string name="core_ui_season_number">Season %1$s</string>
   <string name="core_ui_request">Request</string>
   <string name="core_ui_request_movie">Request movie</string>
   <string name="core_ui_request_series">Request series</string>

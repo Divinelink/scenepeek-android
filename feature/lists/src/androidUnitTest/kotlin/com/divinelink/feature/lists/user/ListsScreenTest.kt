@@ -20,11 +20,11 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class ListsScreenTest : ComposeTest() {
@@ -37,7 +37,7 @@ class ListsScreenTest : ComposeTest() {
   )
 
   @Test
-  fun `test unauthenticated shows fab`() {
+  fun `test unauthenticated shows fab`() = uiTest {
     fetchUserListsUseCase.mockResponse(
       Result.failure(SessionException.Unauthenticated()),
     )
@@ -53,14 +53,12 @@ class ListsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("Login").assertIsDisplayed()
-      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-    }
+    onNodeWithText("Login").assertIsDisplayed()
+    onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
   }
 
   @Test
-  fun `test display lists`() {
+  fun `test display lists`() = uiTest {
     fetchUserListsUseCase.mockResponse(Result.success(ListItemFactory.page1()))
 
     setVisibilityScopeContent(
@@ -75,16 +73,14 @@ class ListsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(
-        TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
-      ).assertIsDisplayed()
-      onNodeWithText(ListItemFactory.recommended().name).assertIsDisplayed()
-    }
+    onNodeWithTag(
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
+    ).assertIsDisplayed()
+    onNodeWithText(ListItemFactory.recommended().name).assertIsDisplayed()
   }
 
   @Test
-  fun `test refresh list`() = runTest {
+  fun `test refresh list`() = uiTest {
     fetchUserListsUseCase.mockResponse(
       Result.success(ListItemFactory.page2()),
     )
@@ -101,25 +97,23 @@ class ListsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText(ListItemFactory.movies().name).assertIsNotDisplayed()
-      fetchUserListsUseCase.mockResponse(
-        Result.success(ListItemFactory.page1()),
-      )
+    onNodeWithText(ListItemFactory.movies().name).assertIsNotDisplayed()
+    fetchUserListsUseCase.mockResponse(
+      Result.success(ListItemFactory.page1()),
+    )
 
-      onNodeWithTag(TestTags.Lists.PULL_TO_REFRESH).performTouchInput {
-        swipeDown()
-      }
-
-      waitUntil {
-        onNodeWithText(ListItemFactory.movies().name).isDisplayed()
-      }
-      onNodeWithText(ListItemFactory.movies().name).assertIsDisplayed()
+    onNodeWithTag(TestTags.Lists.PULL_TO_REFRESH).performTouchInput {
+      swipeDown()
     }
+
+    waitUntil {
+      onNodeWithText(ListItemFactory.movies().name).isDisplayed()
+    }
+    onNodeWithText(ListItemFactory.movies().name).assertIsDisplayed()
   }
 
   @Test
-  fun `test on navigate to list on list mode`() {
+  fun `test on navigate to list on list mode`() = uiTest {
     var navigateRoute: Navigation.ListDetailsRoute? = null
     fetchUserListsUseCase.mockResponse(Result.success(ListItemFactory.page1()))
 
@@ -139,26 +133,24 @@ class ListsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(
-        TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
-      ).assertIsDisplayed()
-      onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
-    }
+    onNodeWithTag(
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
+    ).assertIsDisplayed()
 
-    assertThat(navigateRoute).isEqualTo(
-      Navigation.ListDetailsRoute(
-        id = 8452377,
-        name = ListItemFactory.shows().name,
-        backdropPath = ListItemFactory.shows().backdropPath,
-        description = ListItemFactory.shows().description,
-        public = false,
-      ),
+    onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
+
+
+    navigateRoute shouldBe Navigation.ListDetailsRoute(
+      id = 8452377,
+      name = ListItemFactory.shows().name,
+      backdropPath = ListItemFactory.shows().backdropPath,
+      description = ListItemFactory.shows().description,
+      public = false,
     )
   }
 
   @Test
-  fun `test on navigate to list on grid mode`() {
+  fun `test on navigate to list on grid mode`() = uiTest {
     var navigateRoute: Navigation.ListDetailsRoute? = null
     fetchUserListsUseCase.mockResponse(Result.success(ListItemFactory.page1()))
 
@@ -182,26 +174,25 @@ class ListsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(
-        TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
-      ).assertIsDisplayed()
-      onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
-    }
+    onNodeWithTag(
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
+    ).assertIsDisplayed()
+    onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
 
-    assertThat(navigateRoute).isEqualTo(
+
+    navigateRoute shouldBe
       Navigation.ListDetailsRoute(
         id = 8452377,
         name = ListItemFactory.shows().name,
         backdropPath = ListItemFactory.shows().backdropPath,
         description = ListItemFactory.shows().description,
         public = false,
-      ),
-    )
+      )
   }
 
+
   @Test
-  fun `test update view mode`() {
+  fun `test update view mode`() = uiTest {
     fetchUserListsUseCase.mockResponse(
       Result.success(ListItemFactory.page1()),
     )
@@ -218,21 +209,19 @@ class ListsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(
-        TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
-      ).assertIsDisplayed()
+    onNodeWithTag(
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
+    ).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
+    onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
 
-      onNodeWithTag(
-        TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
-      ).assertIsDisplayed()
-    }
+    onNodeWithTag(
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
+    ).assertIsDisplayed()
   }
 
   @Test
-  fun `test on navigate to create list screen`() {
+  fun `test on navigate to create list screen`() = uiTest {
     val channel = Channel<Result<PaginationData<ListItem>>>()
     var isCreateListScreenNavigated = false
 
@@ -254,16 +243,14 @@ class ListsScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsNotDisplayed()
 
-      channel.trySend(
-        Result.success(ListItemFactory.page1()),
-      )
+    channel.trySend(
+      Result.success(ListItemFactory.page1()),
+    )
 
-      onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsDisplayed().performClick()
-    }
+    onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsDisplayed().performClick()
 
-    assertThat(isCreateListScreenNavigated).isTrue()
+    isCreateListScreenNavigated shouldBe true
   }
 }

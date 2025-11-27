@@ -7,8 +7,6 @@ import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
-import com.divinelink.feature.profile.ProfileUiState
-import com.divinelink.feature.profile.ProfileViewModel
 
 class ProfileViewModelTestRobot {
 

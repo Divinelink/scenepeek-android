@@ -9,7 +9,7 @@ import org.mockito.kotlin.whenever
 
 class TestFindByIdUseCase {
 
-  val mock: com.divinelink.core.domain.FindByIdUseCase = mock()
+  val mock: FindByIdUseCase = mock()
 
   init {
     mockFailure()

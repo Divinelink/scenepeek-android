@@ -6,7 +6,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestMediaRepository
-import com.divinelink.scenepeek.home.usecase.GetPopularMoviesUseCase
+import com.divinelink.core.domain.GetPopularMoviesUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest

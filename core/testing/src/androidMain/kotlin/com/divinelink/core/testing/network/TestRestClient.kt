@@ -1,6 +1,8 @@
 package com.divinelink.core.testing.network
 
 import JvmUnitTestDemoAssetManager
+import com.divinelink.core.testing.commons.provider.TestSecretProvider
+import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.TMDbClient
 
 class TestRestClient {
@@ -20,7 +22,11 @@ class TestRestClient {
       it.readBytes().decodeToString().trimIndent()
     }
 
-    restClient = TMDbClient(MockEngine(json))
+    restClient = TMDbClient(
+      engine = MockEngine(json),
+      config = PreviewBuildConfigProvider(),
+      secret = TestSecretProvider(),
+    )
 
     restClient.get<T>(url = url)
   }
@@ -29,7 +35,11 @@ class TestRestClient {
     url: String,
     json: String,
   ) {
-    restClient = TMDbClient(MockEngine(json))
+    restClient = TMDbClient(
+      engine = MockEngine(json),
+      config = PreviewBuildConfigProvider(),
+      secret = TestSecretProvider(),
+    )
 
     restClient.get<T>(url = url)
   }
@@ -38,7 +48,11 @@ class TestRestClient {
     url: String,
     response: String,
   ) {
-    restClient = TMDbClient(MockEngine(response))
+    restClient = TMDbClient(
+      engine = MockEngine(response),
+      config = PreviewBuildConfigProvider(),
+      secret = TestSecretProvider(),
+    )
 
     restClient.delete<T>(url = url)
   }
@@ -48,7 +62,11 @@ class TestRestClient {
     body: T,
     response: String,
   ) {
-    restClient = TMDbClient(MockEngine(response))
+    restClient = TMDbClient(
+      engine = MockEngine(response),
+      config = PreviewBuildConfigProvider(),
+      secret = TestSecretProvider(),
+    )
 
     return restClient.post(url = url, body = body)
   }

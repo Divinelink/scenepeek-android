@@ -12,8 +12,14 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.feature.add.to.account.R
+import com.divinelink.core.ui.core_ui_login
+import com.divinelink.feature.add.to.account.Res
+import com.divinelink.feature.add.to.account.feature_add_to_account_item_add_to_list_unexpected_failure
+import com.divinelink.feature.add.to.account.feature_add_to_account_item_added_to_list_failure
+import com.divinelink.feature.add.to.account.feature_add_to_account_item_added_to_list_success
+import com.divinelink.feature.add.to.account.feature_add_to_account_list_login_description
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -25,7 +31,7 @@ class AddToListViewModelTest {
   object AddToListRouteFactory {
     fun movie() = AddToListRoute(
       id = 1234,
-      mediaType = MediaType.MOVIE,
+      mediaType = MediaType.MOVIE.value,
     )
   }
 
@@ -270,9 +276,9 @@ class AddToListViewModelTest {
             isLoading = false,
             error = BlankSlateState.Unauthenticated(
               description = UIText.ResourceText(
-                R.string.feature_add_to_account_list_login_description,
+                Res.string.feature_add_to_account_list_login_description,
               ),
-              retryText = UIText.ResourceText(com.divinelink.core.ui.UiString.core_ui_login),
+              retryText = UIText.ResourceText(UiString.core_ui_login),
             ),
           ),
         ),
@@ -325,7 +331,7 @@ class AddToListViewModelTest {
             addedToLists = setOf(8452376),
             displayMessage = DisplayMessage.Success(
               UIText.ResourceText(
-                R.string.feature_add_to_account_item_added_to_list_success,
+                Res.string.feature_add_to_account_item_added_to_list_success,
                 ListItemFactory.page1().list.first().name,
               ),
             ),
@@ -370,7 +376,7 @@ class AddToListViewModelTest {
             loadingMore = false,
             displayMessage = DisplayMessage.Error(
               UIText.ResourceText(
-                R.string.feature_add_to_account_item_added_to_list_failure,
+                Res.string.feature_add_to_account_item_added_to_list_failure,
                 ListItemFactory.page1().list.first().name,
               ),
             ),
@@ -415,7 +421,7 @@ class AddToListViewModelTest {
             loadingMore = false,
             displayMessage = DisplayMessage.Error(
               UIText.ResourceText(
-                R.string.feature_add_to_account_item_add_to_list_unexpected_failure,
+                Res.string.feature_add_to_account_item_add_to_list_unexpected_failure,
                 ListItemFactory.page1().list.first().name,
               ),
             ),
@@ -444,7 +450,7 @@ class AddToListViewModelTest {
           loadingMore = false,
           displayMessage = DisplayMessage.Error(
             UIText.ResourceText(
-              R.string.feature_add_to_account_item_add_to_list_unexpected_failure,
+              Res.string.feature_add_to_account_item_add_to_list_unexpected_failure,
               ListItemFactory.page1().list.first().name,
             ),
           ),
@@ -498,9 +504,9 @@ class AddToListViewModelTest {
             loadingMore = false,
             error = BlankSlateState.Unauthenticated(
               description = UIText.ResourceText(
-                R.string.feature_add_to_account_list_login_description,
+                Res.string.feature_add_to_account_list_login_description,
               ),
-              retryText = UIText.ResourceText(com.divinelink.core.ui.UiString.core_ui_login),
+              retryText = UIText.ResourceText(UiString.core_ui_login),
             ),
           ),
         ),
@@ -523,9 +529,9 @@ class AddToListViewModelTest {
           loadingMore = false,
           error = BlankSlateState.Unauthenticated(
             description = UIText.ResourceText(
-              R.string.feature_add_to_account_list_login_description,
+              Res.string.feature_add_to_account_list_login_description,
             ),
-            retryText = UIText.ResourceText(com.divinelink.core.ui.UiString.core_ui_login),
+            retryText = UIText.ResourceText(UiString.core_ui_login),
           ),
         ),
       )

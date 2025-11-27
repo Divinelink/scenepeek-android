@@ -2,6 +2,7 @@ package com.divinelink.core.testing.network
 
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.get
 import com.divinelink.core.network.client.post
@@ -23,6 +24,7 @@ class TestJellyseerrClient {
     client = JellyseerrRestClient(
       engine = MockEngine(json),
       savedStateStorage = storage,
+      config = PreviewBuildConfigProvider(),
     )
 
     client.client.get<T>(url = url)
@@ -35,6 +37,7 @@ class TestJellyseerrClient {
     client = JellyseerrRestClient(
       engine = MockEngine(json),
       savedStateStorage = storage,
+      config = PreviewBuildConfigProvider(),
     )
 
     client.client.post<Unit, T>(url = url, body = Unit)

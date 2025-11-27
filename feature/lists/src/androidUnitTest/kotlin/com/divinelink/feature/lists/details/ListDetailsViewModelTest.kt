@@ -9,10 +9,13 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.add.to.account.Res
+import com.divinelink.feature.add.to.account.feature_add_to_account_remove_batch_items_success
+import com.divinelink.feature.add.to.account.feature_add_to_account_remove_from_list_offline_error
+import com.divinelink.feature.add.to.account.feature_add_to_account_remove_single_item_success
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
-import com.divinelink.feature.add.to.account.R as accountR
 
 class ListDetailsViewModelTest {
 
@@ -572,7 +575,7 @@ class ListDetailsViewModelTest {
           loadingMore = false,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              accountR.string.feature_add_to_account_remove_single_item_success,
+              Res.string.feature_add_to_account_remove_single_item_success,
               ListDetailsFactory.mustWatch().media.first().name,
               "Must watch",
             ),
@@ -641,7 +644,7 @@ class ListDetailsViewModelTest {
           loadingMore = false,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              accountR.string.feature_add_to_account_remove_batch_items_success,
+              Res.string.feature_add_to_account_remove_batch_items_success,
               3,
               "Must watch",
             ),
@@ -853,7 +856,7 @@ class ListDetailsViewModelTest {
           loadingMore = false,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              accountR.string.feature_add_to_account_remove_from_list_offline_error,
+              Res.string.feature_add_to_account_remove_from_list_offline_error,
             ),
           ),
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),

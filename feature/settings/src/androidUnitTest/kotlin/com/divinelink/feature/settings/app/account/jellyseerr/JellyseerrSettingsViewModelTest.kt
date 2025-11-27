@@ -3,8 +3,8 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 import com.divinelink.core.commons.exception.ApiClientException
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
@@ -18,7 +18,9 @@ import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.settings.R
+import com.divinelink.feature.settings.Res
+import com.divinelink.feature.settings.feature_settings_could_not_connect
+import com.divinelink.feature.settings.feature_settings_invalid_credentials
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -44,7 +46,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           dialogState = DialogState(
-            message = UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+            message = UIText.ResourceText(Res.string.feature_settings_invalid_credentials),
             error = AppException.Unauthorized("401"),
           ),
           jellyseerrState = JellyseerrState.Login(
@@ -73,7 +75,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           dialogState = DialogState(
-            message = UIText.ResourceText(R.string.feature_settings_could_not_connect),
+            message = UIText.ResourceText(Res.string.feature_settings_could_not_connect),
             error = AppException.Offline(),
           ),
           jellyseerrState = JellyseerrState.Login(
@@ -102,7 +104,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           dialogState = DialogState(
-            message = UIText.ResourceText(R.string.feature_settings_could_not_connect),
+            message = UIText.ResourceText(Res.string.feature_settings_could_not_connect),
             error = AppException.SocketTimeout(),
           ),
           jellyseerrState = JellyseerrState.Login(

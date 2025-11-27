@@ -18,17 +18,17 @@ import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.uiTest
+import com.divinelink.core.testing.usecase.FakeGetFavoriteMoviesUseCase
+import com.divinelink.core.testing.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.MEDIA_LIST_TAG
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
-import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
-import com.divinelink.scenepeek.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.scenepeek.home.ui.HomeScreen
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
 
@@ -43,7 +43,7 @@ class HomeScreenTest : ComposeTest() {
   val testDispatcher = mainDispatcherRule.testDispatcher
 
   @Test
-  fun navigateToDetailsScreenTest() = runTest {
+  fun navigateToDetailsScreenTest() = uiTest {
     var detailsRoute: DetailsRoute? = null
     getPopularMoviesUseCase.mockFetchPopularMovies(
       response = flowOf(Result.success(MediaItemFactory.MoviesList())),
@@ -65,21 +65,21 @@ class HomeScreenTest : ComposeTest() {
         ),
       )
     }
-    composeTestRule
-      .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+
+    onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
       .performClick()
 
     assertThat(detailsRoute).isEqualTo(
       DetailsRoute(
         id = 1,
         isFavorite = false,
-        mediaType = MediaType.MOVIE,
+        mediaType = MediaType.MOVIE.value,
       ),
     )
   }
 
   @Test
-  fun `test on media long click opens action modal`() = runTest {
+  fun `test on media long click opens action modal`() = uiTest {
     var route: Navigation? = null
     getPopularMoviesUseCase.mockFetchPopularMovies(
       response = flowOf(Result.success(MediaItemFactory.MoviesList())),
@@ -99,8 +99,8 @@ class HomeScreenTest : ComposeTest() {
         viewModel = viewModel,
       )
     }
-    composeTestRule
-      .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+
+    onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
       .performTouchInput {
         longClick()
       }
@@ -111,7 +111,7 @@ class HomeScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test switch between browser and filter mode`() = runTest {
+  fun `test switch between browser and filter mode`() = uiTest {
     getPopularMoviesUseCase.mockFetchPopularMovies(
       response = flowOf(Result.success(MediaItemFactory.MoviesList(1..20))),
     )
@@ -135,17 +135,15 @@ class HomeScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("Fight club 1").assertIsDisplayed()
-      onNodeWithTag(MEDIA_LIST_TAG).performScrollToIndex(19)
-      onNodeWithText("Fight club 20").assertIsDisplayed()
+    onNodeWithText("Fight club 1").assertIsDisplayed()
+    onNodeWithTag(MEDIA_LIST_TAG).performScrollToIndex(19)
+    onNodeWithText("Fight club 20").assertIsDisplayed()
 
-      onNodeWithText("Liked By You").performClick()
-      onNodeWithText("Fight club 20").assertIsNotDisplayed()
-      onNodeWithText("The Wire").assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.Button.CLEAR_FILTERS).performClick()
-      onNodeWithText("Fight club 20").assertIsDisplayed()
-      onNodeWithText("The Wire").assertIsNotDisplayed()
-    }
+    onNodeWithText("Liked By You").performClick()
+    onNodeWithText("Fight club 20").assertIsNotDisplayed()
+    onNodeWithText("The Wire").assertIsDisplayed()
+    onNodeWithTag(TestTags.Components.Button.CLEAR_FILTERS).performClick()
+    onNodeWithText("Fight club 20").assertIsDisplayed()
+    onNodeWithText("The Wire").assertIsNotDisplayed()
   }
 }

@@ -6,6 +6,7 @@ import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSamp
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.model.tab.PersonTab
@@ -38,7 +39,7 @@ class PersonViewModelTest {
           knownForDepartment = null,
           name = null,
           profilePath = null,
-          gender = null,
+          gender = Gender.NOT_SET.value,
         ),
       )
       .buildViewModel()
@@ -137,7 +138,7 @@ class PersonViewModelTest {
       .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -149,7 +150,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
@@ -182,7 +183,7 @@ class PersonViewModelTest {
             channel.send(
               Result.success(
                 PersonDetailsResult.CreditsSuccess(
-                  knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+                  knownForCredits = PersonCastCreditFactory.knownFor(),
                   knownForDepartment = KnownForDepartment.Acting.value,
                   movies = emptyMap(),
                   tvShows = emptyMap(),
@@ -201,7 +202,7 @@ class PersonViewModelTest {
             personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
           createState(
-            credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+            credits = PersonCastCreditFactory.knownFor(),
             personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
         ),
@@ -214,7 +215,7 @@ class PersonViewModelTest {
       .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -232,7 +233,7 @@ class PersonViewModelTest {
             PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
         ),
       )
       .onTabSelected(PersonTab.TVShows)
@@ -242,7 +243,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
@@ -259,7 +260,7 @@ class PersonViewModelTest {
       .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -277,7 +278,7 @@ class PersonViewModelTest {
             PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
         ),
       )
       .onTabSelected(PersonTab.TVShows)
@@ -288,7 +289,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
@@ -310,7 +311,7 @@ class PersonViewModelTest {
       .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -325,7 +326,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
@@ -346,7 +347,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
@@ -367,7 +368,7 @@ class PersonViewModelTest {
       .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -382,7 +383,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
@@ -403,7 +404,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
@@ -425,7 +426,7 @@ class PersonViewModelTest {
       .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -439,7 +440,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          credits = PersonCastCreditFactory.knownFor(),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(

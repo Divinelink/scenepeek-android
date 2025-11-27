@@ -99,21 +99,23 @@ fun JellyseerrLoggedInContent(
               )
             }
 
-            Text(
-              modifier = Modifier
-                .padding(
-                  start = MaterialTheme.dimensions.keyline_16,
-                  top = MaterialTheme.dimensions.keyline_8,
+            jellyseerrState.accountDetails.createdAtLocalDateTime.localizeIsoDate()?.let { date ->
+              Text(
+                modifier = Modifier
+                  .padding(
+                    start = MaterialTheme.dimensions.keyline_16,
+                    top = MaterialTheme.dimensions.keyline_8,
+                  ),
+                text = stringResource(
+                  Res.string.feature_settings_jellyseerr_joined_on,
+                  date,
+                  jellyseerrState.accountDetails.id,
                 ),
-              text = stringResource(
-                Res.string.feature_settings_jellyseerr_joined_on,
-                jellyseerrState.accountDetails.createdAtLocalDateTime.localizeIsoDate(),
-                jellyseerrState.accountDetails.id,
-              ),
-              color = MaterialTheme.colorScheme.onSurface,
-              fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-              style = MaterialTheme.typography.bodySmall,
-            )
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                style = MaterialTheme.typography.bodySmall,
+              )
+            }
           }
         }
       }

@@ -33,11 +33,11 @@ import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeGetDetailsActionItemsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
-import com.divinelink.factories.VideoFactory
-import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.divinelink.feature.details.media.ui.MediaDetailsResult
-import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
-import com.divinelink.scenepeek.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
+import com.divinelink.core.fixtures.model.details.video.VideoFactory
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
+import com.divinelink.core.model.details.media.MediaDetailsResult
+import com.divinelink.core.domain.details.media.GetMediaDetailsUseCase
+import com.divinelink.core.testing.usecase.FakeFetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first

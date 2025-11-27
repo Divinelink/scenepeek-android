@@ -9,9 +9,11 @@ import kotlinx.datetime.number
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun LocalDateTime.localizeIsoDate(): String = stringResource(
-  UiString.core_ui_localized_date_full,
-  stringResource(Month.from(month.number).resource),
-  day,
-  year,
-)
+fun LocalDateTime?.localizeIsoDate(): String? = this?.let {
+  stringResource(
+    UiString.core_ui_localized_date_full,
+    stringResource(Month.from(month.number).resource),
+    day,
+    year,
+  )
+}

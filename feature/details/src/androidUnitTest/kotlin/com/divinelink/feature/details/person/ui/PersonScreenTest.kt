@@ -21,7 +21,6 @@ import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
-import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
@@ -30,21 +29,25 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
+import com.divinelink.core.ui.core_ui_filter_button_content_desc
+import com.divinelink.core.ui.core_ui_movie_image_placeholder
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.test.runTest
+import org.jetbrains.compose.resources.getString
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -62,13 +65,13 @@ class PersonScreenTest : ComposeTest() {
   )
 
   @BeforeTest
-  fun setUp() {
+  override fun setUp() {
     navArgs = PersonRoute(
       id = PersonDetailsFactory.steveCarell().person.id,
       knownForDepartment = null,
       name = PersonDetailsFactory.steveCarell().person.name,
       profilePath = null,
-      gender = null,
+      gender = Gender.NOT_SET.value,
     )
     fetchPersonDetailsUseCase = TestFetchPersonDetailsUseCase()
     fetchChangesUseCase = TestFetchChangesUseCase()
@@ -84,7 +87,7 @@ class PersonScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test loading content is visible when navArgs name is null`() {
+  fun `test loading content is visible when navArgs name is null`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -113,13 +116,11 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
   }
 
   @Test
-  fun `test topAppBar is not visible when personDetails is not success`() {
+  fun `test topAppBar is not visible when personDetails is not success`() = uiTest {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
@@ -142,14 +143,12 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsNotDisplayed()
-    }
+    onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsNotDisplayed()
   }
 
   @Test
-  fun `test DropDownMenu is visible when success`() {
+  fun `test DropDownMenu is visible when success`() = uiTest {
     fetchPersonDetailsUseCase.mockSuccess(
       PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
     )
@@ -167,16 +166,14 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).assertIsDisplayed().performClick()
-      onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
-      onNodeWithTag(TestTags.Menu.MENU_ITEM.format("Share")).assertIsDisplayed().performClick()
-      onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsNotDisplayed()
-    }
+    onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).assertIsDisplayed().performClick()
+    onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
+    onNodeWithTag(TestTags.Menu.item("Share")).assertIsDisplayed().performClick()
+    onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsNotDisplayed()
   }
 
   @Test
-  fun `test person content is visible when success personal details`() {
+  fun `test person content is visible when success personal details`() = uiTest {
     fetchPersonDetailsUseCase.mockSuccess(
       PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
     )
@@ -195,14 +192,12 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Person.CONTENT_LIST).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.PERSONAL_DETAILS).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.Person.CONTENT_LIST).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.PERSONAL_DETAILS).assertIsDisplayed()
   }
 
   @Test
-  fun `test state is updated on success person details`() = runTest {
+  fun `test state is updated on success person details`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -223,21 +218,19 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
 
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Person.CONTENT_LIST).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.PERSONAL_DETAILS).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.CONTENT_LIST).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.PERSONAL_DETAILS).assertIsDisplayed()
   }
 
   @Test
-  fun `test knownFor section is visible when credits are available`() = runTest {
+  fun `test knownFor section is visible when credits are available`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -258,32 +251,30 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
+    onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsDisplayed()
   }
 
   @Test
-  fun `test knownFor section scroll position does not change when new items are added`() = runTest {
+  fun `test knownFor section scroll position does not change when new items are added`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -304,85 +295,83 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
-        matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
-      )
+    onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
+      matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
+    )
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsDisplayed()
 
-      onNodeWithText("8.6").assertIsDisplayed()
-      onNodeWithText("9.6").assertIsNotDisplayed()
-      onNodeWithText("9.5").assertIsNotDisplayed()
-      onNodeWithText("9.4").assertIsNotDisplayed()
+    onNodeWithText("8.6").assertIsDisplayed()
+    onNodeWithText("9.6").assertIsNotDisplayed()
+    onNodeWithText("9.5").assertIsNotDisplayed()
+    onNodeWithText("9.4").assertIsNotDisplayed()
 
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = listOf(
-              theOffice().copy(
-                media = MediaItemFactory.theOffice().copy(id = 1, voteAverage = 9.3),
-              ),
-              littleMissSunshine().copy(
-                media = MediaItemFactory.littleMissSunshine().copy(id = 2, voteAverage = 9.4),
-              ),
-              despicableMe().copy(
-                media = MediaItemFactory.despicableMe().copy(id = 3, voteAverage = 9.5),
-              ),
-              bruceAlmighty().copy(
-                media = MediaItemFactory.bruceAlmighty().copy(id = 3, voteAverage = 9.6),
-              ),
-              theOffice().copy(
-                media = MediaItemFactory.theOffice().copy(id = 5, voteAverage = 5.2),
-              ),
-              littleMissSunshine().copy(
-                media = MediaItemFactory.littleMissSunshine().copy(id = 6, voteAverage = 4.3),
-              ),
-              despicableMe().copy(
-                media = MediaItemFactory.despicableMe().copy(id = 7, voteAverage = 3.2),
-              ),
-              bruceAlmighty().copy(
-                media = MediaItemFactory.bruceAlmighty().copy(id = 8, voteAverage = 2.1),
-              ),
-              theOffice(),
-              littleMissSunshine(),
-              despicableMe(),
-              bruceAlmighty(),
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = listOf(
+            theOffice().copy(
+              media = MediaItemFactory.theOffice().copy(id = 1, voteAverage = 9.3),
             ),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
+            littleMissSunshine().copy(
+              media = MediaItemFactory.littleMissSunshine().copy(id = 2, voteAverage = 9.4),
+            ),
+            despicableMe().copy(
+              media = MediaItemFactory.despicableMe().copy(id = 3, voteAverage = 9.5),
+            ),
+            bruceAlmighty().copy(
+              media = MediaItemFactory.bruceAlmighty().copy(id = 3, voteAverage = 9.6),
+            ),
+            theOffice().copy(
+              media = MediaItemFactory.theOffice().copy(id = 5, voteAverage = 5.2),
+            ),
+            littleMissSunshine().copy(
+              media = MediaItemFactory.littleMissSunshine().copy(id = 6, voteAverage = 4.3),
+            ),
+            despicableMe().copy(
+              media = MediaItemFactory.despicableMe().copy(id = 7, voteAverage = 3.2),
+            ),
+            bruceAlmighty().copy(
+              media = MediaItemFactory.bruceAlmighty().copy(id = 8, voteAverage = 2.1),
+            ),
+            theOffice(),
+            littleMissSunshine(),
+            despicableMe(),
+            bruceAlmighty(),
           ),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithText("8.6").assertIsDisplayed()
-      onNodeWithText("9.6").assertIsNotDisplayed()
-      onNodeWithText("9.5").assertIsNotDisplayed()
-      onNodeWithText("9.4").assertIsNotDisplayed()
-    }
+    onNodeWithText("8.6").assertIsDisplayed()
+    onNodeWithText("9.6").assertIsNotDisplayed()
+    onNodeWithText("9.5").assertIsNotDisplayed()
+    onNodeWithText("9.4").assertIsNotDisplayed()
   }
 
   @Test
   fun `test loading content is visible when ui state is success but person details are loading`() =
-    runTest {
+    uiTest {
       val channel = Channel<Result<PersonDetailsResult>>()
 
       fetchPersonDetailsUseCase.mockSuccess(
@@ -411,26 +400,24 @@ class PersonScreenTest : ComposeTest() {
           animatedVisibilityScope = this,
         )
       }
-      with(composeTestRule) {
-        onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
 
-        channel.send(
-          Result.success(
-            PersonDetailsResult.CreditsSuccess(
-              knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
-              knownForDepartment = KnownForDepartment.Acting.value,
-              movies = GroupedPersonCreditsSample.movies(),
-              tvShows = GroupedPersonCreditsSample.tvShows(),
-            ),
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
-        )
+        ),
+      )
 
-        onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
-      }
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
     }
 
   @Test
-  fun `test loading content is gone when details are fetched with initial loading`() = runTest {
+  fun `test loading content is gone when details are fetched with initial loading`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
@@ -457,34 +444,33 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
 
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
 
-      channel.send(
-        Result.success(
-          PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
-        ),
-      )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
+      ),
+    )
 
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
-    }
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+
   }
 
   @Test
-  fun `test onMediaClick navigates to detail`() = runTest {
+  fun `test onMediaClick navigates to detail`() = uiTest {
     var detailsRoute: DetailsRoute? = null
     val channel = Channel<Result<PersonDetailsResult>>()
 
@@ -510,49 +496,46 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithContentDescription(
-        getString(UiString.core_ui_movie_image_placeholder),
-      ).assertIsDisplayed()
+    onNodeWithContentDescription(
+      getString(UiString.core_ui_movie_image_placeholder),
+    ).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
-        matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
-      )
+    onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
+      matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
+    )
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
 
-      composeTestRule
-        .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
-        .performClick()
+    onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+      .performClick()
 
-      assertThat(detailsRoute).isEqualTo(
-        DetailsRoute(
-          id = 2316,
-          isFavorite = null,
-          mediaType = MediaType.TV,
-        ),
-      )
-    }
+    assertThat(detailsRoute).isEqualTo(
+      DetailsRoute(
+        id = 2316,
+        isFavorite = null,
+        mediaType = MediaType.TV.value,
+      ),
+    )
   }
 
   @Test
-  fun `test onMediaLongClick opens action modal`() = runTest {
+  fun `test onMediaLongClick opens action modal`() = uiTest {
     var route: Navigation? = null
     val channel = Channel<Result<PersonDetailsResult>>()
 
@@ -574,45 +557,43 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithContentDescription(
-        getString(UiString.core_ui_movie_image_placeholder),
-      ).assertIsDisplayed()
+    onNodeWithContentDescription(
+      getString(UiString.core_ui_movie_image_placeholder),
+    ).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
-        matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
-      )
+    onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
+      matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
+    )
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
 
-      composeTestRule
-        .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
-        .performTouchInput {
-          longClick()
-        }
+    onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+      .performTouchInput {
+        longClick()
+      }
 
-      assertThat(route).isEqualTo(
-        Navigation.ActionMenuRoute.Media(theOffice().media.encodeToString()),
-      )
-    }
+    assertThat(route).isEqualTo(
+      Navigation.ActionMenuRoute.Media(theOffice().media.encodeToString()),
+    )
+
   }
 
   @Test
-  fun `test knownForSection is hidden iff credits are not Visible`() = runTest {
+  fun `test knownForSection is hidden iff credits are not Visible`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -633,24 +614,23 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertDoesNotExist()
+    onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsNotDisplayed()
-    }
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertDoesNotExist()
+
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsNotDisplayed()
   }
 
   @Test
-  fun `test knownForSection is hidden iff credits are empty`() = runTest {
+  fun `test knownForSection is hidden iff credits are empty`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -671,35 +651,34 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
 
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = emptyList(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = emptyList(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
+    onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertDoesNotExist()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertDoesNotExist()
 
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsNotDisplayed()
-    }
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsNotDisplayed()
+
   }
 
   @Test
-  fun `selecting Movies and TV Shows tabs displays correct content`() {
+  fun `selecting Movies and TV Shows tabs displays correct content`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -721,19 +700,17 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      // Switch to Movies tab
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
-      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
+    // Switch to Movies tab
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
 
-      // Switch to TV Shows tab
-      onNodeWithText("TV Shows").performClick()
-      onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false)).assertIsDisplayed()
-    }
+    // Switch to TV Shows tab
+    onNodeWithText("TV Shows").performClick()
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false)).assertIsDisplayed()
   }
 
   @Test
-  fun `toggling layout style updates credit display format`() = runTest {
+  fun `toggling layout style updates credit display format`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
 
@@ -754,38 +731,36 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      // Load initial data
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    // Load initial data
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
+      ),
+    )
 
-      // Switch to Movies tab
-      onNodeWithText("Movies").performClick()
+    // Switch to Movies tab
+    onNodeWithText("Movies").performClick()
 
-      // Verify initial grid layout
-      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsNotDisplayed()
+    // Verify initial grid layout
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
+    onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
 
-      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsNotDisplayed()
-    }
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsNotDisplayed()
   }
 
   @Test
-  fun `applying department filter updates displayed credits`() = runTest {
+  fun `applying department filter updates displayed credits`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
 
@@ -804,47 +779,45 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = emptyList(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = emptyMap(),
-          ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = emptyList(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = emptyMap(),
         ),
-      )
-      // Switch to Movies tab
-      onNodeWithText("Movies").performClick()
+      ),
+    )
+    // Switch to Movies tab
+    onNodeWithText("Movies").performClick()
 
-      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
-      onNodeWithText("Acting (3)").assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).performScrollToIndex(1)
-      onNodeWithTag(TestTags.Person.CREDIT_MEDIA_ITEM.format("Bruce Almighty")).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+    onNodeWithText("Acting (3)").assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).performScrollToIndex(1)
+    onNodeWithTag(TestTags.Person.CREDIT_MEDIA_ITEM.format("Bruce Almighty")).assertIsDisplayed()
 
-      // Open filter dialog
-      onNodeWithTag(TestTags.Components.FILTER_BUTTON).performClick()
+    // Open filter dialog
+    onNodeWithTag(TestTags.Components.FILTER_BUTTON).performClick()
 
-      // Select directing filter
-      onNodeWithText("Production (2)").performClick()
+    // Select directing filter
+    onNodeWithText("Production (2)").performClick()
 
-      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER).assertIsNotDisplayed()
-      onNodeWithText("Acting").assertIsNotDisplayed()
-      onNodeWithText(bruceAlmighty().media.name).assertIsNotDisplayed()
-      onNodeWithText("Writing").assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER).assertIsNotDisplayed()
+    onNodeWithText("Acting").assertIsNotDisplayed()
+    onNodeWithText(bruceAlmighty().media.name).assertIsNotDisplayed()
+    onNodeWithText("Writing").assertIsNotDisplayed()
 
-      onNodeWithText("Production (2)").assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.CREDIT_MEDIA_ITEM.format("Bruce Almighty"))
-        .assertIsNotDisplayed()
-    }
+    onNodeWithText("Production (2)").assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.CREDIT_MEDIA_ITEM.format("Bruce Almighty"))
+      .assertIsNotDisplayed()
   }
 
   @Test
-  fun `show empty state when no credits available`() = runTest {
+  fun `show empty state when no credits available`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
 
@@ -863,40 +836,38 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      // Send empty credits
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = emptyList(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = emptyMap(),
-            tvShows = emptyMap(),
-          ),
+    // Send empty credits
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = emptyList(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = emptyMap(),
+          tvShows = emptyMap(),
         ),
-      )
+      ),
+    )
 
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
 
-      // Verify empty state
-      onNodeWithTag(
-        TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(MediaType.MOVIE.name),
-      ).assertIsDisplayed()
+    // Verify empty state
+    onNodeWithTag(
+      TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(MediaType.MOVIE.name),
+    ).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
 
-      // Verify empty state
-      onNodeWithTag(
-        TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(MediaType.TV.name),
-      ).assertIsDisplayed()
-    }
+    // Verify empty state
+    onNodeWithTag(
+      TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(MediaType.TV.name),
+    ).assertIsDisplayed()
   }
 
   @Test
-  fun `display current department in header when no filters applied`() = runTest {
+  fun `display current department in header when no filters applied`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
 
@@ -915,42 +886,40 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = emptyList(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = emptyList(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
-      // Switch to Movies tab
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
+      ),
+    )
+    // Switch to Movies tab
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
 
-      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
-      onNodeWithTag(
-        TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing"),
-      ).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+    onNodeWithTag(
+      TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing"),
+    ).assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).performScrollToIndex(4)
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).performScrollToIndex(4)
 
-      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing")).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing")).assertIsDisplayed()
 
-      // Switch to TV Shows tab
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
+    // Switch to TV Shows tab
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
 
-      // Ensuring department is updated when switching tabs
-      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
-    }
+    // Ensuring department is updated when switching tabs
+    onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
   }
 
   @Test
-  fun `filters persist when switching tabs`() = runTest {
+  fun `filters persist when switching tabs`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
 
@@ -969,47 +938,44 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      // Load data for both tabs
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = emptyList(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    // Load data for both tabs
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = emptyList(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
-      )
-      onNodeWithText("Movies").performClick()
+      ),
+    )
+    onNodeWithText("Movies").performClick()
 
-      // Apply filter to Movies tab
-      onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Components.FILTER_BUTTON).performClick()
-      onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsDisplayed()
-      onNodeWithText("Writing (1)").performClick()
-      onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsNotDisplayed()
+    // Apply filter to Movies tab
+    onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Components.FILTER_BUTTON).performClick()
+    onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsDisplayed()
+    onNodeWithText("Writing (1)").performClick()
+    onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsNotDisplayed()
 
-      // Switch to TV Shows tab
-      onNodeWithText("TV Shows").performClick()
+    // Switch to TV Shows tab
+    onNodeWithText("TV Shows").performClick()
 
-      // Verify TV Shows tab has no language
-      onNodeWithTag(TestTags.Components.FILTER_BUTTON).assertIsDisplayed()
-      onNodeWithContentDescription(
-        getString(UiString.core_ui_filter_button_content_desc),
-      ).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+    // Verify TV Shows tab has no language
+    onNodeWithTag(TestTags.Components.FILTER_BUTTON).assertIsDisplayed()
+    onNodeWithContentDescription(getString(UiString.core_ui_filter_button_content_desc))
+      .assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
 
-      onNodeWithText("Movies").performClick()
-      onNodeWithText("Writing (1)").assertIsDisplayed()
-    }
+    onNodeWithText("Movies").performClick()
+    onNodeWithText("Writing (1)").assertIsDisplayed()
   }
 
   @Test
-  fun `display scroll to top when scrolling up from bottom of the list on movies tab`() = runTest {
+  fun `display scroll to top when scrolling up from bottom of the list on movies tab`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
 
@@ -1028,45 +994,43 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = emptyList(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = GroupedPersonCreditsSample.movies(),
-            tvShows = GroupedPersonCreditsSample.tvShows(),
-          ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = emptyList(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
+      ),
+    )
+    // Switch to Movies tab
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
+
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
+      .performScrollToNode(
+        matcher = hasText(text = "The Incredible Burt Wonderstone"),
       )
-      // Switch to Movies tab
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
+    onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
 
-      composeTestRule.onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
-        .performScrollToNode(
-          matcher = hasText(text = "The Incredible Burt Wonderstone"),
-        )
-      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
+      .performScrollToNode(
+        matcher = hasText(text = "Get Smart"),
+      )
 
-      composeTestRule.onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
-        .performScrollToNode(
-          matcher = hasText(text = "Get Smart"),
-        )
+    onNodeWithText("Get Smart").assertIsDisplayed()
 
-      onNodeWithText("Get Smart").assertIsDisplayed()
+    onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
 
-      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
-
-      onNodeWithText("Bruce Almighty").assertIsDisplayed()
-      onNodeWithText("Get Smart").assertIsNotDisplayed()
-    }
+    onNodeWithText("Bruce Almighty").assertIsDisplayed()
+    onNodeWithText("Get Smart").assertIsNotDisplayed()
   }
 
   @Test
-  fun `display scroll to top when scrolling up from bottom of the list on tv tab`() = runTest {
+  fun `display scroll to top when scrolling up from bottom of the list on tv tab`() = uiTest {
     val channel = Channel<Result<PersonDetailsResult>>()
     fetchPersonDetailsUseCase.mockSuccess(response = channel)
 
@@ -1085,69 +1049,68 @@ class PersonScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      channel.send(
-        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
-      )
-      channel.send(
-        Result.success(
-          PersonDetailsResult.CreditsSuccess(
-            knownForCredits = emptyList(),
-            knownForDepartment = KnownForDepartment.Acting.value,
-            movies = emptyMap(),
-            tvShows = mapOf(
-              "Acting" to listOf(theOffice()),
-              "Directing" to listOf(
-                theOffice().toWizard {
-                  withSeriesCharacter(character = "Michael Scarn")
-                },
-              ),
-              "Writing" to listOf(
-                theOffice().toWizard {
-                  withSeriesCharacter("Worlds best boss")
-                },
-              ),
-              "Production" to listOf(PersonCrewCreditFactory.riot()),
-              "Lighting" to listOf(
-                PersonCrewCreditFactory.riot().toWizard { withJob("Lighting") },
-              ),
-              "Sound" to listOf(
-                PersonCrewCreditFactory.riot().toWizard { withJob("Sound Design") },
-              ),
-              "Visual Effects" to listOf(
-                PersonCrewCreditFactory.riot().toWizard { withJob("Visual Effects") },
-              ),
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+    channel.send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = emptyList(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = emptyMap(),
+          tvShows = mapOf(
+            "Acting" to listOf(theOffice()),
+            "Directing" to listOf(
+              theOffice().toWizard {
+                withSeriesCharacter(character = "Michael Scarn")
+              },
+            ),
+            "Writing" to listOf(
+              theOffice().toWizard {
+                withSeriesCharacter("Worlds best boss")
+              },
+            ),
+            "Production" to listOf(PersonCrewCreditFactory.riot()),
+            "Lighting" to listOf(
+              PersonCrewCreditFactory.riot().toWizard { withJob("Lighting") },
+            ),
+            "Sound" to listOf(
+              PersonCrewCreditFactory.riot().toWizard { withJob("Sound Design") },
+            ),
+            "Visual Effects" to listOf(
+              PersonCrewCreditFactory.riot().toWizard { withJob("Visual Effects") },
             ),
           ),
         ),
+      ),
+    )
+    // Switch to Movies tab
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
+
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+      .performScrollToNode(
+        matcher = hasText(text = "Sound (1)"),
       )
-      // Switch to Movies tab
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
 
-      composeTestRule.onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
-        .performScrollToNode(
-          matcher = hasText(text = "Sound (1)"),
+    onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
+
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+      .performScrollToIndex(9)
+
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+      .performTouchInput {
+        val center = centerY
+
+        swipeDown(
+          startY = center,
+          endY = center + 100,
         )
+      }
 
-      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
 
-      composeTestRule.onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
-        .performScrollToIndex(9)
-
-      composeTestRule.onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
-        .performTouchInput {
-          val center = centerY
-
-          swipeDown(
-            startY = center,
-            endY = center + 100,
-          )
-        }
-
-      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
-
-      onNodeWithText("Acting (1)").assertIsDisplayed()
-      onNodeWithText("Sound (1)").assertIsNotDisplayed()
-    }
+    onNodeWithText("Acting (1)").assertIsDisplayed()
+    onNodeWithText("Sound (1)").assertIsNotDisplayed()
   }
+
 }

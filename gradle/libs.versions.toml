@@ -67,16 +67,16 @@ screenshot = "0.0.1-alpha11"
 androidx-test = "1.7.0"
 truth = "1.4.5"
 turbine = "1.2.1"
-kotest = "6.0.4"
+kotest = "6.0.5"
 
 # UI
 robolectric = "4.16"
-androidx-compose-ui-test = "1.9.4"
+androidx-compose-ui-test = "1.9.5"
 ui-automator = "2.3.0"
 
 # Mockers
-mockito = "5.18.0"
-mockito-kotlin = "6.0.0"
+mockito = "5.20.0"
+mockito-kotlin = "6.1.0"
 
 [libraries]
 
@@ -160,7 +160,6 @@ firebase-config = 'com.google.firebase:firebase-config-ktx:22.0.0'
 # Database
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
-datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 sqldelight-android = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }

@@ -35,7 +35,21 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
-import com.divinelink.feature.settings.*
+import com.divinelink.feature.settings.Res
+import com.divinelink.feature.settings.feature_settings_about__ad_free
+import com.divinelink.feature.settings.feature_settings_about__developed_by
+import com.divinelink.feature.settings.feature_settings_about__developer_github_url
+import com.divinelink.feature.settings.feature_settings_about__github
+import com.divinelink.feature.settings.feature_settings_about__no_tracker
+import com.divinelink.feature.settings.feature_settings_about__open_source
+import com.divinelink.feature.settings.feature_settings_about__repository_url
+import com.divinelink.feature.settings.feature_settings_about__source_code
+import com.divinelink.feature.settings.feature_settings_about__tmdb_endorsement
+import com.divinelink.feature.settings.feature_settings_about__version
+import com.divinelink.feature.settings.ic_ad_free
+import com.divinelink.feature.settings.ic_github
+import com.divinelink.feature.settings.ic_open_source
+import com.divinelink.feature.settings.ic_tracker_free
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import com.divinelink.core.model.Res as R
@@ -137,9 +151,11 @@ fun AboutCard(
               urlHandler.openUrl(
                 url = githubAccountUrl,
                 onError = {
-                  Navigation.WebViewRoute(
-                    url = githubAccountUrl,
-                    title = aboutGithubTitle,
+                  onNavigate(
+                    Navigation.WebViewRoute(
+                      url = githubAccountUrl,
+                      title = aboutGithubTitle,
+                    ),
                   )
                 },
               )

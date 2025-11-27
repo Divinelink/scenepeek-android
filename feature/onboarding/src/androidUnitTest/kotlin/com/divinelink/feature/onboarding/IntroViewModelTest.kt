@@ -45,9 +45,9 @@ class IntroViewModelTest {
         OnboardingUiState.initial().copy(
           sections = listOf(
             IntroSection.Header(
-              title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
+              title = UIText.ResourceText(Res.string.feature_onboarding_welcome_page_title),
               description = UIText.ResourceText(
-                R.string.feature_onboarding_welcome_page_description,
+                Res.string.feature_onboarding_welcome_page_description,
               ),
             ),
             IntroSection.Spacer,
@@ -75,9 +75,9 @@ class IntroViewModelTest {
         OnboardingUiState.initial().copy(
           sections = listOf(
             IntroSection.Header(
-              title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
+              title = UIText.ResourceText(Res.string.feature_onboarding_welcome_page_title),
               description = UIText.ResourceText(
-                R.string.feature_onboarding_welcome_page_description,
+                Res.string.feature_onboarding_welcome_page_description,
               ),
             ),
             IntroSection.Spacer,
@@ -107,9 +107,9 @@ class IntroViewModelTest {
         OnboardingUiState.initial().copy(
           sections = listOf(
             IntroSection.Header(
-              title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
+              title = UIText.ResourceText(Res.string.feature_onboarding_welcome_page_title),
               description = UIText.ResourceText(
-                R.string.feature_onboarding_welcome_page_description,
+                Res.string.feature_onboarding_welcome_page_description,
               ),
             ),
             IntroSection.Spacer,

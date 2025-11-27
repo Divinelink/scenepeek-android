@@ -15,8 +15,8 @@ import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
-import com.divinelink.scenepeek.home.usecase.GetFavoriteMoviesUseCase
-import com.divinelink.scenepeek.home.usecase.GetPopularMoviesUseCase
+import com.divinelink.core.domain.GetFavoriteMoviesUseCase
+import com.divinelink.core.domain.GetPopularMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest

@@ -8,14 +8,17 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_select
+import com.divinelink.core.ui.core_ui_share
 import io.kotest.matchers.shouldBe
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
-import com.divinelink.core.ui.UiString as uiR
 
 class ActionMenuModalTests : ComposeTest() {
 
@@ -23,7 +26,7 @@ class ActionMenuModalTests : ComposeTest() {
   private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
   @Test
-  fun `test ActionMenuModal for ListDetails`() {
+  fun `test ActionMenuModal for ListDetails`() = uiTest {
     val viewModel = ActionMenuViewModel(
       listRepository = repository.mock,
       entryPoint = ActionMenuEntryPoint.ListDetails(
@@ -50,21 +53,19 @@ class ActionMenuModalTests : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.ACTION_MENU).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.ACTION_MENU).assertIsDisplayed()
 
-      onNodeWithText(getString(UiString.core_ui_share)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_share)).assertIsDisplayed()
 
-      mediaItem shouldBe null
+    mediaItem shouldBe null
 
-      onNodeWithText(getString(UiString.core_ui_select)).assertIsDisplayed().performClick()
+    onNodeWithText(getString(UiString.core_ui_select)).assertIsDisplayed().performClick()
 
-      mediaItem shouldBe MediaItemFactory.theWire()
-    }
+    mediaItem shouldBe MediaItemFactory.theWire()
   }
 
   @Test
-  fun `test ActionMenuModal for Other`() {
+  fun `test ActionMenuModal for Other`() = uiTest {
     val viewModel = ActionMenuViewModel(
       listRepository = repository.mock,
       entryPoint = ActionMenuEntryPoint.Other,
@@ -85,14 +86,12 @@ class ActionMenuModalTests : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.ACTION_MENU).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.ACTION_MENU).assertIsDisplayed()
 
-      onNodeWithText(getString(UiString.core_ui_share)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_share)).assertIsDisplayed()
 
-      mediaItem shouldBe null
+    mediaItem shouldBe null
 
-      onNodeWithText(getString(UiString.core_ui_select)).assertIsNotDisplayed()
-    }
+    onNodeWithText(getString(UiString.core_ui_select)).assertIsNotDisplayed()
   }
 }

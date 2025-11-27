@@ -1,6 +1,6 @@
 package com.divinelink.factories.api
 
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import com.divinelink.core.fixtures.LoremIpsum
 import com.divinelink.core.network.media.model.search.movie.SearchMovieApi
 
 object SearchMovieApiFactory {
@@ -30,7 +30,7 @@ object SearchMovieApiFactory {
       genreIds = listOf(),
       originalLanguage = "",
       originalTitle = "",
-      overview = LoremIpsum(15).values.joinToString(),
+      overview = LoremIpsum(15),
       popularity = (it * 525.25),
       posterPath = "movie $it - posterPath",
       releaseDate = "2002-08-22",

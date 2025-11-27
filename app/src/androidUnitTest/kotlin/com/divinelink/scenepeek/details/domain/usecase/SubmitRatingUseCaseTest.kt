@@ -7,8 +7,8 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
-import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
+import com.divinelink.core.domain.details.media.SubmitRatingParameters
+import com.divinelink.core.domain.details.media.SubmitRatingUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

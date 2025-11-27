@@ -10,26 +10,28 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.hasClickLabel
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestCreateListUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.lists.R
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_delete
+import com.divinelink.core.ui.core_ui_select_media_backdrop_image
 import com.divinelink.feature.lists.create.backdrop.SelectBackdropViewModel
 import com.divinelink.feature.lists.create.ui.CreateListScreen
+import com.divinelink.feature.lists.feature_lists_delete_list
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
-import org.koin.android.ext.koin.androidContext
+import org.jetbrains.compose.resources.getString
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.core.ui.UiString as uiR
+import com.divinelink.feature.lists.Res as R
 
 class CreateListScreenTest : ComposeTest() {
 
@@ -39,7 +41,7 @@ class CreateListScreenTest : ComposeTest() {
   @BeforeTest
   fun setup() {
     startKoin {
-      androidContext(composeTestRule.activity)
+//      androidContext(composeTestRule.activity)
     }
   }
 
@@ -49,7 +51,7 @@ class CreateListScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test on delete click open delete dialog`() = runTest {
+  fun `test on delete click open delete dialog`() = uiTest {
     var navigatedBackToLists = false
     setVisibilityScopeContent {
       CreateListScreen(
@@ -73,26 +75,25 @@ class CreateListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.DELETE_REQUEST).assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Components.SCROLLABLE_CONTENT).performScrollToNode(
-        hasText(getString(R.string.feature_lists_delete_list)),
-      )
+    onNodeWithTag(TestTags.Dialogs.DELETE_REQUEST).assertIsNotDisplayed()
 
-      onNodeWithText(getString(R.string.feature_lists_delete_list)).performClick()
-      onNodeWithTag(TestTags.Dialogs.DELETE_REQUEST).assertIsDisplayed()
+    onNodeWithTag(TestTags.Components.SCROLLABLE_CONTENT).performScrollToNode(
+      hasText(getString(R.string.feature_lists_delete_list)),
+    )
 
-      repository.mockDeleteListResponse(Result.success(Unit))
+    onNodeWithText(getString(R.string.feature_lists_delete_list)).performClick()
+    onNodeWithTag(TestTags.Dialogs.DELETE_REQUEST).assertIsDisplayed()
 
-      onNodeWithText(getString(com.divinelink.core.ui.UiString.core_ui_delete)).performClick()
+    repository.mockDeleteListResponse(Result.success(Unit))
 
-      navigatedBackToLists shouldBe true
-    }
+    onNodeWithText(getString(UiString.core_ui_delete)).performClick()
+
+    navigatedBackToLists shouldBe true
   }
 
   @Test
-  fun `test select backdrop and update list`() = runTest {
+  fun `test select backdrop and update list`() = uiTest {
     var navigatedUp = false
     repository.mockFetchListsBackdrops(
       flowOf(
@@ -141,21 +142,20 @@ class CreateListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNode(
-        hasClickLabel(UiString.core_ui_select_media_backdrop_image),
-      ).performClick()
 
-      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
+    onNode(
+      hasClickLabel(getString(UiString.core_ui_select_media_backdrop_image)),
+    ).performClick()
 
-      onNodeWithText("Fight club").assertIsDisplayed()
-      onNodeWithText("Inception").assertIsDisplayed().performClick()
+    onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsNotDisplayed()
+    onNodeWithText("Fight club").assertIsDisplayed()
+    onNodeWithText("Inception").assertIsDisplayed().performClick()
 
-      onNodeWithText("Save").performClick()
+    onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsNotDisplayed()
 
-      navigatedUp shouldBe true
-    }
+    onNodeWithText("Save").performClick()
+
+    navigatedUp shouldBe true
   }
 }

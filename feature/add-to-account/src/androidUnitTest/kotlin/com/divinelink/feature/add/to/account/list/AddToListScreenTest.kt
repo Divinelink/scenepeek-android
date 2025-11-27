@@ -20,17 +20,21 @@ import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestAddItemToListUseCase
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.add.to.account.R
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_login
+import com.divinelink.feature.add.to.account.Res
+import com.divinelink.feature.add.to.account.feature_add_to_account_empty_lists
+import com.divinelink.feature.add.to.account.feature_add_to_account_list_title
 import com.divinelink.feature.add.to.account.list.ui.AddToListScreen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -42,12 +46,12 @@ class AddToListScreenTest : ComposeTest() {
   private val savedStateHandle = SavedStateHandle(
     mapOf(
       "id" to 1234,
-      "mediaType" to MediaType.MOVIE,
+      "mediaType" to MediaType.MOVIE.value,
     ),
   )
 
   @Test
-  fun `test AddToListModalBottomSheet`() = runTest {
+  fun `test AddToListModalBottomSheet`() = uiTest {
     listRepository.mockGetItemStatus(result = Result.success(false))
 
     fetchUserListsUseCase.mockResponse(
@@ -68,13 +72,11 @@ class AddToListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Lists.Add.SCREEN).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.Lists.Add.SCREEN).assertIsDisplayed()
   }
 
   @Test
-  fun `test AddToListModalBottomSheet with empty data`() {
+  fun `test AddToListModalBottomSheet with empty data`() = uiTest {
     fetchUserListsUseCase.mockResponse(
       Result.success(
         ListItemFactory.page1().copy(
@@ -97,14 +99,12 @@ class AddToListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Lists.Add.SCREEN).assertIsDisplayed()
-      onNodeWithText(getString(R.string.feature_add_to_account_empty_lists)).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.Lists.Add.SCREEN).assertIsDisplayed()
+    onNodeWithText(getString(Res.string.feature_add_to_account_empty_lists)).assertIsDisplayed()
   }
 
   @Test
-  fun `test login when unauthenticated`() {
+  fun `test login when unauthenticated`() = uiTest {
     var navigatedToTMDBAuth = false
 
     val channel = Channel<Result<PaginationData<ListItem>>>()
@@ -128,28 +128,24 @@ class AddToListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      channel.trySend(
-        Result.failure(SessionException.Unauthenticated()),
-      )
+    channel.trySend(
+      Result.failure(SessionException.Unauthenticated()),
+    )
 
-      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-      onNodeWithText(getString(com.divinelink.core.ui.UiString.core_ui_login))
-        .assertIsDisplayed()
-        .performClick()
+    onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_login)).assertIsDisplayed().performClick()
 
-      assertTrue { navigatedToTMDBAuth }
+    assertTrue { navigatedToTMDBAuth }
 
-      channel.trySend(
-        Result.success(ListItemFactory.page1()),
-      )
+    channel.trySend(
+      Result.success(ListItemFactory.page1()),
+    )
 
-      onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
-    }
+    onNodeWithText(getString(Res.string.feature_add_to_account_list_title)).assertIsDisplayed()
   }
 
   @Test
-  fun `test add to list with success`() = runTest {
+  fun `test add to list with success`() = uiTest {
     listRepository.mockGetItemStatus(result = Result.success(false))
 
     fetchUserListsUseCase.mockResponse(
@@ -176,23 +172,21 @@ class AddToListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
+    onNodeWithText(getString(Res.string.feature_add_to_account_list_title)).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsNotDisplayed()
 
-      onNodeWithText("Top Movies").assertIsDisplayed().performClick()
+    onNodeWithText("Top Movies").assertIsDisplayed().performClick()
 
-      onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsDisplayed()
+    onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsDisplayed()
 
-      channel.trySend(Result.success(true))
+    channel.trySend(Result.success(true))
 
-      onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsNotDisplayed()
-    }
+    onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsNotDisplayed()
   }
 
   @Test
-  fun `test onLoadMore with success`() = runTest {
+  fun `test onLoadMore with success`() = uiTest {
     listRepository.mockGetItemStatus(result = Result.success(false))
 
     val channel = Channel<Result<PaginationData<ListItem>>>()
@@ -212,27 +206,25 @@ class AddToListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
-      channel.trySend(Result.success(ListItemFactory.page1Many()))
-      onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+    channel.trySend(Result.success(ListItemFactory.page1Many()))
+    onNodeWithText(getString(Res.string.feature_add_to_account_list_title)).assertIsDisplayed()
 
-      onNodeWithText(ListItemFactory.page1Many().list.first().name).assertIsDisplayed()
+    onNodeWithText(ListItemFactory.page1Many().list.first().name).assertIsDisplayed()
 
-      channel.trySend(Result.success(ListItemFactory.page2Many()))
+    channel.trySend(Result.success(ListItemFactory.page2Many()))
 
-      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(19)
+    onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(19)
 
-      onNodeWithText(ListItemFactory.page1Many().list.last().name).assertIsDisplayed()
+    onNodeWithText(ListItemFactory.page1Many().list.last().name).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(29)
+    onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(29)
 
-      onNodeWithText(ListItemFactory.page2Many().list.last().name).assertIsDisplayed()
-    }
+    onNodeWithText(ListItemFactory.page2Many().list.last().name).assertIsDisplayed()
   }
 
   @Test
-  fun `test get item status`() = runTest {
+  fun `test get item status`() = uiTest {
     val mediaReference = MediaReference(
       mediaId = 1234,
       mediaType = MediaType.MOVIE,
@@ -272,40 +264,38 @@ class AddToListScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
-      channel.trySend(Result.success(ListItemFactory.page1Many()))
-      onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+    channel.trySend(Result.success(ListItemFactory.page1Many()))
+    onNodeWithText(getString(Res.string.feature_add_to_account_list_title)).assertIsDisplayed()
 
-      channel.trySend(Result.success(ListItemFactory.page2Many()))
-      ListItemFactory.page1Many().list.forEachIndexed { index, list ->
-        if (index % 2 == 0) {
-          onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToNode(
-            hasContentDescription("Added on list ${list.name}"),
-          )
-        }
-      }
-
-      channel.trySend(Result.success(ListItemFactory.page2Many()))
-
-      ListItemFactory.page2Many().list.forEach { list ->
+    channel.trySend(Result.success(ListItemFactory.page2Many()))
+    ListItemFactory.page1Many().list.forEachIndexed { index, list ->
+      if (index % 2 == 0) {
         onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToNode(
-          hasText(list.name),
-        )
-        onNodeWithContentDescription("Added on list ${list.name}").assertIsNotDisplayed()
-      }
-
-      // Scroll back to first item and assert that the get item status call is only fetched once
-      // per item.
-      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(0)
-
-      ListItemFactory.page1Many().list.forEach { list ->
-        listRepository.verifyGetItemStatus(
-          listId = list.id,
-          item = mediaReference,
-          times = 1,
+          hasContentDescription("Added on list ${list.name}"),
         )
       }
+    }
+
+    channel.trySend(Result.success(ListItemFactory.page2Many()))
+
+    ListItemFactory.page2Many().list.forEach { list ->
+      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToNode(
+        hasText(list.name),
+      )
+      onNodeWithContentDescription("Added on list ${list.name}").assertIsNotDisplayed()
+    }
+
+    // Scroll back to first item and assert that the get item status call is only fetched once
+    // per item.
+    onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(0)
+
+    ListItemFactory.page1Many().list.forEach { list ->
+      listRepository.verifyGetItemStatus(
+        listId = list.id,
+        item = mediaReference,
+        times = 1,
+      )
     }
   }
 }

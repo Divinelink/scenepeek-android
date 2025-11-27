@@ -5,34 +5,33 @@ import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class TestFetchPersonDetailsUseCase {
 
-  val mock: FetchPersonDetailsUseCase = mock()
+  val mock: FetchPersonDetailsUseCase = org.mockito.kotlin.mock()
 
   init {
     mockFailure()
   }
 
   private fun mockFailure() {
-    whenever(
-      mock.invoke(any()),
+    org.mockito.kotlin.whenever(
+      mock.invoke(org.mockito.kotlin.any()),
     ).thenReturn(
       flowOf(Result.failure(Exception())),
     )
   }
 
   fun mockSuccess(result: PersonDetailsResult) {
-    whenever(mock.invoke(any())).thenReturn(
+    org.mockito.kotlin.whenever(mock.invoke(org.mockito.kotlin.any())).thenReturn(
       flowOf(Result.success(result)),
     )
   }
 
   // Mock multiple emissions
   fun mockSuccess(response: Channel<Result<PersonDetailsResult>>) {
-    whenever(mock.invoke(any())).thenReturn(response.consumeAsFlow())
+    org.mockito.kotlin.whenever(mock.invoke(org.mockito.kotlin.any())).thenReturn(response.consumeAsFlow())
   }
 }

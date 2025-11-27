@@ -3,9 +3,7 @@ package com.divinelink.feature.tmdb.auth
 import app.cash.turbine.test
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
-import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
-import com.divinelink.feature.tmdb.auth.TMDBAuthUiState
-import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
+import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -59,7 +57,7 @@ class TMDBAuthViewModelTest {
     )
 
     viewModel.onNavigateUp.test {
-      viewModel.handleCloseWeb()
+      viewModel.handleCloseWeb(false)
 
       assertThat(awaitItem()).isEqualTo(Unit)
     }
@@ -94,7 +92,7 @@ class TMDBAuthViewModelTest {
     )
 
     viewModel.onNavigateUp.test {
-      viewModel.createSession()
+      viewModel.handleCloseWeb(true)
 
       assertThat(awaitItem()).isEqualTo(Unit)
     }
@@ -109,7 +107,7 @@ class TMDBAuthViewModelTest {
     )
 
     viewModel.onNavigateUp.test {
-      viewModel.createSession()
+      viewModel.handleCloseWeb(true)
 
       assertThat(awaitItem()).isEqualTo(Unit)
     }

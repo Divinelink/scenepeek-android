@@ -5,11 +5,14 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.uiTest
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.clear_filters_button_content_description
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.core.ui.components.FilterBar
 import com.google.common.truth.Truth.assertThat
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
-import com.divinelink.core.ui.UiString as uiR
 
 class FilterBarTest : ComposeTest() {
 
@@ -23,9 +26,9 @@ class FilterBarTest : ComposeTest() {
   )
 
   @Test
-  fun clearButtonClickTest() {
+  fun clearButtonClickTest() = uiTest {
     var clearIsClicked = false
-    composeTestRule.setContent {
+    setContent {
       FilterBar(
         filters = filters,
         onFilterClick = {},
@@ -35,23 +38,20 @@ class FilterBarTest : ComposeTest() {
       )
     }
 
-    val clearFilterButtonContentDescription =
-      composeTestRule.activity.getString(
-        uiR.string.clear_filters_button_content_description,
-      )
+    val clearFilterButtonContentDescription = getString(
+      UiString.clear_filters_button_content_description,
+    )
 
-    composeTestRule
-      .onNodeWithContentDescription(clearFilterButtonContentDescription)
-      .assertIsDisplayed()
+    onNodeWithContentDescription(clearFilterButtonContentDescription).assertIsDisplayed()
       .performClick()
 
     assertThat(clearIsClicked).isTrue()
   }
 
   @Test
-  fun filterBarActionClickTest() {
+  fun filterBarActionClickTest() = uiTest {
     var actionIsClicked = false
-    composeTestRule.setContent {
+    setContent {
       FilterBar(
         filters = filters,
         onFilterClick = { filter ->
@@ -61,22 +61,19 @@ class FilterBarTest : ComposeTest() {
       )
     }
 
-    composeTestRule
-      .onNodeWithText("Action")
-      .assertIsDisplayed()
-      .performClick()
+    onNodeWithText("Action").assertIsDisplayed().performClick()
 
     assertThat(actionIsClicked).isTrue()
   }
 
   @Test
-  fun clearButtonNotDisplayedTest() {
+  fun clearButtonNotDisplayedTest() = uiTest {
     val filters = listOf(
       Filter("Romance", isSelected = false),
       Filter("Thriller", isSelected = false),
     )
 
-    composeTestRule.setContent {
+    setContent {
       FilterBar(
         filters = filters,
         onFilterClick = {},
@@ -84,13 +81,10 @@ class FilterBarTest : ComposeTest() {
       )
     }
 
-    val clearFilterButtonContentDescription =
-      composeTestRule.activity.getString(
-        uiR.string.clear_filters_button_content_description,
-      )
+    val clearFilterButtonContentDescription = getString(
+      UiString.clear_filters_button_content_description,
+    )
 
-    composeTestRule
-      .onNodeWithContentDescription(clearFilterButtonContentDescription)
-      .assertDoesNotExist()
+    onNodeWithContentDescription(clearFilterButtonContentDescription).assertDoesNotExist()
   }
 }

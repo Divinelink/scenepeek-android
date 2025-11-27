@@ -3,6 +3,7 @@ package com.divinelink.scenepeek.settings.appearance.usecase
 import android.os.Build
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
+import com.divinelink.core.domain.theme.ProdSystemThemeProvider
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.UnitTest
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -37,7 +38,10 @@ class GetAvailableThemesUseCaseTest : UnitTest() {
     val failResponse = Result.failure<Exception>(Exception("Some exception"))
 
     // When
-    val useCase = GetAvailableThemesUseCase(testDispatcher)
+    val useCase = GetAvailableThemesUseCase(
+      systemThemeProvider = ProdSystemThemeProvider(),
+      dispatcher = testDispatcher,
+    )
     val result = useCase(Unit)
 
     // Then
@@ -53,7 +57,10 @@ class GetAvailableThemesUseCaseTest : UnitTest() {
     val failResponse = Result.failure<Exception>(Exception("Some exception"))
 
     // When
-    val useCase = GetAvailableThemesUseCase(testDispatcher)
+    val useCase = GetAvailableThemesUseCase(
+      systemThemeProvider = ProdSystemThemeProvider(),
+      dispatcher = testDispatcher,
+    )
     val result = useCase(Unit)
 
     // Then

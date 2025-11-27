@@ -28,20 +28,17 @@ android {
   }
 
   signingConfigs {
-
-    signingConfigs {
-      create("release") {
-        val tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
-        val allFilesFromDir = File(tmpFilePath).listFiles()
-        if (allFilesFromDir != null) {
-          val keystoreFile = allFilesFromDir.first()
-          keystoreFile.renameTo(File("/keystore/keystore.jks"))
-          storeFile = keystoreFile
-        }
-        storePassword = System.getenv("SIGNING_STORE_PASSWORD")
-        keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-        keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+    create("release") {
+      val tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
+      val allFilesFromDir = File(tmpFilePath).listFiles()
+      if (allFilesFromDir != null) {
+        val keystoreFile = allFilesFromDir.first()
+        keystoreFile.renameTo(File("/keystore/keystore.jks"))
+        storeFile = keystoreFile
       }
+      storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+      keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+      keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
     }
   }
 
@@ -64,11 +61,7 @@ android {
     }
   }
 
-  testOptions {
-    unitTests {
-      isIncludeAndroidResources = true
-    }
-  }
+  testOptions.unitTests.isIncludeAndroidResources = true
 
   lint {
     checkReleaseBuilds = false
@@ -123,6 +116,11 @@ kotlin {
 
     androidUnitTest.dependencies {
       implementation(libs.androidx.navigation.testing)
+    }
+
+    androidMain.dependencies {
+      implementation(compose.uiTooling)
+      implementation(libs.koin.start.up)
     }
   }
 }

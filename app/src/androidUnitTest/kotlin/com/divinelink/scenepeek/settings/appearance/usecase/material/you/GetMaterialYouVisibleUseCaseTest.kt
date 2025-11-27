@@ -2,6 +2,7 @@ package com.divinelink.scenepeek.settings.appearance.usecase.material.you
 
 import android.os.Build
 import com.divinelink.core.domain.theme.material.you.GetMaterialYouVisibleUseCase
+import com.divinelink.core.domain.theme.material.you.ProdMaterialYouProvider
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.UnitTest
 import com.google.common.truth.Truth.assertThat
@@ -26,7 +27,10 @@ class GetMaterialYouVisibleUseCaseTest : UnitTest() {
     val response = Result.success(false)
 
     // When
-    val useCase = GetMaterialYouVisibleUseCase(testDispatcher)
+    val useCase = GetMaterialYouVisibleUseCase(
+      materialYouProvider = ProdMaterialYouProvider(),
+      dispatcher = testDispatcher,
+    )
     val result = useCase(Unit)
 
     // Then
@@ -40,7 +44,10 @@ class GetMaterialYouVisibleUseCaseTest : UnitTest() {
     val response = Result.success(true)
 
     // When
-    val useCase = GetMaterialYouVisibleUseCase(testDispatcher)
+    val useCase = GetMaterialYouVisibleUseCase(
+      materialYouProvider = ProdMaterialYouProvider(),
+      dispatcher = testDispatcher,
+    )
     val result = useCase(Unit)
 
     // Then

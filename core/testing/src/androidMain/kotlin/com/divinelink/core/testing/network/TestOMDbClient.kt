@@ -1,6 +1,7 @@
 package com.divinelink.core.testing.network
 
 import JvmUnitTestDemoAssetManager
+import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.OMDbClient
 import com.divinelink.core.network.client.get
 
@@ -21,7 +22,10 @@ class TestOMDbClient {
       it.readBytes().decodeToString().trimIndent()
     }
 
-    restClient = OMDbClient(MockEngine(json))
+    restClient = OMDbClient(
+      engine = MockEngine(json),
+      config = PreviewBuildConfigProvider(),
+    )
 
     restClient.client.get<T>(url = url)
   }
@@ -30,7 +34,10 @@ class TestOMDbClient {
     url: String,
     json: String,
   ) {
-    restClient = OMDbClient(MockEngine(json))
+    restClient = OMDbClient(
+      engine = MockEngine(json),
+      config = PreviewBuildConfigProvider(),
+    )
 
     restClient.client.get<T>(url = url)
   }

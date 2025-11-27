@@ -38,7 +38,7 @@ object JellyseerrRequestFactory {
       mediaStatus = JellyseerrStatus.Media.DELETED,
       requestStatus = JellyseerrStatus.Request.PENDING,
       requester = JellyseerrRequesterFactory.rhea(),
-      requestDate = LocalDateTime.parse("2025-06-22T12:00:00"),
+      requestDate = LocalDateTime.parse("2025-06-22T13:00:22"),
       seasons = listOf(
         SeasonRequest(seasonNumber = 2, status = JellyseerrStatus.Season.PENDING),
         SeasonRequest(seasonNumber = 3, status = JellyseerrStatus.Season.PENDING),

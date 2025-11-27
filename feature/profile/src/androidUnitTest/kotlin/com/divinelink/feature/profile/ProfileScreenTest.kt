@@ -10,14 +10,16 @@ import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
-import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_login
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 
 class ProfileScreenTest : ComposeTest() {
@@ -28,7 +30,7 @@ class ProfileScreenTest : ComposeTest() {
   private lateinit var viewModel: ProfileViewModel
 
   @Test
-  fun `test navigate to login when logged out`() {
+  fun `test navigate to login when logged out`() = uiTest {
     var navigateToTMDBAuthCalled = false
     getAccountDetailsUseCase.mockSuccess(flowOf(Result.success(TMDBAccountFactory.anonymous())))
     authRepository.mockJellyseerrEnabled(false)
@@ -47,15 +49,13 @@ class ProfileScreenTest : ComposeTest() {
         },
       )
     }
-    with(composeTestRule) {
-      onNodeWithText(getString(UiString.core_ui_login)).performClick()
+    onNodeWithText(getString(UiString.core_ui_login)).performClick()
 
-      navigateToTMDBAuthCalled shouldBe true
-    }
+    navigateToTMDBAuthCalled shouldBe true
   }
 
   @Test
-  fun `test navigate to watchlist`() {
+  fun `test navigate to watchlist`() = uiTest {
     var userDataSection: UserDataSection? = null
     authRepository.mockJellyseerrEnabled(false)
     viewModel = ProfileViewModel(
@@ -68,20 +68,18 @@ class ProfileScreenTest : ComposeTest() {
         viewModel = viewModel,
         onNavigate = {
           if (it is Navigation.UserDataRoute) {
-            userDataSection = it.section
+            userDataSection = UserDataSection.from(it.section)
           }
         },
       )
     }
-    with(composeTestRule) {
-      onNodeWithText("Watchlist").performClick()
+    onNodeWithText("Watchlist").performClick()
 
-      userDataSection shouldBe UserDataSection.Watchlist
-    }
+    userDataSection shouldBe UserDataSection.Watchlist
   }
 
   @Test
-  fun `test navigate to ratings`() {
+  fun `test navigate to ratings`() = uiTest {
     var userDataSection: UserDataSection? = null
     authRepository.mockJellyseerrEnabled(false)
     viewModel = ProfileViewModel(
@@ -94,18 +92,18 @@ class ProfileScreenTest : ComposeTest() {
         viewModel = viewModel,
         onNavigate = {
           if (it is Navigation.UserDataRoute) {
-            userDataSection = it.section
+            userDataSection = UserDataSection.from(it.section)
           }
         },
       )
     }
-    composeTestRule.onNodeWithText("Ratings").performClick()
+    onNodeWithText("Ratings").performClick()
 
     userDataSection shouldBe UserDataSection.Ratings
   }
 
   @Test
-  fun `test navigate to lists`() {
+  fun `test navigate to lists`() = uiTest {
     var navigateToLists = false
     authRepository.mockJellyseerrEnabled(false)
 
@@ -124,16 +122,14 @@ class ProfileScreenTest : ComposeTest() {
         },
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Profile.CONTENT).performScrollToIndex(5)
-      onNodeWithText("Lists").performClick()
+    onNodeWithTag(TestTags.Profile.CONTENT).performScrollToIndex(5)
+    onNodeWithText("Lists").performClick()
 
-      navigateToLists shouldBe true
-    }
+    navigateToLists shouldBe true
   }
 
   @Test
-  fun `test navigate jellyseerr requests`() {
+  fun `test navigate jellyseerr requests`() = uiTest {
     var route: Navigation? = null
     authRepository.mockJellyseerrEnabled(true)
 
@@ -150,13 +146,11 @@ class ProfileScreenTest : ComposeTest() {
         },
       )
     }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Profile.CONTENT).performScrollToNode(
-        hasText("Requests"),
-      )
-      onNodeWithText("Requests").performClick()
+    onNodeWithTag(TestTags.Profile.CONTENT).performScrollToNode(
+      hasText("Requests"),
+    )
+    onNodeWithText("Requests").performClick()
 
-      route shouldBe Navigation.JellyseerrRequestsRoute
-    }
+    route shouldBe Navigation.JellyseerrRequestsRoute
   }
 }

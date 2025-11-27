@@ -351,10 +351,12 @@ private fun LazyItemScope.RequestItem(
             contentDescription = null,
           )
 
-          Text(
-            text = request.requestDate.localizeIsoDate(),
-            style = MaterialTheme.typography.bodyMedium,
-          )
+          request.requestDate.localizeIsoDate()?.let { date ->
+            Text(
+              text = date,
+              style = MaterialTheme.typography.bodyMedium,
+            )
+          }
         }
 
         if (request.seasons.isNotEmpty()) {

@@ -24,15 +24,21 @@ import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.data.UserDataResponseFactory
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestFetchUserDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_error_generic_description
+import com.divinelink.core.ui.core_ui_error_generic_title
+import com.divinelink.core.ui.core_ui_login
+import com.divinelink.core.ui.core_ui_offline_description
+import com.divinelink.core.ui.core_ui_offline_title
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 
 class UserDataScreenTest : ComposeTest() {
@@ -46,7 +52,7 @@ class UserDataScreenTest : ComposeTest() {
   )
 
   @Test
-  fun `test unknown error`() = runTest {
+  fun `test unknown error`() = uiTest {
     observeAccountUseCase.mockResponse(response = Result.success(true))
 
     setVisibilityScopeContent {
@@ -57,7 +63,7 @@ class UserDataScreenTest : ComposeTest() {
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
+              "section" to UserDataSection.Watchlist.value,
             ),
           ),
         ),
@@ -65,19 +71,17 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      waitForIdle()
-      delay(2000)
+    waitForIdle()
+    delay(2000)
 
-      onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
-      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_error_generic_title)).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_error_generic_description)).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
+    onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_error_generic_title)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_error_generic_description)).assertIsDisplayed()
   }
 
   @Test
-  fun `test network error`() {
+  fun `test network error`() = uiTest {
     observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(Result.failure(AppException.Offline())),
@@ -92,23 +96,23 @@ class UserDataScreenTest : ComposeTest() {
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
+              "section" to UserDataSection.Watchlist.value,
             ),
           ),
         ),
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
-    composeTestRule.onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-    composeTestRule.onNodeWithText(getString(UiString.core_ui_offline_title))
+    onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
+    onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_offline_title))
       .assertIsDisplayed()
-    composeTestRule.onNodeWithText(getString(UiString.core_ui_offline_description))
+    onNodeWithText(getString(UiString.core_ui_offline_description))
       .assertIsDisplayed()
   }
 
   @Test
-  fun `test unauthenticated error`() = runTest {
+  fun `test unauthenticated error`() = uiTest {
     var verifyNavigatedToTMDBLogin = false
 
     observeAccountUseCase.mockResponse(
@@ -128,32 +132,30 @@ class UserDataScreenTest : ComposeTest() {
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
+              "section" to UserDataSection.Watchlist.value,
             ),
           ),
         ),
       )
     }
 
-    val loginButton = composeTestRule.activity.getString(
-      UiString.core_ui_login,
+    val loginButton = getString(UiString.core_ui_login)
+
+    val loginToSeeWatchlistString = getString(
+      Res.string.feature_user_data_login_watchlist_description,
     )
 
-    val loginToSeeWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_user_data_login_watchlist_description,
-    )
-
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
-    composeTestRule.onNodeWithText(loginToSeeWatchlistString).assertIsDisplayed()
-    composeTestRule.onNodeWithText(loginButton).assertIsDisplayed()
+    onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
+    onNodeWithText(loginToSeeWatchlistString).assertIsDisplayed()
+    onNodeWithText(loginButton).assertIsDisplayed()
 
     // Navigate to Login
-    composeTestRule.onNodeWithText(loginButton).performClick()
+    onNodeWithText(loginButton).performClick()
     assertThat(verifyNavigatedToTMDBLogin).isTrue()
   }
 
   @Test
-  fun `test watchlist tabs are visible with movies and tv tabs`() {
+  fun `test watchlist tabs are visible with movies and tv tabs`() = uiTest {
     observeAccountUseCase.mockResponse(response = Result.success(true))
 
     setVisibilityScopeContent {
@@ -165,7 +167,7 @@ class UserDataScreenTest : ComposeTest() {
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
+              "section" to UserDataSection.Watchlist.value,
             ),
           ),
         ),
@@ -173,21 +175,21 @@ class UserDataScreenTest : ComposeTest() {
         )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .performClick()
       .assertIsSelected()
   }
 
   @Test
-  fun `test watchlist with empty content`() {
+  fun `test watchlist with empty content`() = uiTest {
     observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
@@ -205,39 +207,39 @@ class UserDataScreenTest : ComposeTest() {
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
+              "section" to UserDataSection.Watchlist.value,
             ),
           ),
         ),
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
-    val emptyMovieWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_user_data_empty_movies_watchlist,
+    val emptyMovieWatchlistString = getString(
+      Res.string.feature_user_data_empty_movies_watchlist,
     )
 
-    composeTestRule.onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()
+    onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .performClick()
 
-    val emptyTVWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_user_data_empty_tv_shows_watchlist,
+    val emptyTVWatchlistString = getString(
+      Res.string.feature_user_data_empty_tv_shows_watchlist,
     )
 
-    composeTestRule.onNodeWithText(emptyTVWatchlistString).assertIsDisplayed()
+    onNodeWithText(emptyTVWatchlistString).assertIsDisplayed()
   }
 
   @Test
-  fun `test tv watching is loading`() {
+  fun `test tv watching is loading`() = uiTest {
     observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = Result.success(UserDataResponseFactory.emptyMovies()),
@@ -248,7 +250,7 @@ class UserDataScreenTest : ComposeTest() {
       fetchUserDataUseCase = fetchWatchlistUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
-          "userDataSection" to UserDataSection.Watchlist,
+          "section" to UserDataSection.Watchlist.value,
         ),
       ),
     )
@@ -261,28 +263,28 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
-    val emptyMovieWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_user_data_empty_movies_watchlist,
+    val emptyMovieWatchlistString = getString(
+      Res.string.feature_user_data_empty_movies_watchlist,
     )
 
-    composeTestRule.onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()
+    onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .performClick()
 
-    composeTestRule.onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
   }
 
   @Test
-  fun `test watchlist with movies and tv content`() {
+  fun `test watchlist with movies and tv content`() = uiTest {
     observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
@@ -300,38 +302,37 @@ class UserDataScreenTest : ComposeTest() {
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
+              "section" to UserDataSection.Watchlist.value,
             ),
           ),
         ),
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
     val movieList = UserDataResponseFactory.movies().data
 
-    composeTestRule.onNodeWithText(movieList.first().name).assertIsDisplayed()
-    composeTestRule.onNodeWithText(movieList.last().name).assertDoesNotExist()
+    onNodeWithText(movieList.first().name).assertIsDisplayed()
+    onNodeWithText(movieList.last().name).assertDoesNotExist()
 
     // Scroll to the end of the list
-    composeTestRule.onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
+    onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
       .performScrollToNode(
         matcher = hasText(text = movieList.last().name),
       )
 
-    composeTestRule.onNodeWithText(movieList.last().name).assertIsDisplayed()
-    composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
+    onNodeWithText(movieList.last().name).assertIsDisplayed()
+    onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
 
     // Scroll up to display the ScrollToTopButton
-    composeTestRule
-      .onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
+    onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
       .performTouchInput {
         val center = centerY
 
@@ -341,15 +342,15 @@ class UserDataScreenTest : ComposeTest() {
         )
       }
 
-    composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
+    onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
 
     // Should be at the top of the list
-    composeTestRule.onNodeWithText(movieList.first().name).assertIsDisplayed()
-    composeTestRule.onNodeWithText(movieList.last().name).assertDoesNotExist()
+    onNodeWithText(movieList.first().name).assertIsDisplayed()
+    onNodeWithText(movieList.last().name).assertDoesNotExist()
   }
 
   @Test
-  fun `test navigate to details from tv content`() {
+  fun `test navigate to details from tv content`() = uiTest {
     var verifyNavigatedToMediaDetails = false
     var navArgs: Navigation.DetailsRoute? = null
 
@@ -375,18 +376,18 @@ class UserDataScreenTest : ComposeTest() {
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
+              "section" to UserDataSection.Watchlist.value,
             ),
           ),
         ),
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
       .performClick()
@@ -394,15 +395,15 @@ class UserDataScreenTest : ComposeTest() {
 
     val tvList = UserDataResponseFactory.tv().data
 
-    composeTestRule.onNodeWithText(tvList.first().name).assertIsDisplayed()
-    composeTestRule.onNodeWithText(tvList.last().name).assertDoesNotExist()
+    onNodeWithText(tvList.first().name).assertIsDisplayed()
+    onNodeWithText(tvList.last().name).assertDoesNotExist()
 
-    composeTestRule.onNodeWithText(tvList.first().name).performClick()
+    onNodeWithText(tvList.first().name).performClick()
 
     assertThat(verifyNavigatedToMediaDetails).isTrue()
     assertThat(navArgs).isEqualTo(
       Navigation.DetailsRoute(
-        mediaType = MediaType.TV,
+        mediaType = MediaType.TV.value,
         id = tvList.first().id,
         isFavorite = tvList.first().isFavorite,
       ),
@@ -410,7 +411,7 @@ class UserDataScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test open action modal on long press`() {
+  fun `test open action modal on long press`() = uiTest {
     var route: Navigation? = null
 
     observeAccountUseCase.mockResponse(response = Result.success(true))
@@ -426,7 +427,7 @@ class UserDataScreenTest : ComposeTest() {
       fetchUserDataUseCase = fetchWatchlistUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
-          "userDataSection" to UserDataSection.Watchlist,
+          "section" to UserDataSection.Watchlist.value,
         ),
       ),
     )
@@ -439,11 +440,11 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
+    onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
       .performClick()
@@ -451,10 +452,10 @@ class UserDataScreenTest : ComposeTest() {
 
     val tvList = UserDataResponseFactory.tv().data
 
-    composeTestRule.onNodeWithText(tvList.first().name).assertIsDisplayed()
-    composeTestRule.onNodeWithText(tvList.last().name).assertDoesNotExist()
+    onNodeWithText(tvList.first().name).assertIsDisplayed()
+    onNodeWithText(tvList.last().name).assertDoesNotExist()
 
-    composeTestRule.onNodeWithText(tvList.first().name).performTouchInput { longClick() }
+    onNodeWithText(tvList.first().name).performTouchInput { longClick() }
 
     assertThat(route).isEqualTo(
       Navigation.ActionMenuRoute.Media(tvList.first().encodeToString()),

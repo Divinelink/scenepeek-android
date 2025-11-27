@@ -1,7 +1,9 @@
 package com.divinelink.scenepeek.main.ui
 
-import android.net.Uri
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
+import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
@@ -32,10 +34,14 @@ class MainViewModelRobot {
       createSessionUseCase = createSessionUseCase.mock,
       findByIdUseCase = findByIdUseCase.mock,
       getJellyseerrProfileUseCase = getJellyseerrProfileUseCase.mock,
+      networkMonitor = TestNetworkMonitor(),
+      onboardingManager = TestOnboardingManager(),
+      preferencesRepository = TestPreferencesRepository(),
+      navigationProviders = emptyList(),
     )
   }
 
-  fun onHandleDeeplink(uri: Uri?) = apply {
+  fun onHandleDeeplink(uri: String?) = apply {
     viewModel.handleDeepLink(uri)
   }
 

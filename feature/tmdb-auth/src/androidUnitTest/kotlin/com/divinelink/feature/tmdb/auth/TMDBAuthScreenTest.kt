@@ -7,19 +7,17 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.uiTest
+import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
-import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.tmdb.auth.TMDBAuthScreen
-import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class TMDBAuthScreenTest : ComposeTest() {
 
   @Test
-  fun `test webViewFallback shows LoginWebViewLoginScreen`() = runTest {
+  fun `test webViewFallback shows LoginWebViewLoginScreen`() = uiTest {
     lateinit var route: Navigation
     val createSessionUseCase = TestCreateSessionUseCase()
     val createRequestTokenUseCase = FakeCreateRequestTokenUseCase()
@@ -39,12 +37,10 @@ class TMDBAuthScreenTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Auth.LOGIN_WEB_VIEW_SCREEN).assertIsDisplayed()
-      onNodeWithText("Login to TMDB").assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.TopAppBar.NAVIGATE_UP).performClick()
+    onNodeWithTag(TestTags.Auth.LOGIN_WEB_VIEW_SCREEN).assertIsDisplayed()
+    onNodeWithText("Login to TMDB").assertIsDisplayed()
+    onNodeWithTag(TestTags.Components.TopAppBar.NAVIGATE_UP).performClick()
 
-      route shouldBe Navigation.Back
-    }
+    route shouldBe Navigation.Back
   }
 }

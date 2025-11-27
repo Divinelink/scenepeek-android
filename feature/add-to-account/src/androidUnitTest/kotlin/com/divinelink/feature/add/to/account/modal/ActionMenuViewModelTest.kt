@@ -4,8 +4,12 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.add.to.account.R
+import com.divinelink.feature.add.to.account.Res
+import com.divinelink.feature.add.to.account.feature_add_to_account_remove_from_list_offline_error
+import com.divinelink.feature.add.to.account.feature_add_to_account_remove_single_item_success
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -165,7 +169,7 @@ class ActionMenuViewModelTest {
           entryPoint = list,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              R.string.feature_add_to_account_remove_single_item_success,
+              Res.string.feature_add_to_account_remove_single_item_success,
               "Fight Club",
               "List name",
             ),
@@ -200,7 +204,7 @@ class ActionMenuViewModelTest {
           entryPoint = list,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              R.string.feature_add_to_account_remove_from_list_offline_error,
+              Res.string.feature_add_to_account_remove_from_list_offline_error,
             ),
           ),
         ),
@@ -232,7 +236,7 @@ class ActionMenuViewModelTest {
           media = MediaItemFactory.FightClub(),
           entryPoint = list,
           snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(com.divinelink.core.ui.UiString.core_ui_error_retry),
+            UIText.ResourceText(UiString.core_ui_error_retry),
           ),
         ),
       )

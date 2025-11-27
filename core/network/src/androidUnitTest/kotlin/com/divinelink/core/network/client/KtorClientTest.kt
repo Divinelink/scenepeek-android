@@ -1,5 +1,6 @@
 package com.divinelink.core.network.client
 
+import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.model.exception.AppException
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.HttpClientEngine
@@ -16,6 +17,7 @@ import kotlin.test.assertFailsWith
 class KtorClientTest {
 
   private lateinit var engine: HttpClientEngine
+  private val config = PreviewBuildConfigProvider()
 
   private val url = "http://localhost:8080"
 
@@ -28,7 +30,10 @@ class KtorClientTest {
       )
     }
 
-    val response: String = ktorClient(engine).get(url).bodyAsText()
+    val response: String = ktorClient(
+      engine = engine,
+      config = config,
+    ).get(url).bodyAsText()
     response shouldBe """{"message": "Success"}"""
   }
 
@@ -42,7 +47,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Unauthorized> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -56,7 +64,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Forbidden> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -70,7 +81,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.NotFound> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -84,7 +98,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Conflict> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -98,7 +115,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.TooManyRequests> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -112,7 +132,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.PayloadTooLarge> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -126,7 +149,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.ServerError> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -140,7 +166,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.BadRequest> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -151,7 +180,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Unknown> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -162,7 +194,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.SocketTimeout> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -173,7 +208,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.ConnectionTimeout> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -184,7 +222,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Ssl> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -195,7 +236,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Serialization> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -206,7 +250,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Offline> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 
@@ -217,7 +264,10 @@ class KtorClientTest {
     }
 
     assertFailsWith<AppException.Offline> {
-      ktorClient(engine).get<Any>(url)
+      ktorClient(
+        engine = engine,
+        config = config,
+      ).get<Any>(url)
     }
   }
 

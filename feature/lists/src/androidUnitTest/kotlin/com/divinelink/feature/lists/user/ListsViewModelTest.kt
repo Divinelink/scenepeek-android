@@ -9,7 +9,8 @@ import com.divinelink.core.model.list.ListData
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.feature.lists.R
+import com.divinelink.feature.lists.Res
+import com.divinelink.feature.lists.feature_lists_login_description
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -29,7 +30,7 @@ class ListsViewModelTest {
       .assertUiState(
         ListsUiState.initial.copy(
           error = BlankSlateState.Unauthenticated(
-            UIText.ResourceText(R.string.feature_lists_login_description),
+            UIText.ResourceText(Res.string.feature_lists_login_description),
           ),
           page = 1,
           lists = ListData.Initial,

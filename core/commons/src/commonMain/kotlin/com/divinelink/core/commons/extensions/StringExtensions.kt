@@ -30,9 +30,11 @@ fun String.formatTo(
   null
 }
 
-fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime = Instant
-  .parse(this)
-  .toLocalDateTime(timeZone)
+fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime? = try {
+  Instant.parse(this).toLocalDateTime(timeZone)
+} catch (_: Exception) {
+  null
+}
 
 fun String?.extractDetailsFromDeepLink(): Pair<Int, String>? {
   // Example URL format: "https://www.themoviedb.org/tv/693134-dune-part-two"

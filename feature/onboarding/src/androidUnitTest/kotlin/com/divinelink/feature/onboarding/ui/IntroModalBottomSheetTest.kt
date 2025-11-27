@@ -7,11 +7,12 @@ import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.TestMarkOnboardingCompleteUseCase
 import com.divinelink.feature.onboarding.manager.IntroSections
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class IntroModalBottomSheetTest : ComposeTest() {
@@ -23,7 +24,7 @@ class IntroModalBottomSheetTest : ComposeTest() {
   private val getJellyseerrAccountDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
 
   @Test
-  fun `test onboarding screen with initial pages`() {
+  fun `test onboarding screen with initial pages`() = uiTest {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
@@ -40,36 +41,12 @@ class IntroModalBottomSheetTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("TMDB").assertIsDisplayed()
-      onNodeWithText("Jellyseerr").assertIsDisplayed()
-    }
+    onNodeWithText("TMDB").assertIsDisplayed()
+    onNodeWithText("Jellyseerr").assertIsDisplayed()
   }
 
   @Test
-  fun `test onboarding swipe down closes modal`() {
-    viewModel = IntroViewModel(
-      markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
-      getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-      getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
-      onboardingManager = TestOnboardingManager(
-        sections = IntroSections.onboardingSections,
-      ),
-    )
-
-    setContentWithTheme {
-      IntroModalBottomSheet(
-        onNavigate = {},
-        viewModel = viewModel,
-      )
-    }
-
-    with(composeTestRule) {
-    }
-  }
-
-  @Test
-  fun `test perform connect tmdb action`() {
+  fun `test perform connect tmdb action`() = uiTest {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
@@ -92,15 +69,13 @@ class IntroModalBottomSheetTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("TMDB").performClick()
-    }
+    onNodeWithText("TMDB").performClick()
 
-    assertThat(tmdbLoginClicked).isTrue()
+    tmdbLoginClicked shouldBe true
   }
 
   @Test
-  fun `test perform connect jellyseerr action`() {
+  fun `test perform connect jellyseerr action`() = uiTest {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
@@ -122,12 +97,8 @@ class IntroModalBottomSheetTest : ComposeTest() {
         viewModel = viewModel,
       )
     }
-    with(composeTestRule) {
-      onNodeWithText("Jellyseerr").performClick()
-    }
+    onNodeWithText("Jellyseerr").performClick()
 
-    assertThat(jellyseerrRoute).isEqualTo(
-      Navigation.JellyseerrSettingsRoute(withNavigationBar = false),
-    )
+    jellyseerrRoute shouldBe Navigation.JellyseerrSettingsRoute(withNavigationBar = false)
   }
 }

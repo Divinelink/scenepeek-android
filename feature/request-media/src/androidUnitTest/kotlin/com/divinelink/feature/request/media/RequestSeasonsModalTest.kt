@@ -32,21 +32,26 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_cancel
+import com.divinelink.core.ui.core_ui_jellyseerr_session_expired
+import com.divinelink.core.ui.core_ui_login
+import com.divinelink.core.ui.core_ui_request_series
+import com.divinelink.core.ui.core_ui_select_seasons_button
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.request.media.tv.RequestSeasonsModal
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
+import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 
 class RequestSeasonsModalTest : ComposeTest() {
@@ -59,7 +64,7 @@ class RequestSeasonsModalTest : ComposeTest() {
   private val jellyseerrRepository = TestJellyseerrRepository()
 
   @Test
-  fun `test initialise modal without advanced permission hides advanced options`() = runTest {
+  fun `test initialise modal without advanced permission hides advanced options`() = uiTest {
     authRepository.mockPermissions(flowOf(emptyList()))
 
     getServerInstancesUseCase.mockResponse(
@@ -96,29 +101,27 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .assertIsDisplayed()
-        .performScrollToIndex(14)
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .assertIsDisplayed()
+      .performScrollToIndex(14)
 
-      onNodeWithText(
-        getString(R.string.feature_request_media_destination_server),
-      ).assertIsNotDisplayed()
+    onNodeWithText(
+      getString(Res.string.feature_request_media_destination_server),
+    ).assertIsNotDisplayed()
 
-      onNodeWithText(
-        getString(R.string.feature_request_media_quality_profile),
-      ).assertIsNotDisplayed()
+    onNodeWithText(
+      getString(Res.string.feature_request_media_quality_profile),
+    ).assertIsNotDisplayed()
 
-      onNodeWithText(
-        getString(R.string.feature_request_media_root_folder),
-      ).assertIsNotDisplayed()
-    }
+    onNodeWithText(
+      getString(Res.string.feature_request_media_root_folder),
+    ).assertIsNotDisplayed()
   }
 
   @Test
-  fun `test observe profile permissions`() = runTest {
+  fun `test observe profile permissions`() = uiTest {
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     authRepository.mockPermissions(flowOf(listOf(), ProfilePermission.entries))
@@ -155,22 +158,20 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(
-          hasText("Sonarr (Default)"),
-        )
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .performScrollToNode(
+        hasText("Sonarr (Default)"),
+      )
 
-      onNodeWithText("Sonarr (Default)").assertIsDisplayed()
-      onNodeWithText("Quality profile").assertIsNotDisplayed()
-      onNodeWithText("Root folders").assertIsNotDisplayed()
-    }
+    onNodeWithText("Sonarr (Default)").assertIsDisplayed()
+    onNodeWithText("Quality profile").assertIsNotDisplayed()
+    onNodeWithText("Root folders").assertIsNotDisplayed()
   }
 
   @Test
-  fun `test show request tv show dialog`() = runTest {
+  fun `test show request tv show dialog`() = uiTest {
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
@@ -207,15 +208,13 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_request_series)).assertIsDisplayed()
-    }
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_request_series)).assertIsDisplayed()
   }
 
   @Test
   fun `test request tv show dialog confirm button is disabled without selected seasons`() =
-    runTest {
+    uiTest {
       mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
       jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
       getServerInstancesUseCase.mockResponse(Result.success(SonarrInstanceFactory.all))
@@ -250,141 +249,15 @@ class RequestSeasonsModalTest : ComposeTest() {
         )
       }
 
-      with(composeTestRule) {
-        onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
-        onNodeWithText(getString(UiString.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
-        onNodeWithText(getString(UiString.core_ui_select_seasons_button))
-          .assertIsDisplayed()
-          .assertIsNotEnabled()
-      }
-    }
-
-  @Test
-  fun `test request tv show dialog confirm button is enabled with selected seasons`() = runTest {
-    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
-    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
-    getServerInstancesUseCase.mockResponse(
-      Result.success(SonarrInstanceFactory.all),
-    )
-
-    getServerInstanceDetailsUseCase.mockResponse(
-      Result.success(SonarrInstanceDetailsFactory.sonarr),
-    )
-
-    val viewModel = RequestMediaViewModel(
-      data = RequestMediaEntryData(
-        request = null,
-        media = MediaItemFactory.theOffice(),
-      ),
-      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
-      getServerInstancesUseCase = getServerInstancesUseCase.mock,
-      authRepository = authRepository.mock,
-      requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
-      mediaRepository = mediaRepository.mock,
-    )
-
-    setContentWithTheme {
-      RequestSeasonsModal(
-        viewModel = viewModel,
-        media = MediaItemFactory.theOffice(),
-        onDismissRequest = {},
-        onNavigate = {},
-        onUpdateMediaInfo = {},
-        onCancelRequest = {},
-        onUpdateRequestInfo = {},
-        request = null,
-      )
-    }
-
-    with(composeTestRule) {
       onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(UiString.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
-
-      onNodeWithTag(TestTags.Dialogs.SEASON_ROW.format(1)).performClick()
-      onNodeWithTag(TestTags.Dialogs.SEASON_ROW.format(2)).performClick()
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3)).performClick()
-
-      onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
-
-      onNodeWithText("Season 1").performClick()
-
-      onNodeWithText("Request 2 seasons").assertIsDisplayed().assertIsEnabled()
-
-      onNodeWithText("Season 2").performClick()
-
-      onNodeWithText("Request 1 season").assertIsDisplayed().assertIsEnabled()
-    }
-  }
-
-  @Test
-  fun `test re-selecting seasons removes them`() = runTest {
-    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
-    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
-    getServerInstancesUseCase.mockResponse(
-      Result.success(SonarrInstanceFactory.all),
-    )
-
-    getServerInstanceDetailsUseCase.mockResponse(
-      Result.success(SonarrInstanceDetailsFactory.sonarr),
-    )
-
-    val viewModel = RequestMediaViewModel(
-      data = RequestMediaEntryData(
-        request = null,
-        media = MediaItemFactory.theOffice(),
-      ),
-      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
-      getServerInstancesUseCase = getServerInstancesUseCase.mock,
-      authRepository = authRepository.mock,
-      requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
-      mediaRepository = mediaRepository.mock,
-    )
-
-    setContentWithTheme {
-      RequestSeasonsModal(
-        viewModel = viewModel,
-        media = MediaItemFactory.theOffice(),
-        onDismissRequest = {},
-        onNavigate = {},
-        onUpdateMediaInfo = {},
-        onCancelRequest = {},
-        onUpdateRequestInfo = {},
-        request = null,
-      )
-    }
-
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
-
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button))
-        .assertIsDisplayed()
-        .assertIsNotEnabled()
-
-      onNodeWithText("Request 3 seasons").assertDoesNotExist()
-
-      onNodeWithText("Season 1").performClick()
-      onNodeWithText("Season 2").performClick()
-      onNodeWithText("Season 3").performClick()
-
-      onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
-
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertDoesNotExist()
-
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1)).performClick()
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(2)).performClick()
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3)).performClick()
-
       onNodeWithText(getString(UiString.core_ui_select_seasons_button))
         .assertIsDisplayed()
         .assertIsNotEnabled()
     }
-  }
 
   @Test
-  fun `test request tv show dialog toggle all switch`() = runTest {
+  fun `test request tv show dialog confirm button is enabled with selected seasons`() = uiTest {
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
@@ -421,21 +294,26 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
 
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
-      onNodeWithText("Request 9 seasons").assertIsDisplayed().assertIsEnabled()
+    onNodeWithTag(TestTags.Dialogs.SEASON_ROW.format(1)).performClick()
+    onNodeWithTag(TestTags.Dialogs.SEASON_ROW.format(2)).performClick()
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3)).performClick()
 
-      // Toggle it back to unselect all seasons
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
-    }
+    onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
+
+    onNodeWithText("Season 1").performClick()
+
+    onNodeWithText("Request 2 seasons").assertIsDisplayed().assertIsEnabled()
+
+    onNodeWithText("Season 2").performClick()
+
+    onNodeWithText("Request 1 season").assertIsDisplayed().assertIsEnabled()
   }
 
   @Test
-  fun `test request tv show dialog toggle all after already have selected few seasons`() = runTest {
+  fun `test re-selecting seasons removes them`() = uiTest {
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
@@ -472,23 +350,134 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
 
-      onNodeWithText("Season 1").performClick()
-      onNodeWithText("Season 2").performClick()
-      onNodeWithText("Season 3").performClick()
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button))
+      .assertIsDisplayed()
+      .assertIsNotEnabled()
 
-      onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
+    onNodeWithText("Request 3 seasons").assertDoesNotExist()
 
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
-      onNodeWithText("Request 9 seasons").assertIsDisplayed().assertIsEnabled()
-    }
+    onNodeWithText("Season 1").performClick()
+    onNodeWithText("Season 2").performClick()
+    onNodeWithText("Season 3").performClick()
+
+    onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
+
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertDoesNotExist()
+
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1)).performClick()
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(2)).performClick()
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3)).performClick()
+
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button))
+      .assertIsDisplayed()
+      .assertIsNotEnabled()
   }
 
   @Test
-  fun `test request tv show modal already processed seasons are not clickable`() = runTest {
+  fun `test request tv show dialog toggle all switch`() = uiTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
+
+    val viewModel = RequestMediaViewModel(
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
+    )
+
+    setContentWithTheme {
+      RequestSeasonsModal(
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
+      )
+    }
+
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
+
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithText("Request 9 seasons").assertIsDisplayed().assertIsEnabled()
+
+    // Toggle it back to unselect all seasons
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
+  }
+
+  @Test
+  fun `test request tv show dialog toggle all after already have selected few seasons`() = uiTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
+
+    val viewModel = RequestMediaViewModel(
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
+    )
+
+    setContentWithTheme {
+      RequestSeasonsModal(
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
+      )
+    }
+
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
+
+    onNodeWithText("Season 1").performClick()
+    onNodeWithText("Season 2").performClick()
+    onNodeWithText("Season 3").performClick()
+
+    onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
+
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithText("Request 9 seasons").assertIsDisplayed().assertIsEnabled()
+  }
+
+  @Test
+  fun `test request tv show modal already processed seasons are not clickable`() = uiTest {
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -525,20 +514,18 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
 
-      onNodeWithText("Season 1").performClick()
-      onNodeWithText("Season 2").performClick()
-      onNodeWithText("Season 3").performClick()
+    onNodeWithText("Season 1").performClick()
+    onNodeWithText("Season 2").performClick()
+    onNodeWithText("Season 3").performClick()
 
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
-    }
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button)).assertIsDisplayed()
   }
 
   @Test
-  fun `test request with forbidden 403 prompts to re-login`() = runTest {
+  fun `test request with forbidden 403 prompts to re-login`() = uiTest {
     var route: Navigation? = null
 
     getServerInstancesUseCase.mockResponse(
@@ -581,24 +568,23 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
-      onNodeWithText("Request 9 seasons")
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithText("Request 9 seasons")
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      onNodeWithTag(TestTags.Dialogs.TWO_BUTTON_DIALOG).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_jellyseerr_session_expired)).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_login)).assertIsDisplayed().performClick()
-    }
+    onNodeWithTag(TestTags.Dialogs.TWO_BUTTON_DIALOG).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_jellyseerr_session_expired)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_login)).assertIsDisplayed().performClick()
+
     route shouldBe Navigation.JellyseerrSettingsRoute(withNavigationBar = true)
   }
 
   @Test
-  fun `test request with unauthorized 401 prompts to re-login`() = runTest {
+  fun `test request with unauthorized 401 prompts to re-login`() = uiTest {
     var route: Navigation? = null
 
     getServerInstancesUseCase.mockResponse(
@@ -640,25 +626,23 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
-      onNodeWithText("Request 9 seasons")
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithText("Request 9 seasons")
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      onNodeWithTag(TestTags.Dialogs.TWO_BUTTON_DIALOG).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_jellyseerr_session_expired)).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_login)).assertIsDisplayed().performClick()
-    }
+    onNodeWithTag(TestTags.Dialogs.TWO_BUTTON_DIALOG).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_jellyseerr_session_expired)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_login)).assertIsDisplayed().performClick()
 
     route shouldBe Navigation.JellyseerrSettingsRoute(withNavigationBar = true)
   }
 
   @Test
-  fun `test request with conflict 409 shows snackbar`() = runTest {
+  fun `test request with conflict 409 shows snackbar`() = uiTest {
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -696,23 +680,21 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
-      onNodeWithText("Request 9 seasons")
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithText("Request 9 seasons")
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      viewModel.uiState.value.snackbarMessage shouldBe SnackbarMessage.from(
-        text = UIText.ResourceText(R.string.feature_request_media_request_exists),
-      )
-    }
+    viewModel.uiState.value.snackbarMessage shouldBe SnackbarMessage.from(
+      text = UIText.ResourceText(Res.string.feature_request_media_request_exists),
+    )
   }
 
   @Test
-  fun `test request with generic error shows generic message`() = runTest {
+  fun `test request with generic error shows generic message`() = uiTest {
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -750,26 +732,24 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
-      onNodeWithText("Request 9 seasons")
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithText("Request 9 seasons")
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      viewModel.uiState.value.snackbarMessage shouldBe SnackbarMessage.from(
-        text = UIText.ResourceText(
-          R.string.feature_request_media_failed_request,
-          "The Office",
-        ),
-      )
-    }
+    viewModel.uiState.value.snackbarMessage shouldBe SnackbarMessage.from(
+      text = UIText.ResourceText(
+        Res.string.feature_request_media_failed_request,
+        "The Office",
+      ),
+    )
   }
 
   @Test
-  fun `test fetch details with empty instances does not show advanced options`() = runTest {
+  fun `test fetch details with empty instances does not show advanced options`() = uiTest {
     getServerInstancesUseCase.mockResponse(Result.success(emptyList()))
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
@@ -799,24 +779,22 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .assertIsDisplayed()
-        .performScrollToIndex(14)
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .assertIsDisplayed()
+      .performScrollToIndex(14)
 
-      onNodeWithText(
-        getString(R.string.feature_request_media_quality_profile),
-      ).assertIsNotDisplayed()
-      onNodeWithText(
-        getString(R.string.feature_request_media_root_folder),
-      ).assertIsNotDisplayed()
-    }
+    onNodeWithText(
+      getString(Res.string.feature_request_media_quality_profile),
+    ).assertIsNotDisplayed()
+    onNodeWithText(
+      getString(Res.string.feature_request_media_root_folder),
+    ).assertIsNotDisplayed()
   }
 
   @Test
-  fun `test fetch details with failure`() = runTest {
+  fun `test fetch details with failure`() = uiTest {
     getServerInstancesUseCase.mockFailure(AppException.Unknown())
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
@@ -847,24 +825,22 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .assertIsDisplayed()
-        .performScrollToIndex(14)
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .assertIsDisplayed()
+      .performScrollToIndex(14)
 
-      onNodeWithText(
-        getString(R.string.feature_request_media_quality_profile),
-      ).assertIsNotDisplayed()
-      onNodeWithText(
-        getString(R.string.feature_request_media_root_folder),
-      ).assertIsNotDisplayed()
-    }
+    onNodeWithText(
+      getString(Res.string.feature_request_media_quality_profile),
+    ).assertIsNotDisplayed()
+    onNodeWithText(
+      getString(Res.string.feature_request_media_root_folder),
+    ).assertIsNotDisplayed()
   }
 
   @Test
-  fun `test update destination server`() = runTest {
+  fun `test update destination server`() = uiTest {
     authRepository.mockEnableAllPermissions()
     mediaRepository.mockFetchTvSeasons(response = Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
@@ -902,28 +878,26 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(
-          hasTestTag(TestTags.Request.DESTINATION_SERVER_MENU.format("Content")),
-        )
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .performScrollToNode(
+        hasTestTag(TestTags.Request.DESTINATION_SERVER_MENU.format("Content")),
+      )
 
-      onNodeWithText("Sonarr (Default)").assertIsDisplayed()
-      onNodeWithText("Animarr").assertIsNotDisplayed()
+    onNodeWithText("Sonarr (Default)").assertIsDisplayed()
+    onNodeWithText("Animarr").assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Request.DESTINATION_SERVER_MENU.format("Content"))
-        .assertIsDisplayed()
-        .performClick()
+    onNodeWithTag(TestTags.Request.DESTINATION_SERVER_MENU.format("Content"))
+      .assertIsDisplayed()
+      .performClick()
 
-      onNodeWithText("Animarr").assertIsDisplayed().performClick()
-      onNodeWithText("Sonarr (Default)").assertIsNotDisplayed()
-    }
+    onNodeWithText("Animarr").assertIsDisplayed().performClick()
+    onNodeWithText("Sonarr (Default)").assertIsNotDisplayed()
   }
 
   @Test
-  fun `test update quality profile`() = runTest {
+  fun `test update quality profile`() = uiTest {
     authRepository.mockEnableAllPermissions()
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
@@ -961,26 +935,24 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(hasTestTag(TestTags.Request.QUALITY_PROFILE_MENU.format("Content")))
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .performScrollToNode(hasTestTag(TestTags.Request.QUALITY_PROFILE_MENU.format("Content")))
 
-      onNodeWithText("HD - 720p/1080p (Default)").assertIsDisplayed()
-      onNodeWithText("SD").assertIsNotDisplayed()
+    onNodeWithText("HD - 720p/1080p (Default)").assertIsDisplayed()
+    onNodeWithText("SD").assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Request.QUALITY_PROFILE_MENU.format("Content"))
-        .assertIsDisplayed()
-        .performClick()
+    onNodeWithTag(TestTags.Request.QUALITY_PROFILE_MENU.format("Content"))
+      .assertIsDisplayed()
+      .performClick()
 
-      onNodeWithText("SD").assertIsDisplayed().performClick()
-      onNodeWithText("HD - 720p/1080p (Default)").assertIsNotDisplayed()
-    }
+    onNodeWithText("SD").assertIsDisplayed().performClick()
+    onNodeWithText("HD - 720p/1080p (Default)").assertIsNotDisplayed()
   }
 
   @Test
-  fun `test update root folder`() = runTest {
+  fun `test update root folder`() = uiTest {
     authRepository.mockEnableAllPermissions()
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
@@ -1017,26 +989,24 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(hasTestTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content")))
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .performScrollToNode(hasTestTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content")))
 
-      onNodeWithText("/data/tv (1.78 TB) (Default)").assertIsDisplayed()
-      onNodeWithText("/data/anime (1.78 TB)").assertIsNotDisplayed()
+    onNodeWithText("/data/tv (1.78 TB) (Default)").assertIsDisplayed()
+    onNodeWithText("/data/anime (1.78 TB)").assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content"))
-        .assertIsDisplayed()
-        .performClick()
+    onNodeWithTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content"))
+      .assertIsDisplayed()
+      .performClick()
 
-      onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed().performClick()
-      onNodeWithText("HD data/tv (1.78 TB) (Default)").assertIsNotDisplayed()
-    }
+    onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed().performClick()
+    onNodeWithText("HD data/tv (1.78 TB) (Default)").assertIsNotDisplayed()
   }
 
   @Test
-  fun `test request season with updated properties`() = runTest {
+  fun `test request season with updated properties`() = uiTest {
     var mediaInfo: JellyseerrMediaInfo? = null
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
@@ -1089,42 +1059,40 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+    onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(hasTestTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content")))
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .performScrollToNode(hasTestTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content")))
 
-      onNodeWithText("/data/tv (1.78 TB) (Default)").assertIsDisplayed()
-      onNodeWithText("/data/anime (1.78 TB)").assertIsNotDisplayed()
+    onNodeWithText("/data/tv (1.78 TB) (Default)").assertIsDisplayed()
+    onNodeWithText("/data/anime (1.78 TB)").assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content"))
-        .assertIsDisplayed()
-        .performClick()
+    onNodeWithTag(TestTags.Request.ROOT_FOLDER_MENU.format("Content"))
+      .assertIsDisplayed()
+      .performClick()
 
-      onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed().performClick()
-      onNodeWithText("data/tv (1.78 TB) (Default)").assertIsNotDisplayed()
+    onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed().performClick()
+    onNodeWithText("data/tv (1.78 TB) (Default)").assertIsNotDisplayed()
 
-      onNodeWithText("Request 9 seasons")
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithText("Request 9 seasons")
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      viewModel.uiState.value.snackbarMessage shouldBe SnackbarMessage.from(
-        text = UIText.ResourceText(
-          R.string.feature_request_media_success_request,
-          "The Office",
-        ),
-      )
+    viewModel.uiState.value.snackbarMessage shouldBe SnackbarMessage.from(
+      text = UIText.ResourceText(
+        Res.string.feature_request_media_success_request,
+        "The Office",
+      ),
+    )
 
-      mediaInfo shouldBe JellyseerrMediaRequestResponseFactory.tvPartially().mediaInfo
-    }
+    mediaInfo shouldBe JellyseerrMediaRequestResponseFactory.tvPartially().mediaInfo
   }
 
   @Test
-  fun `test fetch instance details with error hides fields`() = runTest {
+  fun `test fetch instance details with error hides fields`() = uiTest {
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -1159,25 +1127,23 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(
-          hasText("Sonarr (Default)"),
-        )
+    onNodeWithTag(TestTags.LAZY_COLUMN)
+      .performScrollToNode(
+        hasText("Sonarr (Default)"),
+      )
 
-      onNodeWithText("Sonarr (Default)").assertIsDisplayed()
+    onNodeWithText("Sonarr (Default)").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performTouchInput { swipeDown() }
+    onNodeWithTag(TestTags.LAZY_COLUMN).performTouchInput { swipeDown() }
 
-      onNodeWithText("Quality profile").assertIsNotDisplayed()
-      onNodeWithText("Root folders").assertIsNotDisplayed()
-    }
+    onNodeWithText("Quality profile").assertIsNotDisplayed()
+    onNodeWithText("Root folders").assertIsNotDisplayed()
   }
 
   @Test
-  fun `test initialise modal with request sets preselected advanced values`() = runTest {
+  fun `test initialise modal with request sets preselected advanced values`() = uiTest {
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -1213,33 +1179,31 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-        hasText("Animarr"),
-      )
+    onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+      hasText("Animarr"),
+    )
 
-      onNodeWithText("Animarr").assertIsDisplayed()
+    onNodeWithText("Animarr").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-        hasText("Quality profile"),
-      )
+    onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+      hasText("Quality profile"),
+    )
 
-      onNodeWithText("Quality profile").assertIsDisplayed()
-      onNodeWithText("Any").assertIsDisplayed()
+    onNodeWithText("Quality profile").assertIsDisplayed()
+    onNodeWithText("Any").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-        hasText("/data/anime (1.78 TB)"),
-      )
+    onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+      hasText("/data/anime (1.78 TB)"),
+    )
 
-      onNodeWithText("Root folder").assertIsDisplayed()
-      onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed()
-    }
+    onNodeWithText("Root folder").assertIsDisplayed()
+    onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed()
   }
 
   @Test
-  fun `test with request and selected seasons edit request button is shown`() = runTest {
+  fun `test with request and selected seasons edit request button is shown`() = uiTest {
     var cancelRequestId: Int? = null
 
     authRepository.mockEnableAllPermissions()
@@ -1279,47 +1243,45 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("Edit request").assertIsDisplayed()
+    onNodeWithText("Edit request").assertIsDisplayed()
 
-      // Pre-selected season from request is enabled
-      // Toggle off first requested season
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    // Pre-selected season from request is enabled
+    // Toggle off first requested season
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      onNodeWithText("Edit request").assertIsDisplayed()
+    onNodeWithText("Edit request").assertIsDisplayed()
 
-      // Requested season that is not on the request is not enabled
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(2))
-        .assertIsDisplayed()
-        .assertIsNotEnabled()
+    // Requested season that is not on the request is not enabled
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(2))
+      .assertIsDisplayed()
+      .assertIsNotEnabled()
 
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3))
-        .assertIsDisplayed()
-        .assertIsNotEnabled()
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3))
+      .assertIsDisplayed()
+      .assertIsNotEnabled()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-        hasTestTag(TestTags.Dialogs.SEASON_SWITCH.format(6)),
-      )
+    onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+      hasTestTag(TestTags.Dialogs.SEASON_SWITCH.format(6)),
+    )
 
-      // Toggle off second requested season
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(6))
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    // Toggle off second requested season
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(6))
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      // All requested season are toggled off - cancel request is shown
-      onNodeWithText("Edit request").assertIsNotDisplayed()
-      onNodeWithText("Cancel request").assertIsDisplayed().performClick()
+    // All requested season are toggled off - cancel request is shown
+    onNodeWithText("Edit request").assertIsNotDisplayed()
+    onNodeWithText("Cancel request").assertIsDisplayed().performClick()
 
-      cancelRequestId shouldBe JellyseerrRequestFactory.Tv.theOffice1().id
-    }
+    cancelRequestId shouldBe JellyseerrRequestFactory.Tv.theOffice1().id
   }
 
   @Test
-  fun `test cancel request with failure`() = runTest {
+  fun `test cancel request with failure`() = uiTest {
     var cancelRequestId: Int? = null
 
     authRepository.mockEnableAllPermissions()
@@ -1360,31 +1322,29 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("Edit request").assertIsDisplayed()
+    onNodeWithText("Edit request").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-        hasTestTag(TestTags.Dialogs.SEASON_SWITCH.format(6)),
-      )
+    onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+      hasTestTag(TestTags.Dialogs.SEASON_SWITCH.format(6)),
+    )
 
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(6))
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(6))
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      onNodeWithText("Cancel request").assertIsDisplayed().performClick()
+    onNodeWithText("Cancel request").assertIsDisplayed().performClick()
 
-      cancelRequestId shouldBe null
-    }
+    cancelRequestId shouldBe null
   }
 
   @Test
-  fun `test edit request`() = runTest {
+  fun `test edit request`() = uiTest {
     var jellyseerrRequest: JellyseerrRequest? = null
 
     authRepository.mockEnableAllPermissions()
@@ -1443,37 +1403,35 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
     }
 
-    with(composeTestRule) {
-      onNodeWithText("Edit request").assertIsDisplayed()
+    onNodeWithText("Edit request").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
-        .assertIsDisplayed()
-        .assertIsEnabled()
-        .performClick()
+    onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .performClick()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-        hasText("Quality profile"),
-      )
+    onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+      hasText("Quality profile"),
+    )
 
-      onNodeWithText("Quality profile").performClick()
-      onNodeWithText(InstanceProfileFactory.hd720.name).performClick()
+    onNodeWithText("Quality profile").performClick()
+    onNodeWithText(InstanceProfileFactory.hd720.name).performClick()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-        hasText("Root folder"),
-      )
+    onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+      hasText("Root folder"),
+    )
 
-      // Preselected folder path
-      onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed()
-      onNodeWithText("Root folder").performClick()
+    // Preselected folder path
+    onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed()
+    onNodeWithText("Root folder").performClick()
 
-      onNodeWithText("/data/tv (1.78 TB) (Default)").performClick()
+    onNodeWithText("/data/tv (1.78 TB) (Default)").performClick()
 
-      onNodeWithText("Edit request").assertIsDisplayed().performClick()
-      jellyseerrRequest shouldBe JellyseerrRequestFactory.Tv.theOffice1().copy(
-        profileName = InstanceProfileFactory.hd720.name,
-        profileId = InstanceProfileFactory.hd720.id,
-        rootFolder = InstanceRootFolderFactory.tv.path,
-      )
-    }
+    onNodeWithText("Edit request").assertIsDisplayed().performClick()
+    jellyseerrRequest shouldBe JellyseerrRequestFactory.Tv.theOffice1().copy(
+      profileName = InstanceProfileFactory.hd720.name,
+      profileId = InstanceProfileFactory.hd720.id,
+      rootFolder = InstanceRootFolderFactory.tv.path,
+    )
   }
 }

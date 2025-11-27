@@ -29,6 +29,7 @@ import com.divinelink.feature.settings.navigation.links.linkHandlingSettingsScre
 import com.divinelink.feature.settings.navigation.settings.settingsScreen
 import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.user.data.navigation.userDataScreen
+import com.divinelink.feature.webview.webViewScreen
 import com.divinelink.scenepeek.home.navigation.findNavigation
 import com.divinelink.scenepeek.home.navigation.homeScreen
 import org.koin.core.qualifier.named
@@ -243,7 +244,7 @@ val navigationModule = module {
   // WebView Navigation
   single<NavGraphExtension>(named<Navigation.WebViewRoute>()) {
     { navController, _ ->
-//      webViewScreen(navController::findNavigation) // TODO KMP
+      webViewScreen(navController::findNavigation)
     }
   }
 

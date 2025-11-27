@@ -5,10 +5,16 @@ import com.divinelink.core.navigation.route.Navigation.EditListRoute
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.lists.R
+import com.divinelink.feature.lists.feature_lists_create_failure
+import com.divinelink.feature.lists.feature_lists_create_successfully
+import com.divinelink.feature.lists.feature_lists_delete_failure
+import com.divinelink.feature.lists.feature_lists_delete_successfully
+import com.divinelink.feature.lists.feature_lists_update_failure
+import com.divinelink.feature.lists.feature_lists_update_successfully
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
+import com.divinelink.feature.lists.Res as R
 
 class CreateListViewModelTest {
 

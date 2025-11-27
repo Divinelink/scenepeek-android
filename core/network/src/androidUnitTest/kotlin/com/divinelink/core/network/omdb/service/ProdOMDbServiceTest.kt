@@ -1,8 +1,10 @@
 package com.divinelink.core.network.omdb.service
 
+import com.divinelink.core.commons.provider.SecretProvider
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.network.omdb.mapper.map
 import com.divinelink.core.network.omdb.model.OMDbResponseApi
+import com.divinelink.core.testing.commons.provider.TestSecretProvider
 import com.divinelink.core.testing.network.TestOMDbClient
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.single
@@ -14,10 +16,12 @@ class ProdOMDbServiceTest {
 
   private lateinit var service: ProdOMDbService
   private lateinit var testRestClient: TestOMDbClient
+  private lateinit var secrets: SecretProvider
 
   @BeforeTest
   fun setUp() {
     testRestClient = TestOMDbClient()
+    secrets = TestSecretProvider()
   }
 
   @Test
@@ -27,7 +31,10 @@ class ProdOMDbServiceTest {
       jsonFileName = "omdb-details.json",
     )
 
-    service = ProdOMDbService(testRestClient.restClient)
+    service = ProdOMDbService(
+      client = testRestClient.restClient,
+      secrets = secrets,
+    )
 
     val response = service.fetchImdbDetails("tt0401729").single()
 
@@ -88,7 +95,10 @@ class ProdOMDbServiceTest {
       """.trimIndent(),
     )
 
-    service = ProdOMDbService(testRestClient.restClient)
+    service = ProdOMDbService(
+      client = testRestClient.restClient,
+      secrets = secrets,
+    )
 
     val response = service.fetchImdbDetails("tt0401729").single()
 

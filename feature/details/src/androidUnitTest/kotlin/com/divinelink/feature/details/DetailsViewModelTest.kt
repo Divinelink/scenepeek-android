@@ -1,0 +1,2825 @@
+package com.divinelink.feature.details
+
+import androidx.compose.material3.SnackbarResult
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.fixtures.details.media.DetailsDataFactory
+import com.divinelink.core.fixtures.details.media.DetailsFormFactory
+import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toMovieWzd
+import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toTvWzd
+import com.divinelink.core.fixtures.details.review.ReviewFactory
+import com.divinelink.core.fixtures.details.season.SeasonFactory
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory.toWizard
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
+import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
+import com.divinelink.core.fixtures.model.details.video.VideoFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
+import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
+import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingDetails
+import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.TvTab
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.expectUiStates
+import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.core_ui_error_retry
+import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.details.media.ui.DetailsViewModel
+import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.core.model.details.media.MediaDetailsResult
+import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
+import kotlin.test.Test
+import com.divinelink.feature.details.Res as R
+
+class DetailsViewModelTest {
+
+  private val testRobot = DetailsViewModelRobot()
+
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+
+  private val mediaId = 1234
+  private val similarMovies = MediaItemFactory.MoviesList()
+  private val movieDetails = MediaDetailsFactory.FightClub()
+  private val tvDetails = MediaDetailsFactory.TheOffice()
+  private val reviewsList = ReviewFactory.ReviewList()
+
+  private fun defaultDetails(
+    result: MediaDetailsResult,
+    accountDetails: AccountMediaDetails = AccountMediaDetailsFactory.NotRated(),
+  ) = flowOf(
+    Result.success(result),
+    Result.success(MediaDetailsResult.AccountDetailsSuccess(accountDetails)),
+  )
+
+  @Test
+  fun `successful initialise viewModel`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+        ),
+      )
+  }
+
+  @Test
+  fun `given success details response then I expect MovieDetails`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          isLoading = false,
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+        ),
+      )
+  }
+
+  @Test
+  fun `given success details response updates rating source`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.IMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          isLoading = false,
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.IMDB,
+        ),
+      )
+  }
+
+  @Test
+  fun `given success reviews response then I expect ReviewsList`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.ReviewsSuccess(
+            formOrder = MovieTab.Reviews.order,
+            reviews = reviewsList,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withReviews(DetailsDataFactory.Movie.reviews())
+          },
+          mediaId = mediaId,
+          isLoading = true,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+        ),
+      )
+  }
+
+  @Test
+  fun `given success details and reviews response then I expect combined flows`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.ReviewsSuccess(
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.NotRated(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+            withReviews(DetailsDataFactory.Movie.reviews())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
+          mediaDetails = movieDetails,
+        ),
+      )
+  }
+
+  @Test
+  fun `given success details and similar response then I expect Loading State`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.ReviewsSuccess(
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.NotRated(),
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.RecommendedSuccess(
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withRecommendations(DetailsDataFactory.Movie.recommendations())
+            withReviews(DetailsDataFactory.Movie.reviews())
+          },
+          mediaId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          isLoading = true,
+        ),
+      )
+  }
+
+  @Test
+  fun `test given error I expect FatalError`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(MediaDetailsResult.Failure.FatalError()),
+          Result.success(
+            MediaDetailsResult.RecommendedSuccess(
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.NotRated(),
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.ReviewsSuccess(
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withRecommendations(DetailsDataFactory.Movie.recommendations())
+            withReviews(DetailsDataFactory.Movie.reviews())
+          },
+          tabs = MovieTab.entries,
+          isLoading = false,
+          error = MediaDetailsResult.Failure.FatalError().message,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+        ),
+      )
+  }
+
+  @Test
+  fun `given unknown error I expect general error`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(MediaDetailsResult.Failure.Unknown),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.NotRated(),
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.RecommendedSuccess(
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.ReviewsSuccess(
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withRecommendations(DetailsDataFactory.Movie.recommendations())
+            withReviews(DetailsDataFactory.Movie.reviews())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          error = MediaDetailsResult.Failure.Unknown.message,
+        ),
+      )
+  }
+
+  @Test
+  fun `on MovieDetails Exception I expect Fatal Error`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.failure(MediaDetailsException()),
+          Result.success(
+            MediaDetailsResult.RecommendedSuccess(
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.ReviewsSuccess(
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.NotRated(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withRecommendations(DetailsDataFactory.Movie.recommendations())
+            withReviews(DetailsDataFactory.Movie.reviews())
+          },
+          mediaId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          isLoading = false,
+          error = MediaDetailsResult.Failure.FatalError().message,
+        ),
+      )
+  }
+
+  @Test
+  fun `on some other exception I expect Unknown error`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.failure(Exception()),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.NotRated(),
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.RecommendedSuccess(
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.ReviewsSuccess(
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withRecommendations(DetailsDataFactory.Movie.recommendations())
+            withReviews(DetailsDataFactory.Movie.reviews())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
+          error = MediaDetailsResult.Failure.Unknown.message,
+        ),
+      )
+  }
+
+  @Test
+  fun `given movie is liked when MaskAsFavorite clicked then I expect to un mark it`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails.copy(isFavorite = true),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .mockMarkAsFavoriteUseCase(
+        media = MediaItemFactory.FightClub().toWizard { withFavorite(true) },
+        response = Result.success(false),
+      )
+      .withNavArguments(
+        id = mediaId,
+        mediaType = MediaType.MOVIE,
+      )
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
+          mediaDetails = movieDetails.copy(isFavorite = true),
+        ),
+      )
+      .onMarkAsFavorite()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
+          mediaDetails = movieDetails.copy(isFavorite = false),
+        ),
+      )
+  }
+
+  @Test
+  fun `given movie is not favorite when MaskAsFavorite clicked then I expect to mark it`() =
+    runTest {
+      testRobot
+        .mockFetchMediaDetails(
+          response = defaultDetails(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        )
+        .mockMarkAsFavoriteUseCase(
+          media = MediaItemFactory.FightClub(),
+          response = Result.success(true),
+        )
+        .withNavArguments(
+          id = mediaId,
+          mediaType = MediaType.MOVIE,
+        )
+        .buildViewModel()
+        .assertViewState(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = movieDetails.copy(isFavorite = false),
+          ),
+        )
+        .onMarkAsFavorite()
+        .assertViewState(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = movieDetails.copy(isFavorite = true),
+          ),
+        )
+    }
+
+  @Test
+  fun `given success details and movies response then I expect combined flows`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.VideosSuccess(
+              VideoFactory.Youtube(),
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.NotRated(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(
+        id = mediaId,
+        mediaType = MediaType.MOVIE,
+      )
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          trailer = VideoFactory.Youtube(),
+        ),
+      )
+  }
+
+  @Test
+  fun `given account media details with rated I expect user rating`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.AccountDetailsSuccess(
+              AccountMediaDetailsFactory.Rated(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated(),
+        ),
+      )
+  }
+
+  @Test
+  fun `given non rated media I expect no user rating`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+        ),
+      )
+  }
+
+  @Test
+  fun `given success submit rate, when I submit rate, then I expect success message`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .mockSubmitRate(response = Result.success(Unit))
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .expectUiStates(
+        action = { onSubmitRate(5) },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            snackbarMessage = null,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+              withRating(null)
+            },
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            snackbarMessage = null,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+              withRating(null)
+            },
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to false,
+              AccountDataSection.Rating to true,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            snackbarMessage = SnackbarMessage.from(
+              UIText.ResourceText(
+                R.string.details__rating_submitted_successfully,
+                movieDetails.title,
+              ),
+            ),
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+              withId(mediaId)
+              withRating(5.0f)
+            },
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given NoSession error submit rate, when I submit, then I expect error message`() = runTest {
+    lateinit var viewModel: DetailsViewModel
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .mockSubmitRate(response = Result.failure(SessionException.Unauthenticated()))
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
+        viewModel = it.getViewModel()
+      }
+      .expectUiStates(
+        action = {
+          onSubmitRate(5)
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to false,
+              AccountDataSection.Rating to false,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to false,
+              AccountDataSection.Rating to true,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+              actionLabelText = UIText.ResourceText(R.string.login),
+              onSnackbarResult = viewModel::navigateToLogin,
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given NoSession error, when login action, then I expect navigation to login`() = runTest {
+    lateinit var viewModel: DetailsViewModel
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .mockSubmitRate(response = Result.failure(SessionException.Unauthenticated()))
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
+        viewModel = it.getViewModel()
+      }
+      .onSubmitRate(5)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          isLoading = false,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+            actionLabelText = UIText.ResourceText(R.string.login),
+            onSnackbarResult = viewModel::navigateToLogin,
+          ),
+        ),
+      )
+      .onNavigateToLogin(SnackbarResult.ActionPerformed)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          isLoading = false,
+          snackbarMessage = null,
+          navigateToLogin = true,
+        ),
+      )
+  }
+
+  @Test
+  fun `given navigation to login, when I consume it, then I expect navigation to be null`() {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .onNavigateToLogin(SnackbarResult.ActionPerformed)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          navigateToLogin = true,
+        ),
+      )
+      .consumeNavigation()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          navigateToLogin = null,
+        ),
+      )
+  }
+
+  @Test
+  fun `given snackbar message, when I consume it I expect snackbar message null`() = runTest {
+    testRobot
+      .mockSubmitRate(response = Result.success(Unit))
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .onSubmitRate(5)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          snackbarMessage = SnackbarMessage.from(
+            UIText.ResourceText(
+              R.string.details__rating_submitted_successfully,
+              movieDetails.title,
+            ),
+          ),
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+            withId(mediaId)
+            withRating(5.0f)
+          },
+        ),
+      )
+      .consumeSnackbar()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+            withId(mediaId)
+            withRating(5.0f)
+          },
+        ),
+      )
+  }
+
+  @Test
+  fun `given rated movie when I delete rating then I expect no user rating`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          result = MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+          accountDetails = AccountMediaDetailsFactory.Rated(),
+        ),
+      )
+      .mockDeleteRating(
+        response = Result.success(Unit),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated(),
+        ),
+      )
+      .onDeleteRating()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+            withRating(null)
+          },
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.details__rating_deleted_successfully,
+              movieDetails.title,
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given invalid accountId when I add to watchlist I expect error`() = runTest {
+    lateinit var viewModel: DetailsViewModel
+
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .mockAddToWatchlist(
+        response = Result.failure(SessionException.Unauthenticated()),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
+        viewModel = it.getViewModel()
+      }
+      .expectUiStates(
+        action = { onAddToWatchlist() },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to true,
+              AccountDataSection.Rating to false,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
+              actionLabelText = UIText.ResourceText(R.string.login),
+              onSnackbarResult = viewModel::navigateToLogin,
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given error when I add to watchlist I expect general error`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .mockAddToWatchlist(response = Result.failure(Exception()))
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(UiString.core_ui_error_retry),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given item on watchlist when I add to watchlist I expect removed message`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          result = MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+          accountDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+        ),
+      )
+      .mockAddToWatchlist(Result.success(Unit))
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+        ),
+      )
+      .expectUiStates(
+        action = { onAddToWatchlist() },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+            snackbarMessage = null,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to true,
+              AccountDataSection.Rating to false,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.details__removed_from_watchlist,
+                movieDetails.title,
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given item not on watchlist when I add to watchlist I expect added message`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          result = MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+          accountDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+        ),
+      )
+      .mockAddToWatchlist(Result.success(Unit))
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+        ),
+      )
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.details__added_to_watchlist,
+              movieDetails.title,
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test MediaDetailsResult MenuOption updates menu items`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.MenuOptionsSuccess(listOf(DetailsMenuOptions.SHARE)),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = movieDetails,
+          menuOptions = listOf(DetailsMenuOptions.SHARE),
+        ),
+      )
+  }
+
+  @Test
+  fun `test on CreditsSuccess MediaDetailsResult update tvCredits`() = runTest {
+    val credits = AggregatedCreditsFactory.credits()
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+          Result.success(MediaDetailsResult.CreditsSuccess(credits)),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+            withCast(DetailsDataFactory.Tv.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails,
+        ),
+      )
+  }
+
+  @Test
+  fun `test on JellyseerrDetailsSuccess movie MediaDetailsResult updates media status`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(MediaDetailsResult.DetailsSuccess(movieDetails, RatingSource.TMDB)),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Movie.pending(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.pending(),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageMovie,
+          ),
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = movieDetails,
+          permissions = ProfilePermission.entries,
+        ),
+      )
+  }
+
+  @Test
+  fun `test on JellyseerrDetailsSuccess tv MediaDetailsResult update seasons status`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.available(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
+          },
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.available(),
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allWithStatus().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
+          ),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+  }
+
+  @Test
+  fun `test on JellyseerrDetailsSuccess MediaDetailsResult updates current seasons`() = runTest {
+    val channel = Channel<Result<MediaDetailsResult>>()
+    testRobot
+      .mockFetchMediaDetails(channel)
+      .mockPermissions(ProfilePermission.entries)
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .expectUiStates(
+        action = {
+          launch {
+            channel.send(
+              Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+            )
+          }
+
+          launch {
+            channel.send(
+              Result.success(
+                MediaDetailsResult.JellyseerrDetails.Requested(
+                  JellyseerrMediaInfoFactory.Tv.available(),
+                ),
+              ),
+            )
+          }
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading(),
+            jellyseerrMediaInfo = null,
+            mediaId = mediaId,
+            isLoading = true,
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasons())
+            },
+            jellyseerrMediaInfo = null,
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = tvDetails,
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
+            },
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.available(),
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allWithStatus().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageTvShow,
+              DetailActionItem.Request,
+            ),
+            permissions = ProfilePermission.entries,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test update media info for movie`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .onUpdateMediaInfo(
+        JellyseerrMediaRequestResponseFactory.movie().copy(
+          message = "Success",
+        ).mediaInfo,
+      )
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageMovie,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = movieDetails,
+          permissions = ProfilePermission.entries,
+        ),
+      )
+  }
+
+  @Test
+  fun `test update media info for tv with success updates current seasons`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(
+              DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
+            )
+          },
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
+          ),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .onUpdateMediaInfo(JellyseerrMediaRequestResponseFactory.tvAllRequested().mediaInfo)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+  }
+
+  @Test
+  fun `test obfuscateSpoilers with initially hidden should show them`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+      )
+      .mockSpoilersObfuscation(false)
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .onObfuscateSpoilers()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = true,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onFetchAllRatings updates rating source`() = runTest {
+    val allRatingsChannel = Channel<Result<Pair<RatingSource, RatingDetails>>>()
+
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .mockFetchAllRatingsUseCase(allRatingsChannel)
+      .expectUiStates(
+        action = {
+          onFetchAllRatings()
+
+          launch {
+            allRatingsChannel.send(
+              Result.success(RatingSource.TRAKT to RatingDetailsFactory.trakt()),
+            )
+          }
+
+          launch {
+            allRatingsChannel.send(
+              Result.success(RatingSource.IMDB to RatingDetailsFactory.imdb()),
+            )
+          }
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasons())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = tvDetails.copy(
+              ratingCount = RatingCount(
+                ratings = mapOf(
+                  RatingSource.TMDB to RatingDetails.Score(
+                    voteAverage = 8.6,
+                    voteCount = 4503,
+                  ),
+                  RatingSource.IMDB to RatingDetails.Initial,
+                  RatingSource.TRAKT to RatingDetails.Initial,
+                ),
+              ),
+            ),
+            spoilersObfuscated = false,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasons())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = tvDetails.copy(
+              ratingCount = RatingCount(
+                ratings = mapOf(
+                  RatingSource.TMDB to RatingDetails.Score(
+                    voteAverage = 8.6,
+                    voteCount = 4503,
+                  ),
+                  RatingSource.IMDB to RatingDetails.Initial,
+                  RatingSource.TRAKT to RatingDetailsFactory.trakt(),
+                ),
+              ),
+            ),
+            spoilersObfuscated = false,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasons())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = tvDetails.copy(
+              ratingCount = RatingCount(
+                ratings = mapOf(
+                  RatingSource.TMDB to RatingDetails.Score(
+                    voteAverage = 8.6,
+                    voteCount = 4503,
+                  ),
+                  RatingSource.IMDB to RatingDetailsFactory.imdb(),
+                  RatingSource.TRAKT to RatingDetailsFactory.trakt(),
+                ),
+              ),
+            ),
+            spoilersObfuscated = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onMediaSourceClick for TV show emits openUrl`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+      )
+      .withNavArguments(2316, MediaType.TV)
+      .buildViewModel()
+      .onMediaSourceClick(RatingSource.TMDB)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = 2316,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo(
+          "https://www.themoviedb.org/tv/2316-the-office",
+        )
+      }
+      .onMediaSourceClick(RatingSource.IMDB)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://www.imdb.com/title/tt0386676")
+      }
+      .onMediaSourceClick(RatingSource.TRAKT)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://trakt.tv/shows/tt0386676")
+      }
+  }
+
+  @Test
+  fun `test onMediaSourceClick for movie emits openUrl`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(movieDetails.id, MediaType.MOVIE)
+      .buildViewModel()
+      .onMediaSourceClick(RatingSource.TMDB)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = movieDetails.id,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo(
+          "https://www.themoviedb.org/movie/550-fight-club",
+        )
+      }
+      .onMediaSourceClick(RatingSource.IMDB)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://www.imdb.com/title/tt0137523")
+      }
+      .onMediaSourceClick(RatingSource.TRAKT)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://trakt.tv/movies/tt0137523")
+      }
+  }
+
+  @Test
+  fun `test onMediaSourceClick for movie emits openUrls`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails.copy(imdbId = null),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(movieDetails.id, MediaType.MOVIE)
+      .buildViewModel()
+      .onMediaSourceClick(RatingSource.TMDB)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = movieDetails.id,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails.copy(imdbId = null),
+          spoilersObfuscated = false,
+        ),
+      )
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo(
+          "https://www.themoviedb.org/movie/550-fight-club",
+        )
+      }
+      .onMediaSourceClick(RatingSource.IMDB)
+      .assertOpenUrlTab { expectNoEvents() }
+      .onMediaSourceClick(RatingSource.TRAKT)
+      .assertOpenUrlTab { expectNoEvents() }
+  }
+
+  @Test
+  fun `test getMediaDetails with RatingSuccess updates RatingCount`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.IMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.RatingSuccess(RatingCountFactory.imdb()),
+          ),
+        ),
+      )
+      .withNavArguments(movieDetails.id, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = movieDetails.id,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = movieDetails.copy(
+            ratingCount = RatingCountFactory.imdb(),
+          ),
+          ratingSource = RatingSource.IMDB,
+          spoilersObfuscated = false,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onTabSelected updates selectedTabIndex`() {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+          selectedTabIndex = 0,
+        ),
+      )
+      .onTabSelected(1)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+          selectedTabIndex = 1,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteRequest on TV media with success overrides seasons`() {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .mockDeleteRequest(
+        response = flowOf(
+          Result.success(JellyseerrMediaInfoFactory.Tv.unknown()),
+        ),
+      )
+      .onDeleteRequest(3)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.Request,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.unknown(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_request_delete,
+            ),
+          ),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteRequest on Movie media with success updates status`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Movie.processing(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = movieDetails,
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageMovie,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .mockDeleteRequest(
+        response = flowOf(
+          Result.success(JellyseerrMediaInfoFactory.Movie.unknown()),
+        ),
+      )
+      .expectUiStates(
+        action = {
+          onDeleteRequest(3)
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = true,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.Request,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.unknown(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_details_jellyseerr_success_request_delete,
+              ),
+            ),
+            permissions = ProfilePermission.entries,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteRequest on TV media with failure`() {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .mockDeleteRequest(
+        response = flowOf(
+          Result.failure(Exception("Failed to delete request")),
+        ),
+      )
+      .onDeleteRequest(3)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_failed_request_delete,
+            ),
+          ),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteMedia and file on TV media with success`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .mockDeleteMedia(
+        response = Result.success(Unit),
+      )
+      .onDeleteMedia(true)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.Request,
+          ),
+          jellyseerrMediaInfo = null,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_media_delete,
+              "The Office",
+            ),
+          ),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteMedia and file on TV with success`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .mockDeleteMedia(
+        response = Result.success(Unit),
+      )
+      .onDeleteMedia(false)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.Request,
+          ),
+          jellyseerrMediaInfo = null,
+          permissions = ProfilePermission.entries,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_media_delete,
+              "The Office",
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteMedia and file on TV with failure`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .mockDeleteMedia(
+        response = Result.failure(Exception("Failed to delete media")),
+      )
+      .expectUiStates(
+        action = { onDeleteMedia(false) },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageTvShow,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+            snackbarMessage = null,
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+            },
+            mediaId = mediaId,
+            isLoading = true,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageTvShow,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+            snackbarMessage = null,
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageTvShow,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_details_jellyseerr_failure_media_delete,
+                "The Office",
+              ),
+            ),
+            permissions = ProfilePermission.entries,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteMedia and file on Movie with success`() = runTest {
+    testRobot
+      .mockPermissions(ProfilePermission.entries)
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Movie.processing(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = movieDetails,
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageMovie,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          permissions = ProfilePermission.entries,
+        ),
+      )
+      .mockDeleteMedia(response = Result.success(Unit))
+      .expectUiStates(
+        action = { onDeleteMedia(true) },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = true,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+              DetailActionItem.Request,
+            ),
+            jellyseerrMediaInfo = null,
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_details_jellyseerr_success_media_delete,
+                "Fight Club",
+              ),
+            ),
+            permissions = ProfilePermission.entries,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test fetch media info without manage permissions and requests does not add manage action`() =
+    runTest {
+      testRobot
+        .mockPermissions(emptyList())
+        .mockFetchMediaDetails(
+          response = flowOf(
+            Result.success(
+              MediaDetailsResult.DetailsSuccess(
+                mediaDetails = tvDetails,
+                ratingSource = RatingSource.TMDB,
+              ),
+            ),
+            Result.success(
+              MediaDetailsResult.JellyseerrDetails.Requested(
+                JellyseerrMediaInfoFactory.Tv.emptyRequests(),
+              ),
+            ),
+          ),
+        )
+        .withNavArguments(mediaId, MediaType.TV)
+        .buildViewModel()
+        .assertViewState(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(
+                DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
+              )
+            },
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.emptyRequests(),
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+            ),
+          ),
+        )
+    }
+
+  @Test
+  fun `test fetch media info with only requests adds manage action`() = runTest {
+    testRobot
+      .mockPermissions(emptyList())
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(
+              DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
+            )
+          },
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test update media info for movie with request and no permission`() = runTest {
+    testRobot
+      .mockPermissions(emptyList())
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .onUpdateMediaInfo(
+        JellyseerrMediaRequestResponseFactory.movieWithRequest().mediaInfo,
+      )
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageMovie,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaRequestResponseFactory.movieWithRequest().mediaInfo,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = movieDetails,
+          permissions = emptyList(),
+        ),
+      )
+  }
+}

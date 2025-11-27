@@ -28,8 +28,8 @@ import com.divinelink.core.ui.components.AppTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WebViewScreen(
-  modifier: Modifier = Modifier,
+actual fun WebViewScreen(
+  modifier: Modifier,
   route: Navigation.WebViewRoute,
   onNavigate: (Navigation) -> Unit,
 ) {

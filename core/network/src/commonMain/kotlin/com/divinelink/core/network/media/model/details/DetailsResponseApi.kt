@@ -150,12 +150,12 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
     budget = if (budget == 0) {
       "-"
     } else {
-      budget.formatWithCommas()
+      "$${budget.formatWithCommas()}"
     },
     revenue = if (revenue == 0L) {
       "-"
     } else {
-      budget.formatWithCommas()
+      "$${revenue.formatWithCommas()}"
     },
   ),
 )

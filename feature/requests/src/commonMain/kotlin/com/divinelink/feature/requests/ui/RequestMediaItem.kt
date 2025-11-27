@@ -144,14 +144,16 @@ fun LazyItemScope.RequestMediaItem(
               color = MaterialTheme.colorScheme.onSurfaceVariant,
               text = stringResource(Res.string.feature_requests_requested),
             )
+            item.request.requestDate.localizeIsoDate()?.let { date ->
             Text(
               text = stringResource(
                 Res.string.feature_requests_request_by,
-                item.request.requestDate.localizeIsoDate(),
+                date,
                 item.request.requester.displayName,
               ),
               style = MaterialTheme.typography.bodyMedium,
             )
+            }
           }
 
           item.request.profileName?.let { profileName ->

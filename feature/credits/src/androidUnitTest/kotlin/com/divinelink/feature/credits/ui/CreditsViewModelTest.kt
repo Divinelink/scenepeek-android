@@ -27,7 +27,7 @@ class CreditsViewModelTest {
       .withNavArgs(
         CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
-          mediaType = MediaType.TV,
+          mediaType = MediaType.TV.value,
         ),
       )
       .buildViewModel()
@@ -40,7 +40,7 @@ class CreditsViewModelTest {
       .withNavArgs(
         CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
-          mediaType = MediaType.TV,
+          mediaType = MediaType.TV.value,
         ),
       )
       .mockFetchCreditsUseCaseSuccess(flowOf(Result.success(AggregatedCreditsFactory.credits())))
@@ -74,7 +74,7 @@ class CreditsViewModelTest {
       .withNavArgs(
         CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
-          mediaType = MediaType.TV,
+          mediaType = MediaType.TV.value,
         ),
       )
       .setupChannelForUseCase(channel)
@@ -155,7 +155,7 @@ class CreditsViewModelTest {
       .withNavArgs(
         CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
-          mediaType = MediaType.TV,
+          mediaType = MediaType.TV.value,
         ),
       )
       .mockFetchCreditsUseCaseSuccess(flowOf(Result.success(AggregatedCreditsFactory.credits())))
@@ -184,7 +184,7 @@ class CreditsViewModelTest {
       .withNavArgs(
         CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
-          mediaType = MediaType.TV,
+          mediaType = MediaType.TV.value,
         ),
       )
       .mockFetchCreditsUseCaseSuccess(flowOf(Result.success(AggregatedCreditsFactory.credits())))

@@ -11,7 +11,14 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.domain.details.media.AddToWatchlistParameters
+import com.divinelink.core.domain.details.media.AddToWatchlistUseCase
+import com.divinelink.core.domain.details.media.DeleteRatingParameters
+import com.divinelink.core.domain.details.media.DeleteRatingUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
+import com.divinelink.core.domain.details.media.GetMediaDetailsUseCase
+import com.divinelink.core.domain.details.media.SubmitRatingParameters
+import com.divinelink.core.domain.details.media.SubmitRatingUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
@@ -29,6 +36,7 @@ import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
+import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
@@ -56,13 +64,6 @@ import com.divinelink.feature.details.feature_details_jellyseerr_failure_media_d
 import com.divinelink.feature.details.feature_details_jellyseerr_success_media_delete
 import com.divinelink.feature.details.feature_details_jellyseerr_success_request_delete
 import com.divinelink.feature.details.login
-import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
-import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
-import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
-import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
-import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
-import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
-import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -181,7 +182,7 @@ class DetailsViewModel(
                     this[castOrder] = DetailsForm.Content(
                       DetailsData.Cast(
                         isTv = false,
-                        items = data.mediaDetails.cast,
+                        items = (data.mediaDetails as Movie).cast,
                       ),
                     )
                   }
@@ -199,7 +200,7 @@ class DetailsViewModel(
                   val updatedForms = viewState.forms.toMutableMap().apply {
                     this[aboutOrder] = DetailsForm.Content(getAboutDetailsData(data))
                     this[seasonsTabOrder] = DetailsForm.Content(
-                      DetailsData.Seasons(data.mediaDetails.seasons),
+                      DetailsData.Seasons((data.mediaDetails as TV).seasons),
                     )
                   }
 
@@ -792,8 +793,8 @@ class DetailsViewModel(
       tagline = result.mediaDetails.tagline,
       genres = result.mediaDetails.genres,
       creators = when (result.mediaDetails) {
-        is TV -> result.mediaDetails.creators
-        is Movie -> result.mediaDetails.creators
+        is TV -> (result.mediaDetails as TV).creators
+        is Movie -> (result.mediaDetails as Movie).creators
       },
       information = result.mediaDetails.information,
     )

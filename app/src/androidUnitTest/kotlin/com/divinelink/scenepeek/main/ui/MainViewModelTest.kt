@@ -1,6 +1,5 @@
 package com.divinelink.scenepeek.main.ui
 
-import android.net.Uri
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -38,7 +37,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with movie deeplink`() {
-    val url = Uri.parse("https://www.themoviedb.org/movie/693134-dune-part-two")
+    val url = "https://www.themoviedb.org/movie/693134-dune-part-two"
 
     robot
       .buildViewModel()
@@ -48,7 +47,7 @@ class MainViewModelTest {
         MainUiEvent.NavigateToDetails(
           DetailsRoute(
             id = 693134,
-            mediaType = MediaType.MOVIE,
+            mediaType = MediaType.MOVIE.value,
             isFavorite = false,
           ),
         ),
@@ -59,7 +58,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with tv deeplink`() {
-    val url = Uri.parse("https://www.themoviedb.org/tv/693134-dune-part-two")
+    val url = "https://www.themoviedb.org/tv/693134-dune-part-two"
 
     robot
       .buildViewModel()
@@ -69,7 +68,7 @@ class MainViewModelTest {
         MainUiEvent.NavigateToDetails(
           DetailsRoute(
             id = 693134,
-            mediaType = MediaType.TV,
+            mediaType = MediaType.TV.value,
             isFavorite = false,
           ),
         ),
@@ -80,7 +79,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with person deeplink`() {
-    val url = Uri.parse("https://www.themoviedb.org/person/693134-dune-part-two")
+    val url = "https://www.themoviedb.org/person/693134-dune-part-two"
 
     robot
       .buildViewModel()
@@ -93,7 +92,7 @@ class MainViewModelTest {
             knownForDepartment = null,
             name = null,
             profilePath = null,
-            gender = Gender.NOT_SET,
+            gender = Gender.NOT_SET.value,
           ),
         ),
       )
@@ -103,7 +102,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with invalid deeplink`() {
-    val url = Uri.parse("https://www.themoviedb.org/invalid/693134-dune-part-two")
+    val url = "https://www.themoviedb.org/invalid/693134-dune-part-two"
 
     robot
       .buildViewModel()
@@ -127,7 +126,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with tmdb deeplink with approved redirect`() = runTest {
-    val url = Uri.parse("scenepeek://auth/redirect")
+    val url = "scenepeek://auth/redirect"
 
     robot
       .buildViewModel()
@@ -137,7 +136,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with imdb deeplink with title`() = runTest {
-    val url = Uri.parse("https://www.imdb.com/title/tt0044741/")
+    val url = "https://www.imdb.com/title/tt0044741/"
 
     robot
       .buildViewModel()
@@ -147,7 +146,7 @@ class MainViewModelTest {
         MainUiEvent.NavigateToDetails(
           DetailsRoute(
             id = 550,
-            mediaType = MediaType.MOVIE,
+            mediaType = MediaType.MOVIE.value,
             isFavorite = false,
           ),
         ),
@@ -156,7 +155,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with imdb deeplink for tv`() = runTest {
-    val url = Uri.parse("https://www.imdb.com/title/tt11280740")
+    val url = "https://www.imdb.com/title/tt11280740"
 
     robot
       .buildViewModel()
@@ -166,7 +165,7 @@ class MainViewModelTest {
         MainUiEvent.NavigateToDetails(
           DetailsRoute(
             id = 2316,
-            mediaType = MediaType.TV,
+            mediaType = MediaType.TV.value,
             isFavorite = false,
           ),
         ),
@@ -175,7 +174,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with imdb deeplink with name`() = runTest {
-    val url = Uri.parse("https://www.imdb.com/name/nm0044741/")
+    val url = "https://www.imdb.com/name/nm0044741/"
 
     robot
       .buildViewModel()
@@ -188,7 +187,7 @@ class MainViewModelTest {
             name = "Randall Einhorn",
             profilePath = null,
             knownForDepartment = "Directing",
-            gender = Gender.MALE,
+            gender = Gender.MALE.value,
           ),
         ),
       )
@@ -196,7 +195,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with imdb deeplink and unknown media type`() = runTest {
-    val url = Uri.parse("https://www.imdb.com/name/nm0044741/")
+    val url = "https://www.imdb.com/name/nm0044741/"
 
     robot
       .buildViewModel()
@@ -207,7 +206,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with imdb and findById failure does not emit anything`() = runTest {
-    val url = Uri.parse("https://www.imdb.com/name/nm0044741/")
+    val url = "https://www.imdb.com/name/nm0044741/"
 
     robot
       .buildViewModel()

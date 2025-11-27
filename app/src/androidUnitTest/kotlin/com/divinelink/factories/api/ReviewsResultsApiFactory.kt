@@ -1,6 +1,6 @@
 package com.divinelink.factories.api
 
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import com.divinelink.core.fixtures.LoremIpsum
 import com.divinelink.core.network.media.model.details.reviews.AuthorDetailsApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewResultsApi
 
@@ -14,7 +14,7 @@ object ReviewsResultsApiFactory {
       rating = 10.0,
       username = "eledriel_s",
     ),
-    content = LoremIpsum(100).values.joinToString(),
+    content = LoremIpsum(100),
     createdAt = "2017-02-13T23:16:19.538Z",
     id = "",
     updatedAt = "",
@@ -29,7 +29,7 @@ object ReviewsResultsApiFactory {
       rating = 6.7,
       username = "andreas_o",
     ),
-    content = LoremIpsum(80).values.joinToString(),
+    content = LoremIpsum(80),
     createdAt = "2018-02-13T23:16:19.538Z",
     id = "",
     updatedAt = "",
@@ -44,7 +44,7 @@ object ReviewsResultsApiFactory {
       rating = 9.3,
       username = "john_doe",
     ),
-    content = LoremIpsum(60).values.joinToString(),
+    content = LoremIpsum(60),
     createdAt = "2019-02-13T23:16:19.538Z",
     id = "",
     updatedAt = "",

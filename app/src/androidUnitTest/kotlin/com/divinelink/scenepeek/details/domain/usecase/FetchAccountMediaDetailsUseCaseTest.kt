@@ -11,8 +11,8 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.divinelink.feature.details.media.usecase.FetchAccountMediaDetailsUseCase
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
+import com.divinelink.core.domain.details.media.FetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf

@@ -12,7 +12,7 @@ data class JellyseerrRequest(
   val mediaStatus: JellyseerrStatus.Media,
   val requestStatus: JellyseerrStatus.Request,
   val requester: JellyseerrRequester,
-  val requestDate: LocalDateTime,
+  val requestDate: LocalDateTime?,
   val seasons: List<SeasonRequest>,
   val profileName: String?,
   val canRemove: Boolean,

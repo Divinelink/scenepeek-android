@@ -16,5 +16,5 @@ data class JellyseerrProfile(
   val permissions: List<ProfilePermission>,
 )
 
-val JellyseerrProfile.createdAtLocalDateTime: LocalDateTime
+val JellyseerrProfile.createdAtLocalDateTime: LocalDateTime?
   get() = createdAt.toLocalDateTime()
