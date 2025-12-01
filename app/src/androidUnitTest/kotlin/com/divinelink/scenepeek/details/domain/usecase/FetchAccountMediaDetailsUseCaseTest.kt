@@ -4,15 +4,15 @@ import app.cash.turbine.test
 import com.divinelink.core.commons.data
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.domain.details.media.FetchAccountMediaDetailsUseCase
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
-import com.divinelink.core.domain.details.media.FetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf

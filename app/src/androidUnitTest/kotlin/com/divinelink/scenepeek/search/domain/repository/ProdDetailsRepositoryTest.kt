@@ -12,6 +12,7 @@ import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.MoviesList
@@ -52,7 +53,6 @@ import com.divinelink.core.testing.service.TestTraktService
 import com.divinelink.factories.api.DetailsResponseApiFactory
 import com.divinelink.factories.api.ReviewsResultsApiFactory
 import com.divinelink.factories.api.account.states.AccountMediaDetailsResponseApiFactory
-import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first

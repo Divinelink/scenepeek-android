@@ -1,8 +1,8 @@
 package com.divinelink.scenepeek.base.data.remote.movies.mapper
 
 import com.divinelink.core.data.details.mapper.map
-import com.divinelink.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
+import com.divinelink.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

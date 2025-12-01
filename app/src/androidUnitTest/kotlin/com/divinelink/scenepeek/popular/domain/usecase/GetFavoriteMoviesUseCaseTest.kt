@@ -1,10 +1,10 @@
 package com.divinelink.scenepeek.popular.domain.usecase
 
+import com.divinelink.core.domain.GetFavoriteMoviesUseCase
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestMediaRepository
-import com.divinelink.core.domain.GetFavoriteMoviesUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

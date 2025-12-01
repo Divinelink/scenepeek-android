@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.onError
+import com.divinelink.core.domain.GetFavoriteMoviesUseCase
+import com.divinelink.core.domain.GetPopularMoviesUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.exception.AppException
@@ -15,8 +17,6 @@ import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
-import com.divinelink.core.domain.GetFavoriteMoviesUseCase
-import com.divinelink.core.domain.GetPopularMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest

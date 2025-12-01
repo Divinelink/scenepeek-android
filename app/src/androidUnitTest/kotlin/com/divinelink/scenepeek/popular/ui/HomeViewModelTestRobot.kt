@@ -4,10 +4,10 @@ import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
-import com.divinelink.core.ui.components.Filter
 import com.divinelink.core.testing.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeGetPopularMoviesUseCase
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
+import com.divinelink.core.ui.components.Filter
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import com.divinelink.scenepeek.home.ui.HomeViewState
 import com.google.common.truth.Truth.assertThat

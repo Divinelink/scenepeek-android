@@ -1,12 +1,12 @@
 package com.divinelink.scenepeek.search.domain.usecase
 
 import app.cash.turbine.test
+import com.divinelink.core.domain.search.GetSearchMoviesUseCase
+import com.divinelink.core.domain.search.SearchResult
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestMediaRepository
-import com.divinelink.core.domain.search.GetSearchMoviesUseCase
-import com.divinelink.core.domain.search.SearchResult
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last

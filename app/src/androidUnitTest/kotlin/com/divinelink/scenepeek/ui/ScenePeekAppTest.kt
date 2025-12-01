@@ -698,8 +698,6 @@ class ScenePeekAppTest : ComposeTest() {
 //    ) {
     uiState = MainUiState.Loading
 
-
-
     setContentWithTheme {
       val navController = rememberTestNavController()
       val scope = rememberCoroutineScope()

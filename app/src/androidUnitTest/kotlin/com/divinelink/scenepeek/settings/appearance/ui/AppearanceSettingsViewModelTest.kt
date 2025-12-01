@@ -11,7 +11,6 @@ import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUse
 import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
 import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.domain.SystemThemeProviderFactory
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel

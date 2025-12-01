@@ -1,12 +1,12 @@
 package com.divinelink.scenepeek.popular.domain.usecase
 
 import app.cash.turbine.test
+import com.divinelink.core.domain.GetPopularMoviesUseCase
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestMediaRepository
-import com.divinelink.core.domain.GetPopularMoviesUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest

@@ -4,9 +4,12 @@ import app.cash.turbine.test
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.domain.details.media.GetMediaDetailsUseCase
 import com.divinelink.core.fixtures.details.review.ReviewFactory
+import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
+import com.divinelink.core.fixtures.model.details.video.VideoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory.Tv.betterCallSaul1
@@ -14,6 +17,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFact
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
@@ -31,13 +35,9 @@ import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
+import com.divinelink.core.testing.usecase.FakeFetchAccountMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDetailsActionItemsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
-import com.divinelink.core.fixtures.model.details.video.VideoFactory
-import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
-import com.divinelink.core.model.details.media.MediaDetailsResult
-import com.divinelink.core.domain.details.media.GetMediaDetailsUseCase
-import com.divinelink.core.testing.usecase.FakeFetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
