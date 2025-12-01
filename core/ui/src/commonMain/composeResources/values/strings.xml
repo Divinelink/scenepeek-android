@@ -171,6 +171,8 @@
 
   <!-- September 19, 2025 -->
   <string name="core_ui_localized_date_full">%1$s %2$s, %3$s</string>
+  <!-- September 2025 -->
+  <string name="core_ui_localized_month_year">%1$s %2$s</string>
 
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>

@@ -30,6 +30,12 @@ fun String.formatTo(
   null
 }
 
+fun String.toLocalDate(): LocalDate? = try {
+  LocalDate.parse(this)
+} catch (_: Exception) {
+  null
+}
+
 fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime? = try {
   Instant.parse(this).toLocalDateTime(timeZone)
 } catch (_: Exception) {

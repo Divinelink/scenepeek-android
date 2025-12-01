@@ -14,6 +14,8 @@ kotlin {
 
       implementation(projects.feature.addToAccount)
       implementation(projects.feature.requestMedia)
+
+      implementation(libs.kotlinx.datetime)
     }
 
     androidMain.dependencies {

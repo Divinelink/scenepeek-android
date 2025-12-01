@@ -51,6 +51,18 @@ class StringExtensionsTest {
   }
 
   @Test
+  fun `test toLocalDate with valid iso date`() {
+    "2025-06-22".toLocalDate().toString() shouldBe "2025-06-22"
+    "2025-06-22".toLocalDate().toString() shouldBe "2025-06-22"
+  }
+
+  @Test
+  fun `test toLocalDate with invalid iso date`() {
+    "2025-22-06".toLocalDate() shouldBe null
+    "2025-22-06".toLocalDate() shouldBe null
+  }
+
+  @Test
   fun `test localizeIsoDate with invalid iso date`() {
     val date = "2025-06-22T13:00:22"
 

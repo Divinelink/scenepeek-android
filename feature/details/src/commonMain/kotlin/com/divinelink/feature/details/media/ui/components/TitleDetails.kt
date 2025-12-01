@@ -7,8 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.divinelink.core.commons.Constants
-import com.divinelink.core.commons.extensions.formatTo
+import com.divinelink.core.commons.extensions.toLocalDate
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.MediaDetails
@@ -16,6 +15,7 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.extension.localizeMonthYear
 import com.divinelink.feature.details.Res
 import com.divinelink.feature.details.feature_details_number_of_seasons
 import org.jetbrains.compose.resources.pluralStringResource
@@ -36,7 +36,7 @@ fun TitleDetails(
       Text(
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        text = mediaDetails.releaseDate.formatTo(Constants.YYYY_MM_DD, Constants.MMM_YYYY)
+        text = mediaDetails.releaseDate.toLocalDate()?.localizeMonthYear(useLong = false)
           ?: mediaDetails.releaseDate,
       )
 
