@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:function-naming", "ktlint:standard:filename")
+
 package com.divinelink.scenepeek
 
 import androidx.compose.runtime.DisposableEffect
@@ -31,7 +33,6 @@ fun MainViewController(): UIViewController = ComposeUIViewController {
     dynamicColor = viewModel.materialYou.collectAsState().value,
     blackBackground = viewModel.blackBackgrounds.collectAsState().value,
   ) {
-
     DisposableEffect(Unit) {
       ExternalUriHandler.listener = { uri ->
         viewModel.handleDeepLink(uri)

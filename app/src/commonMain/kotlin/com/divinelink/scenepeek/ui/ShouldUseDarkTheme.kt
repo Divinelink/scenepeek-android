@@ -11,6 +11,7 @@ fun shouldUseDarkTheme(
   selectedTheme: Theme,
 ): Boolean = when (uiState) {
   is MainUiState.Loading -> isSystemInDarkTheme()
+
   is MainUiState.Completed -> when (selectedTheme) {
     Theme.SYSTEM -> isSystemInDarkTheme()
     Theme.LIGHT -> false

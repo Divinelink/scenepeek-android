@@ -223,14 +223,14 @@ class HomeViewModelTest {
       )
   }
 
+  /**
+   * If the time we fetch movies with IDs 1,2,3,4,5
+   * and on our second attempt the IDs are 1,2,3,4,5,6,7,8,10
+   * We'll merge those items to together but discard duplicate ones.
+   * Favorite movies are in favor of non favorites.
+   */
   @Test
   fun `duplicates are successfully removed`() = runTest {
-    /**
-     * If the time we fetch movies with IDs 1,2,3,4,5
-     * and on our second attempt the IDs are 1,2,3,4,5,6,7,8,10
-     * We'll merge those items to together but discard duplicate ones.
-     * Favorite movies are in favor of non favorites.
-     */
     testRobot
       .mockFetchPopularMovies(
         response = Result.success(loadData(1, 5)),

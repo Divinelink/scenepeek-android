@@ -9,12 +9,12 @@ plugins {
   alias(libs.plugins.firebase.crashlytics)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.gms)
-  alias(libs.plugins.ktlint)
 }
 
 apply("../buildscripts/detekt.gradle")
 apply("../buildscripts/git-hooks.gradle")
 apply("../buildscripts/kover.gradle")
+apply("../buildscripts/ktlint.gradle.kts")
 
 android {
   namespace = "com.divinelink.scenepeek"
@@ -197,3 +197,9 @@ compose.resources {
   packageOfResClass = "com.divinelink.scenepeek"
   generateResClass = auto
 }
+
+// ktlint {
+//  filter {
+//    exclude("**/generated/**")
+//  }
+// }

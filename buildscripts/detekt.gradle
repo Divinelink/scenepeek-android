@@ -66,27 +66,3 @@ private String getDiffedFilesFromBranch() {
 private static def execute(cmd, output) {
   ['sh', '-c', cmd].execute().waitForProcessOutput(output, System.err)
 }
-
-task RunUnitTests {
-  group 'CI'
-  description 'Runs all module\'s unit tests if there are changes in this module'
-
-  def changedFilesList = getDiffedFilesFromBranch()
-
-  if (changedFilesList.isEmpty()) {
-    println("No kotlin files changed! Skipping task...")
-    return
-  } else {
-    if (changedFilesList.contains("app")) {
-      println("Running tests:")
-      dependsOn(":app:testDebugUnitTest")
-    }
-    //N/A in project yet
-    //        if (changedFilesList.contains("androidApp/")) {
-    //            println("Running Android tests:")
-    //            dependsOn(":androidApp:testStageMinApi28DebugUnitTest")
-    //        }
-    println "Executed!"
-  }
-}
-

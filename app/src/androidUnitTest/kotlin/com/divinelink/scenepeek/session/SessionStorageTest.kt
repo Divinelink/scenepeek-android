@@ -50,7 +50,7 @@ class SessionStorageTest {
 
     savedState.savedState.test {
       awaitItem().tmdbSession shouldBe TmdbSessionFactory.full().copy(
-        sessionId = "session"
+        sessionId = "session",
       )
     }
   }

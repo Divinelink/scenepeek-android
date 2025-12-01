@@ -34,8 +34,7 @@ class MainViewModel(
   val preferencesRepository: PreferencesRepository,
   val navigationProviders: List<NavGraphExtension>,
   themedActivityDelegate: ThemedActivityDelegate,
-) : ViewModel(),
-    ThemedActivityDelegate by themedActivityDelegate {
+) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
   val uiState: StateFlow<MainUiState> = _uiState

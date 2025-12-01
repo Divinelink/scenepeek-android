@@ -842,69 +842,68 @@ class ScenePeekAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test when onboarding is visible and initial full screen onboarding is shown`() =
-    uiTest {
-      popularMoviesUseCase.mockFetchPopularMovies(
-        response = Result.success(MediaItemFactory.MoviesList()),
+  fun `test when onboarding is visible and initial full screen onboarding is shown`() = uiTest {
+    popularMoviesUseCase.mockFetchPopularMovies(
+      response = Result.success(MediaItemFactory.MoviesList()),
+    )
+
+    declare {
+      HomeViewModel(
+        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+        searchStateManager = searchStateManager,
       )
-
-      declare {
-        HomeViewModel(
-          getPopularMoviesUseCase = popularMoviesUseCase.mock,
-          markAsFavoriteUseCase = markAsFavoriteUseCase,
-          getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
-          searchStateManager = searchStateManager,
-        )
-      }
-
-      declare {
-        IntroViewModel(
-          markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
-          getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-          getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
-          onboardingManager = onboardingManager,
-        )
-      }
-
-      onboardingManager.setIsInitialOnboarding(true)
-      onboardingManager.setShowIntro(true)
-      onboardingManager.setSections(IntroSections.onboardingSections)
-
-      setContentWithTheme {
-        state = rememberScenePeekAppState(
-          networkMonitor = networkMonitor,
-          onboardingManager = onboardingManager,
-          navigationProvider = navigationProvider,
-          preferencesRepository = preferencesRepository,
-        )
-
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
-
-      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.NAVIGATION_BAR).assertIsNotDisplayed()
-
-      // Try to dismiss onboarding by swiping down
-      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).performTouchInput {
-        swipeDown()
-      }
-
-      // Still displayed because it's not dismissable through swipe
-      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsDisplayed()
-
-      onNodeWithTag(TestTags.Components.SCROLLABLE_CONTENT).performScrollToNode(
-        matcher = hasText("Get started"),
-      )
-      onNodeWithText("Get started").performClick()
-      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsNotDisplayed()
-
-      onNodeWithText("Fight club 1").assertIsDisplayed()
     }
+
+    declare {
+      IntroViewModel(
+        markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
+        getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+        getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
+        onboardingManager = onboardingManager,
+      )
+    }
+
+    onboardingManager.setIsInitialOnboarding(true)
+    onboardingManager.setShowIntro(true)
+    onboardingManager.setSections(IntroSections.onboardingSections)
+
+    setContentWithTheme {
+      state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
+      )
+
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
+    }
+
+    onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsDisplayed()
+    onNodeWithTag(TestTags.Components.NAVIGATION_BAR).assertIsNotDisplayed()
+
+    // Try to dismiss onboarding by swiping down
+    onNodeWithTag(TestTags.Onboarding.FULLSCREEN).performTouchInput {
+      swipeDown()
+    }
+
+    // Still displayed because it's not dismissable through swipe
+    onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsDisplayed()
+
+    onNodeWithTag(TestTags.Components.SCROLLABLE_CONTENT).performScrollToNode(
+      matcher = hasText("Get started"),
+    )
+    onNodeWithText("Get started").performClick()
+    onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsNotDisplayed()
+
+    onNodeWithText("Fight club 1").assertIsDisplayed()
+  }
 
   @Test
   fun `test when intro is visible and is not firstLaunch modal intro is shown`() = uiTest {

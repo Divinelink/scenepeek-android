@@ -24,7 +24,7 @@ lifecycle-runtime-ktx = "2.9.4"
 activity-compose = "1.11.0"
 start-up = "1.2.0"
 kotlinx-datetime = "0.7.1"
-ktlint = "12.1.1"
+ktlint-cli = "1.8.0"
 secrets = "2.0.1"
 desugar = "2.0.4"
 navigation-runtime-ktx = "2.9.6"
@@ -188,6 +188,8 @@ ui-automator = { module = "androidx.test.uiautomator:uiautomator", version.ref =
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 
+ktlint-cli = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint-cli" }
+
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
@@ -204,7 +206,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 gms = { id = "com.google.gms.google-services", version.ref = "google-services" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
