@@ -70,7 +70,7 @@ object ChangeApiSerializer : KSerializer<ChangeApi> {
       ChangeType.GENDER,
       ChangeType.HOMEPAGE,
       ChangeType.PRIMARY,
-      -> extractStringFromJson()
+        -> extractStringFromJson()
       ChangeType.IMAGES -> extractImagesFromJson()
       ChangeType.VIDEOS -> extractFromJson<VideosValue>()
       ChangeType.CAST -> extractFromJson<CastValue>()

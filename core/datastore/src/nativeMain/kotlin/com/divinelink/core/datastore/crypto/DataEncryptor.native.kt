@@ -184,4 +184,3 @@ internal class IOSEncryptionProvider(private val storage: KeystoreSecretsStorage
     return cipher.decrypt(dataWithIv)
   }
 }
-

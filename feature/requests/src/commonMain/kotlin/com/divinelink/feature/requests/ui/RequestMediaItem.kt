@@ -145,14 +145,14 @@ fun LazyItemScope.RequestMediaItem(
               text = stringResource(Res.string.feature_requests_requested),
             )
             item.request.requestDate.localizeIsoDate()?.let { date ->
-            Text(
-              text = stringResource(
-                Res.string.feature_requests_request_by,
-                date,
-                item.request.requester.displayName,
-              ),
-              style = MaterialTheme.typography.bodyMedium,
-            )
+              Text(
+                text = stringResource(
+                  Res.string.feature_requests_request_by,
+                  date,
+                  item.request.requester.displayName,
+                ),
+                style = MaterialTheme.typography.bodyMedium,
+              )
             }
           }
 

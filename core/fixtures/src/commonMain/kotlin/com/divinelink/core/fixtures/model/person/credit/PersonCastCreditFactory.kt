@@ -85,8 +85,6 @@ object PersonCastCreditFactory {
     fun build(): PersonCredit = personCredit
   }
 
-  fun PersonCredit.toWizard(block: com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.PersonCastCreditFactoryWizard.() -> Unit) =
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.PersonCastCreditFactoryWizard(
-      this
-    ).apply(block).build()
+  fun PersonCredit.toWizard(block: PersonCastCreditFactoryWizard.() -> Unit) =
+    PersonCastCreditFactoryWizard(this).apply(block).build()
 }

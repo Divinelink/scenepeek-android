@@ -213,48 +213,47 @@ class RequestSeasonsModalTest : ComposeTest() {
   }
 
   @Test
-  fun `test request tv show dialog confirm button is disabled without selected seasons`() =
-    uiTest {
-      mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
-      jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
-      getServerInstancesUseCase.mockResponse(Result.success(SonarrInstanceFactory.all))
+  fun `test request tv show dialog confirm button is disabled without selected seasons`() = uiTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
+    getServerInstancesUseCase.mockResponse(Result.success(SonarrInstanceFactory.all))
 
-      getServerInstanceDetailsUseCase.mockResponse(
-        Result.success(SonarrInstanceDetailsFactory.sonarr),
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
+
+    val viewModel = RequestMediaViewModel(
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
+    )
+
+    setContentWithTheme {
+      RequestSeasonsModal(
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
-
-      val viewModel = RequestMediaViewModel(
-        data = RequestMediaEntryData(
-          request = null,
-          media = MediaItemFactory.theOffice(),
-        ),
-        getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
-        getServerInstancesUseCase = getServerInstancesUseCase.mock,
-        authRepository = authRepository.mock,
-        requestMediaUseCase = requestMediaUseCase.mock,
-        jellyseerrRepository = jellyseerrRepository.mock,
-        mediaRepository = mediaRepository.mock,
-      )
-
-      setContentWithTheme {
-        RequestSeasonsModal(
-          viewModel = viewModel,
-          media = MediaItemFactory.theOffice(),
-          onDismissRequest = {},
-          onNavigate = {},
-          onUpdateMediaInfo = {},
-          onCancelRequest = {},
-          onUpdateRequestInfo = {},
-          request = null,
-        )
-      }
-
-      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
-      onNodeWithText(getString(UiString.core_ui_select_seasons_button))
-        .assertIsDisplayed()
-        .assertIsNotEnabled()
     }
+
+    onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
+    onNodeWithText(getString(UiString.core_ui_select_seasons_button))
+      .assertIsDisplayed()
+      .assertIsNotEnabled()
+  }
 
   @Test
   fun `test request tv show dialog confirm button is enabled with selected seasons`() = uiTest {

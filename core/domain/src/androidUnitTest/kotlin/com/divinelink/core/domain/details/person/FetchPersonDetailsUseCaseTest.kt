@@ -98,7 +98,7 @@ class FetchPersonDetailsUseCaseTest {
 
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -171,7 +171,7 @@ class FetchPersonDetailsUseCaseTest {
 
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -259,7 +259,7 @@ class FetchPersonDetailsUseCaseTest {
 
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -296,7 +296,7 @@ class FetchPersonDetailsUseCaseTest {
 
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -321,7 +321,7 @@ class FetchPersonDetailsUseCaseTest {
     useCase.invoke(paramss).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -356,7 +356,7 @@ class FetchPersonDetailsUseCaseTest {
 
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = mapOf(
             "Acting" to listOf(

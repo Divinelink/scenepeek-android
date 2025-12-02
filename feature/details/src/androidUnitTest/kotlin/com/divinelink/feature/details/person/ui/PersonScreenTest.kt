@@ -21,6 +21,7 @@ import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
@@ -259,7 +260,7 @@ class PersonScreenTest : ComposeTest() {
     channel.send(
       Result.success(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -303,7 +304,7 @@ class PersonScreenTest : ComposeTest() {
     channel.send(
       Result.success(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -405,7 +406,7 @@ class PersonScreenTest : ComposeTest() {
       channel.send(
         Result.success(
           PersonDetailsResult.CreditsSuccess(
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+            knownForCredits = PersonCastCreditFactory.knownFor(),
             knownForDepartment = KnownForDepartment.Acting.value,
             movies = GroupedPersonCreditsSample.movies(),
             tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -449,7 +450,7 @@ class PersonScreenTest : ComposeTest() {
     channel.send(
       Result.success(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -466,7 +467,6 @@ class PersonScreenTest : ComposeTest() {
     )
 
     onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
-
   }
 
   @Test
@@ -504,7 +504,7 @@ class PersonScreenTest : ComposeTest() {
     channel.send(
       Result.success(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -563,7 +563,7 @@ class PersonScreenTest : ComposeTest() {
     channel.send(
       Result.success(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -589,7 +589,6 @@ class PersonScreenTest : ComposeTest() {
     assertThat(route).isEqualTo(
       Navigation.ActionMenuRoute.Media(theOffice().media.encodeToString()),
     )
-
   }
 
   @Test
@@ -674,7 +673,6 @@ class PersonScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsNotDisplayed()
     onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsNotDisplayed()
-
   }
 
   @Test
@@ -738,7 +736,7 @@ class PersonScreenTest : ComposeTest() {
     channel.send(
       Result.success(
         PersonDetailsResult.CreditsSuccess(
-          knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.knownFor(),
+          knownForCredits = PersonCastCreditFactory.knownFor(),
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
@@ -1112,5 +1110,4 @@ class PersonScreenTest : ComposeTest() {
     onNodeWithText("Acting (1)").assertIsDisplayed()
     onNodeWithText("Sound (1)").assertIsNotDisplayed()
   }
-
 }

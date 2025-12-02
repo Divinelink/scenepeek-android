@@ -49,6 +49,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
@@ -450,7 +451,7 @@ fun PersonContentGridPreview() {
               2 to emptyList(),
             ),
             tabs = PersonTab.entries,
-            knownForCredits = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.all(),
+            knownForCredits = PersonCastCreditFactory.all(),
           ),
           lazyListState = rememberLazyListState(),
           scope = rememberCoroutineScope(),

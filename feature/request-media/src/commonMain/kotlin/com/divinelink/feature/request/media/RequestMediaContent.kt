@@ -194,7 +194,7 @@ fun RequestMediaContent(
           ) {
             Switch(
               checked = item.seasonNumber in state.selectedSeasons ||
-                (item.seasonNumber !in state.requestableSeasons) && item.isAvailable(),
+                (item.seasonNumber !in state.requestableSeasons && item.isAvailable()),
               enabled = item.seasonNumber in state.requestableSeasons || item.canBeRequested(),
               onCheckedChange = {
                 onAction(RequestMediaAction.SelectSeason(item.seasonNumber))

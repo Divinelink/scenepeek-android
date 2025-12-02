@@ -11,9 +11,7 @@ import kotlinx.datetime.number
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun LocalDateTime?.localizeIsoDate(
-  useLong: Boolean = true,
-): String? = this?.let {
+fun LocalDateTime?.localizeIsoDate(useLong: Boolean = true): String? = this?.let {
   stringResource(
     UiString.core_ui_localized_date_full,
     stringResource(
@@ -27,9 +25,7 @@ fun LocalDateTime?.localizeIsoDate(
 }
 
 @Composable
-fun LocalDate?.localizeMonthYear(
-  useLong: Boolean = true,
-): String? = this?.let {
+fun LocalDate?.localizeMonthYear(useLong: Boolean = true): String? = this?.let {
   stringResource(
     UiString.core_ui_localized_month_year,
     stringResource(

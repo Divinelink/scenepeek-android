@@ -42,11 +42,10 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     logoutJellyseerrUseCase.verifyLogoutInteraction()
   }
 
-  suspend fun mockJellyseerrAccountDetailsResponse(
-    response: Result<JellyseerrProfileResult>,
-  ) = apply {
-    accountDetailsChannel.send(response)
-  }
+  suspend fun mockJellyseerrAccountDetailsResponse(response: Result<JellyseerrProfileResult>) =
+    apply {
+      accountDetailsChannel.send(response)
+    }
 
   fun onUserAddressChange(address: String) = apply {
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnAddressChange(address))
@@ -71,11 +70,10 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLoginClick)
   }
 
-  suspend fun onLogoutJellyseerr(accountDetailsResult: Result<JellyseerrProfileResult>) =
-    apply {
-      accountDetailsChannel.send(accountDetailsResult)
-      viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLogoutClick)
-    }
+  suspend fun onLogoutJellyseerr(accountDetailsResult: Result<JellyseerrProfileResult>) = apply {
+    accountDetailsChannel.send(accountDetailsResult)
+    viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLogoutClick)
+  }
 
   fun onDismissSnackbar() = apply {
     viewModel.dismissSnackbar()

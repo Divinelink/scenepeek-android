@@ -49,7 +49,6 @@ fun TMDBAuthScreen(
     }
   }
 
-
   LaunchedEffect(Unit) {
     viewModel.openUrlTab.collect { url ->
       urlHandler.openUrl(

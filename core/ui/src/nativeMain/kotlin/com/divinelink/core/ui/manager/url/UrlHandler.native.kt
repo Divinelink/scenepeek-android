@@ -8,7 +8,10 @@ import platform.UIKit.UIApplication
 class IosUrlOpener(
   private val onResult: () -> Unit,
 ) : UrlHandler {
-  override fun openUrl(url: String, onError: () -> Unit) {
+  override fun openUrl(
+    url: String,
+    onError: () -> Unit,
+  ) {
     val nsUrl = NSURL.URLWithString(url) ?: return
 
     UIApplication.sharedApplication.openURL(
@@ -30,13 +33,11 @@ class IosUrlOpener(
   }
 }
 
-
 @Composable
-actual fun rememberUrlHandler(): UrlHandler {
-  return remember { IosUrlOpener(onResult = { /* Do nothing */ }) }
+actual fun rememberUrlHandler(): UrlHandler = remember {
+  IosUrlOpener(onResult = { /* Do nothing */ })
 }
 
 @Composable
-actual fun rememberUrlHandlerWithResult(onResult: () -> Unit): UrlHandler {
-  return remember { IosUrlOpener(onResult) }
-}
+actual fun rememberUrlHandlerWithResult(onResult: () -> Unit): UrlHandler =
+  remember { IosUrlOpener(onResult) }

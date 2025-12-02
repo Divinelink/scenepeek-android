@@ -9,7 +9,7 @@ class NativeBuildConfigProvider(
     append("iOS ")
     append(versionName)
     if (isDebug) append(" DEBUG")
-    append(" (${versionCode})")
+    append(" ($versionCode)")
   },
 ) : BuildConfigProvider
 

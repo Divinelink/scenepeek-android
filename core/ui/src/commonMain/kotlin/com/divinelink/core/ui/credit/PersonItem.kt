@@ -100,7 +100,7 @@ fun PersonItem(
           PersonRole.Creator,
           PersonRole.Novel,
           PersonRole.Screenplay,
-          -> {
+            -> {
             // Do nothing
           }
         }

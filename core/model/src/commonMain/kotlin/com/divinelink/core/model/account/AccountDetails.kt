@@ -10,6 +10,6 @@ data class AccountDetails(
   val tmdbAvatarPath: String?,
 )
 
-fun AccountDetails.getAvatarUrl(imageUrl: String): String? {
-  return tmdbAvatarPath?.let { "${imageUrl}$it" }
+fun AccountDetails.getAvatarUrl(imageUrl: String): String? = tmdbAvatarPath?.let {
+  "${imageUrl}$it"
 }

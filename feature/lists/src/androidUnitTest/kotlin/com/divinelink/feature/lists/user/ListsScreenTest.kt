@@ -139,7 +139,6 @@ class ListsScreenTest : ComposeTest() {
 
     onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
 
-
     navigateRoute shouldBe Navigation.ListDetailsRoute(
       id = 8452377,
       name = ListItemFactory.shows().name,
@@ -179,7 +178,6 @@ class ListsScreenTest : ComposeTest() {
     ).assertIsDisplayed()
     onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
 
-
     navigateRoute shouldBe
       Navigation.ListDetailsRoute(
         id = 8452377,
@@ -189,7 +187,6 @@ class ListsScreenTest : ComposeTest() {
         public = false,
       )
   }
-
 
   @Test
   fun `test update view mode`() = uiTest {

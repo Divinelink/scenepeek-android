@@ -24,11 +24,11 @@ fun JellyseerrAuthMethod.toRequestBodyApi(
 ): JellyseerrLoginRequestBodyApi = when (this) {
   JellyseerrAuthMethod.JELLYFIN,
   JellyseerrAuthMethod.EMBY,
-  -> JellyseerrLoginRequestBodyApi.Jellyfin(
-    username = username,
-    password = password,
-    serverType = serverType,
-  )
+    -> JellyseerrLoginRequestBodyApi.Jellyfin(
+      username = username,
+      password = password,
+      serverType = serverType,
+    )
   JellyseerrAuthMethod.JELLYSEERR -> JellyseerrLoginRequestBodyApi.Jellyseerr(
     email = username,
     password = password,

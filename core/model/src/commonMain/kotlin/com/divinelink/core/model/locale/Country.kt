@@ -415,8 +415,8 @@ private fun String.toFlagEmoji(): String {
 }
 
 @ExcludeFromKoverReport
-private fun Int.toCodePointString(): String {
-  return if (this < 0 || this > 0x10FFFF || (this in 0xD800..0xDFFF)) {
+private fun Int.toCodePointString(): String =
+  if (this < 0 || this > 0x10FFFF || (this in 0xD800..0xDFFF)) {
     "\uFFFD"
   } else if (this <= 0xFFFF) {
     this.toChar().toString()
@@ -426,4 +426,3 @@ private fun Int.toCodePointString(): String {
     val lowSurrogate = 0xDC00 + (code and 0x3FF)
     "${highSurrogate.toChar()}${lowSurrogate.toChar()}"
   }
-}

@@ -61,4 +61,3 @@ kotlin {
 dependencies {
   debugApi(libs.compose.ui.test.manifest)
 }
-

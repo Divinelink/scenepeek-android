@@ -303,4 +303,3 @@ fun <T : Any> SelectableFilterList(
     }
   }
 }
-

@@ -24,7 +24,6 @@ class NumberExtensionTest : ComposeTest() {
   fun `getColorRating should return red color when value is between 0 1 and 3 5`() = uiTest {
     val value = 1.0
 
-
     setContentWithTheme {
       val result = value.getColorRating()
       result shouldBe Color(0xFFDB2360)

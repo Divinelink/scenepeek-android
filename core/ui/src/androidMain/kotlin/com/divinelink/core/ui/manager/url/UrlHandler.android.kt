@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import com.divinelink.core.commons.ExcludeFromKoverReport
 
-
 @Composable
 actual fun rememberUrlHandler(): UrlHandler {
   val context = LocalContext.current
@@ -39,7 +38,10 @@ actual fun rememberUrlHandlerWithResult(onResult: () -> Unit): UrlHandler {
 }
 
 class AndroidUrlHandler(private val context: Context) : UrlHandler {
-  override fun openUrl(url: String, onError: () -> Unit) {
+  override fun openUrl(
+    url: String,
+    onError: () -> Unit,
+  ) {
     launchCustomTab(
       context = context,
       url = url,
@@ -52,7 +54,10 @@ class AndroidUrlHandlerWithResult(
   private val context: Context,
   private val launcher: ActivityResultLauncher<Intent>,
 ) : UrlHandler {
-  override fun openUrl(url: String, onError: () -> Unit) {
+  override fun openUrl(
+    url: String,
+    onError: () -> Unit,
+  ) {
     launchCustomTab(
       context = context,
       launcher = launcher,
@@ -93,7 +98,6 @@ internal fun launchCustomTab(
     }
   }
 }
-
 
 @ExcludeFromKoverReport
 private fun launchCustomTab(

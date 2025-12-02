@@ -31,16 +31,10 @@ object UiTokens {
 }
 
 @Composable
-fun rememberConstants(): ConstantsProvider {
-  return remember { getConstantsProvider() }
-}
+fun rememberConstants(): ConstantsProvider = remember { getConstantsProvider() }
 
 @Composable
-fun rememberConfigProvider(): BuildConfigProvider {
-  return remember { getBuildConfigProvider() }
-}
+fun rememberConfigProvider(): BuildConfigProvider = remember { getBuildConfigProvider() }
 
 @Composable
-fun rememberCurrentPlatform(): Platform {
-  return remember { currentPlatform }
-}
+fun rememberCurrentPlatform(): Platform = remember { currentPlatform }

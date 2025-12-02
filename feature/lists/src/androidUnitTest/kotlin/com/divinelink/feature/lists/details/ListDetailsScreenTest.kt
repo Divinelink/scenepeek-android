@@ -136,7 +136,6 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsDisplayed()
 
     fetchListDetailsUseCase.mockResponse(
@@ -192,7 +191,6 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
     onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
       .assertIsDisplayed()
@@ -230,7 +228,6 @@ class ListDetailsScreenTest : ComposeTest() {
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
-
 
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
     onNodeWithTag(
@@ -285,7 +282,6 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
 
     fetchListDetailsUseCase.mockResponse(
@@ -321,7 +317,6 @@ class ListDetailsScreenTest : ComposeTest() {
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
-
 
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
 
@@ -371,7 +366,6 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
     onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
       .assertIsDisplayed()
@@ -410,7 +404,6 @@ class ListDetailsScreenTest : ComposeTest() {
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
-
 
     editListRoute shouldBe null
 
@@ -458,7 +451,6 @@ class ListDetailsScreenTest : ComposeTest() {
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
-
 
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
     onNodeWithTag(
@@ -575,7 +567,6 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
       .performScrollToNode(hasText("Fight club 1"))
 
@@ -632,7 +623,6 @@ class ListDetailsScreenTest : ComposeTest() {
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
-
 
     onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
       .assertIsDisplayed()

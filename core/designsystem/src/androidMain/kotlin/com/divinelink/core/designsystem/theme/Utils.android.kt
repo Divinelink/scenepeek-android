@@ -28,7 +28,6 @@ fun updateSystemBarsColor(
   return window
 }
 
-
 @Composable
 actual fun rememberSystemUiController(): SystemUiController {
   val view = LocalView.current

@@ -25,4 +25,3 @@ compose.resources {
   packageOfResClass = "com.divinelink.feature.profile"
   generateResClass = auto
 }
-

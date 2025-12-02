@@ -34,7 +34,7 @@ private val loremIpsumText = """
   porttitor rutrum elit. Nunc imperdiet ullamcorper quam, ut consectetur est commodo sed.
 """.trimIndent()
 
-fun LoremIpsum(take: Int): String {
+fun loremIpsum(take: Int): String {
   if (take <= 0 || loremIpsumText.isBlank()) return ""
 
   return loremIpsumText
@@ -42,5 +42,3 @@ fun LoremIpsum(take: Int): String {
     .take(take)
     .joinToString(" ")
 }
-
-

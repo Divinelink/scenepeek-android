@@ -85,7 +85,6 @@ class PersonalDetailsTest : ComposeTest() {
       PersonalDetails(PersonDetailsUiState.Data.Visible(personalDetails))
     }
 
-
     onNodeWithText(
       getString(R.string.feature_details_biography_section),
     ).assertIsDisplayed()
@@ -116,7 +115,6 @@ class PersonalDetailsTest : ComposeTest() {
     setContentWithTheme {
       PersonalDetails(PersonDetailsUiState.Data.Visible(personalDetails))
     }
-
 
     onNodeWithText(
       getString(R.string.feature_details_biography_section),

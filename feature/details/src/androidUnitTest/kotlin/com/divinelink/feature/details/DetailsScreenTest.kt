@@ -613,21 +613,20 @@ class DetailsScreenTest : ComposeTest() {
       )
     }
 
-      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
-        swipeUp(
-          startY = 100f,
-          endY = 50f,
-        )
-      }
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 100f,
+        endY = 50f,
+      )
+    }
 
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Cast.value)).performClick()
+    onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Cast.value)).performClick()
 
-      onNodeWithTag(TestTags.Details.Cast.FORM)
-        .performScrollToNode(hasText(SeriesCastFactory.cast().first().name))
-        .assertIsDisplayed()
+    onNodeWithTag(TestTags.Details.Cast.FORM)
+      .performScrollToNode(hasText(SeriesCastFactory.cast().first().name))
+      .assertIsDisplayed()
 
-      onNodeWithTag(TestTags.VIEW_ALL).assertIsDisplayed().performClick()
-
+    onNodeWithTag(TestTags.VIEW_ALL).assertIsDisplayed().performClick()
 
     route shouldBe CreditsRoute(
       id = 2316,

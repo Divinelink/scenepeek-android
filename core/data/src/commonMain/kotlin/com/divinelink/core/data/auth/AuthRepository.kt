@@ -23,5 +23,4 @@ interface AuthRepository {
   suspend fun setTMDBAccount(accountDetails: AccountDetails)
   suspend fun setTMDBSession(session: TmdbSession)
   suspend fun clearTMDBSession()
-
 }

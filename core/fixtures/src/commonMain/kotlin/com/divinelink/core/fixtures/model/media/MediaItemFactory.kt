@@ -1,6 +1,6 @@
 package com.divinelink.core.fixtures.model.media
 
-import com.divinelink.core.fixtures.LoremIpsum
+import com.divinelink.core.fixtures.loremIpsum
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
@@ -213,7 +213,7 @@ object MediaItemFactory {
       name = "Fight club $it",
       voteAverage = (it.toDouble() + 0.5) % 10,
       voteCount = 12_345 + it,
-      overview = LoremIpsum(15),
+      overview = loremIpsum(15),
       isFavorite = false,
       popularity = (it * 525.25),
     )

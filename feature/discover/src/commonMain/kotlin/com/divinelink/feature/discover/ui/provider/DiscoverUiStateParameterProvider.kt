@@ -6,4 +6,3 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 class DiscoverUiStateParameterProvider : PreviewParameterProvider<DiscoverUiState> {
   override val values: Sequence<DiscoverUiState> = sequenceOf()
 }
-

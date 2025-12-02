@@ -11,6 +11,4 @@ interface AuthUrlHandler {
 }
 
 @Composable
-expect fun rememberAuthUrlHandler(
-  onResult: (Boolean) -> Unit,
-): AuthUrlHandler
+expect fun rememberAuthUrlHandler(onResult: (Boolean) -> Unit): AuthUrlHandler

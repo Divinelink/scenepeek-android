@@ -92,7 +92,6 @@ class DataStoreSavedStateStorage(
     }
   }
 
-
   override suspend fun setTMDBAccount(account: AccountDetails) = updateState { state ->
     state.copy(
       tmdbAccount = account,

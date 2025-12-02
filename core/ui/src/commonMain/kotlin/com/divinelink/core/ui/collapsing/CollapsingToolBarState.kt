@@ -139,7 +139,7 @@ class CollapsingToolBarState(
       // Correction Logic. same as Google code.
       // Reset the total content offset to zero when scrolling all the way down. This
       // will eliminate some float precision inaccuracies.
-      if (consumed.y == 0f && available.y > 0f || contentOffset < 0f) {
+      if ((consumed.y == 0f && available.y > 0f) || contentOffset < 0f) {
         contentOffset = 0f
       }
     }

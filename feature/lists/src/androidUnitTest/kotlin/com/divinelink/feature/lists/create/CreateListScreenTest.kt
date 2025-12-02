@@ -75,7 +75,6 @@ class CreateListScreenTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.Dialogs.DELETE_REQUEST).assertIsNotDisplayed()
 
     onNodeWithTag(TestTags.Components.SCROLLABLE_CONTENT).performScrollToNode(
@@ -141,7 +140,6 @@ class CreateListScreenTest : ComposeTest() {
         },
       )
     }
-
 
     onNode(
       hasClickLabel(getString(UiString.core_ui_select_media_backdrop_image)),

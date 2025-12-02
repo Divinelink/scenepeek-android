@@ -264,17 +264,17 @@ class RequestMediaViewModel(
             when (error) {
               is AppException.Unauthorized,
               is AppException.Forbidden,
-              -> _uiState.update {
-                it.copy(
-                  dialogState = TwoButtonDialogState(
-                    message = UIText.ResourceText(
-                      UiString.core_ui_jellyseerr_session_expired,
+                -> _uiState.update {
+                  it.copy(
+                    dialogState = TwoButtonDialogState(
+                      message = UIText.ResourceText(
+                        UiString.core_ui_jellyseerr_session_expired,
+                      ),
+                      confirmButtonText = UIText.ResourceText(UiString.core_ui_login),
+                      dismissButtonText = UIText.ResourceText(UiString.core_ui_cancel),
                     ),
-                    confirmButtonText = UIText.ResourceText(UiString.core_ui_login),
-                    dismissButtonText = UIText.ResourceText(UiString.core_ui_cancel),
-                  ),
-                )
-              }
+                  )
+                }
               is AppException.Conflict -> setSnackbarMessage(
                 SnackbarMessage.from(
                   text = UIText.ResourceText(Res.string.feature_request_media_request_exists),

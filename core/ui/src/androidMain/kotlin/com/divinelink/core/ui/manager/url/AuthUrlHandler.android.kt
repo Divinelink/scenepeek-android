@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 
-
 @Composable
 actual fun rememberAuthUrlHandler(onResult: (Boolean) -> Unit): AuthUrlHandler {
   val context = LocalContext.current
@@ -32,7 +31,11 @@ private class AndroidAuthUrlHandlerWithResult(
   private val context: Context,
   private val launcher: ActivityResultLauncher<Intent>,
 ) : AuthUrlHandler {
-  override fun openUrl(url: String, callbackUrlScheme: String, onError: () -> Unit) {
+  override fun openUrl(
+    url: String,
+    callbackUrlScheme: String,
+    onError: () -> Unit,
+  ) {
     launchCustomTab(
       context = context,
       launcher = launcher,

@@ -36,7 +36,6 @@ class SettingsScreenTest : ComposeTest() {
       )
     }
 
-
     onNodeWithText("Account").assertExists()
     onNodeWithText("Account").performClick()
 

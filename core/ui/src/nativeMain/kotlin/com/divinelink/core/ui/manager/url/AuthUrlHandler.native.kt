@@ -8,9 +8,7 @@ import platform.UIKit.UIApplication
 import platform.darwin.NSObject
 
 @Composable
-actual fun rememberAuthUrlHandler(
-  onResult: (Boolean) -> Unit,
-): AuthUrlHandler = AuthUrlOpener(
+actual fun rememberAuthUrlHandler(onResult: (Boolean) -> Unit): AuthUrlHandler = AuthUrlOpener(
   onResult = onResult,
 )
 

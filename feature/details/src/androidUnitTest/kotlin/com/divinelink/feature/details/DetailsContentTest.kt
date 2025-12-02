@@ -548,7 +548,6 @@ class DetailsContentTest : ComposeTest() {
       .onFirst()
       .assertIsDisplayed()
 
-
     assertThat(hasClickedAddToWatchlist).isTrue()
   }
 
@@ -848,7 +847,6 @@ class DetailsContentTest : ComposeTest() {
       .assertIsDisplayed()
       .performClick()
 
-
     assertThat(hasClickedObfuscateSpoilers).isTrue()
   }
 
@@ -937,7 +935,6 @@ class DetailsContentTest : ComposeTest() {
     onAllNodesWithTag(TestTags.Rating.DETAILS_RATING_BUTTON)
       .onFirst()
       .performClick()
-
 
     assertThat(hasClickedViewAllRatings).isTrue()
   }

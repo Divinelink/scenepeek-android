@@ -80,7 +80,7 @@ fun ActionMenuModal(
             }
             ActionMenuIntent.Share,
             ActionMenuIntent.RemoveFromList,
-            -> viewModel.onAction(intent)
+              -> viewModel.onAction(intent)
           }
         },
       )

@@ -12,9 +12,7 @@ class TestFetchUserDataUseCase {
 
   val mock: FetchUserDataUseCase = mock()
 
-  /**
-   * Response is a failure by default.
-   */
+  // Response is a failure by default.
   init {
     mockFailure()
   }

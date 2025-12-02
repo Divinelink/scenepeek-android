@@ -18,7 +18,8 @@ object GroupedPersonCreditsSample {
   )
 
   fun tvShows(): GroupedPersonCredits = mapOf(
-    "Acting" to listOf(com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice()),
+    "Acting" to
+      listOf(com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice()),
     "Production" to listOf(PersonCrewCreditFactory.riot()),
   )
 }

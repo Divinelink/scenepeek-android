@@ -36,7 +36,8 @@ class RateDialogContentTest : ComposeTest() {
     }
 
     val descriptionText = getString(
-      Res.string.details__add_rating_description, movie.title,
+      Res.string.details__add_rating_description,
+      movie.title,
     ).fromHtml()
 
     val submitButtonText = getString(Res.string.details__submit_rating_button)
@@ -65,7 +66,8 @@ class RateDialogContentTest : ComposeTest() {
     }
 
     val descriptionText = getString(
-      Res.string.details__add_rating_description, movie.title,
+      Res.string.details__add_rating_description,
+      movie.title,
     ).fromHtml()
 
     val submitButtonText = getString(Res.string.details__submit_rating_button)

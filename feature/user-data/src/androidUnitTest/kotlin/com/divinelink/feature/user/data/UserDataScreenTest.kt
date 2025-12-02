@@ -172,7 +172,7 @@ class UserDataScreenTest : ComposeTest() {
           ),
         ),
 
-        )
+      )
     }
 
     onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))

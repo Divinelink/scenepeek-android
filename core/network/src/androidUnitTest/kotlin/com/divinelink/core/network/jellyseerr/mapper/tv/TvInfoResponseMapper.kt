@@ -42,7 +42,12 @@ class TvInfoResponseMapper {
                 displayName = "ScenePeek",
               ),
               requestDate = LocalDateTime(
-                year = 2025, month = 6, day = 25, hour = 7, minute = 50, second = 29,
+                year = 2025,
+                month = 6,
+                day = 25,
+                hour = 7,
+                minute = 50,
+                second = 29,
               ),
               seasons = listOf(
                 SeasonRequest(seasonNumber = 5, status = JellyseerrStatus.Media.PENDING),
@@ -110,7 +115,12 @@ class TvInfoResponseMapper {
                 displayName = "ScenePeek",
               ),
               requestDate = LocalDateTime(
-                year = 2025, month = 6, day = 25, hour = 15, minute = 25, second = 38,
+                year = 2025,
+                month = 6,
+                day = 25,
+                hour = 15,
+                minute = 25,
+                second = 38,
               ),
               seasons = listOf(
                 SeasonRequest(seasonNumber = 2, status = JellyseerrStatus.Media.PENDING),
@@ -133,7 +143,12 @@ class TvInfoResponseMapper {
                 displayName = "ScenePeek",
               ),
               requestDate = LocalDateTime(
-                year = 2025, month = 6, day = 25, hour = 15, minute = 26, second = 3,
+                year = 2025,
+                month = 6,
+                day = 25,
+                hour = 15,
+                minute = 26,
+                second = 3,
               ),
               seasons = listOf(
                 SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Media.PENDING),
@@ -156,7 +171,12 @@ class TvInfoResponseMapper {
                 displayName = "Admin",
               ),
               requestDate = LocalDateTime(
-                year = 2025, month = 6, day = 26, hour = 8, minute = 34, second = 42,
+                year = 2025,
+                month = 6,
+                day = 26,
+                hour = 8,
+                minute = 34,
+                second = 42,
               ),
               seasons = listOf(
                 SeasonRequest(seasonNumber = 4, status = JellyseerrStatus.Media.PENDING),
@@ -179,7 +199,12 @@ class TvInfoResponseMapper {
                 displayName = "ScenePeek",
               ),
               requestDate = LocalDateTime(
-                year = 2025, month = 6, day = 26, hour = 8, minute = 38, second = 2,
+                year = 2025,
+                month = 6,
+                day = 26,
+                hour = 8,
+                minute = 38,
+                second = 2,
               ),
               seasons = listOf(
                 SeasonRequest(seasonNumber = 3, status = JellyseerrStatus.Media.UNKNOWN),

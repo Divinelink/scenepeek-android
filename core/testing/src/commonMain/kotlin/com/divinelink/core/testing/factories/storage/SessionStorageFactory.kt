@@ -15,9 +15,7 @@ object SessionStorageFactory {
     ),
   )
 
-  fun full(
-    accessToken: AccessToken = AccessTokenFactory.valid(),
-  ) = SessionStorage(
+  fun full(accessToken: AccessToken = AccessTokenFactory.valid()) = SessionStorage(
     savedState = TestSavedStateStorage(
       tmdbSession = TmdbSessionFactory.full().copy(
         accessToken = accessToken,
@@ -25,9 +23,7 @@ object SessionStorageFactory {
     ),
   )
 
-  fun empty(
-    savedState: SavedStateStorage = TestSavedStateStorage(),
-  ) = SessionStorage(
+  fun empty(savedState: SavedStateStorage = TestSavedStateStorage()) = SessionStorage(
     savedState = savedState,
   )
 }

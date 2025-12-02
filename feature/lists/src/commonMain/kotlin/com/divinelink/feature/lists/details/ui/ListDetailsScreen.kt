@@ -158,7 +158,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               is ListDetailsAction.SelectMedia,
               is ListDetailsAction.OnRemoveItems,
               is ListDetailsAction.ConsumeSnackbarMessage,
-              -> viewModel.onAction(action)
+                -> viewModel.onAction(action)
               is ListDetailsAction.OnItemClick -> onNavigate(
                 Navigation.DetailsRoute(
                   id = action.mediaId,

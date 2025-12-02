@@ -43,7 +43,8 @@ enum class Month(
   SEPTEMBER(9, Res.string.month_september, Res.string.month_september_short),
   OCTOBER(10, Res.string.month_october, Res.string.month_october_short),
   NOVEMBER(11, Res.string.month_november, Res.string.month_november_short),
-  DECEMBER(12, Res.string.month_december, Res.string.month_december_short);
+  DECEMBER(12, Res.string.month_december, Res.string.month_december_short),
+  ;
 
   companion object {
     fun from(number: Int): Month = entries.first { it.number == number }

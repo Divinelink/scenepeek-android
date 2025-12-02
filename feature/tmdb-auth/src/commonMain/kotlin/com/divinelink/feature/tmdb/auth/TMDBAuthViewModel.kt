@@ -54,9 +54,7 @@ class TMDBAuthViewModel(
    * There's a delay to make sure the session is properly created before proceeding
    * Also check [com.divinelink.core.domain.session.CreateSessionUseCase]
    */
-  fun handleCloseWeb(
-    createSession: Boolean,
-  ) {
+  fun handleCloseWeb(createSession: Boolean) {
     if (createSession) {
       createSession()
     } else {

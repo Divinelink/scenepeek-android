@@ -32,6 +32,8 @@ class TestFetchPersonDetailsUseCase {
 
   // Mock multiple emissions
   fun mockSuccess(response: Channel<Result<PersonDetailsResult>>) {
-    org.mockito.kotlin.whenever(mock.invoke(org.mockito.kotlin.any())).thenReturn(response.consumeAsFlow())
+    org.mockito.kotlin.whenever(
+      mock.invoke(org.mockito.kotlin.any()),
+    ).thenReturn(response.consumeAsFlow())
   }
 }

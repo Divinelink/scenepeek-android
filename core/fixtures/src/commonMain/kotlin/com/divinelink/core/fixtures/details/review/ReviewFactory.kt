@@ -1,6 +1,6 @@
 package com.divinelink.core.fixtures.details.review
 
-import com.divinelink.core.fixtures.LoremIpsum
+import com.divinelink.core.fixtures.loremIpsum
 import com.divinelink.core.model.details.review.Review
 
 object ReviewFactory {
@@ -8,21 +8,21 @@ object ReviewFactory {
   fun Review_1() = Review(
     author = AuthorFactory.eledriel(),
     rating = 10,
-    content = LoremIpsum(100),
+    content = loremIpsum(100),
     date = "13-02-2017",
   )
 
   fun Review_2() = Review(
     author = AuthorFactory.andreas(),
     rating = 6,
-    content = LoremIpsum(80),
+    content = loremIpsum(80),
     date = "13-02-2018",
   )
 
   fun Review_3() = Review(
     author = AuthorFactory.john(),
     rating = 9,
-    content = LoremIpsum(60),
+    content = loremIpsum(60),
     date = "13-02-2019",
   )
 

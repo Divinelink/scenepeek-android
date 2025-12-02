@@ -141,7 +141,6 @@ class ProdAuthRepositoryTest {
     )
     repository = ProdAuthRepository(savedStateStorage)
 
-
     repository.tmdbAccount.test {
       awaitItem() shouldBe null
 
@@ -157,7 +156,6 @@ class ProdAuthRepositoryTest {
       tmdbAccount = null,
     )
     repository = ProdAuthRepository(savedStateStorage)
-
 
     savedStateStorage.observedTmdbSession.test {
       awaitItem() shouldBe null
@@ -175,7 +173,6 @@ class ProdAuthRepositoryTest {
       tmdbSession = TmdbSessionFactory.full(),
     )
     repository = ProdAuthRepository(savedStateStorage)
-
 
     savedStateStorage.savedState.test {
       awaitItem() shouldBe InitialSavedState.copy(

@@ -69,9 +69,7 @@ internal class AndroidIntentManager(
 }
 
 @Composable
-actual fun rememberIntentManager(
-  buildConfigProvider: BuildConfigProvider,
-): IntentManager {
+actual fun rememberIntentManager(buildConfigProvider: BuildConfigProvider): IntentManager {
   val context = LocalContext.current
 
   return AndroidIntentManager(

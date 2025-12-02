@@ -68,7 +68,6 @@ class CreditsScreenTest : ComposeTest() {
     }
 
     onNodeWithText(getString(Res.string.feature_credits_cast_and_crew_title)).assertIsDisplayed()
-
   }
 
   @Test
@@ -89,7 +88,6 @@ class CreditsScreenTest : ComposeTest() {
     onNodeWithContentDescription(
       getString(UiString.core_ui_navigate_up_button_content_description),
     ).assertIsDisplayed()
-
   }
 
   @Test
@@ -122,7 +120,6 @@ class CreditsScreenTest : ComposeTest() {
     onNodeWithText(
       AggregatedCreditsFactory.credits().cast.last().name,
     ).assertIsDisplayed()
-
   }
 
   @Test
@@ -159,7 +156,6 @@ class CreditsScreenTest : ComposeTest() {
     onNodeWithText(
       AggregatedCreditsFactory.credits().crewDepartments.last().department,
     ).assertIsDisplayed()
-
   }
 
   @Test
@@ -182,7 +178,6 @@ class CreditsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
     onNodeWithText(getString(Res.string.feature_credits_cast_missing)).assertIsDisplayed()
-
   }
 
   @Test
@@ -211,7 +206,6 @@ class CreditsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
     onNodeWithText(getString(Res.string.feature_credits_crew_missing)).assertIsDisplayed()
-
   }
 
   @Test
@@ -257,6 +251,5 @@ class CreditsScreenTest : ComposeTest() {
       }
 
     onNodeWithText(getString(UiString.core_ui_show_spoilers_tooltip)).assertIsDisplayed()
-
   }
 }

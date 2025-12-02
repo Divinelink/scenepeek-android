@@ -72,7 +72,6 @@ class RequestMovieModalTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
     onNodeWithText(getString(UiString.core_ui_request_movie)).assertIsDisplayed()
   }
@@ -115,7 +114,6 @@ class RequestMovieModalTest : ComposeTest() {
       )
     }
 
-
     onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
     onNodeWithText(getString(UiString.core_ui_edit_request)).assertIsDisplayed()
     onNodeWithText(getString(UiString.core_ui_cancel_request)).assertIsDisplayed().performClick()
@@ -123,6 +121,5 @@ class RequestMovieModalTest : ComposeTest() {
     cancelRequestId shouldBe 1
 
     jellyseerrRepository.verifyTvDetailsInteractions(0)
-
   }
 }

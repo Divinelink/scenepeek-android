@@ -46,7 +46,9 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
 
     onNodeWithText(RatingSource.IMDB.value).assertIsDisplayed()
 
-    onNodeWithText(getString(Res.string.feature_settings_movie_rating_preference)).assertIsDisplayed()
+    onNodeWithText(
+      getString(Res.string.feature_settings_movie_rating_preference),
+    ).assertIsDisplayed()
       .performClick()
 
     onNodeWithTag(
@@ -79,7 +81,9 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
     onNodeWithText(getString(Res.string.feature_settings_tv_rating_preference)).assertIsDisplayed()
       .performClick()
 
-    onNodeWithTag(TestTags.Settings.RADIO_BUTTON_SELECT_OPTION.format(RatingSource.TRAKT.value)).assertIsDisplayed()
+    onNodeWithTag(
+      TestTags.Settings.RADIO_BUTTON_SELECT_OPTION.format(RatingSource.TRAKT.value),
+    ).assertIsDisplayed()
       .performClick()
 
     onNodeWithText(RatingSource.IMDB.value).assertIsNotDisplayed()

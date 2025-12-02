@@ -92,11 +92,11 @@ fun FeatureSection(
         val vector = when (action) {
           is OnboardingAction.NavigateToJellyseerrLogin,
           is OnboardingAction.NavigateToTMDBLogin,
-          -> if (action.isComplete) {
-            Icons.Default.CheckCircleOutline
-          } else {
-            Icons.AutoMirrored.Filled.Login
-          }
+            -> if (action.isComplete) {
+              Icons.Default.CheckCircleOutline
+            } else {
+              Icons.AutoMirrored.Filled.Login
+            }
           OnboardingAction.NavigateToLinkHandling -> Icons.Default.Settings
         }
 

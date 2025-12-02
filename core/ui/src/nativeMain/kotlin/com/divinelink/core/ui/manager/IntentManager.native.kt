@@ -8,21 +8,17 @@ import platform.UIKit.popoverPresentationController
 import kotlin.experimental.ExperimentalNativeApi
 
 @Composable
-actual fun rememberIntentManager(
-  buildConfigProvider: BuildConfigProvider,
-): IntentManager = IOSIntentManager(
-  packageName = "",
-  buildConfigProvider = buildConfigProvider,
-)
-
+actual fun rememberIntentManager(buildConfigProvider: BuildConfigProvider): IntentManager =
+  IOSIntentManager(
+    packageName = "",
+    buildConfigProvider = buildConfigProvider,
+  )
 
 class IOSIntentManager(
   override val packageName: String,
   private val buildConfigProvider: BuildConfigProvider,
 ) : IntentManager {
-  override fun startActivity(uri: String): Boolean {
-    return false
-  }
+  override fun startActivity(uri: String): Boolean = false
 
   override fun shareText(text: String) {
     val currentViewController = UIApplication.sharedApplication.keyWindow?.rootViewController

@@ -19,6 +19,4 @@ actual class SystemUiController {
 }
 
 @Composable
-actual fun rememberSystemUiController(): SystemUiController {
-  return remember { SystemUiController() }
-}
+actual fun rememberSystemUiController(): SystemUiController = remember { SystemUiController() }

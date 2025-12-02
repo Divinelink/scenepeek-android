@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.factories.api.movie
 
-import com.divinelink.core.fixtures.LoremIpsum
+import com.divinelink.core.fixtures.loremIpsum
 import com.divinelink.core.network.media.model.movie.MovieResponseApi
 
 object MovieApiFactory {
@@ -13,7 +13,7 @@ object MovieApiFactory {
       genreIds = listOf(),
       originalLanguage = "",
       originalTitle = "",
-      overview = LoremIpsum(15),
+      overview = loremIpsum(15),
       popularity = (it * 525.25),
       posterPath = "movie $it - posterPath",
       releaseDate = "2002-08-22",
