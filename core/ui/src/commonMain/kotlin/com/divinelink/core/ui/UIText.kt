@@ -1,3 +1,5 @@
+@file:Suppress("SpreadOperator")
+
 package com.divinelink.core.ui
 
 import androidx.compose.runtime.Composable

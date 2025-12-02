@@ -57,7 +57,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier,
       onClick = onClick,
       enabled = enabled,
@@ -73,7 +73,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier,
       onClick = onClick,
       enabled = enabled,
@@ -89,7 +89,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       enabled = enabled,
@@ -105,7 +105,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       enabled = enabled,
@@ -121,7 +121,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       enabled = enabled,
@@ -137,7 +137,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       enabled = enabled,
@@ -186,7 +186,7 @@ object ActionButton {
       )
     }
 
-    ActionButton(
+    Button(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       enabled = enabled && selectedSeasons != 0,
@@ -202,7 +202,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier
         .fillMaxWidth()
         .testTag(TestTags.ActionButton.REQUEST_MOVIE_BUTTON),
@@ -220,7 +220,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       enabled = enabled,
@@ -236,7 +236,7 @@ object ActionButton {
     enabled: Boolean,
     onClick: () -> Unit,
   ) {
-    ActionButton(
+    Button(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       enabled = enabled,
@@ -247,7 +247,7 @@ object ActionButton {
   }
 
   @Composable
-  private fun ActionButton(
+  private fun Button(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean,

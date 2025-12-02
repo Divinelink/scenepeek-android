@@ -1,3 +1,5 @@
+@file:Suppress("MemberNameEqualsClassName")
+
 package com.divinelink.core.model
 
 sealed interface DataState<out T> {

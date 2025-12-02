@@ -2,8 +2,8 @@ package com.divinelink.core.domain.jellyseerr
 
 import app.cash.turbine.test
 import com.divinelink.core.commons.data
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory

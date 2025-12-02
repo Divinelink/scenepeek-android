@@ -1,8 +1,8 @@
 package com.divinelink.core.domain.search
 
+import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi

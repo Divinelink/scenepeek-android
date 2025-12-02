@@ -1,9 +1,9 @@
 package com.divinelink.core.testing.network
 
-import com.divinelink.core.testing.commons.provider.TestSecretProvider
 import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.TraktClient
 import com.divinelink.core.network.client.get
+import com.divinelink.core.testing.commons.provider.TestSecretProvider
 
 class TestTraktClient {
 
@@ -14,7 +14,7 @@ class TestTraktClient {
     json: String,
   ) {
     client = TraktClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
     )

@@ -1,3 +1,5 @@
+@file:Suppress("TooGenericExceptionCaught")
+
 package com.divinelink.core.network
 
 import com.divinelink.core.network.list.model.add.AddToListResponse
@@ -8,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.io.IOException
-import kotlinx.serialization.json.Json
 
 sealed class Resource<T> {
   data class Success<T>(val data: T) : Resource<T>()
@@ -56,7 +57,7 @@ inline fun <ResultType, RequestType> networkBoundResource(
   }
 }
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "ReturnCount")
 internal suspend inline fun <T : Any> runCatchingWithNetworkRetry(
   times: Int = 3,
   initialDelay: Long = 100, // 0.1 second

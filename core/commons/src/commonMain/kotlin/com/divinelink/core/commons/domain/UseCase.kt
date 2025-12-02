@@ -12,6 +12,7 @@ abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispat
    *
    * @param parameters the input parameters to run the use case with
    */
+  @Suppress("TooGenericExceptionCaught")
   suspend operator fun invoke(parameters: P): Result<R> = try {
     // Moving all use case's executions to the injected dispatcher
     // In production code, this is usually the Default dispatcher (background thread)

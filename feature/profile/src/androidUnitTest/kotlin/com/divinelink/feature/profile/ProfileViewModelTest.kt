@@ -6,7 +6,6 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.feature.profile.ui.TMDBAccountUiState
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
-import com.divinelink.feature.profile.ProfileUiState
 import kotlin.test.Test
 
 class ProfileViewModelTest {

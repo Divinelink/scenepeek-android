@@ -17,7 +17,8 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.media.MediaItem
 
 /**
- * A collection of possible results for an attempt to fetch movie details, similar movies and reviews.
+ * A collection of possible results for an attempt to fetch movie details,
+ * similar movies and reviews.
  */
 sealed class MediaDetailsResult {
   data class AccountDetailsSuccess(val accountDetails: AccountMediaDetails) : MediaDetailsResult()

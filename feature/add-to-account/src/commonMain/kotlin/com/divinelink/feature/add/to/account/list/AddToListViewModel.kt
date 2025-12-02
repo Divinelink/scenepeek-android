@@ -1,3 +1,5 @@
+@file:Suppress("LongMethod")
+
 package com.divinelink.feature.add.to.account.list
 
 import androidx.lifecycle.SavedStateHandle

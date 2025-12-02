@@ -1,8 +1,8 @@
 package com.divinelink.core.domain.details.media
 
+import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository

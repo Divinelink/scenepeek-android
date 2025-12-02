@@ -1,3 +1,5 @@
+@file:Suppress("TooGenericExceptionCaught")
+
 package com.divinelink.core.commons
 
 // TODO Add tests
@@ -57,7 +59,7 @@ data class DeepLinkUri(
           path = path,
           queryParams = queryParams,
         )
-      } catch (e: Exception) {
+      } catch (_: Exception) {
         null
       }
     }

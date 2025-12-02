@@ -49,6 +49,7 @@ class CollapsingToolBarLayoutContentScope(private val state: CollapsingToolBarSt
     }
   }
 
+  @Suppress("LoopWithTooManyJumpStatements")
   suspend fun LazyListState.animateScrollWithToolBarToItem(
     index: Int,
     scrollOffset: Int = 0,

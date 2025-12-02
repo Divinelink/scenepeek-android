@@ -53,7 +53,7 @@ fun StarRatingItemPreview() {
   AppTheme {
     Surface {
       Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4)) {
-        (-1..10).forEach { rating ->
+        for (rating in -1..10) {
           StarRatingItem(rating = rating)
         }
       }

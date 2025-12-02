@@ -22,5 +22,6 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
     extensions.configure<KotlinMultiplatformExtension>(::configureKotlinMultiplatform)
     extensions.configure<LibraryExtension>(::configureKotlinAndroid)
     apply("$buildScripts/ktlint.gradle.kts")
+    apply("$buildScripts/detekt.gradle")
   }
 }

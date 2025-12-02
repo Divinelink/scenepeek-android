@@ -22,7 +22,7 @@ class TestJellyseerrClient {
     json: String,
   ) {
     client = JellyseerrRestClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       savedStateStorage = storage,
       config = PreviewBuildConfigProvider(),
     )
@@ -35,7 +35,7 @@ class TestJellyseerrClient {
     json: String,
   ) {
     client = JellyseerrRestClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       savedStateStorage = storage,
       config = PreviewBuildConfigProvider(),
     )

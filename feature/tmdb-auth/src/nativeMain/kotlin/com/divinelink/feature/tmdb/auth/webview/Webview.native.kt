@@ -4,5 +4,4 @@ package com.divinelink.feature.tmdb.auth.webview
 actual fun Webview(
   onCloseWebview: () -> Unit,
   url: String,
-) {
-}
+) = Unit

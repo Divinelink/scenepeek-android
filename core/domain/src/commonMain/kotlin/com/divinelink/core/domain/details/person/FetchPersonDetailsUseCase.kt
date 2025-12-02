@@ -1,8 +1,8 @@
 package com.divinelink.core.domain.details.person
 
+import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.model.credits.PersonRole

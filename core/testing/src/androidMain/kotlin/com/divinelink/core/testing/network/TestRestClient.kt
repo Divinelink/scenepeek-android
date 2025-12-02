@@ -1,9 +1,9 @@
 package com.divinelink.core.testing.network
 
 import JvmUnitTestDemoAssetManager
-import com.divinelink.core.testing.commons.provider.TestSecretProvider
 import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.TMDbClient
+import com.divinelink.core.testing.commons.provider.TestSecretProvider
 
 class TestRestClient {
 
@@ -23,7 +23,7 @@ class TestRestClient {
     }
 
     restClient = TMDbClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
     )
@@ -36,7 +36,7 @@ class TestRestClient {
     json: String,
   ) {
     restClient = TMDbClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
     )
@@ -49,7 +49,7 @@ class TestRestClient {
     response: String,
   ) {
     restClient = TMDbClient(
-      engine = MockEngine(response),
+      engine = mockEngine(response),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
     )
@@ -63,7 +63,7 @@ class TestRestClient {
     response: String,
   ) {
     restClient = TMDbClient(
-      engine = MockEngine(response),
+      engine = mockEngine(response),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
     )

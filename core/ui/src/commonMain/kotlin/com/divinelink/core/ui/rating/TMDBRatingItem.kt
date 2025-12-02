@@ -1,4 +1,4 @@
-@file:Suppress("MagicNumber")
+@file:Suppress("MagicNumber", "LoopWithTooManyJumpStatements", "ComplexCondition")
 
 package com.divinelink.core.ui.rating
 
@@ -33,7 +33,6 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.extension.getColorRating
 
-@Suppress("MagicNumber")
 enum class RatingSize(
   val size: Dp,
   val coloredArcSize: Dp,

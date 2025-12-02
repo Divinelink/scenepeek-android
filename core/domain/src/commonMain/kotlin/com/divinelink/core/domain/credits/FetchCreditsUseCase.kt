@@ -1,8 +1,8 @@
 package com.divinelink.core.domain.credits
 
+import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.credits.AggregateCredits
 import kotlinx.coroutines.flow.Flow

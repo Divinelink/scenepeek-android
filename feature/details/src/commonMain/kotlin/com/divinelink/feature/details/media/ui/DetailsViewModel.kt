@@ -1,3 +1,5 @@
+@file:Suppress("LongMethod", "LargeClass", "TooManyFunctions")
+
 package com.divinelink.feature.details.media.ui
 
 import androidx.annotation.VisibleForTesting

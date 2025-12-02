@@ -31,8 +31,9 @@ internal class ConnectivityManagerNetworkMonitor(
       }
 
       /**
-       * The callback's methods are invoked on changes to *any* network matching the [NetworkRequest],
-       * not just the active network. So we can simply track the presence (or absence) of such [Network].
+       * The callback's methods are invoked on changes to *any* network matching
+       * the [NetworkRequest], not just the active network.
+       * So we can simply track the presence (or absence) of such [Network].
        */
       val callback = object : NetworkCallback() {
         private val networks = mutableSetOf<Network>()

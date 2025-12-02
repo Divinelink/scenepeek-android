@@ -1,3 +1,5 @@
+@file:Suppress("LongMethod")
+
 package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.lifecycle.ViewModel

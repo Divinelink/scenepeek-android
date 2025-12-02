@@ -6,7 +6,7 @@ dependencies {
 }
 
 tasks.register<JavaExec>("ktlintCheck") {
-  group = "verification"
+  group = "lint"
   description = "Check Kotlin code style."
   classpath = ktlint
   mainClass.set("com.pinterest.ktlint.Main")
@@ -21,7 +21,7 @@ tasks.register<JavaExec>("ktlintCheck") {
 }
 
 tasks.register<JavaExec>("ktlintFormat") {
-  group = "formatting"
+  group = "lint"
   description = "Fix Kotlin code style deviations."
   classpath = ktlint
   mainClass.set("com.pinterest.ktlint.Main")

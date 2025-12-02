@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.map
 import kotlin.io.encoding.Base64
 
 /**
- * Interface for storing auto-generated initialization vectors (IV) for encrypting/decrypting tokens.
- * IVs are randomly generated from the [javax.crypto.Cipher] and are needed for the
+ * Interface for storing auto-generated initialization vectors (IV) for encrypting/decrypting
+ * tokens. IVs are randomly generated from the [javax.crypto.Cipher] and are needed for the
  * encryption/decryption process.
  */
 interface KeystoreSecretsStorage {

@@ -23,6 +23,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
@@ -39,7 +40,6 @@ import com.divinelink.core.ui.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf

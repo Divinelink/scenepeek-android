@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
@@ -23,6 +22,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.core_ui_add_to_watchlist_content_desc
 import com.divinelink.core.ui.core_ui_remove_from_watchlist_content_desc
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun WatchlistButton(

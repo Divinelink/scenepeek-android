@@ -15,13 +15,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.feature.add.to.account.modal.ActionMenuIntent
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ActionMenuContent(

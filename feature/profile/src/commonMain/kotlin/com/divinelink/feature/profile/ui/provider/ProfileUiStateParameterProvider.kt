@@ -3,9 +3,9 @@ package com.divinelink.feature.profile.ui.provider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.account.TMDBAccount
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.feature.profile.ProfileUiState
 import com.divinelink.feature.profile.ui.TMDBAccountUiState
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class ProfileUiStateParameterProvider : PreviewParameterProvider<ProfileUiState> {

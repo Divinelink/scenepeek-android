@@ -114,6 +114,7 @@ complexity:
   LongMethod:
     active: true
     threshold: 60
+    excludes: [ '**/*Factory.kt', '**/generated/**' ]
     ignoreAnnotated: [ IgnoreDetekt, Test, Composable ]
   LongParameterList:
     active: false
@@ -238,7 +239,7 @@ exceptions:
     active: false
   ThrowingExceptionsWithoutMessageOrCause:
     active: true
-    excludes: [ '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
+    excludes: [ '**/testing/**', '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
     exceptions:
       - 'ArrayIndexOutOfBoundsException'
       - 'Error'
@@ -299,7 +300,7 @@ formatting:
     active: false
     autoCorrect: true
   Filename:
-    active: true
+    active: false
     excludes: [ '**main.kt' ]
   FinalNewline:
     active: true
@@ -317,7 +318,8 @@ formatting:
     continuationIndentSize: 4
   MaximumLineLength:
     active: true
-    maxLineLength: 160
+    maxLineLength: 100
+    excludes: [ '**/generated/**' ]
     ignoreBackTickedIdentifier: false
   ModifierOrdering:
     active: true
@@ -449,7 +451,7 @@ naming:
     minimumFunctionNameLength: 3
   FunctionNaming:
     active: true
-    excludes: [ '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/generated/**', '**/main.kt' ]
+    excludes: [ '**/*Factory.kt', '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/generated/**', '**/main.kt' ]
     functionPattern: '([a-z][a-zA-Z0-9]*)|(`.*`)'
     excludeClassPattern: '$^'
     ignoreOverridden: true
@@ -457,7 +459,7 @@ naming:
       - 'Composable'
   FunctionParameterNaming:
     active: true
-    excludes: [ '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
+    excludes: [ '**/generated/**', '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
     parameterPattern: '[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
     ignoreOverridden: true
@@ -466,7 +468,7 @@ naming:
     excludes: [ '**/*.kts' ]
     rootPackage: ''
   MatchingDeclarationName:
-    active: true
+    active: false
     mustBeFirst: true
     excludes: [ '**/kspCaches/**', '**/ksp/**' ]
   MemberNameEqualsClassName:
@@ -671,7 +673,7 @@ style:
     active: true
     maxJumpCount: 1
   MagicNumber:
-    active: true
+    active: false
     excludes: [ '**/test/**', '**/generated/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
     ignoreNumbers:
       - '-1'
@@ -694,11 +696,11 @@ style:
     active: false
   MaxLineLength:
     active: true
-    maxLineLength: 160
+    maxLineLength: 100
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
-    excludes: [ '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
+    excludes: [ '**/generated/**', '**/test/**', '**/androidUnitTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
   MayBeConst:
     active: true
   ModifierOrder:
@@ -775,7 +777,7 @@ style:
     active: true
   UnusedPrivateMember:
     active: true
-    ignoreAnnotated: [ Preview ]
+    ignoreAnnotated: [ Previews ]
     allowedNames: '(_|ignored|expected|serialVersionUID|modifier)'
   UseArrayLiteralsInAnnotations:
     active: false

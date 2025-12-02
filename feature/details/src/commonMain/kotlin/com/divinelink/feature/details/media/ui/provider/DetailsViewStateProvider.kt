@@ -15,7 +15,7 @@ import com.divinelink.core.model.tab.TvTab
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "ThrowingExceptionsWithoutMessageOrCause")
 @ExcludeFromKoverReport
 class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
   override val values: Sequence<DetailsViewState>

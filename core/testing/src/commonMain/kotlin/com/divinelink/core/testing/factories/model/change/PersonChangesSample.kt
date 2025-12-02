@@ -39,7 +39,8 @@ object PersonChangesSample {
           " audience\u200B.",
       ),
       originalValue = StringValue(
-        "Alexandros Karpas is a Greek YouTuber, filmmaker, and co-founder of the multimedia company Unboxholics.",
+        "Alexandros Karpas is a Greek YouTuber, filmmaker, and co-founder of the multimedia" +
+          " company Unboxholics.",
       ),
     ),
   )

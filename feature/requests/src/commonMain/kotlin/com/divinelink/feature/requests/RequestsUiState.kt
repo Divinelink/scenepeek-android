@@ -1,9 +1,9 @@
 package com.divinelink.feature.requests
 
 import com.divinelink.core.model.DataState
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
-import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.ui.blankslate.BlankSlateState
 
 data class RequestsUiState(

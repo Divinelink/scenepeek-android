@@ -7,7 +7,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 
-fun MockEngine(
+fun mockEngine(
   content: String,
   status: HttpStatusCode = HttpStatusCode.OK,
   headers: Headers = headersOf(HttpHeaders.ContentType, "application/json"),

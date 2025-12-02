@@ -9,7 +9,7 @@ dependencies {
 
 task detektCi(type: JavaExec, group: "verification") {
   description = "Run Kotlin static analysis on changed files."
-  group = "CI"
+  group = "lint"
   main = "io.gitlab.arturbosch.detekt.cli.Main"
   classpath = configurations.detekt
 
@@ -36,7 +36,7 @@ task detektCi(type: JavaExec, group: "verification") {
 
 task detektFormat(type: JavaExec, group: "verification") {
   description = "Run Kotlin static analysis on changed files."
-  group = "CI"
+  group = "lint"
   main = "io.gitlab.arturbosch.detekt.cli.Main"
   classpath = configurations.detekt
 

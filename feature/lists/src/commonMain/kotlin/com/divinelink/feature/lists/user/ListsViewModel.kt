@@ -45,6 +45,7 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
     fetchUserLists(isRefreshing = true)
   }
 
+  @Suppress("LongMethod")
   private fun fetchUserLists(isRefreshing: Boolean) {
     _uiState.update { uiState ->
       uiState.copy(

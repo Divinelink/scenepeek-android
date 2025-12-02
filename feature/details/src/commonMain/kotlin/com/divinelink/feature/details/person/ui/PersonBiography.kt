@@ -46,7 +46,7 @@ fun PersonBiography(
           .padding(horizontal = MaterialTheme.dimensions.keyline_12),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
-        (0..2).forEach { _ ->
+        for (i in 0..2) {
           ShimmerLine(tag = stringResource(Res.string.feature_details_biography_section))
         }
       }

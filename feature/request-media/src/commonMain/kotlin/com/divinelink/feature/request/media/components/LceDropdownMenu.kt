@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
-import org.jetbrains.compose.resources.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
@@ -33,6 +32,7 @@ import com.divinelink.core.ui.core_ui_expand
 import com.divinelink.core.ui.core_ui_loading
 import com.divinelink.core.ui.extension.format
 import com.divinelink.feature.request.media.LCEState
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

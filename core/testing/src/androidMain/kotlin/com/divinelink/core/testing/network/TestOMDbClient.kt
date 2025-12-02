@@ -23,7 +23,7 @@ class TestOMDbClient {
     }
 
     restClient = OMDbClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       config = PreviewBuildConfigProvider(),
     )
 
@@ -35,7 +35,7 @@ class TestOMDbClient {
     json: String,
   ) {
     restClient = OMDbClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       config = PreviewBuildConfigProvider(),
     )
 

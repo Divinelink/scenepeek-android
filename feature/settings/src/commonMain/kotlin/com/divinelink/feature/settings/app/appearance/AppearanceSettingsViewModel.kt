@@ -2,8 +2,8 @@ package com.divinelink.feature.settings.app.appearance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.domain.WhileViewSubscribed
 import com.divinelink.core.commons.data
+import com.divinelink.core.commons.domain.WhileViewSubscribed
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.domain.theme.GetThemeUseCase

@@ -1,10 +1,10 @@
 package com.divinelink.core.testing.network
 
 import JvmUnitTestDemoAssetManager
-import com.divinelink.core.testing.commons.provider.TestSecretProvider
 import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.AuthTMDbClient
 import com.divinelink.core.network.client.get
+import com.divinelink.core.testing.commons.provider.TestSecretProvider
 import com.divinelink.core.testing.storage.TestSavedStateStorage
 
 class TestAuthTMDbClient {
@@ -18,7 +18,7 @@ class TestAuthTMDbClient {
     response: String,
   ) {
     restClient = AuthTMDbClient(
-      engine = MockEngine(response),
+      engine = mockEngine(response),
       encryptedStorage = encryptedStorage,
       secret = TestSecretProvider(),
       config = PreviewBuildConfigProvider(),
@@ -36,7 +36,7 @@ class TestAuthTMDbClient {
     }
 
     restClient = AuthTMDbClient(
-      engine = MockEngine(json),
+      engine = mockEngine(json),
       encryptedStorage = encryptedStorage,
       secret = TestSecretProvider(),
       config = PreviewBuildConfigProvider(),

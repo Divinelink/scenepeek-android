@@ -7,8 +7,8 @@ package com.divinelink.core.testing.factories.core.commons
 object DateFactory {
 
   // GMT: Sunday, 1 August 2021 08:00:00
-  fun augustFirst2021(): String = "1627804800"
+  const val AUGUST_FIRST_2021: String = "1627804800"
 
   // GMT: Thursday, 2 September 2021 08:00:00
-  fun septemberSecond2021(): String = "1630569600"
+  const val SEPTEMBER_SECOND_2021: String = "1630569600"
 }

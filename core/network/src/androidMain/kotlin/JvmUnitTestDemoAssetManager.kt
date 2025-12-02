@@ -5,7 +5,9 @@ import java.util.Properties
 /**
  * This class helps with loading Android `/assets` files, especially when running JVM unit tests.
  * It must remain on the root package for an easier [Class.getResource] with relative paths.
- * @see <a href="https://developer.android.com/reference/tools/gradle-api/7.3/com/android/build/api/dsl/UnitTestOptions">UnitTestOptions</a>
+ * @see
+ * <a href="https://developer.android.com/reference/tools/gradle-api/7.3/com/android/build/api
+ * /dsl/UnitTestOptions">UnitTestOptions</a>
  */
 
 object JvmUnitTestDemoAssetManager : DemoAssetManager {

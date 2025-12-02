@@ -1,8 +1,8 @@
 package com.divinelink.core.domain.jellyseerr
 
+import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import kotlinx.coroutines.flow.first

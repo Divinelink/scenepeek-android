@@ -1,8 +1,8 @@
 package com.divinelink.core.domain
 
+import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 

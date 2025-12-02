@@ -7,6 +7,6 @@ object AggregateCreditsFactory {
 
   fun theOffice() = AggregateCredits(
     id = 2316,
-    expiresAtEpochSeconds = DateFactory.septemberSecond2021(),
+    expiresAtEpochSeconds = DateFactory.SEPTEMBER_SECOND_2021,
   )
 }

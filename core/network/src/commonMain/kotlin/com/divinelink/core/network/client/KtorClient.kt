@@ -1,3 +1,5 @@
+@file:Suppress("TooGenericExceptionCaught", "RethrowCaughtException", "LongMethod")
+
 package com.divinelink.core.network.client
 
 import com.divinelink.core.commons.Constants
@@ -41,7 +43,7 @@ val localJson = Json {
   explicitNulls = false
 }
 
-private val timeoutMillis = 30_000L
+private const val TIMEOUT_MILLIS = 30_000L
 
 fun ktorClient(
   engine: HttpClientEngine,
@@ -61,9 +63,9 @@ fun ktorClient(
   }
 
   install(HttpTimeout) {
-    requestTimeoutMillis = timeoutMillis
-    connectTimeoutMillis = timeoutMillis
-    socketTimeoutMillis = timeoutMillis
+    requestTimeoutMillis = TIMEOUT_MILLIS
+    connectTimeoutMillis = TIMEOUT_MILLIS
+    socketTimeoutMillis = TIMEOUT_MILLIS
   }
 
   HttpResponseValidator {

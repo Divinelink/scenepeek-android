@@ -24,11 +24,11 @@ import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.feature.profile.ProfileAction
 import com.divinelink.feature.profile.ProfileSection
 import com.divinelink.feature.profile.ProfileUiState
 import com.divinelink.feature.profile.ui.provider.ProfileUiStateParameterProvider
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun ProfileContent(

@@ -176,7 +176,7 @@ class KtorClientTest {
   @Test
   fun `test unknown exception returns AppException Unknown`() = runTest {
     engine = MockEngine {
-      throw Exception("Unknown error")
+      throw AppException.Unknown("Unknown error")
     }
 
     assertFailsWith<AppException.Unknown> {

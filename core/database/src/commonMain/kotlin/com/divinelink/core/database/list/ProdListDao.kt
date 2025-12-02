@@ -159,7 +159,7 @@ class ProdListDao(
     accountId: String,
     items: List<ListItem>,
   ) = database.transaction {
-    (0..<20).forEach { index ->
+    for (index in 0..20) {
       val listItem = items.getOrNull(index)
       if (listItem != null) {
         database.listItemEntityQueries.insertListItem(

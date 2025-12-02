@@ -1,3 +1,5 @@
+@file:Suppress("LongMethod")
+
 package com.divinelink.feature.request.media
 
 import androidx.lifecycle.ViewModel
