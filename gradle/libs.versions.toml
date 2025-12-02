@@ -62,7 +62,7 @@ android-youtube-player = "13.0.0"
 cryptography = "0.5.0"
 
 # Testing
-kover = "0.8.3"
+kover = "0.9.3"
 screenshot = "0.0.1-alpha11"
 androidx-test = "1.7.0"
 truth = "1.4.5"

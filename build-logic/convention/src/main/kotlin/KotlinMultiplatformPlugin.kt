@@ -17,6 +17,7 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
       apply(libs.findPlugin("kotlin.multiplatform").get().get().pluginId)
       apply(libs.findPlugin("kotlin.cocoapods").get().get().pluginId)
       apply(libs.findPlugin("kotlin.serialization").get().get().pluginId)
+      apply(libs.findPlugin("kover").get().get().pluginId)
     }
 
     extensions.configure<KotlinMultiplatformExtension>(::configureKotlinMultiplatform)

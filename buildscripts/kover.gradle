@@ -26,43 +26,48 @@ dependencies {
 
 kover {
   reports {
-    variant("debug") {
-      filters {
-        excludes {
-          packages("com.divinelink.core.ui.provider",
-              "com.divinelink.core.ui.tab.custom",
-              "com.divinelink.core.ui.collapsing",
-
-              ".provider",)
-          classes("*ComposableSingletons*",
-              "*BuildConfig*",
-              "*Module*",
-
-              "*Service*",
-              "*Activity*",
-              "*.BuildConfig",
-              "*.BR",
-              "*androidx*",
-              "*.DebugUtil",
-
-              "*Preview",
-              "*ParameterProvider.kt",
-
-              "ConnectivityManagerNetworkMonitor.kt",)
-          annotatedBy("androidx.compose.ui.tooling.preview.Preview",
-              "*.ExcludeFromKoverReport",
-              "com.divinelink.core.ui.Previews",)
-        }
-        includes {
-          packages("com.divinelink")
-        }
+    filters {
+      excludes {
+        androidGeneratedClasses()
+        packages(
+            "com.divinelink.core.ui.provider",
+            "com.divinelink.core.ui.tab.custom",
+            "com.divinelink.core.ui.collapsing",
+            "*.provider.*",
+        )
+        classes(
+            "*ComposableSingletons*",
+            "*BuildConfig*",
+            "*Module*",
+            "*Service*",
+            "*Activity*",
+            "*.BuildConfig",
+            "*.BR",
+            "*androidx*",
+            "*.DebugUtil",
+            "*Preview",
+            "*ParameterProvider.kt",
+            "ConnectivityManagerNetworkMonitor.kt",
+        )
+        annotatedBy(
+            "androidx.compose.ui.tooling.preview.Preview",
+            "*.ExcludeFromKoverReport",
+            "com.divinelink.core.ui.Previews",
+        )
       }
+      includes {
+        packages("com.divinelink")
+      }
+    }
 
+    variant("debug") {
       html {
+        onCheck = false
         htmlDir = layout.buildDirectory.dir("all-projects-reports")
       }
 
       xml {
+        onCheck = false
         xmlFile = layout.buildDirectory.file("all-projects-reports/kover.xml")
       }
     }
