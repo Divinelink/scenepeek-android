@@ -1,10 +1,7 @@
 package com.divinelink
 
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtensionAware
-import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatformExtension) =
   extension.apply {
@@ -59,7 +56,4 @@ internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatform
         implementation(kotlin("test"))
       }
     }
-
-    // applying the Cocoapods Configuration we made
-    (this as ExtensionAware).extensions.configure<CocoapodsExtension>(::configureKotlinCocoapods)
   }

@@ -15,7 +15,6 @@ class KotlinMultiplatformPlugin : Plugin<Project> {
     pluginManager.apply {
       apply("com.android.library")
       apply(libs.findPlugin("kotlin.multiplatform").get().get().pluginId)
-      apply(libs.findPlugin("kotlin.cocoapods").get().get().pluginId)
       apply(libs.findPlugin("kotlin.serialization").get().get().pluginId)
       apply(libs.findPlugin("kover").get().get().pluginId)
     }
