@@ -1,0 +1,13 @@
+<resources>
+  <string name="feature_request_media_destination_server">Destination server</string>
+  <string name="feature_request_media_root_folder">Root folder</string>
+  <string name="feature_request_media_quality_profile">Quality profile</string>
+  <string name="feature_request_media_default">Default</string>
+  <string name="feature_request_media_cancel_request_success">Successfully canceled request</string>
+  <string name="feature_request_media_cancel_request_failure">Failed to cancel request</string>
+  <string name="feature_request_media_update_request_success">Request updated successfully</string>
+  <string name="feature_request_media_update_request_failure">Failed to update request</string>
+  <string name="feature_request_media_success_request">%1$s requested successfully</string>
+  <string name="feature_request_media_failed_request">Failed to request %1$s</string>
+  <string name="feature_request_media_request_exists">Request for this media already exists.</string>
+</resources>

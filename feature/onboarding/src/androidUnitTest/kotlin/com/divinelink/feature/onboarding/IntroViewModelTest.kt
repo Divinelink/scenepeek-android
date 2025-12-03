@@ -1,0 +1,157 @@
+package com.divinelink.feature.onboarding
+
+import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.onboarding.IntroSection
+import com.divinelink.core.model.onboarding.OnboardingAction
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.assertUiState
+import com.divinelink.feature.onboarding.manager.IntroSections
+import com.divinelink.feature.onboarding.manager.IntroSections.jellyseerr
+import com.divinelink.feature.onboarding.manager.IntroSections.linkHandling
+import com.divinelink.feature.onboarding.manager.IntroSections.tmdb
+import com.divinelink.feature.onboarding.resources.Res
+import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
+import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
+import com.divinelink.feature.onboarding.ui.OnboardingUiState
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
+import kotlin.test.Test
+
+class IntroViewModelTest {
+
+  private val robot: IntroViewModelTestRobot = IntroViewModelTestRobot()
+
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+
+  @Test
+  fun `test viewModel init with onboarding pages`() {
+    robot
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .buildViewModel()
+      .assertUiState(
+        OnboardingUiState.initial().copy(sections = IntroSections.onboardingSections),
+      )
+  }
+
+  @Test
+  fun `test onFetchAccount with success updates feature action`() {
+    robot
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .mockIsInitialOnboarding(true)
+      .mockGetAccountDetails(flowOf(Result.success(TMDBAccountFactory.loggedIn())))
+      .buildViewModel()
+      .assertUiState(
+        OnboardingUiState.initial().copy(
+          sections = listOf(
+            IntroSection.Header(
+              title = UIText.ResourceText(Res.string.feature_onboarding_welcome_page_title),
+              description = UIText.ResourceText(
+                Res.string.feature_onboarding_welcome_page_description,
+              ),
+            ),
+            IntroSection.Spacer,
+            IntroSection.SecondaryHeader.Features,
+            tmdb.copy(action = OnboardingAction.NavigateToTMDBLogin(isComplete = true)),
+            jellyseerr,
+            linkHandling,
+            IntroSection.GetStartedButton,
+          ),
+          isFirstLaunch = true,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onFetchJellyseerrAccountDetails with success updates page action`() {
+    robot
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .mockIsInitialOnboarding(true)
+      .mockGetJellyseerrAccountDetails(
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        OnboardingUiState.initial().copy(
+          sections = listOf(
+            IntroSection.Header(
+              title = UIText.ResourceText(Res.string.feature_onboarding_welcome_page_title),
+              description = UIText.ResourceText(
+                Res.string.feature_onboarding_welcome_page_description,
+              ),
+            ),
+            IntroSection.Spacer,
+            IntroSection.SecondaryHeader.Features,
+            tmdb,
+            jellyseerr.copy(
+              action = OnboardingAction.NavigateToJellyseerrLogin(isComplete = true),
+            ),
+            linkHandling,
+            IntroSection.GetStartedButton,
+          ),
+          isFirstLaunch = true,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onFetchJellyseerrAccountDetails with null account details does nothing`() {
+    robot
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .mockIsInitialOnboarding(true)
+      .mockGetJellyseerrAccountDetails(
+        Result.success(JellyseerrAccountDetailsResultFactory.signedOut()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        OnboardingUiState.initial().copy(
+          sections = listOf(
+            IntroSection.Header(
+              title = UIText.ResourceText(Res.string.feature_onboarding_welcome_page_title),
+              description = UIText.ResourceText(
+                Res.string.feature_onboarding_welcome_page_description,
+              ),
+            ),
+            IntroSection.Spacer,
+            IntroSection.SecondaryHeader.Features,
+            tmdb,
+            jellyseerr.copy(
+              action = OnboardingAction.NavigateToJellyseerrLogin(isComplete = false),
+            ),
+            linkHandling,
+            IntroSection.GetStartedButton,
+          ),
+          isFirstLaunch = true,
+        ),
+      )
+  }
+
+  @Test
+  fun `test on onboardingComplete navigates up`() = runTest {
+    robot
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .mockIsInitialOnboarding(true)
+      .buildViewModel()
+      .onboardingComplete()
+      .assertNavigateUp()
+  }
+
+  @Test
+  fun `test on not initial onboarding does not update started jobs`() {
+    robot
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .mockIsInitialOnboarding(false)
+      .mockGetJellyseerrAccountDetails(
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        OnboardingUiState.initial().copy(
+          sections = IntroSections.onboardingSections,
+        ),
+      )
+  }
+}

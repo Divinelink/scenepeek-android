@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.divinelink.scenepeek</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>scenepeek</string>
+			</array>
+		</dict>
+	</array>
+	<key>OMDBAPIKey</key>
+	<string>$(OMDB_API_KEY)</string>
+	<key>TMDBAuthToken</key>
+	<string>$(TMDB_AUTH_TOKEN)</string>
+	<key>TMDBBaseURL</key>
+	<string>$(TMDB_BASE_URL)</string>
+	<key>TraktAPIKey</key>
+	<string>$(TRAKT_API_KEY)</string>
+</dict>
+</plist>

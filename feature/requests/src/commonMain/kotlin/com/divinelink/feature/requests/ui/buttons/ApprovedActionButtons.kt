@@ -1,0 +1,36 @@
+package com.divinelink.feature.requests.ui.buttons
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.Composable
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.ui.button.action.ActionButton
+import com.divinelink.feature.requests.RequestsAction
+
+@Composable
+fun ApprovedActionButtons(
+  request: JellyseerrRequest,
+  enabled: Boolean,
+  hasPermission: Boolean,
+  onAction: (RequestsAction) -> Unit,
+) {
+  if (hasPermission) {
+    Column {
+      ActionButton.DeleteRequest(enabled = enabled) {
+        onAction(RequestsAction.DeleteRequest(request.id))
+      }
+
+      ActionButton.RemoveFromServer(
+        enabled = enabled,
+        mediaType = request.media.mediaType,
+        onClick = {
+          onAction(
+            RequestsAction.RemoveFromServer(
+              mediaId = request.jellyseerrMediaId,
+              requestId = request.id,
+            ),
+          )
+        },
+      )
+    }
+  }
+}

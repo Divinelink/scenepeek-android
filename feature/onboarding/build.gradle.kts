@@ -1,16 +1,29 @@
 plugins {
-  alias(libs.plugins.divinelink.android.feature)
-  alias(libs.plugins.divinelink.android.library.compose)
-  alias(libs.plugins.ksp)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
+
+  alias(libs.plugins.divinelink.compose.feature)
   alias(libs.plugins.kotlin.serialization)
 }
 
-dependencies {
-  implementation(libs.kotlinx.serialization.json)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.core.commons)
+      implementation(projects.core.domain)
+      implementation(projects.core.datastore)
 
-  implementation(projects.core.datastore)
-  implementation(projects.core.domain)
-  implementation(projects.core.scaffold)
+      implementation(libs.kotlinx.serialization.json)
+    }
 
-  testImplementation(projects.core.testing)
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
+}
+
+compose.resources {
+  publicResClass = false
+  packageOfResClass = "com.divinelink.feature.onboarding.resources"
+  generateResClass = auto
 }

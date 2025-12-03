@@ -24,16 +24,14 @@ lifecycle-runtime-ktx = "2.9.4"
 activity-compose = "1.11.0"
 start-up = "1.2.0"
 kotlinx-datetime = "0.7.1"
-ktlint = "12.1.1"
+ktlint-cli = "1.8.0"
 secrets = "2.0.1"
-desugar = "2.0.4"
-navigation-runtime-ktx = "2.9.6"
 navigation-compose = "2.9.6"
 
 detekt = "1.23.6"
 
 # Internal Database
-sqldelight = "2.1.0"
+sqldelight = "2.2.1"
 datastore = '1.1.7'
 
 # Multithreading
@@ -48,35 +46,37 @@ kotlinx-io = "0.8.0"
 koin = "4.1.1"
 
 # Compose
+compose = "1.9.3"
 compose-bom = "2025.11.00"
 compose-foundation = "1.9.4"
 material3 = "1.4.0"
+compose-navigation = "2.9.1"
 
 compose-shimmer = "1.3.3"
 
-# Timber
-timber = "5.0.1"
+# Misc
+napier = "2.7.1"
+android-youtube-player = "13.0.0"
+cryptography = "0.5.0"
 
 # Testing
-kover = "0.8.3"
+kover = "0.9.3"
 screenshot = "0.0.1-alpha11"
 androidx-test = "1.7.0"
 truth = "1.4.5"
 turbine = "1.2.1"
-kotest = "6.0.4"
+kotest = "6.0.5"
 
 # UI
 robolectric = "4.16"
-androidx-compose-ui-test = "1.9.4"
+androidx-compose-ui-test = "1.9.5"
 ui-automator = "2.3.0"
 
 # Mockers
-mockito = "5.18.0"
-mockito-kotlin = "6.0.0"
+mockito = "5.20.0"
+mockito-kotlin = "6.1.0"
 
 [libraries]
-
-android-tools-desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
 
 # Android X
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
@@ -86,22 +86,22 @@ androidx-startup = { group = "androidx.startup", name = "startup-runtime", versi
 androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidx-tracing" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }
 
-androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-runtime-ktx" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
-
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 # Jetpack Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
+compose-backhandler ={ group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose" }
+compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "compose" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -116,7 +116,7 @@ compose-material3-adaptive = { group = "androidx.compose.material3.adaptive", na
 compose-material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout" }
 compose-material3-adaptive-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation" }
 compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
-
+compose-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "compose" }
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
 
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
@@ -125,6 +125,7 @@ coil-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.r
 # Network & Serialization
 ktor-client-core = { group = 'io.ktor', name = 'ktor-client-core', version.ref = 'ktor' }
 ktor-client-android = { group = 'io.ktor', name = 'ktor-client-android', version.ref = 'ktor' }
+ktor-client-darwin = { group = 'io.ktor', name = 'ktor-client-darwin', version.ref = 'ktor' }
 ktor-client-logging = { group = 'io.ktor', name = 'ktor-client-logging', version.ref = 'ktor' }
 ktor-client-mock = { group = 'io.ktor', name = 'ktor-client-mock', version.ref = 'ktor' }
 ktor-client-content-negotiation = { group = 'io.ktor', name = 'ktor-client-content-negotiation', version.ref = 'ktor' }
@@ -133,15 +134,15 @@ kotlinx-serialization-json = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-
 
 # Depedency Injection
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-start-up = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
 
 # Misc
-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-
-youtube-player = 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
-
+napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
+android-youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "android-youtube-player" }
 
 # Firebase
 firebase-bom = 'com.google.firebase:firebase-bom:33.4.0'
@@ -155,8 +156,12 @@ datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 sqldelight-android = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+sqldelight-native = { group = "app.cash.sqldelight", name = "native-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-driver = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
+
+cryptography-core = { group = "dev.whyoleg.cryptography", name = "cryptography-core", version.ref = "cryptography" }
+cryptography-ios = { group = "dev.whyoleg.cryptography", name = "cryptography-provider-cryptokit", version.ref = "cryptography" }
 
 # Testing
 androidx-test-ktx = { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
@@ -176,19 +181,23 @@ ui-automator = { module = "androidx.test.uiautomator:uiautomator", version.ref =
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 
+ktlint-cli = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint-cli" }
+
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+compose-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+compose-multiplatform-gradle-plugin = { group = "org.jetbrains.compose", name = "org.jetbrains.compose.gradle.plugin", version.ref = "compose" }
 
 [plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 gms = { id = "com.google.gms.google-services", version.ref = "google-services" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
@@ -205,7 +214,13 @@ screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"
 # Plugins defined by this project
 divinelink-android-application = { id = "divinelink.android.application", version = "unspecified" }
 divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
-divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
 divinelink-android-library-compose = { id = "divinelink.android.library.compose", version = "unspecified" }
-divinelink-android-feature = { id = "divinelink.android.feature", version = "unspecified" }
 divinelink-android-koin = { id = "divinelink.android.koin", version = "unspecified" }
+#divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
+#divinelink-android-feature = { id = "divinelink.android.feature", version = "unspecified" }
+
+# Multiplatform
+divinelink-kotlin-multiplatform-application = { id = "com.divinelink.kotlin.multiplatform.application", version = "unspecified" }
+divinelink-kotlin-multiplatform = { id = "com.divinelink.kotlin.multiplatform", version = "unspecified" }
+divinelink-compose-multiplatform = { id = "com.divinelink.compose.multiplatform", version = "unspecified" }
+divinelink-compose-feature = { id = "com.divinelink.compose.feature", version = "unspecified" }

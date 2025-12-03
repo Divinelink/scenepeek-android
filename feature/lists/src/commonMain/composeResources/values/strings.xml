@@ -1,0 +1,33 @@
+<resources>
+  <string name="feature_lists_title">Lists</string>
+
+  <string name="feature_lists_login_description">You need to be logged in to view your lists.</string>
+  <string name="feature_lists_empty">You haven't created any lists.</string>
+  <string name="feature_lists_empty_list">There are no items added to this list.</string>
+
+  <string name="feature_lists_delete_list">Delete list</string>
+  <string name="feature_lists_delete_list_alert_message">Are you sure you want to delete this list? This action cannot be undone.</string>
+
+  <string name="feature_lists_edit_list">Edit list</string>
+  <string name="feature_lists_add_list">Create list</string>
+
+  <string name="feature_lists_name">Name</string>
+  <string name="feature_lists_description">Description</string>
+  <string name="feature_lists_public_description">Public lists can be viewed by other users.</string>
+
+  <string name='feature_lists_update_successfully'>%1$s updated successfully</string>
+  <string name='feature_lists_update_failure'>Failed to update %1$s</string>
+
+  <string name='feature_lists_delete_successfully'>%1$s deleted successfully</string>
+  <string name='feature_lists_delete_failure'>Failed to delete %1$s</string>
+
+  <string name='feature_lists_create_successfully'>%1$s created successfully</string>
+  <string name='feature_lists_create_failure'>Failed to create %1$s</string>
+
+  <string name="feature_lists_backdrops_empty">There are no images for this list. Add items to be able to change the image.</string>
+  <string name="feature_lists_change_image">Change image</string>
+
+  <string name="feature_lists_selected">%1$s/%2$s selected</string>
+
+  <string name="feature_lists_selected_media_content_desc">Selected media %1$s</string>
+</resources>

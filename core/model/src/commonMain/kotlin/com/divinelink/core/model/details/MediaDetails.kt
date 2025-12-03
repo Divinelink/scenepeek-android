@@ -1,0 +1,141 @@
+package com.divinelink.core.model.details
+
+import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.media.MediaDetailsInformation
+import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
+
+/**
+ * Represents details or a movie or TV show.
+ */
+sealed class MediaDetails {
+  abstract val id: Int
+  abstract val title: String
+  abstract val posterPath: String
+  abstract val backdropPath: String
+  abstract val tagline: String?
+  abstract val overview: String?
+  abstract val releaseDate: String
+  abstract val ratingCount: RatingCount
+  abstract val genres: List<Genre>?
+  abstract val isFavorite: Boolean
+  abstract val imdbId: String?
+  abstract val popularity: Double
+  abstract val information: MediaDetailsInformation
+
+  fun copy(
+    id: Int = this.id,
+    title: String = this.title,
+    posterPath: String = this.posterPath,
+    backdropPath: String = this.backdropPath,
+    tagline: String? = this.tagline,
+    overview: String? = this.overview,
+    releaseDate: String = this.releaseDate,
+    genres: List<Genre>? = this.genres,
+    isFavorite: Boolean = this.isFavorite,
+    ratingCount: RatingCount = this.ratingCount,
+    imdbId: String? = this.imdbId,
+  ): MediaDetails = when (this) {
+    is Movie -> Movie(
+      id = id,
+      title = title,
+      posterPath = posterPath,
+      backdropPath = backdropPath,
+      tagline = tagline,
+      overview = overview,
+      creators = creators,
+      releaseDate = releaseDate,
+      ratingCount = ratingCount,
+      isFavorite = isFavorite,
+      genres = genres,
+      cast = cast,
+      runtime = runtime,
+      imdbId = imdbId,
+      popularity = popularity,
+      information = information,
+    )
+    is TV -> TV(
+      id = id,
+      title = title,
+      posterPath = posterPath,
+      backdropPath = backdropPath,
+      tagline = tagline,
+      overview = overview,
+      releaseDate = releaseDate,
+      ratingCount = ratingCount,
+      isFavorite = isFavorite,
+      genres = genres,
+      seasons = seasons,
+      creators = creators,
+      numberOfSeasons = numberOfSeasons,
+      imdbId = imdbId,
+      popularity = popularity,
+      information = information,
+    )
+  }
+}
+
+fun MediaDetails.externalUrl(source: RatingSource = RatingSource.TMDB): String? {
+  val mediaType = if (this is Movie) MediaType.MOVIE else MediaType.TV
+
+  return when (source) {
+    RatingSource.TMDB -> {
+      val urlTitle = title
+        .lowercase()
+        .replace(":", "")
+        .replace(regex = "[\\s|/]".toRegex(), replacement = "-")
+
+      "${source.url}/${mediaType.value}/$id-$urlTitle"
+    }
+    RatingSource.IMDB -> {
+      val imdbId = imdbId ?: return null
+
+      "${source.url}/title/$imdbId"
+    }
+    RatingSource.TRAKT -> {
+      val imdbId = imdbId ?: return null
+
+      source.url + "/${mediaType.traktPath}/" + imdbId
+    }
+  }
+}
+
+// TODO Add tests
+fun MediaDetails?.clearSeasonsStatus(): MediaDetails? = when (this) {
+  is Movie -> this
+  is TV -> this.copy(
+    seasons = seasons.map { it.copy(status = null) },
+  )
+  null -> null
+}
+
+fun MediaDetails.toMediaItem() = when (this) {
+  is Movie -> MediaItem.Media.Movie(
+    id = this.id,
+    name = this.title,
+    posterPath = this.posterPath,
+    backdropPath = this.backdropPath,
+    releaseDate = this.releaseDate,
+    voteAverage = this.ratingCount.getRating(RatingSource.TMDB)?.voteAverage ?: 0.0,
+    voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
+    overview = this.overview ?: "",
+    popularity = popularity,
+    isFavorite = false,
+    accountRating = null,
+  )
+  is TV -> MediaItem.Media.TV(
+    id = this.id,
+    name = this.title,
+    posterPath = this.posterPath,
+    backdropPath = this.backdropPath,
+    releaseDate = this.releaseDate,
+    voteAverage = this.ratingCount.getRating(RatingSource.TMDB)?.voteAverage ?: 0.0,
+    voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
+    overview = this.overview ?: "",
+    popularity = popularity,
+    isFavorite = false,
+    accountRating = null,
+  )
+}

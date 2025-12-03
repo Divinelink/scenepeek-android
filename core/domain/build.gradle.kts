@@ -1,16 +1,21 @@
 plugins {
-  alias(libs.plugins.divinelink.android.library)
-  alias(libs.plugins.divinelink.android.koin)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
 }
 
-dependencies {
-  api(projects.core.commons)
-  implementation(projects.core.data)
-  implementation(projects.core.database)
-  implementation(projects.core.datastore)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      api(projects.core.commons)
+      implementation(projects.core.data)
+      implementation(projects.core.database)
+      implementation(projects.core.datastore)
 
-  implementation(libs.timber)
-  implementation(libs.kotlinx.datetime)
+      implementation(libs.napier)
+      implementation(libs.kotlinx.datetime)
+    }
 
-  testImplementation(projects.core.testing)
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
 }

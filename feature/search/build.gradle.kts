@@ -1,15 +1,24 @@
 plugins {
-  alias(libs.plugins.divinelink.android.feature)
-  alias(libs.plugins.divinelink.android.library.compose)
-  alias(libs.plugins.ksp)
-  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
+
+  alias(libs.plugins.divinelink.compose.feature)
 }
 
-dependencies {
-  implementation(libs.kotlinx.serialization.json)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.core.domain)
+    }
 
-  implementation(projects.core.domain)
-  implementation(projects.core.scaffold)
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
+}
 
-  testImplementation(projects.core.testing)
+compose.resources {
+  publicResClass = false
+  packageOfResClass = "com.divinelink.feature.search.resources"
+  generateResClass = auto
 }

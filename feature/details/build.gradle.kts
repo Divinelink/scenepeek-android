@@ -1,20 +1,35 @@
 plugins {
-  alias(libs.plugins.divinelink.android.feature)
-  alias(libs.plugins.divinelink.android.library.compose)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
+
+  alias(libs.plugins.divinelink.compose.feature)
 }
 
-dependencies {
-  implementation(projects.core.commons)
-  implementation(projects.core.data)
-  implementation(projects.core.domain)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.core.data)
+      implementation(projects.core.domain)
+      implementation(projects.core.fixtures)
 
-  implementation(projects.feature.addToAccount)
-  implementation(projects.feature.requestMedia)
+      implementation(projects.feature.addToAccount)
+      implementation(projects.feature.requestMedia)
 
-  implementation(projects.core.scaffold)
+      implementation(libs.kotlinx.datetime)
+    }
 
-  implementation(libs.androidx.browser)
+    androidMain.dependencies {
+      implementation(libs.androidx.browser)
+    }
 
-  implementation(projects.core.fixtures)
-  testImplementation(projects.core.testing)
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
+}
+
+compose.resources {
+  publicResClass = false
+  packageOfResClass = "com.divinelink.feature.details.resources"
+  generateResClass = auto
 }

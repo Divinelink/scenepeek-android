@@ -1,23 +1,20 @@
-plugins {
-  alias(libs.plugins.divinelink.android.application)
-  alias(libs.plugins.divinelink.android.application.compose)
-  alias(libs.plugins.divinelink.android.koin)
+import org.jetbrains.compose.ExperimentalComposeLibrary
 
-  alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.android.application)
+plugins {
+  alias(libs.plugins.divinelink.kotlin.multiplatform.application)
+  alias(libs.plugins.divinelink.compose.multiplatform)
+
   alias(libs.plugins.detekt)
   alias(libs.plugins.firebase.appdistribution)
   alias(libs.plugins.firebase.crashlytics)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.ksp)
   alias(libs.plugins.gms)
-  alias(libs.plugins.ktlint)
 }
 
 apply("../buildscripts/detekt.gradle")
 apply("../buildscripts/git-hooks.gradle")
 apply("../buildscripts/kover.gradle")
-apply("../buildscripts/coveralls.gradle")
+apply("../buildscripts/ktlint.gradle.kts")
 
 android {
   namespace = "com.divinelink.scenepeek"
@@ -31,20 +28,17 @@ android {
   }
 
   signingConfigs {
-
-    signingConfigs {
-      create("release") {
-        val tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
-        val allFilesFromDir = File(tmpFilePath).listFiles()
-        if (allFilesFromDir != null) {
-          val keystoreFile = allFilesFromDir.first()
-          keystoreFile.renameTo(File("/keystore/keystore.jks"))
-          storeFile = keystoreFile
-        }
-        storePassword = System.getenv("SIGNING_STORE_PASSWORD")
-        keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-        keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+    create("release") {
+      val tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
+      val allFilesFromDir = File(tmpFilePath).listFiles()
+      if (allFilesFromDir != null) {
+        val keystoreFile = allFilesFromDir.first()
+        keystoreFile.renameTo(File("/keystore/keystore.jks"))
+        storeFile = keystoreFile
       }
+      storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+      keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+      keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
     }
   }
 
@@ -67,11 +61,7 @@ android {
     }
   }
 
-  testOptions {
-    unitTests {
-      isIncludeAndroidResources = true
-    }
-  }
+  testOptions.unitTests.isIncludeAndroidResources = true
 
   lint {
     checkReleaseBuilds = false
@@ -83,32 +73,59 @@ android {
   }
 }
 
-dependencies {
-  implementation(projects.core.commons)
-  implementation(projects.core.data)
-  implementation(projects.core.database)
-  implementation(projects.core.datastore)
-  implementation(projects.core.designsystem)
-  implementation(projects.core.domain)
-  implementation(projects.core.model)
-  implementation(projects.core.network)
-  implementation(projects.core.ui)
-  implementation(projects.core.scaffold)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.core.commons)
+      implementation(projects.core.data)
+      implementation(projects.core.database)
+      implementation(projects.core.datastore)
+      implementation(projects.core.designsystem)
+      implementation(projects.core.domain)
+      implementation(projects.core.model)
+      implementation(projects.core.network)
+      implementation(projects.core.ui)
+      implementation(projects.core.scaffold)
 
-  implementation(projects.feature.addToAccount)
-  implementation(projects.feature.details)
-  implementation(projects.feature.search)
-  implementation(projects.feature.settings)
-  implementation(projects.feature.credits)
-  implementation(projects.feature.discover)
-  implementation(projects.feature.tmdbAuth)
-  implementation(projects.feature.onboarding)
-  implementation(projects.feature.profile)
-  implementation(projects.feature.requests)
-  implementation(projects.feature.userData)
-  implementation(projects.feature.lists)
-  implementation(projects.feature.webview)
-  implementation(projects.feature.requestMedia)
+      implementation(projects.feature.addToAccount)
+      implementation(projects.feature.details)
+      implementation(projects.feature.search)
+      implementation(projects.feature.settings)
+      implementation(projects.feature.credits)
+      implementation(projects.feature.discover)
+      implementation(projects.feature.tmdbAuth)
+      implementation(projects.feature.onboarding)
+      implementation(projects.feature.profile)
+      implementation(projects.feature.requests)
+      implementation(projects.feature.userData)
+      implementation(projects.feature.lists)
+      implementation(projects.feature.webview)
+      implementation(projects.feature.requestMedia)
+    }
+
+    androidMain.dependencies {
+      implementation(compose.uiTooling)
+      implementation(libs.koin.start.up)
+    }
+
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+      @OptIn(ExperimentalComposeLibrary::class)
+      implementation(compose.uiTest)
+    }
+
+    androidUnitTest.dependencies {
+      implementation(libs.androidx.navigation.testing)
+    }
+
+    androidMain.dependencies {
+      implementation(compose.uiTooling)
+      implementation(libs.koin.start.up)
+    }
+  }
+}
+
+dependencies {
 
   // Firebase
   implementation(platform(libs.firebase.bom))
@@ -132,11 +149,7 @@ dependencies {
   debugImplementation(libs.compose.ui.test.manifest)
 
   // Misc
-  implementation(libs.timber)
-
-  // Navigation
-  implementation(libs.androidx.navigation.runtime.ktx)
-  implementation(libs.androidx.navigation.compose)
+  implementation(libs.napier)
 
   // Network & Serialization
   implementation(libs.ktor.client.core)
@@ -147,7 +160,9 @@ dependencies {
   implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.kotlinx.serialization.json)
 
-  implementation(libs.koin.android.compose)
+  implementation(libs.koin.core)
+  implementation(libs.koin.compose)
+  implementation(libs.koin.compose.viewmodel)
   implementation(libs.koin.start.up)
 
   // Testing Libs
@@ -175,4 +190,10 @@ dependencies {
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.truth)
   androidTestImplementation(libs.ui.automator)
+}
+
+compose.resources {
+  publicResClass = false
+  packageOfResClass = "com.divinelink.scenepeek.resources"
+  generateResClass = auto
 }

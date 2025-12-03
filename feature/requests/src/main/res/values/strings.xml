@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="feature_requests_title">Requests</string>
-  <string name="feature_requests_profile">Profile</string>
-  <string name="feature_requests_requested">Requested</string>
-  <string name="feature_requests_modifier">Modified</string>
-
-  <string name="feature_requests_no_requests_available">No requests available.</string>
-</resources>

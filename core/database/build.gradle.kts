@@ -1,21 +1,31 @@
 plugins {
-  alias(libs.plugins.divinelink.android.library)
-  alias(libs.plugins.divinelink.android.koin)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
 
-  alias(libs.plugins.ksp)
   alias(libs.plugins.sqldelight)
 }
 
-dependencies {
-  api(projects.core.model)
-  implementation(projects.core.commons)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      api(projects.core.model)
+      implementation(projects.core.commons)
 
-  api(libs.sqldelight.android)
-  api(libs.sqldelight.coroutines)
+      api(libs.sqldelight.coroutines)
+      implementation(libs.kotlinx.datetime)
+    }
 
-  implementation(libs.kotlinx.datetime)
+    androidMain.dependencies {
+      implementation(libs.sqldelight.android)
+    }
 
-  testImplementation(projects.core.testing)
+    nativeMain.dependencies {
+      implementation(libs.sqldelight.native)
+    }
+
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
 }
 
 sqldelight {

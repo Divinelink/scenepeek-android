@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="core_designsystem__light_theme">Light</string>
-  <string name="core_designsystem__dark_theme">Dark</string>
-  <string name="core_designsystem__system_default">System default</string>
-</resources>

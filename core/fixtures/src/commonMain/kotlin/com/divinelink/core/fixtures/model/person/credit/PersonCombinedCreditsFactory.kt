@@ -1,0 +1,18 @@
+package com.divinelink.core.fixtures.model.person.credit
+
+import com.divinelink.core.model.person.credits.PersonCombinedCredits
+
+object PersonCombinedCreditsFactory {
+
+  fun all() = PersonCombinedCredits(
+    id = 4495,
+    cast = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.all(),
+    crew = PersonCrewCreditFactory.all(),
+  )
+
+  fun sortedByDate() = PersonCombinedCredits(
+    id = 4495,
+    cast = com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.sortedByDate(),
+    crew = PersonCrewCreditFactory.sortedByDate(),
+  )
+}
