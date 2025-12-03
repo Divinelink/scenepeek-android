@@ -124,9 +124,6 @@ fun SelectFilterModalBottomSheet(
         onDismissRequest = onDismissRequest,
       )
     }
-
-// TODO KMP
-//    Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }
 

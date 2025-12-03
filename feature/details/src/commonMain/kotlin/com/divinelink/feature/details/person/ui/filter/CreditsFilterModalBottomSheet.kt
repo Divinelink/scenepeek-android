@@ -102,8 +102,6 @@ private fun CreditsFilterBottomSheetContent(
           )
         }
       }
-      // TODO KMP
-//      Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
     }
   }
 }

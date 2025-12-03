@@ -162,11 +162,6 @@ private fun <T : Filter> CreditsFilterBottomSheetContent(
         onClick = onClick,
       )
     }
-
-    item {
-      // TODO KMP
-//      Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
-    }
   }
 }
 

@@ -33,7 +33,5 @@ fun RateModalBottomSheet(
       },
       canClearRate = canClearRate,
     )
-    // TODO KMP
-//    Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }

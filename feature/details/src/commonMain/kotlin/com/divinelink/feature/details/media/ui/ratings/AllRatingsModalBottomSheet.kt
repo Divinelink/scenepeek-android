@@ -34,8 +34,6 @@ fun AllRatingsModalBottomSheet(
       onClick = onClick,
       ratingCount = ratingCount,
     )
-    // TODO KMP
-//    Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }
 
