@@ -2,6 +2,7 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasTestTag
@@ -147,9 +148,13 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD).assertIsDisplayed()
     onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD).assertIsDisplayed()
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).assertIsNotEnabled()
+
     onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD)
       .performClick()
       .performTextInput(loggedInJellyfin.getOrNull()?.profile?.displayName!!)
+
+    onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).assertIsEnabled()
 
     onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
       .performClick()
@@ -229,13 +234,19 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD).assertIsDisplayed()
     onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD).assertIsDisplayed()
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).assertIsNotEnabled()
+
     onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD)
       .performClick()
       .performTextInput(loggedInJellyfin.getOrNull()?.profile?.displayName!!)
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).assertIsNotEnabled()
+
     onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
       .performClick()
       .performTextInput("password")
+
+    onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).assertIsEnabled()
 
     onNodeWithTag(
       TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD,
@@ -311,9 +322,13 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD).assertIsDisplayed()
     onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD).assertIsDisplayed()
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).assertIsNotEnabled()
+
     onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD)
       .performClick()
       .performTextInput(loggedInJellyfin.getOrNull()?.profile?.displayName!!)
+
+    onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).assertIsEnabled()
 
     onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
       .performClick()
