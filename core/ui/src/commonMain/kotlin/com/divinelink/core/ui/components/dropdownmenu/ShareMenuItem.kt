@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_share
+import com.divinelink.core.ui.resources.core_ui_share
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

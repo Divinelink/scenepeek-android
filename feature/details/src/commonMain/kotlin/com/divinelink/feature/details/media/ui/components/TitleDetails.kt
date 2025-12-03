@@ -16,8 +16,8 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.extension.localizeMonthYear
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_number_of_seasons
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_number_of_seasons
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 

@@ -13,11 +13,11 @@ import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_country
-import com.divinelink.core.ui.core_ui_genres
-import com.divinelink.core.ui.core_ui_language
-import com.divinelink.core.ui.core_ui_rating
-import com.divinelink.core.ui.core_ui_rating_selected
+import com.divinelink.core.ui.resources.core_ui_country
+import com.divinelink.core.ui.resources.core_ui_genres
+import com.divinelink.core.ui.resources.core_ui_language
+import com.divinelink.core.ui.resources.core_ui_rating
+import com.divinelink.core.ui.resources.core_ui_rating_selected
 import org.jetbrains.compose.resources.stringResource
 
 object DiscoverFilterChip {

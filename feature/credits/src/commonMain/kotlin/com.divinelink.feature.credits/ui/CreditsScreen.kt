@@ -20,8 +20,8 @@ import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.ObfuscateSpoilersButton
-import com.divinelink.feature.credits.Res
-import com.divinelink.feature.credits.feature_credits_cast_and_crew_title
+import com.divinelink.feature.credits.resources.Res
+import com.divinelink.feature.credits.resources.feature_credits_cast_and_crew_title
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

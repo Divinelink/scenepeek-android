@@ -20,8 +20,12 @@ import com.divinelink.core.ui.TestTags.MEDIA_LIST_TAG
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
-import com.divinelink.core.ui.core_ui_offline_description
-import com.divinelink.core.ui.core_ui_offline_title
+import com.divinelink.core.ui.resources.core_ui_offline_description
+import com.divinelink.core.ui.resources.core_ui_offline_title
+import com.divinelink.feature.search.resources.Res
+import com.divinelink.feature.search.resources.feature_search__initial_description
+import com.divinelink.feature.search.resources.search__empty_result_description
+import com.divinelink.feature.search.resources.search__empty_result_title
 import com.divinelink.feature.search.ui.SearchContent
 import com.divinelink.feature.search.ui.SearchUiState
 import com.google.common.truth.Truth.assertThat

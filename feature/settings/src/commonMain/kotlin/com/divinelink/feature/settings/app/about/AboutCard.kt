@@ -30,29 +30,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.core_model_ic_tmdb
+import com.divinelink.core.model.resources.core_model_ic_tmdb
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_about__ad_free
-import com.divinelink.feature.settings.feature_settings_about__developed_by
-import com.divinelink.feature.settings.feature_settings_about__developer_github_url
-import com.divinelink.feature.settings.feature_settings_about__github
-import com.divinelink.feature.settings.feature_settings_about__no_tracker
-import com.divinelink.feature.settings.feature_settings_about__open_source
-import com.divinelink.feature.settings.feature_settings_about__repository_url
-import com.divinelink.feature.settings.feature_settings_about__source_code
-import com.divinelink.feature.settings.feature_settings_about__tmdb_endorsement
-import com.divinelink.feature.settings.feature_settings_about__version
-import com.divinelink.feature.settings.ic_ad_free
-import com.divinelink.feature.settings.ic_github
-import com.divinelink.feature.settings.ic_open_source
-import com.divinelink.feature.settings.ic_tracker_free
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_about__ad_free
+import com.divinelink.feature.settings.resources.feature_settings_about__developed_by
+import com.divinelink.feature.settings.resources.feature_settings_about__developer_github_url
+import com.divinelink.feature.settings.resources.feature_settings_about__github
+import com.divinelink.feature.settings.resources.feature_settings_about__no_tracker
+import com.divinelink.feature.settings.resources.feature_settings_about__open_source
+import com.divinelink.feature.settings.resources.feature_settings_about__repository_url
+import com.divinelink.feature.settings.resources.feature_settings_about__source_code
+import com.divinelink.feature.settings.resources.feature_settings_about__tmdb_endorsement
+import com.divinelink.feature.settings.resources.feature_settings_about__version
+import com.divinelink.feature.settings.resources.ic_ad_free
+import com.divinelink.feature.settings.resources.ic_github
+import com.divinelink.feature.settings.resources.ic_open_source
+import com.divinelink.feature.settings.resources.ic_tracker_free
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import com.divinelink.core.model.Res as R
+import com.divinelink.core.model.resources.Res as R
 
 @Composable
 fun AboutCard(

@@ -33,7 +33,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_avatar_image_placeholder
+import com.divinelink.core.ui.resources.core_ui_avatar_image_placeholder
 import org.jetbrains.compose.resources.stringResource
 
 object AvatarImage {

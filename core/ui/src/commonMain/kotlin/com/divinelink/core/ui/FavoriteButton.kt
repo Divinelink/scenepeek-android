@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.ui.resources.Res
+import com.divinelink.core.ui.resources.core_ui_mark_as_favorite_button_content_description
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

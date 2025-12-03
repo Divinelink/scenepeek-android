@@ -3,9 +3,9 @@ package com.divinelink.feature.credits.ui
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.credits.SeriesCrewDepartment
 import com.divinelink.core.model.details.Person
-import com.divinelink.feature.credits.Res
-import com.divinelink.feature.credits.feature_credits_cast_missing
-import com.divinelink.feature.credits.feature_credits_crew_missing
+import com.divinelink.feature.credits.resources.Res
+import com.divinelink.feature.credits.resources.feature_credits_cast_missing
+import com.divinelink.feature.credits.resources.feature_credits_crew_missing
 
 sealed interface CreditsUiContent {
   data class Cast(val cast: List<Person>) : CreditsUiContent {

@@ -30,11 +30,11 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.NavigateUpButton
-import com.divinelink.feature.add.to.account.Res
-import com.divinelink.feature.add.to.account.feature_add_to_account_list_title
 import com.divinelink.feature.add.to.account.list.AddToListAction
 import com.divinelink.feature.add.to.account.list.AddToListUiState
 import com.divinelink.feature.add.to.account.list.ui.provider.AddToListUiStateParameterProvider
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 

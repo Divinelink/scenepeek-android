@@ -5,17 +5,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
-import com.divinelink.feature.settings.AppearanceSettingsScreen__black_backgrounds
-import com.divinelink.feature.settings.AppearanceSettingsScreen__black_backgrounds_summary
-import com.divinelink.feature.settings.AppearanceSettingsScreen__material_you
-import com.divinelink.feature.settings.AppearanceSettingsScreen__material_you_summary
-import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsSwitchItem
-import com.divinelink.feature.settings.preferences__appearance
-import com.divinelink.feature.settings.preferences__theme
+import com.divinelink.feature.settings.resources.AppearanceSettingsScreen__black_backgrounds
+import com.divinelink.feature.settings.resources.AppearanceSettingsScreen__black_backgrounds_summary
+import com.divinelink.feature.settings.resources.AppearanceSettingsScreen__material_you
+import com.divinelink.feature.settings.resources.AppearanceSettingsScreen__material_you_summary
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.preferences__appearance
+import com.divinelink.feature.settings.resources.preferences__theme
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

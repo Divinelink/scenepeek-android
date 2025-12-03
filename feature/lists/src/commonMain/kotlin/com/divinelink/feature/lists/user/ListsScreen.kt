@@ -30,9 +30,9 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.NavigateUpButton
-import com.divinelink.core.ui.core_ui_login
-import com.divinelink.feature.lists.Res
-import com.divinelink.feature.lists.feature_lists_title
+import com.divinelink.core.ui.resources.core_ui_login
+import com.divinelink.feature.lists.resources.Res
+import com.divinelink.feature.lists.resources.feature_lists_title
 import com.divinelink.feature.lists.user.ui.ListsContent
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel

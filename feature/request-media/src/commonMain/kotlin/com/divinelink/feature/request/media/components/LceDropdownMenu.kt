@@ -27,10 +27,10 @@ import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_collapse
-import com.divinelink.core.ui.core_ui_expand
-import com.divinelink.core.ui.core_ui_loading
 import com.divinelink.core.ui.extension.format
+import com.divinelink.core.ui.resources.core_ui_collapse
+import com.divinelink.core.ui.resources.core_ui_expand
+import com.divinelink.core.ui.resources.core_ui_loading
 import com.divinelink.feature.request.media.LCEState
 import org.jetbrains.compose.resources.stringResource
 

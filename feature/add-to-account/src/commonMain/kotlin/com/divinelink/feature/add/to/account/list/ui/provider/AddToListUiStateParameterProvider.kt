@@ -9,12 +9,12 @@ import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.media.toStub
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.core_ui_login
-import com.divinelink.feature.add.to.account.Res
-import com.divinelink.feature.add.to.account.feature_add_to_account_item_added_to_list_failure
-import com.divinelink.feature.add.to.account.feature_add_to_account_item_added_to_list_success
-import com.divinelink.feature.add.to.account.feature_add_to_account_list_login_description
+import com.divinelink.core.ui.resources.core_ui_login
 import com.divinelink.feature.add.to.account.list.AddToListUiState
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_item_added_to_list_failure
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_item_added_to_list_success
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_login_description
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport

@@ -19,6 +19,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekNavigationDefaults
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.scaffold.resources.Res
+import com.divinelink.core.scaffold.resources.top_level_navigation_content_description_selected
+import com.divinelink.core.scaffold.resources.top_level_navigation_content_description_unselected
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.navigation.ScenePeekNavigationBar

@@ -11,7 +11,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_tmdb_user_score
+import com.divinelink.core.ui.resources.core_ui_tmdb_user_score
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

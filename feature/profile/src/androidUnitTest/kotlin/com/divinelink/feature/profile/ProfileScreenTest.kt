@@ -16,7 +16,7 @@ import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_login
+import com.divinelink.core.ui.resources.core_ui_login
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
 import org.jetbrains.compose.resources.getString

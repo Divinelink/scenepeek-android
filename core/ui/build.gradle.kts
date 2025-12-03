@@ -42,7 +42,7 @@ kotlin {
 
 compose.resources {
   publicResClass = true
-  packageOfResClass = "com.divinelink.core.ui"
+  packageOfResClass = "com.divinelink.core.ui.resources"
   generateResClass = auto
 }
 

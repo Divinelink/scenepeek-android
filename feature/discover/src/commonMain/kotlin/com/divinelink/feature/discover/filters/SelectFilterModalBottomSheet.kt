@@ -46,11 +46,11 @@ import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.core_ui_apply_filters
-import com.divinelink.core.ui.core_ui_clear_all
-import com.divinelink.core.ui.core_ui_country
-import com.divinelink.core.ui.core_ui_genres
-import com.divinelink.core.ui.core_ui_language
+import com.divinelink.core.ui.resources.core_ui_apply_filters
+import com.divinelink.core.ui.resources.core_ui_clear_all
+import com.divinelink.core.ui.resources.core_ui_country
+import com.divinelink.core.ui.resources.core_ui_genres
+import com.divinelink.core.ui.resources.core_ui_language
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.FilterType
 import com.divinelink.feature.discover.ui.SearchField

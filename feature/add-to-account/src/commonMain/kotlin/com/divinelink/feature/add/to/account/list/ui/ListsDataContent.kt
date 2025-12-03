@@ -24,9 +24,9 @@ import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.list.ListItemCard
-import com.divinelink.feature.add.to.account.Res
-import com.divinelink.feature.add.to.account.feature_add_to_account_empty_lists
 import com.divinelink.feature.add.to.account.list.AddToListAction
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_empty_lists
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

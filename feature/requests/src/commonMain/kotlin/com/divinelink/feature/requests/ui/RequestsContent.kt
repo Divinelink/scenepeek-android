@@ -38,8 +38,8 @@ import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.skeleton.RequestItemSkeleton
 import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.RequestsUiState
-import com.divinelink.feature.requests.Res
-import com.divinelink.feature.requests.feature_requests_no_requests_available
+import com.divinelink.feature.requests.resources.Res
+import com.divinelink.feature.requests.resources.feature_requests_no_requests_available
 import com.divinelink.feature.requests.ui.provider.RequestsUiStateParameterProvider
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource

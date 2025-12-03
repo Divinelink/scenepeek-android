@@ -19,6 +19,6 @@ kotlin {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.feature.search"
+  packageOfResClass = "com.divinelink.feature.search.resources"
   generateResClass = auto
 }

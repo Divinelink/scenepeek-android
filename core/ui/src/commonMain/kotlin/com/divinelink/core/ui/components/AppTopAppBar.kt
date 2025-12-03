@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_navigate_up_button_content_description
 import com.divinelink.core.ui.getString
+import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)

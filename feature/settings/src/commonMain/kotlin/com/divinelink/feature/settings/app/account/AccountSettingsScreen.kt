@@ -10,11 +10,11 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
-import com.divinelink.core.ui.core_ui_cancel
-import com.divinelink.feature.settings.Res
+import com.divinelink.core.ui.resources.core_ui_cancel
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.feature_settings_logout
-import com.divinelink.feature.settings.preferences__account
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_logout
+import com.divinelink.feature.settings.resources.preferences__account
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

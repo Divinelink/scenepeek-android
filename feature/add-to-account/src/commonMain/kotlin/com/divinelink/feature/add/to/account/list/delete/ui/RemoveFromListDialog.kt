@@ -16,11 +16,11 @@ import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_cancel
-import com.divinelink.core.ui.core_ui_delete
 import com.divinelink.core.ui.fromHtml
-import com.divinelink.feature.add.to.account.Res
-import com.divinelink.feature.add.to.account.feature_add_to_account_remove_items_confirmation
+import com.divinelink.core.ui.resources.core_ui_cancel
+import com.divinelink.core.ui.resources.core_ui_delete
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_items_confirmation
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.clear_filters_button_content_description
+import com.divinelink.core.ui.resources.clear_filters_button_content_description
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

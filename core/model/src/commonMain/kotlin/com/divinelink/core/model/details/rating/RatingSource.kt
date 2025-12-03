@@ -1,9 +1,9 @@
 package com.divinelink.core.model.details.rating
 
-import com.divinelink.core.model.Res
-import com.divinelink.core.model.core_model_ic_imdb
-import com.divinelink.core.model.core_model_ic_tmdb
-import com.divinelink.core.model.core_model_ic_trakt
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.core_model_ic_imdb
+import com.divinelink.core.model.resources.core_model_ic_tmdb
+import com.divinelink.core.model.resources.core_model_ic_trakt
 import org.jetbrains.compose.resources.DrawableResource
 
 enum class RatingSource(

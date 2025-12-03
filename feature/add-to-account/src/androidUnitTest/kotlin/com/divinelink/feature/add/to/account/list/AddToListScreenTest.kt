@@ -27,11 +27,11 @@ import com.divinelink.core.testing.usecase.TestAddItemToListUseCase
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_login
-import com.divinelink.feature.add.to.account.Res
-import com.divinelink.feature.add.to.account.feature_add_to_account_empty_lists
-import com.divinelink.feature.add.to.account.feature_add_to_account_list_title
+import com.divinelink.core.ui.resources.core_ui_login
 import com.divinelink.feature.add.to.account.list.ui.AddToListScreen
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_empty_lists
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_title
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import org.jetbrains.compose.resources.getString

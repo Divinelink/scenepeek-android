@@ -11,7 +11,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.ToolbarState
-import com.divinelink.core.ui.core_ui_toolbar_search_placeholder
+import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 

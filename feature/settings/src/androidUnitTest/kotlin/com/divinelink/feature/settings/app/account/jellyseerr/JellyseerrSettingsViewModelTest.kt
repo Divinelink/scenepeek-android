@@ -18,9 +18,9 @@ import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_could_not_connect
-import com.divinelink.feature.settings.feature_settings_invalid_credentials
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_could_not_connect
+import com.divinelink.feature.settings.resources.feature_settings_invalid_credentials
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

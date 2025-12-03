@@ -1,6 +1,5 @@
 package com.divinelink.core.model.details.media
 
-import com.divinelink.core.model.Res
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
@@ -11,10 +10,11 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
-import com.divinelink.core.model.fatal_error_fetching_details
-import com.divinelink.core.model.general_error_message
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.fatal_error_fetching_details
+import com.divinelink.core.model.resources.general_error_message
 
 /**
  * A collection of possible results for an attempt to fetch movie details,

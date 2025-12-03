@@ -17,12 +17,12 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_eye
-import com.divinelink.core.ui.core_ui_eye_off
-import com.divinelink.core.ui.core_ui_hidden_spoilers_button
-import com.divinelink.core.ui.core_ui_hide_total_episodes_item
-import com.divinelink.core.ui.core_ui_show_total_episodes_item
-import com.divinelink.core.ui.core_ui_visible_spoilers_button
+import com.divinelink.core.ui.resources.core_ui_eye
+import com.divinelink.core.ui.resources.core_ui_eye_off
+import com.divinelink.core.ui.resources.core_ui_hidden_spoilers_button
+import com.divinelink.core.ui.resources.core_ui_hide_total_episodes_item
+import com.divinelink.core.ui.resources.core_ui_show_total_episodes_item
+import com.divinelink.core.ui.resources.core_ui_visible_spoilers_button
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 

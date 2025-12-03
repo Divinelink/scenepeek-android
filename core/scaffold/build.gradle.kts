@@ -16,6 +16,6 @@ kotlin {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.core.scaffold"
+  packageOfResClass = "com.divinelink.core.scaffold.resources"
   generateResClass = auto
 }

@@ -8,11 +8,11 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_navigate_up_button_content_description
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_details_preferences
-import com.divinelink.feature.settings.feature_settings_link_handling
-import com.divinelink.feature.settings.preferences__appearance
+import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_details_preferences
+import com.divinelink.feature.settings.resources.feature_settings_link_handling
+import com.divinelink.feature.settings.resources.preferences__appearance
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test

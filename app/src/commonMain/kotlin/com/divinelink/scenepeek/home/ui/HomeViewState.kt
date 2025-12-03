@@ -8,10 +8,10 @@ import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
-import com.divinelink.core.ui.no_results
-import com.divinelink.scenepeek.Res
-import com.divinelink.scenepeek.home__empty_filtered_result_description
-import com.divinelink.scenepeek.home__empty_filtered_result_title
+import com.divinelink.core.ui.resources.no_results
+import com.divinelink.scenepeek.resources.Res
+import com.divinelink.scenepeek.resources.home__empty_filtered_result_description
+import com.divinelink.scenepeek.resources.home__empty_filtered_result_title
 
 @Immutable
 data class HomeViewState(

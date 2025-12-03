@@ -65,14 +65,14 @@ import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
-import com.divinelink.feature.settings.feature_settings_about
-import com.divinelink.feature.settings.feature_settings_account
-import com.divinelink.feature.settings.feature_settings_details_preferences
-import com.divinelink.feature.settings.feature_settings_jellyseerr_integration
-import com.divinelink.feature.settings.feature_settings_link_handling
-import com.divinelink.feature.settings.login
-import com.divinelink.feature.settings.preferences__appearance
-import com.divinelink.feature.settings.settings
+import com.divinelink.feature.settings.resources.feature_settings_about
+import com.divinelink.feature.settings.resources.feature_settings_account
+import com.divinelink.feature.settings.resources.feature_settings_details_preferences
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_integration
+import com.divinelink.feature.settings.resources.feature_settings_link_handling
+import com.divinelink.feature.settings.resources.login
+import com.divinelink.feature.settings.resources.preferences__appearance
+import com.divinelink.feature.settings.resources.settings
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.scenepeek.di.appModule
 import com.divinelink.scenepeek.di.navigationModule
@@ -89,7 +89,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.feature.settings.Res as R
+import com.divinelink.feature.settings.resources.Res as R
 
 class ScenePeekSettingsNavHostTest : ComposeTest() {
 

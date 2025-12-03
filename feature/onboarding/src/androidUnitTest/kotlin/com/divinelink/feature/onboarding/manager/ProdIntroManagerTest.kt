@@ -4,17 +4,17 @@ import app.cash.turbine.test
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.testing.storage.TestOnboardingStorage
-import com.divinelink.feature.onboarding.feature_onboarding_changelog
-import com.divinelink.feature.onboarding.feature_onboarding_v22_feature_profile
-import com.divinelink.feature.onboarding.feature_onboarding_v22_feature_tmdb_lists
-import com.divinelink.feature.onboarding.feature_onboarding_v22_fix_encryption
-import com.divinelink.feature.onboarding.feature_onboarding_v24_add_loading_indicator
-import com.divinelink.feature.onboarding.feature_onboarding_v24_retry_failed_api_calls
-import com.divinelink.feature.onboarding.feature_onboarding_v24_update_changelog
+import com.divinelink.feature.onboarding.resources.feature_onboarding_changelog
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v22_feature_profile
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v22_feature_tmdb_lists
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v22_fix_encryption
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v24_add_loading_indicator
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v24_retry_failed_api_calls
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v24_update_changelog
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
-import com.divinelink.feature.onboarding.Res as R
+import com.divinelink.feature.onboarding.resources.Res as R
 
 class ProdIntroManagerTest {
 

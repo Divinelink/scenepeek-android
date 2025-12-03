@@ -10,8 +10,8 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_backdrop_image_placeholder
 import com.divinelink.core.ui.rememberConstants
+import com.divinelink.core.ui.resources.core_ui_backdrop_image_placeholder
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

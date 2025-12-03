@@ -12,12 +12,12 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
-import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsTextItem
-import com.divinelink.feature.settings.feature_settings_additional_features
-import com.divinelink.feature.settings.feature_settings_additional_features_summary
 import com.divinelink.feature.settings.provider.AccountDetailsParameterProvider
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_additional_features
+import com.divinelink.feature.settings.resources.feature_settings_additional_features_summary
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 

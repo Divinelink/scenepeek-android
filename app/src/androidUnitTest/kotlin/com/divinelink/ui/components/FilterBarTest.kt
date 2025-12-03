@@ -7,9 +7,9 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.clear_filters_button_content_description
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.core.ui.components.FilterBar
+import com.divinelink.core.ui.resources.clear_filters_button_content_description
 import com.google.common.truth.Truth.assertThat
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test

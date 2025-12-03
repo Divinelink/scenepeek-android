@@ -36,10 +36,21 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_error_retry
+import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.details.resources.details__added_to_watchlist
+import com.divinelink.feature.details.resources.details__must_be_logged_in_to_rate
+import com.divinelink.feature.details.resources.details__must_be_logged_in_to_watchlist
+import com.divinelink.feature.details.resources.details__rating_deleted_successfully
+import com.divinelink.feature.details.resources.details__rating_submitted_successfully
+import com.divinelink.feature.details.resources.details__removed_from_watchlist
+import com.divinelink.feature.details.resources.feature_details_jellyseerr_failed_request_delete
+import com.divinelink.feature.details.resources.feature_details_jellyseerr_failure_media_delete
+import com.divinelink.feature.details.resources.feature_details_jellyseerr_success_media_delete
+import com.divinelink.feature.details.resources.feature_details_jellyseerr_success_request_delete
+import com.divinelink.feature.details.resources.login
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
@@ -47,7 +58,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
-import com.divinelink.feature.details.Res as R
+import com.divinelink.feature.details.resources.Res as R
 
 class DetailsViewModelTest {
 

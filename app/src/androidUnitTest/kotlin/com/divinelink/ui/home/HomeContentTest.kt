@@ -13,12 +13,12 @@ import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.core_ui_retry
-import com.divinelink.scenepeek.Res
+import com.divinelink.core.ui.resources.core_ui_retry
 import com.divinelink.scenepeek.home.ui.HomeContent
 import com.divinelink.scenepeek.home.ui.HomeViewState
-import com.divinelink.scenepeek.home__empty_filtered_result_description
-import com.divinelink.scenepeek.home__empty_filtered_result_title
+import com.divinelink.scenepeek.resources.Res
+import com.divinelink.scenepeek.resources.home__empty_filtered_result_description
+import com.divinelink.scenepeek.resources.home__empty_filtered_result_title
 import com.google.common.truth.Truth.assertThat
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test

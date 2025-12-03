@@ -14,6 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.component.ScenePeekNavigationDefaults
+import com.divinelink.core.scaffold.resources.Res
+import com.divinelink.core.scaffold.resources.top_level_navigation_content_description_selected
+import com.divinelink.core.scaffold.resources.top_level_navigation_content_description_unselected
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

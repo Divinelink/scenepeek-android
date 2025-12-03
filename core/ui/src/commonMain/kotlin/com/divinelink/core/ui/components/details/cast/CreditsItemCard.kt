@@ -32,11 +32,11 @@ import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.conditional
-import com.divinelink.core.ui.core_ui_episode_count
-import com.divinelink.core.ui.core_ui_ic_female_person_placeholder
-import com.divinelink.core.ui.core_ui_ic_person_placeholder
 import com.divinelink.core.ui.credit.shouldHideEpisodeCount
 import com.divinelink.core.ui.provider.PersonParameterProvider
+import com.divinelink.core.ui.resources.core_ui_episode_count
+import com.divinelink.core.ui.resources.core_ui_ic_female_person_placeholder
+import com.divinelink.core.ui.resources.core_ui_ic_person_placeholder
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter

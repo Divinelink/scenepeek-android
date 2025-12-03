@@ -33,9 +33,9 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.NavigateUpButton
-import com.divinelink.core.ui.core_ui_login
-import com.divinelink.core.ui.core_ui_section_ratings
-import com.divinelink.core.ui.core_ui_section_watchlist
+import com.divinelink.core.ui.resources.core_ui_login
+import com.divinelink.core.ui.resources.core_ui_section_ratings
+import com.divinelink.core.ui.resources.core_ui_section_watchlist
 import com.divinelink.feature.user.data.ui.provider.UserDataUiStateParameterProvider
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter

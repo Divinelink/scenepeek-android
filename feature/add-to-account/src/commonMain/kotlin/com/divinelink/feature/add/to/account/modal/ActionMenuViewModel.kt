@@ -10,11 +10,11 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.shareUrl
 import com.divinelink.core.model.media.toStub
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_error_retry
+import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.add.to.account.Res
-import com.divinelink.feature.add.to.account.feature_add_to_account_remove_from_list_offline_error
-import com.divinelink.feature.add.to.account.feature_add_to_account_remove_single_item_success
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_from_list_offline_error
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_single_item_success
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

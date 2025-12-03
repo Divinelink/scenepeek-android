@@ -33,13 +33,13 @@ import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_close_multiple_select
-import com.divinelink.core.ui.core_ui_deselect_all
-import com.divinelink.core.ui.core_ui_select
-import com.divinelink.core.ui.core_ui_select_all
-import com.divinelink.feature.add.to.account.feature_add_to_account_list_title
+import com.divinelink.core.ui.resources.core_ui_close_multiple_select
+import com.divinelink.core.ui.resources.core_ui_deselect_all
+import com.divinelink.core.ui.resources.core_ui_select
+import com.divinelink.core.ui.resources.core_ui_select_all
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuViewModel
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_title
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
@@ -49,7 +49,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.feature.add.to.account.Res as R
+import com.divinelink.feature.add.to.account.resources.Res as R
 
 class ListDetailsScreenTest : ComposeTest() {
 
@@ -62,7 +62,7 @@ class ListDetailsScreenTest : ComposeTest() {
   @BeforeTest
   fun setup() {
     startKoin {
-//      androidContext(composeTestRule.activity)
+      // Do nothing
     }
 
     preferencesRepository = TestPreferencesRepository()

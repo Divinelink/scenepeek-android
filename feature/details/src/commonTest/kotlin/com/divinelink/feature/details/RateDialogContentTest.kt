@@ -10,6 +10,10 @@ import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.fromHtml
 import com.divinelink.feature.details.media.ui.rate.RateDialogContent
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.details__add_rating_description
+import com.divinelink.feature.details.resources.details__clear_my_rating
+import com.divinelink.feature.details.resources.details__submit_rating_button
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test

@@ -20,6 +20,6 @@ kotlin {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.feature.tmdb.auth"
+  packageOfResClass = "com.divinelink.feature.tmdb.auth.resources"
   generateResClass = auto
 }

@@ -11,6 +11,9 @@ import com.divinelink.feature.onboarding.manager.IntroSections
 import com.divinelink.feature.onboarding.manager.IntroSections.jellyseerr
 import com.divinelink.feature.onboarding.manager.IntroSections.linkHandling
 import com.divinelink.feature.onboarding.manager.IntroSections.tmdb
+import com.divinelink.feature.onboarding.resources.Res
+import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
+import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
 import com.divinelink.feature.onboarding.ui.OnboardingUiState
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

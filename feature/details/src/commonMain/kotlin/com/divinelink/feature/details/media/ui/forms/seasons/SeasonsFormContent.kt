@@ -33,10 +33,10 @@ import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.JellyseerrStatusPill
-import com.divinelink.core.ui.core_ui_episode_count
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_no_seasons_available
-import com.divinelink.feature.details.feature_details_no_seasons_available_desc
+import com.divinelink.core.ui.resources.core_ui_episode_count
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_no_seasons_available
+import com.divinelink.feature.details.resources.feature_details_no_seasons_available_desc
 import org.jetbrains.compose.resources.pluralStringResource
 
 @Composable

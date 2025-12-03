@@ -13,15 +13,15 @@ import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_read_more
-import com.divinelink.core.ui.core_ui_show_less
-import com.divinelink.feature.details.feature_details_biography_section
-import com.divinelink.feature.details.feature_details_person_blank_biography
-import com.divinelink.feature.details.feature_details_personal_info_section
+import com.divinelink.core.ui.resources.core_ui_read_more
+import com.divinelink.core.ui.resources.core_ui_show_less
+import com.divinelink.feature.details.resources.feature_details_biography_section
+import com.divinelink.feature.details.resources.feature_details_person_blank_biography
+import com.divinelink.feature.details.resources.feature_details_personal_info_section
 import org.jetbrains.compose.resources.getString
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.feature.details.Res as R
+import com.divinelink.feature.details.resources.Res as R
 
 class PersonalDetailsTest : ComposeTest() {
 

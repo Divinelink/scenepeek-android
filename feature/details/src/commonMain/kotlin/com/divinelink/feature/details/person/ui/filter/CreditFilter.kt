@@ -1,8 +1,8 @@
 package com.divinelink.feature.details.person.ui.filter
 
 import com.divinelink.core.model.UIText
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_filter_sort_release_date
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_filter_sort_release_date
 
 sealed class CreditFilter(val title: UIText) {
 

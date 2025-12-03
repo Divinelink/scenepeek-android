@@ -30,11 +30,11 @@ import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.AvatarImage
-import com.divinelink.core.ui.core_ui_logout
 import com.divinelink.core.ui.extension.localizeIsoDate
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_jellyseerr_joined_on
-import com.divinelink.feature.settings.feature_settings_jellyseerr_total_requests
+import com.divinelink.core.ui.resources.core_ui_logout
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_joined_on
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_total_requests
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

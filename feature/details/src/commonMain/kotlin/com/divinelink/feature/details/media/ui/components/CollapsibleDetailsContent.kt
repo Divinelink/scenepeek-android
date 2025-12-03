@@ -43,8 +43,8 @@ import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.mediaImageDropShadow
 import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.core.ui.rating.YourRatingText
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.details__add_rating
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.details__add_rating
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

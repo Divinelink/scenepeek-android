@@ -29,11 +29,11 @@ import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.account.getAvatarUrl
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.AvatarImage
-import com.divinelink.core.ui.core_ui_login
 import com.divinelink.core.ui.rememberConstants
-import com.divinelink.feature.profile.Res
-import com.divinelink.feature.profile.feature_profile_login_description
-import com.divinelink.feature.profile.feature_profile_my_profile
+import com.divinelink.core.ui.resources.core_ui_login
+import com.divinelink.feature.profile.resources.Res
+import com.divinelink.feature.profile.resources.feature_profile_login_description
+import com.divinelink.feature.profile.resources.feature_profile_my_profile
 import com.valentinilk.shimmer.shimmer
 import org.jetbrains.compose.resources.stringResource
 

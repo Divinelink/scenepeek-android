@@ -14,11 +14,11 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.expanding.ExpandingComponents
 import com.divinelink.core.ui.components.expanding.ExpandingText
-import com.divinelink.core.ui.core_ui_read_more
+import com.divinelink.core.ui.resources.core_ui_read_more
 import com.divinelink.core.ui.shimmer.ShimmerLine
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_biography_section
-import com.divinelink.feature.details.feature_details_person_blank_biography
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_biography_section
+import com.divinelink.feature.details.resources.feature_details_person_blank_biography
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

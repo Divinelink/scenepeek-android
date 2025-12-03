@@ -19,6 +19,9 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.feature.user.data.resources.Res
+import com.divinelink.feature.user.data.resources.feature_user_data_login_rated_description
+import com.divinelink.feature.user.data.resources.feature_user_data_login_watchlist_description
 
 @Composable
 fun UserDataErrorContent(

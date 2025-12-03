@@ -17,11 +17,11 @@ import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestCreateListUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_delete
-import com.divinelink.core.ui.core_ui_select_media_backdrop_image
+import com.divinelink.core.ui.resources.core_ui_delete
+import com.divinelink.core.ui.resources.core_ui_select_media_backdrop_image
 import com.divinelink.feature.lists.create.backdrop.SelectBackdropViewModel
 import com.divinelink.feature.lists.create.ui.CreateListScreen
-import com.divinelink.feature.lists.feature_lists_delete_list
+import com.divinelink.feature.lists.resources.feature_lists_delete_list
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
 import org.jetbrains.compose.resources.getString
@@ -31,7 +31,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.feature.lists.Res as R
+import com.divinelink.feature.lists.resources.Res as R
 
 class CreateListScreenTest : ComposeTest() {
 
@@ -41,7 +41,7 @@ class CreateListScreenTest : ComposeTest() {
   @BeforeTest
   fun setup() {
     startKoin {
-//      androidContext(composeTestRule.activity)
+      // Do nothing
     }
   }
 

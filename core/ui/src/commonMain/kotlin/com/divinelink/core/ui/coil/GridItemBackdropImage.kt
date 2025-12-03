@@ -20,9 +20,9 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_backdrop_image_placeholder
-import com.divinelink.core.ui.core_ui_ic_image
 import com.divinelink.core.ui.rememberConstants
+import com.divinelink.core.ui.resources.core_ui_backdrop_image_placeholder
+import com.divinelink.core.ui.resources.core_ui_ic_image
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 

@@ -36,13 +36,13 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.AvatarImage
-import com.divinelink.core.ui.core_ui_logout
 import com.divinelink.core.ui.rememberConstants
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_not_logged_in
-import com.divinelink.feature.settings.feature_settings_sign_in_to_access_features
-import com.divinelink.feature.settings.feature_settings_tmdb_account
-import com.divinelink.feature.settings.login
+import com.divinelink.core.ui.resources.core_ui_logout
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_not_logged_in
+import com.divinelink.feature.settings.resources.feature_settings_sign_in_to_access_features
+import com.divinelink.feature.settings.resources.feature_settings_tmdb_account
+import com.divinelink.feature.settings.resources.login
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

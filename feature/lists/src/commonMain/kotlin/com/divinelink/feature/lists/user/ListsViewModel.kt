@@ -11,8 +11,8 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.feature.lists.Res
-import com.divinelink.feature.lists.feature_lists_login_description
+import com.divinelink.feature.lists.resources.Res
+import com.divinelink.feature.lists.resources.feature_lists_login_description
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

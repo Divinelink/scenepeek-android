@@ -17,16 +17,16 @@ import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.app.SettingsScreen
-import com.divinelink.feature.settings.feature_settings_about
-import com.divinelink.feature.settings.feature_settings_about__developer_github_url
-import com.divinelink.feature.settings.feature_settings_about__privacy_policy
-import com.divinelink.feature.settings.feature_settings_about__repository_url
-import com.divinelink.feature.settings.feature_settings_about__source_code
-import com.divinelink.feature.settings.feature_settings_about__version
+import com.divinelink.feature.settings.resources.feature_settings_about
+import com.divinelink.feature.settings.resources.feature_settings_about__developer_github_url
+import com.divinelink.feature.settings.resources.feature_settings_about__privacy_policy
+import com.divinelink.feature.settings.resources.feature_settings_about__repository_url
+import com.divinelink.feature.settings.resources.feature_settings_about__source_code
+import com.divinelink.feature.settings.resources.feature_settings_about__version
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
-import com.divinelink.feature.settings.Res as R
+import com.divinelink.feature.settings.resources.Res as R
 
 class AboutSettingsScreenTest : ComposeTest() {
 

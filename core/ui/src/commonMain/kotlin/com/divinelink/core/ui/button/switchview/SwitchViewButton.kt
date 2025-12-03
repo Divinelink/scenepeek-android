@@ -24,7 +24,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.LocalUiPreferences
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.composition.rememberViewModePreferences
-import com.divinelink.core.ui.core_ui_change_layout_button
+import com.divinelink.core.ui.resources.core_ui_change_layout_button
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

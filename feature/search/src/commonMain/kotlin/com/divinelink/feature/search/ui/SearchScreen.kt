@@ -33,8 +33,8 @@ import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.core.ui.components.extensions.showExpandedFab
-import com.divinelink.feature.search.Res
-import com.divinelink.feature.search.feature_search_settings_button_content_description
+import com.divinelink.feature.search.resources.Res
+import com.divinelink.feature.search.resources.feature_search_settings_button_content_description
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

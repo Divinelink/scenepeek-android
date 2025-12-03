@@ -28,8 +28,8 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.conditional
-import com.divinelink.core.ui.core_ui_show_less
-import com.divinelink.core.ui.core_ui_show_more
+import com.divinelink.core.ui.resources.core_ui_show_less
+import com.divinelink.core.ui.resources.core_ui_show_more
 import org.jetbrains.compose.resources.stringResource
 
 private const val MINIMUM_MAX_LINES = 6

@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_private
-import com.divinelink.core.ui.core_ui_public
+import com.divinelink.core.ui.resources.core_ui_private
+import com.divinelink.core.ui.resources.core_ui_public
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_read_more
+import com.divinelink.core.ui.resources.core_ui_read_more
 import org.jetbrains.compose.resources.stringResource
 
 private const val MINIMIZED_MAX_LINES = 6

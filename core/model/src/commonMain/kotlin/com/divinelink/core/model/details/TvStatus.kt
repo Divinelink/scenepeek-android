@@ -1,10 +1,10 @@
 package com.divinelink.core.model.details
 
-import com.divinelink.core.model.Res
-import com.divinelink.core.model.core_model_tv_status_canceled
-import com.divinelink.core.model.core_model_tv_status_continuing
-import com.divinelink.core.model.core_model_tv_status_ended
-import com.divinelink.core.model.core_model_tv_status_unknown
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.core_model_tv_status_canceled
+import com.divinelink.core.model.resources.core_model_tv_status_continuing
+import com.divinelink.core.model.resources.core_model_tv_status_ended
+import com.divinelink.core.model.resources.core_model_tv_status_unknown
 import org.jetbrains.compose.resources.StringResource
 
 enum class TvStatus(

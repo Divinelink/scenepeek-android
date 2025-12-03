@@ -27,11 +27,11 @@ import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.coil.AvatarImage
-import com.divinelink.core.ui.core_ui_ic_jellyseerr
-import com.divinelink.feature.settings.Res
+import com.divinelink.core.ui.resources.core_ui_ic_jellyseerr
 import com.divinelink.feature.settings.components.SettingsClickItem
-import com.divinelink.feature.settings.feature_settings_jellyseerr_integration
-import com.divinelink.feature.settings.feature_settings_logged_in
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_integration
+import com.divinelink.feature.settings.resources.feature_settings_logged_in
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

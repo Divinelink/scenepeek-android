@@ -64,10 +64,10 @@ import com.divinelink.feature.add.to.account.list.delete.ui.RemoveFromListDialog
 import com.divinelink.feature.add.to.account.list.delete.ui.RemoveItem
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuModal
-import com.divinelink.feature.lists.Res
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsUiState
-import com.divinelink.feature.lists.feature_lists_empty_list
+import com.divinelink.feature.lists.resources.Res
+import com.divinelink.feature.lists.resources.feature_lists_empty_list
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 

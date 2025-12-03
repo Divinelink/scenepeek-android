@@ -3,8 +3,8 @@ package com.divinelink.core.ui.extension
 import androidx.compose.runtime.Composable
 import com.divinelink.core.model.locale.Month
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_localized_date_full
-import com.divinelink.core.ui.core_ui_localized_month_year
+import com.divinelink.core.ui.resources.core_ui_localized_date_full
+import com.divinelink.core.ui.resources.core_ui_localized_month_year
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.number

@@ -23,8 +23,8 @@ import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.ListItemBackdropImage
 import com.divinelink.core.ui.components.VisibilityBadge
-import com.divinelink.core.ui.core_ui_added_on_list
-import com.divinelink.core.ui.core_ui_item_count
+import com.divinelink.core.ui.resources.core_ui_added_on_list
+import com.divinelink.core.ui.resources.core_ui_item_count
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 

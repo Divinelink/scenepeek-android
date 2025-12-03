@@ -53,15 +53,15 @@ import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.app.account.jellyseerr.preview.JellyseerrLoginStatePreviewParameterProvider
-import com.divinelink.feature.settings.feature_settings_email
-import com.divinelink.feature.settings.feature_settings_jellyseerr_address_placeholder
-import com.divinelink.feature.settings.feature_settings_jellyseerr_description
-import com.divinelink.feature.settings.feature_settings_jellyseerr_server_url
-import com.divinelink.feature.settings.feature_settings_sign_in_with
-import com.divinelink.feature.settings.feature_settings_signing_in
-import com.divinelink.feature.settings.feature_settings_username
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_email
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_address_placeholder
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_description
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_server_url
+import com.divinelink.feature.settings.resources.feature_settings_sign_in_with
+import com.divinelink.feature.settings.resources.feature_settings_signing_in
+import com.divinelink.feature.settings.resources.feature_settings_username
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 

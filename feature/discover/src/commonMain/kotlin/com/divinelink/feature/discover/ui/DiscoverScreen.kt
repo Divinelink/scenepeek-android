@@ -27,7 +27,7 @@ import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.NavigateUpButton
-import com.divinelink.core.ui.core_ui_discover
+import com.divinelink.core.ui.resources.core_ui_discover
 import com.divinelink.feature.discover.DiscoverViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel

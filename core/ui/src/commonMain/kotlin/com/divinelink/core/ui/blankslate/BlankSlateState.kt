@@ -1,18 +1,18 @@
 package com.divinelink.core.ui.blankslate
 
-import com.divinelink.core.model.Res
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.core_model_ic_tmdb
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.core_model_ic_tmdb
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_error_contact_description
-import com.divinelink.core.ui.core_ui_error_generic_description
-import com.divinelink.core.ui.core_ui_error_generic_title
-import com.divinelink.core.ui.core_ui_login_title
-import com.divinelink.core.ui.core_ui_offline_description
-import com.divinelink.core.ui.core_ui_offline_title
-import com.divinelink.core.ui.core_ui_retry
-import com.divinelink.core.ui.no_connection
+import com.divinelink.core.ui.resources.core_ui_error_contact_description
+import com.divinelink.core.ui.resources.core_ui_error_generic_description
+import com.divinelink.core.ui.resources.core_ui_error_generic_title
+import com.divinelink.core.ui.resources.core_ui_login_title
+import com.divinelink.core.ui.resources.core_ui_offline_description
+import com.divinelink.core.ui.resources.core_ui_offline_title
+import com.divinelink.core.ui.resources.core_ui_retry
+import com.divinelink.core.ui.resources.no_connection
 import org.jetbrains.compose.resources.DrawableResource
 
 sealed class BlankSlateState(

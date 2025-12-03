@@ -23,6 +23,6 @@ kotlin {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.feature.lists"
+  packageOfResClass = "com.divinelink.feature.lists.resources"
   generateResClass = auto
 }

@@ -26,9 +26,9 @@ import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.conditional
-import com.divinelink.core.ui.core_ui_character_episode_episodes
-import com.divinelink.core.ui.core_ui_ic_female_person_placeholder
-import com.divinelink.core.ui.core_ui_ic_person_placeholder
+import com.divinelink.core.ui.resources.core_ui_character_episode_episodes
+import com.divinelink.core.ui.resources.core_ui_ic_female_person_placeholder
+import com.divinelink.core.ui.resources.core_ui_ic_person_placeholder
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.pluralStringResource
 

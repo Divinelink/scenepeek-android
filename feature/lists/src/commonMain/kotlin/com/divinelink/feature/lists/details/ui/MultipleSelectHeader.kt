@@ -31,12 +31,12 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_close_multiple_select
-import com.divinelink.core.ui.core_ui_delete
-import com.divinelink.core.ui.core_ui_deselect_all
-import com.divinelink.core.ui.core_ui_select_all
-import com.divinelink.feature.lists.Res
-import com.divinelink.feature.lists.feature_lists_selected
+import com.divinelink.core.ui.resources.core_ui_close_multiple_select
+import com.divinelink.core.ui.resources.core_ui_delete
+import com.divinelink.core.ui.resources.core_ui_deselect_all
+import com.divinelink.core.ui.resources.core_ui_select_all
+import com.divinelink.feature.lists.resources.Res
+import com.divinelink.feature.lists.resources.feature_lists_selected
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

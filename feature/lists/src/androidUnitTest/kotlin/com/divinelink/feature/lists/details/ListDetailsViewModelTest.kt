@@ -9,10 +9,10 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.add.to.account.Res
-import com.divinelink.feature.add.to.account.feature_add_to_account_remove_batch_items_success
-import com.divinelink.feature.add.to.account.feature_add_to_account_remove_from_list_offline_error
-import com.divinelink.feature.add.to.account.feature_add_to_account_remove_single_item_success
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_batch_items_success
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_from_list_offline_error
+import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_single_item_success
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test

@@ -21,9 +21,9 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_connected
-import com.divinelink.core.ui.core_ui_not_connected
 import com.divinelink.core.ui.provider.NetworkStateParameterProvider
+import com.divinelink.core.ui.resources.core_ui_connected
+import com.divinelink.core.ui.resources.core_ui_not_connected
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 

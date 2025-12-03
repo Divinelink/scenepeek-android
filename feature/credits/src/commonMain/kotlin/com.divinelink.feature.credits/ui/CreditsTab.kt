@@ -1,8 +1,8 @@
 package com.divinelink.feature.credits.ui
 
-import com.divinelink.feature.credits.Res
-import com.divinelink.feature.credits.feature_credits_cast
-import com.divinelink.feature.credits.feature_credits_crew
+import com.divinelink.feature.credits.resources.Res
+import com.divinelink.feature.credits.resources.feature_credits_cast
+import com.divinelink.feature.credits.resources.feature_credits_crew
 import org.jetbrains.compose.resources.StringResource
 
 sealed class CreditsTab(

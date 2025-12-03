@@ -20,8 +20,8 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_about__privacy_policy
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_about__privacy_policy
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

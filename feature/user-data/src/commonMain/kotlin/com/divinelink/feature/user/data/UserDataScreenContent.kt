@@ -33,6 +33,12 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.media.MediaListContent
+import com.divinelink.feature.user.data.resources.Res
+import com.divinelink.feature.user.data.resources.feature_user_data_empty
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_ratings
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_watchlist
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_tv_shows_ratings
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_tv_shows_watchlist
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 

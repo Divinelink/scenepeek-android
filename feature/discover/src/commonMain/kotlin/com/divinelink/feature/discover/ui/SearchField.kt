@@ -12,7 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_toolbar_search
+import com.divinelink.core.ui.resources.core_ui_toolbar_search
 import com.divinelink.core.ui.text.BasicTextFieldWithCursorAtEnd
 import org.jetbrains.compose.resources.stringResource
 

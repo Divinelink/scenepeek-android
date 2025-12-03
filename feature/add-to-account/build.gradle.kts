@@ -21,6 +21,6 @@ kotlin {
 
 compose.resources {
   publicResClass = true
-  packageOfResClass = "com.divinelink.feature.add.to.account"
+  packageOfResClass = "com.divinelink.feature.add.to.account.resources"
   generateResClass = auto
 }

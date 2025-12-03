@@ -13,27 +13,27 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import com.divinelink.core.commons.core_commons_app_name
+import com.divinelink.core.commons.resources.core_commons_app_name
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.LocalIntentManager
-import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsTextItem
-import com.divinelink.feature.settings.feature_settings_enable_link_handling_step_1
-import com.divinelink.feature.settings.feature_settings_enable_link_handling_step_2
-import com.divinelink.feature.settings.feature_settings_enable_link_handling_step_3
-import com.divinelink.feature.settings.feature_settings_enable_link_handling_step_4
-import com.divinelink.feature.settings.feature_settings_enable_link_handling_step_5
-import com.divinelink.feature.settings.feature_settings_enable_link_handling_step_6
-import com.divinelink.feature.settings.feature_settings_link_handling
-import com.divinelink.feature.settings.feature_settings_link_handling_dialog_summary
-import com.divinelink.feature.settings.feature_settings_link_handling_dialog_title
-import com.divinelink.feature.settings.feature_settings_open_settings
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_enable_link_handling_step_1
+import com.divinelink.feature.settings.resources.feature_settings_enable_link_handling_step_2
+import com.divinelink.feature.settings.resources.feature_settings_enable_link_handling_step_3
+import com.divinelink.feature.settings.resources.feature_settings_enable_link_handling_step_4
+import com.divinelink.feature.settings.resources.feature_settings_enable_link_handling_step_5
+import com.divinelink.feature.settings.resources.feature_settings_enable_link_handling_step_6
+import com.divinelink.feature.settings.resources.feature_settings_link_handling
+import com.divinelink.feature.settings.resources.feature_settings_link_handling_dialog_summary
+import com.divinelink.feature.settings.resources.feature_settings_link_handling_dialog_title
+import com.divinelink.feature.settings.resources.feature_settings_open_settings
 import org.jetbrains.compose.resources.stringResource
-import com.divinelink.core.commons.Res as R
+import com.divinelink.core.commons.resources.Res as R
 
 @Composable
 fun LinkHandlingSettingsScreen(

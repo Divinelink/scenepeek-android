@@ -36,8 +36,8 @@ import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.fatal_error_fetching_details
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.resources.fatal_error_fetching_details
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
@@ -52,16 +52,19 @@ import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_add_to_watchlist_content_desc
-import com.divinelink.core.ui.core_ui_hide_total_episodes_item
-import com.divinelink.core.ui.core_ui_mark_as_favorite_button_content_description
-import com.divinelink.core.ui.core_ui_okay
-import com.divinelink.core.ui.core_ui_remove_from_watchlist_content_desc
-import com.divinelink.core.ui.core_ui_share
-import com.divinelink.core.ui.core_ui_show_total_episodes_item
-import com.divinelink.core.ui.core_ui_tmdb_user_score
+import com.divinelink.core.ui.resources.core_ui_add_to_watchlist_content_desc
+import com.divinelink.core.ui.resources.core_ui_hide_total_episodes_item
+import com.divinelink.core.ui.resources.core_ui_mark_as_favorite_button_content_description
+import com.divinelink.core.ui.resources.core_ui_okay
+import com.divinelink.core.ui.resources.core_ui_remove_from_watchlist_content_desc
+import com.divinelink.core.ui.resources.core_ui_share
+import com.divinelink.core.ui.resources.core_ui_show_total_episodes_item
+import com.divinelink.core.ui.resources.core_ui_tmdb_user_score
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.details__add_rating
+import com.divinelink.feature.details.resources.feature_details_request
 import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.google.common.truth.Truth.assertThat
@@ -80,7 +83,7 @@ class DetailsContentTest : ComposeTest() {
   @BeforeTest
   fun setup() {
     startKoin {
-//      androidContext(activity)
+      // Do nothing
     }
   }
 
@@ -242,7 +245,7 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           error = UIText.ResourceText(
-            com.divinelink.core.model.Res.string.fatal_error_fetching_details,
+            com.divinelink.core.model.resources.Res.string.fatal_error_fetching_details,
           ),
         ),
         onMarkAsFavoriteClicked = {},
@@ -265,7 +268,9 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
-    val errorText = getString(com.divinelink.core.model.Res.string.fatal_error_fetching_details)
+    val errorText = getString(
+      com.divinelink.core.model.resources.Res.string.fatal_error_fetching_details,
+    )
 
     val okText = getString(UiString.core_ui_okay)
 

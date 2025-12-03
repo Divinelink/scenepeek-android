@@ -6,20 +6,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import com.divinelink.core.commons.core_commons_app_name
 import com.divinelink.core.commons.provider.BuildConfigProvider
+import com.divinelink.core.commons.resources.core_commons_app_name
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.components.SettingsExternalLinkItem
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.feature_settings_about
-import com.divinelink.feature.settings.feature_settings_about__privacy_policy
-import com.divinelink.feature.settings.feature_settings_about__privacy_policy_url
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_about
+import com.divinelink.feature.settings.resources.feature_settings_about__privacy_policy
+import com.divinelink.feature.settings.resources.feature_settings_about__privacy_policy_url
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import com.divinelink.core.commons.resources.Res as commonRes
 
 @Composable
 fun AboutSettingsScreen(
@@ -38,7 +39,7 @@ fun AboutSettingsScreen(
       item {
         AboutCard(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-          name = stringResource(com.divinelink.core.commons.Res.string.core_commons_app_name),
+          name = stringResource(commonRes.string.core_commons_app_name),
           version = buildConfigProvider.versionName.lowercase(),
           github = "Divinelink",
           onNavigate = onNavigate,

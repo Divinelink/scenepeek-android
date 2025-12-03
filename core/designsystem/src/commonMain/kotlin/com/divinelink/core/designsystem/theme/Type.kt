@@ -6,8 +6,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.divinelink.scenepeek.designsystem.Res
-import com.divinelink.scenepeek.designsystem.font_medium
+import com.divinelink.scenepeek.designsystem.resources.Res
+import com.divinelink.scenepeek.designsystem.resources.font_medium
 import org.jetbrains.compose.resources.Font
 
 @Composable

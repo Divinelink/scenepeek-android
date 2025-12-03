@@ -30,11 +30,11 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.provider.MediaTypeParameterProvider
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_no_movies_available
-import com.divinelink.feature.details.feature_details_no_movies_available_desc
-import com.divinelink.feature.details.feature_details_no_tv_shows_available
-import com.divinelink.feature.details.feature_details_no_tv_shows_available_desc
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_no_movies_available
+import com.divinelink.feature.details.resources.feature_details_no_movies_available_desc
+import com.divinelink.feature.details.resources.feature_details_no_tv_shows_available
+import com.divinelink.feature.details.resources.feature_details_no_tv_shows_available_desc
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 

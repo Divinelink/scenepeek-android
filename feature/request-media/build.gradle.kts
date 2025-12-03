@@ -22,6 +22,6 @@ kotlin {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.feature.request.media"
+  packageOfResClass = "com.divinelink.feature.request.media.resources"
   generateResClass = auto
 }

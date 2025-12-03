@@ -10,7 +10,7 @@ import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_discover
+import com.divinelink.core.ui.resources.core_ui_discover
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

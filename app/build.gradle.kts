@@ -194,12 +194,6 @@ dependencies {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.scenepeek"
+  packageOfResClass = "com.divinelink.scenepeek.resources"
   generateResClass = auto
 }
-
-// ktlint {
-//  filter {
-//    exclude("**/generated/**")
-//  }
-// }

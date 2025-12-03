@@ -19,9 +19,9 @@ import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_cancel_request
-import com.divinelink.core.ui.core_ui_edit_request
-import com.divinelink.core.ui.core_ui_request_movie
+import com.divinelink.core.ui.resources.core_ui_cancel_request
+import com.divinelink.core.ui.resources.core_ui_edit_request
+import com.divinelink.core.ui.resources.core_ui_request_movie
 import com.divinelink.feature.request.media.movie.RequestMovieModal
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString

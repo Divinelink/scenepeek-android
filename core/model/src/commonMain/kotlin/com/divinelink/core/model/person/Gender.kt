@@ -1,10 +1,10 @@
 package com.divinelink.core.model.person
 
-import com.divinelink.core.model.Res
-import com.divinelink.core.model.gender_female
-import com.divinelink.core.model.gender_male
-import com.divinelink.core.model.gender_non_binary
-import com.divinelink.core.model.gender_not_set
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.gender_female
+import com.divinelink.core.model.resources.gender_male
+import com.divinelink.core.model.resources.gender_non_binary
+import com.divinelink.core.model.resources.gender_not_set
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 

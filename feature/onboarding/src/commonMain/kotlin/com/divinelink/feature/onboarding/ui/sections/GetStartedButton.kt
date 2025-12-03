@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.feature.onboarding.Res
-import com.divinelink.feature.onboarding.feature_onboarding_get_started
+import com.divinelink.feature.onboarding.resources.Res
+import com.divinelink.feature.onboarding.resources.feature_onboarding_get_started
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

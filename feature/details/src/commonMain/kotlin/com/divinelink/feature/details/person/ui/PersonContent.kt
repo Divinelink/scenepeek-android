@@ -69,9 +69,9 @@ import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.composition.LocalUiPreferences
 import com.divinelink.core.ui.composition.rememberViewModePreferences
-import com.divinelink.core.ui.core_ui_ic_female_person_placeholder
-import com.divinelink.core.ui.core_ui_ic_person_placeholder
 import com.divinelink.core.ui.extension.format
+import com.divinelink.core.ui.resources.core_ui_ic_female_person_placeholder
+import com.divinelink.core.ui.resources.core_ui_ic_person_placeholder
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter

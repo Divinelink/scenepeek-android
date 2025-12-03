@@ -14,9 +14,9 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.list.ScrollableMediaContent
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_no_recommendation_available
-import com.divinelink.feature.details.feature_details_no_recommendations_available_desc
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_no_recommendation_available
+import com.divinelink.feature.details.resources.feature_details_no_recommendations_available_desc
 
 @Composable
 fun RecommendationsFormContent(

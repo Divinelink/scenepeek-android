@@ -18,9 +18,9 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.details.reviews.ReviewItemCard
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_no_reviews_available
-import com.divinelink.feature.details.feature_details_no_reviews_available_desc
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_no_reviews_available
+import com.divinelink.feature.details.resources.feature_details_no_reviews_available_desc
 
 @Composable
 fun ReviewsFormContent(

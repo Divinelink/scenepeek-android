@@ -79,7 +79,7 @@ import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.composition.PreviewLocalProvider
-import com.divinelink.core.ui.core_ui_okay
+import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar

@@ -14,6 +14,7 @@ import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.commons.provider.ConstantsProvider
 import com.divinelink.core.commons.provider.getBuildConfigProvider
 import com.divinelink.core.commons.provider.getConstantsProvider
+import com.divinelink.core.ui.resources.Res
 
 typealias UiString = Res.string
 typealias UiPlurals = Res.plurals

@@ -36,7 +36,7 @@ import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.components.details.cast.CreditsItemCard
 import com.divinelink.core.ui.components.extensions.OnBottomReached
-import com.divinelink.core.ui.core_ui_load_more
+import com.divinelink.core.ui.resources.core_ui_load_more
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -36,9 +36,9 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.filter.Filter
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_filter
-import com.divinelink.core.ui.core_ui_filter_button_content_desc
 import com.divinelink.core.ui.getString
+import com.divinelink.core.ui.resources.core_ui_filter
+import com.divinelink.core.ui.resources.core_ui_filter_button_content_desc
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.Genre
 import com.divinelink.core.ui.components.details.genres.GenreLabel
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_genres
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_genres
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_clear_all
-import com.divinelink.feature.discover.Res
-import com.divinelink.feature.discover.feature_discover_minimum_user_votes
-import com.divinelink.feature.discover.feature_discover_user_score
+import com.divinelink.core.ui.resources.core_ui_clear_all
+import com.divinelink.feature.discover.resources.Res
+import com.divinelink.feature.discover.resources.feature_discover_minimum_user_votes
+import com.divinelink.feature.discover.resources.feature_discover_user_score
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 

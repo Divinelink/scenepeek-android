@@ -27,15 +27,15 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.composition.PreviewLocalProvider
-import com.divinelink.core.ui.core_ui_create
-import com.divinelink.core.ui.core_ui_edit
+import com.divinelink.core.ui.resources.core_ui_create
+import com.divinelink.core.ui.resources.core_ui_edit
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
-import com.divinelink.feature.lists.Res
 import com.divinelink.feature.lists.create.CreateListAction
 import com.divinelink.feature.lists.create.CreateListUiState
 import com.divinelink.feature.lists.create.ui.provider.CreateListUiStateParameterProvider
-import com.divinelink.feature.lists.feature_lists_add_list
-import com.divinelink.feature.lists.feature_lists_edit_list
+import com.divinelink.feature.lists.resources.Res
+import com.divinelink.feature.lists.resources.feature_lists_add_list
+import com.divinelink.feature.lists.resources.feature_lists_edit_list
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 

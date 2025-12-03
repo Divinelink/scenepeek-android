@@ -3,13 +3,13 @@ package com.divinelink.feature.details.person.ui
 import com.divinelink.core.commons.Constants
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.person.PersonDetails
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_birthday_section
-import com.divinelink.feature.details.feature_details_day_of_death_section
-import com.divinelink.feature.details.feature_details_gender_section
-import com.divinelink.feature.details.feature_details_known_for_section
-import com.divinelink.feature.details.feature_details_person_birthday
-import com.divinelink.feature.details.feature_details_place_of_birth_section
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_birthday_section
+import com.divinelink.feature.details.resources.feature_details_day_of_death_section
+import com.divinelink.feature.details.resources.feature_details_gender_section
+import com.divinelink.feature.details.resources.feature_details_known_for_section
+import com.divinelink.feature.details.resources.feature_details_person_birthday
+import com.divinelink.feature.details.resources.feature_details_place_of_birth_section
 
 fun PersonDetails.toUiSections() = buildList {
   // Known for section

@@ -20,8 +20,8 @@ import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_known_for_section
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_known_for_section
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

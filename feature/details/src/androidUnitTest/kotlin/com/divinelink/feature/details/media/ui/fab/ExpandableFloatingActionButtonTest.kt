@@ -15,8 +15,8 @@ import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
-import com.divinelink.core.ui.core_ui_eye
-import com.divinelink.core.ui.core_ui_ic_jellyseerr
+import com.divinelink.core.ui.resources.core_ui_eye
+import com.divinelink.core.ui.resources.core_ui_ic_jellyseerr
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

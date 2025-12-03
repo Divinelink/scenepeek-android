@@ -8,10 +8,10 @@ import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_requests
-import com.divinelink.core.ui.core_ui_section_lists
-import com.divinelink.core.ui.core_ui_section_ratings
-import com.divinelink.core.ui.core_ui_section_watchlist
+import com.divinelink.core.ui.resources.core_ui_requests
+import com.divinelink.core.ui.resources.core_ui_section_lists
+import com.divinelink.core.ui.resources.core_ui_section_ratings
+import com.divinelink.core.ui.resources.core_ui_section_watchlist
 
 sealed class ProfileSection(
   val title: UIText,

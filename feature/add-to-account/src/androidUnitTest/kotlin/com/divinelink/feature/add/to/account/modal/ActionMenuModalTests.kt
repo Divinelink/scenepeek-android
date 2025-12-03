@@ -14,8 +14,8 @@ import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_select
-import com.divinelink.core.ui.core_ui_share
+import com.divinelink.core.ui.resources.core_ui_select
+import com.divinelink.core.ui.resources.core_ui_share
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test

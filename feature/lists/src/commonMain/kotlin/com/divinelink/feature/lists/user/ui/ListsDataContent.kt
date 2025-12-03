@@ -45,8 +45,8 @@ import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.composition.rememberViewModePreferences
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.list.ListItemCard
-import com.divinelink.feature.lists.Res
-import com.divinelink.feature.lists.feature_lists_empty
+import com.divinelink.feature.lists.resources.Res
+import com.divinelink.feature.lists.resources.feature_lists_empty
 import com.divinelink.feature.lists.user.ListsAction
 import kotlinx.coroutines.launch
 

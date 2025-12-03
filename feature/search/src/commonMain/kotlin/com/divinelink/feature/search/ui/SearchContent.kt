@@ -13,12 +13,12 @@ import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.media.MediaContent
-import com.divinelink.core.ui.searching
-import com.divinelink.feature.search.Res
-import com.divinelink.feature.search.feature_search__initial_description
-import com.divinelink.feature.search.feature_search__initial_title
-import com.divinelink.feature.search.search__empty_result_description
-import com.divinelink.feature.search.search__empty_result_title
+import com.divinelink.core.ui.resources.searching
+import com.divinelink.feature.search.resources.Res
+import com.divinelink.feature.search.resources.feature_search__initial_description
+import com.divinelink.feature.search.resources.feature_search__initial_title
+import com.divinelink.feature.search.resources.search__empty_result_description
+import com.divinelink.feature.search.resources.search__empty_result_title
 
 @Composable
 fun SearchContent(

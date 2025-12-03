@@ -1,10 +1,10 @@
 package com.divinelink.core.model.onboarding
 
-import com.divinelink.core.model.Res
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.core_model_onboarding_added_header
-import com.divinelink.core.model.core_model_onboarding_features_headers
-import com.divinelink.core.model.core_model_onboarding_fixed_header
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.core_model_onboarding_added_header
+import com.divinelink.core.model.resources.core_model_onboarding_features_headers
+import com.divinelink.core.model.resources.core_model_onboarding_fixed_header
 import org.jetbrains.compose.resources.DrawableResource
 
 sealed interface IntroSection {

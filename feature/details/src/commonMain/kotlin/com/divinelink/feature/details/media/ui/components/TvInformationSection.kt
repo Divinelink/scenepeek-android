@@ -11,16 +11,16 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.media.MediaDetailsInformation
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_information
-import com.divinelink.feature.details.feature_details_information_aired_episodes
-import com.divinelink.feature.details.feature_details_information_first_air_date
-import com.divinelink.feature.details.feature_details_information_last_air_date
-import com.divinelink.feature.details.feature_details_information_next_episode_air_date
-import com.divinelink.feature.details.feature_details_information_original_language
-import com.divinelink.feature.details.feature_details_information_original_title
-import com.divinelink.feature.details.feature_details_information_seasons
-import com.divinelink.feature.details.feature_details_information_status
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_information
+import com.divinelink.feature.details.resources.feature_details_information_aired_episodes
+import com.divinelink.feature.details.resources.feature_details_information_first_air_date
+import com.divinelink.feature.details.resources.feature_details_information_last_air_date
+import com.divinelink.feature.details.resources.feature_details_information_next_episode_air_date
+import com.divinelink.feature.details.resources.feature_details_information_original_language
+import com.divinelink.feature.details.resources.feature_details_information_original_title
+import com.divinelink.feature.details.resources.feature_details_information_seasons
+import com.divinelink.feature.details.resources.feature_details_information_status
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

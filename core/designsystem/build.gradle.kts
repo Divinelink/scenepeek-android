@@ -16,7 +16,7 @@ plugins {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.scenepeek.designsystem"
+  packageOfResClass = "com.divinelink.scenepeek.designsystem.resources"
   generateResClass = auto
 }
 

@@ -3,15 +3,15 @@ package com.divinelink.feature.details.person.ui
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory.toWzd
 import com.divinelink.core.model.UIText
-import com.divinelink.feature.details.feature_details_birthday_section
-import com.divinelink.feature.details.feature_details_day_of_death_section
-import com.divinelink.feature.details.feature_details_gender_section
-import com.divinelink.feature.details.feature_details_known_for_section
-import com.divinelink.feature.details.feature_details_person_birthday
-import com.divinelink.feature.details.feature_details_place_of_birth_section
+import com.divinelink.feature.details.resources.feature_details_birthday_section
+import com.divinelink.feature.details.resources.feature_details_day_of_death_section
+import com.divinelink.feature.details.resources.feature_details_gender_section
+import com.divinelink.feature.details.resources.feature_details_known_for_section
+import com.divinelink.feature.details.resources.feature_details_person_birthday
+import com.divinelink.feature.details.resources.feature_details_place_of_birth_section
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
-import com.divinelink.feature.details.Res as R
+import com.divinelink.feature.details.resources.Res as R
 
 class PersonDetailsBuilderTest {
 

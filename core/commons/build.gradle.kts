@@ -44,6 +44,6 @@ secrets {
 
 compose.resources {
   publicResClass = true
-  packageOfResClass = "com.divinelink.core.commons"
+  packageOfResClass = "com.divinelink.core.commons.resources"
   generateResClass = auto
 }

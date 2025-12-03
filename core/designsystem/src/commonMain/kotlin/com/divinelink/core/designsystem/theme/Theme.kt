@@ -11,10 +11,10 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.divinelink.scenepeek.designsystem.Res
-import com.divinelink.scenepeek.designsystem.dark
-import com.divinelink.scenepeek.designsystem.light
-import com.divinelink.scenepeek.designsystem.system
+import com.divinelink.scenepeek.designsystem.resources.Res
+import com.divinelink.scenepeek.designsystem.resources.dark
+import com.divinelink.scenepeek.designsystem.resources.light
+import com.divinelink.scenepeek.designsystem.resources.system
 import org.jetbrains.compose.resources.StringResource
 
 @Composable

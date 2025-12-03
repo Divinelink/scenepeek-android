@@ -24,6 +24,6 @@ kotlin {
 
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.divinelink.feature.onboarding"
+  packageOfResClass = "com.divinelink.feature.onboarding.resources"
   generateResClass = auto
 }

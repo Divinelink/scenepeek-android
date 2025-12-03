@@ -14,7 +14,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_add_to_list_content_desc
+import com.divinelink.core.ui.resources.core_ui_add_to_list_content_desc
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

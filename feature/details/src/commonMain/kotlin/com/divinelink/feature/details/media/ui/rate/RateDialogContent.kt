@@ -24,12 +24,12 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.details.SpannableRating
-import com.divinelink.core.ui.core_ui_your_rating
 import com.divinelink.core.ui.fromHtml
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.details__add_rating_description
-import com.divinelink.feature.details.details__clear_my_rating
-import com.divinelink.feature.details.details__submit_rating_button
+import com.divinelink.core.ui.resources.core_ui_your_rating
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.details__add_rating_description
+import com.divinelink.feature.details.resources.details__clear_my_rating
+import com.divinelink.feature.details.resources.details__submit_rating_button
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 

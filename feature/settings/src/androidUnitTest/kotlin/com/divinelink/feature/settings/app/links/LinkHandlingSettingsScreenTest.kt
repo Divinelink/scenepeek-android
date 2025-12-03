@@ -8,8 +8,8 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_open_settings
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_open_settings
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 

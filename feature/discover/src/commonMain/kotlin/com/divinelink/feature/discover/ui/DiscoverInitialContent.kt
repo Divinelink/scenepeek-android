@@ -13,11 +13,11 @@ import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.tab.MediaTab
-import com.divinelink.feature.discover.Res
-import com.divinelink.feature.discover.feature_discover_description_first
-import com.divinelink.feature.discover.feature_discover_description_second
-import com.divinelink.feature.discover.feature_discover_movies_title
-import com.divinelink.feature.discover.feature_discover_tv_title
+import com.divinelink.feature.discover.resources.Res
+import com.divinelink.feature.discover.resources.feature_discover_description_first
+import com.divinelink.feature.discover.resources.feature_discover_description_second
+import com.divinelink.feature.discover.resources.feature_discover_movies_title
+import com.divinelink.feature.discover.resources.feature_discover_tv_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

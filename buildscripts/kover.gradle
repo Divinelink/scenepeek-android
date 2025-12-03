@@ -33,7 +33,8 @@ kover {
             "com.divinelink.core.ui.provider",
             "com.divinelink.core.ui.tab.custom",
             "com.divinelink.core.ui.collapsing",
-            "*.provider.*",
+            "*provider*",
+            "*resources*",
         )
         classes(
             "*ComposableSingletons*",
@@ -46,8 +47,8 @@ kover {
             "*androidx*",
             "*.DebugUtil",
             "*Preview",
-            "*ParameterProvider.kt",
-            "ConnectivityManagerNetworkMonitor.kt",
+            "*ParameterProvider",
+            "ConnectivityManagerNetworkMonitor",
         )
         annotatedBy(
             "androidx.compose.ui.tooling.preview.Preview",

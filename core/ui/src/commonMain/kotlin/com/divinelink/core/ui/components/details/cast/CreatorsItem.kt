@@ -16,10 +16,10 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_creator
-import com.divinelink.core.ui.core_ui_director
-import com.divinelink.core.ui.core_ui_novel
-import com.divinelink.core.ui.core_ui_screenplay
+import com.divinelink.core.ui.resources.core_ui_creator
+import com.divinelink.core.ui.resources.core_ui_director
+import com.divinelink.core.ui.resources.core_ui_novel
+import com.divinelink.core.ui.resources.core_ui_screenplay
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

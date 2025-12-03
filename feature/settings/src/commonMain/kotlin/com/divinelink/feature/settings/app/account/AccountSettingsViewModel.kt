@@ -11,9 +11,9 @@ import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_currently_login_dialog_summary
-import com.divinelink.feature.settings.feature_settings_logout
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_currently_login_dialog_summary
+import com.divinelink.feature.settings.resources.feature_settings_logout
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -20,6 +20,8 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.ui.coil.platformContext
+import com.divinelink.core.ui.resources.core_ui_ic_movie_placeholder
+import com.divinelink.core.ui.resources.core_ui_movie_image_placeholder
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 

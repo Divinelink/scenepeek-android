@@ -28,6 +28,9 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.manager.url.rememberAuthUrlHandler
+import com.divinelink.feature.tmdb.auth.resources.Res
+import com.divinelink.feature.tmdb.auth.resources.feature_tmdb_auth_loading_text
+import com.divinelink.feature.tmdb.auth.resources.feature_tmdb_auth_login
 import com.divinelink.feature.tmdb.auth.webview.Webview
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel

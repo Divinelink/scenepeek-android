@@ -25,10 +25,10 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.core_ui_filter
 import com.divinelink.core.ui.getString
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_person_credits_department
+import com.divinelink.core.ui.resources.core_ui_filter
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_person_credits_department
 import org.jetbrains.compose.resources.stringResource
 import com.divinelink.core.ui.UiString as uiR
 

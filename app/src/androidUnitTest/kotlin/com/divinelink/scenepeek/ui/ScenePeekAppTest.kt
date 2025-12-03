@@ -64,9 +64,9 @@ import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.ToolbarState
-import com.divinelink.core.ui.core_ui_connected
-import com.divinelink.core.ui.core_ui_not_connected
-import com.divinelink.core.ui.core_ui_toolbar_search_placeholder
+import com.divinelink.core.ui.resources.core_ui_connected
+import com.divinelink.core.ui.resources.core_ui_not_connected
+import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.onboarding.manager.IntroSections
 import com.divinelink.feature.onboarding.ui.IntroViewModel
@@ -74,8 +74,8 @@ import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.scenepeek.di.navigationModule
 import com.divinelink.scenepeek.home.ui.HomeViewModel
-import com.divinelink.scenepeek.top_level_navigation_content_description_selected
-import com.divinelink.scenepeek.top_level_navigation_content_description_unselected
+import com.divinelink.scenepeek.resources.top_level_navigation_content_description_selected
+import com.divinelink.scenepeek.resources.top_level_navigation_content_description_unselected
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
@@ -88,7 +88,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.scenepeek.Res as R
+import com.divinelink.scenepeek.resources.Res as R
 
 class ScenePeekAppTest : ComposeTest() {
 

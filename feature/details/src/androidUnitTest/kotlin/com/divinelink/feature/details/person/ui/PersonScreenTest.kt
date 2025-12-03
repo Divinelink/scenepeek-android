@@ -44,8 +44,8 @@ import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
-import com.divinelink.core.ui.core_ui_filter_button_content_desc
-import com.divinelink.core.ui.core_ui_movie_image_placeholder
+import com.divinelink.core.ui.resources.core_ui_filter_button_content_desc
+import com.divinelink.core.ui.resources.core_ui_movie_image_placeholder
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import org.jetbrains.compose.resources.getString

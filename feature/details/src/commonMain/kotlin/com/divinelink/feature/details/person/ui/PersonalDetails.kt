@@ -17,8 +17,8 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.shimmer.ShimmerHalfLine
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_personal_info_section
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_personal_info_section
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

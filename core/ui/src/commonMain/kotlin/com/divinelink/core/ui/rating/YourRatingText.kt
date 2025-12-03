@@ -14,9 +14,9 @@ import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.core_ui_your_rating
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.extension.getColorRating
+import com.divinelink.core.ui.resources.core_ui_your_rating
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -11,9 +11,9 @@ import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestMediaRatingPreferenceUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_movie_rating_preference
-import com.divinelink.feature.settings.feature_settings_tv_rating_preference
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_movie_rating_preference
+import com.divinelink.feature.settings.resources.feature_settings_tv_rating_preference
 import org.jetbrains.compose.resources.getString
 import kotlin.test.BeforeTest
 import kotlin.test.Test

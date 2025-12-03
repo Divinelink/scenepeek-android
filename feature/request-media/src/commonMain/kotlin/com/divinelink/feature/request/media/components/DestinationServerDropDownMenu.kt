@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.feature.request.media.LCEState
-import com.divinelink.feature.request.media.Res
-import com.divinelink.feature.request.media.feature_request_media_default
-import com.divinelink.feature.request.media.feature_request_media_destination_server
+import com.divinelink.feature.request.media.resources.Res
+import com.divinelink.feature.request.media.resources.feature_request_media_default
+import com.divinelink.feature.request.media.resources.feature_request_media_destination_server
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

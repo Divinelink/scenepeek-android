@@ -1,10 +1,10 @@
 package com.divinelink.core.model.tab
 
-import com.divinelink.core.model.Res
-import com.divinelink.core.model.core_model_tab_about
-import com.divinelink.core.model.core_model_tab_cast
-import com.divinelink.core.model.core_model_tab_recommendations
-import com.divinelink.core.model.core_model_tab_reviews
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.core_model_tab_about
+import com.divinelink.core.model.resources.core_model_tab_cast
+import com.divinelink.core.model.resources.core_model_tab_recommendations
+import com.divinelink.core.model.resources.core_model_tab_reviews
 import org.jetbrains.compose.resources.StringResource
 
 sealed class MovieTab(

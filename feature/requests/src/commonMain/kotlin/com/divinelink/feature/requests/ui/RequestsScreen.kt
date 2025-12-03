@@ -32,8 +32,8 @@ import com.divinelink.core.ui.components.NavigateUpButton
 import com.divinelink.feature.request.media.RequestMediaModal
 import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.RequestsViewModel
-import com.divinelink.feature.requests.Res
-import com.divinelink.feature.requests.feature_requests_title
+import com.divinelink.feature.requests.resources.Res
+import com.divinelink.feature.requests.resources.feature_requests_title
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

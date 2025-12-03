@@ -29,10 +29,10 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.ui.CreditMediaItem
 import com.divinelink.core.ui.components.MediaItem
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_person_credits_department_size
 import com.divinelink.feature.details.person.ui.credits.EmptyContentCreditCard
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_person_credits_department_size
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

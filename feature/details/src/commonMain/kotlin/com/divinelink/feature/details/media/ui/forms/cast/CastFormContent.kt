@@ -25,12 +25,12 @@ import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.core_ui_cast_count
-import com.divinelink.core.ui.core_ui_view_all
 import com.divinelink.core.ui.credit.PersonItem
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.feature_details_no_cast_available
-import com.divinelink.feature.details.feature_details_no_cast_available_desc
+import com.divinelink.core.ui.resources.core_ui_cast_count
+import com.divinelink.core.ui.resources.core_ui_view_all
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.feature_details_no_cast_available
+import com.divinelink.feature.details.resources.feature_details_no_cast_available_desc
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 

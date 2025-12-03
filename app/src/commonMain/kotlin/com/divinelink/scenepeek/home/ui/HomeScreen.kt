@@ -28,8 +28,8 @@ import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.extensions.showExpandedFab
-import com.divinelink.scenepeek.Res
-import com.divinelink.scenepeek.settings_button_content_description
+import com.divinelink.scenepeek.resources.Res
+import com.divinelink.scenepeek.resources.settings_button_content_description
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

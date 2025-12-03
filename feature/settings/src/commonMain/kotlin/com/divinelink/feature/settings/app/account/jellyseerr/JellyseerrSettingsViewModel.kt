@@ -18,11 +18,11 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.DialogState
-import com.divinelink.core.ui.core_ui_error_retry
+import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.settings.Res
-import com.divinelink.feature.settings.feature_settings_could_not_connect
-import com.divinelink.feature.settings.feature_settings_invalid_credentials
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_could_not_connect
+import com.divinelink.feature.settings.resources.feature_settings_invalid_credentials
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged

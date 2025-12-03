@@ -21,6 +21,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.ui.resources.core_ui_password
+import com.divinelink.core.ui.resources.core_ui_toggle_password_visibility_button
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -7,6 +7,9 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
+import com.divinelink.core.ui.resources.core_ui_hide_total_episodes_item
+import com.divinelink.core.ui.resources.core_ui_share
+import com.divinelink.core.ui.resources.core_ui_show_total_episodes_item
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 

@@ -10,6 +10,10 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.scaffold.resources.Res
+import com.divinelink.core.scaffold.resources.home
+import com.divinelink.core.scaffold.resources.profile
+import com.divinelink.core.scaffold.resources.search
 import org.jetbrains.compose.resources.StringResource
 
 enum class TopLevelDestination(

@@ -17,16 +17,16 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.rememberCurrentPlatform
-import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.feature_settings_about
-import com.divinelink.feature.settings.feature_settings_details_preferences
-import com.divinelink.feature.settings.feature_settings_link_handling
-import com.divinelink.feature.settings.preferences__account
-import com.divinelink.feature.settings.preferences__appearance
-import com.divinelink.feature.settings.settings
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_about
+import com.divinelink.feature.settings.resources.feature_settings_details_preferences
+import com.divinelink.feature.settings.resources.feature_settings_link_handling
+import com.divinelink.feature.settings.resources.preferences__account
+import com.divinelink.feature.settings.resources.preferences__appearance
+import com.divinelink.feature.settings.resources.settings
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

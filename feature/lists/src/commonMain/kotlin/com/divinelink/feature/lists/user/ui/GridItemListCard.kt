@@ -20,7 +20,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.coil.GridItemBackdropImage
 import com.divinelink.core.ui.components.VisibilityBadge
-import com.divinelink.core.ui.core_ui_item_count
+import com.divinelink.core.ui.resources.core_ui_item_count
 import org.jetbrains.compose.resources.pluralStringResource
 
 @Composable

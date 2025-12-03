@@ -1,16 +1,16 @@
 package com.divinelink.core.model.filter
 
-import com.divinelink.core.model.Res
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.all
-import com.divinelink.core.model.approved
-import com.divinelink.core.model.available
-import com.divinelink.core.model.completed
-import com.divinelink.core.model.deleted
-import com.divinelink.core.model.failed
-import com.divinelink.core.model.pending
-import com.divinelink.core.model.processing
-import com.divinelink.core.model.unavailable
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.all
+import com.divinelink.core.model.resources.approved
+import com.divinelink.core.model.resources.available
+import com.divinelink.core.model.resources.completed
+import com.divinelink.core.model.resources.deleted
+import com.divinelink.core.model.resources.failed
+import com.divinelink.core.model.resources.pending
+import com.divinelink.core.model.resources.processing
+import com.divinelink.core.model.resources.unavailable
 
 sealed class MediaRequestFilter(
   override val value: String,

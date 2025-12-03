@@ -13,10 +13,10 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.LocalIntentManager
-import com.divinelink.core.ui.core_ui_okay
-import com.divinelink.core.ui.core_ui_share_error_details
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.manager.IntentManager
+import com.divinelink.core.ui.resources.core_ui_okay
+import com.divinelink.core.ui.resources.core_ui_share_error_details
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

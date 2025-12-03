@@ -28,6 +28,6 @@ kotlin {
 
 compose.resources {
   publicResClass = true
-  packageOfResClass = "com.divinelink.core.model"
+  packageOfResClass = "com.divinelink.core.model.resources"
   generateResClass = auto
 }

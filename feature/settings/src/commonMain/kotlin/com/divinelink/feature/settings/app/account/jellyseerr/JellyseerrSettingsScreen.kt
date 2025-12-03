@@ -12,9 +12,9 @@ import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.dialog.BasicDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
-import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.feature_settings_jellyseerr_account
+import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_account
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

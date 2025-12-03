@@ -13,13 +13,13 @@ import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
-import com.divinelink.feature.details.Res
-import com.divinelink.feature.details.details__add_rating
-import com.divinelink.feature.details.feature_details__add_to_list
-import com.divinelink.feature.details.feature_details__watchlist
-import com.divinelink.feature.details.feature_details_manage_movie
-import com.divinelink.feature.details.feature_details_manage_tv
-import com.divinelink.feature.details.feature_details_request
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.details__add_rating
+import com.divinelink.feature.details.resources.feature_details__add_to_list
+import com.divinelink.feature.details.resources.feature_details__watchlist
+import com.divinelink.feature.details.resources.feature_details_manage_movie
+import com.divinelink.feature.details.resources.feature_details_manage_tv
+import com.divinelink.feature.details.resources.feature_details_request
 
 @Composable
 internal fun ScaffoldState.DetailsExpandableFloatingActionButton(

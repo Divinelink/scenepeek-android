@@ -1,16 +1,16 @@
 package com.divinelink.core.model.jellyseerr.media
 
-import com.divinelink.core.model.Res
-import com.divinelink.core.model.core_model_request_status_approved
-import com.divinelink.core.model.core_model_request_status_declined
-import com.divinelink.core.model.core_model_request_status_failed
-import com.divinelink.core.model.core_model_request_status_pending
-import com.divinelink.core.model.core_model_status_available
-import com.divinelink.core.model.core_model_status_deleted
-import com.divinelink.core.model.core_model_status_partially_available
-import com.divinelink.core.model.core_model_status_pending
-import com.divinelink.core.model.core_model_status_requested
-import com.divinelink.core.model.core_model_status_unknown
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.core_model_request_status_approved
+import com.divinelink.core.model.resources.core_model_request_status_declined
+import com.divinelink.core.model.resources.core_model_request_status_failed
+import com.divinelink.core.model.resources.core_model_request_status_pending
+import com.divinelink.core.model.resources.core_model_status_available
+import com.divinelink.core.model.resources.core_model_status_deleted
+import com.divinelink.core.model.resources.core_model_status_partially_available
+import com.divinelink.core.model.resources.core_model_status_pending
+import com.divinelink.core.model.resources.core_model_status_requested
+import com.divinelink.core.model.resources.core_model_status_unknown
 import org.jetbrains.compose.resources.StringResource
 
 sealed interface JellyseerrStatus {
