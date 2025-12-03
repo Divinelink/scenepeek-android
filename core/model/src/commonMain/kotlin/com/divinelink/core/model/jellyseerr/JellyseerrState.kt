@@ -11,7 +11,10 @@ sealed class JellyseerrState(
   ) {
     val isLoginEnabled = loginData.address.value.isNotEmpty() &&
       loginData.username.value.isNotEmpty() &&
-      loginData.password.value.isNotEmpty()
+      when (loginData.authMethod) {
+        JellyseerrAuthMethod.JELLYFIN, JellyseerrAuthMethod.EMBY -> true
+        else -> loginData.password.value.isNotEmpty()
+      }
   }
 
   data class LoggedIn(
