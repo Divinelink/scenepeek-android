@@ -2,12 +2,13 @@ package com.divinelink.core.domain.details.media
 
 import app.cash.turbine.test
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.ExternalRatingsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -27,7 +28,7 @@ class FetchAllRatingsUseCaseTest {
   }
 
   @Test
-  fun `test fetch all ratings without imdbId sets imdb and trakt to unavailable`() = runTest {
+  fun `test fetch all ratings without imdbId sets all ratings to unavailable`() = runTest {
     FetchAllRatingsUseCase(
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -36,20 +37,18 @@ class FetchAllRatingsUseCaseTest {
         imdbId = null,
       ),
     ).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(RatingSource.IMDB to RatingDetails.Unavailable),
-      )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(RatingSource.TRAKT to RatingDetails.Unavailable),
-      )
+      awaitItem() shouldBe Result.success(RatingSource.IMDB to RatingDetails.Unavailable)
+      awaitItem() shouldBe Result.success(RatingSource.TRAKT to RatingDetails.Unavailable)
+      awaitItem() shouldBe Result.success(RatingSource.RT to RatingDetails.Unavailable)
+      awaitItem() shouldBe Result.success(RatingSource.METACRITIC to RatingDetails.Unavailable)
       awaitComplete()
     }
   }
 
   @Test
   fun `test fetch all ratings with success from IMDB`() = runTest {
-    repository.mockFetchIMDbDetails(
-      response = Result.success(RatingDetailsFactory.imdb()),
+    repository.mockFetchExternalRatings(
+      response = Result.success(ExternalRatingsFactory.all),
     )
 
     repository.mockFetchTraktRating(
@@ -60,9 +59,11 @@ class FetchAllRatingsUseCaseTest {
       repository = repository.mock,
       dispatcher = testDispatcher,
     ).invoke(MediaDetailsFactory.FightClub()).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(RatingSource.IMDB to RatingDetailsFactory.imdb()),
+      awaitItem() shouldBe Result.success(RatingSource.IMDB to RatingDetailsFactory.imdb())
+      awaitItem() shouldBe Result.success(
+        RatingSource.METACRITIC to RatingDetailsFactory.metacritic,
       )
+      awaitItem() shouldBe Result.success(RatingSource.RT to RatingDetailsFactory.rottenTomatoes)
       awaitItem()
       awaitComplete()
     }
@@ -70,7 +71,7 @@ class FetchAllRatingsUseCaseTest {
 
   @Test
   fun `test fetch all ratings with success from trakt`() = runTest {
-    repository.mockFetchIMDbDetails(response = Result.failure(Exception()))
+    repository.mockFetchExternalRatings(response = Result.failure(Exception()))
 
     repository.mockFetchTraktRating(response = Result.success(RatingDetailsFactory.trakt()))
 
@@ -78,31 +79,27 @@ class FetchAllRatingsUseCaseTest {
       repository = repository.mock,
       dispatcher = testDispatcher,
     ).invoke(MediaDetailsFactory.FightClub()).test {
-      assertThat(awaitItem()).isInstanceOf(
-        Result.failure<Exception>(Exception())::class.java,
-      )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(RatingSource.TRAKT to RatingDetailsFactory.trakt()),
-      )
+      awaitItem().toString() shouldBe Result.failure<Exception>(Exception()).toString()
+      awaitItem() shouldBe Result.success(RatingSource.TRAKT to RatingDetailsFactory.trakt())
       awaitComplete()
     }
   }
 
   @Test
   fun `test fetch all ratings with imdb and trakt success`() = runTest {
-    repository.mockFetchIMDbDetails(response = Result.success(RatingDetailsFactory.imdb()))
+    repository.mockFetchExternalRatings(response = Result.success(ExternalRatingsFactory.all))
     repository.mockFetchTraktRating(response = Result.success(RatingDetailsFactory.trakt()))
 
     FetchAllRatingsUseCase(
       repository = repository.mock,
       dispatcher = testDispatcher,
     ).invoke(MediaDetailsFactory.FightClub()).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(RatingSource.IMDB to RatingDetailsFactory.imdb()),
+      awaitItem() shouldBe Result.success(RatingSource.IMDB to RatingDetailsFactory.imdb())
+      awaitItem() shouldBe Result.success(
+        RatingSource.METACRITIC to RatingDetailsFactory.metacritic,
       )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(RatingSource.TRAKT to RatingDetailsFactory.trakt()),
-      )
+      awaitItem() shouldBe Result.success(RatingSource.RT to RatingDetailsFactory.rottenTomatoes)
+      awaitItem() shouldBe Result.success(RatingSource.TRAKT to RatingDetailsFactory.trakt())
       awaitComplete()
     }
   }

@@ -6,6 +6,8 @@ sealed class MediaRatingSource(open val options: List<RatingSource>) {
       RatingSource.TMDB,
       RatingSource.IMDB,
       RatingSource.TRAKT,
+      RatingSource.RT,
+      RatingSource.METACRITIC,
     ),
   )
 

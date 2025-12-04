@@ -95,6 +95,9 @@
 
   <string name="core_ui_toolbar_search_placeholder">Search for a show, movie, etc.</string>
 
+  <string name="core_ui_percentage">%1$s%</string>
+  <string name="core_ui_metascore">Metascore</string>
+
   <string name="core_ui_season">Season</string>
   <string name="core_ui_episodes">Episodes</string>
   <string name="core_ui_status">Status</string>

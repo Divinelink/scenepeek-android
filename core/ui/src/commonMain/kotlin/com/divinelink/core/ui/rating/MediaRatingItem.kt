@@ -45,5 +45,13 @@ fun MediaRatingItem(
       modifier = modifier,
       ratingDetails = ratingDetails,
     )
+    RatingSource.RT -> RottenTomatoesRatingItem(
+      modifier = modifier,
+      ratingDetails = ratingDetails,
+    )
+    RatingSource.METACRITIC -> MetascoreRatingItem(
+      modifier = modifier,
+      ratingDetails = ratingDetails,
+    )
   }
 }

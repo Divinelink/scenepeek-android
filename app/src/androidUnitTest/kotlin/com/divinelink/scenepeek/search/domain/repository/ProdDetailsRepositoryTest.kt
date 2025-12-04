@@ -14,6 +14,7 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.ExternalRatingsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.MoviesList
 import com.divinelink.core.model.details.rating.RatingDetails
@@ -646,29 +647,23 @@ class ProdDetailsRepositoryTest {
   }
 
   @Test
-  fun `test fetch imdb ratings with success`() = runTest {
+  fun `test fetch external ratings with success`() = runTest {
     val imdbId = "tt0401729"
 
     omdbService.mockFetchImdbDetails(
       response = OMDbResponseApi(
         metascore = "51",
-        imdbRating = "6.6",
-        imdbVotes = "289,715",
+        imdbRating = "8.5",
+        imdbVotes = "2,345",
+        ratings = emptyList(),
       ),
     )
 
-    val response = repository.fetchIMDbDetails(
+    val response = repository.fetchExternalRatings(
       imdbId = imdbId,
     ).first()
 
-    assertThat(response).isEqualTo(
-      Result.success(
-        RatingDetails.Score(
-          voteAverage = 6.6,
-          voteCount = 289_715,
-        ),
-      ),
-    )
+    response shouldBe Result.success(ExternalRatingsFactory.imdbOnly)
   }
 
   @Test

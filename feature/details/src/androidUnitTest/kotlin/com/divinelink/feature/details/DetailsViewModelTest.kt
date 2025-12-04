@@ -1726,16 +1726,48 @@ class DetailsViewModelTest {
             mediaId = mediaId,
             isLoading = false,
             userDetails = AccountMediaDetailsFactory.NotRated(),
+            spoilersObfuscated = false,
             mediaDetails = tvDetails.copy(
               ratingCount = RatingCount(
-                ratings = mapOf(
-                  RatingSource.TMDB to RatingDetails.Score(
-                    voteAverage = 8.6,
-                    voteCount = 4503,
-                  ),
-                  RatingSource.IMDB to RatingDetails.Initial,
-                  RatingSource.TRAKT to RatingDetails.Initial,
-                ),
+                ratings = RatingSource.entries.associateWith { source ->
+                  when (source) {
+                    RatingSource.TMDB -> RatingDetails.Score(
+                      voteAverage = 8.6,
+                      voteCount = 4503,
+                    )
+                    RatingSource.IMDB -> RatingDetails.Initial
+                    RatingSource.TRAKT -> RatingDetails.Initial
+                    RatingSource.METACRITIC -> RatingDetails.Initial
+                    RatingSource.RT -> RatingDetails.Initial
+                  }
+                },
+              ),
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasons())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = tvDetails.copy(
+              ratingCount = RatingCount(
+                ratings = RatingSource.entries.associateWith { source ->
+                  when (source) {
+                    RatingSource.TMDB -> RatingDetails.Score(
+                      voteAverage = 8.6,
+                      voteCount = 4503,
+                    )
+                    RatingSource.IMDB -> RatingDetails.Initial
+                    RatingSource.TRAKT -> RatingDetailsFactory.trakt()
+                    RatingSource.METACRITIC -> RatingDetails.Initial
+                    RatingSource.RT -> RatingDetails.Initial
+                  }
+                },
               ),
             ),
             spoilersObfuscated = false,
@@ -1752,38 +1784,18 @@ class DetailsViewModelTest {
             userDetails = AccountMediaDetailsFactory.NotRated(),
             mediaDetails = tvDetails.copy(
               ratingCount = RatingCount(
-                ratings = mapOf(
-                  RatingSource.TMDB to RatingDetails.Score(
-                    voteAverage = 8.6,
-                    voteCount = 4503,
-                  ),
-                  RatingSource.IMDB to RatingDetails.Initial,
-                  RatingSource.TRAKT to RatingDetailsFactory.trakt(),
-                ),
-              ),
-            ),
-            spoilersObfuscated = false,
-          ),
-          DetailsViewState(
-            mediaType = MediaType.TV,
-            tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
-              withAbout(DetailsDataFactory.Tv.about())
-              withSeasons(DetailsDataFactory.Tv.seasons())
-            },
-            mediaId = mediaId,
-            isLoading = false,
-            userDetails = AccountMediaDetailsFactory.NotRated(),
-            mediaDetails = tvDetails.copy(
-              ratingCount = RatingCount(
-                ratings = mapOf(
-                  RatingSource.TMDB to RatingDetails.Score(
-                    voteAverage = 8.6,
-                    voteCount = 4503,
-                  ),
-                  RatingSource.IMDB to RatingDetailsFactory.imdb(),
-                  RatingSource.TRAKT to RatingDetailsFactory.trakt(),
-                ),
+                ratings = RatingSource.entries.associateWith { source ->
+                  when (source) {
+                    RatingSource.TMDB -> RatingDetails.Score(
+                      voteAverage = 8.6,
+                      voteCount = 4503,
+                    )
+                    RatingSource.IMDB -> RatingDetailsFactory.imdb()
+                    RatingSource.TRAKT -> RatingDetailsFactory.trakt()
+                    RatingSource.METACRITIC -> RatingDetails.Initial
+                    RatingSource.RT -> RatingDetails.Initial
+                  }
+                },
               ),
             ),
             spoilersObfuscated = false,

@@ -36,3 +36,17 @@ tasks.register<JavaExec>("ktlintFormat") {
     "!**/build/generated/compose/resourceGenerator/**"
   )
 }
+
+tasks.register("allChecks") {
+  group = "lint"
+  description = "Runs ktlint, detekt, and testDebugUnitTest"
+
+  dependsOn(
+    "ktlintFormat",
+    "detektFormat",
+    "testDebugUnitTest",
+  )
+
+  tasks.findByName("detektFormat")?.mustRunAfter("ktlintCheck")
+  tasks.findByName("testDebugUnitTest")?.mustRunAfter("detektFormat")
+}

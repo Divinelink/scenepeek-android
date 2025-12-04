@@ -99,6 +99,8 @@ fun MediaDetails.externalUrl(source: RatingSource = RatingSource.TMDB): String? 
 
       source.url + "/${mediaType.traktPath}/" + imdbId
     }
+    RatingSource.RT -> null
+    RatingSource.METACRITIC -> null
   }
 }
 

@@ -79,12 +79,13 @@ fun IMDbRatingItem(
           color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.70f),
         )
       }
+      is RatingDetails.Rating -> Unit
     }
   }
 }
 
 @Composable
-private fun IMDbRatingContentShimmer(modifier: Modifier = Modifier) {
+fun IMDbRatingContentShimmer(modifier: Modifier = Modifier) {
   Column(
     modifier = modifier.testTag(TestTags.Rating.IMDB_RATING_SKELETON),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),

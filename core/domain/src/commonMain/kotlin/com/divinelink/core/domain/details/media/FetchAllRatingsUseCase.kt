@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class FetchAllRatingsUseCase(
   private val repository: DetailsRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<MediaDetails, Pair<RatingSource, RatingDetails>>(dispatcher.io) {
+) : FlowUseCase<MediaDetails, Pair<RatingSource, RatingDetails>>(dispatcher.default) {
 
   override fun execute(parameters: MediaDetails): Flow<Result<Pair<RatingSource, RatingDetails>>> =
     channelFlow {
@@ -24,16 +24,26 @@ class FetchAllRatingsUseCase(
       if (imdbId == null) {
         send(Result.success(RatingSource.IMDB to RatingDetails.Unavailable))
         send(Result.success(RatingSource.TRAKT to RatingDetails.Unavailable))
+        send(Result.success(RatingSource.RT to RatingDetails.Unavailable))
+        send(Result.success(RatingSource.METACRITIC to RatingDetails.Unavailable))
         return@channelFlow
       }
 
       launch {
         if (parameters.ratingCount.ratings[RatingSource.IMDB] == RatingDetails.Initial) {
-          repository.fetchIMDbDetails(imdbId).collect { result ->
+          repository.fetchExternalRatings(imdbId).collect { result ->
             result.fold(
-              onSuccess = { imdbDetails ->
+              onSuccess = { ratings ->
                 send(
-                  Result.success(RatingSource.IMDB to (imdbDetails ?: RatingDetails.Unavailable)),
+                  Result.success(RatingSource.IMDB to (ratings?.imdb ?: RatingDetails.Unavailable)),
+                )
+                send(
+                  Result.success(
+                    RatingSource.METACRITIC to (ratings?.metascore ?: RatingDetails.Unavailable),
+                  ),
+                )
+                send(
+                  Result.success(RatingSource.RT to (ratings?.rt ?: RatingDetails.Unavailable)),
                 )
               },
               onFailure = { error ->
