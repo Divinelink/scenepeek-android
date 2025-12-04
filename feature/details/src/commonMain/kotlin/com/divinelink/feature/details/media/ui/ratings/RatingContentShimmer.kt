@@ -16,7 +16,10 @@ import com.divinelink.core.ui.Previews
 import com.valentinilk.shimmer.shimmer
 
 @Composable
-fun RatingContentShimmer(modifier: Modifier = Modifier) {
+fun RatingContentShimmer(
+  modifier: Modifier = Modifier,
+  withVoteCount: Boolean,
+) {
   Column(
     modifier = modifier,
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
@@ -32,15 +35,17 @@ fun RatingContentShimmer(modifier: Modifier = Modifier) {
         .background(MaterialTheme.colorScheme.onSurfaceVariant),
     )
 
-    Text(
-      text = " ",
-      style = MaterialTheme.typography.titleSmall,
-      modifier = Modifier
-        .width(MaterialTheme.dimensions.keyline_48)
-        .shimmer()
-        .clip(MaterialTheme.shapes.small)
-        .background(MaterialTheme.colorScheme.onSurfaceVariant),
-    )
+    if (withVoteCount) {
+      Text(
+        text = " ",
+        style = MaterialTheme.typography.titleSmall,
+        modifier = Modifier
+          .width(MaterialTheme.dimensions.keyline_48)
+          .shimmer()
+          .clip(MaterialTheme.shapes.small)
+          .background(MaterialTheme.colorScheme.onSurfaceVariant),
+      )
+    }
   }
 }
 
@@ -48,6 +53,6 @@ fun RatingContentShimmer(modifier: Modifier = Modifier) {
 @Composable
 private fun RatingSkeletonPreview() {
   AppTheme {
-    RatingContentShimmer()
+    RatingContentShimmer(withVoteCount = true)
   }
 }

@@ -90,7 +90,10 @@ open class GetMediaDetailsUseCase(
             launch ratingFetch@{
               val updatedDetails = when (ratingSource) {
                 RatingSource.TMDB -> return@ratingFetch
-                RatingSource.IMDB -> fetchIMDbDetails(details)
+                RatingSource.IMDB,
+                RatingSource.RT,
+                RatingSource.METACRITIC,
+                  -> fetchOMDbDetails(source = ratingSource, details = details)
                 RatingSource.TRAKT -> fetchTraktDetails(details)
               }
 
@@ -287,11 +290,11 @@ open class GetMediaDetailsUseCase(
     )
   }
 
-  private suspend fun fetchIMDbDetails(details: MediaDetails): MediaDetails {
+  private suspend fun fetchOMDbDetails(source: RatingSource, details: MediaDetails): MediaDetails {
     if (details.imdbId == null) {
       return details.copy(
         ratingCount = details.ratingCount.updateRating(
-          source = RatingSource.IMDB,
+          source = source,
           rating = RatingDetails.Unavailable,
         ),
       )
@@ -299,24 +302,21 @@ open class GetMediaDetailsUseCase(
 
     return details.imdbId?.let { id ->
       repository
-        .fetchIMDbDetails(id)
+        .fetchExternalRatings(id)
         .catch { emit(Result.failure(it)) }
         .firstOrNull()
         ?.fold(
           onFailure = {
             details.copy(
               ratingCount = details.ratingCount.updateRating(
-                source = RatingSource.IMDB,
+                source = source,
                 rating = RatingDetails.Unavailable,
               ),
             )
           },
           onSuccess = { result ->
             details.copy(
-              ratingCount = details.ratingCount.updateRating(
-                source = RatingSource.IMDB,
-                rating = result ?: RatingDetails.Unavailable,
-              ),
+              ratingCount = details.ratingCount.updateExternalRatings(result),
             )
           },
         )

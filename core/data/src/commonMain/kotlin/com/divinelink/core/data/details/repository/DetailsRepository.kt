@@ -4,6 +4,7 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.rating.ExternalRatings
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
@@ -51,7 +52,7 @@ interface DetailsRepository {
 
   fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>>
 
-  fun fetchIMDbDetails(imdbId: String): Flow<Result<RatingDetails?>>
+  fun fetchExternalRatings(imdbId: String): Flow<Result<ExternalRatings?>>
 
   fun fetchTraktRating(
     mediaType: MediaType,

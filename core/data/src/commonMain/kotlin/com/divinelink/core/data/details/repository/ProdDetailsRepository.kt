@@ -18,6 +18,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.rating.ExternalRatings
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.toMediaItem
@@ -237,8 +238,8 @@ class ProdDetailsRepository(
         Result.success(apiResponse.map())
       }
 
-  override fun fetchIMDbDetails(imdbId: String): Flow<Result<RatingDetails?>> = omdbService
-    .fetchImdbDetails(imdbId = imdbId)
+  override fun fetchExternalRatings(imdbId: String): Flow<Result<ExternalRatings?>> = omdbService
+    .fetchExternalRatings(imdbId = imdbId)
     .map { Result.success(it.map()) }
 
   override fun fetchTraktRating(

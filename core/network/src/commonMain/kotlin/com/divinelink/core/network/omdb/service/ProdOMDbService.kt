@@ -13,7 +13,7 @@ class ProdOMDbService(
   private val secrets: SecretProvider,
 ) : OMDbService {
 
-  override fun fetchImdbDetails(imdbId: String): Flow<OMDbResponseApi> = flow {
+  override fun fetchExternalRatings(imdbId: String): Flow<OMDbResponseApi> = flow {
     val url = buildOMDbUrl(imdbId = imdbId, apikey = secrets.omdbApiKey)
 
     val response = client.client.get<OMDbResponseApi>(url)

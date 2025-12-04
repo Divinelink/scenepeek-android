@@ -11,6 +11,6 @@ class TestOMDbService {
   val mock: OMDbService = mock()
 
   fun mockFetchImdbDetails(response: OMDbResponseApi) {
-    whenever(mock.fetchImdbDetails(imdbId = any())).thenReturn(flowOf(response))
+    whenever(mock.fetchExternalRatings(imdbId = any())).thenReturn(flowOf(response))
   }
 }

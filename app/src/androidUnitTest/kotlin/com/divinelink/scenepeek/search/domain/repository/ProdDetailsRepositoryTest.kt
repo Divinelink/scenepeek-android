@@ -657,7 +657,7 @@ class ProdDetailsRepositoryTest {
       ),
     )
 
-    val response = repository.fetchIMDbDetails(
+    val response = repository.fetchExternalRatings(
       imdbId = imdbId,
     ).first()
 

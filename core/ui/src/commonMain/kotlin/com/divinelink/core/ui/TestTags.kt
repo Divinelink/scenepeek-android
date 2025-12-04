@@ -64,6 +64,10 @@ object TestTags {
     const val TRAKT_RATING = "Trakt Rating"
     const val TRAKT_RATING_SKELETON = "Trakt Rating Skeleton"
     const val TMDB_RATING = "TMDb Rating"
+    const val RT_RATING = "Rotten Tomatoes Rating"
+    const val RT_RATING_SKELETON = "Rotten Tomatoes Skeleton"
+    const val METACRITIC_RATING = "Metascore Rating"
+    const val METACRITIC_RATING_SKELETON = "Metascore Skeleton"
 
     const val DETAILS_RATING_BUTTON = "User Score Button"
     const val VOTE_COUNT = "Rating Vote Count %s"

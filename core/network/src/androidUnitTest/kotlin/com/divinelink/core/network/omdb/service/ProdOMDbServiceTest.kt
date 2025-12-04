@@ -36,7 +36,7 @@ class ProdOMDbServiceTest {
       secrets = secrets,
     )
 
-    val response = service.fetchImdbDetails("tt0401729").single()
+    val response = service.fetchExternalRatings("tt0401729").single()
 
     assertThat(response).isEqualTo(
       OMDbResponseApi(
@@ -100,7 +100,7 @@ class ProdOMDbServiceTest {
       secrets = secrets,
     )
 
-    val response = service.fetchImdbDetails("tt0401729").single()
+    val response = service.fetchExternalRatings("tt0401729").single()
 
     assertThat(response).isEqualTo(
       OMDbResponseApi(

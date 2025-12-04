@@ -30,9 +30,13 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.provider.RatingCountParameterProvider
+import com.divinelink.core.ui.resources.core_ui_percentage
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
@@ -45,6 +49,7 @@ fun AllRatingsContent(
       .padding(vertical = MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
     horizontalArrangement = Arrangement.SpaceEvenly,
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     maxItemsInEachRow = 3,
   ) {
     ratingCount.ratings.forEach {
@@ -68,7 +73,12 @@ private fun RatingItem(
     Image(
       modifier = Modifier
         .clip(MaterialTheme.shapes.medium)
-        .clickable { onClick() }
+        .conditional(
+          condition = item.first == RatingSource.TMDB ||
+            item.first == RatingSource.IMDB ||
+            item.first == RatingSource.TRAKT,
+          ifTrue = { clickable { onClick() } },
+        )
         .background(MaterialTheme.colorScheme.surfaceContainer)
         .padding(MaterialTheme.dimensions.keyline_8)
         .size(MaterialTheme.dimensions.keyline_48),
@@ -83,6 +93,9 @@ private fun RatingItem(
       when (item.second) {
         RatingDetails.Initial -> RatingContentShimmer(
           modifier = Modifier.testTag(TestTags.Rating.RATING_SOURCE_SKELETON.format(item.first)),
+          withVoteCount = item.first == RatingSource.IMDB ||
+            item.first == RatingSource.TMDB ||
+            item.first == RatingSource.TRAKT,
         )
         is RatingDetails.Score -> {
           val score = item.second as RatingDetails.Score
@@ -112,6 +125,19 @@ private fun RatingItem(
         RatingDetails.Unavailable -> Text(
           style = MaterialTheme.typography.titleMedium,
           text = "-",
+        )
+        is RatingDetails.Rating -> Text(
+          style = MaterialTheme.typography.titleMedium,
+          text = when (item.first) {
+            RatingSource.TMDB -> (item.second as RatingDetails.Rating).value.toString()
+            RatingSource.IMDB -> (item.second as RatingDetails.Rating).value.toString()
+            RatingSource.TRAKT -> (item.second as RatingDetails.Rating).value.toString()
+            RatingSource.RT -> stringResource(
+              UiString.core_ui_percentage,
+              (item.second as RatingDetails.Rating).value,
+            )
+            RatingSource.METACRITIC -> (item.second as RatingDetails.Rating).value.toString()
+          },
         )
       }
     }

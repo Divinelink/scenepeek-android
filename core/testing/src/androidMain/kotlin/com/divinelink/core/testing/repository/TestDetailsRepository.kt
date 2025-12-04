@@ -122,7 +122,7 @@ class TestDetailsRepository {
 
   fun mockFetchIMDbDetails(response: Result<RatingDetails?>) {
     whenever(
-      mock.fetchIMDbDetails(any()),
+      mock.fetchExternalRatings(any()),
     ).thenReturn(flowOf(response))
   }
 

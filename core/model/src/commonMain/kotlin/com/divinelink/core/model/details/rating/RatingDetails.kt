@@ -10,4 +10,8 @@ sealed interface RatingDetails {
     val voteAverage: Double,
     val voteCount: Int,
   ) : RatingDetails
+
+  data class Rating(
+    val value: Int,
+  ) : RatingDetails
 }
