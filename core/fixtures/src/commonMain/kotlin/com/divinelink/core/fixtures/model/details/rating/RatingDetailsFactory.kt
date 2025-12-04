@@ -18,4 +18,8 @@ object RatingDetailsFactory {
     voteAverage = 9.5,
     voteCount = 3_456,
   )
+
+  val rottenTomatoes = RatingDetails.Rating(51)
+
+  val metacritic = RatingDetails.Rating(52)
 }

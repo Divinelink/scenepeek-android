@@ -8,6 +8,7 @@ import com.divinelink.core.domain.details.media.GetMediaDetailsUseCase
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.ExternalRatingsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.fixtures.model.details.video.VideoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
@@ -145,17 +146,21 @@ class GetMediaDetailsUseCaseTest {
         Result.success(
           MediaDetailsResult.RatingSuccess(
             RatingCount(
-              ratings = mapOf(
-                RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 8.4,
-                  voteCount = 30_452,
-                ),
-                RatingSource.IMDB to RatingDetails.Initial,
-                RatingSource.TRAKT to RatingDetails.Score(
-                  voteAverage = 7.3,
-                  voteCount = 1_234,
-                ),
-              ),
+              ratings = RatingSource.entries.associateWith { source ->
+                when (source) {
+                  RatingSource.TMDB -> RatingDetails.Score(
+                    voteAverage = 8.4,
+                    voteCount = 30_452,
+                  )
+                  RatingSource.IMDB -> RatingDetails.Initial
+                  RatingSource.TRAKT -> RatingDetails.Score(
+                    voteAverage = 7.3,
+                    voteCount = 1_234,
+                  )
+                  RatingSource.RT -> RatingDetails.Initial
+                  RatingSource.METACRITIC -> RatingDetails.Initial
+                }
+              },
             ),
           ),
         ),
@@ -189,14 +194,18 @@ class GetMediaDetailsUseCaseTest {
         Result.success(
           MediaDetailsResult.RatingSuccess(
             RatingCount(
-              ratings = mapOf(
-                RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 8.4,
-                  voteCount = 30_452,
-                ),
-                RatingSource.IMDB to RatingDetails.Initial,
-                RatingSource.TRAKT to RatingDetails.Unavailable,
-              ),
+              ratings = RatingSource.entries.associateWith { source ->
+                when (source) {
+                  RatingSource.TMDB -> RatingDetails.Score(
+                    voteAverage = 8.4,
+                    voteCount = 30_452,
+                  )
+                  RatingSource.IMDB -> RatingDetails.Initial
+                  RatingSource.TRAKT -> RatingDetails.Unavailable
+                  RatingSource.RT -> RatingDetails.Initial
+                  RatingSource.METACRITIC -> RatingDetails.Initial
+                }
+              },
             ),
           ),
         ),
@@ -212,13 +221,8 @@ class GetMediaDetailsUseCaseTest {
 
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
     repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
-    repository.mockFetchIMDbDetails(
-      response = Result.success(
-        RatingDetails.Score(
-          voteAverage = 8.7,
-          voteCount = 4_567,
-        ),
-      ),
+    repository.mockFetchExternalRatings(
+      response = Result.success(ExternalRatingsFactory.all),
     )
     val useCase = createGetMediaDetailsUseCase()
 
@@ -238,17 +242,21 @@ class GetMediaDetailsUseCaseTest {
         Result.success(
           MediaDetailsResult.RatingSuccess(
             RatingCount(
-              ratings = mapOf(
-                RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 8.4,
-                  voteCount = 30_452,
-                ),
-                RatingSource.IMDB to RatingDetails.Score(
-                  voteAverage = 8.7,
-                  voteCount = 4_567,
-                ),
-                RatingSource.TRAKT to RatingDetails.Initial,
-              ),
+              ratings = RatingSource.entries.associateWith { source ->
+                when (source) {
+                  RatingSource.TMDB -> RatingDetails.Score(
+                    voteAverage = 8.4,
+                    voteCount = 30_452,
+                  )
+                  RatingSource.IMDB -> RatingDetails.Score(
+                    voteAverage = 8.5,
+                    voteCount = 2_345,
+                  )
+                  RatingSource.TRAKT -> RatingDetails.Initial
+                  RatingSource.RT -> RatingDetails.Rating(51)
+                  RatingSource.METACRITIC -> RatingDetails.Rating(52)
+                }
+              },
             ),
           ),
         ),
@@ -282,14 +290,18 @@ class GetMediaDetailsUseCaseTest {
         Result.success(
           MediaDetailsResult.RatingSuccess(
             RatingCount(
-              ratings = mapOf(
-                RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 8.4,
-                  voteCount = 30_452,
-                ),
-                RatingSource.IMDB to RatingDetails.Unavailable,
-                RatingSource.TRAKT to RatingDetails.Initial,
-              ),
+              ratings = RatingSource.entries.associateWith { source ->
+                when (source) {
+                  RatingSource.TMDB -> RatingDetails.Score(
+                    voteAverage = 8.4,
+                    voteCount = 30_452,
+                  )
+                  RatingSource.IMDB -> RatingDetails.Unavailable
+                  RatingSource.TRAKT -> RatingDetails.Initial
+                  RatingSource.RT -> RatingDetails.Initial
+                  RatingSource.METACRITIC -> RatingDetails.Initial
+                }
+              },
             ),
           ),
         ),
@@ -327,11 +339,15 @@ class GetMediaDetailsUseCaseTest {
         Result.success(
           MediaDetailsResult.RatingSuccess(
             RatingCount(
-              ratings = mapOf(
-                RatingSource.TMDB to RatingDetails.Score(8.6, 4503),
-                RatingSource.IMDB to RatingDetails.Initial,
-                RatingSource.TRAKT to RatingDetailsFactory.trakt(),
-              ),
+              ratings = RatingSource.entries.associateWith { source ->
+                when (source) {
+                  RatingSource.TMDB -> RatingDetails.Score(8.6, 4503)
+                  RatingSource.IMDB -> RatingDetails.Initial
+                  RatingSource.TRAKT -> RatingDetailsFactory.trakt()
+                  RatingSource.RT -> RatingDetails.Initial
+                  RatingSource.METACRITIC -> RatingDetails.Initial
+                }
+              },
             ),
           ),
         ),

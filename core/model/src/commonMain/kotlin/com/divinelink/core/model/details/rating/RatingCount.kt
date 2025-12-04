@@ -33,9 +33,7 @@ data class RatingCount(val ratings: Map<RatingSource, RatingDetails>) {
     rating: RatingDetails,
   ): RatingCount = copy(ratings = ratings + (source to rating))
 
-  fun updateExternalRatings(
-    externalRatings: ExternalRatings?,
-  ): RatingCount {
+  fun updateExternalRatings(externalRatings: ExternalRatings?): RatingCount {
     val metascore = externalRatings?.metascore ?: RatingDetails.Unavailable
     val rt = externalRatings?.rt ?: RatingDetails.Unavailable
     val imdb = externalRatings?.imdb ?: RatingDetails.Unavailable

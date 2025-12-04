@@ -290,7 +290,10 @@ open class GetMediaDetailsUseCase(
     )
   }
 
-  private suspend fun fetchOMDbDetails(source: RatingSource, details: MediaDetails): MediaDetails {
+  private suspend fun fetchOMDbDetails(
+    source: RatingSource,
+    details: MediaDetails,
+  ): MediaDetails {
     if (details.imdbId == null) {
       return details.copy(
         ratingCount = details.ratingCount.updateRating(

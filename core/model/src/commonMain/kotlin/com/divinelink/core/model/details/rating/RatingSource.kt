@@ -21,7 +21,7 @@ enum class RatingSource(
   IMDB(iconRes = Res.drawable.core_model_ic_imdb, value = "IMDb", url = "https://www.imdb.com"),
   TRAKT(iconRes = Res.drawable.core_model_ic_trakt, value = "Trakt", url = "https://trakt.tv"),
   RT(iconRes = Res.drawable.core_model_ic_rt, value = "Rotten Tomatoes", url = ""),
-  METACRITIC(iconRes = Res.drawable.core_model_ic_metacritic, value = "Metacritic", url = "")
+  METACRITIC(iconRes = Res.drawable.core_model_ic_metacritic, value = "Metacritic", url = ""),
   ;
 
   companion object {
