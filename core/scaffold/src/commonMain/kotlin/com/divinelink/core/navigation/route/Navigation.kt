@@ -130,4 +130,9 @@ sealed interface Navigation {
 
   @Serializable
   data object DiscoverRoute : Navigation
+
+  @Serializable
+  data class MediaPosterRoute(
+    val posterPath: String,
+  ) : Navigation
 }

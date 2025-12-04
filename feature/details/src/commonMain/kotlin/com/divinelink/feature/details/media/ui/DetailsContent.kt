@@ -1,6 +1,7 @@
 package com.divinelink.feature.details.media.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -279,6 +280,7 @@ fun DetailsContent(
           is Movie, is TV -> MediaDetailsContent(
             uiState = viewState,
             onNavigate = onNavigate,
+            visibilityScope = animatedVisibilityScope,
             trailer = viewState.trailer,
             onMediaItemClick = onSimilarMovieClicked,
             onAddRateClick = onAddRateClick,
@@ -317,8 +319,9 @@ fun DetailsContent(
 }
 
 @Composable
-private fun MediaDetailsContent(
+private fun SharedTransitionScope.MediaDetailsContent(
   uiState: DetailsViewState,
+  visibilityScope: AnimatedVisibilityScope,
   onNavigate: (Navigation) -> Unit,
   trailer: Video?,
   obfuscateEpisodes: Boolean,
@@ -354,9 +357,12 @@ private fun MediaDetailsContent(
   }
 
   DynamicDetailsCollapsingToolbar(
+    visibilityScope = visibilityScope,
     mediaDetails = uiState.mediaDetails,
     accountDataState = uiState.accountDataState,
-    onNavigate = onNavigate,
+    onNavigate = {
+      onNavigate(it)
+    },
     status = uiState.jellyseerrMediaInfo?.status,
     ratingSource = uiState.ratingSource,
     hasTrailer = trailer?.key != null,
