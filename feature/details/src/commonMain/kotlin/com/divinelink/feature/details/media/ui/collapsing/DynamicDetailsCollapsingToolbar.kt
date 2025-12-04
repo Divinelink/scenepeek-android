@@ -1,5 +1,7 @@
 package com.divinelink.feature.details.media.ui.collapsing
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -22,8 +24,9 @@ import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
 
 @Composable
-fun DynamicDetailsCollapsingToolbar(
+fun SharedTransitionScope.DynamicDetailsCollapsingToolbar(
   onNavigate: (Navigation) -> Unit,
+  visibilityScope: AnimatedVisibilityScope,
   accountDataState: Map<AccountDataSection, Boolean>,
   mediaDetails: MediaDetails,
   ratingSource: RatingSource,
@@ -45,6 +48,8 @@ fun DynamicDetailsCollapsingToolbar(
     val toolbarPlaceable = subcompose("toolbar") {
       CollapsibleDetailsContent(
         modifier = Modifier.fillMaxWidth(),
+        applySharedTransition = false,
+        visibilityScope = visibilityScope,
         mediaDetails = mediaDetails,
         accountDataState = accountDataState,
         status = status,
@@ -90,7 +95,9 @@ fun DynamicDetailsCollapsingToolbar(
               modifier = Modifier
                 .requiredToolBarMaxHeight()
                 .fillMaxWidth(),
+              applySharedTransition = true,
               mediaDetails = mediaDetails,
+              visibilityScope = visibilityScope,
               accountDataState = accountDataState,
               onNavigate = onNavigate,
               status = status,

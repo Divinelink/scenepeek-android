@@ -10,6 +10,7 @@ import com.divinelink.feature.add.to.account.modal.navigation.defaultMediaAction
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
+import com.divinelink.feature.details.navigation.posterScreen
 import com.divinelink.feature.discover.ui.navigation.discoverScreen
 import com.divinelink.feature.lists.create.ui.navigation.createListScreen
 import com.divinelink.feature.lists.create.ui.navigation.editListScreen
@@ -262,10 +263,19 @@ val navigationModule = module {
     }
   }
 
-  // Action Menu Navigation
+  // Discover Navigation
   single<NavGraphExtension>(named<Navigation.DiscoverRoute>()) {
     { navController, _ ->
       discoverScreen(navController::findNavigation)
+    }
+  }
+
+  // Discover Navigation
+  single<NavGraphExtension>(named<Navigation.MediaPosterRoute>()) {
+    { navController, _ ->
+      posterScreen(
+        onNavigate = navController::findNavigation,
+      )
     }
   }
 

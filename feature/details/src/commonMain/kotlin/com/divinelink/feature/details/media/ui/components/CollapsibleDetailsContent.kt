@@ -2,9 +2,12 @@ package com.divinelink.feature.details.media.ui.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.model.ImageQuality
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.MediaDetails
@@ -33,8 +37,9 @@ import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.coil.PosterImage
 import com.divinelink.core.ui.components.AddToListButton
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.WatchTrailerButton
@@ -48,8 +53,10 @@ import com.divinelink.feature.details.resources.details__add_rating
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun CollapsibleDetailsContent(
+fun SharedTransitionScope.CollapsibleDetailsContent(
   modifier: Modifier = Modifier,
+  applySharedTransition: Boolean,
+  visibilityScope: AnimatedVisibilityScope,
   onNavigate: (Navigation) -> Unit,
   mediaDetails: MediaDetails,
   accountDataState: Map<AccountDataSection, Boolean>,
@@ -84,11 +91,25 @@ fun CollapsibleDetailsContent(
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      MovieImage(
+      PosterImage(
         modifier = Modifier
+          .conditional(
+            condition = applySharedTransition,
+            ifTrue = {
+              sharedElement(
+                sharedContentState = rememberSharedContentState(
+                  SharedElementKeys.MediaPoster(mediaDetails.posterPath),
+                ),
+                animatedVisibilityScope = visibilityScope,
+              )
+            },
+          )
           .mediaImageDropShadow()
-          .height(MaterialTheme.dimensions.posterSizeSmall),
+          .height(MaterialTheme.dimensions.posterSizeSmall)
+          .aspectRatio(2f / 3f),
         path = mediaDetails.posterPath,
+        quality = ImageQuality.QUALITY_342,
+        onClick = { onNavigate(Navigation.MediaPosterRoute(it)) },
       )
 
       Column(

@@ -12,6 +12,7 @@ import com.divinelink.core.navigation.route.navigateToListDetails
 import com.divinelink.core.navigation.route.navigateToLists
 import com.divinelink.core.navigation.route.navigateToOnboarding
 import com.divinelink.core.navigation.route.navigateToPerson
+import com.divinelink.core.navigation.route.navigateToPoster
 import com.divinelink.core.navigation.route.navigateToRequests
 import com.divinelink.core.navigation.route.navigateToSearchFromHome
 import com.divinelink.core.navigation.route.navigateToSearchFromTab
@@ -55,17 +56,13 @@ fun NavController.findNavigation(route: Navigation) {
     }
     is Navigation.UserDataRoute -> navigateToUserData(route)
     is Navigation.WebViewRoute -> navigateToWebView(route)
-
     is Navigation.ActionMenuRoute.Media -> openDefaultActionMenuModal(route)
     Navigation.JellyseerrRequestsRoute -> navigateToRequests()
     Navigation.DiscoverRoute -> navigateToDiscover()
+    is Navigation.MediaPosterRoute -> navigateToPoster(route)
 
     // This is from top level navigation
-    Navigation.HomeRoute -> {
-      // Do nothing
-    }
-    Navigation.ProfileRoute -> {
-      // Do nothing
-    }
+    Navigation.HomeRoute -> Unit
+    Navigation.ProfileRoute -> Unit
   }
 }
