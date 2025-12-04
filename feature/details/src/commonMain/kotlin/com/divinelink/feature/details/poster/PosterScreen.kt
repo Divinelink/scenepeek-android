@@ -74,7 +74,9 @@ fun SharedTransitionScope.FullscreenPoster(
     PosterImage(
       modifier = modifier
         .sharedElement(
-          sharedContentState = rememberSharedContentState(SharedElementKeys.MediaPoster),
+          sharedContentState = rememberSharedContentState(
+            SharedElementKeys.MediaPoster(path)
+          ),
           animatedVisibilityScope = visibilityScope,
         )
         .align(Alignment.Center)

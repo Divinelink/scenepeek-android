@@ -97,7 +97,9 @@ fun SharedTransitionScope.CollapsibleDetailsContent(
             condition = applySharedTransition,
             ifTrue = {
               sharedElement(
-                sharedContentState = rememberSharedContentState(SharedElementKeys.MediaPoster),
+                sharedContentState = rememberSharedContentState(
+                  SharedElementKeys.MediaPoster(mediaDetails.posterPath),
+                ),
                 animatedVisibilityScope = visibilityScope,
               )
             },
