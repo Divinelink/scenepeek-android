@@ -55,7 +55,6 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SharedTransitionScope.CollapsibleDetailsContent(
   modifier: Modifier = Modifier,
-  applySharedTransition: Boolean,
   visibilityScope: AnimatedVisibilityScope,
   onNavigate: (Navigation) -> Unit,
   mediaDetails: MediaDetails,
@@ -93,16 +92,11 @@ fun SharedTransitionScope.CollapsibleDetailsContent(
     ) {
       PosterImage(
         modifier = Modifier
-          .conditional(
-            condition = applySharedTransition,
-            ifTrue = {
-              sharedElement(
-                sharedContentState = rememberSharedContentState(
-                  SharedElementKeys.MediaPoster(mediaDetails.posterPath),
-                ),
-                animatedVisibilityScope = visibilityScope,
-              )
-            },
+          .sharedElement(
+            sharedContentState = rememberSharedContentState(
+              SharedElementKeys.MediaPoster(mediaDetails.posterPath),
+            ),
+            animatedVisibilityScope = visibilityScope,
           )
           .mediaImageDropShadow()
           .height(MaterialTheme.dimensions.posterSizeSmall)

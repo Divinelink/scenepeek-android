@@ -3,10 +3,13 @@ package com.divinelink.feature.details.media.ui
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -36,7 +39,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
@@ -74,8 +80,11 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.collapsingheader.CollapsingHeaderLayout
+import com.divinelink.core.ui.collapsingheader.rememberCollapsingHeaderState
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
@@ -83,7 +92,7 @@ import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
-import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar
+import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
 import com.divinelink.feature.details.media.ui.fab.DetailsExpandableFloatingActionButton
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
@@ -97,6 +106,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -340,6 +350,7 @@ private fun SharedTransitionScope.MediaDetailsContent(
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
+  val density = LocalDensity.current
 
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val pagerState = rememberPagerState(
@@ -356,25 +367,55 @@ private fun SharedTransitionScope.MediaDetailsContent(
       }
   }
 
-  DynamicDetailsCollapsingToolbar(
-    visibilityScope = visibilityScope,
-    mediaDetails = uiState.mediaDetails,
-    accountDataState = uiState.accountDataState,
-    onNavigate = {
-      onNavigate(it)
+  val collapsingHeaderState = rememberCollapsingHeaderState(
+    collapsedHeight = with(density) { MaterialTheme.dimensions.keyline_0.toPx() },
+    initialExpandedHeight = with(density) { 400.dp.toPx() },
+  )
+
+  LaunchedEffect(collapsingHeaderState.progress) {
+    onShowTitle(collapsingHeaderState.progress)
+  }
+
+  CollapsingHeaderLayout(
+    modifier = Modifier
+      .testTag(TestTags.Details.COLLAPSIBLE_LAYOUT)
+      .fillMaxSize(),
+    state = collapsingHeaderState,
+    headerContent = {
+      Box(
+        modifier = Modifier.offset {
+          IntOffset(
+            x = 0,
+            y = -collapsingHeaderState.translation.roundToInt(),
+          )
+        },
+      ) {
+        BackdropImage(
+          path = uiState.mediaDetails.backdropPath,
+          onBackdropLoaded = onBackdropLoaded,
+        )
+        CollapsibleDetailsContent(
+          modifier = Modifier
+            .fillMaxWidth(),
+          mediaDetails = uiState.mediaDetails,
+          visibilityScope = visibilityScope,
+          accountDataState = uiState.accountDataState,
+          onNavigate = onNavigate,
+          status = uiState.jellyseerrMediaInfo?.status,
+          isOnWatchlist = uiState.userDetails.watchlist,
+          hasTrailer = uiState.trailer != null,
+          canManageRequests = uiState.canManageRequests,
+          userDetails = uiState.userDetails,
+          ratingSource = uiState.ratingSource,
+          ratingCount = uiState.mediaDetails.ratingCount,
+          onAddToWatchListClick = onAddToWatchlistClick,
+          onAddRateClick = onAddRateClick,
+          onShowAllRatingsClick = viewAllRatingsClick,
+          onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
+          onOpenManageModal = onOpenManageModal,
+        )
+      }
     },
-    status = uiState.jellyseerrMediaInfo?.status,
-    ratingSource = uiState.ratingSource,
-    hasTrailer = trailer?.key != null,
-    canManageRequests = uiState.canManageRequests,
-    onAddToWatchlistClick = onAddToWatchlistClick,
-    onAddRateClick = onAddRateClick,
-    onShowAllRatingsClick = viewAllRatingsClick,
-    userDetails = uiState.userDetails,
-    onScrollProgress = onShowTitle,
-    onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
-    onBackdropLoaded = onBackdropLoaded,
-    onOpenManageModal = onOpenManageModal,
   ) {
     Column(
       modifier = Modifier
