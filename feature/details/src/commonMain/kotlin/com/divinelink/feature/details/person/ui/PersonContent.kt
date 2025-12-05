@@ -2,12 +2,15 @@ package com.divinelink.feature.details.person.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,11 +26,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -43,13 +44,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
+import com.divinelink.core.model.ImageQuality
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
@@ -58,16 +62,19 @@ import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.scaffold.ProvideScenePeekAppState
+import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.SharedElementKeys
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.button.switchview.SwitchViewButton
+import com.divinelink.core.ui.coil.PosterImage
 import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
 import com.divinelink.core.ui.collapsing.rememberCollapsingToolBarState
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
-import com.divinelink.core.ui.composition.LocalUiPreferences
 import com.divinelink.core.ui.composition.rememberViewModePreferences
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.resources.core_ui_ic_female_person_placeholder
@@ -87,7 +94,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun PersonContent(
+fun SharedTransitionScope.PersonContent(
   scope: CoroutineScope,
   uiState: PersonUiState,
   lazyListState: LazyListState,
@@ -97,6 +104,7 @@ fun PersonContent(
   onApplyFilter: (CreditFilter) -> Unit,
   onProgressUpdate: (Float) -> Unit,
   onNavigate: (Navigation) -> Unit,
+  visibilityScope: AnimatedVisibilityScope,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val isGrid = rememberViewModePreferences(ViewableSection.PERSON_CREDITS) == ViewMode.GRID
@@ -202,6 +210,8 @@ fun PersonContent(
             .requiredToolBarMaxHeight()
             .fillMaxWidth(),
           personDetails = personDetails as PersonDetailsUiState.Data,
+          onNavigate = onNavigate,
+          visibilityScope = visibilityScope,
         )
       },
       content = {
@@ -360,9 +370,11 @@ fun PersonContent(
 }
 
 @Composable
-private fun CollapsiblePersonContent(
+private fun SharedTransitionScope.CollapsiblePersonContent(
   modifier: Modifier = Modifier,
   personDetails: PersonDetailsUiState.Data,
+  onNavigate: (Navigation) -> Unit,
+  visibilityScope: AnimatedVisibilityScope,
 ) {
   Column(
     modifier = modifier
@@ -381,14 +393,24 @@ private fun CollapsiblePersonContent(
     )
     Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
 
-    MovieImage(
-      modifier = Modifier.height(MaterialTheme.dimensions.posterSize),
+    PosterImage(
+      modifier = Modifier
+        .sharedElement(
+          sharedContentState = rememberSharedContentState(
+            SharedElementKeys.MediaPoster(personDetails.personDetails.person.profilePath ?: ""),
+          ),
+          animatedVisibilityScope = visibilityScope,
+        )
+        .height(MaterialTheme.dimensions.posterSize)
+        .aspectRatio(2f / 3f),
       path = personDetails.personDetails.person.profilePath,
       errorPlaceHolder = if (personDetails.personDetails.person.gender == Gender.FEMALE) {
         painterResource(UiDrawable.core_ui_ic_female_person_placeholder)
       } else {
         painterResource(UiDrawable.core_ui_ic_person_placeholder)
       },
+      onClick = { onNavigate(Navigation.MediaPosterRoute(it)) },
+      quality = ImageQuality.QUALITY_342,
     )
   }
 }
@@ -402,23 +424,32 @@ fun PersonContentListPreview(
   LaunchedEffect(Unit) {
     lazyListState.scrollToItem(0)
   }
-  CompositionLocalProvider(
-    LocalUiPreferences provides UiPreferences.Initial,
-  ) {
-    AppTheme {
-      Surface {
-        PersonContent(
-          uiState = uiState,
-          lazyListState = lazyListState,
-          scope = rememberCoroutineScope(),
-          onMediaClick = {},
-          onTabSelected = {},
-          onUpdateViewMode = {},
-          onApplyFilter = {},
-          onProgressUpdate = {},
-          onNavigate = {},
-        )
-      }
+
+  val appState = rememberScenePeekAppState(
+    networkMonitor = TestNetworkMonitor(),
+    onboardingManager = TestOnboardingManager(),
+    preferencesRepository = TestPreferencesRepository(
+      uiPreferences = UiPreferences.Initial.copy(
+        viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+      ),
+    ),
+    navigationProvider = emptyList(),
+  )
+
+  ProvideScenePeekAppState(appState = appState) {
+    SharedTransitionScopeProvider { scope ->
+      scope.PersonContent(
+        uiState = uiState,
+        lazyListState = lazyListState,
+        scope = rememberCoroutineScope(),
+        onMediaClick = {},
+        onTabSelected = {},
+        onUpdateViewMode = {},
+        onApplyFilter = {},
+        onProgressUpdate = {},
+        onNavigate = {},
+        visibilityScope = this,
+      )
     }
   }
 }
@@ -426,43 +457,48 @@ fun PersonContentListPreview(
 @Previews
 @Composable
 fun PersonContentGridPreview() {
-  CompositionLocalProvider(
-    LocalUiPreferences provides UiPreferences.Initial.copy(
-      viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+  val appState = rememberScenePeekAppState(
+    networkMonitor = TestNetworkMonitor(),
+    onboardingManager = TestOnboardingManager(),
+    preferencesRepository = TestPreferencesRepository(
+      uiPreferences = UiPreferences.Initial.copy(
+        viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+      ),
     ),
-  ) {
-    AppTheme {
-      Surface {
-        PersonContent(
-          uiState = PersonUiState(
-            selectedTabIndex = 2,
-            forms = mapOf(
-              0 to PersonForm.About(
-                PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
-              ),
-              1 to PersonForm.Movies(emptyMap()),
-              2 to PersonForm.TvShows(GroupedPersonCreditsSample.tvShows()),
+    navigationProvider = emptyList(),
+  )
+  ProvideScenePeekAppState(appState = appState) {
+    SharedTransitionScopeProvider { scope ->
+      scope.PersonContent(
+        uiState = PersonUiState(
+          selectedTabIndex = 2,
+          forms = mapOf(
+            0 to PersonForm.About(
+              PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
             ),
-            filteredCredits = mapOf(
-              2 to GroupedPersonCreditsSample.tvShows(),
-            ),
-            filters = mapOf(
-              1 to emptyList(),
-              2 to emptyList(),
-            ),
-            tabs = PersonTab.entries,
-            knownForCredits = PersonCastCreditFactory.all(),
+            1 to PersonForm.Movies(emptyMap()),
+            2 to PersonForm.TvShows(GroupedPersonCreditsSample.tvShows()),
           ),
-          lazyListState = rememberLazyListState(),
-          scope = rememberCoroutineScope(),
-          onMediaClick = {},
-          onTabSelected = {},
-          onUpdateViewMode = {},
-          onApplyFilter = {},
-          onProgressUpdate = {},
-          onNavigate = {},
-        )
-      }
+          filteredCredits = mapOf(
+            2 to GroupedPersonCreditsSample.tvShows(),
+          ),
+          filters = mapOf(
+            1 to emptyList(),
+            2 to emptyList(),
+          ),
+          tabs = PersonTab.entries,
+          knownForCredits = PersonCastCreditFactory.all(),
+        ),
+        lazyListState = rememberLazyListState(),
+        scope = rememberCoroutineScope(),
+        onMediaClick = {},
+        onTabSelected = {},
+        onUpdateViewMode = {},
+        onApplyFilter = {},
+        onProgressUpdate = {},
+        onNavigate = {},
+        visibilityScope = this,
+      )
     }
   }
 }

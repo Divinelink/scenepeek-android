@@ -4,9 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 
 @Composable
 fun SharedTransitionScopeProvider(
@@ -14,14 +13,12 @@ fun SharedTransitionScopeProvider(
     sharedTransitionScope: SharedTransitionScope,
   ) -> Unit,
 ) {
-  AppTheme {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedVisibility(visible = true) {
-          content(
-            this@SharedTransitionLayout,
-          )
-        }
+  PreviewLocalProvider {
+    SharedTransitionLayout {
+      AnimatedVisibility(visible = true) {
+        content(
+          this@SharedTransitionLayout,
+        )
       }
     }
   }

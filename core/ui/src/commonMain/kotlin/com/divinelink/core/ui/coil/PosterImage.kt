@@ -11,12 +11,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.ImageQuality
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.conditional
@@ -49,6 +51,7 @@ fun PosterImage(
   AsyncImage(
     modifier = modifier
       .clip(MaterialTheme.shape.medium)
+      .testTag(TestTags.Components.POSTER_IMAGE)
       .conditional(
         condition = path != null,
         ifTrue = { debouncedClickable { onClick(path ?: "") } },
