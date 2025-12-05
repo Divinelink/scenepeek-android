@@ -47,6 +47,7 @@ import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.core.ui.resources.core_ui_filter_button_content_desc
 import com.divinelink.core.ui.resources.core_ui_movie_image_placeholder
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.Channel
 import org.jetbrains.compose.resources.getString
 import kotlin.test.BeforeTest
@@ -1109,5 +1110,41 @@ class PersonScreenTest : ComposeTest() {
 
     onNodeWithText("Acting (1)").assertIsDisplayed()
     onNodeWithText("Sound (1)").assertIsNotDisplayed()
+  }
+
+  @Test
+  fun `test navigate to poster on poster click`() = uiTest {
+    var route: Navigation? = null
+    val channel = Channel<Result<PersonDetailsResult>>()
+
+    fetchPersonDetailsUseCase.mockSuccess(
+      response = channel,
+    )
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setVisibilityScopeContent {
+      PersonScreen(
+        onNavigate = { route = it },
+        viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
+        animatedVisibilityScope = this,
+      )
+    }
+    onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+
+    channel.send(
+      Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+    )
+
+    onNodeWithTag(TestTags.Components.POSTER_IMAGE).performClick()
+
+    route shouldBe Navigation.MediaPosterRoute(
+      PersonDetailsFactory.steveCarell().person.profilePath!!,
+    )
   }
 }

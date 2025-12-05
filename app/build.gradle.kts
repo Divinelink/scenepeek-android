@@ -117,11 +117,6 @@ kotlin {
     androidUnitTest.dependencies {
       implementation(libs.androidx.navigation.testing)
     }
-
-    androidMain.dependencies {
-      implementation(compose.uiTooling)
-      implementation(libs.koin.start.up)
-    }
   }
 }
 
