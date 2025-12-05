@@ -1351,7 +1351,8 @@ class DetailsContentTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Details.Cast.FORM)
       .assertIsDisplayed()
-      .performScrollToNode(hasText(SeriesCastFactory.cast().first().name))
+      .performScrollToIndex(1)
+
     onNodeWithText(SeriesCastFactory.cast().first().name).assertIsDisplayed()
   }
 
@@ -1425,7 +1426,8 @@ class DetailsContentTest : ComposeTest() {
     onNodeWithTag(TestTags.Details.Recommendations.FORM)
       .assertIsDisplayed()
       .performScrollToIndex(1)
-    onNodeWithText(MediaItemFactory.MoviesList().first().overview).assertIsDisplayed()
+
+    onNodeWithText(MediaItemFactory.MoviesList().first().name).assertIsDisplayed()
   }
 
   @Test
@@ -1535,12 +1537,9 @@ class DetailsContentTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Details.Seasons.FORM)
       .assertIsDisplayed()
-      .performScrollToNode(
-        matcher = hasText(SeasonFactory.season1().overview),
-      )
+      .performScrollToIndex(1)
 
-    onNodeWithText(SeasonFactory.season1().overview)
-      .assertIsDisplayed()
+    onNodeWithText(SeasonFactory.season1().name).assertIsDisplayed()
   }
 
   @Test

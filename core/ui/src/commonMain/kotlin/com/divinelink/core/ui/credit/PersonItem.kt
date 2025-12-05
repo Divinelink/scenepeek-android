@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
@@ -40,7 +41,7 @@ fun PersonItem(
   isObfuscated: Boolean,
 ) {
   Card(
-    modifier = modifier,
+    modifier = modifier.testTag("Person ${person.id}"),
     onClick = { onClick(person) },
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
