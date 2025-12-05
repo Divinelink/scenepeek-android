@@ -37,6 +37,11 @@ import com.divinelink.feature.onboarding.resources.feature_onboarding_v29_discov
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v29_discover_rating_filter
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v29_favorite_status_lists
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v29_grid_view
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_convert_app_to_multiplatform
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_display_fullscreen_posters
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_external_ratings
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_fix_encryption
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_fix_jellyfin_auth_with_empty_passwords
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
 import com.divinelink.feature.onboarding.resources.Res as R
@@ -166,6 +171,24 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v29_discover_filters)),
   )
 
+  val v30 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.22.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v30_convert_app_to_multiplatform),
+    ),
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v30_display_fullscreen_posters),
+    ),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v30_external_ratings)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v30_fix_jellyfin_auth_with_empty_passwords),
+    ),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v30_fix_encryption)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -177,5 +200,6 @@ object IntroSections {
     27 to v27,
     28 to v28,
     29 to v29,
+    30 to v30,
   )
 }

@@ -45,4 +45,10 @@
   <string name="feature_onboarding_v29_discover_rating_filter">- Add new discover filters. You can now also discover movies and tv shows by filtering with ratings and minimum votes.</string>
   <string name="feature_onboarding_v29_favorite_status_lists">- Display media favorite status on list details</string>
   <string name="feature_onboarding_v29_discover_filters">- Fix an issue with discover filters between movies and tv shows</string>
+
+  <string name="feature_onboarding_v30_convert_app_to_multiplatform">- Huge updates to ScenePeek codebase. An iOS version will soon be released!</string>
+  <string name="feature_onboarding_v30_display_fullscreen_posters">- View posters in full screen for movies, TV shows, and people. Click any poster on a details screen to expand it to full screen!</string>
+  <string name="feature_onboarding_v30_external_ratings">- Add Rotten Tomatoes and Metacritic scores</string>
+  <string name="feature_onboarding_v30_fix_jellyfin_auth_with_empty_passwords">- Enable login for Jellyfin/Emby users with empty passwords</string>
+  <string name="feature_onboarding_v30_fix_encryption">- Migrate deprecated encryption library. If you were previously connected on TMDB, you'll need to re-login.</string>
 </resources>
