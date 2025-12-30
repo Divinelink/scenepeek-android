@@ -36,7 +36,6 @@ class HomeViewModel(
     HomeViewState.initial(),
   )
   val viewState: StateFlow<HomeViewState> = _viewState
-
   init {
     fetchPopularMovies()
   }

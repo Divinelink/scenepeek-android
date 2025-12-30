@@ -12,14 +12,14 @@ class KotlinMultiplatformApplicationPlugin : Plugin<Project> {
   override fun apply(target: Project): Unit = with(target) {
     pluginManager.apply {
       apply("com.android.application")
-      apply(libs.findPlugin("kotlin.multiplatform").get().get().pluginId)
-      apply(libs.findPlugin("kotlin.serialization").get().get().pluginId)
+      apply("org.jetbrains.kotlin.multiplatform")
+      apply("org.jetbrains.kotlin.plugin.serialization")
     }
 
     extensions.configure<KotlinMultiplatformExtension>(::configureKotlinMultiplatform)
     extensions.configure<ApplicationExtension> {
       configureKotlinAndroid(this)
-      defaultConfig.targetSdk = libs.findVersion("target-sdk").get().requiredVersion.toInt()
+      defaultConfig.targetSdk = libs.versions.target.sdk.get().toInt()
       testOptions.animationsDisabled = true
     }
   }

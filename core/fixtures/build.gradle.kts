@@ -1,6 +1,5 @@
 plugins {
   alias(libs.plugins.divinelink.kotlin.multiplatform)
-  alias(libs.plugins.divinelink.android.library.compose)
 }
 
 kotlin {

@@ -25,6 +25,9 @@ dependencies {
   compileOnly(libs.compose.gradle.plugin)
   compileOnly(libs.compose.multiplatform.gradle.plugin)
   compileOnly(libs.kotlin.gradle.plugin)
+
+  // TODO: https://github.com/gradle/gradle/issues/15383
+  implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
 tasks {
@@ -51,22 +54,6 @@ gradlePlugin {
     register("composeFeature") {
       id = "com.divinelink.compose.feature"
       implementationClass = "ComposeFeatureConventionPlugin"
-    }
-    register("androidApplication") {
-      id = "divinelink.android.application"
-      implementationClass = "AndroidApplicationConventionPlugin"
-    }
-    register("androidApplicationCompose") {
-      id = "divinelink.android.application.compose"
-      implementationClass = "AndroidApplicationComposeConventionPlugin"
-    }
-    register("androidLibraryCompose") {
-      id = "divinelink.android.library.compose"
-      implementationClass = "AndroidLibraryComposeConventionPlugin"
-    }
-    register("androidKoin") {
-      id = "divinelink.android.koin"
-      implementationClass = "AndroidKoinConventionPlugin"
     }
   }
 }

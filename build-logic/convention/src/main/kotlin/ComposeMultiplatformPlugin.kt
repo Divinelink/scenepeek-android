@@ -8,9 +8,9 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class ComposeMultiplatformPlugin : Plugin<Project> {
   override fun apply(target: Project) = with(target) {
-    with(pluginManager) {
-      apply(libs.findPlugin("compose").get().get().pluginId)
-      apply(libs.findPlugin("compose-multiplatform").get().get().pluginId)
+    pluginManager.apply {
+      apply("org.jetbrains.compose")
+      apply("org.jetbrains.kotlin.plugin.compose")
     }
 
     val composeDeps = extensions.getByType<ComposeExtension>().dependencies
@@ -33,8 +33,8 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
           implementation(composeDeps.components.resources)
           implementation(composeDeps.components.uiToolingPreview)
 
-          implementation(libs.findLibrary("compose-backhandler").get())
-          implementation(libs.findLibrary("compose-navigation").get())
+          implementation(libs.compose.backhandler)
+          implementation(libs.compose.navigation)
         }
 
         androidMain.dependencies {
