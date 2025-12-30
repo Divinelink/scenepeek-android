@@ -212,14 +212,6 @@ screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"
 #detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-cli" }
 
 # Plugins defined by this project
-divinelink-android-application = { id = "divinelink.android.application", version = "unspecified" }
-divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
-divinelink-android-library-compose = { id = "divinelink.android.library.compose", version = "unspecified" }
-divinelink-android-koin = { id = "divinelink.android.koin", version = "unspecified" }
-#divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
-#divinelink-android-feature = { id = "divinelink.android.feature", version = "unspecified" }
-
-# Multiplatform
 divinelink-kotlin-multiplatform-application = { id = "com.divinelink.kotlin.multiplatform.application", version = "unspecified" }
 divinelink-kotlin-multiplatform = { id = "com.divinelink.kotlin.multiplatform", version = "unspecified" }
 divinelink-compose-multiplatform = { id = "com.divinelink.compose.multiplatform", version = "unspecified" }

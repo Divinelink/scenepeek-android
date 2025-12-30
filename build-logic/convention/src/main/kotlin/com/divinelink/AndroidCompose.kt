@@ -22,12 +22,12 @@ internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*,
     }
 
     dependencies {
-      val bom = libs.findLibrary("compose-bom").get()
+      val bom = libs.compose.bom
       add("implementation", platform(bom))
       add("testImplementation", platform(bom))
-      add("implementation", libs.findLibrary("compose-ui-tooling-preview").get())
-      add("debugImplementation", libs.findLibrary("compose-ui-tooling").get())
-      add("implementation", libs.findLibrary("compose-shimmer").get())
+      add("implementation", libs.compose.ui.tooling.preview)
+      add("debugImplementation", libs.compose.ui.tooling)
+      add("implementation", libs.compose.shimmer)
     }
 
     testOptions.unitTests.isIncludeAndroidResources = true

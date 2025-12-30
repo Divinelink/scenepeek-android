@@ -39,16 +39,16 @@ internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatform
     sourceSets.apply {
       commonMain {
         dependencies {
-          implementation(libs.findLibrary("koin.core").get())
-          implementation(libs.findLibrary("napier").get())
-          implementation(libs.findLibrary("kotlinx.serialization.json").get())
+          implementation(libs.koin.core)
+          implementation(libs.napier)
+          implementation(libs.kotlinx.serialization.json)
         }
       }
 
       androidMain {
         dependencies {
-          implementation(libs.findLibrary("koin.android").get())
-          implementation(libs.findLibrary("androidx.tracing.ktx").get())
+          implementation(libs.koin.android)
+          implementation(libs.androidx.tracing.ktx)
         }
       }
 

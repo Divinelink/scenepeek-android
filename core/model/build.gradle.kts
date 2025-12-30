@@ -9,11 +9,7 @@ kotlin {
     commonMain.dependencies {
       implementation(projects.core.commons)
 
-      implementation(libs.kotlinx.datetime)
-
       implementation(libs.compose.resources)
-
-      implementation(projects.core.commons)
 
       implementation(libs.kotlinx.serialization.json)
       implementation(libs.kotlinx.datetime)

@@ -21,33 +21,31 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class ComposeFeatureConventionPlugin : Plugin<Project> {
-  override fun apply(target: Project) {
-    with(target) {
-      with(pluginManager) {
-        apply(libs.findPlugin("compose-multiplatform").get().get().pluginId)
-        apply(libs.findPlugin("compose").get().get().pluginId)
-      }
+  override fun apply(target: Project) = with(target) {
+    pluginManager.apply {
+      apply("org.jetbrains.compose")
+      apply("org.jetbrains.kotlin.plugin.compose")
+    }
 
-      // Android-specific configuration
-      extensions.configure<com.android.build.gradle.LibraryExtension> {
-        testOptions.unitTests.isIncludeAndroidResources = true
-      }
+    // Android-specific configuration
+    extensions.configure<com.android.build.gradle.LibraryExtension> {
+      testOptions.unitTests.isIncludeAndroidResources = true
+    }
 
-      extensions.configure<KotlinMultiplatformExtension> {
-        sourceSets.apply {
-          all {
-            languageSettings.optIn("androidx.compose.ui.test.ExperimentalTestApi")
-          }
+    extensions.configure<KotlinMultiplatformExtension> {
+      sourceSets.apply {
+        all {
+          languageSettings.optIn("androidx.compose.ui.test.ExperimentalTestApi")
+        }
 
-          commonMain {
-            dependencies {
-              implementation(project(":core:ui"))
-              implementation(project(":core:designsystem"))
-              implementation(project(":core:scaffold"))
+        commonMain {
+          dependencies {
+            implementation(project(":core:ui"))
+            implementation(project(":core:designsystem"))
+            implementation(project(":core:scaffold"))
 
-              implementation(libs.findLibrary("koin-compose-viewmodel").get())
-              implementation(libs.findLibrary("compose-navigation").get())
-            }
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.compose.navigation)
           }
         }
       }
