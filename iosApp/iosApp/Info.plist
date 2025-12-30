@@ -23,5 +23,13 @@
 	<string>$(TMDB_BASE_URL)</string>
 	<key>TraktAPIKey</key>
 	<string>$(TRAKT_API_KEY)</string>
+
+  <key>UISupportedInterfaceOrientations~ipad</key>
+  <array>
+    <string>UIInterfaceOrientationPortrait</string>
+    <string>UIInterfaceOrientationPortraitUpsideDown</string>
+    <string>UIInterfaceOrientationLandscapeLeft</string>
+    <string>UIInterfaceOrientationLandscapeRight</string>
+  </array>
 </dict>
 </plist>
