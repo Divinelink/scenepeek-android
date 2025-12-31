@@ -12,10 +12,6 @@ kotlin {
 
       implementation(projects.core.fixtures)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
   }
 }
 

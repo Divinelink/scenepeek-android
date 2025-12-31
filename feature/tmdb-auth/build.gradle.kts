@@ -11,10 +11,6 @@ kotlin {
       implementation(projects.core.data)
       implementation(projects.core.domain)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
   }
 }
 

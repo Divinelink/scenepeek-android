@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
@@ -19,7 +20,6 @@ import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.feature_settings_additional_features
 import com.divinelink.feature.settings.resources.feature_settings_additional_features_summary
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun AccountSettingsContent(

@@ -15,6 +15,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -36,7 +37,6 @@ import com.divinelink.feature.add.to.account.list.ui.provider.AddToListUiStatePa
 import com.divinelink.feature.add.to.account.resources.Res
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_title
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

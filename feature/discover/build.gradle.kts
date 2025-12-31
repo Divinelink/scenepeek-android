@@ -13,10 +13,6 @@ kotlin {
       implementation(projects.core.domain)
       implementation(projects.core.fixtures)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
   }
 }
 

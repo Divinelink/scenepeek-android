@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
@@ -27,7 +28,6 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.provider.MediaItemParameterProvider
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 

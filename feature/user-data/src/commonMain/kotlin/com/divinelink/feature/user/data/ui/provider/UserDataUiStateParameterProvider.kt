@@ -1,8 +1,8 @@
 package com.divinelink.feature.user.data.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.feature.user.data.UserDataUiState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class UserDataUiStateParameterProvider : PreviewParameterProvider<UserDataUiState> {

@@ -8,6 +8,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -20,7 +21,6 @@ import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsUiState
 import com.divinelink.feature.lists.details.ui.provider.ListDetailsUiStateParameterProvider
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun ListDetailsContent(

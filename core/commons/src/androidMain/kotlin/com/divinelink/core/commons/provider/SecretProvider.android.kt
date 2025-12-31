@@ -1,6 +1,6 @@
 package com.divinelink.core.commons.provider
 
-import com.divinelink.core.commons.BuildConfig
+import com.divinelink.core.android.BuildConfig
 
 class AndroidSecretsProvider(
   override val tmdbUrl: String = BuildConfig.TMDB_BASE_URL,

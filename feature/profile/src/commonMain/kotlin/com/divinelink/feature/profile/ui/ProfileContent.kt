@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
@@ -28,7 +29,6 @@ import com.divinelink.feature.profile.ProfileAction
 import com.divinelink.feature.profile.ProfileSection
 import com.divinelink.feature.profile.ProfileUiState
 import com.divinelink.feature.profile.ui.provider.ProfileUiStateParameterProvider
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun ProfileContent(

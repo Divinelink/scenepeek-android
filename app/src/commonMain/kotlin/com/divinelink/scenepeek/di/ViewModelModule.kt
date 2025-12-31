@@ -8,6 +8,7 @@ import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
 import com.divinelink.feature.discover.DiscoverViewModel
 import com.divinelink.feature.discover.filters.SelectFilterViewModel
+import com.divinelink.feature.home.HomeViewModel
 import com.divinelink.feature.lists.create.CreateListViewModel
 import com.divinelink.feature.lists.create.backdrop.SelectBackdropViewModel
 import com.divinelink.feature.lists.details.ListDetailsViewModel
@@ -24,7 +25,6 @@ import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.feature.user.data.UserDataViewModel
 import com.divinelink.scenepeek.MainViewModel
-import com.divinelink.scenepeek.home.ui.HomeViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

@@ -1,12 +1,12 @@
 package com.divinelink.feature.lists.create.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.lists.create.CreateListUiState
 import com.divinelink.feature.lists.resources.Res
 import com.divinelink.feature.lists.resources.feature_lists_create_successfully
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUiState> {

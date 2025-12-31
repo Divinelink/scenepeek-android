@@ -9,7 +9,6 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseAp
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
-import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -31,11 +30,11 @@ class TestMediaService {
   val mock: MediaService = mock()
 
   fun mockFetchPopularMovies(
-    request: MoviesRequestApi,
+    page: Int,
     result: Flow<MoviesResponseApi>,
   ) {
     whenever(
-      mock.fetchPopularMovies(request),
+      mock.fetchPopularMovies(page),
     ).thenReturn(
       result,
     )

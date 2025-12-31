@@ -27,26 +27,19 @@ class ComposeFeatureConventionPlugin : Plugin<Project> {
       apply("org.jetbrains.kotlin.plugin.compose")
     }
 
-    // Android-specific configuration
-    extensions.configure<com.android.build.gradle.LibraryExtension> {
-      testOptions.unitTests.isIncludeAndroidResources = true
-    }
-
     extensions.configure<KotlinMultiplatformExtension> {
       sourceSets.apply {
         all {
           languageSettings.optIn("androidx.compose.ui.test.ExperimentalTestApi")
         }
 
-        commonMain {
-          dependencies {
-            implementation(project(":core:ui"))
-            implementation(project(":core:designsystem"))
-            implementation(project(":core:scaffold"))
+        commonMain.dependencies {
+          implementation(project(":core:ui"))
+          implementation(project(":core:designsystem"))
+          implementation(project(":core:scaffold"))
 
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.compose.navigation)
-          }
+          implementation(libs.koin.compose.viewmodel)
+          implementation(libs.compose.multiplatform.navigation)
         }
       }
     }

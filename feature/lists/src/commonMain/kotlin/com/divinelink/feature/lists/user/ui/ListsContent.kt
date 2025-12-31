@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -25,7 +26,6 @@ import com.divinelink.core.ui.composition.LocalUiPreferences
 import com.divinelink.feature.lists.user.ListsAction
 import com.divinelink.feature.lists.user.ListsUiState
 import com.divinelink.feature.lists.user.ui.provider.ListsUiStateParameterProvider
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun ListsContent(

@@ -1,6 +1,6 @@
 package com.divinelink.core.commons.provider
 
-import com.divinelink.core.commons.BuildConfig
+import com.divinelink.core.android.BuildConfig
 
 actual fun getConstantsProvider(): ConstantsProvider = AndroidImageConfigProvider()
 

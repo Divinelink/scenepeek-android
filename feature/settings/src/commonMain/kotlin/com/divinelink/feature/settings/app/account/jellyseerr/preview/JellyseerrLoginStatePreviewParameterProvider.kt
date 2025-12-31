@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr.preview
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
@@ -7,7 +8,6 @@ import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class JellyseerrLoginStatePreviewParameterProvider :

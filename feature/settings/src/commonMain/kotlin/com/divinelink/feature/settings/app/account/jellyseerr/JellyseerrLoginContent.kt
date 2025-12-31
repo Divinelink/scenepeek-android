@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -63,7 +64,6 @@ import com.divinelink.feature.settings.resources.feature_settings_sign_in_with
 import com.divinelink.feature.settings.resources.feature_settings_signing_in
 import com.divinelink.feature.settings.resources.feature_settings_username
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun JellyseerrLoginContent(

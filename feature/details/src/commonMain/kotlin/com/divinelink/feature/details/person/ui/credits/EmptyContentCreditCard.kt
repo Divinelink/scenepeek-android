@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaType
@@ -36,7 +37,6 @@ import com.divinelink.feature.details.resources.feature_details_no_movies_availa
 import com.divinelink.feature.details.resources.feature_details_no_tv_shows_available
 import com.divinelink.feature.details.resources.feature_details_no_tv_shows_available_desc
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun EmptyContentCreditCard(

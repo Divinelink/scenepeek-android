@@ -13,7 +13,6 @@ import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistR
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
 import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
 import com.divinelink.core.network.media.model.find.FindByIdResponseApi
-import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestBodyApi
@@ -35,12 +34,12 @@ import kotlinx.coroutines.flow.flow
 
 class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
-  override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi> = flow {
+  override fun fetchPopularMovies(page: Int): Flow<MoviesResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/discover/movie?"
     val url = baseUrl +
       "&include_adult=false" +
       "&language=en-US" +
-      "&page=${request.page}" +
+      "&page=$page" +
       "&sort_by=popularity.desc" +
       "&vote_count.gte=50"
 

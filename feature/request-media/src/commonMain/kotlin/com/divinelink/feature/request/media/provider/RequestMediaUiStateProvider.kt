@@ -1,5 +1,6 @@
 package com.divinelink.feature.request.media.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
@@ -11,7 +12,6 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanc
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.feature.request.media.LCEState
 import com.divinelink.feature.request.media.RequestMediaUiState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState?> {

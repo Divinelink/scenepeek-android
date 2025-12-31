@@ -3,12 +3,6 @@ plugins {
   alias(libs.plugins.divinelink.compose.multiplatform)
 }
 
-android {
-  defaultConfig {
-    consumerProguardFiles("consumer-proguard-rules.pro")
-  }
-}
-
 kotlin {
   sourceSets {
     commonMain.dependencies {
@@ -40,10 +34,9 @@ kotlin {
 
     commonTest.dependencies {
       implementation(libs.kotlinx.coroutines.test)
-      implementation(projects.core.testing)
     }
 
-    androidUnitTest.dependencies {
+    androidHostTest.dependencies {
       implementation(libs.robolectric)
     }
   }

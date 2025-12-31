@@ -1,5 +1,6 @@
 package com.divinelink.feature.add.to.account.list.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -15,7 +16,6 @@ import com.divinelink.feature.add.to.account.resources.Res
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_item_added_to_list_failure
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_item_added_to_list_success
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_login_description
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiState> {

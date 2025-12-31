@@ -1,8 +1,8 @@
 plugins {
   alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
 
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.secrets)
 }
 
 kotlin {
@@ -31,37 +31,6 @@ kotlin {
 
     commonTest {
       resources.srcDir("src/commonTest/resources")
-
-      dependencies {
-        implementation(kotlin("test"))
-        implementation(projects.core.testing)
-      }
     }
   }
-}
-
-android {
-  buildTypes {
-    release {
-      buildConfigField(
-        "String",
-        "TMDB_AUTH_TOKEN",
-        System.getenv("TMDB_AUTH_TOKEN") ?: "",
-      )
-    }
-  }
-
-  testOptions {
-    unitTests {
-      isIncludeAndroidResources = true
-    }
-  }
-
-  buildFeatures {
-    buildConfig = true
-  }
-}
-
-secrets {
-  defaultPropertiesFileName = "secrets.defaults.properties"
 }

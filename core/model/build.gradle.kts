@@ -9,15 +9,11 @@ kotlin {
     commonMain.dependencies {
       implementation(projects.core.commons)
 
-      implementation(libs.compose.resources)
+      implementation(libs.compose.multiplatform.resources)
 
       implementation(libs.kotlinx.serialization.json)
       implementation(libs.kotlinx.datetime)
       implementation(libs.kotlinx.io.core)
-    }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
     }
   }
 }

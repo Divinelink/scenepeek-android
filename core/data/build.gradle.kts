@@ -14,17 +14,5 @@ kotlin {
 
       implementation(libs.kotlinx.datetime)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
-  }
-}
-
-android {
-  testOptions {
-    unitTests {
-      isIncludeAndroidResources = true
-    }
   }
 }

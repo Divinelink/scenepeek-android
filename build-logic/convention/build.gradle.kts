@@ -39,6 +39,14 @@ tasks {
 
 gradlePlugin {
   plugins {
+    register("androidApplication") {
+      id = "divinelink.android.application"
+      implementationClass = "AndroidApplicationConventionPlugin"
+    }
+    register("androidFeature") {
+      id = "divinelink.android.feature"
+      implementationClass = "AndroidFeatureConventionPlugin"
+    }
     register("kotlinMultiplatformApplication") {
       id = "com.divinelink.kotlin.multiplatform.application"
       implementationClass = "KotlinMultiplatformApplicationPlugin"

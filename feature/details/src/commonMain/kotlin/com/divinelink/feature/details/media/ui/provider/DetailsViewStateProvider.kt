@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.details.media.DetailsDataFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory
@@ -13,7 +14,6 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @Suppress("MagicNumber", "ThrowingExceptionsWithoutMessageOrCause")
 @ExcludeFromKoverReport

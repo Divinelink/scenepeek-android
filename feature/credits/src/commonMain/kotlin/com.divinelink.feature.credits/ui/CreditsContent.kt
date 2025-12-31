@@ -22,6 +22,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -34,7 +35,6 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.credit.PersonItem
 import com.divinelink.feature.credits.provider.CreditsUiStateParameterProvider
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun CreditsContent(

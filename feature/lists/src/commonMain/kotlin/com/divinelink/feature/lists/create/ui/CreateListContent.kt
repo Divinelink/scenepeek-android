@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -55,7 +56,6 @@ import com.divinelink.feature.lists.resources.feature_lists_description
 import com.divinelink.feature.lists.resources.feature_lists_name
 import com.divinelink.feature.lists.resources.feature_lists_public_description
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun CreateListContent(

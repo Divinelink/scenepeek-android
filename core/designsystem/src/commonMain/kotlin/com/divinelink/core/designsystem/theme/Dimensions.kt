@@ -46,10 +46,12 @@ data class Dimensions(
 )
 
 @Composable
-fun mediaCardSize() = if (currentWindowAdaptiveInfo().windowSizeClass.minWidthDp < 400) {
-  MaterialTheme.dimensions.keyline_96
-} else {
+fun mediaCardSize() = if (
+  currentWindowAdaptiveInfo().windowSizeClass.isWidthAtLeastBreakpoint(400)
+) {
   MaterialTheme.dimensions.shortMediaCard
+} else {
+  MaterialTheme.dimensions.keyline_96
 }
 
 val MaterialTheme.dimensions: Dimensions

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="home__empty_filtered_result_title">No media found</string>
+  <string name="home__empty_filtered_result_description">You can try to change the filters or search for something else.</string>
+
+  <string name="settings_button_content_description">Go to settings button</string>
+</resources>

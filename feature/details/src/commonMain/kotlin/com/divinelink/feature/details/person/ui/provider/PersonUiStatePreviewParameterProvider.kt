@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.person.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
@@ -9,7 +10,6 @@ import com.divinelink.feature.details.person.ui.PersonDetailsUiState
 import com.divinelink.feature.details.person.ui.PersonForm
 import com.divinelink.feature.details.person.ui.PersonUiState
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiState> {

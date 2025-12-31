@@ -1,5 +1,6 @@
 package com.divinelink.feature.credits.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
@@ -7,7 +8,6 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.feature.credits.ui.CreditsTab
 import com.divinelink.feature.credits.ui.CreditsUiContent
 import com.divinelink.feature.credits.ui.CreditsUiState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState> {

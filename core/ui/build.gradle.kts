@@ -10,7 +10,7 @@ kotlin {
       api(projects.core.model)
 
       implementation(projects.core.commons)
-      implementation(libs.compose.resources)
+      implementation(libs.compose.multiplatform.resources)
 
       implementation(libs.coil)
       implementation(libs.coil.ktor)
@@ -44,12 +44,4 @@ compose.resources {
   publicResClass = true
   packageOfResClass = "com.divinelink.core.ui.resources"
   generateResClass = auto
-}
-
-android {
-  defaultConfig {
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  testOptions.unitTests.isIncludeAndroidResources = true
 }
