@@ -12,7 +12,7 @@ data class PersonDetailsApi(
   val homepage: String?,
   val id: Long,
   @SerialName("imdb_id") val imdbId: String?,
-  @SerialName("known_for_department") val knownForDepartment: String,
+  @SerialName("known_for_department") val knownForDepartment: String?,
   val name: String,
   @SerialName("place_of_birth") val placeOfBirth: String?,
   val popularity: Double,
