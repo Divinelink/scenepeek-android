@@ -11,7 +11,6 @@ import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
 import com.divinelink.core.network.media.model.find.FindByIdResponseApi
-import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -26,7 +25,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaService {
 
-  fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi>
+  fun fetchPopularMovies(page: Int): Flow<MoviesResponseApi>
 
   fun fetchDiscoverMovies(
     page: Int,

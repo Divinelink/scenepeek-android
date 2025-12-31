@@ -1,11 +1,11 @@
 package com.divinelink.feature.settings.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.feature.settings.app.account.AccountSettingsViewState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class AccountDetailsParameterProvider : PreviewParameterProvider<AccountSettingsViewState?> {

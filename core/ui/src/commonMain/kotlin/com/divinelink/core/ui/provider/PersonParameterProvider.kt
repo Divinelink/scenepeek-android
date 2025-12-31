@@ -1,9 +1,9 @@
 package com.divinelink.core.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class PersonParameterProvider : PreviewParameterProvider<Person> {

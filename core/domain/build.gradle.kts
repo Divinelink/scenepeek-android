@@ -13,9 +13,5 @@ kotlin {
       implementation(libs.napier)
       implementation(libs.kotlinx.datetime)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
   }
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -27,7 +28,6 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.provider.MediaItemParameterProvider
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun CreditMediaItem(

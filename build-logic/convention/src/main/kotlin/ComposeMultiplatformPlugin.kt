@@ -2,8 +2,6 @@ import com.divinelink.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class ComposeMultiplatformPlugin : Plugin<Project> {
@@ -12,8 +10,6 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
       apply("org.jetbrains.compose")
       apply("org.jetbrains.kotlin.plugin.compose")
     }
-
-    val composeDeps = extensions.getByType<ComposeExtension>().dependencies
 
     extensions.configure<KotlinMultiplatformExtension> {
       sourceSets.apply {
@@ -25,20 +21,27 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
         }
 
         commonMain.dependencies {
-          implementation(composeDeps.runtime)
-          implementation(composeDeps.foundation)
-          implementation(composeDeps.material3)
-          implementation(composeDeps.material3AdaptiveNavigationSuite)
-          implementation(composeDeps.materialIconsExtended)
-          implementation(composeDeps.components.resources)
-          implementation(composeDeps.components.uiToolingPreview)
+          api(libs.compose.multiplatform.runtime)
+          api(libs.compose.multiplatform.foundation)
+          api(libs.compose.multiplatform.foundation.layout)
+          api(libs.compose.multiplatform.material3)
+          api(libs.compose.multiplatform.resources)
+          api(libs.compose.multiplatform.ui.tooling.preview)
+          api(libs.compose.multiplatform.material.icons)
+          api(libs.compose.multiplatform.material3)
+          api(libs.compose.multiplatform.material3.adaptive)
 
-          implementation(libs.compose.backhandler)
-          implementation(libs.compose.navigation)
+          implementation(libs.lifecycle.multiplatform.viewmodel)
+          implementation(libs.lifecycle.multiplatform.viewmodel.compose)
+          implementation(libs.lifecycle.multiplatform.runtime)
+          implementation(libs.lifecycle.multiplatform.runtime.compose)
+
+          api(libs.compose.multiplatform.navigation)
+          implementation(libs.compose.multiplatform.backhandler)
         }
 
         androidMain.dependencies {
-          implementation(composeDeps.uiTooling)
+          implementation(libs.compose.multiplatform.ui.tooling)
         }
       }
     }

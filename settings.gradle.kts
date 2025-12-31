@@ -18,7 +18,9 @@ rootProject.name = "ScenePeek"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":android")
 
+include(":core:android")
 include(":core:commons")
 include(":core:data")
 include(":core:database")
@@ -37,6 +39,7 @@ include(":feature:add-to-account")
 include(":feature:credits")
 include(":feature:details")
 include(":feature:discover")
+include(":feature:home")
 include(":feature:lists")
 include(":feature:onboarding")
 include(":feature:profile")

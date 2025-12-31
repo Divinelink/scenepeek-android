@@ -21,10 +21,6 @@ kotlin {
     androidMain.dependencies {
       implementation(libs.androidx.browser)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
   }
 }
 

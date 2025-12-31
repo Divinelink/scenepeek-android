@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
@@ -38,7 +39,6 @@ import com.divinelink.core.ui.resources.core_ui_section_ratings
 import com.divinelink.core.ui.resources.core_ui_section_watchlist
 import com.divinelink.feature.user.data.ui.provider.UserDataUiStateParameterProvider
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

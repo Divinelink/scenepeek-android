@@ -10,10 +10,6 @@ kotlin {
     commonMain.dependencies {
       implementation(projects.core.domain)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
   }
 }
 

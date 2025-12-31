@@ -1,5 +1,6 @@
 package com.divinelink.feature.lists.user.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.UIText
@@ -8,7 +9,6 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.resources.Res
 import com.divinelink.feature.lists.resources.feature_lists_login_description
 import com.divinelink.feature.lists.user.ListsUiState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {

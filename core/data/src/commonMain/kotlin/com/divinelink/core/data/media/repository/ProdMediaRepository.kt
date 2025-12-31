@@ -12,7 +12,6 @@ import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
-import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
@@ -30,8 +29,8 @@ class ProdMediaRepository(
   private val dao: MediaDao,
 ) : MediaRepository {
 
-  override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult> = combine(
-    remote.fetchPopularMovies(request),
+  override fun fetchPopularMovies(page: Int): Flow<MediaListResult> = combine(
+    remote.fetchPopularMovies(page = page),
     dao.getFavoriteMediaIds(MediaType.MOVIE),
   ) { response, favoriteIds ->
     val favoriteSet = favoriteIds.toSet()

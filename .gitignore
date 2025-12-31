@@ -1,7 +1,8 @@
 *.iml
 .gradle
 /local.properties
-/app/google-services.json
+*/google-services.json
+*/google-services.json.base64
 /.idea/*
 .DS_Store
 /build
@@ -162,7 +163,6 @@ web/js/*
 /hello_js/web/js/
 
 node_modules
-/app/google-services.json.base64
 
 # Log/OS Files
 *.log

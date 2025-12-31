@@ -1,17 +1,17 @@
 package com.divinelink.core.commons.provider
 
-import com.divinelink.core.commons.BuildConfig
+import com.divinelink.core.android.AndroidConstants
 
 class AndroidBuildConfigProvider : BuildConfigProvider {
-  override val versionName: String = BuildConfig.VERSION_NAME
-  override val versionCode: Int = BuildConfig.VERSION_CODE
-  override val isDebug: Boolean = BuildConfig.DEBUG
-  override val buildType: String = BuildConfig.BUILD_TYPE
+  override val versionName: String = AndroidConstants.VERSION_NAME
+  override val versionCode: Int = AndroidConstants.versionCode
+  override val isDebug: Boolean = AndroidConstants.isDebug
+  override val buildType: String = AndroidConstants.BUILD_TYPE
   override val versionData: String = buildString {
     append("Android ")
-    append(BuildConfig.VERSION_NAME)
-    if (BuildConfig.DEBUG) append(" DEBUG")
-    append(" (${BuildConfig.VERSION_CODE})")
+    append(AndroidConstants.VERSION_NAME)
+    if (AndroidConstants.isDebug) append(" DEBUG")
+    append(" (${AndroidConstants.versionCode})")
   }
 }
 

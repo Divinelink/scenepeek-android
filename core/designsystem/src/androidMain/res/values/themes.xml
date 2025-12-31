@@ -1,7 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
-  <!-- Base application theme. -->
   <style name="Theme.ScenePeek" parent="android:Theme.Material.Light.NoActionBar">
-    <!--    <item name="android:fontFamily">@font/font</item>-->
     <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     <item name="android:navigationBarColor">@color/transparent</item>
     <item name="android:statusBarColor">@color/transparent</item>

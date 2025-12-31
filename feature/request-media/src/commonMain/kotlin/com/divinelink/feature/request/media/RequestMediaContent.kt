@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.canBeRequested
@@ -62,7 +63,6 @@ import com.divinelink.feature.request.media.components.QualityProfileDropDownMen
 import com.divinelink.feature.request.media.components.RootFolderDropDownMenu
 import com.divinelink.feature.request.media.provider.RequestMediaUiStateProvider
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun RequestMediaContent(

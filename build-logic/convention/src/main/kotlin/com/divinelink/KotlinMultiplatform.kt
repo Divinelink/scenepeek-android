@@ -1,7 +1,12 @@
 package com.divinelink
 
+import com.android.build.api.dsl.androidLibrary
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.AbstractTestTask
+import org.gradle.kotlin.dsl.invoke
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatformExtension) =
   extension.apply {
@@ -16,44 +21,64 @@ internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatform
       }
     }
 
-    listOf(
-      iosX64(),
-      iosArm64(),
-      iosSimulatorArm64(),
-    ).forEach {
-      it.binaries.framework {
-        baseName = "app"
-        isStatic = true
+    targets
+      .withType<KotlinNativeTarget>()
+      .matching { it.konanTarget.family.isAppleFamily }
+      .configureEach {
+        binaries {
+          framework {
+            baseName = "app"
+            isStatic = true
+          }
+        }
       }
-    }
+
+    tasks
+      .withType<AbstractTestTask>()
+      .configureEach {
+        failOnNoDiscoveredTests.set(false)
+      }
 
     // targets
-    androidTarget()
+    androidLibrary {
+      val moduleName = path.split(":").drop(1).joinToString(".") { it.replace("-", ".") }
+      namespace = if (moduleName.isNotEmpty()) {
+        "com.divinelink.$moduleName"
+      } else {
+        "com.divinelink"
+      }
+      println("namespace: $namespace")
+
+      minSdk = libs.versions.min.sdk.get().toInt()
+      compileSdk = libs.versions.compile.sdk.get().toInt()
+
+      androidResources { enable = true }
+
+      withHostTest {
+        isIncludeAndroidResources = true
+      }
+    }
     iosArm64()
     iosX64()
     iosSimulatorArm64()
 
     applyDefaultHierarchyTemplate()
 
-    // common dependencies
-    sourceSets.apply {
-      commonMain {
-        dependencies {
-          implementation(libs.koin.core)
-          implementation(libs.napier)
-          implementation(libs.kotlinx.serialization.json)
-        }
+    sourceSets {
+      commonMain.dependencies {
+        implementation(libs.koin.core)
+        implementation(libs.napier)
+        implementation(libs.kotlinx.serialization.json)
       }
 
-      androidMain {
-        dependencies {
-          implementation(libs.koin.android)
-          implementation(libs.androidx.tracing.ktx)
-        }
+      androidMain.dependencies {
+        implementation(libs.koin.android)
+        implementation(libs.androidx.tracing.ktx)
       }
 
       commonTest.dependencies {
         implementation(kotlin("test"))
+        implementation(project(":core:testing"))
       }
     }
   }

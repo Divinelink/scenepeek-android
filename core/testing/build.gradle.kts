@@ -1,5 +1,3 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
   alias(libs.plugins.divinelink.kotlin.multiplatform)
   alias(libs.plugins.divinelink.compose.multiplatform)
@@ -34,8 +32,7 @@ kotlin {
 
       implementation(libs.kotlinx.datetime)
 
-      @OptIn(ExperimentalComposeLibrary::class)
-      implementation(compose.uiTest)
+      implementation(libs.compose.multiplatform.ui.test)
 
       implementation(libs.kotlinx.coroutines.core)
     }
@@ -56,8 +53,4 @@ kotlin {
       implementation(libs.robolectric)
     }
   }
-}
-
-dependencies {
-  debugApi(libs.compose.ui.test.manifest)
 }

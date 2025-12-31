@@ -1,10 +1,10 @@
 package com.divinelink.feature.add.to.account.modal.ui.provider
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @ExcludeFromKoverReport
 class ActionMenuUiStateParameterProvider : PreviewParameterProvider<ActionMenuUiState> {

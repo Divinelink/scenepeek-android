@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
@@ -48,7 +49,6 @@ import com.divinelink.feature.discover.resources.feature_discover_empty_result_d
 import com.divinelink.feature.discover.resources.feature_discover_empty_result_title
 import com.divinelink.feature.discover.ui.provider.DiscoverUiStateParameterProvider
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun DiscoverContent(

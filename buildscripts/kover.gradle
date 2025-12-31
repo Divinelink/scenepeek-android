@@ -61,7 +61,7 @@ kover {
       }
     }
 
-    variant("debug") {
+    total {
       html {
         onCheck = false
         htmlDir = layout.buildDirectory.dir("all-projects-reports")

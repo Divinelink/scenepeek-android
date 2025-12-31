@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.commons.extensions.toShortString
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -37,7 +38,6 @@ import com.divinelink.core.ui.provider.RatingCountParameterProvider
 import com.divinelink.core.ui.resources.core_ui_percentage
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun AllRatingsContent(

@@ -12,6 +12,7 @@ import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
 import com.divinelink.feature.details.navigation.posterScreen
 import com.divinelink.feature.discover.ui.navigation.discoverScreen
+import com.divinelink.feature.home.navigation.homeScreen
 import com.divinelink.feature.lists.create.ui.navigation.createListScreen
 import com.divinelink.feature.lists.create.ui.navigation.editListScreen
 import com.divinelink.feature.lists.details.ui.navigation.listDetailsScreen
@@ -32,7 +33,6 @@ import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.user.data.navigation.userDataScreen
 import com.divinelink.feature.webview.webViewScreen
 import com.divinelink.scenepeek.home.navigation.findNavigation
-import com.divinelink.scenepeek.home.navigation.homeScreen
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

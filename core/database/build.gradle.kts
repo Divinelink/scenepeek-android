@@ -21,10 +21,6 @@ kotlin {
     nativeMain.dependencies {
       implementation(libs.sqldelight.native)
     }
-
-    commonTest.dependencies {
-      implementation(projects.core.testing)
-    }
   }
 }
 
