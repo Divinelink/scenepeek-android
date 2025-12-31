@@ -61,16 +61,16 @@ kover {
       }
     }
 
-//    variant("debug") {
-//      html {
-//        onCheck = false
-//        htmlDir = layout.buildDirectory.dir("all-projects-reports")
-//      }
-//
-//      xml {
-//        onCheck = false
-//        xmlFile = layout.buildDirectory.file("all-projects-reports/kover.xml")
-//      }
-//    }
+    total {
+      html {
+        onCheck = false
+        htmlDir = layout.buildDirectory.dir("all-projects-reports")
+      }
+
+      xml {
+        onCheck = false
+        xmlFile = layout.buildDirectory.file("all-projects-reports/kover.xml")
+      }
+    }
   }
 }
