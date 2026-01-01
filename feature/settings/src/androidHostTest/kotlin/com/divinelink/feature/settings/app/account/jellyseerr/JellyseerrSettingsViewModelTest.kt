@@ -10,6 +10,7 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.exception.ExceptionConstants
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
@@ -20,6 +21,7 @@ import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.feature_settings_could_not_connect
+import com.divinelink.feature.settings.resources.feature_settings_csrf_enabled
 import com.divinelink.feature.settings.resources.feature_settings_invalid_credentials
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -61,6 +63,37 @@ class JellyseerrSettingsViewModelTest {
         ),
       )
   }
+
+  @Test
+  fun `test on log with CSRF message response expect CSRF dialog`() = runTest {
+    testRobot
+      .mockLoginJellyseerrResponse(
+        Result.failure(AppException.Forbidden(ExceptionConstants.INVALID_CSRF_TOKEN)),
+      )
+      .buildViewModel()
+      .onUserAddressChange("http://localhost:8096")
+      .onUsernameChange("username")
+      .onPasswordChange("password")
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onLoginJellyseerr()
+      .assertUiState(
+        createUiState(
+          dialogState = DialogState(
+            message = UIText.ResourceText(Res.string.feature_settings_csrf_enabled),
+            error = AppException.Forbidden(ExceptionConstants.INVALID_CSRF_TOKEN),
+          ),
+          jellyseerrState = JellyseerrState.Login(
+            isLoading = false,
+            loginData = JellyseerrLoginData(
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
+              password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+            ),
+          ),
+        ),
+      )
+    }
 
   @Test
   fun `test on Offline when jellyseerr expect could not connect error`() = runTest {

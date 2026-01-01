@@ -5,6 +5,8 @@ package com.divinelink.core.network.client
 import com.divinelink.core.commons.Constants
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.network.client.error.ClientErrorResponse
+import com.divinelink.core.network.client.error.extractErrorMessage
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -73,15 +75,17 @@ fun ktorClient(
       if (!response.status.isSuccess()) {
         val statusCode = response.status.value
         val status = response.status.toString()
+        val errorMessage = response.extractErrorMessage<ClientErrorResponse>() ?: status
+
         val error = when (statusCode) {
-          HttpStatusCode.Unauthorized.value -> AppException.Unauthorized(status)
-          HttpStatusCode.Forbidden.value -> AppException.Forbidden(status)
-          HttpStatusCode.NotFound.value -> AppException.NotFound(status)
-          HttpStatusCode.Conflict.value -> AppException.Conflict(status)
-          HttpStatusCode.TooManyRequests.value -> AppException.TooManyRequests(status)
-          HttpStatusCode.PayloadTooLarge.value -> AppException.PayloadTooLarge(status)
-          in 500..599 -> AppException.ServerError(status)
-          else -> AppException.BadRequest(status)
+          HttpStatusCode.Unauthorized.value -> AppException.Unauthorized(errorMessage)
+          HttpStatusCode.Forbidden.value -> AppException.Forbidden(errorMessage)
+          HttpStatusCode.NotFound.value -> AppException.NotFound(errorMessage)
+          HttpStatusCode.Conflict.value -> AppException.Conflict(errorMessage)
+          HttpStatusCode.TooManyRequests.value -> AppException.TooManyRequests(errorMessage)
+          HttpStatusCode.PayloadTooLarge.value -> AppException.PayloadTooLarge(errorMessage)
+          in 500..599 -> AppException.ServerError(errorMessage)
+          else -> AppException.BadRequest(errorMessage)
         }
         throw error
       }

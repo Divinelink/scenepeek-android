@@ -14,6 +14,7 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.exception.ExceptionConstants
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.UiString
@@ -22,6 +23,7 @@ import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.feature_settings_could_not_connect
+import com.divinelink.feature.settings.resources.feature_settings_csrf_enabled
 import com.divinelink.feature.settings.resources.feature_settings_invalid_credentials
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -107,9 +109,13 @@ class JellyseerrSettingsViewModel(
                 is AppException.Unauthorized -> UIText.ResourceText(
                   Res.string.feature_settings_invalid_credentials,
                 )
-                is AppException.Forbidden -> UIText.ResourceText(
-                  Res.string.feature_settings_invalid_credentials,
-                )
+                is AppException.Forbidden -> if (
+                  error.message == ExceptionConstants.INVALID_CSRF_TOKEN
+                ) {
+                  UIText.ResourceText(Res.string.feature_settings_csrf_enabled)
+                } else {
+                  UIText.ResourceText(Res.string.feature_settings_invalid_credentials)
+                }
                 is AppException.Offline -> UIText.ResourceText(
                   Res.string.feature_settings_could_not_connect,
                 )
