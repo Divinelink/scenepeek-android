@@ -118,7 +118,7 @@ class CreateSessionUseCaseTest {
       AccessTokenFactory.valid().accessToken,
     )
 
-    authRepository.verifySetTMDBAccount(AccountDetailsFactory.Pinkman())
+    authRepository.verifyNoInteraction()
 
     repository.clearRequestTokenInvoke()
   }

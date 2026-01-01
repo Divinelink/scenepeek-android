@@ -2,10 +2,15 @@ package com.divinelink.core.domain.session
 
 import app.cash.turbine.test
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
-import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.fixtures.model.session.TmdbSessionFactory
+import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
-import com.google.common.truth.Truth.assertThat
+import com.divinelink.core.testing.storage.TestSavedStateStorage
+import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -23,6 +28,7 @@ class ObserveAccountUseCaseTest {
   fun `test on observe account correctly collects values`() = runTest {
     val useCase = ObserveAccountUseCase(
       authRepository = authRepository.mock,
+      sessionStorage = SessionStorageFactory.full(),
       dispatcher = testDispatcher,
     )
     authRepository.mockTMDBAccount(
@@ -33,37 +39,47 @@ class ObserveAccountUseCaseTest {
     )
 
     useCase(Unit).test {
-      assertThat(
-        awaitItem(),
-      ).isInstanceOf(Result.failure<Exception>(SessionException.Unauthenticated())::class.java)
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
 
-      assertThat(awaitItem()).isEqualTo(Result.success(true))
-
-      awaitComplete()
+      awaitItem() shouldBe Result.success(
+        TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
+      )
     }
   }
 
   @Test
   fun `test on observe account emits unauthenticated when account id becomes null`() = runTest {
+    val savedState = TestSavedStateStorage()
+    val sessionStorage = SessionStorageFactory.empty(
+      savedState = savedState,
+    )
+
     val useCase = ObserveAccountUseCase(
       authRepository = authRepository.mock,
+      sessionStorage = sessionStorage,
       dispatcher = testDispatcher,
     )
-    authRepository.mockTMDBAccount(
-      flowOf(
-        AccountDetailsFactory.Pinkman(),
-        null,
-      ),
-    )
+
+    val channel = Channel<AccountDetails?>()
+    authRepository.mockTMDBAccount(channel)
 
     useCase(Unit).test {
-      assertThat(awaitItem()).isEqualTo(Result.success(true))
+      channel.send(null)
+      awaitItem() shouldBe Result.success(TMDBAccount.Anonymous)
 
-      assertThat(
-        awaitItem(),
-      ).isInstanceOf(Result.failure<Exception>(SessionException.Unauthenticated())::class.java)
+      savedState.setTMDBSession(TmdbSessionFactory.full())
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
 
-      awaitComplete()
+      channel.send(AccountDetailsFactory.Pinkman())
+      awaitItem() shouldBe Result.success(
+        TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
+      )
+
+      channel.send(null)
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      savedState.clearTMDBSession()
+      awaitItem() shouldBe Result.success(TMDBAccount.Anonymous)
     }
   }
 }

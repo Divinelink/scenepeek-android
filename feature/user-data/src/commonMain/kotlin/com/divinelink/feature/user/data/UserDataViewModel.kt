@@ -3,8 +3,10 @@ package com.divinelink.feature.user.data
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.data
 import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
@@ -16,7 +18,6 @@ import com.divinelink.core.navigation.route.Navigation.UserDataRoute
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -57,23 +58,35 @@ class UserDataViewModel(
 
   init {
     viewModelScope.launch {
-      observeAccountUseCase.invoke(Unit)
-        .collectLatest { result ->
-          result.onSuccess {
-            fetchUserData(
-              section = UserDataSection.from(route.section),
-              mediaType = MediaType.TV,
-            )
-            fetchUserData(
-              section = UserDataSection.from(route.section),
-              mediaType = MediaType.MOVIE,
-            )
-          }.onFailure { throwable ->
-            updateUiOnFailure(MediaType.TV, throwable)
-            updateUiOnFailure(MediaType.MOVIE, throwable)
-            resetPages()
+      observeAccountUseCase.invoke(Unit).collect { result ->
+        result.onSuccess {
+          when (result.data) {
+            TMDBAccount.Anonymous -> {
+              updateUiOnFailure(MediaType.TV, SessionException.Unauthenticated())
+              updateUiOnFailure(MediaType.MOVIE, SessionException.Unauthenticated())
+            }
+            TMDBAccount.Loading -> {
+              setLoading(MediaType.MOVIE)
+              setLoading(MediaType.TV)
+            }
+
+            is TMDBAccount.LoggedIn -> {
+              fetchUserData(
+                section = UserDataSection.from(route.section),
+                mediaType = MediaType.TV,
+              )
+              fetchUserData(
+                section = UserDataSection.from(route.section),
+                mediaType = MediaType.MOVIE,
+              )
+            }
           }
+        }.onFailure { throwable ->
+          updateUiOnFailure(MediaType.TV, throwable)
+          updateUiOnFailure(MediaType.MOVIE, throwable)
+          resetPages()
         }
+      }
     }
   }
 
@@ -100,13 +113,18 @@ class UserDataViewModel(
   fun onRefresh() {
     val mediaType = _uiState.value.mediaType
 
-    _uiState.update { uiState ->
-      uiState.copy(forms = uiState.forms + (mediaType to UserDataForm.Loading))
-    }
+    setLoading(mediaType)
+
     fetchUserData(
       section = uiState.value.section,
       mediaType = mediaType,
     )
+  }
+
+  private fun setLoading(mediaType: MediaType) {
+    _uiState.update { uiState ->
+      uiState.copy(forms = uiState.forms + (mediaType to UserDataForm.Loading))
+    }
   }
 
   private fun fetchUserData(

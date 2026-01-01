@@ -37,6 +37,7 @@ class GetAccountDetailsUseCase(
 
     launch(dispatcher.default) {
       storage.sessionFlow.collect { session ->
+        send(Result.success(TMDBAccount.Loading))
         if (session == null) {
           send(Result.failure(SessionException.Unauthenticated()))
           authRepository.clearTMDBSession()
@@ -44,6 +45,7 @@ class GetAccountDetailsUseCase(
           repository.getAccountDetails(session.sessionId).fold(
             onSuccess = { details ->
               authRepository.setTMDBAccount(details)
+              send(Result.success(TMDBAccount.LoggedIn(details)))
             },
             onFailure = {
               if (it is AppException.Unauthorized) {

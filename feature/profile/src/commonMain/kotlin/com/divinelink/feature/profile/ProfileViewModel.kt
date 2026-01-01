@@ -46,6 +46,7 @@ class ProfileViewModel(
                 accountUiState = when (account) {
                   is TMDBAccount.LoggedIn -> TMDBAccountUiState.LoggedIn(account)
                   TMDBAccount.Anonymous -> TMDBAccountUiState.Anonymous
+                  TMDBAccount.Loading -> TMDBAccountUiState.Initial
                 },
               )
             }

@@ -15,7 +15,6 @@ import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestSessionRepository
 import com.divinelink.core.testing.storage.TestSavedStateStorage
-import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -51,12 +50,15 @@ class GetAccountDetailsUseCaseTest {
     authRepository.mockTMDBAccount(null)
 
     useCase.invoke(Unit).test {
-      assertThat(
-        awaitItem(),
-      ).isInstanceOf(Result.failure<Exception>(SessionException.Unauthenticated())::class.java)
-      assertThat(
-        awaitItem(),
-      ).isInstanceOf(Result.failure<Exception>(SessionException.Unauthenticated())::class.java)
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
+
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
     }
   }
 
@@ -81,12 +83,15 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      assertThat(awaitItem()).isInstanceOf(
-        Result.failure<Exception>(SessionException.Unauthenticated())::class.java,
-      )
-      assertThat(awaitItem()).isInstanceOf(
-        Result.failure<Exception>(SessionException.Unauthenticated())::class.java,
-      )
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
+
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        InvalidStatusException(401),
+      ).toString()
     }
 
     authRepository.verifyClearTMDBSessionInvoked()
@@ -109,12 +114,15 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(InvalidStatusException(404)).toString(),
-      )
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
+
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        InvalidStatusException(404),
+      ).toString()
     }
 
     storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
@@ -138,12 +146,15 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(Exception("Foo")).toString(),
-      )
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
+
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        Exception("Foo"),
+      ).toString()
     }
 
     storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
@@ -167,12 +178,15 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
-      )
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
+
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
 
       storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
       authRepository.verifyClearTMDBSessionInvoked(times = 2)
@@ -196,12 +210,13 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(AppException.Unknown()).toString(),
-      )
+      awaitItem() shouldBe Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()))
+
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        AppException.Unknown(),
+      ).toString()
 
       sessionStorage.sessionId shouldBe "sessionId"
     }
@@ -224,12 +239,13 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
-      )
+      awaitItem() shouldBe Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()))
+
+      awaitItem() shouldBe Result.success(TMDBAccount.Loading)
+
+      awaitItem().toString() shouldBe Result.failure<Exception>(
+        SessionException.Unauthenticated(),
+      ).toString()
 
       authRepository.verifyClearTMDBSessionInvoked()
     }

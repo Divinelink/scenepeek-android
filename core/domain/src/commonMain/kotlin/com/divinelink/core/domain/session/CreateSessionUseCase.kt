@@ -29,17 +29,13 @@ class CreateSessionUseCase(
       onSuccess = { accessToken ->
         repository.createSession(accessToken = accessToken.accessToken).fold(
           onSuccess = { session ->
-            // There's a delay to make sure the session is properly created before proceeding
-            delay(TMDB_AUTH_DELAY)
-
             storage.setAccessToken(
               sessionId = session.id,
               accessToken = accessToken,
             )
 
-            repository.getAccountDetails(session.id).onSuccess { accountDetails ->
-              authRepository.setTMDBAccount(accountDetails)
-            }
+            // There's a delay to make sure the session is properly created before proceeding
+            delay(TMDB_AUTH_DELAY)
 
             repository.clearRequestToken()
           },
