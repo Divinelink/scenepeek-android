@@ -60,6 +60,10 @@ class TestAuthRepository {
     whenever(mock.tmdbAccount).thenReturn(account)
   }
 
+  fun mockTMDBAccount(account: Channel<AccountDetails?>) {
+    whenever(mock.tmdbAccount).thenReturn(account.consumeAsFlow())
+  }
+
   suspend fun verifySetTMDBAccount(account: AccountDetails) {
     verify(mock).setTMDBAccount(account)
   }

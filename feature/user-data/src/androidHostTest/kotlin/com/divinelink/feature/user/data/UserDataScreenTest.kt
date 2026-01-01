@@ -15,6 +15,7 @@ import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
+import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
@@ -57,7 +58,9 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test unknown error`() = uiTest {
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(
+      Result.success(TMDBAccountFactory.loggedIn()),
+    )
 
     setVisibilityScopeContent {
       UserDataScreen(
@@ -86,7 +89,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test network error`() = uiTest {
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(Result.failure(AppException.Offline())),
     )
@@ -160,7 +163,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist tabs are visible with movies and tv tabs`() = uiTest {
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
 
     setVisibilityScopeContent {
       UserDataScreen(
@@ -194,7 +197,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with empty content`() = uiTest {
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(UserDataResponseFactory.emptyMovies()),
@@ -244,7 +247,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test tv watching is loading`() = uiTest {
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = Result.success(UserDataResponseFactory.emptyMovies()),
     )
@@ -289,7 +292,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with movies and tv content`() = uiTest {
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(UserDataResponseFactory.movies()),
@@ -358,7 +361,7 @@ class UserDataScreenTest : ComposeTest() {
     var verifyNavigatedToMediaDetails = false
     var navArgs: Navigation.DetailsRoute? = null
 
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(UserDataResponseFactory.movies()),
@@ -418,7 +421,7 @@ class UserDataScreenTest : ComposeTest() {
   fun `test open action modal on long press`() = uiTest {
     var route: Navigation? = null
 
-    observeAccountUseCase.mockResponse(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(UserDataResponseFactory.movies()),

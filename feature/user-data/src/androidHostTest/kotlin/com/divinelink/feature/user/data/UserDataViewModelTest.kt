@@ -1,5 +1,7 @@
 package com.divinelink.feature.user.data
 
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -64,7 +66,7 @@ class UserDataViewModelTest {
   fun `given user is authenticated when view model is created then fetch watchlist`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockResponse(Result.success(true))
+        mockResponse(Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())))
       }
       .mockFetchUserData {
         mockSuccess(
@@ -111,7 +113,7 @@ class UserDataViewModelTest {
   fun `test fetch rated movies with success`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockResponse(Result.success(true))
+        mockResponse(Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())))
       }
       .mockFetchUserData {
         mockSuccess(
@@ -218,7 +220,7 @@ class UserDataViewModelTest {
 
     testRobot
       .mockObserveAccount {
-        mockResponse(Result.success(true))
+        mockResponse(Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())))
       }
       .mockFetchUserData {
         mockSuccess(
@@ -246,7 +248,7 @@ class UserDataViewModelTest {
   fun `test fetchWatchlist with generic error`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockResponse(Result.success(true))
+        mockResponse(Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())))
       }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()
@@ -264,7 +266,9 @@ class UserDataViewModelTest {
   @Test
   fun `test onLoadMore`() = runTest {
     testRobot
-      .mockObserveAccount { mockResponse(Result.success(true)) }
+      .mockObserveAccount {
+        mockResponse(Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())))
+      }
       .mockFetchUserData { mockSuccess(Result.success(UserDataResponseFactory.movies())) }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()

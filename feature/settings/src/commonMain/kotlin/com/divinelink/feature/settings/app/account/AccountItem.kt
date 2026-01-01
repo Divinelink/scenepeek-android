@@ -3,10 +3,12 @@ package com.divinelink.feature.settings.app.account
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,6 +45,7 @@ import com.divinelink.feature.settings.resources.feature_settings_not_logged_in
 import com.divinelink.feature.settings.resources.feature_settings_sign_in_to_access_features
 import com.divinelink.feature.settings.resources.feature_settings_tmdb_account
 import com.divinelink.feature.settings.resources.login
+import com.valentinilk.shimmer.shimmer
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -60,7 +63,14 @@ fun AccountItem(
         details = details.accountDetails,
         onLogoutClick = onLogoutClick,
       )
-      TMDBAccount.Anonymous -> NotLoggedInContent(onLoginClick = onLoginClick)
+      TMDBAccount.Anonymous -> InitialContent(
+        isLoading = false,
+        onLoginClick = onLoginClick,
+      )
+      TMDBAccount.Loading -> InitialContent(
+        isLoading = true,
+        onLoginClick = onLoginClick,
+      )
     }
   }
 }
@@ -118,7 +128,10 @@ private fun LoggedInContent(
 }
 
 @Composable
-private fun NotLoggedInContent(onLoginClick: () -> Unit) {
+private fun InitialContent(
+  isLoading: Boolean,
+  onLoginClick: () -> Unit,
+) {
   Row(
     modifier = Modifier
       .fillMaxWidth()
@@ -152,17 +165,30 @@ private fun NotLoggedInContent(onLoginClick: () -> Unit) {
       )
     }
 
-    FilledTonalButton(
-      modifier = Modifier.testTag(TestTags.Settings.Account.LOGIN_BUTTON),
-      onClick = onLoginClick,
-    ) {
-      Icon(
-        imageVector = Icons.AutoMirrored.Rounded.Login,
-        contentDescription = null,
-        modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
-      )
-      Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
-      Text(stringResource(Res.string.login))
+    AnimatedContent(isLoading) {
+      if (isLoading) {
+        Box(
+          modifier = Modifier
+            .width(MaterialTheme.dimensions.keyline_84)
+            .height(MaterialTheme.dimensions.keyline_40)
+            .shimmer()
+            .clip(MaterialTheme.shapes.extraLarge)
+            .background(MaterialTheme.colorScheme.onSurfaceVariant),
+        )
+      } else {
+        FilledTonalButton(
+          modifier = Modifier.testTag(TestTags.Settings.Account.LOGIN_BUTTON),
+          onClick = onLoginClick,
+        ) {
+          Icon(
+            imageVector = Icons.AutoMirrored.Rounded.Login,
+            contentDescription = null,
+            modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
+          )
+          Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
+          Text(stringResource(Res.string.login))
+        }
+      }
     }
   }
 }
@@ -181,6 +207,12 @@ private fun AccountItemPreview() {
 
         AccountItem(
           accountDetails = TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
+          onLoginClick = {},
+          onLogoutClick = {},
+        )
+
+        AccountItem(
+          accountDetails = TMDBAccount.Loading,
           onLoginClick = {},
           onLogoutClick = {},
         )
