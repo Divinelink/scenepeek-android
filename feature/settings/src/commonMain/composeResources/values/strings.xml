@@ -22,6 +22,7 @@
   <string name="feature_settings_currently_login_dialog_summary">You are currently logged in as %1$s. Do you want to logout?</string>
 
   <string name="feature_settings_invalid_credentials">The credentials you entered are invalid.</string>
+  <string name="feature_settings_csrf_enabled">Your server currently has CSRF protection enabled.\n\nTo allow third-party applications like ScenePeek to make external API calls to your server, you'll need to disable CSRF.\n\nIf you're not the server administrator, please contact your admin for assistance.</string>
   <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
 
   <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and select a sign-in method to enable Jellyseerr.\nMake sure to include the full URL with https:// or http:// and port number if needed.</string>
