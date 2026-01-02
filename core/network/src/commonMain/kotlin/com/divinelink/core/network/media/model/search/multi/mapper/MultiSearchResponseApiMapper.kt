@@ -11,6 +11,7 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchResultApi
 fun MultiSearchResponseApi.map(): MultiSearch = MultiSearch(
   searchList = results.map(),
   totalPages = totalPages,
+  page = page,
 )
 
 fun List<MultiSearchResultApi>.map(): List<MediaItem> = this.map {

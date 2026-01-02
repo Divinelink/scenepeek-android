@@ -33,6 +33,8 @@ import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.core.ui.components.extensions.showExpandedFab
+import com.divinelink.core.ui.tab.ScenePeekSecondaryTabs
+import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.search.resources.Res
 import com.divinelink.feature.search.resources.feature_search_settings_button_content_description
 import org.jetbrains.compose.resources.stringResource
@@ -67,33 +69,41 @@ fun AnimatedVisibilityScope.SearchScreen(
     modifier = Modifier
       .testTag(TestTags.Search.SEARCH_SCAFFOLD),
     topBar = {
-      ScenePeekSearchBar(
-        modifier = Modifier.clip(SearchBarShape),
-        scrollBehavior = scrollBehavior,
-        focusTrigger = focusTrigger,
-        state = if (focusSearchBar) {
-          ToolbarState.Focused
-        } else {
-          ToolbarState.Unfocused
-        },
-        actions = {
-          IconButton(onClick = { onNavigate(Navigation.SettingsRoute) }) {
-            Icon(
-              imageVector = Icons.Filled.Settings,
-              contentDescription = stringResource(
-                Res.string.feature_search_settings_button_content_description,
-              ),
-            )
-          }
-        },
-        isLoading = uiState.isLoading,
-        query = uiState.query,
-        onSearchFieldChanged = viewModel::onSearchMovies,
-        onFocused = {
-          // Do nothing
-        },
-        onClearClicked = viewModel::onClearClick,
-      )
+      Column {
+        ScenePeekSearchBar(
+          modifier = Modifier.clip(SearchBarShape),
+          scrollBehavior = scrollBehavior,
+          focusTrigger = focusTrigger,
+          state = if (focusSearchBar) {
+            ToolbarState.Focused
+          } else {
+            ToolbarState.Unfocused
+          },
+          actions = {
+            IconButton(onClick = { onNavigate(Navigation.SettingsRoute) }) {
+              Icon(
+                imageVector = Icons.Filled.Settings,
+                contentDescription = stringResource(
+                  Res.string.feature_search_settings_button_content_description,
+                ),
+              )
+            }
+          },
+          isLoading = uiState.isLoading,
+          query = uiState.query,
+          onSearchFieldChanged = viewModel::onSearchMovies,
+          onFocused = {
+            // Do nothing
+          },
+          onClearClicked = viewModel::onClearClick,
+        )
+
+        ScenePeekTabs(
+          tabs = uiState.tabs,
+          selectedIndex = uiState.selectedTabIndex,
+          onClick = viewModel::onSelectTab,
+        )
+      }
     },
     navigationRail = {
       PersistentNavigationRail(
