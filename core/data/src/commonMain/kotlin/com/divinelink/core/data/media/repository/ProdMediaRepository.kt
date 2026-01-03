@@ -14,7 +14,6 @@ import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.mapper.map
 import com.divinelink.core.network.media.model.tv.map
@@ -23,6 +22,7 @@ import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.transformLatest
 
 class ProdMediaRepository(
   private val remote: MediaService,
@@ -98,12 +98,69 @@ class ProdMediaRepository(
       Result.success(favorites)
     }
 
-  @Deprecated("Use fetchMultiInfo instead")
-  override fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult> = remote
-    .fetchSearchMovies(request)
-    .map { apiResponse ->
-      Result.success(apiResponse.toDomainMoviesList())
+  override fun fetchSearchMovies(
+    mediaType: MediaType,
+    request: SearchRequestApi,
+  ): Flow<Result<MultiSearch>> =
+    remote.fetchSearchMovies(mediaType, request).transformLatest { response ->
+      dao.getFavoriteMediaIds(mediaType).collect { favoriteIds ->
+        val data = response.map(mediaType.value).searchList
+        val favoriteIdsSet = favoriteIds.toSet()
+
+        val updatedMedia = data.map { media ->
+          when (media.mediaType) {
+            MediaType.TV -> (media as MediaItem.Media.TV).copy(
+              isFavorite = media.id in favoriteIdsSet,
+            )
+            MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
+              isFavorite = media.id in favoriteIdsSet,
+            )
+            else -> media
+          }
+        }
+
+        emit(
+          Result.success(
+            MultiSearch(
+              searchList = updatedMedia,
+              totalPages = response.totalPages,
+              page = response.page,
+            ),
+          ),
+        )
+      }
     }
+
+//  override fun fetchSearchMovies(
+//    mediaType: MediaType,
+//    request: SearchRequestApi,
+//  ): Flow<Result<MultiSearch>> = combine(
+//    remote.fetchSearchMovies(mediaType, request),
+//    dao.getFavoriteMediaIds(mediaType),
+//  ) { response, favoriteIds ->
+//    val data = response.map(mediaType.value).searchList
+//    val favoriteIds = favoriteIds.toSet()
+//
+//    val updatedMedia = data.map { media ->
+//      when (media.mediaType) {
+//        MediaType.TV -> (media as MediaItem.Media.TV).copy(
+//          isFavorite = media.id in favoriteIds,
+//        )
+//        MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
+//          isFavorite = media.id in favoriteIds,
+//        )
+//        else -> media
+//      }
+//    }
+//
+//    Result.success(
+//      MultiSearch(
+//        searchList = updatedMedia,
+//        totalPages = response.totalPages,
+//        page = response.page,
+//      ),
+//    )
+//  }
 
   override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>> =
     combine(

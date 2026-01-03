@@ -15,7 +15,7 @@ data class MultiSearchResultApi(
   @SerialName("overview") val overview: String? = null,
   @SerialName("poster_path") val posterPath: String? = null,
   @SerialName("profile_path") val profilePath: String? = null,
-  @SerialName("media_type") val mediaType: String,
+  @SerialName("media_type") val mediaType: String?,
   @SerialName("genre_ids") val genreIds: List<Int>? = null,
   val gender: Int? = null,
   @SerialName("popularity") val popularity: Double,

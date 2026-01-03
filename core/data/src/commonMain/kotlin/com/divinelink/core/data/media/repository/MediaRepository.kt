@@ -51,7 +51,7 @@ interface MediaRepository {
    * Request movies through a search query. Uses pagination.
    * Uses [Flow] in order to observe changes to our movies list.
    */
-  fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult>
+  fun fetchSearchMovies(mediaType: MediaType, request: SearchRequestApi): Flow<Result<MultiSearch>>
 
   /**
    * Request movies, tv series and persons through a search query.

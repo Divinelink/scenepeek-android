@@ -1,7 +1,6 @@
 package com.divinelink.scenepeek.popular.domain.repository
 
 import app.cash.turbine.test
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.fixtures.model.GenreFactory
@@ -12,16 +11,12 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
-import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.service.TestMediaService
-import com.divinelink.factories.api.SearchMovieApiFactory
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -37,13 +32,6 @@ class ProdMediaRepositoryTest {
   private val apiPopularResponse = MoviesResponseApi(
     page = 1,
     results = MovieApiFactory.EmptyList(),
-    totalPages = 0,
-    totalResults = 0,
-  )
-
-  private val apiSearchResponse = SearchResponseApi(
-    page = 1,
-    results = SearchMovieApiFactory.EmptyList(),
     totalPages = 0,
     totalResults = 0,
   )
@@ -116,32 +104,6 @@ class ProdMediaRepositoryTest {
       awaitComplete()
     }
   }
-
-  @Test
-  fun `given no movies are favorite, when searching movies, then I expect non favorite movies`() =
-    runTest {
-      val request = SearchRequestApi(query = "test123", 3)
-      val expectedResult = MediaItemFactory.MoviesList()
-
-      val expectedApiSearchResponse = flowOf(apiSearchResponse)
-      expectedResult.forEach { movie ->
-        mediaDao.mockCheckIfFavorite(
-          id = movie.id,
-          mediaType = MediaType.MOVIE,
-          result = false,
-        )
-      }
-      mediaService.mockFetchSearchMovies(
-        request = request,
-        result = expectedApiSearchResponse,
-      )
-
-      val actualResult = repository.fetchSearchMovies(
-        request = request,
-      ).first()
-
-      assertThat(expectedResult).isEqualTo(actualResult.data)
-    }
 
   @Test
   fun `test fetch favorites`() = runTest {

@@ -8,14 +8,20 @@ import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResultApi
 
-fun MultiSearchResponseApi.map(): MultiSearch = MultiSearch(
-  searchList = results.map(),
+/**
+ * @param mediaType is passed from single API searches (movie, tv, people) in order to re-use
+ * the same mapper for all search API calls.
+ */
+fun MultiSearchResponseApi.map(
+  mediaType: String? = null,
+): MultiSearch = MultiSearch(
+  searchList = results.map(mediaType),
   totalPages = totalPages,
   page = page,
 )
 
-fun List<MultiSearchResultApi>.map(): List<MediaItem> = this.map {
-  when (MediaType.from(it.mediaType)) {
+fun List<MultiSearchResultApi>.map(mediaType: String?): List<MediaItem> = this.map {
+  when (MediaType.from(it.mediaType ?: mediaType)) {
     MediaType.TV -> MediaItem.Media.TV(
       id = it.id,
       posterPath = it.posterPath,

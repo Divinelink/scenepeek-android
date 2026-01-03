@@ -12,8 +12,6 @@ import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccount
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
-import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
@@ -35,17 +33,6 @@ class TestMediaService {
   ) {
     whenever(
       mock.fetchPopularMovies(page),
-    ).thenReturn(
-      result,
-    )
-  }
-
-  fun mockFetchSearchMovies(
-    request: SearchRequestApi,
-    result: Flow<SearchResponseApi>,
-  ) {
-    whenever(
-      mock.fetchSearchMovies(request),
     ).thenReturn(
       result,
     )

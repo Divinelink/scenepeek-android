@@ -18,7 +18,6 @@ import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestBodyApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
@@ -91,16 +90,18 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  @Deprecated("Use fetchMultiInfo instead")
-  override fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/search/movie?"
+  override fun fetchSearchMovies(
+    mediaType: MediaType,
+    request: SearchRequestApi,
+  ): Flow<MultiSearchResponseApi> = flow {
+    val baseUrl = "${restClient.tmdbUrl}/search/${mediaType.value}?"
     val url = baseUrl +
       "&language=en-US" +
       "&query=${request.query}" +
       "&page=${request.page}" +
       "&include_adult=false"
 
-    val response = restClient.get<SearchResponseApi>(url = url)
+    val response = restClient.get<MultiSearchResponseApi>(url = url)
 
     emit(response)
   }
