@@ -19,6 +19,8 @@ import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
+import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -26,18 +28,20 @@ import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.ScreenSettingsRow
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
+import com.divinelink.core.ui.components.details.cast.CreditsItemCard
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.composition.rememberViewModePreferences
+import com.divinelink.core.ui.credit.PersonItem
 
 @Composable
 fun ScrollableMediaContent(
   modifier: Modifier = Modifier,
   state: LazyGridState = rememberLazyGridState(),
-  items: List<MediaItem.Media>,
+  items: List<MediaItem>,
   section: ViewableSection,
   onLoadMore: () -> Unit,
   onSwitchViewMode: (ViewableSection) -> Unit,
-  onClick: (MediaItem.Media) -> Unit,
+  onClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
   emptyContent: @Composable () -> Unit = {},
 ) {
@@ -84,23 +88,57 @@ fun ScrollableMediaContent(
         items = items,
         key = { it.uniqueIdentifier },
       ) { media ->
-        when (viewMode) {
-          ViewMode.GRID -> MediaItem(
-            modifier = Modifier
-              .animateItem()
-              .animateContentSize(),
-            media = media,
-            onClick = onClick,
-            onLongClick = onLongClick,
-          )
-          ViewMode.LIST -> DetailedMediaItem(
-            modifier = Modifier
-              .animateItem()
-              .animateContentSize(),
-            mediaItem = media,
-            onClick = onClick,
-            onLongClick = onLongClick,
-          )
+        when (media) {
+          is MediaItem.Media -> when (viewMode) {
+            ViewMode.GRID -> MediaItem(
+              modifier = Modifier
+                .animateItem()
+                .animateContentSize(),
+              media = media,
+              onClick = onClick,
+              onLongClick = onLongClick,
+            )
+            ViewMode.LIST -> DetailedMediaItem(
+              modifier = Modifier
+                .animateItem()
+                .animateContentSize(),
+              mediaItem = media,
+              onClick = onClick,
+              onLongClick = onLongClick,
+            )
+          }
+          is MediaItem.Person -> when (viewMode) {
+            ViewMode.GRID -> CreditsItemCard(
+              modifier = Modifier
+                .animateItem()
+                .animateContentSize(),
+              person = Person(
+                id = media.id.toLong(),
+                name = media.name,
+                profilePath = media.posterPath,
+                gender = media.gender,
+                knownForDepartment = media.knownForDepartment,
+                role = listOf(PersonRole.Unknown),
+              ),
+              onPersonClick = { onClick(media) },
+            )
+            ViewMode.LIST -> PersonItem(
+              modifier = Modifier
+                .animateItem()
+                .animateContentSize(),
+              person = Person(
+                id = media.id.toLong(),
+                name = media.name,
+                profilePath = media.posterPath,
+                gender = media.gender,
+                knownForDepartment = media.knownForDepartment,
+                role = listOf(PersonRole.Unknown),
+              ),
+              onClick = { onClick(media) },
+              isObfuscated = false,
+            )
+          }
+          MediaItem.Unknown -> Unit
         }
       }
 

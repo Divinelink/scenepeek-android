@@ -18,6 +18,7 @@ import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
@@ -115,11 +116,11 @@ fun DetailsScreen(
       onNavigate = onNavigate,
       animatedVisibilityScope = animatedVisibilityScope,
       onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
-      onSimilarMovieClicked = { movie ->
+      onMediaItemClick = { media ->
         val route = DetailsRoute(
-          id = movie.id,
-          mediaType = movie.mediaType.value,
-          isFavorite = movie.isFavorite ?: false,
+          id = media.id,
+          mediaType = media.mediaType.value,
+          isFavorite = (media as? MediaItem.Media)?.isFavorite,
         )
         onNavigate(route)
       },

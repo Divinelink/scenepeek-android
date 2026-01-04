@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.tab.MediaTab
@@ -109,7 +110,7 @@ fun UserDataScreenContent(
                     Navigation.DetailsRoute(
                       mediaType = media.mediaType.value,
                       id = media.id,
-                      isFavorite = media.isFavorite,
+                      isFavorite = (media as? MediaItem.Media)?.isFavorite, // TODO
                     ),
                   )
                 },
