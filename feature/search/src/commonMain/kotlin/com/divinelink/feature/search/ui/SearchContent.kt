@@ -11,6 +11,7 @@ import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -112,32 +113,8 @@ private fun SearchScrollableContent(
     onSwitchViewMode = {
       // TODO
     },
-    onClick = { media ->
-      when (media) {
-        is MediaItem.Media -> {
-          val route = Navigation.DetailsRoute(
-            id = media.id,
-            mediaType = media.mediaType.value,
-            isFavorite = media.isFavorite,
-          )
-          onNavigate(route)
-        }
-        is MediaItem.Person -> {
-          val route = Navigation.PersonRoute(
-            id = media.id.toLong(),
-            knownForDepartment = media.knownForDepartment,
-            name = media.name,
-            profilePath = media.profilePath,
-            gender = media.gender.value,
-          )
-          onNavigate(route)
-        }
-        else -> return@ScrollableMediaContentV2
-      }
-    },
+    onClick = { media -> media.toRoute()?.let { onNavigate(it) } },
     onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
     canLoadMore = canFetchMore,
-    emptyContent = {
-    },
   )
 }
