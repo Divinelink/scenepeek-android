@@ -1,5 +1,6 @@
 package com.divinelink.core.ui.list
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,6 +26,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.DetailedMediaItem
+import com.divinelink.core.ui.LoadMoreContent
 import com.divinelink.core.ui.ScreenSettingsRow
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
@@ -43,6 +45,7 @@ fun ScrollableMediaContent(
   onSwitchViewMode: (ViewableSection) -> Unit,
   onClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
+  canLoadMore: Boolean,
   emptyContent: @Composable () -> Unit = {},
 ) {
   val viewMode = rememberViewModePreferences(section)
@@ -97,6 +100,7 @@ fun ScrollableMediaContent(
               media = media,
               onClick = onClick,
               onLongClick = onLongClick,
+              showDate = section == ViewableSection.SEARCH || section == ViewableSection.DISCOVER,
             )
             ViewMode.LIST -> DetailedMediaItem(
               modifier = Modifier
@@ -139,6 +143,12 @@ fun ScrollableMediaContent(
             )
           }
           MediaItem.Unknown -> Unit
+        }
+      }
+
+      item(span = { GridItemSpan(maxLineSpan) }) {
+        AnimatedVisibility(visible = canLoadMore) {
+          LoadMoreContent()
         }
       }
 

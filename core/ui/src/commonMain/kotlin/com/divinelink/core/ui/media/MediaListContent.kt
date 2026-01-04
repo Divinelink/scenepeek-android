@@ -24,6 +24,7 @@ fun MediaListContent(
   onClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
   onLoadMore: () -> Unit,
+  canLoadMore: Boolean,
   onSwitchViewMode: (ViewableSection) -> Unit,
 ) {
   val state = rememberLazyGridState()
@@ -38,6 +39,7 @@ fun MediaListContent(
       onSwitchViewMode = onSwitchViewMode,
       onClick = onClick,
       onLongClick = onLongClick,
+      canLoadMore = canLoadMore,
     )
 
     ScrollToTopButton(
@@ -63,6 +65,7 @@ fun UserDataContentPreview() {
         onLongClick = {},
         onLoadMore = {},
         onSwitchViewMode = {},
+        canLoadMore = false,
       )
     }
   }

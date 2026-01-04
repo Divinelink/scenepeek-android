@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.SearchBarShape
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -48,6 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AnimatedVisibilityScope.SearchScreen(
   onNavigate: (Navigation) -> Unit,
   viewModel: SearchViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel()
 ) {
   val keyboardController = LocalSoftwareKeyboardController.current
   val focusManager = LocalFocusManager.current
@@ -188,6 +190,7 @@ fun AnimatedVisibilityScope.SearchScreen(
           searchMovieTabState = searchMovieTabState,
           searchPeopleTabState = searchPeopleTabState,
           searchTVTabState = searchTVTabState,
+          onSwitchViewMode = switchViewButtonViewModel::switchViewMode
         )
       }
     },

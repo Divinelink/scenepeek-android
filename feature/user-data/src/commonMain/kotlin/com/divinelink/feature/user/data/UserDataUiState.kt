@@ -17,4 +17,5 @@ data class UserDataUiState(
   val canFetchMore: Map<MediaType, Boolean>,
 ) {
   val mediaType = MediaType.from(MediaTab.entries[selectedTabIndex].value)
+  val canFetchMoreForSelectedTab = canFetchMore[mediaType] == true
 }

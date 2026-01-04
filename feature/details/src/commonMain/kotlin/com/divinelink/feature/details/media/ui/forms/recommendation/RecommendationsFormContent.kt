@@ -28,13 +28,14 @@ fun RecommendationsFormContent(
   onSwitchViewMode: (ViewableSection) -> Unit,
 ) {
   ScrollableMediaContent(
+    modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
     items = recommendations.items,
     section = ViewableSection.MEDIA_DETAILS,
     onLoadMore = {},
     onSwitchViewMode = onSwitchViewMode,
     onClick = onItemClick,
     onLongClick = onLongClick,
-    modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
+    canLoadMore = false,
     emptyContent = {
       BlankSlate(
         modifier = Modifier

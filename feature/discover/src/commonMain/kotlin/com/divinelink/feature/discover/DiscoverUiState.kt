@@ -44,5 +44,6 @@ data class DiscoverUiState(
   val selectedTab = tabs[selectedTabIndex]
   val selectedMedia = selectedTab.mediaType
   val currentFilters = filters[selectedTab.mediaType] ?: MediaTypeFilters.initial
+  val canFetchMoreForSelectedTab = canFetchMore[selectedMedia] == true
   val isLoading = loadingMap[selectedMedia] == true
 }
