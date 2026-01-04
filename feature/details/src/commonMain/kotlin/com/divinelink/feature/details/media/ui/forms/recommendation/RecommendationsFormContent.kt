@@ -23,7 +23,7 @@ fun RecommendationsFormContent(
   modifier: Modifier = Modifier,
   title: String,
   recommendations: DetailsData.Recommendations,
-  onItemClick: (MediaItem.Media) -> Unit,
+  onItemClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
   onSwitchViewMode: (ViewableSection) -> Unit,
 ) {

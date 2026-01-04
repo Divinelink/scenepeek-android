@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
@@ -177,11 +178,12 @@ fun DiscoverContent(
               onLoadMore = { action(DiscoverAction.LoadMore) },
               onSwitchViewMode = onSwitchViewMode,
               onClick = { media ->
+                media as? MediaItem.Media // TODO
                 onNavigate(
                   Navigation.DetailsRoute(
                     mediaType = media.mediaType.value,
                     id = media.id,
-                    isFavorite = media.isFavorite,
+                    isFavorite = (media as? MediaItem.Media)?.isFavorite,
                   ),
                 )
               },

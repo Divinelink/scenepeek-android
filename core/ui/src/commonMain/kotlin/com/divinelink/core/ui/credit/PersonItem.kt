@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.FlowRowOverflow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -101,9 +100,7 @@ fun PersonItem(
           PersonRole.Creator,
           PersonRole.Novel,
           PersonRole.Screenplay,
-            -> {
-            // Do nothing
-          }
+            -> Unit
         }
       }
     }
@@ -123,7 +120,6 @@ private fun BuildPersonSubHeader(
 ) {
   FlowRow(
     modifier = Modifier.fillMaxWidth(),
-    overflow = FlowRowOverflow.Visible,
   ) {
     roles.forEachIndexed { index, role ->
       val isLastRole = index == roles.lastIndex

@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MediaListContent(
   list: List<MediaItem.Media>,
-  onClick: (MediaItem.Media) -> Unit,
+  onClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
   onLoadMore: () -> Unit,
   onSwitchViewMode: (ViewableSection) -> Unit,
