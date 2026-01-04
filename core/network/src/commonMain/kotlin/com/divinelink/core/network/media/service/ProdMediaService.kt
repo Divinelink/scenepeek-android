@@ -90,10 +90,10 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  override fun fetchSearchMovies(
+  override suspend fun fetchSearchMovies(
     mediaType: MediaType,
     request: SearchRequestApi,
-  ): Flow<MultiSearchResponseApi> = flow {
+  ): Result<MultiSearchResponseApi> = runCatching {
     val baseUrl = "${restClient.tmdbUrl}/search/${mediaType.value}?"
     val url = baseUrl +
       "&language=en-US" +
@@ -101,9 +101,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
       "&page=${request.page}" +
       "&include_adult=false"
 
-    val response = restClient.get<MultiSearchResponseApi>(url = url)
-
-    emit(response)
+    restClient.get<MultiSearchResponseApi>(url = url)
   }
 
   override fun fetchDetails(

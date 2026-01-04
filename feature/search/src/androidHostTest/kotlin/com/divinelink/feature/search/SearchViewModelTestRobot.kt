@@ -62,7 +62,7 @@ class SearchViewModelTestRobot {
   }
 
   fun onSearchMovies(query: String) = apply {
-    viewModel.onSearchMovies(query)
+    viewModel.onSearch(query)
   }
 
   fun onClearClicked() = apply {

@@ -86,7 +86,7 @@ class SearchContentTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      SearchContent(
+      SearchScrollableContent(
         onNavigate = { route = it },
         uiState = uiState,
         onLoadNextPage = {},

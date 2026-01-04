@@ -13,6 +13,7 @@ data class SearchUiState(
   val pages: Map<SearchTab, Int>,
   val forms: Map<SearchTab, SearchForm<MediaItem.Media>>,
   val canFetchMore: Map<SearchTab, Boolean>,
+  val lastQuery: Map<SearchTab, String?>,
 ) {
   companion object {
     fun initial() = SearchUiState(
@@ -23,10 +24,10 @@ data class SearchUiState(
       selectedTabIndex = 0,
       pages = SearchTab.entries.associateWith { tab ->
         when (tab) {
-          SearchTab.All -> 1
-          SearchTab.Movie -> 1
-          SearchTab.People -> 1
-          SearchTab.TV -> 1
+          SearchTab.All -> 0
+          SearchTab.Movie -> 0
+          SearchTab.People -> 0
+          SearchTab.TV -> 0
         }
       },
       forms = SearchTab.entries.associateWith { tab ->
@@ -45,11 +46,19 @@ data class SearchUiState(
           SearchTab.TV -> true
         }
       },
+      lastQuery = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> null
+          SearchTab.Movie -> null
+          SearchTab.People -> null
+          SearchTab.TV -> null
+        }
+      },
     )
   }
 
   val selectedTab = tabs[selectedTabIndex]
-  val selectedPage = pages[selectedTab]
+  val selectedQuery = lastQuery[selectedTab]
 }
 
 sealed interface SearchForm<out T : MediaItem.Media> {
@@ -63,9 +72,9 @@ sealed interface SearchForm<out T : MediaItem.Media> {
 
   data class Data<T : MediaItem.Media>(
     val tab: SearchTab,
-    val paginationData: Map<Int, List<MediaItem>>,
+    val pages: Map<Int, List<MediaItem>>,
   ) : SearchForm<T> {
-    val media = paginationData.values.flatten().distinctBy { it.id }
+    val media = pages.values.flatten().distinctBy { it.uniqueIdentifier }
     val isEmpty: Boolean = media.isEmpty()
   }
 }

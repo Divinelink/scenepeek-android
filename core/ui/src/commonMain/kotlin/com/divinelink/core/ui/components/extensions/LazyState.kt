@@ -11,35 +11,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
 /**
- * Taken from
- * https://manavtamboli.medium.com/infinite-list-paged-list-in-jetpack-compose-b10fc7e74768
- */
-
-@Composable
-fun LazyGridState.OnBottomReached(loadMore: () -> Unit) {
-  var initialLoad = remember { true }
-
-  val shouldLoadMore = remember {
-    derivedStateOf {
-      val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-        ?: return@derivedStateOf true
-
-      lastVisibleItem.index == layoutInfo.totalItemsCount - 1 && !initialLoad
-    }
-  }
-
-  // Convert the state into a cold flow and collect
-  LaunchedEffect(shouldLoadMore) {
-    snapshotFlow { shouldLoadMore.value }
-      .collect {
-        // if should load more, then invoke loadMore
-        if (it) loadMore()
-        initialLoad = false
-      }
-  }
-}
-
-/**
  * Handler to make any lazy column (or lazy row) infinite. Will notify the [onLoadMore]
  * callback once needed
  * @param lazyListState state of the list that needs to also be passed to the LazyColumn composable.

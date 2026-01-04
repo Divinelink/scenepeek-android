@@ -1,6 +1,7 @@
 package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.commons.data
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
@@ -21,12 +22,14 @@ import com.divinelink.core.network.media.service.MediaService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.transformLatest
 
 class ProdMediaRepository(
   private val remote: MediaService,
   private val dao: MediaDao,
+  private val dispatcher: DispatcherProvider,
 ) : MediaRepository {
 
   override fun fetchPopularMovies(page: Int): Flow<MediaListResult> = combine(
@@ -101,13 +104,20 @@ class ProdMediaRepository(
   override fun fetchSearchMovies(
     mediaType: MediaType,
     request: SearchRequestApi,
-  ): Flow<Result<MultiSearch>> =
-    remote.fetchSearchMovies(mediaType, request).transformLatest { response ->
-      dao.getFavoriteMediaIds(mediaType).collect { favoriteIds ->
-        val data = response.map(mediaType.value).searchList
+  ): Flow<Result<MultiSearch>> = flow {
+    val response = remote.fetchSearchMovies(mediaType, request).getOrThrow()
+
+    val baseResult = MultiSearch(
+      searchList = response.map(mediaType.value).searchList,
+      totalPages = response.totalPages,
+      page = response.page,
+    )
+
+    dao.getFavoriteMediaIds(mediaType)
+      .map { favoriteIds ->
         val favoriteIdsSet = favoriteIds.toSet()
 
-        val updatedMedia = data.map { media ->
+        val updatedMedia = baseResult.searchList.map { media ->
           when (media.mediaType) {
             MediaType.TV -> (media as MediaItem.Media.TV).copy(
               isFavorite = media.id in favoriteIdsSet,
@@ -119,48 +129,12 @@ class ProdMediaRepository(
           }
         }
 
-        emit(
-          Result.success(
-            MultiSearch(
-              searchList = updatedMedia,
-              totalPages = response.totalPages,
-              page = response.page,
-            ),
-          ),
-        )
+        baseResult.copy(searchList = updatedMedia)
       }
-    }
-
-//  override fun fetchSearchMovies(
-//    mediaType: MediaType,
-//    request: SearchRequestApi,
-//  ): Flow<Result<MultiSearch>> = combine(
-//    remote.fetchSearchMovies(mediaType, request),
-//    dao.getFavoriteMediaIds(mediaType),
-//  ) { response, favoriteIds ->
-//    val data = response.map(mediaType.value).searchList
-//    val favoriteIds = favoriteIds.toSet()
-//
-//    val updatedMedia = data.map { media ->
-//      when (media.mediaType) {
-//        MediaType.TV -> (media as MediaItem.Media.TV).copy(
-//          isFavorite = media.id in favoriteIds,
-//        )
-//        MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-//          isFavorite = media.id in favoriteIds,
-//        )
-//        else -> media
-//      }
-//    }
-//
-//    Result.success(
-//      MultiSearch(
-//        searchList = updatedMedia,
-//        totalPages = response.totalPages,
-//        page = response.page,
-//      ),
-//    )
-//  }
+      .collect { resultWithFavorites ->
+        emit(Result.success(resultWithFavorites))
+      }
+  }.flowOn(dispatcher.io)
 
   override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>> =
     combine(

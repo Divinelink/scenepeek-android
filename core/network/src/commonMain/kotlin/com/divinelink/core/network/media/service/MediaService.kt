@@ -38,10 +38,10 @@ interface MediaService {
 
   fun fetchMultiInfo(request: MultiSearchRequestApi): Flow<MultiSearchResponseApi>
 
-  fun fetchSearchMovies(
+  suspend fun fetchSearchMovies(
     mediaType: MediaType,
     request: SearchRequestApi,
-  ): Flow<MultiSearchResponseApi>
+  ): Result<MultiSearchResponseApi>
 
   fun fetchDetails(
     request: MediaRequestApi,

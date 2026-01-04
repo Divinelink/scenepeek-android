@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -30,8 +31,6 @@ class SearchViewModel(
   val uiState: StateFlow<SearchUiState> = _uiState
 
   private var searchJob: Job? = null
-
-  private var latestQuery: String? = null
 
   init {
     viewModelScope.launch {
@@ -52,9 +51,16 @@ class SearchViewModel(
     searchStateManager.updateEntryPoint(SearchEntryPoint.SEARCH_TAB)
   }
 
-  fun onSearchMovies(query: String) {
+  fun onSearch(
+    query: String,
+    reset: Boolean,
+  ) {
     searchJob?.cancel()
-    resetPage()
+
+    if (reset) {
+      resetPage()
+    }
+
     if (query.isEmpty()) {
       onClearClick()
     } else {
@@ -67,18 +73,27 @@ class SearchViewModel(
       searchJob = viewModelScope.launch {
         delay(timeMillis = 300)
 
-        fetchFromSearchQuery(query = query, page = 1)
+        fetchFromSearchQuery(
+          query = query,
+          page = 1,
+          tab = SearchTab.fromIndex(uiState.value.selectedTabIndex),
+        )
       }
     }
   }
 
   private fun fetchFromSearchQuery(
+    tab: SearchTab,
     query: String,
     page: Int,
   ) {
-    val isNewSearch = query != latestQuery
-    latestQuery = query
-    val tab = uiState.value.tabs[uiState.value.selectedTabIndex]
+    val isNewSearch = query != uiState.value.lastQuery[tab]
+
+    _uiState.update { uiState ->
+      uiState.copy(
+        lastQuery = uiState.lastQuery + (tab to query),
+      )
+    }
 
     viewModelScope.launch {
       fetchMultiInfoSearchUseCase.invoke(
@@ -88,8 +103,9 @@ class SearchViewModel(
           tab = tab,
         ),
       )
+        .takeWhile { uiState.value.query == query } // TODO Maybe it.data.query == query ?
         .distinctUntilChanged()
-        .collectLatest { result ->
+        .collect { result ->
           result.fold(
             onSuccess = { data ->
               handleSearchSuccess(
@@ -114,7 +130,7 @@ class SearchViewModel(
     response: MultiSearchResult,
   ) {
     _uiState.update { uiState ->
-      val data = (uiState.forms[response.tab] as? SearchForm.Data)?.paginationData ?: mapOf(
+      val data = (uiState.forms[response.tab] as? SearchForm.Data)?.pages ?: mapOf(
         1 to response.searchList,
       )
 
@@ -122,25 +138,23 @@ class SearchViewModel(
         forms = uiState.forms.plus(
           response.tab to SearchForm.Data(
             tab = response.tab,
-            paginationData = if (reset) {
+            pages = if (reset) {
               mapOf(1 to response.searchList)
             } else {
               data.plus(response.page to response.searchList)
             },
           ),
         ),
-        pages = uiState.pages + (response.tab to response.page + 1),
+        pages = uiState.pages + (response.tab to response.page),
         canFetchMore = uiState.canFetchMore + (response.tab to response.canFetchMore),
         isLoading = false,
       )
     }
   }
 
-
   fun onClearClick() {
     searchJob?.cancel()
     resetPage()
-    latestQuery = null
     _uiState.update { uiState ->
       uiState.copy(
         forms = SearchTab.entries.associateWith { tab ->
@@ -159,6 +173,14 @@ class SearchViewModel(
             SearchTab.TV -> true
           }
         },
+        lastQuery = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> null
+            SearchTab.Movie -> null
+            SearchTab.People -> null
+            SearchTab.TV -> null
+          }
+        },
         query = "",
         isLoading = false,
         focusSearch = false,
@@ -169,7 +191,8 @@ class SearchViewModel(
   fun onLoadNextPage() {
     fetchFromSearchQuery(
       query = uiState.value.query,
-      page = uiState.value.pages[uiState.value.selectedTab] ?: 1,
+      page = uiState.value.pages[uiState.value.selectedTab]?.plus(1) ?: 1,
+      tab = uiState.value.selectedTab,
     )
   }
 
@@ -182,13 +205,33 @@ class SearchViewModel(
   }
 
   fun onRetryClick() {
-    latestQuery = null
-    onSearchMovies(uiState.value.query)
+    resetLastQuery()
+    onSearch(
+      query = uiState.value.query,
+      reset = true,
+    )
   }
 
-  fun onSelectTab(index: Int) {
+  fun onSelectTab(tab: SearchTab) {
     _uiState.update { uiState ->
-      uiState.copy(selectedTabIndex = index)
+      uiState.copy(
+        selectedTabIndex = tab.order,
+        forms = uiState.forms.keys.associateWith { formTab ->
+          val tabsLastQuery = uiState.lastQuery[formTab]
+          if (formTab == tab && tabsLastQuery != uiState.query) {
+            SearchForm.Loading
+          } else {
+            uiState.forms[formTab] ?: SearchForm.Initial
+          }
+        },
+      )
+    }
+
+    if (uiState.value.lastQuery[tab] != uiState.value.query) {
+      onSearch(
+        query = uiState.value.query,
+        reset = false,
+      )
     }
   }
 
@@ -197,10 +240,25 @@ class SearchViewModel(
       uiState.copy(
         pages = SearchTab.entries.associateWith { tab ->
           when (tab) {
-            SearchTab.All -> 1
-            SearchTab.Movie -> 1
-            SearchTab.People -> 1
-            SearchTab.TV -> 1
+            SearchTab.All -> 0
+            SearchTab.Movie -> 0
+            SearchTab.People -> 0
+            SearchTab.TV -> 0
+          }
+        },
+      )
+    }
+  }
+
+  private fun resetLastQuery() {
+    _uiState.update { uiState ->
+      uiState.copy(
+        lastQuery = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> null
+            SearchTab.Movie -> null
+            SearchTab.People -> null
+            SearchTab.TV -> null
           }
         },
       )

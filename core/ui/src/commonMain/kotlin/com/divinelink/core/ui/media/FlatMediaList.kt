@@ -2,12 +2,8 @@ package com.divinelink.core.ui.media
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -16,9 +12,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -30,14 +24,11 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DevicePreviews
+import com.divinelink.core.ui.LoadMoreContent
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.components.details.cast.CreditsItemCard
-import com.divinelink.core.ui.components.extensions.OnBottomReached
-import com.divinelink.core.ui.resources.core_ui_load_more
-import org.jetbrains.compose.resources.stringResource
+import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 
 @Composable
 fun FlatMediaList(
@@ -49,7 +40,7 @@ fun FlatMediaList(
   isLoading: Boolean,
   scrollState: LazyGridState,
 ) {
-  scrollState.OnBottomReached {
+  scrollState.EndlessScrollHandler(buffer = 4) {
     onLoadNextPage()
   }
 
@@ -108,26 +99,6 @@ fun FlatMediaList(
         LoadMoreContent()
       }
     }
-  }
-}
-
-@Composable
-private fun LoadMoreContent(modifier: Modifier = Modifier) {
-  Column(
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    modifier = modifier
-      .padding(vertical = MaterialTheme.dimensions.keyline_16)
-      .fillMaxWidth(),
-  ) {
-    Material3CircularProgressIndicator(
-      modifier = Modifier.wrapContentSize(),
-    )
-
-    Text(
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-      text = stringResource(UiString.core_ui_load_more),
-    )
   }
 }
 

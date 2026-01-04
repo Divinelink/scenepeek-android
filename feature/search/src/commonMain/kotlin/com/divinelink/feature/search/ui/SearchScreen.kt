@@ -18,11 +18,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.SearchBarShape
+import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -33,10 +37,9 @@ import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.core.ui.components.extensions.showExpandedFab
-import com.divinelink.core.ui.tab.ScenePeekSecondaryTabs
-import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.search.resources.Res
 import com.divinelink.feature.search.resources.feature_search_settings_button_content_description
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -46,12 +49,45 @@ fun AnimatedVisibilityScope.SearchScreen(
   onNavigate: (Navigation) -> Unit,
   viewModel: SearchViewModel = koinViewModel(),
 ) {
+  val keyboardController = LocalSoftwareKeyboardController.current
+  val focusManager = LocalFocusManager.current
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
   var focusSearchBar by remember { mutableStateOf(false) }
   var focusTrigger by remember { mutableIntStateOf(0) }
 
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val scrollState = rememberLazyGridState()
+
+  val searchAllTabState = rememberLazyGridState()
+  val searchMovieTabState = rememberLazyGridState()
+  val searchPeopleTabState = rememberLazyGridState()
+  val searchTVTabState = rememberLazyGridState()
+
+  LaunchedEffect(uiState.query) {
+    if (uiState.query != uiState.selectedQuery) {
+      when (uiState.selectedTab) {
+        SearchTab.All -> searchAllTabState.scrollToItem(0)
+        SearchTab.Movie -> searchMovieTabState.scrollToItem(0)
+        SearchTab.People -> searchPeopleTabState.scrollToItem(0)
+        SearchTab.TV -> searchTVTabState.scrollToItem(0)
+      }
+    }
+  }
+
+  LaunchedEffect(searchAllTabState, searchMovieTabState, searchPeopleTabState, searchTVTabState) {
+    snapshotFlow {
+      searchAllTabState.isScrollInProgress ||
+        searchPeopleTabState.isScrollInProgress ||
+        searchTVTabState.isScrollInProgress ||
+        searchMovieTabState.isScrollInProgress
+    }
+      .distinctUntilChanged()
+      .collect { isScrolling ->
+        if (isScrolling) {
+          keyboardController?.hide()
+          focusManager.clearFocus()
+        }
+      }
+  }
 
   LaunchedEffect(uiState.focusSearch) {
     if (uiState.focusSearch) {
@@ -91,17 +127,22 @@ fun AnimatedVisibilityScope.SearchScreen(
           },
           isLoading = uiState.isLoading,
           query = uiState.query,
-          onSearchFieldChanged = viewModel::onSearchMovies,
+          onSearchFieldChanged = { query ->
+            viewModel.onSearch(
+              query = query,
+              reset = true,
+            )
+          },
           onFocused = {
             // Do nothing
           },
           onClearClicked = viewModel::onClearClick,
         )
 
-        ScenePeekTabs(
+        SearchTabs(
           tabs = uiState.tabs,
-          selectedIndex = uiState.selectedTabIndex,
-          onClick = viewModel::onSelectTab,
+          selected = SearchTab.fromIndex(uiState.selectedTabIndex),
+          onClick = { viewModel.onSelectTab(it) },
         )
       }
     },
@@ -125,7 +166,12 @@ fun AnimatedVisibilityScope.SearchScreen(
     },
     floatingActionButton = {
       DiscoverFab(
-        expanded = scrollState.showExpandedFab(),
+        expanded = when (uiState.selectedTab) {
+          SearchTab.All -> searchAllTabState.showExpandedFab()
+          SearchTab.Movie -> searchMovieTabState.showExpandedFab()
+          SearchTab.People -> searchPeopleTabState.showExpandedFab()
+          SearchTab.TV -> searchTVTabState.showExpandedFab()
+        },
         onNavigate = onNavigate,
       )
     },
@@ -138,7 +184,10 @@ fun AnimatedVisibilityScope.SearchScreen(
           onNavigate = onNavigate,
           onLoadNextPage = viewModel::onLoadNextPage,
           onRetryClick = viewModel::onRetryClick,
-          scrollState = scrollState,
+          searchAllTabState = searchAllTabState,
+          searchMovieTabState = searchMovieTabState,
+          searchPeopleTabState = searchPeopleTabState,
+          searchTVTabState = searchTVTabState,
         )
       }
     },

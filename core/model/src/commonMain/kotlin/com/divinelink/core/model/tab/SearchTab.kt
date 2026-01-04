@@ -46,5 +46,7 @@ sealed class SearchTab(
         TV,
         People,
       )
+
+    fun fromIndex(index: Int): SearchTab = entries.first { it.order == index }
   }
 }
