@@ -4,8 +4,8 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 
-suspend inline fun <reified T : ClientErrorResponse> HttpResponse.extractErrorMessage(): String? {
-  return try {
+suspend inline fun <reified T : ClientErrorResponse> HttpResponse.extractErrorMessage(): String? =
+  try {
     when (val error = body<T>()) {
       is ClientErrorResponse.Jellyseerr -> error.message
       is ClientErrorResponse.TMDB -> error.statusMessage
@@ -18,4 +18,3 @@ suspend inline fun <reified T : ClientErrorResponse> HttpResponse.extractErrorMe
       null
     }
   }
-}
