@@ -93,7 +93,7 @@ class JellyseerrSettingsViewModelTest {
           ),
         ),
       )
-    }
+  }
 
   @Test
   fun `test on Offline when jellyseerr expect could not connect error`() = runTest {

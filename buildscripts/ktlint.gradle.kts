@@ -39,14 +39,14 @@ tasks.register<JavaExec>("ktlintFormat") {
 
 tasks.register("allChecks") {
   group = "lint"
-  description = "Runs ktlint, detekt, and testDebugUnitTest"
+  description = "Runs ktlint, detekt, and testAndroidHostTest"
 
   dependsOn(
     "ktlintFormat",
     "detektFormat",
-    "testDebugUnitTest",
+    "testAndroidHostTest",
   )
 
   tasks.findByName("detektFormat")?.mustRunAfter("ktlintCheck")
-  tasks.findByName("testDebugUnitTest")?.mustRunAfter("detektFormat")
+  tasks.findByName("koverHtmlReport")?.mustRunAfter("detektFormat")
 }

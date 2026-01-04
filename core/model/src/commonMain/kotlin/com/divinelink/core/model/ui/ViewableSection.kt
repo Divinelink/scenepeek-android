@@ -7,4 +7,5 @@ enum class ViewableSection(val key: String) {
   USER_DATA("user_data"),
   MEDIA_DETAILS("media_details"),
   LIST_DETAILS("list_details"),
+  SEARCH("search"),
 }
