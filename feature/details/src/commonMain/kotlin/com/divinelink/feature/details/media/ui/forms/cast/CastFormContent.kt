@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -59,7 +60,9 @@ fun CastFormContent(
     if (cast.items.isEmpty()) {
       item {
         BlankSlate(
-          modifier = Modifier.testTag(TestTags.Details.Cast.EMPTY),
+          modifier = Modifier
+            .padding(top = MaterialTheme.dimensions.keyline_12)
+            .testTag(TestTags.Details.Cast.EMPTY),
           uiState = BlankSlateState.Custom(
             title = UIText.ResourceText(Res.string.feature_details_no_cast_available),
             description = UIText.ResourceText(
