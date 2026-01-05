@@ -8,11 +8,15 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.tab.SearchTab
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.media.MediaContent
+import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.list.ScrollableMediaContent
 import com.divinelink.core.ui.resources.searching
 import com.divinelink.feature.search.resources.Res
 import com.divinelink.feature.search.resources.feature_search__initial_description
@@ -20,70 +24,102 @@ import com.divinelink.feature.search.resources.feature_search__initial_title
 import com.divinelink.feature.search.resources.search__empty_result_description
 import com.divinelink.feature.search.resources.search__empty_result_title
 
+@Suppress("NestedBlockDepth")
 @Composable
 fun SearchContent(
   uiState: SearchUiState,
   onNavigate: (Navigation) -> Unit,
   onRetryClick: () -> Unit,
   onLoadNextPage: () -> Unit,
+  searchAllTabState: LazyGridState,
+  searchMovieTabState: LazyGridState,
+  searchPeopleTabState: LazyGridState,
+  searchTVTabState: LazyGridState,
+  onSwitchViewMode: (ViewableSection) -> Unit,
+) {
+  uiState.forms[uiState.selectedTab]?.let { form ->
+    when (form) {
+      is SearchForm.Initial -> BlankSlate(
+        modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+        uiState = BlankSlateState.Custom(
+          icon = null,
+          title = UIText.ResourceText(Res.string.feature_search__initial_title),
+          description = UIText.ResourceText(Res.string.feature_search__initial_description),
+        ),
+      )
+      is SearchForm.Loading -> LoadingContent()
+      is SearchForm.Error -> BlankSlate(
+        modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+        uiState = form.blankSlate,
+        onRetry = onRetryClick,
+      )
+      is SearchForm.Data -> if (form.isEmpty) {
+        BlankSlate(
+          modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+          uiState = BlankSlateState.Custom(
+            icon = UiDrawable.searching,
+            title = UIText.ResourceText(Res.string.search__empty_result_title),
+            description = UIText.ResourceText(Res.string.search__empty_result_description),
+          ),
+        )
+      } else {
+        when (uiState.selectedTab) {
+          SearchTab.All -> SearchScrollableContent(
+            form = form,
+            onNavigate = onNavigate,
+            onLoadNextPage = onLoadNextPage,
+            canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
+            scrollState = searchAllTabState,
+            onSwitchViewMode = onSwitchViewMode,
+          )
+          SearchTab.Movie -> SearchScrollableContent(
+            form = form,
+            onNavigate = onNavigate,
+            onLoadNextPage = onLoadNextPage,
+            canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
+            scrollState = searchMovieTabState,
+            onSwitchViewMode = onSwitchViewMode,
+          )
+          SearchTab.People -> SearchScrollableContent(
+            form = form,
+            onNavigate = onNavigate,
+            onLoadNextPage = onLoadNextPage,
+            canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
+            scrollState = searchPeopleTabState,
+            onSwitchViewMode = onSwitchViewMode,
+          )
+          SearchTab.TV -> SearchScrollableContent(
+            form = form,
+            onNavigate = onNavigate,
+            onLoadNextPage = onLoadNextPage,
+            canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
+            scrollState = searchTVTabState,
+            onSwitchViewMode = onSwitchViewMode,
+          )
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun SearchScrollableContent(
+  form: SearchForm.Data<MediaItem.Media>,
+  onNavigate: (Navigation) -> Unit,
+  onLoadNextPage: () -> Unit,
+  canFetchMore: Boolean,
+  onSwitchViewMode: (ViewableSection) -> Unit,
   scrollState: LazyGridState,
 ) {
-  when {
-    uiState.error is BlankSlateState.Offline -> BlankSlate(
-      modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
-      uiState = BlankSlateState.Offline,
-      onRetry = onRetryClick,
-    )
-
-    uiState.searchResults?.data?.isEmpty() == true -> BlankSlate(
-      modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
-      uiState = BlankSlateState.Custom(
-        icon = UiDrawable.searching,
-        title = UIText.ResourceText(Res.string.search__empty_result_title),
-        description = UIText.ResourceText(Res.string.search__empty_result_description),
-      ),
-    )
-
-    uiState.searchResults?.data?.isNotEmpty() == true -> MediaContent(
-      modifier = Modifier,
-      section = uiState.searchResults,
-      onMediaClick = { media ->
-        when (media) {
-          is MediaItem.Media -> {
-            val route = Navigation.DetailsRoute(
-              id = media.id,
-              mediaType = media.mediaType.value,
-              isFavorite = media.isFavorite,
-            )
-            onNavigate(route)
-          }
-          is MediaItem.Person -> {
-            val route = Navigation.PersonRoute(
-              id = media.id.toLong(),
-              knownForDepartment = media.knownForDepartment,
-              name = media.name,
-              profilePath = media.profilePath,
-              gender = media.gender.value,
-            )
-            onNavigate(route)
-          }
-          else -> {
-            return@MediaContent
-          }
-        }
-      },
-      onLoadNextPage = onLoadNextPage,
-      onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
-      scrollState = scrollState,
-    )
-
-    else -> BlankSlate(
-      modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
-      uiState = BlankSlateState.Custom(
-        icon = null,
-        title = UIText.ResourceText(Res.string.feature_search__initial_title),
-        description = UIText.ResourceText(Res.string.feature_search__initial_description),
-      ),
-    )
-  }
+  ScrollableMediaContent(
+    modifier = Modifier,
+    state = scrollState,
+    items = form.media,
+    section = ViewableSection.SEARCH,
+    onLoadMore = onLoadNextPage,
+    onSwitchViewMode = onSwitchViewMode,
+    onClick = { media -> media.toRoute()?.let { onNavigate(it) } },
+    onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
+    canLoadMore = canFetchMore,
+  )
 }

@@ -5,6 +5,7 @@ import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.search.MultiSearch
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -30,9 +31,12 @@ class TestMediaRepository {
     )
   }
 
-  fun mockFetchSearchMovies(response: MediaListResult) {
+  fun mockFetchSearchMovies(response: Result<MultiSearch>) {
     whenever(
-      mock.fetchSearchMovies(any()),
+      mock.fetchSearchMovies(
+        mediaType = any(),
+        request = any(),
+      ),
     ).thenReturn(
       flowOf(response),
     )

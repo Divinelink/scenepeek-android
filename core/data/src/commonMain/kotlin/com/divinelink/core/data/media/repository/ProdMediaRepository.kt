@@ -1,6 +1,7 @@
 package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.commons.data
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
@@ -14,7 +15,6 @@ import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.mapper.map
 import com.divinelink.core.network.media.model.tv.map
@@ -22,11 +22,14 @@ import com.divinelink.core.network.media.service.MediaService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class ProdMediaRepository(
   private val remote: MediaService,
   private val dao: MediaDao,
+  private val dispatcher: DispatcherProvider,
 ) : MediaRepository {
 
   override fun fetchPopularMovies(page: Int): Flow<MediaListResult> = combine(
@@ -98,12 +101,40 @@ class ProdMediaRepository(
       Result.success(favorites)
     }
 
-  @Deprecated("Use fetchMultiInfo instead")
-  override fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult> = remote
-    .fetchSearchMovies(request)
-    .map { apiResponse ->
-      Result.success(apiResponse.toDomainMoviesList())
-    }
+  override fun fetchSearchMovies(
+    mediaType: MediaType,
+    request: SearchRequestApi,
+  ): Flow<Result<MultiSearch>> = flow {
+    val response = remote.fetchSearchMovies(mediaType, request).getOrThrow()
+
+    val baseResult = MultiSearch(
+      searchList = response.map(mediaType.value).searchList,
+      totalPages = response.totalPages,
+      page = response.page,
+    )
+
+    dao.getFavoriteMediaIds(mediaType)
+      .map { favoriteIds ->
+        val favoriteIdsSet = favoriteIds.toSet()
+
+        val updatedMedia = baseResult.searchList.map { media ->
+          when (media.mediaType) {
+            MediaType.TV -> (media as MediaItem.Media.TV).copy(
+              isFavorite = media.id in favoriteIdsSet,
+            )
+            MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
+              isFavorite = media.id in favoriteIdsSet,
+            )
+            else -> media
+          }
+        }
+
+        baseResult.copy(searchList = updatedMedia)
+      }
+      .collect { resultWithFavorites ->
+        emit(Result.success(resultWithFavorites))
+      }
+  }.flowOn(dispatcher.io)
 
   override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>> =
     combine(

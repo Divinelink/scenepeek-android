@@ -1,7 +1,6 @@
-package com.divinelink.scenepeek.popular.domain.repository
+package com.divinelink.core.data.media
 
 import app.cash.turbine.test
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.fixtures.model.GenreFactory
@@ -12,22 +11,18 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
-import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.service.TestMediaService
-import com.divinelink.factories.api.SearchMovieApiFactory
-import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Rule
 import kotlin.test.Test
 
-// TODO Restructure to data unit test package
 class ProdMediaRepositoryTest {
 
   private val movie = MediaItemFactory.FightClub().toWizard {
@@ -41,15 +36,12 @@ class ProdMediaRepositoryTest {
     totalResults = 0,
   )
 
-  private val apiSearchResponse = SearchResponseApi(
-    page = 1,
-    results = SearchMovieApiFactory.EmptyList(),
-    totalPages = 0,
-    totalResults = 0,
-  )
-
   private var mediaDao = TestMediaDao()
   private var mediaService = TestMediaService()
+
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private lateinit var repository: MediaRepository
 
@@ -58,6 +50,7 @@ class ProdMediaRepositoryTest {
     repository = ProdMediaRepository(
       dao = mediaDao.mock,
       remote = mediaService.mock,
+      dispatcher = testDispatcher,
     )
   }
 
@@ -76,7 +69,7 @@ class ProdMediaRepositoryTest {
     )
 
     repository.fetchPopularMovies(page).test {
-      assertThat(awaitItem()).isEqualTo(Result.success(expectedResult))
+      awaitItem() shouldBe Result.success(expectedResult)
       awaitComplete()
     }
   }
@@ -101,47 +94,17 @@ class ProdMediaRepositoryTest {
     )
 
     repository.fetchPopularMovies(page).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(MediaItemFactory.MoviesList()),
-      )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          buildList {
-            addAll(MediaItemFactory.MoviesList(1..2).map { it.copy(isFavorite = true) })
-            addAll(MediaItemFactory.MoviesList(3..10))
-          },
-        ),
+      awaitItem() shouldBe Result.success(MediaItemFactory.MoviesList())
+      awaitItem() shouldBe Result.success(
+        buildList {
+          addAll(MediaItemFactory.MoviesList(1..2).map { it.copy(isFavorite = true) })
+          addAll(MediaItemFactory.MoviesList(3..10))
+        },
       )
 
       awaitComplete()
     }
   }
-
-  @Test
-  fun `given no movies are favorite, when searching movies, then I expect non favorite movies`() =
-    runTest {
-      val request = SearchRequestApi(query = "test123", 3)
-      val expectedResult = MediaItemFactory.MoviesList()
-
-      val expectedApiSearchResponse = flowOf(apiSearchResponse)
-      expectedResult.forEach { movie ->
-        mediaDao.mockCheckIfFavorite(
-          id = movie.id,
-          mediaType = MediaType.MOVIE,
-          result = false,
-        )
-      }
-      mediaService.mockFetchSearchMovies(
-        request = request,
-        result = expectedApiSearchResponse,
-      )
-
-      val actualResult = repository.fetchSearchMovies(
-        request = request,
-      ).first()
-
-      assertThat(expectedResult).isEqualTo(actualResult.data)
-    }
 
   @Test
   fun `test fetch favorites`() = runTest {
@@ -152,7 +115,7 @@ class ProdMediaRepositoryTest {
     mediaDao.mockFetchFavorites(favoriteMovies)
 
     repository.fetchFavorites().test {
-      assertThat(awaitItem()).isEqualTo(Result.success(MediaItemFactory.all()))
+      awaitItem() shouldBe Result.success(MediaItemFactory.all())
       awaitComplete()
     }
   }
@@ -163,7 +126,7 @@ class ProdMediaRepositoryTest {
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
-    assertThat(result).isEqualTo(Result.success(true))
+    result shouldBe Result.success(true)
   }
 
   @Test
@@ -172,7 +135,7 @@ class ProdMediaRepositoryTest {
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
-    assertThat(result).isEqualTo(Result.success(false))
+    result shouldBe Result.success(false)
   }
 
   @Test

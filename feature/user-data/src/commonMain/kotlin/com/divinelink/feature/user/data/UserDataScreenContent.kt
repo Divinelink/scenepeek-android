@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.tab.MediaTab
@@ -28,6 +27,7 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.user.data.UserDataSection.Ratings
 import com.divinelink.core.model.user.data.UserDataSection.Watchlist
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -105,20 +105,13 @@ fun UserDataScreenContent(
             } else {
               MediaListContent(
                 list = it.media,
-                onClick = { media ->
-                  onNavigate(
-                    Navigation.DetailsRoute(
-                      mediaType = media.mediaType.value,
-                      id = media.id,
-                      isFavorite = (media as? MediaItem.Media)?.isFavorite, // TODO
-                    ),
-                  )
-                },
+                onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
                 onLoadMore = onLoadMore,
                 onLongClick = { media ->
                   onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
                 },
                 onSwitchViewMode = onSwitchViewMode,
+                canLoadMore = uiState.canFetchMoreForSelectedTab,
               )
             }
           }

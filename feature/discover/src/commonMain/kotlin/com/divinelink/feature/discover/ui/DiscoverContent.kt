@@ -25,10 +25,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -177,19 +177,11 @@ fun DiscoverContent(
               section = ViewableSection.DISCOVER,
               onLoadMore = { action(DiscoverAction.LoadMore) },
               onSwitchViewMode = onSwitchViewMode,
-              onClick = { media ->
-                media as? MediaItem.Media // TODO
-                onNavigate(
-                  Navigation.DetailsRoute(
-                    mediaType = media.mediaType.value,
-                    id = media.id,
-                    isFavorite = (media as? MediaItem.Media)?.isFavorite,
-                  ),
-                )
-              },
+              onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
               onLongClick = { media ->
                 onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
               },
+              canLoadMore = uiState.canFetchMoreForSelectedTab,
             )
           }
         }

@@ -15,7 +15,6 @@ import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
@@ -39,8 +38,10 @@ interface MediaService {
 
   fun fetchMultiInfo(request: MultiSearchRequestApi): Flow<MultiSearchResponseApi>
 
-  @Deprecated("Use fetchMultiInfo instead")
-  fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi>
+  suspend fun fetchSearchMovies(
+    mediaType: MediaType,
+    request: SearchRequestApi,
+  ): Result<MultiSearchResponseApi>
 
   fun fetchDetails(
     request: MediaRequestApi,

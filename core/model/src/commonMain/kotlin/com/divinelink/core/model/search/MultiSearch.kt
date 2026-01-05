@@ -5,4 +5,5 @@ import com.divinelink.core.model.media.MediaItem
 data class MultiSearch(
   val searchList: List<MediaItem>,
   val totalPages: Int,
+  val page: Int,
 )

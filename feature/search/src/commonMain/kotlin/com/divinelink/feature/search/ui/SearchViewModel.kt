@@ -2,28 +2,25 @@ package com.divinelink.feature.search.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.data
-import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.FetchMultiInfoSearchUseCase
 import com.divinelink.core.domain.search.MultiSearchParameters
+import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.model.search.SearchEntryPoint
-import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.model.tab.SearchTab
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
   private val fetchMultiInfoSearchUseCase: FetchMultiInfoSearchUseCase,
-  private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val searchStateManager: SearchStateManager,
 ) : ViewModel() {
 
@@ -31,8 +28,6 @@ class SearchViewModel(
   val uiState: StateFlow<SearchUiState> = _uiState
 
   private var searchJob: Job? = null
-
-  private var latestQuery: String? = null
 
   init {
     viewModelScope.launch {
@@ -53,9 +48,16 @@ class SearchViewModel(
     searchStateManager.updateEntryPoint(SearchEntryPoint.SEARCH_TAB)
   }
 
-  fun onSearchMovies(query: String) {
+  fun onSearch(
+    query: String,
+    reset: Boolean,
+  ) {
     searchJob?.cancel()
-    resetPage()
+
+    if (reset) {
+      resetPage()
+    }
+
     if (query.isEmpty()) {
       onClearClick()
     } else {
@@ -68,62 +70,113 @@ class SearchViewModel(
       searchJob = viewModelScope.launch {
         delay(timeMillis = 300)
 
-        fetchFromSearchQuery(query = query, page = 1)
+        fetchFromSearchQuery(
+          query = query,
+          page = 1,
+          tab = SearchTab.fromIndex(uiState.value.selectedTabIndex),
+        )
       }
     }
   }
 
   private fun fetchFromSearchQuery(
+    tab: SearchTab,
     query: String,
     page: Int,
   ) {
-    var isNewSearch = query != latestQuery
-    latestQuery = query
+    val isNewSearch = query != uiState.value.lastQuery[tab]
+
+    _uiState.update { uiState ->
+      uiState.copy(
+        lastQuery = uiState.lastQuery + (tab to query),
+      )
+    }
 
     viewModelScope.launch {
       fetchMultiInfoSearchUseCase.invoke(
         parameters = MultiSearchParameters(
           query = query,
           page = page,
+          tab = tab,
         ),
       )
+        .takeWhile { uiState.value.query == query }
         .distinctUntilChanged()
-        .collectLatest { result ->
-          result.onSuccess {
-            incrementPage()
-            if (result.data.query == latestQuery) {
-              _uiState.update { viewState ->
-                viewState.copy(
-                  isLoading = false,
-                  error = null,
-                  searchResults = if (isNewSearch) {
-                    isNewSearch = false
-                    MediaSection(
-                      data = result.data.searchList,
-                      shouldLoadMore = result.data.totalPages > page,
-                    )
-                  } else {
-                    viewState.searchResults
-                      ?.addMore(result.data.searchList)
-                      ?.copy(shouldLoadMore = result.data.totalPages > page)
-                  },
-                )
-              }
-            }
-          }.onFailure {
-            handleSearchError(it)
-          }
+        .collect { result ->
+          result.fold(
+            onSuccess = { data ->
+              handleSearchSuccess(
+                reset = isNewSearch,
+                response = data,
+              )
+            },
+            onFailure = {
+              handleSearchError(
+                reset = isNewSearch,
+                tab = tab,
+                error = it,
+              )
+            },
+          )
         }
+    }
+  }
+
+  private fun handleSearchSuccess(
+    reset: Boolean,
+    response: MultiSearchResult,
+  ) {
+    _uiState.update { uiState ->
+      val data = (uiState.forms[response.tab] as? SearchForm.Data)?.pages ?: mapOf(
+        1 to response.searchList,
+      )
+
+      uiState.copy(
+        forms = uiState.forms.plus(
+          response.tab to SearchForm.Data(
+            pages = if (reset) {
+              mapOf(1 to response.searchList)
+            } else {
+              data.plus(response.page to response.searchList)
+            },
+          ),
+        ),
+        pages = uiState.pages + (response.tab to response.page),
+        canFetchMore = uiState.canFetchMore + (response.tab to response.canFetchMore),
+        isLoading = false,
+      )
     }
   }
 
   fun onClearClick() {
     searchJob?.cancel()
     resetPage()
-    latestQuery = null
-    _uiState.update { viewState ->
-      viewState.copy(
-        searchResults = null,
+    _uiState.update { uiState ->
+      uiState.copy(
+        forms = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> SearchForm.Initial
+            SearchTab.Movie -> SearchForm.Initial
+            SearchTab.People -> SearchForm.Initial
+            SearchTab.TV -> SearchForm.Initial
+          }
+        },
+        canFetchMore = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> true
+            SearchTab.Movie -> true
+            SearchTab.People -> true
+            SearchTab.TV -> true
+          }
+        },
+        lastQuery = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> null
+            SearchTab.Movie -> null
+            SearchTab.People -> null
+            SearchTab.TV -> null
+          }
+        },
         query = "",
         isLoading = false,
         focusSearch = false,
@@ -134,55 +187,91 @@ class SearchViewModel(
   fun onLoadNextPage() {
     fetchFromSearchQuery(
       query = uiState.value.query,
-      page = uiState.value.page,
+      page = uiState.value.pages[uiState.value.selectedTab]?.plus(1) ?: 1,
+      tab = uiState.value.selectedTab,
     )
   }
 
-  fun onMarkAsFavoriteClick(movie: MediaItem) {
-    if (movie !is MediaItem.Media) return
-
-    viewModelScope.launch {
-      markAsFavoriteUseCase(movie)
-    }
-  }
-
   fun onRetryClick() {
-    latestQuery = null
-    onSearchMovies(uiState.value.query)
+    resetLastQuery()
+    onSearch(
+      query = uiState.value.query,
+      reset = true,
+    )
   }
 
-  private fun incrementPage() {
+  fun onSelectTab(tab: SearchTab) {
     _uiState.update { uiState ->
       uiState.copy(
-        page = uiState.page + 1,
+        selectedTabIndex = tab.order,
+        forms = uiState.forms.keys.associateWith { formTab ->
+          val tabsLastQuery = uiState.lastQuery[formTab]
+          if (formTab == tab && tabsLastQuery != uiState.query) {
+            SearchForm.Loading
+          } else {
+            uiState.forms[formTab] ?: SearchForm.Initial
+          }
+        },
+      )
+    }
+
+    if (uiState.value.lastQuery[tab] != uiState.value.query) {
+      onSearch(
+        query = uiState.value.query,
+        reset = false,
       )
     }
   }
 
   private fun resetPage() {
-    _uiState.update { viewState ->
-      viewState.copy(
-        page = 1,
+    _uiState.update { uiState ->
+      uiState.copy(
+        pages = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> 0
+            SearchTab.Movie -> 0
+            SearchTab.People -> 0
+            SearchTab.TV -> 0
+          }
+        },
       )
     }
   }
 
-  private fun handleSearchError(it: Throwable) {
-    _uiState.update { viewState ->
-      viewState.copy(
-        isLoading = false,
+  private fun resetLastQuery() {
+    _uiState.update { uiState ->
+      uiState.copy(
+        lastQuery = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> null
+            SearchTab.Movie -> null
+            SearchTab.People -> null
+            SearchTab.TV -> null
+          }
+        },
       )
     }
+  }
 
-    if (it is AppException.Offline) {
-      if (uiState.value.page == 1) {
-        _uiState.update { viewState ->
-          viewState.copy(
-            searchResults = null,
-            error = BlankSlateState.Offline,
+  private fun handleSearchError(
+    reset: Boolean,
+    tab: SearchTab,
+    error: Throwable,
+  ) {
+    _uiState.update { uiState ->
+      uiState.copy(
+        forms = if (uiState.forms[tab] !is SearchForm.Data || reset) {
+          uiState.forms.plus(
+            tab to when (error) {
+              is AppException.Offline -> SearchForm.Error.Network
+              else -> SearchForm.Error.Unknown
+            },
           )
-        }
-      }
+        } else {
+          uiState.forms
+        },
+        isLoading = false,
+      )
     }
   }
 }

@@ -2,10 +2,9 @@ package com.divinelink.feature.search
 
 import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.domain.search.SearchStateManager
-import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
-import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.feature.search.ui.SearchUiState
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.google.common.truth.Truth.assertThat
@@ -18,13 +17,11 @@ class SearchViewModelTestRobot {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   private val fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
 
   fun buildViewModel() = apply {
     viewModel = SearchViewModel(
       fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
-      markAsFavoriteUseCase = markAsFavoriteUseCase,
       searchStateManager = SearchStateManager(),
     )
   }
@@ -39,16 +36,6 @@ class SearchViewModelTestRobot {
     )
   }
 
-  fun mockMarkAsFavorite(
-    mediaItem: MediaItem.Media,
-    result: Result<Boolean>,
-  ) = apply {
-    markAsFavoriteUseCase.mockMarkAsFavoriteResult(
-      media = mediaItem,
-      result = result,
-    )
-  }
-
   fun onRetryClick() = apply {
     viewModel.onRetryClick()
   }
@@ -57,16 +44,19 @@ class SearchViewModelTestRobot {
     viewModel.onLoadNextPage()
   }
 
-  fun onMarkAsFavorite(movie: MediaItem.Media) = apply {
-    viewModel.onMarkAsFavoriteClick(movie)
-  }
-
-  fun onSearchMovies(query: String) = apply {
-    viewModel.onSearchMovies(query)
+  fun onSearch(query: String, reset: Boolean = false) = apply {
+    viewModel.onSearch(
+      query = query,
+      reset = reset,
+    )
   }
 
   fun onClearClicked() = apply {
     viewModel.onClearClick()
+  }
+
+  fun onSelectTab(tab: SearchTab) = apply {
+    viewModel.onSelectTab(tab)
   }
 
   suspend fun delay(timeInMillis: Long) = apply {

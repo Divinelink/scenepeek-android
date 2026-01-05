@@ -13,7 +13,6 @@ import com.divinelink.core.network.di.remoteModule
 import com.divinelink.feature.onboarding.di.onboardingModule
 import com.divinelink.scenepeek.di.appModule
 import com.divinelink.scenepeek.di.appRemoteModule
-import com.divinelink.scenepeek.di.appRepositoryModule
 import com.divinelink.scenepeek.di.appUseCaseModule
 import com.divinelink.scenepeek.di.appViewModelModule
 import com.divinelink.scenepeek.di.navigationModule
@@ -35,7 +34,6 @@ fun KoinApplication.configKoinModules() {
   modules(
     appModule,
     appRemoteModule,
-    appRepositoryModule,
     appViewModelModule,
     appUseCaseModule,
     commonModule,

@@ -1,24 +1,79 @@
 package com.divinelink.feature.search.ui
 
-import com.divinelink.core.model.media.MediaSection
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.ui.blankslate.BlankSlateState
 
 data class SearchUiState(
   val query: String,
-  val page: Int,
-  val searchResults: MediaSection?,
-  val error: BlankSlateState?,
   val isLoading: Boolean,
   val focusSearch: Boolean,
+  val tabs: List<SearchTab>,
+  val selectedTabIndex: Int,
+  val pages: Map<SearchTab, Int>,
+  val forms: Map<SearchTab, SearchForm<MediaItem.Media>>,
+  val canFetchMore: Map<SearchTab, Boolean>,
+  val lastQuery: Map<SearchTab, String?>,
 ) {
   companion object {
     fun initial() = SearchUiState(
-      page = 1,
       query = "",
-      error = null,
       isLoading = false,
-      searchResults = null,
       focusSearch = false,
+      tabs = SearchTab.entries,
+      selectedTabIndex = 0,
+      pages = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> 0
+          SearchTab.Movie -> 0
+          SearchTab.People -> 0
+          SearchTab.TV -> 0
+        }
+      },
+      forms = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> SearchForm.Initial
+          SearchTab.Movie -> SearchForm.Initial
+          SearchTab.People -> SearchForm.Initial
+          SearchTab.TV -> SearchForm.Initial
+        }
+      },
+      canFetchMore = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> true
+          SearchTab.Movie -> true
+          SearchTab.People -> true
+          SearchTab.TV -> true
+        }
+      },
+      lastQuery = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> null
+          SearchTab.Movie -> null
+          SearchTab.People -> null
+          SearchTab.TV -> null
+        }
+      },
     )
+  }
+
+  val selectedTab = tabs[selectedTabIndex]
+  val selectedQuery = lastQuery[selectedTab]
+}
+
+sealed interface SearchForm<out T : MediaItem.Media> {
+  data object Initial : SearchForm<Nothing>
+  data object Loading : SearchForm<Nothing>
+
+  sealed class Error(val blankSlate: BlankSlateState) : SearchForm<Nothing> {
+    data object Network : Error(BlankSlateState.Offline)
+    data object Unknown : Error(BlankSlateState.Generic)
+  }
+
+  data class Data<T : MediaItem.Media>(
+    val pages: Map<Int, List<MediaItem>>,
+  ) : SearchForm<T> {
+    val media = pages.values.flatten().distinctBy { it.uniqueIdentifier }
+    val isEmpty: Boolean = media.isEmpty()
   }
 }
