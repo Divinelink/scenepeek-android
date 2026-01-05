@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
 import androidx.navigation.testing.TestNavHostController
 import app.cash.turbine.test
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
@@ -298,6 +299,12 @@ class ScenePeekAppTest : ComposeTest() {
     )
 
     declare {
+      SwitchViewButtonViewModel(
+        repository = preferencesRepository,
+      )
+    }
+
+    declare {
       HomeViewModel(
         getPopularMoviesUseCase = popularMoviesUseCase.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -309,7 +316,6 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
         searchStateManager = searchStateManager,
       )
     }
@@ -373,6 +379,12 @@ class ScenePeekAppTest : ComposeTest() {
     )
 
     declare {
+      SwitchViewButtonViewModel(
+        repository = preferencesRepository,
+      )
+    }
+
+    declare {
       HomeViewModel(
         getPopularMoviesUseCase = popularMoviesUseCase.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -384,7 +396,6 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
         searchStateManager = searchStateManager,
       )
     }
@@ -461,6 +472,12 @@ class ScenePeekAppTest : ComposeTest() {
     )
 
     declare {
+      SwitchViewButtonViewModel(
+        repository = preferencesRepository,
+      )
+    }
+
+    declare {
       HomeViewModel(
         getPopularMoviesUseCase = popularMoviesUseCase.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -472,7 +489,6 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
         searchStateManager = searchStateManager,
       )
     }
@@ -525,6 +541,12 @@ class ScenePeekAppTest : ComposeTest() {
     )
 
     declare {
+      SwitchViewButtonViewModel(
+        repository = preferencesRepository,
+      )
+    }
+
+    declare {
       HomeViewModel(
         getPopularMoviesUseCase = popularMoviesUseCase.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -536,7 +558,6 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
         searchStateManager = searchStateManager,
       )
     }

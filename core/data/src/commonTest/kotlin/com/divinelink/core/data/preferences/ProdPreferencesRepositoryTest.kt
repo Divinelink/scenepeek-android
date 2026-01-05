@@ -19,7 +19,17 @@ class ProdPreferencesRepositoryTest {
   fun `test default view modes`() = runTest {
     repository.uiPreferences.test {
       awaitItem() shouldBe UiPreferences(
-        viewModes = ViewableSection.entries.associateWith { ViewMode.LIST },
+        viewModes = ViewableSection.entries.associateWith {
+          when (it) {
+            ViewableSection.LISTS -> ViewMode.LIST
+            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
+            ViewableSection.DISCOVER -> ViewMode.LIST
+            ViewableSection.USER_DATA -> ViewMode.LIST
+            ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+            ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            ViewableSection.SEARCH -> ViewMode.GRID
+          }
+        },
       )
     }
   }
@@ -28,7 +38,17 @@ class ProdPreferencesRepositoryTest {
   fun `test update ViewMode`() = runTest {
     repository.uiPreferences.test {
       awaitItem() shouldBe UiPreferences(
-        viewModes = ViewableSection.entries.associateWith { ViewMode.LIST },
+        viewModes = ViewableSection.entries.associateWith {
+          when (it) {
+            ViewableSection.LISTS -> ViewMode.LIST
+            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
+            ViewableSection.DISCOVER -> ViewMode.LIST
+            ViewableSection.USER_DATA -> ViewMode.LIST
+            ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+            ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            ViewableSection.SEARCH -> ViewMode.GRID
+          }
+        },
       )
 
       repository.switchViewMode(
@@ -44,7 +64,7 @@ class ProdPreferencesRepositoryTest {
             ViewableSection.USER_DATA -> ViewMode.LIST
             ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
             ViewableSection.LIST_DETAILS -> ViewMode.LIST
-            ViewableSection.SEARCH -> ViewMode.LIST
+            ViewableSection.SEARCH -> ViewMode.GRID
           }
         },
       )
@@ -62,7 +82,7 @@ class ProdPreferencesRepositoryTest {
             ViewableSection.USER_DATA -> ViewMode.LIST
             ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
             ViewableSection.LIST_DETAILS -> ViewMode.LIST
-            ViewableSection.SEARCH -> ViewMode.LIST
+            ViewableSection.SEARCH -> ViewMode.GRID
           }
         },
       )

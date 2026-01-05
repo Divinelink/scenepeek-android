@@ -16,7 +16,6 @@ data class MultiSearchResult(
   val tab: SearchTab,
   val searchList: List<MediaItem>,
   val page: Int,
-  val totalPages: Int,
   val canFetchMore: Boolean,
 )
 
@@ -70,7 +69,6 @@ class FetchMultiInfoSearchUseCase(
               tab = parameters.tab,
               page = it.page,
               searchList = it.searchList,
-              totalPages = it.totalPages,
               canFetchMore = it.page < it.totalPages,
             ),
           )

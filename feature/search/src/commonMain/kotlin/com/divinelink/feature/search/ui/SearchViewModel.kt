@@ -2,13 +2,11 @@ package com.divinelink.feature.search.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.FetchMultiInfoSearchUseCase
 import com.divinelink.core.domain.search.MultiSearchParameters
 import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.tab.SearchTab
 import kotlinx.coroutines.Job
@@ -23,7 +21,6 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
   private val fetchMultiInfoSearchUseCase: FetchMultiInfoSearchUseCase,
-  private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val searchStateManager: SearchStateManager,
 ) : ViewModel() {
 
@@ -103,7 +100,7 @@ class SearchViewModel(
           tab = tab,
         ),
       )
-        .takeWhile { uiState.value.query == query } // TODO Maybe it.data.query == query ?
+        .takeWhile { uiState.value.query == query }
         .distinctUntilChanged()
         .collect { result ->
           result.fold(
@@ -137,7 +134,6 @@ class SearchViewModel(
       uiState.copy(
         forms = uiState.forms.plus(
           response.tab to SearchForm.Data(
-            tab = response.tab,
             pages = if (reset) {
               mapOf(1 to response.searchList)
             } else {
@@ -194,14 +190,6 @@ class SearchViewModel(
       page = uiState.value.pages[uiState.value.selectedTab]?.plus(1) ?: 1,
       tab = uiState.value.selectedTab,
     )
-  }
-
-  fun onMarkAsFavoriteClick(movie: MediaItem) {
-    if (movie !is MediaItem.Media) return
-
-    viewModelScope.launch {
-      markAsFavoriteUseCase(movie)
-    }
   }
 
   fun onRetryClick() {

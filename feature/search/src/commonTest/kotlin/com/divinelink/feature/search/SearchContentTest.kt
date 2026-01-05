@@ -9,15 +9,15 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
-import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.core.ui.resources.core_ui_offline_description
 import com.divinelink.core.ui.resources.core_ui_offline_title
@@ -26,6 +26,7 @@ import com.divinelink.feature.search.resources.feature_search__initial_descripti
 import com.divinelink.feature.search.resources.search__empty_result_description
 import com.divinelink.feature.search.resources.search__empty_result_title
 import com.divinelink.feature.search.ui.SearchContent
+import com.divinelink.feature.search.ui.SearchForm
 import com.divinelink.feature.search.ui.SearchUiState
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
@@ -43,7 +44,11 @@ class SearchContentTest : ComposeTest() {
         uiState = uiState,
         onLoadNextPage = {},
         onRetryClick = {},
-        scrollState = rememberLazyGridState(),
+        searchAllTabState = rememberLazyGridState(),
+        searchMovieTabState = rememberLazyGridState(),
+        searchPeopleTabState = rememberLazyGridState(),
+        searchTVTabState = rememberLazyGridState(),
+        onSwitchViewMode = {},
       )
     }
 
@@ -53,24 +58,34 @@ class SearchContentTest : ComposeTest() {
   @Test
   fun `test search content with data`() = uiTest {
     val uiState = SearchUiState.initial().copy(
-      searchResults = MediaSection(
-        data = MediaItemFactory.MoviesList(),
-        shouldLoadMore = false,
-      ),
+      forms = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> SearchForm.Data(
+            mapOf(1 to MediaItemFactory.MoviesList())
+          )
+          SearchTab.Movie -> SearchForm.Initial
+          SearchTab.People -> SearchForm.Initial
+          SearchTab.TV -> SearchForm.Initial
+        }
+      },
       focusSearch = false,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       SearchContent(
         onNavigate = {},
         uiState = uiState,
         onLoadNextPage = {},
         onRetryClick = {},
-        scrollState = rememberLazyGridState(),
+        searchAllTabState = rememberLazyGridState(),
+        searchMovieTabState = rememberLazyGridState(),
+        searchPeopleTabState = rememberLazyGridState(),
+        searchTVTabState = rememberLazyGridState(),
+        onSwitchViewMode = {},
       )
     }
 
-    onNodeWithTag(TestTags.MEDIA_LIST_TAG).assertIsDisplayed()
+    onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
   }
 
   @Test
@@ -78,20 +93,30 @@ class SearchContentTest : ComposeTest() {
     var route: Navigation? = null
 
     val uiState = SearchUiState.initial().copy(
-      searchResults = MediaSection(
-        data = MediaItemFactory.MoviesList(),
-        shouldLoadMore = false,
-      ),
+      forms = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> SearchForm.Data(
+            mapOf(1 to MediaItemFactory.MoviesList())
+          )
+          SearchTab.Movie -> SearchForm.Initial
+          SearchTab.People -> SearchForm.Initial
+          SearchTab.TV -> SearchForm.Initial
+        }
+      },
       focusSearch = false,
     )
 
-    setContentWithTheme {
-      SearchScrollableContent(
+    setVisibilityScopeContent {
+      SearchContent(
         onNavigate = { route = it },
         uiState = uiState,
         onLoadNextPage = {},
         onRetryClick = {},
-        scrollState = rememberLazyGridState(),
+        searchAllTabState = rememberLazyGridState(),
+        searchMovieTabState = rememberLazyGridState(),
+        searchPeopleTabState = rememberLazyGridState(),
+        searchTVTabState = rememberLazyGridState(),
+        onSwitchViewMode = {},
       )
     }
 
@@ -107,11 +132,17 @@ class SearchContentTest : ComposeTest() {
   @Test
   fun `test empty search blank slate is displayed on empty search result without other error`() =
     uiTest {
-      val uiState = SearchUiState.Companion.initial().copy(
-        searchResults = MediaSection(
-          data = emptyList(),
-          shouldLoadMore = false,
-        ),
+      val uiState = SearchUiState.initial().copy(
+        forms = SearchTab.entries.associateWith { tab ->
+          when (tab) {
+            SearchTab.All -> SearchForm.Data(
+              mapOf(1 to emptyList())
+            )
+            SearchTab.Movie -> SearchForm.Initial
+            SearchTab.People -> SearchForm.Initial
+            SearchTab.TV -> SearchForm.Initial
+          }
+        },
       )
 
       setContentWithTheme {
@@ -120,7 +151,11 @@ class SearchContentTest : ComposeTest() {
           uiState = uiState,
           onLoadNextPage = {},
           onRetryClick = {},
-          scrollState = rememberLazyGridState(),
+          searchAllTabState = rememberLazyGridState(),
+          searchMovieTabState = rememberLazyGridState(),
+          searchPeopleTabState = rememberLazyGridState(),
+          searchTVTabState = rememberLazyGridState(),
+          onSwitchViewMode = {},
         )
       }
 
@@ -132,13 +167,16 @@ class SearchContentTest : ComposeTest() {
     }
 
   @Test
-  fun `test search blank slate when is empty and search mode but has other error`() = uiTest {
+  fun `test search with network error shows blank slate`() = uiTest {
     val uiState = SearchUiState.initial().copy(
-      error = BlankSlateState.Offline,
-      searchResults = MediaSection(
-        data = emptyList(),
-        shouldLoadMore = false,
-      ),
+      forms = SearchTab.entries.associateWith { tab ->
+        when (tab) {
+          SearchTab.All -> SearchForm.Error.Network
+          SearchTab.Movie -> SearchForm.Initial
+          SearchTab.People -> SearchForm.Initial
+          SearchTab.TV -> SearchForm.Initial
+        }
+      },
     )
 
     setContentWithTheme {
@@ -147,7 +185,11 @@ class SearchContentTest : ComposeTest() {
         onNavigate = {},
         onLoadNextPage = {},
         onRetryClick = {},
-        scrollState = rememberLazyGridState(),
+        searchAllTabState = rememberLazyGridState(),
+        searchMovieTabState = rememberLazyGridState(),
+        searchPeopleTabState = rememberLazyGridState(),
+        searchTVTabState = rememberLazyGridState(),
+        onSwitchViewMode = {},
       )
     }
 

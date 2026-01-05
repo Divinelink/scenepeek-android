@@ -71,7 +71,6 @@ sealed interface SearchForm<out T : MediaItem.Media> {
   }
 
   data class Data<T : MediaItem.Media>(
-    val tab: SearchTab,
     val pages: Map<Int, List<MediaItem>>,
   ) : SearchForm<T> {
     val media = pages.values.flatten().distinctBy { it.uniqueIdentifier }
