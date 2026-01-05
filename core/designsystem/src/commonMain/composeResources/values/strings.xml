@@ -3,4 +3,8 @@
   <string name="system">System</string>
   <string name="light">Light</string>
   <string name="dark">Dark</string>
+
+  <string name="default_theme">Default</string>
+  <string name="dynamic_theme">Dynamic</string>
+  <string name="custom_theme">Custom</string>
 </resources>

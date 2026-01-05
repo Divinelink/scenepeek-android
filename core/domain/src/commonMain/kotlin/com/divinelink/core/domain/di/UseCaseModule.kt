@@ -31,21 +31,22 @@ import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
+import com.divinelink.core.domain.theme.GetAvailableColorPreferencesUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.domain.theme.GetThemeUseCase
 import com.divinelink.core.domain.theme.ObserveThemeModeUseCase
 import com.divinelink.core.domain.theme.ProdSystemThemeProvider
+import com.divinelink.core.domain.theme.SetColorPreferenceUseCase
 import com.divinelink.core.domain.theme.SetThemeUseCase
 import com.divinelink.core.domain.theme.SystemThemeProvider
 import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.ObserveBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouVisibleUseCase
+import com.divinelink.core.domain.theme.color.GetCustomColorUseCase
+import com.divinelink.core.domain.theme.color.ObserveColorPreferencesUseCase
+import com.divinelink.core.domain.theme.color.ObserveCustomColorUseCase
 import com.divinelink.core.domain.theme.material.you.MaterialYouProvider
-import com.divinelink.core.domain.theme.material.you.ObserveMaterialYouModeUseCase
 import com.divinelink.core.domain.theme.material.you.ProdMaterialYouProvider
-import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -58,14 +59,15 @@ val useCaseModule = module {
   factoryOf(::SetThemeUseCase)
   factoryOf(::GetThemeUseCase)
   factoryOf(::GetAvailableThemesUseCase)
-  factoryOf(::SetMaterialYouUseCase)
-  factoryOf(::GetMaterialYouUseCase)
+  factoryOf(::SetColorPreferenceUseCase)
+  factoryOf(::GetCustomColorUseCase)
+  factoryOf(::GetAvailableColorPreferencesUseCase)
   factoryOf(::SetBlackBackgroundsUseCase)
   factoryOf(::GetBlackBackgroundsUseCase)
-  factoryOf(::GetMaterialYouVisibleUseCase)
   factoryOf(::ObserveBlackBackgroundsUseCase)
   factoryOf(::ObserveThemeModeUseCase)
-  factoryOf(::ObserveMaterialYouModeUseCase)
+  factoryOf(::ObserveColorPreferencesUseCase)
+  factoryOf(::ObserveCustomColorUseCase)
 
   factoryOf(::FindByIdUseCase)
   factoryOf(::FetchChangesUseCase)

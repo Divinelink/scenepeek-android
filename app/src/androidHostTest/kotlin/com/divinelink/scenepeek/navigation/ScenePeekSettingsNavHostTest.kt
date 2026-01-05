@@ -19,11 +19,11 @@ import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.domain.theme.GetThemeUseCase
+import com.divinelink.core.domain.theme.SetColorPreferenceUseCase
 import com.divinelink.core.domain.theme.SetThemeUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
-import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
@@ -267,7 +267,10 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
           systemThemeProvider = SystemThemeProviderFactory.available,
           dispatcher = testDispatcher,
         ),
-        setMaterialYouUseCase = SetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
+        setColorPreferenceUseCase = SetColorPreferenceUseCase(
+          preferenceStorage = fakePreferenceStorage,
+          dispatcher = testDispatcher,
+        ),
         getMaterialYouUseCase = GetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
         setBlackBackgroundsUseCase = SetBlackBackgroundsUseCase(
           preferenceStorage = fakePreferenceStorage,

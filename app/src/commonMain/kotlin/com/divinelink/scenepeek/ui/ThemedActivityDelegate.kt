@@ -19,10 +19,13 @@ package com.divinelink.scenepeek.ui
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.di.ApplicationScope
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.designsystem.theme.model.ColorPreference
+import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.domain.theme.GetThemeUseCase
 import com.divinelink.core.domain.theme.ObserveThemeModeUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.ObserveBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.material.you.ObserveMaterialYouModeUseCase
+import com.divinelink.core.domain.theme.color.ObserveColorPreferencesUseCase
+import com.divinelink.core.domain.theme.color.ObserveCustomColorUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -60,17 +63,28 @@ interface ThemedActivityDelegate {
   val materialYou: StateFlow<Boolean>
 
   /**
+   * Allows observing of the current Material You state
+   */
+  val colorPreference: StateFlow<ColorPreference>
+
+  /**
    * Allows observing of the current black backgrounds state
    */
   val blackBackgrounds: StateFlow<Boolean>
+
+  /**
+   * Allows observing of the custom seed color
+   */
+  val customColor: StateFlow<Long>
 }
 
 class ThemedActivityDelegateImpl(
   @ApplicationScope externalScope: CoroutineScope,
   observeThemeUseCase: ObserveThemeModeUseCase,
   private val getThemeUseCase: GetThemeUseCase,
-  observeMaterialYouUseCase: ObserveMaterialYouModeUseCase,
   observeBlackBackgroundsUseCase: ObserveBlackBackgroundsUseCase,
+  observeColorPreferenceUseCase: ObserveColorPreferencesUseCase,
+  observeCustomColorUseCase: ObserveCustomColorUseCase,
 ) : ThemedActivityDelegate {
 
   override val theme: StateFlow<Theme> = observeThemeUseCase(Unit).map { result ->
@@ -85,11 +99,19 @@ class ThemedActivityDelegateImpl(
       }
     }
 
-  override val materialYou: StateFlow<Boolean> = observeMaterialYouUseCase(Unit).map { result ->
-    if (result.isSuccess) result.data else false
-  }.stateIn(externalScope, SharingStarted.Eagerly, false)
+  override val materialYou: StateFlow<Boolean> = observeColorPreferenceUseCase(Unit)
+    .map { if (it.isSuccess) it.data == ColorPreference.Dynamic else false }
+    .stateIn(externalScope, SharingStarted.Eagerly, false)
 
   override val blackBackgrounds: StateFlow<Boolean> = observeBlackBackgroundsUseCase(Unit).map {
     if (it.isSuccess) it.data else false
   }.stateIn(externalScope, SharingStarted.Eagerly, false)
+
+  override val colorPreference: StateFlow<ColorPreference> = observeColorPreferenceUseCase(Unit)
+    .map { if (it.isSuccess) it.data else ColorPreference.Default }
+    .stateIn(externalScope, SharingStarted.Eagerly, ColorPreference.Default)
+
+  override val customColor: StateFlow<Long> = observeCustomColorUseCase(Unit)
+    .map { if (it.isSuccess) it.data else seedLong }
+    .stateIn(externalScope, SharingStarted.Eagerly, seedLong)
 }

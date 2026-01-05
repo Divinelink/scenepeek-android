@@ -11,21 +11,24 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.designsystem.theme.model.ColorPreference
 import com.divinelink.scenepeek.designsystem.resources.Res
 import com.divinelink.scenepeek.designsystem.resources.dark
 import com.divinelink.scenepeek.designsystem.resources.light
 import com.divinelink.scenepeek.designsystem.resources.system
+import com.materialkolor.DynamicMaterialTheme
 import org.jetbrains.compose.resources.StringResource
 
 @Composable
 fun AppTheme(
   useDarkTheme: Boolean = isSystemInDarkTheme(),
-  dynamicColor: Boolean = false,
+  colorPreference: ColorPreference = ColorPreference.Default,
+  seedColor: Long = seedLong,
   blackBackground: Boolean = true,
   content: @Composable () -> Unit,
 ) {
   var colors = systemAppearance(
-    dynamicColor = dynamicColor,
+    dynamicColor = colorPreference == ColorPreference.Dynamic,
     blackBackground = blackBackground,
     isDark = useDarkTheme,
   )
@@ -37,11 +40,23 @@ fun AppTheme(
   CompositionLocalProvider(
     LocalDarkThemeProvider provides useDarkTheme,
   ) {
-    MaterialTheme(
-      colorScheme = colors,
-      typography = scenePeekTypography(),
-      content = { Surface { content() } },
-    )
+    when (colorPreference) {
+      ColorPreference.Dynamic,
+      ColorPreference.Default,
+        -> MaterialTheme(
+        colorScheme = colors,
+        typography = scenePeekTypography(),
+        content = { Surface { content() } },
+      )
+      ColorPreference.Custom -> DynamicMaterialTheme(
+        seedColor = Color(seedColor.toULong()),
+        isDark = useDarkTheme,
+        isAmoled = blackBackground,
+        animate = false,
+        typography = scenePeekTypography(),
+        content = { Surface { content() } },
+      )
+    }
   }
 }
 

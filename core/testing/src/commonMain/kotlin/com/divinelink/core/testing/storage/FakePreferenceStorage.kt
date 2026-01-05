@@ -19,9 +19,6 @@ class FakePreferenceStorage(
   private val _selectedTheme = MutableStateFlow(selectedTheme)
   override val selectedTheme = _selectedTheme
 
-  private val _isMaterialYouEnabled = MutableStateFlow(isMaterialYouEnabled)
-  override val isMaterialYouEnabled = _isMaterialYouEnabled
-
   private val _isBlackBackgroundsEnabled = MutableStateFlow(isBlackBackgroundsEnabled)
   override val isBlackBackgroundsEnabled = _isBlackBackgroundsEnabled
 
@@ -42,10 +39,6 @@ class FakePreferenceStorage(
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
-  }
-
-  override suspend fun setMaterialYou(isEnabled: Boolean) {
-    _isMaterialYouEnabled.value = isEnabled
   }
 
   override suspend fun setBlackBackgrounds(isEnabled: Boolean) {

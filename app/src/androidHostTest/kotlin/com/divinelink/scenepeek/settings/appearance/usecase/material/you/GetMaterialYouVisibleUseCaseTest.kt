@@ -1,7 +1,6 @@
 package com.divinelink.scenepeek.settings.appearance.usecase.material.you
 
 import android.os.Build
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouVisibleUseCase
 import com.divinelink.core.domain.theme.material.you.ProdMaterialYouProvider
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.UnitTest

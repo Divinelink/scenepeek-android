@@ -5,6 +5,7 @@ package com.divinelink.scenepeek
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.window.ComposeUIViewController
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.rememberScenePeekAppState
@@ -30,8 +31,9 @@ fun MainViewController(): UIViewController = ComposeUIViewController {
 
   AppTheme(
     useDarkTheme = darkTheme,
-    dynamicColor = viewModel.materialYou.collectAsState().value,
-    blackBackground = viewModel.blackBackgrounds.collectAsState().value,
+    seedColor = viewModel.customColor.collectAsStateWithLifecycle().value,
+    colorPreference = viewModel.colorPreference.collectAsStateWithLifecycle().value,
+    blackBackground = viewModel.blackBackgrounds.collectAsStateWithLifecycle().value,
   ) {
     DisposableEffect(Unit) {
       ExternalUriHandler.listener = { uri ->

@@ -41,7 +41,8 @@ class MainActivity : ComponentActivity() {
 
       AppTheme(
         useDarkTheme = darkTheme,
-        dynamicColor = viewModel.materialYou.collectAsState().value,
+        seedColor = viewModel.customColor.collectAsState().value,
+        colorPreference = viewModel.colorPreference.collectAsState().value,
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
         ScenePeekApp(

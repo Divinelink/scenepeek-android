@@ -10,7 +10,10 @@ kotlin {
     commonMain.dependencies {
       implementation(projects.core.commons)
       implementation(projects.core.domain)
+      implementation(projects.core.datastore) // TODO REMOVE PRIOR MERGING
 
+      implementation(libs.material.kolor)
+      implementation(libs.compose.colorpicker)
       implementation(libs.kotlinx.datetime)
 
       implementation(projects.core.fixtures)

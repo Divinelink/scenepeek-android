@@ -4,12 +4,12 @@ import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.domain.theme.GetThemeUseCase
 import com.divinelink.core.domain.theme.ProdSystemThemeProvider
+import com.divinelink.core.domain.theme.SetColorPreferenceUseCase
 import com.divinelink.core.domain.theme.SetThemeUseCase
 import com.divinelink.core.domain.theme.SystemThemeProvider
 import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
-import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -53,7 +53,7 @@ class AppearanceSettingsViewModelTest {
         systemThemeProvider = systemThemeProvider,
         dispatcher = testDispatcher,
       ),
-      setMaterialYouUseCase = SetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
+      setColorPreferenceUseCase = SetColorPreferenceUseCase(fakePreferenceStorage, testDispatcher),
       getMaterialYouUseCase = GetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
       setBlackBackgroundsUseCase = SetBlackBackgroundsUseCase(
         preferenceStorage = fakePreferenceStorage,

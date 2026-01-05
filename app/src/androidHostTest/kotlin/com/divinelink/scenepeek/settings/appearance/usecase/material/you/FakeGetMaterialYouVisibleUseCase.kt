@@ -2,7 +2,6 @@ package com.divinelink.scenepeek.settings.appearance.usecase.material.you
 
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouVisibleUseCase
 import com.divinelink.core.domain.theme.material.you.MaterialYouProvider
 
 class FakeGetMaterialYouVisibleUseCase(
