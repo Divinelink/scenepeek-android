@@ -61,7 +61,7 @@ class SearchContentTest : ComposeTest() {
       forms = SearchTab.entries.associateWith { tab ->
         when (tab) {
           SearchTab.All -> SearchForm.Data(
-            mapOf(1 to MediaItemFactory.MoviesList())
+            mapOf(1 to MediaItemFactory.MoviesList()),
           )
           SearchTab.Movie -> SearchForm.Initial
           SearchTab.People -> SearchForm.Initial
@@ -96,7 +96,7 @@ class SearchContentTest : ComposeTest() {
       forms = SearchTab.entries.associateWith { tab ->
         when (tab) {
           SearchTab.All -> SearchForm.Data(
-            mapOf(1 to MediaItemFactory.MoviesList())
+            mapOf(1 to MediaItemFactory.MoviesList()),
           )
           SearchTab.Movie -> SearchForm.Initial
           SearchTab.People -> SearchForm.Initial
@@ -136,7 +136,7 @@ class SearchContentTest : ComposeTest() {
         forms = SearchTab.entries.associateWith { tab ->
           when (tab) {
             SearchTab.All -> SearchForm.Data(
-              mapOf(1 to emptyList())
+              mapOf(1 to emptyList()),
             )
             SearchTab.Movie -> SearchForm.Initial
             SearchTab.People -> SearchForm.Initial

@@ -21,7 +21,8 @@ enum class ColorSystem(
   Custom(
     value = "custom",
     resource = Res.string.custom_theme,
-  );
+  ),
+  ;
 
   companion object {
     fun from(value: String): ColorSystem = entries.first { it.value == value }

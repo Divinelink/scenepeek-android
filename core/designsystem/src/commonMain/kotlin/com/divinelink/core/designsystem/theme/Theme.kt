@@ -44,10 +44,10 @@ fun AppTheme(
       ColorSystem.Dynamic,
       ColorSystem.Default,
         -> MaterialTheme(
-        colorScheme = colors,
-        typography = scenePeekTypography(),
-        content = { Surface { content() } },
-      )
+          colorScheme = colors,
+          typography = scenePeekTypography(),
+          content = { Surface { content() } },
+        )
       ColorSystem.Custom -> DynamicMaterialTheme(
         seedColor = Color(theme.themeColor.toULong()),
         isDark = useDarkTheme,

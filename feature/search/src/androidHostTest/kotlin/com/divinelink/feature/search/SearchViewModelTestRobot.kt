@@ -44,7 +44,10 @@ class SearchViewModelTestRobot {
     viewModel.onLoadNextPage()
   }
 
-  fun onSearch(query: String, reset: Boolean = false) = apply {
+  fun onSearch(
+    query: String,
+    reset: Boolean = false,
+  ) = apply {
     viewModel.onSearch(
       query = query,
       reset = reset,
