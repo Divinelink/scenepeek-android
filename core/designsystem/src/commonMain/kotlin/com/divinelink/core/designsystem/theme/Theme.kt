@@ -11,47 +11,47 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.divinelink.core.designsystem.theme.model.ColorPreference
-import com.divinelink.scenepeek.designsystem.resources.Res
-import com.divinelink.scenepeek.designsystem.resources.dark
-import com.divinelink.scenepeek.designsystem.resources.light
-import com.divinelink.scenepeek.designsystem.resources.system
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.model.Theme
+import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.materialkolor.DynamicMaterialTheme
-import org.jetbrains.compose.resources.StringResource
 
 @Composable
 fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  colorPreference: ColorPreference = ColorPreference.Default,
-  seedColor: Long = seedLong,
-  blackBackground: Boolean = true,
+  theme: ThemePreferences = ThemePreferences.initial,
   content: @Composable () -> Unit,
 ) {
+  val useDarkTheme = when (theme.theme) {
+    Theme.SYSTEM -> isSystemInDarkTheme()
+    Theme.LIGHT -> false
+    Theme.DARK -> true
+  }
+
   var colors = systemAppearance(
-    dynamicColor = colorPreference == ColorPreference.Dynamic,
-    blackBackground = blackBackground,
+    dynamicColor = theme.colorSystem == ColorSystem.Dynamic,
+    blackBackground = theme.isPureBlack,
     isDark = useDarkTheme,
   )
 
-  if (blackBackground && useDarkTheme) {
+  if (theme.isPureBlack && useDarkTheme) {
     colors = colors.copy(background = Color.Black, surface = Color.Black)
   }
 
   CompositionLocalProvider(
     LocalDarkThemeProvider provides useDarkTheme,
   ) {
-    when (colorPreference) {
-      ColorPreference.Dynamic,
-      ColorPreference.Default,
+    when (theme.colorSystem) {
+      ColorSystem.Dynamic,
+      ColorSystem.Default,
         -> MaterialTheme(
         colorScheme = colors,
         typography = scenePeekTypography(),
         content = { Surface { content() } },
       )
-      ColorPreference.Custom -> DynamicMaterialTheme(
-        seedColor = Color(seedColor.toULong()),
+      ColorSystem.Custom -> DynamicMaterialTheme(
+        seedColor = Color(theme.themeColor.toULong()),
         isDark = useDarkTheme,
-        isAmoled = blackBackground,
+        isAmoled = theme.isPureBlack,
         animate = false,
         typography = scenePeekTypography(),
         content = { Surface { content() } },
@@ -74,18 +74,3 @@ val ListPaddingValues = PaddingValues(
   vertical = 16.dp,
   horizontal = 12.dp,
 )
-
-enum class Theme(
-  val storageKey: String,
-  val label: StringResource,
-) {
-  SYSTEM("system", Res.string.system),
-  LIGHT("light", Res.string.light),
-  DARK("dark", Res.string.dark),
-}
-
-/**
- * Returns the matching [Theme] for the given [storageKey] value.
- */
-fun themeFromStorageKey(storageKey: String): Theme? =
-  Theme.entries.firstOrNull { it.storageKey == storageKey }

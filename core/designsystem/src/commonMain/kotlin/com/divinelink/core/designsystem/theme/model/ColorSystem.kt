@@ -6,7 +6,7 @@ import com.divinelink.scenepeek.designsystem.resources.default_theme
 import com.divinelink.scenepeek.designsystem.resources.dynamic_theme
 import org.jetbrains.compose.resources.StringResource
 
-enum class ColorPreference(
+enum class ColorSystem(
   val value: String,
   val resource: StringResource,
 ) {
@@ -24,6 +24,6 @@ enum class ColorPreference(
   );
 
   companion object {
-    fun from(value: String): ColorPreference = entries.first { it.value == value }
+    fun from(value: String): ColorSystem = entries.first { it.value == value }
   }
 }

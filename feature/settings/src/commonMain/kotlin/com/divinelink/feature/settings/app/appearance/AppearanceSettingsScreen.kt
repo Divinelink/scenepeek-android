@@ -32,7 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.designsystem.theme.model.ColorPreference
+import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_cancel
 import com.divinelink.core.ui.resources.core_ui_okay
@@ -69,8 +69,8 @@ fun AppearanceSettingsScreen(
   if (showColorWheel) {
     SelectColorDialog(
       onDismissRequest = { showColorWheel = false },
-      onConfirm = viewModel::setCustomColor,
-      initialColorLong = uiState.customColor,
+      onConfirm = viewModel::setThemeColor,
+      initialColorLong = uiState.themePreferences.themeColor,
     )
   }
 
@@ -83,8 +83,8 @@ fun AppearanceSettingsScreen(
       item {
         SettingsRadioPrefItem(
           title = stringResource(Res.string.preferences__theme),
-          selected = stringResource(uiState.theme.label),
-          selectedIndex = themeValues.indexOf(uiState.theme.storageKey),
+          selected = stringResource(uiState.themePreferences.theme.label),
+          selectedIndex = themeValues.indexOf(uiState.themePreferences.theme.storageKey),
           listItems = uiState.availableThemes.map { theme ->
             stringResource(theme.label)
           },
@@ -99,7 +99,7 @@ fun AppearanceSettingsScreen(
         SettingsSwitchItem(
           title = stringResource(Res.string.AppearanceSettingsScreen__black_backgrounds),
           summary = stringResource(Res.string.AppearanceSettingsScreen__black_backgrounds_summary),
-          isChecked = uiState.blackBackgroundsEnabled,
+          isChecked = uiState.themePreferences.isPureBlack,
           onCheckedChange = viewModel::setBlackBackgrounds,
         )
       }
@@ -115,16 +115,16 @@ fun AppearanceSettingsScreen(
 
         SettingsRadioButtonSingleSelection(
           modifier = Modifier,
-          options = uiState.availableColorPreferences,
+          options = uiState.availableColorSystems,
           displayText = { option -> stringResource(option.resource) },
-          onSelectOption = viewModel::setColorPreference,
-          selectedOption = uiState.colorPreference,
+          onSelectOption = viewModel::updateColorSystem,
+          selectedOption = uiState.themePreferences.colorSystem,
         )
       }
 
       item {
         AnimatedVisibility(
-          visible = uiState.colorPreference == ColorPreference.Custom,
+          visible = uiState.themePreferences.colorSystem == ColorSystem.Custom,
           enter = slideInVertically() + expandVertically(),
           exit = slideOutVertically() + shrinkVertically(),
         ) {
@@ -143,7 +143,7 @@ fun AppearanceSettingsScreen(
               text = stringResource(Res.string.feature_settings_color),
             )
 
-            ColorSampleBox(colorLong = uiState.customColor)
+            ColorSampleBox(colorLong = uiState.themePreferences.themeColor)
           }
         }
       }

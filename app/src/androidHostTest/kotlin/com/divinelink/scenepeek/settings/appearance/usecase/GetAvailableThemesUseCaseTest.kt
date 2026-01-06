@@ -1,9 +1,9 @@
 package com.divinelink.scenepeek.settings.appearance.usecase
 
 import android.os.Build
+import com.divinelink.core.data.preferences.ProdSystemThemeProvider
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
-import com.divinelink.core.domain.theme.ProdSystemThemeProvider
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.UnitTest
 import com.divinelink.core.testing.storage.FakePreferenceStorage

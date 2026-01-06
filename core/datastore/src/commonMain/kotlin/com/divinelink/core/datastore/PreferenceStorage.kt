@@ -15,8 +15,8 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
-import com.divinelink.core.designsystem.theme.Theme
-import com.divinelink.core.designsystem.theme.model.ColorPreference
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
 import kotlinx.coroutines.flow.Flow
@@ -28,10 +28,10 @@ interface PreferenceStorage {
   suspend fun selectTheme(theme: String)
   val selectedTheme: Flow<String>
 
-  suspend fun setColorPreference(preference: ColorPreference)
-  val colorPreference: Flow<ColorPreference>
+  suspend fun setColorSystem(preference: ColorSystem)
+  val colorSystem: Flow<ColorSystem>
 
-  suspend fun setCustomColor(color: Long)
+  suspend fun setThemeColor(color: Long)
   val customColor: Flow<Long>
 
   suspend fun setBlackBackgrounds(isEnabled: Boolean)
@@ -138,15 +138,15 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     it[PREF_SEASONS_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
   }.distinctUntilChanged()
 
-  override suspend fun setColorPreference(preference: ColorPreference) {
+  override suspend fun setColorSystem(preference: ColorSystem) {
     dataStore.edit { it[PREF_COLOR_PREFERENCE] = preference.value }
   }
 
-  override val colorPreference: Flow<ColorPreference> = dataStore.data.map { it ->
-    it[PREF_COLOR_PREFERENCE]?.let { ColorPreference.from(it) } ?: ColorPreference.Dynamic
+  override val colorSystem: Flow<ColorSystem> = dataStore.data.map { it ->
+    it[PREF_COLOR_PREFERENCE]?.let { ColorSystem.from(it) } ?: ColorSystem.Dynamic
   }.distinctUntilChanged()
 
-  override suspend fun setCustomColor(color: Long) {
+  override suspend fun setThemeColor(color: Long) {
     dataStore.edit { it[PREF_CUSTOM_COLOR_ID] = color }
   }
 

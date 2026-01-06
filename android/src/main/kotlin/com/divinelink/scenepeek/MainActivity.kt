@@ -6,11 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.collectAsState
-import com.divinelink.core.designsystem.theme.AppTheme
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.rememberScenePeekAppState
-import com.divinelink.scenepeek.ui.shouldUseDarkTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalAnimationApi
@@ -27,10 +26,8 @@ class MainActivity : ComponentActivity() {
     handleIntent(intent)
     enableEdgeToEdge()
     setContent {
-      val darkTheme = shouldUseDarkTheme(
-        uiState = viewModel.uiState.collectAsState().value,
-        selectedTheme = viewModel.theme.collectAsState().value,
-      )
+      val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+      val uiEvent by viewModel.uiEvent.collectAsStateWithLifecycle()
 
       val state = rememberScenePeekAppState(
         onboardingManager = viewModel.onboardingManager,
@@ -39,19 +36,12 @@ class MainActivity : ComponentActivity() {
         navigationProvider = viewModel.navigationProviders,
       )
 
-      AppTheme(
-        useDarkTheme = darkTheme,
-        seedColor = viewModel.customColor.collectAsState().value,
-        colorPreference = viewModel.colorPreference.collectAsState().value,
-        blackBackground = viewModel.blackBackgrounds.collectAsState().value,
-      ) {
-        ScenePeekApp(
-          state = state,
-          uiState = viewModel.uiState.collectAsState().value,
-          uiEvent = viewModel.uiEvent.collectAsState().value,
-          onConsumeEvent = viewModel::consumeUiEvent,
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = viewModel::consumeUiEvent,
+      )
     }
   }
 

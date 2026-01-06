@@ -1,12 +1,12 @@
 package com.divinelink.scenepeek.settings.appearance.ui
 
+import com.divinelink.core.data.preferences.ProdSystemThemeProvider
+import com.divinelink.core.data.preferences.SystemThemeProvider
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.domain.theme.GetThemeUseCase
-import com.divinelink.core.domain.theme.ProdSystemThemeProvider
 import com.divinelink.core.domain.theme.SetColorPreferenceUseCase
 import com.divinelink.core.domain.theme.SetThemeUseCase
-import com.divinelink.core.domain.theme.SystemThemeProvider
 import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
 import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase

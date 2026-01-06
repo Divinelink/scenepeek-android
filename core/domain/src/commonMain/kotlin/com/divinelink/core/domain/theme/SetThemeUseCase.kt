@@ -3,7 +3,7 @@ package com.divinelink.core.domain.theme
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.datastore.PreferenceStorage
-import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.designsystem.theme.model.Theme
 
 open class SetThemeUseCase(
   private val preferenceStorage: PreferenceStorage,

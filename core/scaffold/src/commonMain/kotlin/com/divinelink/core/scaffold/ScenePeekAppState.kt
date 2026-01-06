@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
+import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.navigation.route.navigateToHome
@@ -85,6 +86,12 @@ class ScenePeekAppState internal constructor(
     scope = scope,
     started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
     initialValue = UiPreferences.Initial,
+  )
+
+  val themePreferences = preferencesRepository.themePreferences.stateIn(
+    scope = scope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
+    initialValue = ThemePreferences.initial,
   )
 
   val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries

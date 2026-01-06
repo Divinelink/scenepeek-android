@@ -31,7 +31,7 @@ import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
-import com.divinelink.core.domain.theme.GetAvailableColorPreferencesUseCase
+import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.domain.theme.GetThemeUseCase
 import com.divinelink.core.domain.theme.ObserveThemeModeUseCase
@@ -61,7 +61,7 @@ val useCaseModule = module {
   factoryOf(::GetAvailableThemesUseCase)
   factoryOf(::SetColorPreferenceUseCase)
   factoryOf(::GetCustomColorUseCase)
-  factoryOf(::GetAvailableColorPreferencesUseCase)
+  factoryOf(::GetAvailableColorSystemsUseCase)
   factoryOf(::SetBlackBackgroundsUseCase)
   factoryOf(::GetBlackBackgroundsUseCase)
   factoryOf(::ObserveBlackBackgroundsUseCase)

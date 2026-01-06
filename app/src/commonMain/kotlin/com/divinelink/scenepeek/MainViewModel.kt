@@ -18,7 +18,6 @@ import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
-import com.divinelink.scenepeek.ui.ThemedActivityDelegate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -33,8 +32,9 @@ class MainViewModel(
   val onboardingManager: OnboardingManager,
   val preferencesRepository: PreferencesRepository,
   val navigationProviders: List<NavGraphExtension>,
-  themedActivityDelegate: ThemedActivityDelegate,
-) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
+//  themedActivityDelegate: ThemedActivityDelegate,
+) : ViewModel() {
+//    ThemedActivityDelegate by themedActivityDelegate {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
   val uiState: StateFlow<MainUiState> = _uiState
