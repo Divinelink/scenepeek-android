@@ -11,7 +11,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 
 @Composable
-fun ColorSampleBox(colorLong: Long) {
+fun ColorSampleTile(colorLong: Long) {
   Box(
     modifier = Modifier
       .size(
