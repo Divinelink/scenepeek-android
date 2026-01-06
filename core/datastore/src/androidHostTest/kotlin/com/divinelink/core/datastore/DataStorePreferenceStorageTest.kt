@@ -1,10 +1,14 @@
 package com.divinelink.core.datastore
 
+import androidx.compose.ui.graphics.Color
 import app.cash.turbine.test
-import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.model.Theme
+import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.runner.RunWith
@@ -31,24 +35,41 @@ class DataStorePreferenceStorageTest {
 
     storage.selectTheme("test_theme")
 
-    assertThat(storage.selectedTheme.first()).isEqualTo("test_theme")
+    storage.selectedTheme.first() shouldBe "test_theme"
   }
 
   @Test
   fun `test default selectedTheme is System`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
-    assertThat(storage.selectedTheme.first()).isEqualTo(Theme.SYSTEM.storageKey)
-    assertThat(storage.selectedTheme.first()).isNotEqualTo(Theme.DARK.storageKey)
-    assertThat(storage.selectedTheme.first()).isNotEqualTo(Theme.LIGHT.storageKey)
+    storage.selectedTheme.first() shouldBe Theme.SYSTEM.storageKey
+    storage.selectedTheme.first() shouldNotBe Theme.DARK.storageKey
+    storage.selectedTheme.first() shouldNotBe Theme.LIGHT.storageKey
   }
 
   @Test
-  fun `test setMaterialYou sets isMaterialYouEnabled`() = runTest {
+  fun `test color system updates`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
-    storage.setMaterialYou(true)
 
-    assertThat(storage.isMaterialYouEnabled.first()).isTrue()
+    storage.colorSystem.test {
+      awaitItem() shouldBe ColorSystem.Dynamic
+      storage.setColorSystem(ColorSystem.Default)
+
+      awaitItem() shouldBe ColorSystem.Default
+    }
+  }
+
+  @Test
+  fun `test default custom color and updates`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.customColor.test {
+      awaitItem() shouldBe seedLong
+
+      storage.setThemeColor(Color.Green.value.toLong())
+
+      awaitItem() shouldBe Color.Green.value.toLong()
+    }
   }
 
   @Test
@@ -57,11 +78,11 @@ class DataStorePreferenceStorageTest {
 
     storage.setBlackBackgrounds(true)
 
-    assertThat(storage.isBlackBackgroundsEnabled.first()).isTrue()
-
-    storage.setBlackBackgrounds(false)
-
-    assertThat(storage.isBlackBackgroundsEnabled.first()).isFalse()
+    storage.isBlackBackgroundsEnabled.test {
+      awaitItem() shouldBe true
+      storage.setBlackBackgrounds(false)
+      awaitItem() shouldBe false
+    }
   }
 
   @Test
@@ -69,11 +90,11 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.spoilersObfuscation.test {
-      assertThat(awaitItem()).isEqualTo(false)
+      awaitItem() shouldBe false
 
       storage.setSpoilersObfuscation(true)
 
-      assertThat(awaitItem()).isEqualTo(true)
+      awaitItem() shouldBe true
     }
   }
 
@@ -82,7 +103,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.spoilersObfuscation.test {
-      assertThat(awaitItem()).isEqualTo(false)
+      awaitItem() shouldBe false
 
       storage.setSpoilersObfuscation(false)
       storage.setSpoilersObfuscation(false)
@@ -96,7 +117,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.movieRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
     }
   }
 
@@ -105,13 +126,13 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.movieRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setMovieRatingSource(RatingSource.IMDB)
-      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+      awaitItem() shouldBe RatingSource.IMDB
 
       storage.setMovieRatingSource(RatingSource.TRAKT)
-      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+      awaitItem() shouldBe RatingSource.TRAKT
     }
   }
 
@@ -120,7 +141,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.movieRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setMovieRatingSource(RatingSource.TMDB)
       storage.setMovieRatingSource(RatingSource.TMDB)
@@ -134,7 +155,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.tvRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
     }
   }
 
@@ -143,13 +164,13 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.tvRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setTvRatingSource(RatingSource.IMDB)
-      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+      awaitItem() shouldBe RatingSource.IMDB
 
       storage.setTvRatingSource(RatingSource.TRAKT)
-      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+      awaitItem() shouldBe RatingSource.TRAKT
     }
   }
 
@@ -158,7 +179,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.tvRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setTvRatingSource(RatingSource.TMDB)
       storage.setTvRatingSource(RatingSource.TMDB)
@@ -172,7 +193,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.episodesRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
     }
   }
 
@@ -181,13 +202,13 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.episodesRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setEpisodesRatingSource(RatingSource.IMDB)
-      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+      awaitItem() shouldBe RatingSource.IMDB
 
       storage.setEpisodesRatingSource(RatingSource.TRAKT)
-      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+      awaitItem() shouldBe RatingSource.TRAKT
     }
   }
 
@@ -196,7 +217,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.episodesRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setEpisodesRatingSource(RatingSource.TMDB)
       storage.setEpisodesRatingSource(RatingSource.TMDB)
@@ -210,7 +231,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.seasonsRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
     }
   }
 
@@ -219,13 +240,13 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.seasonsRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setSeasonsRatingSource(RatingSource.IMDB)
-      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+      awaitItem() shouldBe RatingSource.IMDB
 
       storage.setSeasonsRatingSource(RatingSource.TRAKT)
-      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+      awaitItem() shouldBe RatingSource.TRAKT
     }
   }
 
@@ -234,7 +255,7 @@ class DataStorePreferenceStorageTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.seasonsRatingSource.test {
-      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+      awaitItem() shouldBe RatingSource.TMDB
 
       storage.setSeasonsRatingSource(RatingSource.TMDB)
       storage.setSeasonsRatingSource(RatingSource.TMDB)

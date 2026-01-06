@@ -9,44 +9,50 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class TestPreferencesRepository(
   uiPreferences: UiPreferences = UiPreferences.Initial,
-
+  themePreferences: ThemePreferences = ThemePreferences.initial,
 ) :
   PreferencesRepository {
 
-  private val uiPreferencesFlow = MutableStateFlow(uiPreferences)
+  private val _uiPreferences = MutableStateFlow(uiPreferences)
+  override val uiPreferences: Flow<UiPreferences> = _uiPreferences
 
-  override val uiPreferences: Flow<UiPreferences> = uiPreferencesFlow
-
-  override val themePreferences: StateFlow<ThemePreferences>
-    get() = TODO("Not yet implemented")
+  private val _themePreferences = MutableStateFlow(themePreferences)
+  override val themePreferences: Flow<ThemePreferences> = _themePreferences
 
   override suspend fun switchViewMode(section: ViewableSection) {
-    val currentViewMode = uiPreferencesFlow.value.viewModes[section]
+    val currentViewMode = _uiPreferences.value.viewModes[section]
 
     currentViewMode?.let { viewMode ->
-      uiPreferencesFlow.value = uiPreferencesFlow.value.copy(
-        viewModes = uiPreferencesFlow.value.viewModes + (section to viewMode.other()),
+      _uiPreferences.value = _uiPreferences.value.copy(
+        viewModes = _uiPreferences.value.viewModes + (section to viewMode.other()),
       )
     }
   }
 
   override suspend fun updateCurrentTheme(theme: Theme) {
-    TODO("Not yet implemented")
+    _themePreferences.value = _themePreferences.value.copy(
+      theme = theme,
+    )
   }
 
   override suspend fun updateColorSystem(system: ColorSystem) {
-    TODO("Not yet implemented")
+    _themePreferences.value = _themePreferences.value.copy(
+      colorSystem = system,
+    )
   }
 
   override suspend fun updateThemeColor(color: Long) {
-    TODO("Not yet implemented")
+    _themePreferences.value = _themePreferences.value.copy(
+      themeColor = color,
+    )
   }
 
   override suspend fun setPureBlack(enabled: Boolean) {
-    TODO("Not yet implemented")
+    _themePreferences.value = _themePreferences.value.copy(
+      isPureBlack = enabled,
+    )
   }
 }

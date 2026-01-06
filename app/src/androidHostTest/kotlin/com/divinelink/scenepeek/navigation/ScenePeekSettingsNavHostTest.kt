@@ -17,13 +17,8 @@ import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
+import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
-import com.divinelink.core.domain.theme.GetThemeUseCase
-import com.divinelink.core.domain.theme.SetColorPreferenceUseCase
-import com.divinelink.core.domain.theme.SetThemeUseCase
-import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
@@ -77,7 +72,6 @@ import com.divinelink.feature.settings.resources.settings
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.scenepeek.di.appModule
 import com.divinelink.scenepeek.di.navigationModule
-import com.divinelink.scenepeek.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
@@ -95,6 +89,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
   private lateinit var navController: TestNavHostController
   private lateinit var fakePreferenceStorage: FakePreferenceStorage
+  private lateinit var preferencesRepository: TestPreferencesRepository
 
   // HOME use cases
   private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
@@ -116,6 +111,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     }
 
     fakePreferenceStorage = FakePreferenceStorage()
+    preferencesRepository = TestPreferencesRepository()
 
     popularMoviesUseCase = FakeGetPopularMoviesUseCase()
     fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
@@ -155,7 +151,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         networkMonitor = TestNetworkMonitor(),
         onboardingManager = TestOnboardingManager(),
         navController = navController,
-        preferencesRepository = TestPreferencesRepository(),
+        preferencesRepository = preferencesRepository,
         navigationProvider = get<List<NavGraphExtension>>(),
       )
 
@@ -252,35 +248,18 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     navController.navigate(SettingsRoute)
 
     fakePreferenceStorage = FakePreferenceStorage()
-    val fakeGetMaterialYouVisibleUseCase = FakeGetMaterialYouVisibleUseCase(
-      materialYouProvider = MaterialYouProviderFactory.available,
-      dispatcher = testDispatcher,
-    )
-
-    fakeGetMaterialYouVisibleUseCase.mockMaterialYouVisible(true)
 
     declare {
       AppearanceSettingsViewModel(
-        setThemeUseCase = SetThemeUseCase(fakePreferenceStorage, testDispatcher),
-        getThemeUseCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher),
         getAvailableThemesUseCase = GetAvailableThemesUseCase(
           systemThemeProvider = SystemThemeProviderFactory.available,
           dispatcher = testDispatcher,
         ),
-        setColorPreferenceUseCase = SetColorPreferenceUseCase(
-          preferenceStorage = fakePreferenceStorage,
+        preferencesRepository = preferencesRepository,
+        getAvailableColorPreferences = GetAvailableColorSystemsUseCase(
+          materialYouProvider = MaterialYouProviderFactory.available,
           dispatcher = testDispatcher,
         ),
-        getMaterialYouUseCase = GetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
-        setBlackBackgroundsUseCase = SetBlackBackgroundsUseCase(
-          preferenceStorage = fakePreferenceStorage,
-          dispatcher = testDispatcher,
-        ),
-        getBlackBackgroundsUseCase = GetBlackBackgroundsUseCase(
-          preferenceStorage = fakePreferenceStorage,
-          dispatcher = testDispatcher,
-        ),
-        getMaterialYouVisibleUseCase = fakeGetMaterialYouVisibleUseCase,
       )
     }
 

@@ -33,18 +33,8 @@ import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
-import com.divinelink.core.domain.theme.GetThemeUseCase
-import com.divinelink.core.domain.theme.ObserveThemeModeUseCase
 import com.divinelink.core.domain.theme.ProdSystemThemeProvider
-import com.divinelink.core.domain.theme.SetColorPreferenceUseCase
-import com.divinelink.core.domain.theme.SetThemeUseCase
 import com.divinelink.core.domain.theme.SystemThemeProvider
-import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.black.backgrounds.ObserveBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.color.GetCustomColorUseCase
-import com.divinelink.core.domain.theme.color.ObserveColorPreferencesUseCase
-import com.divinelink.core.domain.theme.color.ObserveCustomColorUseCase
 import com.divinelink.core.domain.theme.material.you.MaterialYouProvider
 import com.divinelink.core.domain.theme.material.you.ProdMaterialYouProvider
 import org.koin.core.module.dsl.bind
@@ -56,18 +46,8 @@ val useCaseModule = module {
   singleOf(::ProdSystemThemeProvider) { bind<SystemThemeProvider>() }
   singleOf(::ProdMaterialYouProvider) { bind<MaterialYouProvider>() }
 
-  factoryOf(::SetThemeUseCase)
-  factoryOf(::GetThemeUseCase)
   factoryOf(::GetAvailableThemesUseCase)
-  factoryOf(::SetColorPreferenceUseCase)
-  factoryOf(::GetCustomColorUseCase)
   factoryOf(::GetAvailableColorSystemsUseCase)
-  factoryOf(::SetBlackBackgroundsUseCase)
-  factoryOf(::GetBlackBackgroundsUseCase)
-  factoryOf(::ObserveBlackBackgroundsUseCase)
-  factoryOf(::ObserveThemeModeUseCase)
-  factoryOf(::ObserveColorPreferencesUseCase)
-  factoryOf(::ObserveCustomColorUseCase)
 
   factoryOf(::FindByIdUseCase)
   factoryOf(::FetchChangesUseCase)

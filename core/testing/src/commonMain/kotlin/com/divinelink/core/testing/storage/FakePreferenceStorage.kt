@@ -1,23 +1,32 @@
 package com.divinelink.core.testing.storage
 
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakePreferenceStorage(
   selectedTheme: String = "",
-  isMaterialYouEnabled: Boolean = false,
   isBlackBackgroundsEnabled: Boolean = false,
   spoilersObfuscation: Boolean = false,
   movieRatingSource: RatingSource = RatingSource.TMDB,
   tvRatingSource: RatingSource = RatingSource.TMDB,
   episodesRatingSource: RatingSource = RatingSource.TMDB,
   seasonsRatingSource: RatingSource = RatingSource.TMDB,
+  colorSystem: ColorSystem = ColorSystem.Dynamic,
+  customColor: Long = seedLong,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
   override val selectedTheme = _selectedTheme
+
+  private val _colorSystem = MutableStateFlow(colorSystem)
+  override val colorSystem = _colorSystem
+
+  private val _customColor = MutableStateFlow(customColor)
+  override val customColor = _customColor
 
   private val _isBlackBackgroundsEnabled = MutableStateFlow(isBlackBackgroundsEnabled)
   override val isBlackBackgroundsEnabled = _isBlackBackgroundsEnabled
@@ -63,5 +72,13 @@ class FakePreferenceStorage(
 
   override suspend fun setSeasonsRatingSource(ratingSource: RatingSource) {
     _seasonsRatingSource.value = ratingSource
+  }
+
+  override suspend fun setColorSystem(preference: ColorSystem) {
+    _colorSystem.value = preference
+  }
+
+  override suspend fun setThemeColor(color: Long) {
+    _customColor.value = color
   }
 }
