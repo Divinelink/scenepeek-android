@@ -42,6 +42,11 @@ import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_displa
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_external_ratings
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_fix_encryption
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_fix_jellyfin_auth_with_empty_passwords
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_add_custom_color_option
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_add_detailed_csrf_warning
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_add_detailed_error_messages_for_seerr
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_improve_search
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_show_year_on_search
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
 import com.divinelink.feature.onboarding.resources.Res as R
@@ -189,6 +194,22 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v30_fix_encryption)),
   )
 
+  val v32 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.23.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v32_improve_search)),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v32_add_custom_color_option)),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v32_show_year_on_search)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v32_add_detailed_error_messages_for_seerr),
+    ),
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v32_add_detailed_csrf_warning),
+    ),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -201,5 +222,6 @@ object IntroSections {
     28 to v28,
     29 to v29,
     30 to v30,
+    32 to v32,
   )
 }

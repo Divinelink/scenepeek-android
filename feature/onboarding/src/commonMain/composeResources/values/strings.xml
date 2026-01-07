@@ -51,4 +51,10 @@
   <string name="feature_onboarding_v30_external_ratings">- Add Rotten Tomatoes and Metacritic scores</string>
   <string name="feature_onboarding_v30_fix_jellyfin_auth_with_empty_passwords">- Enable login for Jellyfin/Emby users with empty passwords</string>
   <string name="feature_onboarding_v30_fix_encryption">- Migrate deprecated encryption library. If you were previously connected on TMDB, you'll need to re-login.</string>
+
+  <string name="feature_onboarding_v32_improve_search">- Improve search functionality. You can now get categorized results for movies, tv shows, people, or just search through all!</string>
+  <string name="feature_onboarding_v32_show_year_on_search">- Show media release year on search and discover results</string>
+  <string name="feature_onboarding_v32_add_custom_color_option"><![CDATA[- Added a custom color theme option! Head to <strong>Settings > Appearance</strong> to give the app a more personal touch]]></string>
+  <string name="feature_onboarding_v32_add_detailed_error_messages_for_seerr">- Add detailed error messages on jellyseerr login</string>
+  <string name="feature_onboarding_v32_add_detailed_csrf_warning">- Add detailed warning when CSRF is enabled on user's jellyseerr instance</string>
 </resources>
