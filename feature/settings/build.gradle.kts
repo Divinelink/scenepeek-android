@@ -9,8 +9,10 @@ kotlin {
   sourceSets {
     commonMain.dependencies {
       implementation(projects.core.commons)
+      implementation(projects.core.data)
       implementation(projects.core.domain)
 
+      implementation(libs.compose.colorpicker)
       implementation(libs.kotlinx.datetime)
 
       implementation(projects.core.fixtures)

@@ -11,37 +11,52 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.divinelink.scenepeek.designsystem.resources.Res
-import com.divinelink.scenepeek.designsystem.resources.dark
-import com.divinelink.scenepeek.designsystem.resources.light
-import com.divinelink.scenepeek.designsystem.resources.system
-import org.jetbrains.compose.resources.StringResource
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.model.Theme
+import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.materialkolor.DynamicMaterialTheme
 
 @Composable
 fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  dynamicColor: Boolean = false,
-  blackBackground: Boolean = true,
+  theme: ThemePreferences = ThemePreferences.initial,
   content: @Composable () -> Unit,
 ) {
+  val useDarkTheme = when (theme.theme) {
+    Theme.SYSTEM -> isSystemInDarkTheme()
+    Theme.LIGHT -> false
+    Theme.DARK -> true
+  }
+
   var colors = systemAppearance(
-    dynamicColor = dynamicColor,
-    blackBackground = blackBackground,
+    dynamicColor = theme.colorSystem == ColorSystem.Dynamic,
+    blackBackground = theme.isPureBlack,
     isDark = useDarkTheme,
   )
 
-  if (blackBackground && useDarkTheme) {
+  if (theme.isPureBlack && useDarkTheme) {
     colors = colors.copy(background = Color.Black, surface = Color.Black)
   }
 
   CompositionLocalProvider(
     LocalDarkThemeProvider provides useDarkTheme,
   ) {
-    MaterialTheme(
-      colorScheme = colors,
-      typography = scenePeekTypography(),
-      content = { Surface { content() } },
-    )
+    when (theme.colorSystem) {
+      ColorSystem.Dynamic,
+      ColorSystem.Default,
+        -> MaterialTheme(
+          colorScheme = colors,
+          typography = scenePeekTypography(),
+          content = { Surface { content() } },
+        )
+      ColorSystem.Custom -> DynamicMaterialTheme(
+        seedColor = Color(theme.themeColor.toULong()),
+        isDark = useDarkTheme,
+        isAmoled = theme.isPureBlack,
+        animate = false,
+        typography = scenePeekTypography(),
+        content = { Surface { content() } },
+      )
+    }
   }
 }
 
@@ -59,18 +74,3 @@ val ListPaddingValues = PaddingValues(
   vertical = 16.dp,
   horizontal = 12.dp,
 )
-
-enum class Theme(
-  val storageKey: String,
-  val label: StringResource,
-) {
-  SYSTEM("system", Res.string.system),
-  LIGHT("light", Res.string.light),
-  DARK("dark", Res.string.dark),
-}
-
-/**
- * Returns the matching [Theme] for the given [storageKey] value.
- */
-fun themeFromStorageKey(storageKey: String): Theme? =
-  Theme.entries.firstOrNull { it.storageKey == storageKey }

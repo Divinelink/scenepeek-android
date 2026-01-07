@@ -1270,7 +1270,7 @@ class SearchViewModelTest {
             }
           },
           query = "new query",
-        )
+        ),
       )
       .delay(300)
       .assertUiState(

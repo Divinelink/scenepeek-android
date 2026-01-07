@@ -53,6 +53,8 @@ compose-material-icons-extended = "1.7.3"
 lifecycle-multiplatform = "2.10.0-alpha07"
 compose-navigation = "2.9.1"
 compose-shimmer = "1.3.3"
+compose-colorpicker = "1.1.3"
+materialkolor = "4.0.5"
 
 # Misc
 napier = "2.7.1"
@@ -112,6 +114,8 @@ compose-multiplatform-ui-test = { module = "org.jetbrains.compose.ui:ui-test", v
 compose-multiplatform-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 compose-multiplatform-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose-multiplatform" }
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
+compose-colorpicker = { group = "com.github.skydoves", name = "colorpicker-compose", version.ref = "compose-colorpicker" }
+material-kolor = { group = "com.materialkolor", name = "material-kolor", version.ref = "materialkolor" }
 
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 

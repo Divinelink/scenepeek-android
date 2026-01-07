@@ -5,9 +5,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.DisplaySettings
 import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -59,7 +59,7 @@ fun SettingsScreen(
 
       item {
         SettingsClickItem(
-          icon = IconWrapper.Vector(Icons.Outlined.AutoAwesome),
+          icon = IconWrapper.Vector(Icons.Outlined.Palette),
           text = stringResource(Res.string.preferences__appearance),
           onClick = { onNavigate(Navigation.AppearanceSettingsRoute) },
         )

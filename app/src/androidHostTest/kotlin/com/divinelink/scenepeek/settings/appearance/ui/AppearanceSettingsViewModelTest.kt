@@ -1,25 +1,24 @@
 package com.divinelink.scenepeek.settings.appearance.ui
 
-import com.divinelink.core.designsystem.theme.Theme
+import androidx.compose.ui.graphics.Color
+import app.cash.turbine.test
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.model.Theme
+import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.designsystem.theme.seedLong
+import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
-import com.divinelink.core.domain.theme.GetThemeUseCase
 import com.divinelink.core.domain.theme.ProdSystemThemeProvider
-import com.divinelink.core.domain.theme.SetThemeUseCase
 import com.divinelink.core.domain.theme.SystemThemeProvider
-import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
-import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
+import com.divinelink.core.domain.theme.material.you.MaterialYouProvider
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
-import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.UpdateSettingsState
-import com.divinelink.scenepeek.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
 import org.junit.Rule
 import kotlin.test.Test
 
@@ -32,45 +31,32 @@ class AppearanceSettingsViewModelTest {
 
   private lateinit var viewModel: AppearanceSettingsViewModel
 
-  private val fakeGetMaterialYouVisibleUseCase = FakeGetMaterialYouVisibleUseCase(
-    materialYouProvider = MaterialYouProviderFactory.available,
-    dispatcher = testDispatcher,
-  )
-
-  @Before
-  fun setup() {
-    fakeGetMaterialYouVisibleUseCase.mockMaterialYouVisible(false)
-  }
-
   private fun buildViewModel(
-    fakePreferenceStorage: FakePreferenceStorage,
+    themePreferences: ThemePreferences = ThemePreferences.initial,
+    materialYouProvider: MaterialYouProvider = MaterialYouProviderFactory.available,
     systemThemeProvider: SystemThemeProvider = ProdSystemThemeProvider(),
   ) = apply {
     viewModel = AppearanceSettingsViewModel(
-      setThemeUseCase = SetThemeUseCase(fakePreferenceStorage, testDispatcher),
-      getThemeUseCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher),
       getAvailableThemesUseCase = GetAvailableThemesUseCase(
         systemThemeProvider = systemThemeProvider,
         dispatcher = testDispatcher,
       ),
-      setMaterialYouUseCase = SetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
-      getMaterialYouUseCase = GetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
-      setBlackBackgroundsUseCase = SetBlackBackgroundsUseCase(
-        preferenceStorage = fakePreferenceStorage,
+      getAvailableColorPreferences = GetAvailableColorSystemsUseCase(
+        materialYouProvider = materialYouProvider,
         dispatcher = testDispatcher,
       ),
-      getBlackBackgroundsUseCase = GetBlackBackgroundsUseCase(
-        preferenceStorage = fakePreferenceStorage,
-        dispatcher = testDispatcher,
+      preferencesRepository = TestPreferencesRepository(
+        themePreferences = themePreferences,
       ),
-      getMaterialYouVisibleUseCase = fakeGetMaterialYouVisibleUseCase,
     )
   }
 
   @Test
   fun `given theme is system, when I set theme to dark, then I expect dark theme`() = runTest {
     // Given
-    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.SYSTEM.storageKey))
+    buildViewModel(
+      themePreferences = ThemePreferences.initial.copy(theme = Theme.SYSTEM),
+    )
     // When
     viewModel.setTheme(Theme.DARK)
     // Then
@@ -81,7 +67,9 @@ class AppearanceSettingsViewModelTest {
   @Test
   fun `given theme is system, then I expect system theme`() = runTest {
     // Given
-    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.SYSTEM.storageKey))
+    buildViewModel(
+      themePreferences = ThemePreferences.initial.copy(theme = Theme.SYSTEM),
+    )
     // Then
     val state = viewModel.uiState.first()
     state.assertState(theme = Theme.SYSTEM)
@@ -90,7 +78,9 @@ class AppearanceSettingsViewModelTest {
   @Test
   fun `given theme is dark, then I expect dark theme`() = runTest {
     // Given
-    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.DARK.storageKey))
+    buildViewModel(
+      themePreferences = ThemePreferences.initial.copy(theme = Theme.DARK),
+    )
     // Then
     val state = viewModel.uiState.first()
     state.assertState(theme = Theme.DARK)
@@ -99,77 +89,103 @@ class AppearanceSettingsViewModelTest {
   @Test
   fun `given theme is light, then I expect light theme`() = runTest {
     // Given
-    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.LIGHT.storageKey))
+    buildViewModel(
+      themePreferences = ThemePreferences.initial.copy(theme = Theme.LIGHT),
+    )
     // Then
     val state = viewModel.uiState.first()
     state.assertState(theme = Theme.LIGHT)
   }
 
   @Test
-  fun `given material you is enabled, when I set it to false, then I expect false`() = runTest {
-    // Given
-    buildViewModel(FakePreferenceStorage(isMaterialYouEnabled = true))
-    // When
-    viewModel.setMaterialYou(false)
-    // Then
-    val state = viewModel.uiState.first()
-    state.assertState(materialYouEnabled = false)
-  }
+  fun `given dynamic color is enabled, when I update it I expect updated color system`() = runTest {
+    buildViewModel(
+      themePreferences = ThemePreferences.initial.copy(
+        colorSystem = ColorSystem.Dynamic,
+      ),
+    )
 
-  @Test
-  fun `given material you is disabled, when I set it to true, then I expect true`() = runTest {
-    // Given
-    buildViewModel(FakePreferenceStorage(isMaterialYouEnabled = false))
-    // When
-    viewModel.setMaterialYou(true)
-    // Then
-    val state = viewModel.uiState.first()
-    state.assertState(materialYouEnabled = true)
+    viewModel.uiState.test {
+      awaitItem().assertState(colorSystem = ColorSystem.Dynamic)
+      viewModel.updateColorSystem(ColorSystem.Custom)
+      awaitItem().assertState(colorSystem = ColorSystem.Custom)
+      viewModel.updateColorSystem(ColorSystem.Default)
+      awaitItem().assertState(colorSystem = ColorSystem.Default)
+    }
   }
 
   @Test
   fun `given black backgrounds is enabled, when I disable it, then I expect false`() = runTest {
-    // Given
-    buildViewModel(FakePreferenceStorage(isBlackBackgroundsEnabled = true))
-    // When
-    viewModel.setBlackBackgrounds(false)
-    // Then
-    val state = viewModel.uiState.first()
-    state.assertState(blackBackgroundsEnabled = false)
+    buildViewModel(
+      themePreferences = ThemePreferences.initial.copy(
+        isPureBlack = true,
+      ),
+    )
+    viewModel.uiState.test {
+      awaitItem().assertState(isPureBlack = true)
+      viewModel.setBlackBackgrounds(false)
+      awaitItem().assertState(isPureBlack = false)
+    }
   }
 
   @Test
-  fun `given black backgrounds is disabled, when I enable it, then I expect true`() = runTest {
-    // Given
-    buildViewModel(FakePreferenceStorage(isBlackBackgroundsEnabled = false))
-    // When
-    viewModel.setBlackBackgrounds(true)
-    // Then
+  fun `test dynamic color is unavailable`() = runTest {
+    buildViewModel(
+      materialYouProvider = MaterialYouProviderFactory.unavailable,
+    )
+
     val state = viewModel.uiState.first()
-    state.assertState(blackBackgroundsEnabled = true)
+    state.assertState(
+      availableColorSystems = listOf(
+        ColorSystem.Default,
+        ColorSystem.Custom,
+      ),
+    )
   }
 
   @Test
-  fun `given material you is visible, then I expect material you visible`() = runTest {
-    // Given
-    fakeGetMaterialYouVisibleUseCase.mockMaterialYouVisible(true)
-    buildViewModel(FakePreferenceStorage())
-    // Then
+  fun `test dynamic color is available`() = runTest {
+    buildViewModel(
+      materialYouProvider = MaterialYouProviderFactory.available,
+    )
+
     val state = viewModel.uiState.first()
-    state.assertState(materialYouVisible = true)
+    state.assertState(
+      availableColorSystems = listOf(
+        ColorSystem.Default,
+        ColorSystem.Dynamic,
+        ColorSystem.Custom,
+      ),
+    )
+  }
+
+  @Test
+  fun `test check and update theme color`() = runTest {
+    buildViewModel(
+      themePreferences = ThemePreferences.initial.copy(
+        themeColor = Color.Green.value.toLong(),
+      ),
+    )
+    viewModel.uiState.test {
+      awaitItem().assertState(themeColor = Color.Green.value.toLong())
+      viewModel.setThemeColor(Color.Magenta.value.toLong())
+      awaitItem().assertState(themeColor = Color.Magenta.value.toLong())
+    }
   }
 
   private fun UpdateSettingsState.assertState(
     theme: Theme = Theme.SYSTEM,
     availableThemes: List<Theme> = listOf(Theme.LIGHT, Theme.DARK),
-    materialYouEnabled: Boolean = false,
-    materialYouVisible: Boolean = false,
-    blackBackgroundsEnabled: Boolean = false,
+    colorSystem: ColorSystem = ColorSystem.Dynamic,
+    themeColor: Long = seedLong,
+    isPureBlack: Boolean = false,
+    availableColorSystems: List<ColorSystem> = ColorSystem.entries,
   ) {
-    assertThat(this.theme).isEqualTo(theme)
-    assertThat(this.availableThemes).isEqualTo(availableThemes)
-    assertThat(this.materialYouEnabled).isEqualTo(materialYouEnabled)
-    assertThat(this.materialYouVisible).isEqualTo(materialYouVisible)
-    assertThat(this.blackBackgroundsEnabled).isEqualTo(blackBackgroundsEnabled)
+    this.themePreferences.theme shouldBe theme
+    this.themePreferences.colorSystem shouldBe colorSystem
+    this.themePreferences.themeColor shouldBe themeColor
+    this.themePreferences.isPureBlack shouldBe isPureBlack
+    this.availableThemes shouldBe availableThemes
+    this.availableColorSystems shouldBe availableColorSystems
   }
 }

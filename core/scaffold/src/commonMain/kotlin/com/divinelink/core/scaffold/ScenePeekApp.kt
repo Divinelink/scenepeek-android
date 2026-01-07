@@ -16,6 +16,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.divinelink.core.commons.provider.getBuildConfigProvider
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToOnboarding
@@ -41,6 +42,8 @@ fun ScenePeekApp(
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
   val isFirstLaunch by state.isInitialOnboarding.collectAsStateWithLifecycle()
+  val theme by state.themePreferences.collectAsStateWithLifecycle()
+
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
 
   LaunchedEffect(isOffline) {
@@ -88,28 +91,30 @@ fun ScenePeekApp(
     }
   }
 
-  LocalProvider(
-    snackbarHostState = state.snackbarHostState,
-    coroutineScope = state.scope,
-    buildConfigProvider = getBuildConfigProvider(),
-  ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-      SharedTransitionLayout(
-        modifier = Modifier.fillMaxSize().weight(1f),
-      ) {
-        state.sharedTransitionScope = this@SharedTransitionLayout
-        ProvideScenePeekAppState(
-          appState = state,
+  AppTheme(theme = theme) {
+    LocalProvider(
+      snackbarHostState = state.snackbarHostState,
+      coroutineScope = state.scope,
+      buildConfigProvider = getBuildConfigProvider(),
+    ) {
+      Column(modifier = Modifier.fillMaxSize()) {
+        SharedTransitionLayout(
+          modifier = Modifier.fillMaxSize().weight(1f),
         ) {
-          Surface(modifier = Modifier.fillMaxSize()) {
-            when (uiState) {
-              is MainUiState.Completed -> ScenePeekNavHost()
-              MainUiState.Loading -> LoadingContent()
+          state.sharedTransitionScope = this@SharedTransitionLayout
+          ProvideScenePeekAppState(
+            appState = state,
+          ) {
+            Surface(modifier = Modifier.fillMaxSize()) {
+              when (uiState) {
+                is MainUiState.Completed -> ScenePeekNavHost()
+                MainUiState.Loading -> LoadingContent()
+              }
             }
           }
         }
+        NetworkStatusIndicator(networkState = networkState)
       }
-      NetworkStatusIndicator(networkState = networkState)
     }
   }
 }

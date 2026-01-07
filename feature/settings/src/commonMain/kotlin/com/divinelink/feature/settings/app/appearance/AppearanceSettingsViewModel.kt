@@ -4,33 +4,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.WhileViewSubscribed
-import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.data.preferences.PreferencesRepository
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.model.Theme
+import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
-import com.divinelink.core.domain.theme.GetThemeUseCase
-import com.divinelink.core.domain.theme.SetThemeUseCase
-import com.divinelink.core.domain.theme.black.backgrounds.GetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.black.backgrounds.SetBlackBackgroundsUseCase
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouUseCase
-import com.divinelink.core.domain.theme.material.you.GetMaterialYouVisibleUseCase
-import com.divinelink.core.domain.theme.material.you.SetMaterialYouUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class AppearanceSettingsViewModel(
-  val setThemeUseCase: SetThemeUseCase,
-  getThemeUseCase: GetThemeUseCase,
+  private val preferencesRepository: PreferencesRepository,
   getAvailableThemesUseCase: GetAvailableThemesUseCase,
-  val setMaterialYouUseCase: SetMaterialYouUseCase,
-  getMaterialYouUseCase: GetMaterialYouUseCase,
-  val setBlackBackgroundsUseCase: SetBlackBackgroundsUseCase,
-  getBlackBackgroundsUseCase: GetBlackBackgroundsUseCase,
-  getMaterialYouVisibleUseCase: GetMaterialYouVisibleUseCase,
+  getAvailableColorPreferences: GetAvailableColorSystemsUseCase,
 ) : ViewModel() {
 
   private val refreshSignal = MutableSharedFlow<Unit>()
@@ -45,51 +38,52 @@ class AppearanceSettingsViewModel(
 
   private val _uiState: StateFlow<UpdateSettingsState> = loadDataSignal.mapLatest {
     UpdateSettingsState(
-      theme = getThemeUseCase(Unit).data,
+      themePreferences = preferencesRepository.themePreferences.first(),
       availableThemes = getAvailableThemesUseCase(Unit).data,
-      materialYouEnabled = getMaterialYouUseCase(Unit).data,
-      materialYouVisible = getMaterialYouVisibleUseCase(Unit).data,
-      blackBackgroundsEnabled = getBlackBackgroundsUseCase(Unit).data,
+      availableColorSystems = getAvailableColorPreferences(Unit).data,
     )
   }.stateIn(
-    viewModelScope,
-    WhileViewSubscribed,
+    scope = viewModelScope,
+    started = WhileViewSubscribed,
     initialValue = UpdateSettingsState(
-      theme = Theme.SYSTEM,
+      themePreferences = ThemePreferences.initial,
       availableThemes = listOf(),
-      materialYouEnabled = false,
-      materialYouVisible = false,
-      blackBackgroundsEnabled = false,
+      availableColorSystems = listOf(),
     ),
   )
   val uiState: StateFlow<UpdateSettingsState> = _uiState
 
   fun setTheme(theme: Theme) {
     viewModelScope.launch {
-      setThemeUseCase(theme)
+      preferencesRepository.updateCurrentTheme(theme)
       refreshData()
     }
   }
 
-  fun setMaterialYou(isEnabled: Boolean) {
+  fun updateColorSystem(system: ColorSystem) {
     viewModelScope.launch {
-      setMaterialYouUseCase(isEnabled)
+      preferencesRepository.updateColorSystem(system)
       refreshData()
     }
   }
 
   fun setBlackBackgrounds(isEnabled: Boolean) {
     viewModelScope.launch {
-      setBlackBackgroundsUseCase(isEnabled)
+      preferencesRepository.setPureBlack(isEnabled)
+      refreshData()
+    }
+  }
+
+  fun setThemeColor(color: Long) {
+    viewModelScope.launch {
+      preferencesRepository.updateThemeColor(color)
       refreshData()
     }
   }
 }
 
 data class UpdateSettingsState(
-  val theme: Theme,
+  val themePreferences: ThemePreferences,
   val availableThemes: List<Theme>,
-  val materialYouEnabled: Boolean,
-  val materialYouVisible: Boolean,
-  val blackBackgroundsEnabled: Boolean,
+  val availableColorSystems: List<ColorSystem>,
 )

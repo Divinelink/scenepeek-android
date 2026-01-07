@@ -49,7 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AnimatedVisibilityScope.SearchScreen(
   onNavigate: (Navigation) -> Unit,
   viewModel: SearchViewModel = koinViewModel(),
-  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel()
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val keyboardController = LocalSoftwareKeyboardController.current
   val focusManager = LocalFocusManager.current
@@ -190,7 +190,7 @@ fun AnimatedVisibilityScope.SearchScreen(
           searchMovieTabState = searchMovieTabState,
           searchPeopleTabState = searchPeopleTabState,
           searchTVTabState = searchTVTabState,
-          onSwitchViewMode = switchViewButtonViewModel::switchViewMode
+          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
         )
       }
     },

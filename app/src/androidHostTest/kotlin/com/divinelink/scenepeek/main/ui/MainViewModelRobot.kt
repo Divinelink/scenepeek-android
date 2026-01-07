@@ -12,7 +12,6 @@ import com.divinelink.core.testing.usecase.TestFindByIdUseCase
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.scenepeek.MainViewModel
-import com.divinelink.scenepeek.test.util.fakes.FakeThemedActivityDelegate
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
@@ -23,14 +22,12 @@ class MainViewModelRobot {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val themedActivityDelegate = FakeThemedActivityDelegate()
   private val createSessionUseCase = TestCreateSessionUseCase()
   private val findByIdUseCase = TestFindByIdUseCase()
   private val getJellyseerrProfileUseCase = FakeGetJellyseerrDetailsUseCase()
 
   fun buildViewModel() = apply {
     viewModel = MainViewModel(
-      themedActivityDelegate = themedActivityDelegate,
       createSessionUseCase = createSessionUseCase.mock,
       findByIdUseCase = findByIdUseCase.mock,
       getJellyseerrProfileUseCase = getJellyseerrProfileUseCase.mock,

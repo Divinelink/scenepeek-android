@@ -12,9 +12,7 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchResultApi
  * @param mediaType is passed from single API searches (movie, tv, people) in order to re-use
  * the same mapper for all search API calls.
  */
-fun MultiSearchResponseApi.map(
-  mediaType: String? = null,
-): MultiSearch = MultiSearch(
+fun MultiSearchResponseApi.map(mediaType: String? = null): MultiSearch = MultiSearch(
   searchList = results.map(mediaType),
   totalPages = totalPages,
   page = page,

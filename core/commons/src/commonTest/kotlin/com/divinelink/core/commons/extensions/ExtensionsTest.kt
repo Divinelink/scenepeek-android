@@ -1,6 +1,6 @@
 package com.divinelink.core.commons.extensions
 
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class ExtensionsTest {
@@ -12,7 +12,7 @@ class ExtensionsTest {
 
     val result = value.round(decimals)
 
-    assertThat(result).isEqualTo(1.2)
+    result shouldBe 1.2
   }
 
   @Test
@@ -22,7 +22,7 @@ class ExtensionsTest {
 
     val result = value.round(decimals)
 
-    assertThat(result).isEqualTo(1.3)
+    result shouldBe 1.3
   }
 
   @Test
@@ -32,7 +32,7 @@ class ExtensionsTest {
 
     val result = value.round(decimals)
 
-    assertThat(result).isEqualTo(1.23)
+    result shouldBe 1.23
   }
 
   @Test
@@ -41,7 +41,7 @@ class ExtensionsTest {
 
     val result = value.isWholeNumber()
 
-    assertThat(result).isTrue()
+    result shouldBe true
   }
 
   @Test
@@ -50,7 +50,7 @@ class ExtensionsTest {
 
     val result = value.isWholeNumber()
 
-    assertThat(result).isFalse()
+    result shouldBe false
   }
 
   @Test
@@ -58,7 +58,7 @@ class ExtensionsTest {
     val value = 100
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("100")
+    result shouldBe "100"
   }
 
   @Test
@@ -67,7 +67,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("1m")
+    result shouldBe "1m"
   }
 
   @Test
@@ -76,7 +76,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("1.1m")
+    result shouldBe "1.1m"
   }
 
   @Test
@@ -85,7 +85,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("1.3m")
+    result shouldBe "1.3m"
   }
 
   @Test
@@ -94,7 +94,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("1.3m")
+    result shouldBe "1.3m"
   }
 
   /**
@@ -111,7 +111,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("2.9m")
+    result shouldBe "2.9m"
   }
 
   @Test
@@ -120,7 +120,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("2.9m")
+    result shouldBe "2.9m"
   }
 
   @Test
@@ -129,7 +129,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("2.9m")
+    result shouldBe "2.9m"
   }
 
   @Test
@@ -138,7 +138,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("1.3k")
+    result shouldBe "1.3k"
   }
 
   @Test
@@ -147,7 +147,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("999.3k")
+    result shouldBe "999.3k"
   }
 
   @Test
@@ -156,7 +156,7 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("1.3k")
+    result shouldBe "1.3k"
   }
 
   @Test
@@ -165,6 +165,6 @@ class ExtensionsTest {
 
     val result = value.toShortString()
 
-    assertThat(result).isEqualTo("1k")
+    result shouldBe "1k"
   }
 }

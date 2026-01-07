@@ -4,16 +4,20 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_COLOR_PREFERENCE
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_CUSTOM_COLOR_ID
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
-import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.designsystem.theme.model.Theme
+import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -24,8 +28,11 @@ interface PreferenceStorage {
   suspend fun selectTheme(theme: String)
   val selectedTheme: Flow<String>
 
-  suspend fun setMaterialYou(isEnabled: Boolean)
-  val isMaterialYouEnabled: Flow<Boolean>
+  suspend fun setColorSystem(preference: ColorSystem)
+  val colorSystem: Flow<ColorSystem>
+
+  suspend fun setThemeColor(color: Long)
+  val customColor: Flow<Long>
 
   suspend fun setBlackBackgrounds(isEnabled: Boolean)
   val isBlackBackgroundsEnabled: Flow<Boolean>
@@ -55,8 +62,9 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   object PreferencesKeys {
     val PREF_SELECTED_THEME = stringPreferencesKey("settings.theme")
-    val PREF_MATERIAL_YOU = booleanPreferencesKey("settings.material.you")
     val PREF_BLACK_BACKGROUNDS = booleanPreferencesKey("settings.black.backgrounds")
+    val PREF_COLOR_PREFERENCE = stringPreferencesKey("settings.color.preference")
+    val PREF_CUSTOM_COLOR_ID = longPreferencesKey("settings.custom.color")
 
     val PREF_SERIES_TOTAL_EPISODES_OBFUSCATION = booleanPreferencesKey(
       "settings.series.episode.obfuscation",
@@ -76,16 +84,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val selectedTheme = dataStore.data.map {
     it[PREF_SELECTED_THEME] ?: Theme.SYSTEM.storageKey
-  }
-
-  override suspend fun setMaterialYou(isEnabled: Boolean) {
-    dataStore.edit {
-      it[PREF_MATERIAL_YOU] = isEnabled
-    }
-  }
-
-  override val isMaterialYouEnabled = dataStore.data.map {
-    it[PREF_MATERIAL_YOU] ?: true
   }
 
   override suspend fun setBlackBackgrounds(isEnabled: Boolean) {
@@ -138,5 +136,21 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val seasonsRatingSource: Flow<RatingSource> = dataStore.data.map { it ->
     it[PREF_SEASONS_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
+  }.distinctUntilChanged()
+
+  override suspend fun setColorSystem(preference: ColorSystem) {
+    dataStore.edit { it[PREF_COLOR_PREFERENCE] = preference.value }
+  }
+
+  override val colorSystem: Flow<ColorSystem> = dataStore.data.map { it ->
+    it[PREF_COLOR_PREFERENCE]?.let { ColorSystem.from(it) } ?: ColorSystem.Dynamic
+  }.distinctUntilChanged()
+
+  override suspend fun setThemeColor(color: Long) {
+    dataStore.edit { it[PREF_CUSTOM_COLOR_ID] = color }
+  }
+
+  override val customColor: Flow<Long> = dataStore.data.map {
+    it[PREF_CUSTOM_COLOR_ID] ?: seedLong
   }.distinctUntilChanged()
 }

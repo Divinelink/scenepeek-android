@@ -13,6 +13,8 @@ kotlin {
   sourceSets {
     commonMain.dependencies {
       implementation(libs.compose.multiplatform.resources)
+
+      implementation(libs.material.kolor)
     }
 
     androidMain.dependencies {

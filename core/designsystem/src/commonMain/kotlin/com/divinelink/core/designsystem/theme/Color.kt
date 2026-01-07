@@ -13,7 +13,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-// Seed #FF004872
+fun Long.toColor(): Color = Color(this.toULong())
+
+val seedLong = Color(0xFF004872).value.toLong()
 
 val primaryLight = Color(0xFF2F628C)
 val onPrimaryLight = Color(0xFFFFFFFF)
