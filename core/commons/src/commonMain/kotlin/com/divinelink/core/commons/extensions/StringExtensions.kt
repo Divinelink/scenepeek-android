@@ -141,3 +141,13 @@ fun String.markdownToHtml(): String = this
   .replace(Regex("""_(.*?)_"""), "<i>$1</i>")
   .replace(Regex("""\*(.*?)\*"""), "<i>$1</i>")
   .replace(Regex("""`(.*?)`"""), "<code>$1</code>")
+
+fun String.formatAsDisplayHex(): String {
+  val value = if (length == 8 && startsWith("ff", ignoreCase = true)) {
+    substring(2, 8).uppercase()
+  } else {
+    uppercase()
+  }
+
+  return "#$value"
+}

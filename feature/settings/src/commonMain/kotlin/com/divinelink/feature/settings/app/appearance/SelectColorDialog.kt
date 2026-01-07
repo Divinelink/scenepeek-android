@@ -18,10 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.divinelink.core.commons.extensions.formatAsDisplayHex
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.toColor
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_cancel
 import com.divinelink.core.ui.resources.core_ui_okay
@@ -65,7 +66,7 @@ fun SelectColorDialog(
               .height(250.dp)
               .padding(MaterialTheme.dimensions.keyline_40),
             controller = controller,
-            initialColor = Color(initialColorLong.toULong()),
+            initialColor = initialColorLong.toColor(),
             onColorChanged = { colorEnvelope: ColorEnvelope ->
               currentColor = colorEnvelope.color.value.toLong()
               hex = colorEnvelope.hexCode
@@ -77,6 +78,7 @@ fun SelectColorDialog(
               .fillMaxWidth()
               .height(MaterialTheme.dimensions.keyline_36),
             controller = controller,
+            initialColor = initialColorLong.toColor(),
           )
 
           Row(
@@ -85,7 +87,7 @@ fun SelectColorDialog(
           ) {
             ColorSampleTile(colorLong = currentColor)
 
-            hex?.let { Text(it.uppercase()) }
+            hex?.let { Text(text = it.formatAsDisplayHex()) }
           }
 
           Row(

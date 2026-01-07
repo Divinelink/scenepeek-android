@@ -210,4 +210,15 @@ class StringExtensionsTest {
       email.isValidEmail() shouldBe expected
     }
   }
+
+  @Test
+  fun `test formatAsDisplayHex with alpha values`() {
+    "ff6cc981".formatAsDisplayHex() shouldBe "#6CC981"
+    "FF6cc981".formatAsDisplayHex() shouldBe "#6CC981"
+  }
+
+  @Test
+  fun `test formatAsDisplayHex without alpha values`() {
+    "6cc981".formatAsDisplayHex() shouldBe "#6CC981"
+  }
 }
