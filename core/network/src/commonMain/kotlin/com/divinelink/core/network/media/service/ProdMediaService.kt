@@ -1,6 +1,7 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.model.discover.DiscoverFilter
+import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.GenresListResponse
@@ -25,6 +26,7 @@ import com.divinelink.core.network.media.model.states.AccountMediaDetailsRespons
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import com.divinelink.core.network.media.util.buildDiscoverUrl
 import com.divinelink.core.network.media.util.buildFetchDetailsUrl
+import com.divinelink.core.network.media.util.buildFetchMediaListUrl
 import com.divinelink.core.network.media.util.buildFindByIdUrl
 import com.divinelink.core.network.media.util.buildGenreUrl
 import com.divinelink.core.network.runCatchingWithNetworkRetry
@@ -32,6 +34,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ProdMediaService(private val restClient: TMDbClient) : MediaService {
+
+  override suspend fun fetchMediaLists(
+    section: HomeSection,
+    page: Int,
+  ): Result<MultiSearchResponseApi> = runCatching {
+    val url = buildFetchMediaListUrl(section = section, page = page)
+
+    restClient.get<MultiSearchResponseApi>(url = url)
+  }
 
   override fun fetchPopularMovies(page: Int): Flow<MoviesResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/discover/movie?"

@@ -37,6 +37,7 @@ fun MediaItem(
   media: MediaItem.Media,
   subtitle: String? = null,
   showDate: Boolean = false,
+  minLines: Int = 1,
   onClick: (MediaItem.Media) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
 ) {
@@ -64,6 +65,7 @@ fun MediaItem(
         .padding(horizontal = MaterialTheme.dimensions.keyline_8),
       text = media.name,
       maxLines = 3,
+      minLines = minLines,
       overflow = TextOverflow.Ellipsis,
       style = MaterialTheme.typography.bodySmall,
       fontWeight = MaterialTheme.typography.titleSmall.fontWeight,

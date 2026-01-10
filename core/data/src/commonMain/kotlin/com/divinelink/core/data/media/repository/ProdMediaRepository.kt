@@ -4,8 +4,10 @@ import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.discover.DiscoverFilter
+import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -23,6 +25,7 @@ import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
@@ -32,17 +35,76 @@ class ProdMediaRepository(
   private val dispatcher: DispatcherProvider,
 ) : MediaRepository {
 
-  override fun fetchPopularMovies(page: Int): Flow<MediaListResult> = combine(
-    remote.fetchPopularMovies(page = page),
+  override suspend fun fetchTrending(page: Int): Flow<Result<PaginationData<MediaItem>>> = combine(
+    flowOf(remote.fetchMediaLists(HomeSection.TrendingAll, page)),
     dao.getFavoriteMediaIds(MediaType.MOVIE),
-  ) { response, favoriteIds ->
-    val favoriteSet = favoriteIds.toSet()
-    val updatedMovies = response.map().list.map { media ->
-      (media as MediaItem.Media.Movie).copy(
-        isFavorite = media.id in favoriteSet,
-      )
+    dao.getFavoriteMediaIds(MediaType.TV),
+  ) { response, favoriteMovieIds, favoriteTvShowIds ->
+    val data = response.data.map()
+    val moviesIdsSet = favoriteMovieIds.toSet()
+    val tvShowIdsSet = favoriteTvShowIds.toSet()
+
+    val updatedMedia = data.searchList.map { media ->
+      when (media.mediaType) {
+        MediaType.TV -> (media as MediaItem.Media.TV).copy(
+          isFavorite = media.id in tvShowIdsSet,
+        )
+        MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
+          isFavorite = media.id in moviesIdsSet,
+        )
+        else -> media
+      }
     }
-    Result.success(updatedMovies)
+
+    val paginationData = PaginationData(
+      page = page,
+      totalPages = data.totalPages,
+      totalResults = data.totalPages, // todo
+      list = updatedMedia,
+    )
+    Result.success(paginationData)
+  }
+
+  override fun fetchMediaLists(
+    section: HomeSection,
+    page: Int,
+  ): Flow<Result<PaginationData<MediaItem>>> = flow {
+    val mediaType = when (section) {
+      HomeSection.TrendingAll -> MediaType.MOVIE
+      is HomeSection.Popular -> section.mediaType
+      is HomeSection.Upcoming -> section.mediaType
+    }
+    val response = remote.fetchMediaLists(section, page).getOrThrow()
+
+    val paginationData = PaginationData(
+      page = response.page,
+      totalPages = response.totalPages,
+      totalResults = response.totalResults,
+      list = response.results.map(mediaType.value),
+    )
+
+    dao
+      .getFavoriteMediaIds(mediaType)
+      .map { favoriteIds ->
+        val favoriteIdsSet = favoriteIds.toSet()
+
+        val updatedMedia = paginationData.list.map { media ->
+          when (media.mediaType) {
+            MediaType.TV -> (media as MediaItem.Media.TV).copy(
+              isFavorite = media.id in favoriteIdsSet,
+            )
+            MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
+              isFavorite = media.id in favoriteIdsSet,
+            )
+            else -> media
+          }
+        }
+
+        paginationData.copy(list = updatedMedia)
+      }
+      .collect { resultWithFavorites ->
+        emit(Result.success(resultWithFavorites))
+      }
   }
 
   override fun discoverMovies(

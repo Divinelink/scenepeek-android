@@ -53,19 +53,18 @@ class AppearanceSettingsScreenTest : ComposeTest() {
     ).assertIsDisplayed()
   }
 
-  private fun setupViewModel(
-    themePreferences: ThemePreferences = ThemePreferences.initial,
-  ) = AppearanceSettingsViewModel(
-    preferencesRepository = TestPreferencesRepository(
-      themePreferences = themePreferences,
-    ),
-    getAvailableThemesUseCase = GetAvailableThemesUseCase(
-      systemThemeProvider = SystemThemeProviderFactory.available,
-      dispatcher = testDispatcher,
-    ),
-    getAvailableColorPreferences = GetAvailableColorSystemsUseCase(
-      materialYouProvider = MaterialYouProviderFactory.available,
-      dispatcher = testDispatcher,
-    ),
-  )
+  private fun setupViewModel(themePreferences: ThemePreferences = ThemePreferences.initial) =
+    AppearanceSettingsViewModel(
+      preferencesRepository = TestPreferencesRepository(
+        themePreferences = themePreferences,
+      ),
+      getAvailableThemesUseCase = GetAvailableThemesUseCase(
+        systemThemeProvider = SystemThemeProviderFactory.available,
+        dispatcher = testDispatcher,
+      ),
+      getAvailableColorPreferences = GetAvailableColorSystemsUseCase(
+        materialYouProvider = MaterialYouProviderFactory.available,
+        dispatcher = testDispatcher,
+      ),
+    )
 }

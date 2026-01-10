@@ -2,80 +2,129 @@ package com.divinelink.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.data
-import com.divinelink.core.commons.onError
-import com.divinelink.core.domain.GetFavoriteMoviesUseCase
-import com.divinelink.core.domain.GetPopularMoviesUseCase
+import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.home.HomeMode
-import com.divinelink.core.model.home.HomePage
+import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.components.Filter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
 
 class HomeViewModel(
-  private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+  private val repository: MediaRepository,
   private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
-  private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
   private val searchStateManager: SearchStateManager,
+  clock: Clock,
 ) : ViewModel() {
 
-  private val _viewState: MutableStateFlow<HomeViewState> = MutableStateFlow(
-    HomeViewState.initial(),
+  private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(
+    HomeUiState.initial(
+      sections = buildHomeSections(clock),
+    ),
   )
-  val viewState: StateFlow<HomeViewState> = _viewState
+  val uiState: StateFlow<HomeUiState> = _uiState
+
   init {
-    fetchPopularMovies()
+    fetchSections()
   }
 
-  private fun fetchPopularMovies() {
-    if (getPage(HomePage.Popular) == 1) {
-      _viewState.setLoading()
+  private fun fetchSections() {
+    uiState.value.forms.keys.forEach { section ->
+      fetchMediaSection(section)
     }
+  }
 
-    viewModelScope.launch {
-      getPopularMoviesUseCase.invoke(
-        parameters = getPage(HomePage.Popular),
-      ).collectLatest { result ->
-        result.onSuccess {
-          incrementPage(HomePage.Popular)
-          _viewState.update { viewState ->
-            viewState.copy(
+  private fun fetchMediaSection(section: HomeSection) {
+    when (section) {
+      HomeSection.TrendingAll -> fetchTrending(section)
+      is HomeSection.Popular,
+      is HomeSection.Upcoming,
+        -> fetchMediaLists(section)
+    }
+  }
+
+  private fun handleResult(
+    section: HomeSection,
+    result: Result<PaginationData<MediaItem>>,
+  ) {
+    result.onSuccess { response ->
+      _uiState.update { uiState ->
+        val data = (uiState.forms[section] as? HomeForm.Data)?.pages ?: mapOf(
+          1 to response.list,
+        )
+
+        uiState.copy(
+          forms = uiState.forms.plus(
+            section to HomeForm.Data(
+              pages = data.plus(response.page to response.list),
+              canLoadMore = response.canLoadMore(),
+              hasError = false,
               isLoading = false,
-              error = null,
-              retryAction = null,
-              popularMovies = viewState.popularMovies.addMore(result.data),
-            )
-          }
-        }.onError<AppException.Offline> {
-          if (getPage(HomePage.Popular) == 1) {
-            _viewState.update { viewState ->
-              viewState.copy(
-                error = BlankSlateState.Offline,
-                retryAction = HomeMode.Browser,
-                isLoading = false,
-              )
-            }
-          }
-        }.onFailure {
-          _viewState.update { viewState ->
-            viewState.copy(
-              isLoading = false,
-              error = BlankSlateState.Generic,
-            )
-          }
+            ),
+          ),
+          pages = uiState.pages.plus(
+            section to response.page,
+          ),
+        )
+      }
+    }.onFailure { error ->
+      if (uiState.value.forms.all { it.value is HomeForm.Initial }) {
+        handleErrorForInitialForms(error)
+      } else {
+        if (getPage(section) == 1) {
+          setWholeCurrentFormToError(section)
+        } else {
+          setErrorOnCurrentSectionWithData(section)
         }
+      }
+    }
+  }
+
+  private fun setWholeCurrentFormToError(section: HomeSection) {
+    _uiState.update { uiState ->
+      uiState.copy(
+        forms = uiState.forms.plus(section to HomeForm.Error),
+      )
+    }
+  }
+
+  private fun setErrorOnCurrentSectionWithData(section: HomeSection) {
+    _uiState.update { uiState ->
+      val currentForm = uiState.forms[section]
+      val pages = (currentForm as? HomeForm.Data)?.pages ?: emptyMap()
+
+      uiState.copy(
+        forms = uiState.forms.plus(
+          section to HomeForm.Data(
+            pages = pages,
+            canLoadMore = false,
+            isLoading = false,
+            hasError = true,
+          ),
+        ),
+      )
+    }
+  }
+
+  private fun handleErrorForInitialForms(error: Throwable) {
+    when (error) {
+      is AppException.Offline -> _uiState.update { uiState ->
+        uiState.copy(
+          error = BlankSlateState.Offline,
+        )
+      }
+      else -> _uiState.update { uiState ->
+        uiState.copy(
+          error = BlankSlateState.Generic,
+        )
       }
     }
   }
@@ -93,46 +142,58 @@ class HomeViewModel(
    * or make a search query with incremented page.
    * If there are language selected, it will not load more movies.
    */
-  fun onLoadNextPage() {
-    when (viewState.value.mode) {
-      HomeMode.Filtered -> return
-      HomeMode.Browser -> if (viewState.value.popularMovies.shouldLoadMore) {
-        fetchPopularMovies()
-      }
+  fun onLoadNextPage(section: HomeSection) {
+    val currentForm = uiState.value.forms[section]
+    val form = currentForm as? HomeForm.Data
+
+    if (form?.hasError == false && form.canLoadMore) {
+      fetchMediaSection(section)
     }
   }
 
   fun onClearFiltersClicked() {
-    _viewState.update { viewState ->
+    _uiState.update { viewState ->
       viewState.copy(
         filters = HomeFilter.entries.map { it.filter },
         filteredResults = null,
-        mode = HomeMode.Browser,
       )
     }
   }
 
-  fun onFilterClick(filter: Filter) {
-    val homeFilter = HomeFilter.entries.find { it.filter.name == filter.name }
-    updateFilters(homeFilter)
-
-    when (homeFilter) {
-      HomeFilter.Liked -> {
-        updateLikedFilteredMovies()
-      }
-
-      else -> {
-        // Do nothing
-      }
+  private fun onRetry() {
+    _uiState.update { uiState ->
+      uiState.copy(error = null)
     }
+
+    fetchSections()
   }
 
-  fun onRetryClick() {
-    when (viewState.value.retryAction) {
-      HomeMode.Browser -> fetchPopularMovies()
-      else -> {
-        // Do nothing
-      }
+  private fun onRetrySection(section: HomeSection) {
+    val newForm = when (val currentForm = uiState.value.forms[section]) {
+      is HomeForm.Data -> currentForm.copy(
+        hasError = false,
+        canLoadMore = false,
+        isLoading = true,
+      )
+      HomeForm.Error -> HomeForm.Initial
+      HomeForm.Initial -> HomeForm.Initial
+      null -> HomeForm.Initial
+    }
+
+    _uiState.update { uiState ->
+      uiState.copy(
+        forms = uiState.forms.plus(section to newForm),
+      )
+    }
+
+    fetchMediaSection(section)
+  }
+
+  fun onAction(action: HomeAction) {
+    when (action) {
+      HomeAction.RetryAll -> onRetry()
+      is HomeAction.LoadMore -> onLoadNextPage(action.section)
+      is HomeAction.RetrySection -> onRetrySection(action.section)
     }
   }
 
@@ -140,80 +201,36 @@ class HomeViewModel(
     searchStateManager.updateEntryPoint(SearchEntryPoint.HOME)
   }
 
-  /**
-   * Handles the language for the liked movies.
-   * This method fetches the liked movies from the database and updates the view state.
-   */
-  private fun updateLikedFilteredMovies() {
-    getFavoriteMoviesUseCase(Unit)
-      .onEach { result ->
-        if (result.isSuccess) {
-          if (viewState.value.showFavorites == true) {
-            _viewState.update { viewState ->
-              viewState.copy(
-                filteredResults = MediaSection(data = result.data, shouldLoadMore = false),
-              )
-            }
-          } else {
-            _viewState.update { viewState ->
-              viewState.copy(
-                filteredResults = MediaSection(
-                  data = viewState.filteredResults?.data?.minus((result.data.toSet()).toSet())
-                    ?: emptyList(),
-                  shouldLoadMore = false,
-                ),
-              )
-            }
-          }
+  private fun getPage(page: HomeSection): Int = uiState.value.pages[page]?.plus(1) ?: 1
+
+  private fun fetchMediaLists(section: HomeSection) {
+    viewModelScope.launch {
+      repository.fetchMediaLists(
+        section = section,
+        page = getPage(section),
+      )
+        .catch { emit(Result.failure(it)) }
+        .collect { result ->
+          handleResult(
+            section = section,
+            result = result,
+          )
         }
-      }
-      .launchIn(viewModelScope)
-  }
-
-  /**
-   * Updates the language list.
-   * @param [homeFilter] The filter to be updated.
-   * This method updates the language list by toggling the selected state of the filter.
-   * If the filter is already selected, it will be unselected and vice versa.
-   */
-  private fun updateFilters(homeFilter: HomeFilter?) {
-    _viewState.update { viewState ->
-      viewState.copy(
-        // TODO add test
-        retryAction = null,
-        filters = viewState.filters.map { currentFilter ->
-          if (currentFilter.name == homeFilter?.filter?.name) {
-            currentFilter.copy(isSelected = !currentFilter.isSelected)
-          } else {
-            currentFilter
-          }
-        },
-      )
-    }
-    _viewState.update {
-      it.copy(
-        mode = if (viewState.value.filters.any { filter -> filter.isSelected }) {
-          HomeMode.Filtered
-        } else {
-          HomeMode.Browser
-        },
-      )
     }
   }
 
-  private fun incrementPage(page: HomePage) {
-    _viewState.update { viewState ->
-      viewState.copy(
-        pages = viewState.pages + (page to (viewState.pages[page] ?: 1) + 1),
+  private fun fetchTrending(section: HomeSection) {
+    viewModelScope.launch {
+      repository.fetchTrending(
+        page = getPage(section),
       )
+        .catch { emit(Result.failure(it)) }
+        .collect { result ->
+          handleResult(
+            section = section,
+            result = result,
+          )
+        }
     }
-  }
-
-  private fun getPage(page: HomePage): Int = viewState.value.pages[page] ?: 1
-}
-
-private fun MutableStateFlow<HomeViewState>.setLoading() {
-  update { viewState ->
-    viewState.copy(isLoading = true)
   }
 }

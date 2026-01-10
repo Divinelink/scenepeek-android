@@ -5,7 +5,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
@@ -25,11 +24,11 @@ class HomeContentTest : ComposeTest() {
 
   @Test
   fun `test initial loading`() = uiTest {
-    val uiState = HomeViewState.initial()
+    val uiState = HomeUiState.initial()
 
     setContentWithTheme {
       HomeContent(
-        viewState = uiState,
+        uiState = uiState,
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -44,7 +43,7 @@ class HomeContentTest : ComposeTest() {
 
   @Test
   fun `test blank slate is visible when ui state has blank slate state`() = uiTest {
-    val uiState = HomeViewState.initial().copy(
+    val uiState = HomeUiState.initial().copy(
       error = BlankSlateState.Offline,
       retryAction = HomeMode.Browser,
     )
@@ -53,7 +52,7 @@ class HomeContentTest : ComposeTest() {
 
     setContentWithTheme {
       HomeContent(
-        viewState = uiState,
+        uiState = uiState,
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -73,14 +72,14 @@ class HomeContentTest : ComposeTest() {
 
   @Test
   fun `test blank slate retry is not visible when retryText is null`() = uiTest {
-    val uiState = HomeViewState.initial().copy(
+    val uiState = HomeUiState.initial().copy(
       error = BlankSlateState.Unauthenticated(),
       retryAction = null,
     )
 
     setContentWithTheme {
       HomeContent(
-        viewState = uiState,
+        uiState = uiState,
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -96,14 +95,14 @@ class HomeContentTest : ComposeTest() {
 
   @Test
   fun `test blank slate is not visible when error state is null`() = uiTest {
-    val uiState = HomeViewState.initial().copy(
+    val uiState = HomeUiState.initial().copy(
       error = null,
       retryAction = null,
     )
 
     setContentWithTheme {
       HomeContent(
-        viewState = uiState,
+        uiState = uiState,
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -118,7 +117,7 @@ class HomeContentTest : ComposeTest() {
 
   @Test
   fun `test empty filter blank slate when is empty and filter mode`() = uiTest {
-    val uiState = HomeViewState.initial().copy(
+    val uiState = HomeUiState.initial().copy(
       error = null,
       retryAction = null,
       filteredResults = MediaSection(
@@ -130,7 +129,7 @@ class HomeContentTest : ComposeTest() {
 
     setContentWithTheme {
       HomeContent(
-        viewState = uiState,
+        uiState = uiState,
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},

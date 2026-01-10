@@ -18,7 +18,7 @@ sealed interface DiscoverForm<out T : MediaItem.Media> {
     val paginationData: Map<Int, List<MediaItem.Media>>,
     val totalResults: Int,
   ) : DiscoverForm<T> {
-    val media = paginationData.values.flatten().distinctBy { it.id }
+    val media = paginationData.values.flatten().distinctBy { it.uniqueIdentifier }
     val isEmpty: Boolean = media.isEmpty()
   }
 }

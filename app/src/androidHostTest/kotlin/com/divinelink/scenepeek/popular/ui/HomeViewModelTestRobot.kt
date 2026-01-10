@@ -8,8 +8,8 @@ import com.divinelink.core.testing.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.components.Filter
+import com.divinelink.feature.home.HomeUiState
 import com.divinelink.feature.home.HomeViewModel
-import com.divinelink.feature.home.HomeViewState
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 
@@ -33,8 +33,8 @@ class HomeViewModelTestRobot {
     )
   }
 
-  fun assertViewState(expectedViewState: HomeViewState) = apply {
-    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+  fun assertViewState(expectedViewState: HomeUiState) = apply {
+    assertThat(viewModel.uiState.value).isEqualTo(expectedViewState)
   }
 
   fun mockFetchPopularMovies(response: MediaListResult) = apply {

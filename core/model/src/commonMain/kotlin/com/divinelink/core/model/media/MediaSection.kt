@@ -19,7 +19,7 @@ data class MediaSection(
     currentMediaList: List<MediaItem>,
     updatedMediaList: List<MediaItem>,
   ): List<MediaItem> {
-    val combinedList = currentMediaList.plus(updatedMediaList).distinctBy { it.id }
+    val combinedList = currentMediaList.plus(updatedMediaList).distinctBy { it.uniqueIdentifier }
     val updatedList = combinedList.toMutableList()
     updatedMediaList.forEach { updatedMovie ->
       val index = updatedList.indexOfFirst { it.id == updatedMovie.id }
@@ -27,6 +27,6 @@ data class MediaSection(
         updatedList[index] = updatedMovie
       }
     }
-    return updatedList.distinctBy { it.id }
+    return updatedList.distinctBy { it.uniqueIdentifier }
   }
 }

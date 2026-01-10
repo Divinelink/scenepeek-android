@@ -1,7 +1,6 @@
 package com.divinelink.scenepeek.di
 
 import com.divinelink.core.domain.GetFavoriteMoviesUseCase
-import com.divinelink.core.domain.GetPopularMoviesUseCase
 import com.divinelink.core.domain.details.media.AddToWatchlistUseCase
 import com.divinelink.core.domain.details.media.DeleteRatingUseCase
 import com.divinelink.core.domain.details.media.FetchAccountMediaDetailsUseCase
@@ -15,7 +14,6 @@ val appUseCaseModule = module {
 
   factoryOf(::FetchMultiInfoSearchUseCase)
   factoryOf(::GetFavoriteMoviesUseCase)
-  factoryOf(::GetPopularMoviesUseCase)
 
   // Details
   factoryOf(::AddToWatchlistUseCase)

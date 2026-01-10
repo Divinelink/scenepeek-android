@@ -112,3 +112,14 @@ fun LazyGridState.showExpandedFab(): Boolean {
 
   return scrollToTop.value
 }
+
+@Composable
+fun LazyListState.showExpandedFab(): Boolean {
+  val scrollToTop = remember {
+    derivedStateOf {
+      this.firstVisibleItemIndex == 0 || this.lastScrolledBackward
+    }
+  }
+
+  return scrollToTop.value
+}
