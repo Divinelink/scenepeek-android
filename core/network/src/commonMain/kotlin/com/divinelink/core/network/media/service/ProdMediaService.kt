@@ -44,20 +44,6 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     restClient.get<MultiSearchResponseApi>(url = url)
   }
 
-  override fun fetchPopularMovies(page: Int): Flow<MoviesResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/discover/movie?"
-    val url = baseUrl +
-      "&include_adult=false" +
-      "&language=en-US" +
-      "&page=$page" +
-      "&sort_by=popularity.desc" +
-      "&vote_count.gte=50"
-
-    val response = restClient.get<MoviesResponseApi>(url = url)
-
-    emit(response)
-  }
-
   override fun fetchDiscoverMovies(
     page: Int,
     filters: List<DiscoverFilter>,

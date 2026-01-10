@@ -2,10 +2,12 @@ package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -23,12 +25,26 @@ class TestMediaRepository {
     )
   }
 
-  fun mockFetchPopularMovies(response: MediaListResult) {
+  suspend fun mockFetchTrending(
+    page: Int = any(),
+    response: Flow<Result<PaginationData<MediaItem>>>,
+  ) {
     whenever(
-      mock.fetchPopularMovies(any()),
-    ).thenReturn(
-      flowOf(response),
-    )
+      mock.fetchTrending(
+        page = page,
+      ),
+    ).thenReturn(response)
+  }
+
+  fun mockFetchMediaLists(
+    response: Flow<Result<PaginationData<MediaItem>>>,
+  ) {
+    whenever(
+      mock.fetchMediaLists(
+        section = any(),
+        page = any(),
+      ),
+    ).thenReturn(response)
   }
 
   fun mockFetchSearchMovies(response: Result<MultiSearch>) {

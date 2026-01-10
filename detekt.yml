@@ -143,7 +143,7 @@ complexity:
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
-    excludes: [ '**/test/**', '**/androidHostTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/AppFlowHelper.kt' ]
+    excludes: [ '**/test/**', '**/androidHostTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', "**Factory.kt", ]
     thresholdInFiles: 20
     thresholdInClasses: 20
     thresholdInInterfaces: 20

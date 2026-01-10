@@ -10,11 +10,9 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.GenresListResponse
-import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
-import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.service.TestMediaService
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
@@ -28,13 +26,6 @@ class ProdMediaRepositoryTest {
   private val movie = MediaItemFactory.FightClub().toWizard {
     withFavorite(true)
   }
-
-  private val apiPopularResponse = MoviesResponseApi(
-    page = 1,
-    results = MovieApiFactory.EmptyList(),
-    totalPages = 0,
-    totalResults = 0,
-  )
 
   private var mediaDao = TestMediaDao()
   private var mediaService = TestMediaService()
@@ -52,58 +43,6 @@ class ProdMediaRepositoryTest {
       remote = mediaService.mock,
       dispatcher = testDispatcher,
     )
-  }
-
-  @Test
-  fun `test fetch popular movies with no favorite ids`() = runTest {
-    val page = 1
-    val expectedResult = MediaItemFactory.MoviesList()
-
-    val expectApiPopularResponse = flowOf(apiPopularResponse)
-
-    mediaDao.mockFetchFavoriteMovieIds(flowOf(emptyList()))
-
-    mediaService.mockFetchPopularMovies(
-      page = page,
-      result = expectApiPopularResponse,
-    )
-
-    repository.fetchPopularMovies(page).test {
-      awaitItem() shouldBe Result.success(expectedResult)
-      awaitComplete()
-    }
-  }
-
-  @Test
-  fun `test fetch popular movies with favorite ids`() = runTest {
-    val page = 1
-
-    val expectApiPopularResponse = flowOf(apiPopularResponse)
-
-    mediaDao.mockFetchFavoriteMovieIds(
-      flowOf(
-        emptyList(),
-        emptyList(),
-        listOf(1, 2),
-      ),
-    )
-
-    mediaService.mockFetchPopularMovies(
-      page = page,
-      result = expectApiPopularResponse,
-    )
-
-    repository.fetchPopularMovies(page).test {
-      awaitItem() shouldBe Result.success(MediaItemFactory.MoviesList())
-      awaitItem() shouldBe Result.success(
-        buildList {
-          addAll(MediaItemFactory.MoviesList(1..2).map { it.copy(isFavorite = true) })
-          addAll(MediaItemFactory.MoviesList(3..10))
-        },
-      )
-
-      awaitComplete()
-    }
   }
 
   @Test

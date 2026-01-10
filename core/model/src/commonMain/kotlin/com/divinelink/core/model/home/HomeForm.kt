@@ -1,4 +1,4 @@
-package com.divinelink.feature.home
+package com.divinelink.core.model.home
 
 import com.divinelink.core.model.media.MediaItem
 

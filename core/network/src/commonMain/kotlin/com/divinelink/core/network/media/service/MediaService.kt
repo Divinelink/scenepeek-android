@@ -30,8 +30,6 @@ interface MediaService {
     page: Int,
   ): Result<MultiSearchResponseApi>
 
-  fun fetchPopularMovies(page: Int): Flow<MoviesResponseApi>
-
   fun fetchDiscoverMovies(
     page: Int,
     filters: List<DiscoverFilter>,

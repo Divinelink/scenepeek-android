@@ -1,6 +1,7 @@
 package com.divinelink.feature.home
 
 import androidx.compose.runtime.Immutable
+import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.home.HomeSectionInfo
 import com.divinelink.core.model.media.MediaItem
@@ -27,7 +28,7 @@ data class HomeUiState(
       error = null,
     )
 
-    private fun List<HomeSectionInfo>.buildForms(): Map<HomeSection, HomeForm<MediaItem>> =
+    fun List<HomeSectionInfo>.buildForms(): Map<HomeSection, HomeForm<MediaItem>> =
       associate {
         it.section to HomeForm.Initial
       }

@@ -7,6 +7,7 @@ import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.search.SearchEntryPoint
@@ -137,26 +138,12 @@ class HomeViewModel(
     }
   }
 
-  /**
-   * Checks whether to load more popularMovies movies,
-   * or make a search query with incremented page.
-   * If there are language selected, it will not load more movies.
-   */
-  fun onLoadNextPage(section: HomeSection) {
+  private fun onLoadNextPage(section: HomeSection) {
     val currentForm = uiState.value.forms[section]
     val form = currentForm as? HomeForm.Data
 
     if (form?.hasError == false && form.canLoadMore) {
       fetchMediaSection(section)
-    }
-  }
-
-  fun onClearFiltersClicked() {
-    _uiState.update { viewState ->
-      viewState.copy(
-        filters = HomeFilter.entries.map { it.filter },
-        filteredResults = null,
-      )
     }
   }
 

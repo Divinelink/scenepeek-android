@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
@@ -16,7 +17,6 @@ import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.skeleton.MediaItemSkeleton
-import com.divinelink.feature.home.HomeForm
 
 @Composable
 fun MediaRowContent(
