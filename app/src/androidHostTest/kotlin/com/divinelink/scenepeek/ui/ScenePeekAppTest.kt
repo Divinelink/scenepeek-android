@@ -8,6 +8,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -25,14 +27,18 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
+import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.scaffold.ScenePeekApp
@@ -42,6 +48,7 @@ import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
@@ -51,7 +58,6 @@ import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
-import com.divinelink.core.testing.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
@@ -89,6 +95,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Clock
 import com.divinelink.scenepeek.resources.Res as R
 
 class ScenePeekAppTest : ComposeTest() {
@@ -99,6 +106,9 @@ class ScenePeekAppTest : ComposeTest() {
   private val networkMonitor = TestNetworkMonitor()
   private val onboardingManager = TestOnboardingManager()
   private val preferencesRepository = TestPreferencesRepository()
+  private val mediaRepository = TestMediaRepository()
+  private val clock: Clock = ClockFactory.decemberFirst2021()
+
   private lateinit var navigationProvider: List<NavGraphExtension>
 
   private val homeTab = "Home"
@@ -108,7 +118,6 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var state: ScenePeekAppState
 
   // HOME use cases
-  private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
   private lateinit var fetchMultiInfoSearchUseCase: FakeFetchMultiInfoSearchUseCase
   private lateinit var markAsFavoriteUseCase: TestMarkAsFavoriteUseCase
   private lateinit var getFavoriteMoviesUseCase: FakeGetFavoriteMoviesUseCase
@@ -140,7 +149,6 @@ class ScenePeekAppTest : ComposeTest() {
     uiState = MainUiState.Completed
     uiEvent = MainUiEvent.None
 
-    popularMoviesUseCase = FakeGetPopularMoviesUseCase()
     fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
     markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
     getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
@@ -175,16 +183,14 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test navigation items are visible`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
+        repository = mediaRepository.mock,
+        clock = clock,
       )
     }
 
@@ -225,17 +231,15 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test navigate to profile`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     authRepository.mockJellyseerrEnabled(true)
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -294,9 +298,7 @@ class ScenePeekAppTest : ComposeTest() {
     val homeTab = "Home"
     val searchTab = "Search"
 
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     declare {
       SwitchViewButtonViewModel(
@@ -306,9 +308,9 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -374,9 +376,8 @@ class ScenePeekAppTest : ComposeTest() {
    */
   @Test
   fun `test search bar remains unfocused when navigating between home and search`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mediaRepository
+    mockHomeData()
 
     declare {
       SwitchViewButtonViewModel(
@@ -386,9 +387,9 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -467,9 +468,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test navigate to search`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     declare {
       SwitchViewButtonViewModel(
@@ -479,9 +478,9 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -536,9 +535,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test re-selecting search tab focuses search bar`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     declare {
       SwitchViewButtonViewModel(
@@ -548,9 +545,9 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -629,9 +626,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test navigate to profile when is on movie details`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     authRepository.mockJellyseerrEnabled(false)
 
@@ -650,9 +645,9 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -770,15 +765,13 @@ class ScenePeekAppTest : ComposeTest() {
     runTest(
       MainDispatcherRule().testDispatcher.unconfined,
     ) {
-      popularMoviesUseCase.mockFetchPopularMovies(
-        response = Result.failure(Exception("")),
-      )
+      mockHomeData(Result.failure(AppException.Unknown()))
 
       declare {
         HomeViewModel(
-          getPopularMoviesUseCase = popularMoviesUseCase.mock,
+          clock = clock,
+          repository = mediaRepository.mock,
           markAsFavoriteUseCase = markAsFavoriteUseCase,
-          getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
           searchStateManager = searchStateManager,
         )
       }
@@ -864,15 +857,13 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test when onboarding is visible and initial full screen onboarding is shown`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -923,20 +914,19 @@ class ScenePeekAppTest : ComposeTest() {
     onNodeWithText("Get started").performClick()
     onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsNotDisplayed()
 
-    onNodeWithText("Fight club 1").assertIsDisplayed()
+    onNodeWithText("Trending").assertIsDisplayed()
+    onAllNodesWithText("Fight club 1").onFirst().assertIsDisplayed()
   }
 
   @Test
   fun `test when intro is visible and is not firstLaunch modal intro is shown`() = uiTest {
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
+    mockHomeData()
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -978,6 +968,19 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     onNodeWithTag(TestTags.Onboarding.MODAL).assertIsNotDisplayed()
+  }
+
+  private suspend fun mockHomeData(
+    response: Result<PaginationData<MediaItem>> = Result.success(
+      MediaItemFactory.paginationData(),
+    ),
+  ) {
+    mediaRepository.mockFetchTrending(
+      response = flowOf(response),
+    )
+    mediaRepository.mockFetchMediaLists(
+      response = flowOf(response),
+    )
   }
 }
 

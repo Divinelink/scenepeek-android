@@ -27,12 +27,12 @@ class TestMediaService {
 
   val mock: MediaService = mock()
 
-  fun mockFetchPopularMovies(
+  suspend fun mockFetchMediaLists(
     page: Int,
-    result: Flow<MoviesResponseApi>,
+    result: Result<MultiSearchResponseApi>,
   ) {
     whenever(
-      mock.fetchPopularMovies(page),
+      mock.fetchMediaLists(section = any(), page),
     ).thenReturn(
       result,
     )

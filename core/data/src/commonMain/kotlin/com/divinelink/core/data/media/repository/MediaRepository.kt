@@ -1,8 +1,10 @@
 package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.discover.DiscoverFilter
+import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -12,7 +14,6 @@ import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import kotlinx.coroutines.flow.Flow
 
-typealias MultiListResult = Result<List<MediaItem>>
 typealias MediaListResult = Result<List<MediaItem.Media>>
 
 /**
@@ -24,7 +25,12 @@ interface MediaRepository {
    * Request popular movies using pagination.
    * Uses [Flow] in order to observe changes to our popular movies list.
    */
-  fun fetchPopularMovies(page: Int): Flow<MediaListResult>
+  suspend fun fetchTrending(page: Int): Flow<Result<PaginationData<MediaItem>>>
+
+  fun fetchMediaLists(
+    section: HomeSection,
+    page: Int,
+  ): Flow<Result<PaginationData<MediaItem>>>
 
   fun discoverMovies(
     page: Int,

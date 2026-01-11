@@ -19,6 +19,7 @@ import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
+import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
@@ -39,15 +40,14 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.domain.SystemThemeProviderFactory
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
-import com.divinelink.core.testing.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
-import com.divinelink.core.testing.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutUseCase
@@ -83,19 +83,21 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Clock
 import com.divinelink.feature.settings.resources.Res as R
 
 class ScenePeekSettingsNavHostTest : ComposeTest() {
 
+  private val clock: Clock = ClockFactory.decemberFirst2021()
+
   private lateinit var navController: TestNavHostController
   private lateinit var fakePreferenceStorage: FakePreferenceStorage
   private lateinit var preferencesRepository: TestPreferencesRepository
+  private lateinit var mediaRepository: TestMediaRepository
 
   // HOME use cases
-  private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
   private lateinit var fetchMultiInfoSearchUseCase: FakeFetchMultiInfoSearchUseCase
   private lateinit var markAsFavoriteUseCase: TestMarkAsFavoriteUseCase
-  private lateinit var getFavoriteMoviesUseCase: FakeGetFavoriteMoviesUseCase
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -112,19 +114,16 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
     fakePreferenceStorage = FakePreferenceStorage()
     preferencesRepository = TestPreferencesRepository()
+    mediaRepository = TestMediaRepository()
 
-    popularMoviesUseCase = FakeGetPopularMoviesUseCase()
     fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
     markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
-    getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
-
-    popularMoviesUseCase.mockFetchPopularMovies(Result.success(emptyList()))
 
     declare {
       HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        clock = clock,
+        repository = mediaRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         searchStateManager = SearchStateManager(),
       )
     }

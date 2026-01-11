@@ -14,6 +14,7 @@ app/release/output-metadata.json
 app/schemas/*
 
 # Built application files
+*mapping.txt
 *.apk
 *.aab
 *.ap_
