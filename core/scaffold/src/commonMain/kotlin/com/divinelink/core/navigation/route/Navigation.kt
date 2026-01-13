@@ -1,5 +1,6 @@
 package com.divinelink.core.navigation.route
 
+import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.serialization.Serializable
@@ -135,4 +136,7 @@ sealed interface Navigation {
   data class MediaPosterRoute(
     val posterPath: String,
   ) : Navigation
+
+  @Serializable
+  data class MediaListsRoute(val section: HomeSection) : Navigation
 }

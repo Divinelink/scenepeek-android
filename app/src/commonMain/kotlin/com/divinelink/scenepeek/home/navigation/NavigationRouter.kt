@@ -10,6 +10,7 @@ import com.divinelink.core.navigation.route.navigateToDiscover
 import com.divinelink.core.navigation.route.navigateToEditList
 import com.divinelink.core.navigation.route.navigateToListDetails
 import com.divinelink.core.navigation.route.navigateToLists
+import com.divinelink.core.navigation.route.navigateToMediaLists
 import com.divinelink.core.navigation.route.navigateToOnboarding
 import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.navigation.route.navigateToPoster
@@ -60,6 +61,7 @@ fun NavController.findNavigation(route: Navigation) {
     Navigation.JellyseerrRequestsRoute -> navigateToRequests()
     Navigation.DiscoverRoute -> navigateToDiscover()
     is Navigation.MediaPosterRoute -> navigateToPoster(route)
+    is Navigation.MediaListsRoute -> navigateToMediaLists(route)
 
     // This is from top level navigation
     Navigation.HomeRoute -> Unit

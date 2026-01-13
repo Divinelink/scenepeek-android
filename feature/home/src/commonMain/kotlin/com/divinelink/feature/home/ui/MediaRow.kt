@@ -1,11 +1,14 @@
 package com.divinelink.feature.home.ui
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
@@ -26,13 +29,22 @@ fun MediaRow(
 ) {
   Column(
     modifier = modifier.animateContentSize(),
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
-    Text(
-      modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_8),
-      text = stringResource(config.title),
-      style = MaterialTheme.typography.titleMedium,
-    )
+    TextButton(
+      onClick = {
+        onNavigate(Navigation.MediaListsRoute(config.section))
+      },
+    ) {
+      Text(
+        text = stringResource(config.title),
+        style = MaterialTheme.typography.titleMedium,
+      )
+
+      Icon(
+        imageVector = Icons.Default.ChevronRight,
+        contentDescription = null,
+      )
+    }
 
     when (form) {
       HomeForm.Initial -> MediaRowSkeleton()

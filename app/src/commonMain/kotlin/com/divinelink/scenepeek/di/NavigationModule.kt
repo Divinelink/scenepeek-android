@@ -22,6 +22,7 @@ import com.divinelink.feature.onboarding.navigation.modalOnboarding
 import com.divinelink.feature.profile.navigation.profileScreen
 import com.divinelink.feature.requests.ui.navigation.requestsScreen
 import com.divinelink.feature.search.navigation.searchScreen
+import com.divinelink.feature.search.ui.navigation.mediaListsScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
 import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
 import com.divinelink.feature.settings.navigation.account.jellyseerrSettingsScreen
@@ -274,6 +275,14 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.MediaPosterRoute>()) {
     { navController, _ ->
       posterScreen(
+        onNavigate = navController::findNavigation,
+      )
+    }
+  }
+
+  single<NavGraphExtension>(named<Navigation.MediaListsRoute>()) {
+    { navController, _ ->
+      mediaListsScreen(
         onNavigate = navController::findNavigation,
       )
     }

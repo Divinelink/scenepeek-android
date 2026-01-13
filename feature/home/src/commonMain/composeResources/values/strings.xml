@@ -3,11 +3,5 @@
   <string name="home__empty_filtered_result_title">No media found</string>
   <string name="home__empty_filtered_result_description">You can try to change the filters or search for something else.</string>
 
-  <string name="trending">Trending</string>
-  <string name="popular_movies">Popular movies</string>
-  <string name="upcoming_movies">Upcoming movies</string>
-  <string name="popular_series">Popular series</string>
-  <string name="upcoming_series">Upcoming series</string>
-
   <string name="settings_button_content_description">Go to settings button</string>
 </resources>

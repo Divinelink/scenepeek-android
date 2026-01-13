@@ -17,6 +17,7 @@ import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.divinelink.feature.requests.RequestsViewModel
+import com.divinelink.feature.search.MediaListsViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
@@ -53,6 +54,7 @@ val appViewModelModule = module {
   viewModelOf(::RequestsViewModel)
   viewModelOf(::DiscoverViewModel)
   viewModelOf(::SelectFilterViewModel)
+  viewModelOf(::MediaListsViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)
