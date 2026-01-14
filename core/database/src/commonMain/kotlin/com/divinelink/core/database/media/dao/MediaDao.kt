@@ -24,6 +24,8 @@ interface MediaDao {
 
   fun fetchAllFavorites(): Flow<List<MediaItem.Media>>
 
+  fun fetchFavorites(mediaType: MediaType): Flow<List<MediaItem>>
+
   fun getFavoriteMediaIds(mediaType: MediaType): Flow<List<Int>>
 
   fun insertSeasons(

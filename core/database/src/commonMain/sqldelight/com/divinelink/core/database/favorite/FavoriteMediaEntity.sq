@@ -17,6 +17,15 @@ FROM FavoriteMediaEntity f
 INNER JOIN MediaItemEntity mi ON (f.mediaId = mi.id AND f.mediaType = mi.mediaType)
 ORDER BY f.favoritedAt DESC;
 
+getAllFavoritesByMediaType:
+SELECT
+    f.favoritedAt,
+    mi.*
+FROM FavoriteMediaEntity f
+INNER JOIN MediaItemEntity mi ON (f.mediaId = mi.id AND f.mediaType = mi.mediaType)
+WHERE f.mediaType = ?
+ORDER BY f.favoritedAt DESC;
+
 getFavoriteMediaIds:
 SELECT mediaId, mediaType
 FROM FavoriteMediaEntity

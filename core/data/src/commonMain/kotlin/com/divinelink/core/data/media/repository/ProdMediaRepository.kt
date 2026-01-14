@@ -166,6 +166,19 @@ class ProdMediaRepository(
       Result.success(favorites)
     }
 
+  override fun fetchFavorites(mediaType: MediaType): Flow<Result<PaginationData<MediaItem>>> = dao
+    .fetchFavorites(mediaType)
+    .map { favorites ->
+      Result.success(
+        PaginationData(
+          page = 1,
+          totalPages = 1,
+          totalResults = favorites.size,
+          list = favorites,
+        ),
+      )
+    }
+
   override fun fetchSearchMovies(
     mediaType: MediaType,
     request: SearchRequestApi,

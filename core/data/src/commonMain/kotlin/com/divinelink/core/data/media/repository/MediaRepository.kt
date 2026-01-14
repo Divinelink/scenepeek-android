@@ -47,6 +47,8 @@ interface MediaRepository {
    */
   fun fetchFavorites(): Flow<MediaListResult>
 
+  fun fetchFavorites(mediaType: MediaType): Flow<Result<PaginationData<MediaItem>>>
+
   /**
    * Request movies through a search query. Uses pagination.
    * Uses [Flow] in order to observe changes to our movies list.

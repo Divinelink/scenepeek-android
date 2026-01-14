@@ -16,6 +16,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
 
@@ -59,6 +60,47 @@ class ProdMediaDao(
     .getAllFavorites()
     .asFlow()
     .mapToList(dispatcher.io)
+    .distinctUntilChanged()
+    .map { favorites ->
+      favorites.mapNotNull { favorite ->
+        if (MediaType.from(favorite.mediaType) == MediaType.MOVIE) {
+          MediaItem.Media.Movie(
+            id = favorite.id.toInt(),
+            name = favorite.name,
+            posterPath = favorite.posterPath,
+            backdropPath = favorite.backdropPath,
+            releaseDate = favorite.releaseDate!!,
+            voteAverage = favorite.voteAverage,
+            voteCount = favorite.voteCount.toInt(),
+            overview = favorite.overview,
+            popularity = favorite.popularity,
+            isFavorite = true,
+          )
+        } else if (MediaType.from(favorite.mediaType) == MediaType.TV) {
+          MediaItem.Media.TV(
+            id = favorite.id.toInt(),
+            name = favorite.name,
+            posterPath = favorite.posterPath,
+            backdropPath = favorite.backdropPath,
+            releaseDate = favorite.firstAirDate!!,
+            voteAverage = favorite.voteAverage,
+            voteCount = favorite.voteCount.toInt(),
+            overview = favorite.overview,
+            popularity = favorite.popularity,
+            isFavorite = true,
+          )
+        } else {
+          null
+        }
+      }
+    }
+
+  override fun fetchFavorites(mediaType: MediaType): Flow<List<MediaItem.Media>> = database
+    .favoriteMediaEntityQueries
+    .getAllFavoritesByMediaType(mediaType.value)
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .distinctUntilChanged()
     .map { favorites ->
       favorites.mapNotNull { favorite ->
         if (MediaType.from(favorite.mediaType) == MediaType.MOVIE) {

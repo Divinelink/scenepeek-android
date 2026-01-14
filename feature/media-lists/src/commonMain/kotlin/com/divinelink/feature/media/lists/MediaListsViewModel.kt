@@ -47,9 +47,7 @@ class MediaListsViewModel(
       is HomeSection.Popular -> fetchMediaLists(mediaType)
       is HomeSection.TopRated -> fetchMediaLists(mediaType)
       is HomeSection.Upcoming -> fetchMediaLists(mediaType)
-      HomeSection.Favorites -> {
-        // Fetch favorites
-      }
+      HomeSection.Favorites -> fetchFavorites(mediaType)
     }
   }
 
@@ -87,6 +85,22 @@ class MediaListsViewModel(
         request = request,
         page = getPage(mediaType),
       )
+        .catch { emit(Result.failure(it)) }
+        .distinctUntilChanged()
+        .collect { result ->
+          handleResult(
+            mediaType = mediaType,
+            result = result,
+          )
+        }
+    }
+  }
+
+  private fun fetchFavorites(
+    mediaType: MediaType,
+  ) {
+    viewModelScope.launch {
+      repository.fetchFavorites(mediaType)
         .catch { emit(Result.failure(it)) }
         .distinctUntilChanged()
         .collect { result ->

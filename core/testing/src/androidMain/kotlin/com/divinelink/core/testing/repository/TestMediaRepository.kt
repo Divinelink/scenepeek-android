@@ -41,7 +41,7 @@ class TestMediaRepository {
   ) {
     whenever(
       mock.fetchMediaLists(
-        section = any(),
+        request = any(),
         page = any(),
       ),
     ).thenReturn(response)
