@@ -54,7 +54,7 @@ fun MediaListsContent(
   }
 
   Column {
-    if (uiState.tabs.isNotEmpty() && uiState.tabs.size != 1) {
+    if (uiState.showTabs) {
       ScenePeekSecondaryTabs(
         tabs = uiState.tabs,
         selectedIndex = uiState.selectedTab.order,

@@ -34,6 +34,7 @@ data class MediaListsUiState(
   val selectedTab = tabs[selectedTabIndex]
   val selectedMediaType = selectedTab.mediaType
   val selectedForm = forms[selectedMediaType]
+  val showTabs = tabs.isNotEmpty() && tabs.size != 1
 
   companion object {
     fun initial(section: MediaListSection) = MediaListsUiState(

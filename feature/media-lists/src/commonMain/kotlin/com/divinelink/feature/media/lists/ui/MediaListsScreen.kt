@@ -12,6 +12,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.navigation.route.Navigation
@@ -32,7 +33,11 @@ fun AnimatedVisibilityScope.MediaListsScreen(
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+  val scrollBehavior = if (uiState.showTabs) {
+    TopAppBarDefaults.enterAlwaysScrollBehavior()
+  } else {
+    TopAppBarDefaults.pinnedScrollBehavior()
+  }
   val topAppBarColor = TopAppBarDefaults.topAppBarColors(
     scrolledContainerColor = MaterialTheme.colorScheme.surface,
   )
@@ -40,6 +45,7 @@ fun AnimatedVisibilityScope.MediaListsScreen(
   rememberScaffoldState(
     animatedVisibilityScope = this,
   ).PersistentScaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     navigationRail = {
       PersistentNavigationRail()
     },
