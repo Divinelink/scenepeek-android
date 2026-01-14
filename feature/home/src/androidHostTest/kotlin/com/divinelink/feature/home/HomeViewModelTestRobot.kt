@@ -3,7 +3,7 @@ package com.divinelink.feature.home
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.model.PaginationData
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestMediaRepository
@@ -71,7 +71,7 @@ class HomeViewModelTestRobot {
     )
   }
 
-  fun onRetrySection(section: HomeSection) = apply {
+  fun onRetrySection(section: MediaListSection) = apply {
     viewModel.onAction(HomeAction.RetrySection(section))
   }
 
@@ -79,7 +79,7 @@ class HomeViewModelTestRobot {
     viewModel.onAction(HomeAction.RetryAll)
   }
 
-  fun onLoadNextPage(section: HomeSection) = apply {
+  fun onLoadNextPage(section: MediaListSection) = apply {
     viewModel.onAction(HomeAction.LoadMore(section))
   }
 

@@ -1,7 +1,7 @@
 package com.divinelink.feature.media.lists
 
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.Res
@@ -16,7 +16,7 @@ import com.divinelink.core.model.tab.MediaListTab
 import com.divinelink.feature.media.lists.ui.MediaListsForm
 
 /**
- * This screen conditionally displays tabs based on the provided [HomeSection].
+ * This screen conditionally displays tabs based on the provided [MediaListSection].
  *
  * Tabs are determined at initialization time. When the section already specifies
  * a concrete media type (e.g., "Popular Movies"), tabs are hidden because the context
@@ -26,7 +26,7 @@ import com.divinelink.feature.media.lists.ui.MediaListsForm
 data class MediaListsUiState(
   val selectedTabIndex: Int,
   val tabs: List<MediaListTab>,
-  val section: HomeSection,
+  val section: MediaListSection,
   val title: UIText,
   val pages: Map<MediaType, Int>,
   val forms: Map<MediaType, MediaListsForm<MediaItem>>,
@@ -36,50 +36,50 @@ data class MediaListsUiState(
   val selectedForm = forms[selectedMediaType]
 
   companion object {
-    fun initial(section: HomeSection) = MediaListsUiState(
+    fun initial(section: MediaListSection) = MediaListsUiState(
       selectedTabIndex = 0,
       section = section,
       title = when (section) {
-        HomeSection.TrendingAll -> UIText.ResourceText(Res.string.trending)
-        is HomeSection.Popular -> if (section.mediaType == MediaType.MOVIE) {
+        MediaListSection.TrendingAll -> UIText.ResourceText(Res.string.trending)
+        is MediaListSection.Popular -> if (section.mediaType == MediaType.MOVIE) {
           UIText.ResourceText(Res.string.popular_movies)
         } else {
           UIText.ResourceText(Res.string.popular_series)
         }
-        is HomeSection.Upcoming -> if (section.mediaType == MediaType.MOVIE) {
+        is MediaListSection.Upcoming -> if (section.mediaType == MediaType.MOVIE) {
           UIText.ResourceText(Res.string.upcoming_movies)
         } else {
           UIText.ResourceText(Res.string.upcoming_series)
         }
-        HomeSection.Favorites -> UIText.ResourceText(Res.string.favorites)
-        is HomeSection.TopRated -> UIText.ResourceText(Res.string.top_rated)
+        MediaListSection.Favorites -> UIText.ResourceText(Res.string.favorites)
+        is MediaListSection.TopRated -> UIText.ResourceText(Res.string.top_rated)
       },
       pages = emptyMap(),
       forms = when (section) {
-        HomeSection.Favorites -> mapOf(
+        MediaListSection.Favorites -> mapOf(
           MediaType.MOVIE to MediaListsForm.Initial,
           MediaType.TV to MediaListsForm.Initial,
         )
-        is HomeSection.Popular -> mapOf(
+        is MediaListSection.Popular -> mapOf(
           section.mediaType to MediaListsForm.Initial,
         )
-        is HomeSection.TopRated -> mapOf(
+        is MediaListSection.TopRated -> mapOf(
           MediaType.MOVIE to MediaListsForm.Initial,
           MediaType.TV to MediaListsForm.Initial,
         )
-        HomeSection.TrendingAll -> mapOf(
+        MediaListSection.TrendingAll -> mapOf(
           MediaType.UNKNOWN to MediaListsForm.Initial,
         )
-        is HomeSection.Upcoming -> mapOf(
+        is MediaListSection.Upcoming -> mapOf(
           section.mediaType to MediaListsForm.Initial,
         )
       },
       tabs = when (section) {
-        HomeSection.Favorites -> MediaListTab.entries
-        is HomeSection.TopRated -> MediaListTab.entries
-        is HomeSection.Popular -> MediaListTab.from(section.mediaType)
-        is HomeSection.Upcoming -> MediaListTab.from(section.mediaType)
-        HomeSection.TrendingAll -> MediaListTab.from(MediaType.UNKNOWN)
+        MediaListSection.Favorites -> MediaListTab.entries
+        is MediaListSection.TopRated -> MediaListTab.entries
+        is MediaListSection.Popular -> MediaListTab.from(section.mediaType)
+        is MediaListSection.Upcoming -> MediaListTab.from(section.mediaType)
+        MediaListSection.TrendingAll -> MediaListTab.from(null)
       },
     )
   }

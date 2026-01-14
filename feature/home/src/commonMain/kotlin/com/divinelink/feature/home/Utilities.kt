@@ -1,7 +1,7 @@
 package com.divinelink.feature.home
 
-import com.divinelink.core.model.home.HomeSection
 import com.divinelink.core.model.home.HomeSectionInfo
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.popular_movies
@@ -18,23 +18,23 @@ fun buildHomeSections(clock: Clock): List<HomeSectionInfo> {
 
   return listOf(
     HomeSectionInfo(
-      section = HomeSection.TrendingAll,
+      section = MediaListSection.TrendingAll,
       title = Res.string.trending,
     ),
     HomeSectionInfo(
-      section = HomeSection.Popular(MediaType.MOVIE),
+      section = MediaListSection.Popular(MediaType.MOVIE),
       title = Res.string.popular_movies,
     ),
     HomeSectionInfo(
-      section = HomeSection.Upcoming(MediaType.MOVIE, minDate = today),
+      section = MediaListSection.Upcoming(MediaType.MOVIE, minDate = today),
       title = Res.string.upcoming_movies,
     ),
     HomeSectionInfo(
-      section = HomeSection.Popular(MediaType.TV),
+      section = MediaListSection.Popular(MediaType.TV),
       title = Res.string.popular_series,
     ),
     HomeSectionInfo(
-      section = HomeSection.Upcoming(MediaType.TV, minDate = today),
+      section = MediaListSection.Upcoming(MediaType.TV, minDate = today),
       title = Res.string.upcoming_series,
     ),
   )

@@ -4,7 +4,7 @@ import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.feature.home.HomeFormFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.home.HomeForm
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
@@ -55,8 +55,8 @@ class HomeViewModelTest {
 
   private fun createUiState(
     clock: Clock = ClockFactory.decemberFirst2021(),
-    forms: Map<HomeSection, HomeForm<MediaItem>>,
-    pages: Map<HomeSection, Int>,
+    forms: Map<MediaListSection, HomeForm<MediaItem>>,
+    pages: Map<MediaListSection, Int>,
   ) = HomeUiState.initial(
     sections = buildHomeSections(clock),
   ).copy(
@@ -64,14 +64,14 @@ class HomeViewModelTest {
     pages = pages,
   )
 
-  private val trendingSection = HomeSection.TrendingAll
-  private val popularMoviesSection = HomeSection.Popular(MediaType.MOVIE)
-  private val upcomingMoviesSection = HomeSection.Upcoming(
+  private val trendingSection = MediaListSection.TrendingAll
+  private val popularMoviesSection = MediaListSection.Popular(MediaType.MOVIE)
+  private val upcomingMoviesSection = MediaListSection.Upcoming(
     mediaType = MediaType.MOVIE,
     minDate = "2021-12-01",
   )
-  private val popularTVSection = HomeSection.Popular(MediaType.TV)
-  private val upcomingTVSection = HomeSection.Upcoming(
+  private val popularTVSection = MediaListSection.Popular(MediaType.TV)
+  private val upcomingTVSection = MediaListSection.Upcoming(
     mediaType = MediaType.TV,
     minDate = "2021-12-01",
   )
@@ -90,7 +90,7 @@ class HomeViewModelTest {
     upcomingMovies: HomeForm<MediaItem>,
     popularTV: HomeForm<MediaItem>,
     upcomingTV: HomeForm<MediaItem>,
-  ): Map<HomeSection, HomeForm<MediaItem>> = mapOf(
+  ): Map<MediaListSection, HomeForm<MediaItem>> = mapOf(
     trendingSection to trending,
     popularMoviesSection to popularMovies,
     upcomingMoviesSection to upcomingMovies,

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.home.toRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -26,7 +26,7 @@ class MediaListsViewModel(
 
   private val _uiState: MutableStateFlow<MediaListsUiState> = MutableStateFlow(
     MediaListsUiState.initial(
-      section = Json.decodeFromString<HomeSection>(savedStateHandle.get<String>("section")!!),
+      section = Json.decodeFromString<MediaListSection>(savedStateHandle.get<String>("section")!!),
     ),
   )
   val uiState: StateFlow<MediaListsUiState> = _uiState
@@ -43,11 +43,11 @@ class MediaListsViewModel(
     mediaType: MediaType,
   ) {
     when (uiState.value.section) {
-      HomeSection.TrendingAll -> fetchTrending()
-      is HomeSection.Popular -> fetchMediaLists(mediaType)
-      is HomeSection.TopRated -> fetchMediaLists(mediaType)
-      is HomeSection.Upcoming -> fetchMediaLists(mediaType)
-      HomeSection.Favorites -> fetchFavorites(mediaType)
+      MediaListSection.TrendingAll -> fetchTrending()
+      is MediaListSection.Popular -> fetchMediaLists(mediaType)
+      is MediaListSection.TopRated -> fetchMediaLists(mediaType)
+      is MediaListSection.Upcoming -> fetchMediaLists(mediaType)
+      MediaListSection.Favorites -> fetchFavorites(mediaType)
     }
   }
 

@@ -1,6 +1,6 @@
 package com.divinelink.core.network.media.util
 
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
@@ -88,7 +88,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for trending`() {
     buildFetchMediaListUrl(
-      section = HomeSection.TrendingAll,
+      section = MediaListSection.TrendingAll,
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3/trending/all/day?language=en-US&page=1"
   }
@@ -96,7 +96,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for popular movies`() {
     buildFetchMediaListUrl(
-      section = HomeSection.Popular(MediaType.MOVIE),
+      section = MediaListSection.Popular(MediaType.MOVIE),
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
@@ -110,7 +110,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for popular tv`() {
     buildFetchMediaListUrl(
-      section = HomeSection.Popular(MediaType.TV),
+      section = MediaListSection.Popular(MediaType.TV),
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
@@ -123,7 +123,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for upcoming movies`() {
     buildFetchMediaListUrl(
-      section = HomeSection.Upcoming(
+      section = MediaListSection.Upcoming(
         mediaType = MediaType.MOVIE,
         minDate = "2021-12-01"
       ),
@@ -139,7 +139,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for upcoming tv`() {
     buildFetchMediaListUrl(
-      section = HomeSection.Upcoming(
+      section = MediaListSection.Upcoming(
         mediaType = MediaType.TV,
         minDate = "2021-12-01"
       ),

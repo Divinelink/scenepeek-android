@@ -2,6 +2,7 @@ package com.divinelink.core.model.tab
 
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.empty_string
 import com.divinelink.core.model.resources.movie_tab
 import com.divinelink.core.model.resources.tv_show_tab
 import org.jetbrains.compose.resources.StringResource
@@ -30,7 +31,7 @@ sealed class MediaListTab(
     mediaType = MediaType.UNKNOWN,
     order = 0,
     value = MediaType.UNKNOWN.value,
-    titleRes = Res.string.tv_show_tab,
+    titleRes = Res.string.empty_string,
   )
 
   companion object {
