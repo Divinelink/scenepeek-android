@@ -33,7 +33,7 @@ import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.extension.format
-import com.divinelink.core.ui.media.MediaListContent
+import com.divinelink.core.ui.list.ScrollableMediaContent
 import com.divinelink.feature.user.data.resources.Res
 import com.divinelink.feature.user.data.resources.feature_user_data_empty
 import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_ratings
@@ -68,11 +68,7 @@ fun UserDataScreenContent(
     UserDataTabs(
       tabs = uiState.tabs,
       selectedIndex = uiState.selectedTabIndex,
-      onClick = {
-        scope.launch {
-          pagerState.animateScrollToPage(it)
-        }
-      },
+      onClick = { scope.launch { pagerState.animateScrollToPage(it) } },
     )
 
     HorizontalPager(
@@ -88,8 +84,7 @@ fun UserDataScreenContent(
             onRetry = onRefresh,
             section = uiState.section,
           )
-          is UserDataForm.Data -> {
-            if (it.isEmpty) {
+          is UserDataForm.Data -> if (it.isEmpty) {
               val stringResource = when (it.mediaType to uiState.section) {
                 MediaType.MOVIE to Ratings -> Res.string.feature_user_data_empty_movies_ratings
                 MediaType.MOVIE to Watchlist -> Res.string.feature_user_data_empty_movies_watchlist
@@ -103,8 +98,8 @@ fun UserDataScreenContent(
                 ),
               )
             } else {
-              MediaListContent(
-                list = it.media,
+            ScrollableMediaContent(
+              items = it.media,
                 onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
                 onLoadMore = onLoadMore,
                 onLongClick = { media ->
@@ -112,11 +107,11 @@ fun UserDataScreenContent(
                 },
                 onSwitchViewMode = onSwitchViewMode,
                 canLoadMore = uiState.canFetchMoreForSelectedTab,
+              section = ViewableSection.USER_DATA,
               )
             }
           }
         }
-      }
     }
   }
 }
