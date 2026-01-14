@@ -1,7 +1,7 @@
 package com.divinelink.core.network.media.util
 
 import com.divinelink.core.model.discover.DiscoverFilter
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Routes
 import io.ktor.http.URLProtocol
@@ -86,31 +86,33 @@ fun buildDiscoverUrl(
 }.toString()
 
 fun buildFetchMediaListUrl(
-  section: HomeSection,
+  request: MediaListRequest,
   page: Int,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
-  encodedPath = Routes.TMDb.V3 + when (section) {
-    HomeSection.TrendingAll -> "/trending/all/day"
-    is HomeSection.Popular -> "/discover/${section.mediaType.value}"
-    is HomeSection.Upcoming -> "/discover/${section.mediaType.value}"
+  encodedPath = Routes.TMDb.V3 + when (request) {
+    is MediaListRequest.Upcoming -> "/discover/${request.mediaType.value}"
+    is MediaListRequest.Popular -> "/discover/${request.mediaType.value}"
+    is MediaListRequest.TopRated -> "/${request.mediaType.value}/top_rated"
+    MediaListRequest.TrendingAll -> "/trending/all/day"
   }
 
   parameters.apply {
     append("language", "en-US")
     append("page", page.toString())
-    when (section) {
-      is HomeSection.Popular -> {
+    when (request) {
+      is MediaListRequest.Popular -> {
         append("sort_by", "popularity.desc")
         append("vote_count.gte", "50")
       }
-      is HomeSection.Upcoming -> when (section.mediaType) {
-        MediaType.TV -> append("first_air_date.gte", section.minDate)
-        MediaType.MOVIE -> append("primary_release_date.gte", section.minDate)
+      is MediaListRequest.Upcoming -> when (request.mediaType) {
+        MediaType.TV -> append("first_air_date.gte", request.minDate)
+        MediaType.MOVIE -> append("primary_release_date.gte", request.minDate)
         else -> Unit
       }
-      HomeSection.TrendingAll -> Unit
+      is MediaListRequest.TopRated -> Unit
+      MediaListRequest.TrendingAll -> Unit
     }
   }
 }.toString()

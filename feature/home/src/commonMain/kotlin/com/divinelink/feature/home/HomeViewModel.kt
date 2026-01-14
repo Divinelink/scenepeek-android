@@ -9,7 +9,9 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.toRequest
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +51,8 @@ class HomeViewModel(
       is HomeSection.Popular,
       is HomeSection.Upcoming,
         -> fetchMediaLists(section)
+      is HomeSection.TopRated -> Unit
+      HomeSection.Favorites -> Unit
     }
   }
 
@@ -71,9 +75,11 @@ class HomeViewModel(
               isLoading = false,
             ),
           ),
-          pages = uiState.pages.plus(
-            section to response.page,
-          ),
+          pages = if (response.page > (uiState.pages[section] ?: 0)) {
+            uiState.pages.plus(section to response.page)
+          } else {
+            uiState.pages
+          },
         )
       }
     }.onFailure { error ->
@@ -191,9 +197,13 @@ class HomeViewModel(
   private fun getPage(page: HomeSection): Int = uiState.value.pages[page]?.plus(1) ?: 1
 
   private fun fetchMediaLists(section: HomeSection) {
+    val request = section.toRequest(
+      mediaType = MediaType.UNKNOWN,
+    ) ?: return
+
     viewModelScope.launch {
       repository.fetchMediaLists(
-        section = section,
+        request = request,
         page = getPage(section),
       )
         .catch { emit(Result.failure(it)) }

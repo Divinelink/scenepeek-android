@@ -7,7 +7,7 @@ import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.discover.DiscoverFilter
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -36,7 +36,7 @@ class ProdMediaRepository(
 ) : MediaRepository {
 
   override suspend fun fetchTrending(page: Int): Flow<Result<PaginationData<MediaItem>>> = combine(
-    flowOf(remote.fetchMediaLists(HomeSection.TrendingAll, page)),
+    flowOf(remote.fetchMediaLists(MediaListRequest.TrendingAll, page)),
     dao.getFavoriteMediaIds(MediaType.MOVIE),
     dao.getFavoriteMediaIds(MediaType.TV),
   ) { response, favoriteMovieIds, favoriteTvShowIds ->
@@ -66,15 +66,18 @@ class ProdMediaRepository(
   }
 
   override fun fetchMediaLists(
-    section: HomeSection,
+    request: MediaListRequest,
     page: Int,
   ): Flow<Result<PaginationData<MediaItem>>> = flow {
-    val mediaType = when (section) {
-      HomeSection.TrendingAll -> MediaType.MOVIE
-      is HomeSection.Popular -> section.mediaType
-      is HomeSection.Upcoming -> section.mediaType
+    val mediaType = when (request) {
+      is MediaListRequest.Popular -> request.mediaType
+      is MediaListRequest.TopRated -> request.mediaType
+      is MediaListRequest.Upcoming -> request.mediaType
+      MediaListRequest.TrendingAll -> null
     }
-    val response = remote.fetchMediaLists(section, page).getOrThrow()
+    mediaType ?: return@flow
+
+    val response = remote.fetchMediaLists(request, page).getOrThrow()
 
     val paginationData = PaginationData(
       page = response.page,

@@ -4,7 +4,7 @@ import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.discover.DiscoverFilter
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -28,7 +28,7 @@ interface MediaRepository {
   suspend fun fetchTrending(page: Int): Flow<Result<PaginationData<MediaItem>>>
 
   fun fetchMediaLists(
-    section: HomeSection,
+    request: MediaListRequest,
     page: Int,
   ): Flow<Result<PaginationData<MediaItem>>>
 
@@ -46,12 +46,6 @@ interface MediaRepository {
    * Fetch all popular movies that the user has marked as favorite.
    */
   fun fetchFavorites(): Flow<MediaListResult>
-
-  /**
-   * Fetch all favorite ids: movies, series and persons.
-   * Uses [Flow] in order to observe changes to our favorite list.
-   */
-//  fun fetchFavoriteIds(): Flow<Result<List<Pair<Int, MediaType>>>>
 
   /**
    * Request movies through a search query. Uses pagination.

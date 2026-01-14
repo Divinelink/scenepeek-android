@@ -1,4 +1,4 @@
-package com.divinelink.feature.search.ui
+package com.divinelink.feature.media.lists.ui
 
 import com.divinelink.core.model.media.MediaItem
 

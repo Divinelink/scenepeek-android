@@ -17,12 +17,12 @@ import com.divinelink.feature.lists.create.ui.navigation.createListScreen
 import com.divinelink.feature.lists.create.ui.navigation.editListScreen
 import com.divinelink.feature.lists.details.ui.navigation.listDetailsScreen
 import com.divinelink.feature.lists.user.navigation.listsScreen
+import com.divinelink.feature.media.lists.navigation.mediaListsScreen
 import com.divinelink.feature.onboarding.navigation.fullscreenOnboarding
 import com.divinelink.feature.onboarding.navigation.modalOnboarding
 import com.divinelink.feature.profile.navigation.profileScreen
 import com.divinelink.feature.requests.ui.navigation.requestsScreen
 import com.divinelink.feature.search.navigation.searchScreen
-import com.divinelink.feature.search.ui.navigation.mediaListsScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
 import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
 import com.divinelink.feature.settings.navigation.account.jellyseerrSettingsScreen

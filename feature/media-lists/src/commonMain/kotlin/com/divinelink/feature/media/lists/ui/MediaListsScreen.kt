@@ -1,4 +1,4 @@
-package com.divinelink.feature.search.ui
+package com.divinelink.feature.media.lists.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,7 @@ import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.NavigateUpButton
 import com.divinelink.core.ui.getString
-import com.divinelink.feature.search.MediaListsViewModel
+import com.divinelink.feature.media.lists.MediaListsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
