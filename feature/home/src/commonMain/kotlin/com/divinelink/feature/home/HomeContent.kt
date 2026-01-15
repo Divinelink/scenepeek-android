@@ -17,7 +17,9 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.model.filter.HomeFilter
 import com.divinelink.core.model.home.HomeForm
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -42,10 +44,15 @@ fun HomeContent(
         ),
       filters = uiState.filters,
       onFilterClick = {
-        // TODO
+        val route = when (it) {
+          is HomeFilter.Favorites -> Navigation.MediaListsRoute(MediaListSection.Favorites)
+          is HomeFilter.TopRated -> Navigation.MediaListsRoute(MediaListSection.TopRated)
+        }
+
+        onNavigate(route)
       },
       onClearClick = {
-        // TODO
+        // Do nothing
       },
     )
 

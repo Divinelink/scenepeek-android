@@ -13,6 +13,7 @@ import com.divinelink.feature.lists.create.CreateListViewModel
 import com.divinelink.feature.lists.create.backdrop.SelectBackdropViewModel
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import com.divinelink.feature.lists.user.ListsViewModel
+import com.divinelink.feature.media.lists.MediaListsViewModel
 import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.request.media.RequestMediaViewModel
@@ -53,6 +54,7 @@ val appViewModelModule = module {
   viewModelOf(::RequestsViewModel)
   viewModelOf(::DiscoverViewModel)
   viewModelOf(::SelectFilterViewModel)
+  viewModelOf(::MediaListsViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

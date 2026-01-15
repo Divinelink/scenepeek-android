@@ -32,7 +32,10 @@ class TestMediaService {
     result: Result<MultiSearchResponseApi>,
   ) {
     whenever(
-      mock.fetchMediaLists(section = any(), page),
+      mock.fetchMediaLists(
+        request = any(),
+        page = page,
+      ),
     ).thenReturn(
       result,
     )

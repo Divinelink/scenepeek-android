@@ -16,9 +16,7 @@ object HomeFormFactory {
     hasError = false,
   )
 
-  fun data(
-    pages: Map<Int, List<MediaItem>>,
-  ) = HomeForm.Data(
+  fun data(pages: Map<Int, List<MediaItem>>) = HomeForm.Data(
     pages = pages,
     canLoadMore = false,
     isLoading = false,

@@ -8,8 +8,10 @@ import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.home.HomeForm
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.model.home.toRequest
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,17 +45,19 @@ class HomeViewModel(
     }
   }
 
-  private fun fetchMediaSection(section: HomeSection) {
+  private fun fetchMediaSection(section: MediaListSection) {
     when (section) {
-      HomeSection.TrendingAll -> fetchTrending(section)
-      is HomeSection.Popular,
-      is HomeSection.Upcoming,
+      MediaListSection.TrendingAll -> fetchTrending(section)
+      is MediaListSection.Popular,
+      is MediaListSection.Upcoming,
         -> fetchMediaLists(section)
+      is MediaListSection.TopRated -> Unit
+      MediaListSection.Favorites -> Unit
     }
   }
 
   private fun handleResult(
-    section: HomeSection,
+    section: MediaListSection,
     result: Result<PaginationData<MediaItem>>,
   ) {
     result.onSuccess { response ->
@@ -71,9 +75,11 @@ class HomeViewModel(
               isLoading = false,
             ),
           ),
-          pages = uiState.pages.plus(
-            section to response.page,
-          ),
+          pages = if (response.page > (uiState.pages[section] ?: 0)) {
+            uiState.pages.plus(section to response.page)
+          } else {
+            uiState.pages
+          },
         )
       }
     }.onFailure { error ->
@@ -89,7 +95,7 @@ class HomeViewModel(
     }
   }
 
-  private fun setWholeCurrentFormToError(section: HomeSection) {
+  private fun setWholeCurrentFormToError(section: MediaListSection) {
     _uiState.update { uiState ->
       uiState.copy(
         forms = uiState.forms.plus(section to HomeForm.Error),
@@ -97,7 +103,7 @@ class HomeViewModel(
     }
   }
 
-  private fun setErrorOnCurrentSectionWithData(section: HomeSection) {
+  private fun setErrorOnCurrentSectionWithData(section: MediaListSection) {
     _uiState.update { uiState ->
       val currentForm = uiState.forms[section]
       val pages = (currentForm as? HomeForm.Data)?.pages ?: emptyMap()
@@ -138,7 +144,7 @@ class HomeViewModel(
     }
   }
 
-  private fun onLoadNextPage(section: HomeSection) {
+  private fun onLoadNextPage(section: MediaListSection) {
     val currentForm = uiState.value.forms[section]
     val form = currentForm as? HomeForm.Data
 
@@ -155,7 +161,7 @@ class HomeViewModel(
     fetchSections()
   }
 
-  private fun onRetrySection(section: HomeSection) {
+  private fun onRetrySection(section: MediaListSection) {
     val newForm = when (val currentForm = uiState.value.forms[section]) {
       is HomeForm.Data -> currentForm.copy(
         hasError = false,
@@ -188,12 +194,16 @@ class HomeViewModel(
     searchStateManager.updateEntryPoint(SearchEntryPoint.HOME)
   }
 
-  private fun getPage(page: HomeSection): Int = uiState.value.pages[page]?.plus(1) ?: 1
+  private fun getPage(page: MediaListSection): Int = uiState.value.pages[page]?.plus(1) ?: 1
 
-  private fun fetchMediaLists(section: HomeSection) {
+  private fun fetchMediaLists(section: MediaListSection) {
+    val request = section.toRequest(
+      mediaType = MediaType.UNKNOWN,
+    ) ?: return
+
     viewModelScope.launch {
       repository.fetchMediaLists(
-        section = section,
+        request = request,
         page = getPage(section),
       )
         .catch { emit(Result.failure(it)) }
@@ -206,7 +216,7 @@ class HomeViewModel(
     }
   }
 
-  private fun fetchTrending(section: HomeSection) {
+  private fun fetchTrending(section: MediaListSection) {
     viewModelScope.launch {
       repository.fetchTrending(
         page = getPage(section),

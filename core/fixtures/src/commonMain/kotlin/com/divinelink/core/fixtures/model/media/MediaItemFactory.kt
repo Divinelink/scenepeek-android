@@ -201,7 +201,21 @@ object MediaItemFactory {
     bruceAlmighty(),
     despicableMe(),
     littleMissSunshine(),
+  )
 
+  fun movies() = listOf(
+    the40YearOldVirgin(),
+    theIncredibleBurtWonderstone(),
+    getSmart(),
+    bruceAlmighty(),
+    despicableMe(),
+    littleMissSunshine(),
+  )
+
+  fun tv() = listOf(
+    theWire(),
+    theOffice(),
+    riot(),
   )
 
   fun MoviesList(range: IntProgression = 1..10): List<MediaItem.Media.Movie> = range.map {

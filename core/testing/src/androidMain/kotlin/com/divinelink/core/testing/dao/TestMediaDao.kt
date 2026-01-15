@@ -30,6 +30,17 @@ class TestMediaDao {
     )
   }
 
+  fun mockFetchFavorites(
+    mediaType: MediaType,
+    result: Flow<List<MediaItem.Media>>,
+  ) {
+    whenever(
+      mock.fetchFavorites(mediaType),
+    ).thenReturn(
+      result,
+    )
+  }
+
   fun mockFetchFavoriteMovieIds(result: Flow<List<Int>>) {
     whenever(
       mock.getFavoriteMediaIds(MediaType.MOVIE),

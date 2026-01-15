@@ -3,7 +3,7 @@ package com.divinelink.feature.home
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.model.PaginationData
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestMediaRepository
@@ -24,9 +24,7 @@ class HomeViewModelTestRobot {
   private val repository = TestMediaRepository()
   private val fakeMarkAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
-  fun buildViewModel(
-    clock: Clock = ClockFactory.decemberFirst2021(),
-  ) = apply {
+  fun buildViewModel(clock: Clock = ClockFactory.decemberFirst2021()) = apply {
     viewModel = HomeViewModel(
       repository = repository.mock,
       clock = clock,
@@ -39,9 +37,7 @@ class HomeViewModelTestRobot {
     assertThat(viewModel.uiState.value).isEqualTo(expectedUiState)
   }
 
-  suspend fun mockFetchSectionData(
-    response: Flow<Result<PaginationData<MediaItem>>>,
-  ) = apply {
+  suspend fun mockFetchSectionData(response: Flow<Result<PaginationData<MediaItem>>>) = apply {
     repository.mockFetchMediaLists(
       response = response,
     )
@@ -50,9 +46,7 @@ class HomeViewModelTestRobot {
     )
   }
 
-  suspend fun mockFetchSectionData(
-    response: Result<PaginationData<MediaItem>>,
-  ) = apply {
+  suspend fun mockFetchSectionData(response: Result<PaginationData<MediaItem>>) = apply {
     repository.mockFetchMediaLists(
       response = flowOf(response),
     )
@@ -71,7 +65,7 @@ class HomeViewModelTestRobot {
     )
   }
 
-  fun onRetrySection(section: HomeSection) = apply {
+  fun onRetrySection(section: MediaListSection) = apply {
     viewModel.onAction(HomeAction.RetrySection(section))
   }
 
@@ -79,7 +73,7 @@ class HomeViewModelTestRobot {
     viewModel.onAction(HomeAction.RetryAll)
   }
 
-  fun onLoadNextPage(section: HomeSection) = apply {
+  fun onLoadNextPage(section: MediaListSection) = apply {
     viewModel.onAction(HomeAction.LoadMore(section))
   }
 

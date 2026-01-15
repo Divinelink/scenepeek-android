@@ -1,7 +1,7 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.model.discover.DiscoverFilter
-import com.divinelink.core.model.home.HomeSection
+import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.GenresListResponse
@@ -36,10 +36,10 @@ import kotlinx.coroutines.flow.flow
 class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
   override suspend fun fetchMediaLists(
-    section: HomeSection,
+    request: MediaListRequest,
     page: Int,
   ): Result<MultiSearchResponseApi> = runCatching {
-    val url = buildFetchMediaListUrl(section = section, page = page)
+    val url = buildFetchMediaListUrl(request = request, page = page)
 
     restClient.get<MultiSearchResponseApi>(url = url)
   }

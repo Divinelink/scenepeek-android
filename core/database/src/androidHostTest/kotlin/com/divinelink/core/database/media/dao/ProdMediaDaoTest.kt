@@ -181,4 +181,54 @@ class ProdMediaDaoTest {
       awaitItem() shouldBe GenreFactory.Tv.all.sortedBy { it.name }
     }
   }
+
+  @Test
+  fun `test fetch movie favorites`() = runTest {
+    dao.fetchFavorites(mediaType = MediaType.MOVIE).test {
+      awaitItem() shouldBe emptyList()
+    }
+
+    dao.insertMediaList(media = MediaItemFactory.all())
+    MediaItemFactory.all().forEach {
+      dao.addToFavorites(
+        mediaId = it.id,
+        mediaType = it.mediaType,
+      )
+    }
+
+    dao.fetchFavorites(mediaType = MediaType.MOVIE).test {
+      awaitItem() shouldBe MediaItemFactory.movies().map {
+        it.copy(isFavorite = true)
+      }
+    }
+  }
+
+  @Test
+  fun `test fetch tv favorites`() = runTest {
+    dao.insertMediaList(media = MediaItemFactory.all())
+
+    dao.fetchFavorites(mediaType = MediaType.TV).test {
+      awaitItem() shouldBe emptyList()
+
+      MediaItemFactory.all().forEach {
+        dao.addToFavorites(
+          mediaId = it.id,
+          mediaType = it.mediaType,
+        )
+      }
+
+      awaitItem() shouldBe listOf(
+        MediaItemFactory.theWire().copy(isFavorite = true),
+      )
+      awaitItem() shouldBe listOf(
+        MediaItemFactory.theWire().copy(isFavorite = true),
+        MediaItemFactory.theOffice().copy(isFavorite = true),
+      )
+      awaitItem() shouldBe listOf(
+        MediaItemFactory.theWire().copy(isFavorite = true),
+        MediaItemFactory.theOffice().copy(isFavorite = true),
+        MediaItemFactory.riot().copy(isFavorite = true),
+      )
+    }
+  }
 }

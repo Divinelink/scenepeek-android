@@ -1,11 +1,8 @@
-@file:Suppress("MagicNumber")
-
 package com.divinelink.core.ui.components
 
 import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,37 +14,32 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.filter.HomeFilter
+import com.divinelink.core.model.filter.SelectableFilter
 import com.divinelink.core.ui.Previews
-
-/**
- * A composable that will display a list of language.
- *
- * @param modifier The modifier to be applied to the filter bar.
- * @param language The list of language to display.
- * @param onFilterClick A callback that will be called when a filter is clicked.
- * @param onClearClick A callback that will be called when the clear button is clicked.
- */
+import com.divinelink.core.ui.getString
 
 const val FILTER_BAR_TEST_TAG = "FILTER_BAR"
 
 @Composable
 fun FilterBar(
   modifier: Modifier = Modifier,
-  filters: List<Filter>,
-  onFilterClick: (Filter) -> Unit,
+  filters: List<SelectableFilter>,
+  onFilterClick: (SelectableFilter) -> Unit,
   onClearClick: () -> Unit,
 ) {
+  if (filters.isEmpty()) return
+
   CompositionLocalProvider(
     LocalOverscrollFactory provides null,
   ) {
     LazyRow(
       modifier = modifier
         .testTag(FILTER_BAR_TEST_TAG)
-        .padding(start = 0.dp)
         .fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       val sortedFilters = filters.sortedBy { !it.isSelected }
@@ -59,7 +51,7 @@ fun FilterBar(
 
       items(
         count = sortedFilters.size,
-        key = { index -> sortedFilters[index].name },
+        key = { index -> sortedFilters[index].value },
       ) { index ->
         val filter = sortedFilters[index]
         FilterItem(
@@ -75,8 +67,8 @@ fun FilterBar(
 @Composable
 private fun FilterItem(
   modifier: Modifier = Modifier,
-  filter: Filter,
-  onFilterClick: (Filter) -> Unit,
+  filter: SelectableFilter,
+  onFilterClick: (SelectableFilter) -> Unit,
 ) {
   val color = if (filter.isSelected) {
     MaterialTheme.colorScheme.primary
@@ -91,7 +83,7 @@ private fun FilterItem(
     modifier = modifier,
     onClick = { onFilterClick(filter) },
   ) {
-    Text(text = filter.name)
+    Text(text = filter.name.getString())
   }
 }
 
@@ -101,10 +93,8 @@ private fun FilterBarPreview() {
   AppTheme {
     FilterBar(
       filters = listOf(
-        Filter("All", true),
-        Filter("Popular", false),
-        Filter("Top Rated", true),
-        Filter("Upcoming", false),
+        HomeFilter.Favorites(false),
+        HomeFilter.TopRated(true),
       ),
       onFilterClick = { },
       onClearClick = { },
@@ -112,25 +102,13 @@ private fun FilterBarPreview() {
   }
 }
 
-/**
- * A data class that represents a filter.
- * @param name The name of the filter.
- * @param isSelected Whether the filter is selected or not.
- */
-data class Filter(
-  val name: String,
-  val isSelected: Boolean,
-)
-
 @Previews
 @Composable
 private fun FilterBarUnselectedPreview() {
   AppTheme {
     val filters = mutableListOf(
-      Filter("All", false),
-      Filter("Popular", false),
-      Filter("Top Rated", false),
-      Filter("Upcoming", false),
+      HomeFilter.Favorites(false),
+      HomeFilter.TopRated(false),
     )
     FilterBar(
       filters = filters,

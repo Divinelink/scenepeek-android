@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="empty_media_list_title">No media found</string>
+  <string name="empty_media_list_description">You can try to change the filters or search for something else.</string>
+</resources>

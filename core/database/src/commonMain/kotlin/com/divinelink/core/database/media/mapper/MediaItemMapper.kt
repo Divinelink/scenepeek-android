@@ -18,7 +18,7 @@ fun MediaItem.Media.map() = MediaItemEntity(
   video = -1,
   name = name,
   originalName = name,
-  firstAirDate = "",
+  firstAirDate = releaseDate,
   genreIdsJson = "",
   originCountryJson = "",
 )

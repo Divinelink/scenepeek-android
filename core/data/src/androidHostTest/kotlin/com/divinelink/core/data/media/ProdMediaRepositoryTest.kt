@@ -6,6 +6,7 @@ import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
@@ -55,6 +56,26 @@ class ProdMediaRepositoryTest {
 
     repository.fetchFavorites().test {
       awaitItem() shouldBe Result.success(MediaItemFactory.all())
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test fetch favorites movies`() = runTest {
+    val movies = MediaItemFactory.all().filter { it.mediaType == MediaType.MOVIE }
+    val favoriteMovies = flowOf(movies)
+
+    mediaDao.mockFetchFavorites(mediaType = MediaType.MOVIE, favoriteMovies)
+
+    repository.fetchFavorites(mediaType = MediaType.MOVIE).test {
+      awaitItem() shouldBe Result.success(
+        PaginationData(
+          list = movies,
+          page = 1,
+          totalPages = 1,
+          totalResults = movies.size,
+        ),
+      )
       awaitComplete()
     }
   }

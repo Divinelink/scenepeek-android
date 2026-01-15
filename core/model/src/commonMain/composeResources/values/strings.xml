@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="empty_string" />
+
   <string name="fatal_error_fetching_details">Couldn't load details. Going back to previous screen.</string>
   <string name="general_error_message">Something when wrong.</string>
 
@@ -8,7 +10,6 @@
   <string name="people_tab">People</string>
   <string name="tv_tab">TV</string>
   <string name="tv_show_tab">TV Shows</string>
-
 
   <string name="gender_not_set">-</string>
   <string name="gender_male">Male</string>
@@ -43,6 +44,14 @@
   <string name="core_model_onboarding_features_headers">Features</string>
   <string name="core_model_onboarding_added_header">Added</string>
   <string name="core_model_onboarding_fixed_header">Fixed/Improved</string>
+
+  <string name="trending">Trending</string>
+  <string name="popular_movies">Popular movies</string>
+  <string name="upcoming_movies">Upcoming movies</string>
+  <string name="popular_series">Popular series</string>
+  <string name="upcoming_series">Upcoming series</string>
+  <string name="favorites">Favorites</string>
+  <string name="top_rated">Top rated</string>
 
   <string name="all">All</string>
   <string name="approved">Approved</string>
