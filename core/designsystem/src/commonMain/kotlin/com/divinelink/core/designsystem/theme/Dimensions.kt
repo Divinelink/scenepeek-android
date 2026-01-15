@@ -3,7 +3,8 @@
 package com.divinelink.core.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowDpSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
@@ -45,13 +46,12 @@ data class Dimensions(
   val posterSize: Dp = 180.dp,
 )
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun mediaCardSize() = if (
-  currentWindowAdaptiveInfo().windowSizeClass.isWidthAtLeastBreakpoint(400)
-) {
-  MaterialTheme.dimensions.shortMediaCard
-} else {
+fun mediaCardSize() = if (currentWindowDpSize().width < 400.dp) {
   MaterialTheme.dimensions.keyline_96
+} else {
+  MaterialTheme.dimensions.shortMediaCard
 }
 
 val MaterialTheme.dimensions: Dimensions
