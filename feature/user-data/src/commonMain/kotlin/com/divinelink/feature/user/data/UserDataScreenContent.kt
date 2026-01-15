@@ -85,33 +85,33 @@ fun UserDataScreenContent(
             section = uiState.section,
           )
           is UserDataForm.Data -> if (it.isEmpty) {
-              val stringResource = when (it.mediaType to uiState.section) {
-                MediaType.MOVIE to Ratings -> Res.string.feature_user_data_empty_movies_ratings
-                MediaType.MOVIE to Watchlist -> Res.string.feature_user_data_empty_movies_watchlist
-                MediaType.TV to Ratings -> Res.string.feature_user_data_empty_tv_shows_ratings
-                MediaType.TV to Watchlist -> Res.string.feature_user_data_empty_tv_shows_watchlist
-                else -> Res.string.feature_user_data_empty
-              }
-              BlankSlate(
-                uiState = BlankSlateState.Custom(
-                  title = UIText.ResourceText(stringResource),
-                ),
-              )
-            } else {
+            val stringResource = when (it.mediaType to uiState.section) {
+              MediaType.MOVIE to Ratings -> Res.string.feature_user_data_empty_movies_ratings
+              MediaType.MOVIE to Watchlist -> Res.string.feature_user_data_empty_movies_watchlist
+              MediaType.TV to Ratings -> Res.string.feature_user_data_empty_tv_shows_ratings
+              MediaType.TV to Watchlist -> Res.string.feature_user_data_empty_tv_shows_watchlist
+              else -> Res.string.feature_user_data_empty
+            }
+            BlankSlate(
+              uiState = BlankSlateState.Custom(
+                title = UIText.ResourceText(stringResource),
+              ),
+            )
+          } else {
             ScrollableMediaContent(
               items = it.media,
-                onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
-                onLoadMore = onLoadMore,
-                onLongClick = { media ->
-                  onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
-                },
-                onSwitchViewMode = onSwitchViewMode,
-                canLoadMore = uiState.canFetchMoreForSelectedTab,
+              onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
+              onLoadMore = onLoadMore,
+              onLongClick = { media ->
+                onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
+              },
+              onSwitchViewMode = onSwitchViewMode,
+              canLoadMore = uiState.canFetchMoreForSelectedTab,
               section = ViewableSection.USER_DATA,
-              )
-            }
+            )
           }
         }
+      }
     }
   }
 }

@@ -9,15 +9,10 @@ sealed interface MediaListRequest {
   data class TopRated(val mediaType: MediaType) : MediaListRequest
 }
 
-fun MediaListSection.toRequest(
-  mediaType: MediaType,
-): MediaListRequest? {
-  return when (this) {
-    MediaListSection.Favorites -> null
-    MediaListSection.TopRated -> MediaListRequest.TopRated(mediaType)
-
-    MediaListSection.TrendingAll -> MediaListRequest.TrendingAll
-    is MediaListSection.Popular -> MediaListRequest.Popular(this.mediaType)
-    is MediaListSection.Upcoming -> MediaListRequest.Upcoming(this.mediaType, minDate)
-  }
+fun MediaListSection.toRequest(mediaType: MediaType): MediaListRequest? = when (this) {
+  MediaListSection.Favorites -> null
+  MediaListSection.TopRated -> MediaListRequest.TopRated(mediaType)
+  MediaListSection.TrendingAll -> MediaListRequest.TrendingAll
+  is MediaListSection.Popular -> MediaListRequest.Popular(this.mediaType)
+  is MediaListSection.Upcoming -> MediaListRequest.Upcoming(this.mediaType, minDate)
 }

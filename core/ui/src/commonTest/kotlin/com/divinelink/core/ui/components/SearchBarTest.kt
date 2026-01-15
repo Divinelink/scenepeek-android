@@ -1,4 +1,4 @@
-package com.divinelink.ui.components
+package com.divinelink.core.ui.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.test.assertIsDisplayed
@@ -9,8 +9,6 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.components.ScenePeekSearchBar
-import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test

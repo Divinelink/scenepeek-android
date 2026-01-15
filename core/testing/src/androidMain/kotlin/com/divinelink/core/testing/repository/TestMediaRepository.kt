@@ -36,9 +36,7 @@ class TestMediaRepository {
     ).thenReturn(response)
   }
 
-  fun mockFetchMediaLists(
-    response: Flow<Result<PaginationData<MediaItem>>>,
-  ) {
+  fun mockFetchMediaLists(response: Flow<Result<PaginationData<MediaItem>>>) {
     whenever(
       mock.fetchMediaLists(
         request = any(),

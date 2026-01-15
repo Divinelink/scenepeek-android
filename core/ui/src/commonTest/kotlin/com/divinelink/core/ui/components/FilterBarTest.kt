@@ -1,36 +1,32 @@
-package com.divinelink.ui.components
+package com.divinelink.core.ui.components
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.divinelink.core.model.filter.HomeFilter
+import com.divinelink.core.model.filter.SelectableFilter
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.components.Filter
-import com.divinelink.core.ui.components.FilterBar
 import com.divinelink.core.ui.resources.clear_filters_button_content_description
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
 
 class FilterBarTest : ComposeTest() {
 
-  private val filters = listOf(
-    Filter("Action", isSelected = true),
-    Filter("Comedy", isSelected = false),
-    Filter("Drama", isSelected = false),
-    Filter("Horror", isSelected = false),
-    Filter("Romance", isSelected = false),
-    Filter("Thriller", isSelected = false),
-  )
+  private val filters = HomeFilter.entries
 
   @Test
   fun clearButtonClickTest() = uiTest {
     var clearIsClicked = false
     setContent {
       FilterBar(
-        filters = filters,
+        filters = listOf(
+          HomeFilter.Favorites(isSelected = true),
+          HomeFilter.TopRated(isSelected = false),
+        ),
         onFilterClick = {},
         onClearClick = {
           clearIsClicked = true
@@ -42,37 +38,34 @@ class FilterBarTest : ComposeTest() {
       UiString.clear_filters_button_content_description,
     )
 
-    onNodeWithContentDescription(clearFilterButtonContentDescription).assertIsDisplayed()
+    onNodeWithContentDescription(clearFilterButtonContentDescription)
+      .assertIsDisplayed()
       .performClick()
 
-    assertThat(clearIsClicked).isTrue()
+    clearIsClicked shouldBe true
   }
 
   @Test
   fun filterBarActionClickTest() = uiTest {
-    var actionIsClicked = false
+    var clickedFilter: SelectableFilter? = null
+
     setContent {
       FilterBar(
         filters = filters,
         onFilterClick = { filter ->
-          actionIsClicked = filter.name == "Action"
+          clickedFilter = filter
         },
         onClearClick = {},
       )
     }
 
-    onNodeWithText("Action").assertIsDisplayed().performClick()
+    onNodeWithText("Favorites").assertIsDisplayed().performClick()
 
-    assertThat(actionIsClicked).isTrue()
+    clickedFilter shouldBe HomeFilter.Favorites(isSelected = false)
   }
 
   @Test
   fun clearButtonNotDisplayedTest() = uiTest {
-    val filters = listOf(
-      Filter("Romance", isSelected = false),
-      Filter("Thriller", isSelected = false),
-    )
-
     setContent {
       FilterBar(
         filters = filters,

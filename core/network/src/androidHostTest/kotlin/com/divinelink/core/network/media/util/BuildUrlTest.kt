@@ -1,8 +1,7 @@
 package com.divinelink.core.network.media.util
 
-import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
-import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -16,9 +15,8 @@ class BuildUrlTest {
       appendToResponse = true,
     )
 
-    assertThat(url).isEqualTo(
-      "https://api.themoviedb.org/3/tv/1234?language=en-US&append_to_response=external_ids",
-    )
+    url shouldBe
+      "https://api.themoviedb.org/3/tv/1234?language=en-US&append_to_response=external_ids"
   }
 
   @Test
@@ -29,9 +27,7 @@ class BuildUrlTest {
       appendToResponse = false,
     )
 
-    assertThat(url).isEqualTo(
-      "https://api.themoviedb.org/3/tv/1234?language=en-US",
-    )
+    url shouldBe "https://api.themoviedb.org/3/tv/1234?language=en-US"
   }
 
   @Test
@@ -42,9 +38,7 @@ class BuildUrlTest {
       appendToResponse = true,
     )
 
-    assertThat(url).isEqualTo(
-      "https://api.themoviedb.org/3/movie/1234?language=en-US&append_to_response=credits",
-    )
+    url shouldBe "https://api.themoviedb.org/3/movie/1234?language=en-US&append_to_response=credits"
   }
 
   @Test
@@ -55,9 +49,7 @@ class BuildUrlTest {
       appendToResponse = false,
     )
 
-    assertThat(url).isEqualTo(
-      "https://api.themoviedb.org/3/movie/1234?language=en-US",
-    )
+    url shouldBe "https://api.themoviedb.org/3/movie/1234?language=en-US"
   }
 
   @Test
@@ -66,9 +58,7 @@ class BuildUrlTest {
       externalId = "tt1234",
     )
 
-    assertThat(url).isEqualTo(
-      "https://api.themoviedb.org/3/find/tt1234?external_source=imdb_id",
-    )
+    url shouldBe "https://api.themoviedb.org/3/find/tt1234?external_source=imdb_id"
   }
 
   @Test
@@ -88,7 +78,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for trending`() {
     buildFetchMediaListUrl(
-      section = MediaListSection.TrendingAll,
+      request = MediaListRequest.TrendingAll,
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3/trending/all/day?language=en-US&page=1"
   }
@@ -96,7 +86,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for popular movies`() {
     buildFetchMediaListUrl(
-      section = MediaListSection.Popular(MediaType.MOVIE),
+      request = MediaListRequest.Popular(MediaType.MOVIE),
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
@@ -110,7 +100,7 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for popular tv`() {
     buildFetchMediaListUrl(
-      section = MediaListSection.Popular(MediaType.TV),
+      request = MediaListRequest.Popular(MediaType.TV),
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
@@ -123,9 +113,9 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for upcoming movies`() {
     buildFetchMediaListUrl(
-      section = MediaListSection.Upcoming(
+      request = MediaListRequest.Upcoming(
         mediaType = MediaType.MOVIE,
-        minDate = "2021-12-01"
+        minDate = "2021-12-01",
       ),
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3" +
@@ -139,9 +129,9 @@ class BuildUrlTest {
   @Test
   fun `test buildFetchMediaListUrl for upcoming tv`() {
     buildFetchMediaListUrl(
-      section = MediaListSection.Upcoming(
+      request = MediaListRequest.Upcoming(
         mediaType = MediaType.TV,
-        minDate = "2021-12-01"
+        minDate = "2021-12-01",
       ),
       page = 1,
     ) shouldBe "https://api.themoviedb.org/3" +

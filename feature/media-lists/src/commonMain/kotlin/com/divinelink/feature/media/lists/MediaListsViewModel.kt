@@ -39,9 +39,7 @@ class MediaListsViewModel(
     }
   }
 
-  private fun fetchMediaSection(
-    mediaType: MediaType,
-  ) {
+  private fun fetchMediaSection(mediaType: MediaType) {
     when (uiState.value.section) {
       MediaListSection.TrendingAll -> fetchTrending()
       is MediaListSection.Popular -> fetchMediaLists(mediaType)
@@ -75,9 +73,7 @@ class MediaListsViewModel(
     }
   }
 
-  private fun fetchMediaLists(
-    mediaType: MediaType,
-  ) {
+  private fun fetchMediaLists(mediaType: MediaType) {
     val request = uiState.value.section.toRequest(mediaType) ?: return
 
     viewModelScope.launch {
@@ -96,9 +92,7 @@ class MediaListsViewModel(
     }
   }
 
-  private fun fetchFavorites(
-    mediaType: MediaType,
-  ) {
+  private fun fetchFavorites(mediaType: MediaType) {
     viewModelScope.launch {
       repository.fetchFavorites(mediaType)
         .catch { emit(Result.failure(it)) }
@@ -161,13 +155,13 @@ class MediaListsViewModel(
           is MediaListsForm.Error,
           MediaListsForm.Initial,
             -> when (error) {
-            is AppException.Offline -> uiState.copy(
-              forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Offline),
-            )
-            else -> uiState.copy(
-              forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Generic),
-            )
-          }
+              is AppException.Offline -> uiState.copy(
+                forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Offline),
+              )
+              else -> uiState.copy(
+                forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Generic),
+              )
+            }
           null -> uiState
         }
       }

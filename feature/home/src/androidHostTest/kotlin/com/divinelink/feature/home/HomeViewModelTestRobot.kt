@@ -24,9 +24,7 @@ class HomeViewModelTestRobot {
   private val repository = TestMediaRepository()
   private val fakeMarkAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
-  fun buildViewModel(
-    clock: Clock = ClockFactory.decemberFirst2021(),
-  ) = apply {
+  fun buildViewModel(clock: Clock = ClockFactory.decemberFirst2021()) = apply {
     viewModel = HomeViewModel(
       repository = repository.mock,
       clock = clock,
@@ -39,9 +37,7 @@ class HomeViewModelTestRobot {
     assertThat(viewModel.uiState.value).isEqualTo(expectedUiState)
   }
 
-  suspend fun mockFetchSectionData(
-    response: Flow<Result<PaginationData<MediaItem>>>,
-  ) = apply {
+  suspend fun mockFetchSectionData(response: Flow<Result<PaginationData<MediaItem>>>) = apply {
     repository.mockFetchMediaLists(
       response = response,
     )
@@ -50,9 +46,7 @@ class HomeViewModelTestRobot {
     )
   }
 
-  suspend fun mockFetchSectionData(
-    response: Result<PaginationData<MediaItem>>,
-  ) = apply {
+  suspend fun mockFetchSectionData(response: Result<PaginationData<MediaItem>>) = apply {
     repository.mockFetchMediaLists(
       response = flowOf(response),
     )

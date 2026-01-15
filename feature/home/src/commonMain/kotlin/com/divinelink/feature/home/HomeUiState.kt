@@ -30,9 +30,8 @@ data class HomeUiState(
       error = null,
     )
 
-    fun List<HomeSectionInfo>.buildForms(): Map<MediaListSection, HomeForm<MediaItem>> =
-      associate {
-        it.section to HomeForm.Initial
-      }
+    fun List<HomeSectionInfo>.buildForms(): Map<MediaListSection, HomeForm<MediaItem>> = associate {
+      it.section to HomeForm.Initial
+    }
   }
 }
