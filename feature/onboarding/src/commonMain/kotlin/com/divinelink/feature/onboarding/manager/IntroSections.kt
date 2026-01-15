@@ -16,23 +16,6 @@ import com.divinelink.feature.onboarding.resources.feature_onboarding_link_handl
 import com.divinelink.feature.onboarding.resources.feature_onboarding_link_handling_page_title
 import com.divinelink.feature.onboarding.resources.feature_onboarding_tmdb_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_tmdb_page_title
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v22_feature_profile
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v22_feature_tmdb_lists
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v22_fix_encryption
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v24_add_loading_indicator
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v24_retry_failed_api_calls
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v24_update_changelog
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v25_fix_favorite_status
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v25_media_action_menu
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v25_redesign_jellyseerr_login
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v25_redesign_ui_media_cards
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v25_support_emby_login
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v26_jellyseerr_request_advanced_settings
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v26_jellyseerr_request_advanced_settings_extra
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v27_jellyseerr_encryption
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v27_jellyseerr_requests_screen
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v27_tmdb_display_item_status_when_adding_to_lists
-import com.divinelink.feature.onboarding.resources.feature_onboarding_v28_discover_screen
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v29_discover_filters
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v29_discover_rating_filter
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v29_favorite_status_lists
@@ -47,6 +30,9 @@ import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_add_de
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_add_detailed_error_messages_for_seerr
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_improve_search
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_show_year_on_search
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v33_fix_duplicate_ids_crash
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v33_redesign_home_screen
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v33_update_favorites
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
 import com.divinelink.feature.onboarding.resources.Res as R
@@ -89,81 +75,6 @@ object IntroSections {
     }
     add(IntroSection.GetStartedButton)
   }
-
-  val v23 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
-    IntroSection.WhatsNew("v0.15.0"),
-    IntroSection.SecondaryHeader.Added,
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_feature_tmdb_lists)),
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_feature_profile)),
-    IntroSection.SecondaryHeader.Fixed,
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_fix_encryption)),
-  )
-
-  val v24 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
-    IntroSection.WhatsNew("v0.16.0"),
-    IntroSection.SecondaryHeader.Fixed,
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v24_retry_failed_api_calls)),
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v24_add_loading_indicator)),
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v24_update_changelog)),
-  )
-
-  val v25 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
-    IntroSection.WhatsNew("v0.17.0"),
-    IntroSection.SecondaryHeader.Features,
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_support_emby_login)),
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_redesign_ui_media_cards)),
-    IntroSection.Text(
-      UIText.ResourceText(R.string.feature_onboarding_v25_redesign_jellyseerr_login),
-    ),
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_media_action_menu)),
-    IntroSection.SecondaryHeader.Fixed,
-    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_fix_favorite_status)),
-  )
-
-  val v26 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
-    IntroSection.WhatsNew("v0.18.0"),
-    IntroSection.SecondaryHeader.Features,
-    IntroSection.Text(
-      UIText.ResourceText(R.string.feature_onboarding_v26_jellyseerr_request_advanced_settings),
-    ),
-    IntroSection.Text(
-      UIText.ResourceText(
-        R.string.feature_onboarding_v26_jellyseerr_request_advanced_settings_extra,
-      ),
-    ),
-  )
-
-  val v27 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
-    IntroSection.WhatsNew("v0.19.0"),
-    IntroSection.SecondaryHeader.Added,
-    IntroSection.Text(
-      UIText.ResourceText(R.string.feature_onboarding_v27_jellyseerr_requests_screen),
-    ),
-    IntroSection.SecondaryHeader.Features,
-    IntroSection.Text(
-      UIText.ResourceText(
-        R.string.feature_onboarding_v27_tmdb_display_item_status_when_adding_to_lists,
-      ),
-    ),
-    IntroSection.SecondaryHeader.Fixed,
-    IntroSection.Text(
-      UIText.ResourceText(R.string.feature_onboarding_v27_jellyseerr_encryption),
-    ),
-  )
-
-  val v28 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
-    IntroSection.WhatsNew("v0.20.0"),
-    IntroSection.SecondaryHeader.Added,
-    IntroSection.Text(
-      UIText.ResourceText(R.string.feature_onboarding_v28_discover_screen),
-    ),
-  )
 
   val v29 = listOf(
     IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
@@ -210,18 +121,23 @@ object IntroSections {
     ),
   )
 
+  val v33 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.24.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_redesign_home_screen)),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_update_favorites)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_fix_duplicate_ids_crash)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
   val changelogSections = mapOf(
-    23 to v23,
-    24 to v24,
-    25 to v25,
-    26 to v26,
-    27 to v27,
-    28 to v28,
     29 to v29,
     30 to v30,
     32 to v32,
+    33 to v33
   )
 }
