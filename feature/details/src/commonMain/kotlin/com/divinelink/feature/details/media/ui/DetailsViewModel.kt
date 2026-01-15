@@ -184,7 +184,7 @@ class DetailsViewModel(
                     this[castOrder] = DetailsForm.Content(
                       DetailsData.Cast(
                         isTv = false,
-                        items = (data.mediaDetails as Movie).cast,
+                        items = (data.mediaDetails as Movie).cast.distinctBy { it.id },
                       ),
                     )
                   }
@@ -254,7 +254,7 @@ class DetailsViewModel(
                   this[castOrder] = DetailsForm.Content(
                     DetailsData.Cast(
                       isTv = true,
-                      items = credits.cast,
+                      items = credits.cast.distinctBy { it.id },
                     ),
                   )
                 }
