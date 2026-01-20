@@ -43,6 +43,7 @@ class SelectFilterViewModel(
         filterRepository
           .selectedCountry
           .map { it[_uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { country ->
             _uiState.update {
               it.copy(
@@ -60,6 +61,7 @@ class SelectFilterViewModel(
         filterRepository
           .selectedGenres
           .map { it[_uiState.value.mediaType] ?: emptyList() }
+          .distinctUntilChanged()
           .onEach { genres ->
             _uiState.update {
               it.copy(
@@ -75,6 +77,7 @@ class SelectFilterViewModel(
         filterRepository
           .selectedLanguage
           .map { it[_uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { language ->
             _uiState.update {
               it.copy(
@@ -91,6 +94,7 @@ class SelectFilterViewModel(
         filterRepository
           .voteAverage
           .map { it[_uiState.value.mediaType] }
+
           .onEach { voteAverage ->
             _uiState.update {
               it.copy(
@@ -121,6 +125,7 @@ class SelectFilterViewModel(
         filterRepository
           .year
           .map { it[_uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { filter ->
             _uiState.update { uiState ->
               when (filter) {
