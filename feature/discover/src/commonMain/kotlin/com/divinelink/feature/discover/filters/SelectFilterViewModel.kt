@@ -94,7 +94,7 @@ class SelectFilterViewModel(
         filterRepository
           .voteAverage
           .map { it[_uiState.value.mediaType] }
-
+          .distinctUntilChanged()
           .onEach { voteAverage ->
             _uiState.update {
               it.copy(
@@ -110,6 +110,7 @@ class SelectFilterViewModel(
         filterRepository
           .minimumVotes
           .map { it[uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { votes ->
             _uiState.update {
               it.copy(

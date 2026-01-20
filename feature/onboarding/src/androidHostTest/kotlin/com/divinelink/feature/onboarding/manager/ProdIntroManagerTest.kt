@@ -91,7 +91,7 @@ class ProdIntroManagerTest {
     )
 
     manager.sections.test {
-      awaitItem() shouldBe emptyList<IntroSection>()
+      awaitItem() shouldBe emptyList()
       awaitComplete()
     }
   }
@@ -153,18 +153,28 @@ class ProdIntroManagerTest {
         IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
         IntroSection.WhatsNew("v0.24.0"),
         IntroSection.SecondaryHeader.Added,
-        IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_redesign_home_screen)),
-        IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_update_favorites)),
+        IntroSection.Text(
+          UIText.ResourceText(R.string.feature_onboarding_v33_redesign_home_screen),
+        ),
+        IntroSection.Text(
+          UIText.ResourceText(R.string.feature_onboarding_v33_update_favorites),
+        ),
         IntroSection.SecondaryHeader.Fixed,
-        IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_fix_duplicate_ids_crash)),
+        IntroSection.Text(
+          UIText.ResourceText(R.string.feature_onboarding_v33_fix_duplicate_ids_crash),
+        ),
         IntroSection.WhatsNew("v0.23.0"),
         IntroSection.SecondaryHeader.Added,
         IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v32_improve_search)),
-        IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v32_add_custom_color_option)),
+        IntroSection.Text(
+          UIText.ResourceText(R.string.feature_onboarding_v32_add_custom_color_option),
+        ),
         IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v32_show_year_on_search)),
         IntroSection.SecondaryHeader.Fixed,
         IntroSection.Text(
-          UIText.ResourceText(R.string.feature_onboarding_v32_add_detailed_error_messages_for_seerr),
+          UIText.ResourceText(
+            R.string.feature_onboarding_v32_add_detailed_error_messages_for_seerr,
+          ),
         ),
         IntroSection.Text(
           UIText.ResourceText(R.string.feature_onboarding_v32_add_detailed_csrf_warning),
@@ -180,7 +190,9 @@ class ProdIntroManagerTest {
         IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v30_external_ratings)),
         IntroSection.SecondaryHeader.Fixed,
         IntroSection.Text(
-          UIText.ResourceText(R.string.feature_onboarding_v30_fix_jellyfin_auth_with_empty_passwords),
+          UIText.ResourceText(
+            R.string.feature_onboarding_v30_fix_jellyfin_auth_with_empty_passwords,
+          ),
         ),
         IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v30_fix_encryption)),
       )
