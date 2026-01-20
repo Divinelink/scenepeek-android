@@ -16,6 +16,15 @@
   <string name="tv_tab">TV</string>
   <string name="tv_show_tab">TV Shows</string>
 
+  <string name="name">Name</string>
+  <string name="popularity">Popularity</string>
+  <string name="revenue">Revenue</string>
+  <string name="primary_release_date">Release date</string>
+  <string name="first_air_date">Air date</string>
+  <string name="title">Title</string>
+  <string name="vote_average">User score</string>
+  <string name="vote_count">Total votes</string>
+
   <string name="gender_not_set">-</string>
   <string name="gender_male">Male</string>
   <string name="gender_female">Female</string>

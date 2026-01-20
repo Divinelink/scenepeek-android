@@ -111,7 +111,7 @@ fun ListsDataContent(
         item(span = { GridItemSpan(maxLineSpan) }) {
           ScreenSettingsRow(
             section = ViewableSection.LISTS,
-            onSwitchViewMode = { userInteraction.invoke(ListsAction.SwitchViewMode) },
+            onSwitchPreferences = { userInteraction.invoke(ListsAction.SwitchViewMode) },
           )
         }
 

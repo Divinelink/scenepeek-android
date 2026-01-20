@@ -15,6 +15,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
@@ -41,7 +42,7 @@ import kotlinx.coroutines.launch
 fun MediaListsContent(
   uiState: MediaListsUiState,
   action: (MediaListsAction) -> Unit,
-  onSwitchViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
   val scope = rememberCoroutineScope()
@@ -110,7 +111,7 @@ fun MediaListsContent(
               items = form.media,
               section = ViewableSection.SEARCH,
               onLoadMore = { action(MediaListsAction.LoadMore) },
-              onSwitchViewMode = onSwitchViewMode,
+              onSwitchPreferences = onSwitchPreferences,
               onClick = { it.toRoute()?.let { route -> onNavigate(route) } },
               onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
               canLoadMore = form.canLoadMore,
@@ -131,7 +132,7 @@ fun MediaListsContentPreview(
     MediaListsContent(
       uiState = state,
       action = {},
-      onSwitchViewMode = {},
+      onSwitchPreferences = {},
       onNavigate = {},
     )
   }

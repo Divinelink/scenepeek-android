@@ -3,7 +3,8 @@ package com.divinelink.core.model.ui
 enum class ViewableSection(val key: String) {
   LISTS("lists"),
   PERSON_CREDITS("person_credits"),
-  DISCOVER("discover"),
+  DISCOVER_SHOWS("discover"),
+  DISCOVER_MOVIES("discover"),
   USER_DATA("user_data"),
   MEDIA_DETAILS("media_details"),
   LIST_DETAILS("list_details"),

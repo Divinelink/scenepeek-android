@@ -1,5 +1,5 @@
 [versions]
-version-name = "0.24.0"
+version-name = "0.25.0-RC1"
 version-code = "33"
 
 compile-sdk = "36"

@@ -62,6 +62,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -104,7 +105,7 @@ fun SharedTransitionScope.PersonContent(
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
   onTabSelected: (Int) -> Unit,
-  onUpdateViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
   onProgressUpdate: (Float) -> Unit,
   onNavigate: (Navigation) -> Unit,
@@ -279,7 +280,7 @@ fun SharedTransitionScope.PersonContent(
               Spacer(modifier = Modifier.weight(1f))
 
               SwitchViewButton(
-                onClick = onUpdateViewMode,
+                onClick = { onSwitchPreferences(SwitchPreferencesAction.SwitchViewMode(it)) },
                 section = ViewableSection.PERSON_CREDITS,
               )
             }
@@ -458,7 +459,7 @@ fun PersonContentListPreview(
         scope = rememberCoroutineScope(),
         onMediaClick = {},
         onTabSelected = {},
-        onUpdateViewMode = {},
+        onSwitchPreferences = {},
         onApplyFilter = {},
         onProgressUpdate = {},
         onNavigate = {},
@@ -507,7 +508,7 @@ fun PersonContentGridPreview() {
         scope = rememberCoroutineScope(),
         onMediaClick = {},
         onTabSelected = {},
-        onUpdateViewMode = {},
+        onSwitchPreferences = {},
         onApplyFilter = {},
         onProgressUpdate = {},
         onNavigate = {},

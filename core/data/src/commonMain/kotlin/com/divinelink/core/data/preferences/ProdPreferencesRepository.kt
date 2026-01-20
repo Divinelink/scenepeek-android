@@ -37,6 +37,10 @@ class ProdPreferencesRepository(
     )
   }
 
+  override suspend fun switchSortDirection(section: ViewableSection) {
+    storage.updateSortDirection(section)
+  }
+
   override suspend fun updateCurrentTheme(theme: Theme) {
     preferenceStorage.selectTheme(theme.storageKey)
   }

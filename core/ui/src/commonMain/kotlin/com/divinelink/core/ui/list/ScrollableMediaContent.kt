@@ -26,6 +26,7 @@ import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.DetailedMediaItem
@@ -48,7 +49,7 @@ fun ScrollableMediaContent(
   items: List<MediaItem>,
   section: ViewableSection,
   onLoadMore: () -> Unit,
-  onSwitchViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
   onClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
   canLoadMore: Boolean,
@@ -91,7 +92,7 @@ fun ScrollableMediaContent(
         item(span = { GridItemSpan(maxLineSpan) }) {
           ScreenSettingsRow(
             section = section,
-            onSwitchViewMode = onSwitchViewMode,
+            onSwitchPreferences = onSwitchPreferences,
           )
         }
 
@@ -108,7 +109,9 @@ fun ScrollableMediaContent(
                 media = media,
                 onClick = onClick,
                 onLongClick = onLongClick,
-                showDate = section == ViewableSection.SEARCH || section == ViewableSection.DISCOVER,
+                showDate = section == ViewableSection.SEARCH ||
+                  section == ViewableSection.DISCOVER_SHOWS ||
+                  section == ViewableSection.DISCOVER_MOVIES,
               )
               ViewMode.LIST -> DetailedMediaItem(
                 modifier = Modifier

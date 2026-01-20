@@ -43,6 +43,7 @@ import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.toStub
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
@@ -78,7 +79,7 @@ fun ListScrollableContent(
   action: (ListDetailsAction) -> Unit,
   onUpdateToolbarProgress: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
-  onSwitchViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
   var showActionModal by remember { mutableStateOf<MediaItem?>(null) }
@@ -256,7 +257,7 @@ fun ListScrollableContent(
           item(span = { GridItemSpan(maxLineSpan) }) {
             ScreenSettingsRow(
               section = ViewableSection.LIST_DETAILS,
-              onSwitchViewMode = onSwitchViewMode,
+              onSwitchPreferences = onSwitchPreferences,
             )
           }
 

@@ -14,6 +14,7 @@ interface PreferencesRepository {
   val themePreferences: Flow<ThemePreferences>
 
   suspend fun switchViewMode(section: ViewableSection)
+  suspend fun switchSortDirection(section: ViewableSection)
 
   suspend fun updateCurrentTheme(theme: Theme)
   suspend fun updateColorSystem(system: ColorSystem)

@@ -121,7 +121,7 @@ fun PersonScreen(
               )
             },
             onTabSelected = viewModel::onTabSelected,
-            onUpdateViewMode = switchViewButtonViewModel::switchViewMode,
+            onSwitchPreferences = switchViewButtonViewModel::onAction,
             onApplyFilter = viewModel::onApplyFilter,
             onProgressUpdate = { toolbarProgress = it },
             onNavigate = onNavigate,

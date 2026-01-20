@@ -4,6 +4,7 @@ import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.sort.other
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
@@ -28,6 +29,20 @@ class TestPreferencesRepository(
     currentViewMode?.let { viewMode ->
       _uiPreferences.value = _uiPreferences.value.copy(
         viewModes = _uiPreferences.value.viewModes + (section to viewMode.other()),
+      )
+    }
+  }
+
+  override suspend fun switchSortDirection(section: ViewableSection) {
+    val currentSortDirection = _uiPreferences.value.sortBy[section]
+
+    currentSortDirection?.let { sortBy ->
+      _uiPreferences.value = _uiPreferences.value.copy(
+        sortBy = _uiPreferences.value.sortBy + (
+          section to sortBy.copy(
+            direction = sortBy.direction.other(),
+          )
+          ),
       )
     }
   }

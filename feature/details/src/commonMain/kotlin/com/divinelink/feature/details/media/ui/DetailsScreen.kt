@@ -148,7 +148,7 @@ fun DetailsScreen(
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
       onUpdateMediaInfo = viewModel::onUpdateMediaInfo,
-      onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
+      onSwitchPreferences = switchViewButtonViewModel::onAction,
     )
 
     videoUrl?.let {

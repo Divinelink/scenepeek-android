@@ -74,7 +74,7 @@ fun AnimatedVisibilityScope.MediaListsScreen(
           uiState = uiState,
           action = viewModel::onAction,
           onNavigate = onNavigate,
-          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
+          onSwitchPreferences = switchViewButtonViewModel::onAction,
         )
       }
     },

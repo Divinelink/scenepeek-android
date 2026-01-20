@@ -25,7 +25,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
@@ -56,7 +58,7 @@ fun DiscoverContent(
   uiState: DiscoverUiState,
   action: (DiscoverAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
-  onSwitchViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
   val scope = rememberCoroutineScope()
   val pagerState = rememberPagerState(
@@ -184,9 +186,13 @@ fun DiscoverContent(
           } else {
             ScrollableMediaContent(
               items = it.media,
-              section = ViewableSection.DISCOVER,
+              section = if (uiState.selectedMedia == MediaType.MOVIE) {
+                ViewableSection.DISCOVER_MOVIES
+              } else {
+                ViewableSection.DISCOVER_SHOWS
+              },
               onLoadMore = { action(DiscoverAction.LoadMore) },
-              onSwitchViewMode = onSwitchViewMode,
+              onSwitchPreferences = onSwitchPreferences,
               onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
               onLongClick = { media ->
                 onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
@@ -210,7 +216,7 @@ fun DiscoverContentPreview(
       uiState = state,
       action = {},
       onNavigate = {},
-      onSwitchViewMode = {},
+      onSwitchPreferences = {},
     )
   }
 }
