@@ -2,8 +2,11 @@ package com.divinelink.core.ui.button.switchview
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDownward
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
@@ -32,7 +36,6 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SortingButton(
-  modifier: Modifier = Modifier,
   section: ViewableSection,
   onSwitchSortDirection: (ViewableSection) -> Unit,
   onSwitchSortBy: (ViewableSection, SortBy) -> Unit,
@@ -45,6 +48,32 @@ fun SortingButton(
   }
   val rotationState by remember(sortBy) { derivedStateOf { if (descending) 0f else 180f } }
   val rotation by animateFloatAsState(targetValue = rotationState)
+
+  if (showDropdownSortByOptions) {
+    DropdownMenu(
+      modifier = Modifier
+        .widthIn(min = 180.dp)
+        .testTag(TestTags.Menu.DROPDOWN_MENU),
+      expanded = showDropdownSortByOptions,
+      onDismissRequest = { showDropdownSortByOptions = false },
+    ) {
+      val options = when (section) {
+        ViewableSection.DISCOVER_SHOWS -> SortBy.discoverShowEntries
+        ViewableSection.DISCOVER_MOVIES -> SortBy.discoverMovieEntries
+        else -> emptyList()
+      }
+
+      options.forEach { option ->
+        SortDropdownMenuItem(
+          sortBy = option,
+          onClick = {
+            showDropdownSortByOptions = false
+            onSwitchSortBy(section, option)
+          },
+        )
+      }
+    }
+  }
 
   TextButton(
     onClick = { showDropdownSortByOptions = true },
@@ -66,4 +95,16 @@ fun SortingButton(
       tint = MaterialTheme.colorScheme.primary,
     )
   }
+}
+
+@Composable
+private fun SortDropdownMenuItem(
+  sortBy: SortBy,
+  onClick: (SortBy) -> Unit,
+) {
+  DropdownMenuItem(
+    modifier = Modifier,
+    text = { Text(text = stringResource(sortBy.label)) },
+    onClick = { onClick(sortBy) },
+  )
 }

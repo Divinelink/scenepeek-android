@@ -3,6 +3,7 @@ package com.divinelink.core.domain.components
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.preferences.PreferencesRepository
+import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.launch
@@ -11,7 +12,7 @@ class SwitchViewButtonViewModel(private val repository: PreferencesRepository) :
 
   fun onAction(action: SwitchPreferencesAction) {
     when (action) {
-      is SwitchPreferencesAction.SwitchSortBy -> switchSortBy(action.section)
+      is SwitchPreferencesAction.SwitchSortBy -> switchSortBy(action.section, action.sortBy)
       is SwitchPreferencesAction.SwitchSortDirection -> switchSortDirection(action.section)
       is SwitchPreferencesAction.SwitchViewMode -> switchViewMode(action.section)
     }
@@ -29,8 +30,12 @@ class SwitchViewButtonViewModel(private val repository: PreferencesRepository) :
     }
   }
 
-  private fun switchSortBy(section: ViewableSection) {
+  private fun switchSortBy(
+    section: ViewableSection,
+    sortBy: SortBy,
+  ) {
     viewModelScope.launch {
+      repository.switchSortBy(section, sortBy)
     }
   }
 }

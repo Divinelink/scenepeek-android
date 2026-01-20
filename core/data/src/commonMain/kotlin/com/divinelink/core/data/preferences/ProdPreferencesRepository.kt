@@ -5,6 +5,7 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -39,6 +40,13 @@ class ProdPreferencesRepository(
 
   override suspend fun switchSortDirection(section: ViewableSection) {
     storage.updateSortDirection(section)
+  }
+
+  override suspend fun switchSortBy(
+    section: ViewableSection,
+    sortBy: SortBy,
+  ) {
+    storage.updateSortBy(section, sortBy)
   }
 
   override suspend fun updateCurrentTheme(theme: Theme) {

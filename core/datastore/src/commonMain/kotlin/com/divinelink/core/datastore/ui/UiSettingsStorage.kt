@@ -16,6 +16,7 @@ import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 interface UiSettingsStorage {
@@ -49,7 +50,7 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
       viewModes = ViewableSection.entries.associateWith { section ->
         ViewMode.from(it[viewModeKey(section)])
       },
-      sortBy = mapOf(
+      sortOption = mapOf(
         ViewableSection.DISCOVER_MOVIES to SortOption(
           sortBy = SortBy.findDiscoverMovieOption(it[sortByKey(ViewableSection.DISCOVER_MOVIES)]),
           direction = SortDirection.from(it[sortDirectionKey(ViewableSection.DISCOVER_MOVIES)]),
@@ -60,13 +61,18 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
         ),
       ),
     )
-  }
+  }.distinctUntilChanged()
 
   override suspend fun updateViewMode(section: ViewableSection) {
     dataStore.edit { preferences ->
-      val currentViewMode = preferences[viewModeKey(section)]
+      val currentViewMode = ViewMode.from(preferences[viewModeKey(section)])
 
-      preferences[viewModeKey(section)] = ViewMode.from(currentViewMode).other().value
+      if (section == ViewableSection.DISCOVER_MOVIES || section == ViewableSection.DISCOVER_SHOWS) {
+        preferences[viewModeKey(ViewableSection.DISCOVER_SHOWS)] = currentViewMode.other().value
+        preferences[viewModeKey(ViewableSection.DISCOVER_MOVIES)] = currentViewMode.other().value
+      } else {
+        preferences[viewModeKey(section)] = currentViewMode.other().value
+      }
     }
   }
 

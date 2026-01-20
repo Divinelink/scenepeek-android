@@ -27,7 +27,7 @@ fun rememberViewModePreferences(section: ViewableSection): ViewMode {
 fun rememberSortBy(section: ViewableSection): SortOption {
   val uiPreferences = rememberUiPreferences()
 
-  return uiPreferences.sortBy[section] ?: SortOption(
+  return uiPreferences.sortOption[section] ?: SortOption(
     sortBy = SortBy.POPULARITY,
     direction = SortDirection.DESC,
   )

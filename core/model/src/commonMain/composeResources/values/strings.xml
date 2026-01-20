@@ -22,7 +22,7 @@
   <string name="primary_release_date">Release date</string>
   <string name="first_air_date">Air date</string>
   <string name="title">Title</string>
-  <string name="vote_average">User score</string>
+  <string name="vote_average">Rating</string>
   <string name="vote_count">Total votes</string>
 
   <string name="gender_not_set">-</string>

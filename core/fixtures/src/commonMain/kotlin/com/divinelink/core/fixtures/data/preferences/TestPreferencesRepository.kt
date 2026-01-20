@@ -4,6 +4,7 @@ import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.other
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
@@ -34,14 +35,27 @@ class TestPreferencesRepository(
   }
 
   override suspend fun switchSortDirection(section: ViewableSection) {
-    val currentSortDirection = _uiPreferences.value.sortBy[section]
+    val currentSortBy = _uiPreferences.value.sortOption[section]
 
-    currentSortDirection?.let { sortBy ->
+    currentSortBy?.let { sortBy ->
       _uiPreferences.value = _uiPreferences.value.copy(
-        sortBy = _uiPreferences.value.sortBy + (
-          section to sortBy.copy(
-            direction = sortBy.direction.other(),
-          )
+        sortOption = _uiPreferences.value.sortOption + (
+          section to sortBy.copy(direction = sortBy.direction.other())
+          ),
+      )
+    }
+  }
+
+  override suspend fun switchSortBy(
+    section: ViewableSection,
+    sortBy: SortBy,
+  ) {
+    val currentSortBy = _uiPreferences.value.sortOption[section]
+
+    currentSortBy?.let { sortOption ->
+      _uiPreferences.value = _uiPreferences.value.copy(
+        sortOption = _uiPreferences.value.sortOption + (
+          section to sortOption.copy(sortBy = sortOption.sortBy)
           ),
       )
     }

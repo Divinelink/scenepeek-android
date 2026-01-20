@@ -21,24 +21,17 @@ fun ScreenSettingsRow(
     verticalAlignment = Alignment.CenterVertically,
   ) {
     when (section) {
-      ViewableSection.DISCOVER_SHOWS -> SortingButton(
-        section = section,
-        onSwitchSortDirection = {
-          onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
-        },
-        onSwitchSortBy = { section, option ->
-          onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
-        },
-      )
-      ViewableSection.DISCOVER_MOVIES -> SortingButton(
-        section = section,
-        onSwitchSortDirection = {
-          onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
-        },
-        onSwitchSortBy = { section, option ->
-          onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
-        },
-      )
+      ViewableSection.DISCOVER_SHOWS,
+      ViewableSection.DISCOVER_MOVIES,
+        -> SortingButton(
+          section = section,
+          onSwitchSortDirection = {
+            onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
+          },
+          onSwitchSortBy = { section, option ->
+            onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
+          },
+        )
       else -> Unit
     }
 

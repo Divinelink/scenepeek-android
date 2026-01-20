@@ -25,19 +25,19 @@ enum class SortBy(val value: String, val label: StringResource) {
   companion object {
     val discoverMovieEntries = listOf(
       POPULARITY,
-      REVENUE,
-      RELEASE_DATE,
-      TITLE,
       VOTE_AVERAGE,
       VOTE_COUNT,
+      RELEASE_DATE,
+      REVENUE,
+      TITLE,
     )
 
     val discoverShowEntries = listOf(
-      FIRST_AIR_DATE,
-      NAME,
       POPULARITY,
       VOTE_AVERAGE,
       VOTE_COUNT,
+      FIRST_AIR_DATE,
+      NAME,
     )
 
     fun findDiscoverMovieOption(value: String?): SortBy = discoverMovieEntries.find {

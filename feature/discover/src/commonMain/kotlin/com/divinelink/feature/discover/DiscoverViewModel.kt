@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 class DiscoverViewModel(
   private val filterRepository: FilterRepository,
   private val discoverUseCase: DiscoverMediaUseCase,
-  private val preferencesRepository: PreferencesRepository,
+  preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<DiscoverUiState> = MutableStateFlow(
@@ -38,7 +38,7 @@ class DiscoverViewModel(
     preferencesRepository
       .uiPreferences
       .mapNotNull { uiPreferences ->
-        uiPreferences.sortBy.mapNotNull { (key, value) ->
+        uiPreferences.sortOption.mapNotNull { (key, value) ->
           when (key) {
             ViewableSection.DISCOVER_SHOWS -> MediaType.TV to value
             ViewableSection.DISCOVER_MOVIES -> MediaType.MOVIE to value
