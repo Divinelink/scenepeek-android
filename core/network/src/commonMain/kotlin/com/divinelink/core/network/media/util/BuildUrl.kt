@@ -3,6 +3,7 @@ package com.divinelink.core.network.media.util
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Routes
 import io.ktor.http.URLProtocol
 import io.ktor.http.buildUrl
@@ -57,6 +58,7 @@ fun buildGenreUrl(media: MediaType): String = buildUrl {
 fun buildDiscoverUrl(
   page: Int,
   media: MediaType,
+  sortOption: SortOption,
   filters: List<DiscoverFilter>,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
@@ -67,7 +69,7 @@ fun buildDiscoverUrl(
     append("page", page.toString())
     append("language", "en-US")
     append("include_adult", "false")
-    append("sort_by", "popularity.desc")
+    append("sort_by", sortOption.sortValue)
     filters.forEach { filter ->
       when (filter) {
         is DiscoverFilter.Genres -> if (filter.filters.isNotEmpty()) {

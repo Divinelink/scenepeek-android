@@ -43,7 +43,7 @@ fun SortingButton(
   var descending by rememberSaveable(sortBy) {
     mutableStateOf(sortBy.direction == SortDirection.DESC)
   }
-  val rotationState by remember(sortBy) { derivedStateOf { if (descending) 180f else 0f } }
+  val rotationState by remember(sortBy) { derivedStateOf { if (descending) 0f else 180f } }
   val rotation by animateFloatAsState(targetValue = rotationState)
 
   TextButton(
