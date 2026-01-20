@@ -14,6 +14,7 @@ import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -72,6 +73,10 @@ class ListsScreenTest : ComposeTest() {
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
+
+    switchViewButtonViewModel.onAction(
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.LISTS),
+    )
 
     onNodeWithTag(
       TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
@@ -134,7 +139,7 @@ class ListsScreenTest : ComposeTest() {
     }
 
     onNodeWithTag(
-      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
     ).assertIsDisplayed()
 
     onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
@@ -207,13 +212,13 @@ class ListsScreenTest : ComposeTest() {
     }
 
     onNodeWithTag(
-      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
     ).assertIsDisplayed()
 
     onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
 
     onNodeWithTag(
-      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
+      TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
     ).assertIsDisplayed()
   }
 
@@ -239,6 +244,10 @@ class ListsScreenTest : ComposeTest() {
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
+
+    switchViewButtonViewModel.onAction(
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.LISTS),
+    )
 
     onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsNotDisplayed()
 

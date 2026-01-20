@@ -15,8 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class TestPreferencesRepository(
   uiPreferences: UiPreferences = UiPreferences.Initial,
   themePreferences: ThemePreferences = ThemePreferences.initial,
-) :
-  PreferencesRepository {
+) : PreferencesRepository {
 
   private val _uiPreferences = MutableStateFlow(uiPreferences)
   override val uiPreferences: Flow<UiPreferences> = _uiPreferences

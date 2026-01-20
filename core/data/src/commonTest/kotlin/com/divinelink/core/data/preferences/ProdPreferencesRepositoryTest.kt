@@ -5,6 +5,9 @@ import app.cash.turbine.test
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortDirection
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -27,15 +30,26 @@ class ProdPreferencesRepositoryTest {
       awaitItem() shouldBe UiPreferences(
         viewModes = ViewableSection.entries.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.LIST
-            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
-            ViewableSection.DISCOVER -> ViewMode.LIST
-            ViewableSection.USER_DATA -> ViewMode.LIST
-            ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
-            ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            ViewableSection.LISTS -> ViewMode.GRID
+            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
+            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
+            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
+            ViewableSection.USER_DATA -> ViewMode.GRID
+            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
+            ViewableSection.LIST_DETAILS -> ViewMode.GRID
             ViewableSection.SEARCH -> ViewMode.GRID
           }
         },
+        sortOption = mapOf(
+          ViewableSection.DISCOVER_MOVIES to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.DISCOVER_SHOWS to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+        ),
       )
     }
   }
@@ -46,15 +60,26 @@ class ProdPreferencesRepositoryTest {
       awaitItem() shouldBe UiPreferences(
         viewModes = ViewableSection.entries.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.LIST
-            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
-            ViewableSection.DISCOVER -> ViewMode.LIST
-            ViewableSection.USER_DATA -> ViewMode.LIST
-            ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
-            ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            ViewableSection.LISTS -> ViewMode.GRID
+            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
+            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
+            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
+            ViewableSection.USER_DATA -> ViewMode.GRID
+            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
+            ViewableSection.LIST_DETAILS -> ViewMode.GRID
             ViewableSection.SEARCH -> ViewMode.GRID
           }
         },
+        sortOption = mapOf(
+          ViewableSection.DISCOVER_MOVIES to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.DISCOVER_SHOWS to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+        ),
       )
 
       repository.switchViewMode(
@@ -64,15 +89,26 @@ class ProdPreferencesRepositoryTest {
       awaitItem() shouldBe UiPreferences(
         viewModes = ViewableSection.entries.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.LIST
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER -> ViewMode.LIST
-            ViewableSection.USER_DATA -> ViewMode.LIST
-            ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
-            ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            ViewableSection.LISTS -> ViewMode.GRID
+            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
+            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
+            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
+            ViewableSection.USER_DATA -> ViewMode.GRID
+            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
+            ViewableSection.LIST_DETAILS -> ViewMode.GRID
             ViewableSection.SEARCH -> ViewMode.GRID
           }
         },
+        sortOption = mapOf(
+          ViewableSection.DISCOVER_MOVIES to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.DISCOVER_SHOWS to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+        ),
       )
 
       repository.switchViewMode(
@@ -82,15 +118,26 @@ class ProdPreferencesRepositoryTest {
       awaitItem() shouldBe UiPreferences(
         viewModes = ViewableSection.entries.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER -> ViewMode.LIST
-            ViewableSection.USER_DATA -> ViewMode.LIST
-            ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
-            ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            ViewableSection.LISTS -> ViewMode.LIST
+            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
+            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
+            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
+            ViewableSection.USER_DATA -> ViewMode.GRID
+            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
+            ViewableSection.LIST_DETAILS -> ViewMode.GRID
             ViewableSection.SEARCH -> ViewMode.GRID
           }
         },
+        sortOption = mapOf(
+          ViewableSection.DISCOVER_MOVIES to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.DISCOVER_SHOWS to SortOption(
+            SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+        ),
       )
     }
   }

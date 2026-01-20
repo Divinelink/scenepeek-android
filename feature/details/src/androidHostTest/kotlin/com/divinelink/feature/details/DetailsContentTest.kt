@@ -118,7 +118,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -156,7 +156,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -191,7 +191,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -226,7 +226,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -263,7 +263,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -308,7 +308,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -346,7 +346,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -395,7 +395,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -437,7 +437,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -478,7 +478,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -529,7 +529,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -582,7 +582,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -620,7 +620,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -655,7 +655,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -722,7 +722,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -791,7 +791,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -839,7 +839,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -886,7 +886,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -929,7 +929,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
         onShowAllRatingsClick = {
           hasClickedViewAllRatings = true
@@ -973,7 +973,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1018,7 +1018,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1062,7 +1062,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1108,7 +1108,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1156,7 +1156,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1198,7 +1198,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1233,7 +1233,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1268,7 +1268,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1303,7 +1303,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1344,7 +1344,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1383,7 +1383,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1418,7 +1418,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1457,7 +1457,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1465,7 +1465,7 @@ class DetailsContentTest : ComposeTest() {
     onNodeWithTag(TestTags.Details.Recommendations.FORM)
       .assertIsDisplayed()
       .performScrollToIndex(1)
-    onNodeWithText(MediaItemFactory.TVList().first().overview).assertIsDisplayed()
+    onNodeWithText(MediaItemFactory.TVList().first().name).assertIsDisplayed()
   }
 
   @Test
@@ -1495,7 +1495,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1530,7 +1530,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1569,7 +1569,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1604,7 +1604,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
         animatedVisibilityScope = this,
       )
     }

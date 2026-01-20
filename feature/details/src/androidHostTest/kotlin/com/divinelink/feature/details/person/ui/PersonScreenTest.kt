@@ -33,6 +33,8 @@ import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.model.ui.SwitchPreferencesAction
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
@@ -701,11 +703,11 @@ class PersonScreenTest : ComposeTest() {
 
     // Switch to Movies tab
     onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
-    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsDisplayed()
 
     // Switch to TV Shows tab
     onNodeWithText("TV Shows").performClick()
-    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(true)).assertIsDisplayed()
   }
 
   @Test
@@ -749,13 +751,13 @@ class PersonScreenTest : ComposeTest() {
     onNodeWithText("Movies").performClick()
 
     // Verify initial grid layout
-    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
-    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsNotDisplayed()
 
     onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
 
-    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsDisplayed()
-    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsNotDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsNotDisplayed()
   }
 
   @Test
@@ -769,7 +771,9 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setVisibilityScopeContent {
+    setVisibilityScopeContent(
+      preferencesRepository = preferencesRepository,
+    ) {
       PersonScreen(
         onNavigate = {},
         viewModel = viewModel,
@@ -777,6 +781,10 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
+
+    switchViewButtonViewModel.onAction(
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.PERSON_CREDITS),
+    )
 
     channel.send(
       Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
@@ -906,7 +914,7 @@ class PersonScreenTest : ComposeTest() {
       TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing"),
     ).assertIsNotDisplayed()
 
-    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).performScrollToIndex(4)
+    onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).performScrollToIndex(4)
 
     onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing")).assertIsDisplayed()
 
@@ -984,7 +992,9 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setVisibilityScopeContent {
+    setVisibilityScopeContent(
+      preferencesRepository = preferencesRepository,
+    ) {
       PersonScreen(
         onNavigate = {},
         viewModel = viewModel,
@@ -992,6 +1002,10 @@ class PersonScreenTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
+
+    switchViewButtonViewModel.onAction(
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.PERSON_CREDITS),
+    )
 
     channel.send(
       Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
@@ -1086,17 +1100,17 @@ class PersonScreenTest : ComposeTest() {
     // Switch to Movies tab
     onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
 
-    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(true))
       .performScrollToNode(
         matcher = hasText(text = "Sound (1)"),
       )
 
     onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
 
-    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(true))
       .performScrollToIndex(9)
 
-    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+    onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(true))
       .performTouchInput {
         val center = centerY
 

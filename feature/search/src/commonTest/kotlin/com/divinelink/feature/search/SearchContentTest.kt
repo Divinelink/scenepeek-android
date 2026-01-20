@@ -48,7 +48,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
       )
     }
 
@@ -81,7 +81,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
       )
     }
 
@@ -116,7 +116,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
       )
     }
 
@@ -155,7 +155,7 @@ class SearchContentTest : ComposeTest() {
           searchMovieTabState = rememberLazyGridState(),
           searchPeopleTabState = rememberLazyGridState(),
           searchTVTabState = rememberLazyGridState(),
-          onSwitchViewMode = {},
+          onSwitchPreferences = {},
         )
       }
 
@@ -189,7 +189,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
       )
     }
 

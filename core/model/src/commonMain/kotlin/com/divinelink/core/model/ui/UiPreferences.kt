@@ -12,7 +12,7 @@ data class UiPreferences(
     val Initial = UiPreferences(
       viewModes = ViewableSection.entries.associateWith { section ->
         when (section) {
-          ViewableSection.LISTS -> ViewMode.LIST
+          ViewableSection.LISTS -> ViewMode.GRID
           ViewableSection.PERSON_CREDITS -> ViewMode.GRID
           ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
           ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
