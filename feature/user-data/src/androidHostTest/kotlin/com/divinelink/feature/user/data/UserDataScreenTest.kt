@@ -37,8 +37,7 @@ import com.divinelink.core.ui.resources.core_ui_login
 import com.divinelink.core.ui.resources.core_ui_offline_description
 import com.divinelink.core.ui.resources.core_ui_offline_title
 import com.divinelink.feature.user.data.resources.Res
-import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_watchlist
-import com.divinelink.feature.user.data.resources.feature_user_data_empty_tv_shows_watchlist
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_watchlist
 import com.divinelink.feature.user.data.resources.feature_user_data_login_watchlist_description
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.delay
@@ -229,20 +228,12 @@ class UserDataScreenTest : ComposeTest() {
       .assertIsDisplayed()
       .assertIsNotSelected()
 
-    val emptyMovieWatchlistString = getString(
-      Res.string.feature_user_data_empty_movies_watchlist,
-    )
-
-    onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()
+    onNodeWithText("Your watchlist is empty").assertIsDisplayed()
 
     onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .performClick()
 
-    val emptyTVWatchlistString = getString(
-      Res.string.feature_user_data_empty_tv_shows_watchlist,
-    )
-
-    onNodeWithText(emptyTVWatchlistString).assertIsDisplayed()
+    onNodeWithText("Your watchlist is empty").assertIsDisplayed()
   }
 
   @Test
@@ -279,7 +270,7 @@ class UserDataScreenTest : ComposeTest() {
       .assertIsNotSelected()
 
     val emptyMovieWatchlistString = getString(
-      Res.string.feature_user_data_empty_movies_watchlist,
+      Res.string.feature_user_data_empty_watchlist,
     )
 
     onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()

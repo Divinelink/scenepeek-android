@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaType
@@ -30,17 +31,20 @@ import com.divinelink.core.model.user.data.UserDataSection.Watchlist
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.list.ScrollableMediaContent
+import com.divinelink.core.ui.resources.no_results
 import com.divinelink.feature.user.data.resources.Res
-import com.divinelink.feature.user.data.resources.feature_user_data_empty
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_rating_description
 import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_ratings
-import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_watchlist
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_shows_rating_description
 import com.divinelink.feature.user.data.resources.feature_user_data_empty_tv_shows_ratings
-import com.divinelink.feature.user.data.resources.feature_user_data_empty_tv_shows_watchlist
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_watchlist
+import com.divinelink.feature.user.data.resources.feature_user_data_empty_watchlist_description
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
@@ -86,16 +90,28 @@ fun UserDataScreenContent(
             section = uiState.section,
           )
           is UserDataForm.Data -> if (it.isEmpty) {
-            val stringResource = when (it.mediaType to uiState.section) {
-              MediaType.MOVIE to Ratings -> Res.string.feature_user_data_empty_movies_ratings
-              MediaType.MOVIE to Watchlist -> Res.string.feature_user_data_empty_movies_watchlist
-              MediaType.TV to Ratings -> Res.string.feature_user_data_empty_tv_shows_ratings
-              MediaType.TV to Watchlist -> Res.string.feature_user_data_empty_tv_shows_watchlist
-              else -> Res.string.feature_user_data_empty
+            val (title, description) = when (it.mediaType to uiState.section) {
+              MediaType.MOVIE to Ratings ->
+                Res.string.feature_user_data_empty_movies_ratings to
+                  Res.string.feature_user_data_empty_movies_rating_description
+              MediaType.TV to Ratings ->
+                Res.string.feature_user_data_empty_tv_shows_ratings to
+                  Res.string.feature_user_data_empty_shows_rating_description
+              MediaType.MOVIE to Watchlist ->
+                Res.string.feature_user_data_empty_watchlist to
+                  Res.string.feature_user_data_empty_watchlist_description
+              MediaType.TV to Watchlist ->
+                Res.string.feature_user_data_empty_watchlist to
+                  Res.string.feature_user_data_empty_watchlist_description
+              else -> return@let
             }
+
             BlankSlate(
+              modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
               uiState = BlankSlateState.Custom(
-                title = UIText.ResourceText(stringResource),
+                icon = UiDrawable.no_results,
+                title = UIText.ResourceText(title),
+                description = UIText.ResourceText(description),
               ),
             )
           } else {

@@ -2,7 +2,8 @@
   <string name="feature_lists_title">Lists</string>
 
   <string name="feature_lists_login_description">You need to be logged in to view your lists.</string>
-  <string name="feature_lists_empty">You haven't created any lists.</string>
+  <string name="feature_lists_empty">You haven't created any lists</string>
+  <string name="feature_lists_empty_description">Start creating lists to track movies and shows and personalize them to fit your style</string>
   <string name="feature_lists_empty_list">There are no items added to this list.</string>
 
   <string name="feature_lists_delete_list">Delete list</string>
