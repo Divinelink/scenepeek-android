@@ -116,6 +116,16 @@ fun DiscoverContent(
       }
 
       item {
+        DiscoverFilterChip.Year(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
+          filter = uiState.currentFilters.year,
+          onClick = { filterModal = FilterModal.Year },
+        )
+      }
+
+      item {
         DiscoverFilterChip.Language(
           modifier = Modifier
             .animateItem()

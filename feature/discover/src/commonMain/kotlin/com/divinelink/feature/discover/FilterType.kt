@@ -1,6 +1,7 @@
 package com.divinelink.feature.discover
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.discover.YearType
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 
@@ -51,4 +52,13 @@ sealed interface FilterType {
     val lessThan: Int,
     val minimumVotes: Int,
   ) : FilterType
+
+  sealed class Year(
+    val type: YearType,
+  ) : FilterType {
+    data object Any : Year(type = YearType.Any)
+    data class Decade(val decade: com.divinelink.core.model.Decade) : Year(type = YearType.Decade)
+    data class Single(val year: Int) : Year(type = YearType.Single)
+    data class Range(val startYear: Int, val endYear: Int) : Year(type = YearType.Range)
+  }
 }

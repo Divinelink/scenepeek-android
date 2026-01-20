@@ -102,6 +102,21 @@ class DiscoverViewModel(
         }
       }
       .launchIn(viewModelScope)
+
+    filterRepository
+      .year
+      .map { it[uiState.value.selectedMedia] }
+      .onEach { filter ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(year = filter) },
+            ),
+          )
+        }
+      }
+      .launchIn(viewModelScope)
   }
 
   fun onAction(action: DiscoverAction) {
@@ -236,6 +251,7 @@ class DiscoverViewModel(
 
   override fun onCleared() {
     super.onCleared()
+    // TODO Bug when exiting screen does not clear
     filterRepository.clear(mediaType = _uiState.value.selectedMedia)
   }
 

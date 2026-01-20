@@ -5,6 +5,11 @@
   <string name="fatal_error_fetching_details">Couldn't load details. Going back to previous screen.</string>
   <string name="general_error_message">Something when wrong.</string>
 
+  <string name="any">Any</string>
+  <string name="decade">Decade</string>
+  <string name="single">Single</string>
+  <string name="range">Range</string>
+
   <string name="all_tab">All</string>
   <string name="movie_tab">Movies</string>
   <string name="people_tab">People</string>

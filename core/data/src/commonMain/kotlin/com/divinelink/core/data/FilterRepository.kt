@@ -51,6 +51,14 @@ class FilterRepository {
   )
   val minimumVotes: StateFlow<Map<MediaType, Int?>> = _minimumVotes.asStateFlow()
 
+  private val _year = MutableStateFlow<Map<MediaType, DiscoverFilter.Year?>>(
+    mapOf(
+      MediaType.MOVIE to null,
+      MediaType.TV to null,
+    ),
+  )
+  val year: StateFlow<Map<MediaType, DiscoverFilter.Year?>> = _year.asStateFlow()
+
   fun updateSelectedGenres(
     mediaType: MediaType,
     genres: List<Genre>,
@@ -86,6 +94,13 @@ class FilterRepository {
     _minimumVotes.value += mediaType to votes
   }
 
+  fun updateYear(
+    mediaType: MediaType,
+    year: DiscoverFilter.Year?,
+  ) {
+    _year.value += mediaType to year
+  }
+
   fun clearRatings(mediaType: MediaType) {
     _voteAverage.value += mediaType to null
     _minimumVotes.value += mediaType to null
@@ -97,5 +112,6 @@ class FilterRepository {
     _selectedCountry.value += mediaType to null
     _voteAverage.value += mediaType to null
     _minimumVotes.value += mediaType to null
+    _year.value += mediaType to null
   }
 }

@@ -24,6 +24,7 @@ class DiscoverMediaUseCase(
         language?.let { filter -> add(DiscoverFilter.Language(filter.code)) }
         country?.let { add(DiscoverFilter.Country(it.code)) }
         voteAverage?.let { add(voteAverage) }
+        year?.let { add(year) }
         add(DiscoverFilter.MinimumVotes(votes ?: 10))
       }
     }.mapNotNull { it }

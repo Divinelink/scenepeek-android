@@ -158,11 +158,20 @@
   <string name="core_ui_public">Public</string>
   <string name="core_ui_private">Private</string>
 
+  <string name="core_ui_from">From</string>
+  <string name="core_ui_to">To</string>
+
   <string name="core_ui_genres">Genres</string>
   <string name="core_ui_language">Language</string>
   <string name="core_ui_country">Country</string>
   <string name="core_ui_rating">Rating</string>
   <string name="core_ui_rating_selected">Rating: %1$s - %2$s</string>
+  <string name="core_ui_year">Year</string>
+  <string name="core_ui_year_single">Year: %1$s</string>
+  <string name="core_ui_year_range">Year: %1$s - %2$s</string>
+  <string name="core_ui_select_year">Select year</string>
+  <string name="core_ui_select_start_year">Select start year</string>
+  <string name="core_ui_select_end_year">Select end year</string>
 
   <string name="core_ui_clear_all">Clear all</string>
 

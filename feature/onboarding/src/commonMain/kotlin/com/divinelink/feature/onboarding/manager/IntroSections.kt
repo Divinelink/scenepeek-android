@@ -138,6 +138,6 @@ object IntroSections {
     29 to v29,
     30 to v30,
     32 to v32,
-    33 to v33
+    33 to v33,
   )
 }

@@ -80,6 +80,18 @@ fun buildDiscoverUrl(
           append("vote_average.lte", filter.lessThan.toString())
         }
         is DiscoverFilter.MinimumVotes -> append("vote_count.gte", filter.votes.toString())
+        is DiscoverFilter.Year.Single -> if (media == MediaType.TV) {
+          append("first_air_date_year", filter.year.toString())
+        } else {
+          append("primary_release_year", filter.year.toString())
+        }
+        is DiscoverFilter.Year.Multiple -> if (media == MediaType.TV) {
+          append("first_air_date.gte", filter.startDateTime)
+          append("first_air_date.lte", filter.endDateTime)
+        } else {
+          append("primary_release_date.gte", filter.startDateTime)
+          append("primary_release_date.lte", filter.endDateTime)
+        }
       }
     }
   }

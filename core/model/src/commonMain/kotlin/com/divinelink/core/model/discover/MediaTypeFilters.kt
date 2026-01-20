@@ -8,12 +8,14 @@ data class MediaTypeFilters(
   val genres: List<Genre>,
   val language: Language?,
   val country: Country?,
+  val year: DiscoverFilter.Year?,
   val voteAverage: DiscoverFilter.VoteAverage?,
   val votes: Int?,
 ) {
   companion object {
     val initial = MediaTypeFilters(
       genres = emptyList(),
+      year = null,
       language = null,
       country = null,
       voteAverage = null,
@@ -26,5 +28,6 @@ data class MediaTypeFilters(
       language != null ||
       country != null ||
       voteAverage != null ||
-      votes != null
+      votes != null ||
+      year != null
 }
