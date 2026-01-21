@@ -11,6 +11,7 @@ import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.map
@@ -112,9 +113,10 @@ class ProdMediaRepository(
 
   override fun discoverMovies(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<Result<UserDataResponse>> = combine(
-    remote.fetchDiscoverMovies(page, filters),
+    remote.fetchDiscoverMovies(page, sortOption, filters),
     dao.getFavoriteMediaIds(MediaType.MOVIE),
   ) { response, favoriteIds ->
     val data = response.map()
@@ -137,9 +139,10 @@ class ProdMediaRepository(
 
   override fun discoverTvShows(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<Result<UserDataResponse>> = combine(
-    remote.fetchDiscoverTv(page, filters),
+    remote.fetchDiscoverTv(page, sortOption, filters),
     dao.getFavoriteMediaIds(MediaType.TV),
   ) { response, favoriteIds ->
     val data = response.map()

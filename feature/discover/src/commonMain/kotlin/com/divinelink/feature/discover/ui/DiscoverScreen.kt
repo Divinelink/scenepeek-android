@@ -85,7 +85,7 @@ fun AnimatedVisibilityScope.DiscoverScreen(
           uiState = uiState,
           action = viewModel::onAction,
           onNavigate = onNavigate,
-          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
+          onSwitchPreferences = switchViewButtonViewModel::onAction,
         )
       }
     },

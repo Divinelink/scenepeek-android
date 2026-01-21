@@ -190,7 +190,7 @@ fun AnimatedVisibilityScope.SearchScreen(
           searchMovieTabState = searchMovieTabState,
           searchPeopleTabState = searchPeopleTabState,
           searchTVTabState = searchTVTabState,
-          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
+          onSwitchPreferences = switchViewButtonViewModel::onAction,
         )
       }
     },

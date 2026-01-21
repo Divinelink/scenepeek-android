@@ -8,6 +8,7 @@ import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
@@ -34,11 +35,13 @@ interface MediaRepository {
 
   fun discoverMovies(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<Result<UserDataResponse>>
 
   fun discoverTvShows(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<Result<UserDataResponse>>
 

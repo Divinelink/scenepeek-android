@@ -9,7 +9,7 @@ enum class ViewMode(val value: String) {
     fun from(value: String?) = when (value) {
       GRID.value -> GRID
       LIST.value -> LIST
-      else -> LIST
+      else -> GRID
     }
   }
 }

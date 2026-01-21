@@ -3,6 +3,7 @@ package com.divinelink.core.network.media.service
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
@@ -46,11 +47,13 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
   override fun fetchDiscoverMovies(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<MoviesResponseApi> = flow {
     val url = buildDiscoverUrl(
       media = MediaType.MOVIE,
       page = page,
+      sortOption = sortOption,
       filters = filters,
     )
 
@@ -61,11 +64,13 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
   override fun fetchDiscoverTv(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<TvResponseApi> = flow {
     val url = buildDiscoverUrl(
       media = MediaType.TV,
       page = page,
+      sortOption = sortOption,
       filters = filters,
     )
 

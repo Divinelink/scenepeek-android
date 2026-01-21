@@ -170,7 +170,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           },
           onUpdateProgress = { progress -> toolbarProgress = progress },
           onBackdropLoaded = { onBackdropLoaded = true },
-          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
+          onSwitchPreferences = switchViewButtonViewModel::onAction,
           onNavigate = onNavigate,
         )
       }

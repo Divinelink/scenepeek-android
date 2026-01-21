@@ -3,23 +3,28 @@ package com.divinelink.feature.discover
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.FilterRepository
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.DiscoverMediaUseCase
 import com.divinelink.core.model.discover.DiscoverParameters
 import com.divinelink.core.model.discover.MediaTypeFilters
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.user.data.UserDataResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 class DiscoverViewModel(
   private val filterRepository: FilterRepository,
   private val discoverUseCase: DiscoverMediaUseCase,
+  preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<DiscoverUiState> = MutableStateFlow(
@@ -29,6 +34,25 @@ class DiscoverViewModel(
 
   init {
     filterRepository.clear(_uiState.value.selectedMedia)
+
+    preferencesRepository
+      .uiPreferences
+      .mapNotNull { uiPreferences ->
+        uiPreferences.sortOption.mapNotNull { (key, value) ->
+          when (key) {
+            ViewableSection.DISCOVER_SHOWS -> MediaType.TV to value
+            ViewableSection.DISCOVER_MOVIES -> MediaType.MOVIE to value
+            else -> null
+          }
+        }.toMap()
+      }
+      .distinctUntilChanged()
+      .onEach { sortMap ->
+        _uiState.update { uiState -> uiState.copy(sortOption = sortMap) }
+
+        handleDiscoverMedia(reset = true)
+      }
+      .launchIn(viewModelScope)
 
     filterRepository
       .selectedGenres
@@ -173,6 +197,8 @@ class DiscoverViewModel(
       discoverUseCase.invoke(
         parameters = DiscoverParameters(
           page = uiState.value.pages[uiState.value.selectedMedia] ?: 1,
+          sortOption = uiState.value.sortOption[uiState.value.selectedMedia]
+            ?: SortOption.defaultDiscoverSortOption,
           mediaType = mediaType,
           filters = currentFilters,
         ),

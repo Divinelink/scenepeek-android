@@ -9,6 +9,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -25,14 +26,14 @@ fun RecommendationsFormContent(
   recommendations: DetailsData.Recommendations,
   onItemClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
-  onSwitchViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
   ScrollableMediaContent(
     modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
     items = recommendations.items,
     section = ViewableSection.MEDIA_DETAILS,
     onLoadMore = {},
-    onSwitchViewMode = onSwitchViewMode,
+    onSwitchPreferences = onSwitchPreferences,
     onClick = onItemClick,
     onLongClick = onLongClick,
     canLoadMore = false,

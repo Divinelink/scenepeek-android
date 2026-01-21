@@ -3,6 +3,7 @@ package com.divinelink.feature.discover
 import com.divinelink.core.model.discover.MediaTypeFilters
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.tab.MediaTab
 
 data class DiscoverUiState(
@@ -11,6 +12,7 @@ data class DiscoverUiState(
   val pages: Map<MediaType, Int>,
   val forms: Map<MediaType, DiscoverForm<MediaItem.Media>>,
   val canFetchMore: Map<MediaType, Boolean>,
+  val sortOption: Map<MediaType, SortOption>,
   val filters: Map<MediaType, MediaTypeFilters>,
   val loadingMap: Map<MediaType, Boolean>,
 ) {
@@ -34,6 +36,7 @@ data class DiscoverUiState(
         MediaType.MOVIE to MediaTypeFilters.initial,
         MediaType.TV to MediaTypeFilters.initial,
       ),
+      sortOption = emptyMap(),
       loadingMap = mapOf(
         MediaType.MOVIE to false,
         MediaType.TV to false,

@@ -9,6 +9,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.tab.SearchTab
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
@@ -35,7 +36,7 @@ fun SearchContent(
   searchMovieTabState: LazyGridState,
   searchPeopleTabState: LazyGridState,
   searchTVTabState: LazyGridState,
-  onSwitchViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
   uiState.forms[uiState.selectedTab]?.let { form ->
     when (form) {
@@ -70,7 +71,7 @@ fun SearchContent(
             onLoadNextPage = onLoadNextPage,
             canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
             scrollState = searchAllTabState,
-            onSwitchViewMode = onSwitchViewMode,
+            onSwitchPreferences = onSwitchPreferences,
           )
           SearchTab.Movie -> SearchScrollableContent(
             form = form,
@@ -78,7 +79,7 @@ fun SearchContent(
             onLoadNextPage = onLoadNextPage,
             canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
             scrollState = searchMovieTabState,
-            onSwitchViewMode = onSwitchViewMode,
+            onSwitchPreferences = onSwitchPreferences,
           )
           SearchTab.People -> SearchScrollableContent(
             form = form,
@@ -86,7 +87,7 @@ fun SearchContent(
             onLoadNextPage = onLoadNextPage,
             canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
             scrollState = searchPeopleTabState,
-            onSwitchViewMode = onSwitchViewMode,
+            onSwitchPreferences = onSwitchPreferences,
           )
           SearchTab.TV -> SearchScrollableContent(
             form = form,
@@ -94,7 +95,7 @@ fun SearchContent(
             onLoadNextPage = onLoadNextPage,
             canFetchMore = uiState.canFetchMore[uiState.selectedTab] == true,
             scrollState = searchTVTabState,
-            onSwitchViewMode = onSwitchViewMode,
+            onSwitchPreferences = onSwitchPreferences,
           )
         }
       }
@@ -108,7 +109,7 @@ private fun SearchScrollableContent(
   onNavigate: (Navigation) -> Unit,
   onLoadNextPage: () -> Unit,
   canFetchMore: Boolean,
-  onSwitchViewMode: (ViewableSection) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
   scrollState: LazyGridState,
 ) {
   ScrollableMediaContent(
@@ -117,7 +118,7 @@ private fun SearchScrollableContent(
     items = form.media,
     section = ViewableSection.SEARCH,
     onLoadMore = onLoadNextPage,
-    onSwitchViewMode = onSwitchViewMode,
+    onSwitchPreferences = onSwitchPreferences,
     onClick = { media -> media.toRoute()?.let { onNavigate(it) } },
     onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
     canLoadMore = canFetchMore,

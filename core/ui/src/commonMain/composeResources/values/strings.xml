@@ -203,6 +203,7 @@
   <string name="core_ui_hidden_spoilers_button">Spoilers are hidden</string>
   <string name="core_ui_visible_spoilers_button">Spoilers are visible</string>
   <string name="core_ui_change_layout_button">Change layout style</string>
+  <string name="core_ui_change_sort_direction">Change sorting direction</string>
   <string name="core_ui_close_multiple_select">Close multiple select</string>
   <string name="core_ui_select_all">Select all</string>
   <string name="core_ui_deselect_all">Deselect all</string>

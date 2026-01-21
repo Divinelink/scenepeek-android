@@ -32,6 +32,7 @@ class DiscoverMediaUseCase(
     if (parameters.mediaType == MediaType.TV) {
       repository.discoverTvShows(
         page = parameters.page,
+        sortOption = parameters.sortOption,
         filters = discoverFilters,
       ).collect { result ->
         result.fold(
@@ -42,6 +43,7 @@ class DiscoverMediaUseCase(
     } else {
       repository.discoverMovies(
         page = parameters.page,
+        sortOption = parameters.sortOption,
         filters = discoverFilters,
       ).collect { result ->
         result.fold(

@@ -115,7 +115,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
           onRefresh = viewModel::onRefresh,
           onLoadMore = viewModel::onLoadMore,
           onTabSelected = viewModel::onTabSelected,
-          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
+          onSwitchPreferences = switchViewButtonViewModel::onAction,
         )
       }
     },
@@ -135,7 +135,7 @@ fun UserDataScreenContentPreview(
         onLoadMore = {},
         onTabSelected = {},
         onNavigate = {},
-        onSwitchViewMode = {},
+        onSwitchPreferences = {},
       )
     }
   }

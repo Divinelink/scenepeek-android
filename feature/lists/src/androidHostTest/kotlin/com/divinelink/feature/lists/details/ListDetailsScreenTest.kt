@@ -152,16 +152,6 @@ class ListDetailsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
 
     onNodeWithText("The Wire").assertIsDisplayed()
-
-//      fetchListDetailsUseCase.mockResponse(
-//        Result.success(ListDetailsFactory.empty()),
-//      )
-//
-//      onNodeWithTag(TestTags.Lists.Details.PULL_TO_REFRESH).performTouchInput {
-//        swipeDown()
-//      }
-//
-//      onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsDisplayed()
   }
 
   @Test
@@ -192,7 +182,7 @@ class ListDetailsScreenTest : ComposeTest() {
     }
 
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value))
       .assertIsDisplayed()
       .performScrollToNode(hasText("The Wire"))
 
@@ -200,7 +190,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     onNodeWithText("The Wire").assertIsDisplayed().performClick()
 
-    detailsRoute shouldBe Navigation.DetailsRoute(
+    detailsRoute shouldBe DetailsRoute(
       id = 1438,
       mediaType = MediaType.TV.value,
       isFavorite = null,
@@ -231,7 +221,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
     onNodeWithTag(
-      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value),
     ).assertIsDisplayed()
 
     onNodeWithText("Fight club 1").assertIsDisplayed()
@@ -243,7 +233,7 @@ class ListDetailsScreenTest : ComposeTest() {
     )
 
     onNodeWithTag(
-      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value),
     ).performScrollToIndex(
       24,
     )
@@ -253,7 +243,7 @@ class ListDetailsScreenTest : ComposeTest() {
     onNodeWithText("Fight club 20").assertIsDisplayed()
 
     onNodeWithTag(
-      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value),
     ).performScrollToIndex(
       42,
     )
@@ -292,7 +282,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsNotDisplayed()
     onNodeWithTag(
-      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value),
     ).assertIsDisplayed()
   }
 
@@ -328,7 +318,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsNotDisplayed()
     onNodeWithTag(
-      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value),
     ).assertIsDisplayed()
   }
 
@@ -367,7 +357,7 @@ class ListDetailsScreenTest : ComposeTest() {
     }
 
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value))
       .assertIsDisplayed()
       .performScrollToNode(hasText("Fight club 1"))
 
@@ -454,7 +444,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
     onNodeWithTag(
-      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
+      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value),
     )
       .performScrollToNode(hasText("Fight club 1"))
       .assertIsDisplayed()
@@ -467,7 +457,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Components.MULTIPLE_SELECT_HEADER).assertIsNotDisplayed()
 
-    onNodeWithText(getString(com.divinelink.core.ui.UiString.core_ui_select)).performClick()
+    onNodeWithText(getString(UiString.core_ui_select)).performClick()
 
     onNodeWithTag(TestTags.Components.MULTIPLE_SELECT_HEADER).assertIsDisplayed()
 
@@ -480,7 +470,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     onNodeWithText("1/20 selected").assertIsDisplayed()
 
-    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value))
       .performScrollToIndex(6)
 
     // Select second item
@@ -567,7 +557,7 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
-    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value))
       .performScrollToNode(hasText("Fight club 1"))
 
     onNodeWithText("Fight club 1").assertIsDisplayed().performTouchInput {
@@ -624,7 +614,7 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
-    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+    onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value))
       .assertIsDisplayed()
       .performScrollToNode(
         hasTestTag(TestTags.Components.Button.SWITCH_VIEW),
@@ -634,7 +624,7 @@ class ListDetailsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
 
     onNodeWithTag(
-      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.GRID.value),
+      TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
     ).assertIsDisplayed()
   }
 }

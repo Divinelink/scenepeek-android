@@ -3,6 +3,7 @@ package com.divinelink.core.network.media.service
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
@@ -32,11 +33,13 @@ interface MediaService {
 
   fun fetchDiscoverMovies(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<MoviesResponseApi>
 
   fun fetchDiscoverTv(
     page: Int,
+    sortOption: SortOption,
     filters: List<DiscoverFilter>,
   ): Flow<TvResponseApi>
 
