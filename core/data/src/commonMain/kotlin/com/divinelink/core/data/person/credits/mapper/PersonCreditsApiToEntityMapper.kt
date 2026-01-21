@@ -6,6 +6,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
 
 fun PersonCreditsApi.toEntityCast() = cast
+  .filterNot { it.adult }
   .filter { MediaType.isMedia(it.mediaType) }
   .map {
     PersonCastCreditEntity(
@@ -22,6 +23,7 @@ fun PersonCreditsApi.toEntityCast() = cast
   }
 
 fun PersonCreditsApi.toEntityCrew(): List<PersonCrewCreditEntity> = crew
+  .filterNot { it.adult }
   .filter { MediaType.isMedia(it.mediaType) }
   .map {
     PersonCrewCreditEntity(

@@ -216,7 +216,7 @@ class ProdPersonRepositoryTest {
         assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
         val secondEmission = awaitItem() as Resource.Success<PersonCombinedCredits?>
         assertThat(secondEmission).isInstanceOf(Resource.Success::class.java)
-        assertThat(secondEmission.data?.cast?.size).isEqualTo(124)
+        assertThat(secondEmission.data?.cast?.size).isEqualTo(123)
         assertThat(secondEmission.data?.crew?.size).isEqualTo(17)
         expectNoEvents()
       }
