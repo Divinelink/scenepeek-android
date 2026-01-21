@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="feature_user_data_empty_movies_watchlist">You haven't added any movies to your watchlist.</string>
-  <string name="feature_user_data_empty_tv_shows_watchlist">You haven't added any TV shows to your watchlist.</string>
+  <string name="feature_user_data_empty_watchlist">Your watchlist is empty</string>
+  <string name="feature_user_data_empty_watchlist_description">Start exploring, add to your watchlist to see them here!</string>
 
-  <string name="feature_user_data_empty_movies_ratings">You haven't rated any movies.</string>
-  <string name="feature_user_data_empty_tv_shows_ratings">You haven't rated any TV shows.</string>
+  <string name="feature_user_data_empty_movies_ratings">You haven't rated any movies</string>
+  <string name="feature_user_data_empty_tv_shows_ratings">You haven't rated any shows</string>
 
-  <string name="feature_user_data_empty">You haven't added anything here.</string>
+  <string name="feature_user_data_empty_movies_rating_description">Start exploring, rate movies to see them here!</string>
+  <string name="feature_user_data_empty_shows_rating_description">Start exploring, rate shows to see them here!</string>
 
   <string name="feature_user_data_login_rated_description">You need to be logged in to view your rated media.</string>
   <string name="feature_user_data_login_watchlist_description">You need to be logged in to view your watchlist.</string>

@@ -37,6 +37,7 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.scaffold.isMediumScreenWidthOrWider
 import com.divinelink.core.ui.ScreenSettingsRow
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.ScrollToTopButton
@@ -45,8 +46,10 @@ import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.composition.rememberViewModePreferences
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.list.ListItemCard
+import com.divinelink.core.ui.resources.no_results
 import com.divinelink.feature.lists.resources.Res
 import com.divinelink.feature.lists.resources.feature_lists_empty
+import com.divinelink.feature.lists.resources.feature_lists_empty_description
 import com.divinelink.feature.lists.user.ListsAction
 import kotlinx.coroutines.launch
 
@@ -88,7 +91,9 @@ fun ListsDataContent(
         .fillMaxSize()
         .padding(bottom = LocalBottomNavigationPadding.current),
       uiState = BlankSlateState.Custom(
+        icon = UiDrawable.no_results,
         title = UIText.ResourceText(Res.string.feature_lists_empty),
+        description = UIText.ResourceText(Res.string.feature_lists_empty_description),
       ),
     )
   } else {
