@@ -18,6 +18,9 @@ import com.divinelink.core.ui.resources.core_ui_genres
 import com.divinelink.core.ui.resources.core_ui_language
 import com.divinelink.core.ui.resources.core_ui_rating
 import com.divinelink.core.ui.resources.core_ui_rating_selected
+import com.divinelink.core.ui.resources.core_ui_year
+import com.divinelink.core.ui.resources.core_ui_year_range
+import com.divinelink.core.ui.resources.core_ui_year_single
 import org.jetbrains.compose.resources.stringResource
 
 object DiscoverFilterChip {
@@ -57,6 +60,32 @@ object DiscoverFilterChip {
         stringResource(UiString.core_ui_language)
       } else {
         stringResource(language.nameRes)
+      },
+      onClick = onClick,
+    )
+  }
+
+  @Composable
+  fun Year(
+    modifier: Modifier,
+    filter: DiscoverFilter.Year?,
+    onClick: () -> Unit,
+  ) {
+    Chip(
+      modifier = modifier,
+      selected = filter != null,
+      label = when (filter) {
+        null -> stringResource(UiString.core_ui_year)
+        is DiscoverFilter.Year.Single -> stringResource(UiString.core_ui_year_single, filter.year)
+        is DiscoverFilter.Year.Range -> stringResource(
+          UiString.core_ui_year_range,
+          filter.startYear,
+          filter.endYear,
+        )
+        is DiscoverFilter.Year.Decade -> stringResource(
+          UiString.core_ui_year_single,
+          filter.decade.label,
+        )
       },
       onClick = onClick,
     )

@@ -28,6 +28,8 @@ class DiscoverViewModel(
   val uiState: StateFlow<DiscoverUiState> = _uiState
 
   init {
+    filterRepository.clear(_uiState.value.selectedMedia)
+
     filterRepository
       .selectedGenres
       .map { it[uiState.value.selectedMedia] ?: emptyList() }
@@ -46,6 +48,7 @@ class DiscoverViewModel(
     filterRepository
       .selectedLanguage
       .map { it[uiState.value.selectedMedia] }
+      .distinctUntilChanged()
       .onEach { language ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -61,6 +64,7 @@ class DiscoverViewModel(
     filterRepository
       .selectedCountry
       .map { it[uiState.value.selectedMedia] }
+      .distinctUntilChanged()
       .onEach { country ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -76,6 +80,7 @@ class DiscoverViewModel(
     filterRepository
       .voteAverage
       .map { it[uiState.value.selectedMedia] }
+      .distinctUntilChanged()
       .onEach { voteAverage ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -91,12 +96,29 @@ class DiscoverViewModel(
     filterRepository
       .minimumVotes
       .map { it[uiState.value.selectedMedia] }
+      .distinctUntilChanged()
       .onEach { votes ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
               mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(votes = votes) },
+            ),
+          )
+        }
+      }
+      .launchIn(viewModelScope)
+
+    filterRepository
+      .year
+      .map { it[uiState.value.selectedMedia] }
+      .distinctUntilChanged()
+      .onEach { filter ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(year = filter) },
             ),
           )
         }
@@ -236,7 +258,8 @@ class DiscoverViewModel(
 
   override fun onCleared() {
     super.onCleared()
-    filterRepository.clear(mediaType = _uiState.value.selectedMedia)
+    filterRepository.clear(mediaType = MediaType.TV)
+    filterRepository.clear(mediaType = MediaType.MOVIE)
   }
 
   private fun Map<MediaType, MediaTypeFilters>.updateFilters(

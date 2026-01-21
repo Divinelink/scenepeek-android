@@ -29,6 +29,7 @@ data class SelectFilterUiState(
           selectedOptions = emptyList(),
           query = null,
         )
+        FilterModal.Year -> FilterType.Year.Any
         FilterModal.Country -> FilterType.Searchable.Countries(
           options = Country.entries,
           selectedOptions = emptyList(),

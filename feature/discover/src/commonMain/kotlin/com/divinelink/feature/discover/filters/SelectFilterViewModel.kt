@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.model.Decade
+import com.divinelink.core.model.discover.DiscoverFilter
+import com.divinelink.core.model.discover.YearType
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
@@ -40,6 +43,7 @@ class SelectFilterViewModel(
         filterRepository
           .selectedCountry
           .map { it[_uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { country ->
             _uiState.update {
               it.copy(
@@ -57,6 +61,7 @@ class SelectFilterViewModel(
         filterRepository
           .selectedGenres
           .map { it[_uiState.value.mediaType] ?: emptyList() }
+          .distinctUntilChanged()
           .onEach { genres ->
             _uiState.update {
               it.copy(
@@ -72,6 +77,7 @@ class SelectFilterViewModel(
         filterRepository
           .selectedLanguage
           .map { it[_uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { language ->
             _uiState.update {
               it.copy(
@@ -88,6 +94,7 @@ class SelectFilterViewModel(
         filterRepository
           .voteAverage
           .map { it[_uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { voteAverage ->
             _uiState.update {
               it.copy(
@@ -103,6 +110,7 @@ class SelectFilterViewModel(
         filterRepository
           .minimumVotes
           .map { it[uiState.value.mediaType] }
+          .distinctUntilChanged()
           .onEach { votes ->
             _uiState.update {
               it.copy(
@@ -114,6 +122,31 @@ class SelectFilterViewModel(
           }
           .launchIn(viewModelScope)
       }
+      FilterModal.Year ->
+        filterRepository
+          .year
+          .map { it[_uiState.value.mediaType] }
+          .distinctUntilChanged()
+          .onEach { filter ->
+            _uiState.update { uiState ->
+              when (filter) {
+                is DiscoverFilter.Year.Range -> uiState.copy(
+                  filterType = FilterType.Year.Range(
+                    startYear = filter.startYear,
+                    endYear = filter.endYear,
+                  ),
+                )
+                is DiscoverFilter.Year.Decade -> uiState.copy(
+                  filterType = FilterType.Year.Decade(decade = filter.decade),
+                )
+                is DiscoverFilter.Year.Single -> uiState.copy(
+                  filterType = FilterType.Year.Single(year = filter.year),
+                )
+                null -> uiState.copy(filterType = FilterType.Year.Any)
+              }
+            }
+          }
+          .launchIn(viewModelScope)
     }
   }
 
@@ -177,6 +210,11 @@ class SelectFilterViewModel(
       is SelectFilterAction.UpdateVoteRange -> handleUpdateVoteRange(action)
       is SelectFilterAction.SearchFilters -> handleSearchFilters(action)
       is SelectFilterAction.UpdateMinimumVotes -> handleUpdateMinimumVotes(action)
+      is SelectFilterAction.UpdateYearType -> handleUpdateYearType(action)
+      is SelectFilterAction.UpdateSingleYear -> handleUpdateSingleYear(action.year)
+      is SelectFilterAction.UpdateStartYear -> handleUpdateStartYear(action.startYear)
+      is SelectFilterAction.UpdateEndYear -> handleUpdateEndYear(action.endYear)
+      is SelectFilterAction.OnSelectDecade -> handleSelectDecade(action.decade)
     }
   }
 
@@ -188,6 +226,7 @@ class SelectFilterViewModel(
           is FilterType.Searchable.Genres -> uiState.filterType.copy(query = action.query)
           is FilterType.Searchable.Languages -> uiState.filterType.copy(query = action.query)
           is FilterType.VoteAverage -> uiState.filterType
+          is FilterType.Year -> uiState.filterType
         },
       )
     }
@@ -210,6 +249,7 @@ class SelectFilterViewModel(
       FilterModal.Country -> Unit
       FilterModal.Language -> Unit
       FilterModal.VoteAverage -> Unit
+      FilterModal.Year -> Unit
     }
   }
 
@@ -269,6 +309,65 @@ class SelectFilterViewModel(
     filterRepository.updateMinimumVotes(
       mediaType = _uiState.value.mediaType,
       votes = action.votes,
+    )
+  }
+
+  private fun handleUpdateYearType(action: SelectFilterAction.UpdateYearType) {
+    val filter = when (action.type) {
+      YearType.Any -> null
+      YearType.Single -> DiscoverFilter.Year.Single(year = 2026)
+      YearType.Range -> DiscoverFilter.Year.Range(
+        startYear = 2026,
+        endYear = 2026,
+      )
+      YearType.Decade -> DiscoverFilter.Year.Decade(decade = Decade.DECADE_2020)
+    }
+
+    filterRepository.updateYear(
+      mediaType = _uiState.value.mediaType,
+      year = filter,
+    )
+  }
+
+  private fun handleUpdateSingleYear(year: Int) {
+    filterRepository.updateYear(
+      mediaType = _uiState.value.mediaType,
+      year = DiscoverFilter.Year.Single(year = year),
+    )
+  }
+
+  private fun handleSelectDecade(decade: Decade) {
+    filterRepository.updateYear(
+      mediaType = _uiState.value.mediaType,
+      year = DiscoverFilter.Year.Decade(decade),
+    )
+  }
+
+  private fun handleUpdateStartYear(startYear: Int) {
+    val type = (uiState.value.filterType as? FilterType.Year.Range)?.copy(
+      startYear = startYear,
+    ) ?: return
+
+    filterRepository.updateYear(
+      mediaType = _uiState.value.mediaType,
+      year = DiscoverFilter.Year.Range(
+        startYear = startYear,
+        endYear = type.endYear,
+      ),
+    )
+  }
+
+  private fun handleUpdateEndYear(endYear: Int) {
+    val type = (uiState.value.filterType as? FilterType.Year.Range)?.copy(
+      endYear = endYear,
+    ) ?: return
+
+    filterRepository.updateYear(
+      mediaType = _uiState.value.mediaType,
+      year = DiscoverFilter.Year.Range(
+        startYear = type.startYear,
+        endYear = endYear,
+      ),
     )
   }
 }

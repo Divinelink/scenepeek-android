@@ -39,6 +39,7 @@ data class Dimensions(
   val keyline_64: Dp = 64.dp,
   val keyline_68: Dp = 68.dp,
   val keyline_72: Dp = 72.dp,
+  val keyline_78: Dp = 78.dp,
   val keyline_84: Dp = 84.dp,
   val keyline_96: Dp = 96.dp,
   val shortMediaCard: Dp = 120.dp,

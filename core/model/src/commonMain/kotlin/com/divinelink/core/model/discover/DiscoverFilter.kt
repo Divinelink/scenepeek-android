@@ -10,4 +10,28 @@ sealed interface DiscoverFilter {
   ) : DiscoverFilter
 
   data class MinimumVotes(val votes: Int) : DiscoverFilter
+
+  sealed interface Year : DiscoverFilter {
+    data class Single(val year: Int) : Year
+
+    sealed class Multiple(
+      val startDateTime: String,
+      val endDateTime: String,
+    ) : Year
+
+    data class Range(
+      val startYear: Int,
+      val endYear: Int,
+    ) : Multiple(
+      startDateTime = "$startYear-01-01",
+      endDateTime = "$endYear-12-31",
+    )
+
+    data class Decade(
+      val decade: com.divinelink.core.model.Decade,
+    ) : Multiple(
+      startDateTime = "${decade.startYear}-01-01",
+      endDateTime = "${decade.endYear}-12-31",
+    )
+  }
 }
