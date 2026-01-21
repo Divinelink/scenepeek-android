@@ -13,6 +13,8 @@ app/release/output-metadata.json
 
 app/schemas/*
 
+*.salive
+
 # Built application files
 *mapping.txt
 *.apk
