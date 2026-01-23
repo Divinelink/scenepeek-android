@@ -48,4 +48,18 @@ class SeasonViewModel(
       }
       .launchIn(viewModelScope)
   }
+
+  fun onAction(action: SeasonAction) {
+    when (action) {
+      is SeasonAction.OnSelectTab -> handleSelectTab(action)
+    }
+  }
+
+  private fun handleSelectTab(action: SeasonAction.OnSelectTab) {
+    _uiState.update { state ->
+      state.copy(
+        selectedTab = action.index,
+      )
+    }
+  }
 }

@@ -81,6 +81,7 @@ fun AnimatedVisibilityScope.SeasonScreen(
       AppTopAppBar(
         scrollBehavior = scrollBehavior,
         text = UIText.StringText(uiState.season?.name ?: ""),
+        contentColor = textColor,
         subtitle = UIText.StringText(uiState.title),
         progress = toolbarProgress,
         onNavigateUp = { onNavigate(Navigation.Back) },
@@ -101,8 +102,7 @@ fun AnimatedVisibilityScope.SeasonScreen(
           uiState = uiState,
           onBackdropLoaded = { onBackdropLoaded = true },
           toolbarProgress = { progress -> toolbarProgress = progress },
-          action = { action ->
-          },
+          action = viewModel::onAction,
           onNavigate = onNavigate,
         )
       }
