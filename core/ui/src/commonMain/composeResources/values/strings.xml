@@ -6,6 +6,8 @@
   <string name="core_ui_discover">Discover</string>
   <string name="core_ui_share_error_details">Share error details</string>
 
+  <string name="core_ui_information">Information</string>
+
   <string name="core_ui_approve">Approve</string>
   <string name="core_ui_decline">Decline</string>
 
@@ -101,6 +103,11 @@
   <string name="core_ui_season">Season</string>
   <string name="core_ui_episodes">Episodes</string>
   <string name="core_ui_status">Status</string>
+
+  <string name="core_ui_total_runtime">Total time</string>
+  <string name="core_ui_last_air_date">Last air date</string>
+  <string name="core_ui_first_air_date">First air date</string>
+  <string name="core_ui_aired_episodes">Aired episodes</string>
 
   <plurals name="core_ui_request_series_button">
     <item quantity="one">Request 1 season</item>

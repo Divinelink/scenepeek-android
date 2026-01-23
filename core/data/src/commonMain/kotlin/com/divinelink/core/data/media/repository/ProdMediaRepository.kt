@@ -6,6 +6,7 @@ import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
@@ -14,6 +15,7 @@ import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
+import com.divinelink.core.network.media.mapper.details.map
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.map
@@ -291,4 +293,14 @@ class ProdMediaRepository(
       },
       shouldFetch = { it.isEmpty() },
     )
+
+  override fun fetchSeasonDetails(showId: Int, seasonNumber: Int): Flow<Result<SeasonDetails>> =
+    flow {
+      emit(
+        remote.fetchSeason(
+          showId = showId,
+          seasonNumber = seasonNumber,
+        ).map { it.map() },
+      )
+    }
 }

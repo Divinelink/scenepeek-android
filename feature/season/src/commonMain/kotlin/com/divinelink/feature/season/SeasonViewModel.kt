@@ -4,9 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.model.details.season.SeasonData
+import com.divinelink.core.model.details.season.SeasonForm
+import com.divinelink.core.model.details.season.SeasonInformation
+import com.divinelink.core.model.tab.SeasonTab
 import com.divinelink.core.navigation.route.Navigation
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,11 +44,77 @@ class SeasonViewModel(
       .onEach { result ->
         result.fold(
           onSuccess = {
-            _uiState.update { uiState ->
-              uiState.copy(season = it)
+            _uiState.update { state ->
+              val aboutTab = SeasonTab.About
+
+              val updatedForms = state.forms.toMutableMap().apply {
+                this[aboutTab] = SeasonForm.Content(
+                  SeasonData.About(
+                    overview = it.overview,
+                    information = SeasonInformation(
+                      totalEpisodes = it.episodeCount,
+                      totalRuntime = null,
+                      airedEpisodes = null,
+                      lastAirDate = null,
+                      firstAirDate = it.airDate,
+                    ),
+                  ),
+                )
+              }
+
+              state.copy(
+                season = it,
+                forms = updatedForms,
+              )
             }
           },
           onFailure = {
+            Napier.d(it.message.toString())
+          },
+        )
+      }
+      .launchIn(viewModelScope)
+
+    repository.fetchSeasonDetails(
+      showId = route.showId,
+      seasonNumber = route.seasonNumber,
+    )
+      .distinctUntilChanged()
+      .catch {
+        Napier.d(it.message.toString())
+      }
+      .onEach { result ->
+        result.fold(
+          onSuccess = { data ->
+            _uiState.update { state ->
+              val episodeTab = SeasonTab.Episodes
+              val aboutTab = SeasonTab.About
+
+              val updatedForms = state.forms.toMutableMap().apply {
+                this[episodeTab] = SeasonForm.Content(
+                  SeasonData.Episodes(data.episodes),
+                )
+                this[aboutTab] = SeasonForm.Content(
+                  SeasonData.About(
+                    overview = data.overview,
+                    information = SeasonInformation(
+                      totalEpisodes = data.episodeCount,
+                      totalRuntime = data.totalRuntime,
+                      airedEpisodes = data.episodes.count { it.runtime != null },
+                      lastAirDate = data.episodes.findLast { it.runtime != null }?.airDate,
+                      firstAirDate = data.airDate,
+                    ),
+                  ),
+                )
+              }
+
+              state.copy(
+                forms = updatedForms,
+              )
+            }
+          },
+          onFailure = {
+            Napier.d(it.message.toString())
           },
         )
       }

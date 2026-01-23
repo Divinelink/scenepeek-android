@@ -1,6 +1,8 @@
 package com.divinelink.core.model.details.season
 
-typealias SeasonForms = Map<Int, SeasonForm<*>>
+import com.divinelink.core.model.tab.SeasonTab
+
+typealias SeasonForms = Map<SeasonTab, SeasonForm<*>>
 
 sealed interface SeasonForm<T : SeasonData> {
   data object Loading : SeasonForm<Nothing>

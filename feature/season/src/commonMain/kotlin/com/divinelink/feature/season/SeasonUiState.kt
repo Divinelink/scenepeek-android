@@ -22,8 +22,8 @@ data class SeasonUiState(
       season = null,
       selectedTab = 0,
       tabs = SeasonTab.entries,
-      forms = SeasonTab.entries.associate { tab ->
-        tab.order to when (tab) {
+      forms = SeasonTab.entries.associateWith { tab ->
+        when (tab) {
           SeasonTab.Episodes -> SeasonForm.Loading
           SeasonTab.About -> SeasonForm.Loading
           SeasonTab.Cast -> SeasonForm.Loading

@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.ui.SimpleInformationRow
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_information
 import com.divinelink.feature.details.resources.Res
-import com.divinelink.feature.details.resources.feature_details_information
 import com.divinelink.feature.details.resources.feature_details_information_budget
 import com.divinelink.feature.details.resources.feature_details_information_companies
 import com.divinelink.feature.details.resources.feature_details_information_countries
@@ -33,7 +35,7 @@ fun MovieInformationSection(information: MediaDetailsInformation.Movie) {
   ) {
     Text(
       modifier = Modifier.padding(bottom = MaterialTheme.dimensions.keyline_8),
-      text = stringResource(Res.string.feature_details_information),
+      text = stringResource(UiString.core_ui_information),
       style = MaterialTheme.typography.titleMedium,
     )
 
@@ -71,29 +73,6 @@ fun MovieInformationSection(information: MediaDetailsInformation.Movie) {
     SimpleInformationRow(
       title = stringResource(Res.string.feature_details_information_revenue),
       data = information.revenue,
-    )
-  }
-}
-
-@Composable
-fun SimpleInformationRow(
-  title: String,
-  data: String,
-) {
-  Row(
-    modifier = Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-  ) {
-    Text(
-      modifier = Modifier.weight(0.35f),
-      text = title,
-      style = MaterialTheme.typography.bodyMedium,
-    )
-
-    Text(
-      modifier = Modifier.weight(0.65f),
-      text = data,
-      style = MaterialTheme.typography.bodyMedium,
     )
   }
 }

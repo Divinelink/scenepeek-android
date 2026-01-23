@@ -84,11 +84,9 @@
   <string name="feature_details_information_original_language">Original language</string>
   <string name="feature_details_information_budget">Budget</string>
   <string name="feature_details_information_revenue">Revenue</string>
-  <string name="feature_details_information_first_air_date">First air date</string>
   <string name="feature_details_information_last_air_date">Last air date</string>
   <string name="feature_details_information_next_episode_air_date">Next episode air date</string>
   <string name="feature_details_information_seasons">Seasons</string>
-  <string name="feature_details_information_aired_episodes">Aired episodes</string>
 
   <plurals name="feature_details_information_countries">
     <item quantity="one">Country</item>
