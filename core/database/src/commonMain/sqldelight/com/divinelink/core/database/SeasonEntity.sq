@@ -32,6 +32,11 @@ SELECT * FROM SeasonEntity
 WHERE mediaId = ?
 ORDER BY seasonNumber;
 
+fetchSeason:
+SELECT * FROM SeasonEntity
+WHERE mediaId = ? AND seasonNumber = ?
+LIMIT 1;
+
 updateSeasonStatus:
 UPDATE SeasonEntity
 SET status = ?

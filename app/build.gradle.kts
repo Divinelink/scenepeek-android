@@ -31,6 +31,7 @@ kotlin {
       implementation(projects.feature.requestMedia)
       implementation(projects.feature.requests)
       implementation(projects.feature.search)
+      implementation(projects.feature.season)
       implementation(projects.feature.settings)
       implementation(projects.feature.tmdbAuth)
       implementation(projects.feature.userData)

@@ -2,6 +2,7 @@ package com.divinelink.core.database.media.dao
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import app.cash.sqldelight.coroutines.mapToOne
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.MediaItemEntity
@@ -197,6 +198,31 @@ class ProdMediaDao(
         }
       }
   }
+
+  override fun fetchSeason(
+    showId: Int,
+    seasonNumber: Int,
+  ): Flow<Season> = database
+    .transactionWithResult {
+      database
+        .seasonEntityQueries
+        .fetchSeason(mediaId = showId.toLong(), seasonNumber = seasonNumber.toLong())
+        .asFlow()
+        .mapToOne(context = dispatcher.io)
+        .map { entity ->
+          Season(
+            id = entity.id.toInt(),
+            name = entity.name,
+            overview = entity.overview,
+            posterPath = entity.posterPath,
+            airDate = entity.airDate,
+            episodeCount = entity.episodeCount.toInt(),
+            voteAverage = entity.voteAverage,
+            seasonNumber = entity.seasonNumber.toInt(),
+            status = JellyseerrStatus.from(entity.status),
+          )
+        }
+    }
 
   override fun insertSeasons(
     id: Int,

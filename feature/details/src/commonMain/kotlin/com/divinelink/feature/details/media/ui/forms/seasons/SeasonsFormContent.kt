@@ -1,12 +1,14 @@
 package com.divinelink.feature.details.media.ui.forms.seasons
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -14,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -44,20 +47,18 @@ fun SeasonsFormContent(
   modifier: Modifier = Modifier,
   title: String,
   reviews: DetailsData.Seasons,
+  onClick: (seasonNumber: Int) -> Unit,
 ) {
   ScenePeekLazyColumn(
     modifier = modifier.testTag(TestTags.Details.Seasons.FORM),
-    contentPadding = PaddingValues(
-      top = MaterialTheme.dimensions.keyline_16,
-      start = MaterialTheme.dimensions.keyline_16,
-      end = MaterialTheme.dimensions.keyline_16,
-    ),
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+    contentPadding = PaddingValues(top = MaterialTheme.dimensions.keyline_16),
   ) {
     if (reviews.items.isEmpty()) {
       item {
         BlankSlate(
-          modifier = Modifier.testTag(TestTags.Details.Seasons.EMPTY),
+          modifier = Modifier
+            .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+            .testTag(TestTags.Details.Seasons.EMPTY),
           uiState = BlankSlateState.Custom(
             title = UIText.ResourceText(Res.string.feature_details_no_seasons_available),
             description = UIText.ResourceText(
@@ -70,8 +71,8 @@ fun SeasonsFormContent(
     } else {
       items(items = reviews.items) { item ->
         SeasonItem(
-          modifier = Modifier,
           season = item,
+          onClick = onClick,
         )
       }
 
@@ -86,8 +87,16 @@ fun SeasonsFormContent(
 fun SeasonItem(
   modifier: Modifier = Modifier,
   season: Season,
+  onClick: (seasonNumber: Int) -> Unit,
 ) {
   Row(
+    modifier = modifier
+      .clip(MaterialTheme.shapes.medium)
+      .clickable { onClick(season.seasonNumber) }
+      .padding(
+        horizontal = MaterialTheme.dimensions.keyline_16,
+        vertical = MaterialTheme.dimensions.keyline_8,
+      ),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
     MovieImage(
@@ -96,7 +105,7 @@ fun SeasonItem(
     )
 
     Column(
-      modifier = modifier.weight(5f),
+      modifier = Modifier.weight(5f),
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     ) {
       Row(
@@ -144,14 +153,17 @@ fun SeasonItemPreview() {
       ) {
         SeasonItem(
           season = SeasonFactory.season1(),
+          onClick = {},
         )
 
         SeasonItem(
           season = SeasonFactory.season2().copy(status = JellyseerrStatus.Media.AVAILABLE),
+          onClick = {},
         )
 
         SeasonItem(
           season = SeasonFactory.season3().copy(status = JellyseerrStatus.Request.PENDING),
+          onClick = {},
         )
       }
     }

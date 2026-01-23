@@ -68,6 +68,11 @@ interface MediaRepository {
 
   fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>>
 
+  fun fetchSeason(
+    showId: Int,
+    seasonNumber: Int,
+  ): Flow<Result<Season>>
+
   /**
    * Add favorite [media] to local storage.
    */

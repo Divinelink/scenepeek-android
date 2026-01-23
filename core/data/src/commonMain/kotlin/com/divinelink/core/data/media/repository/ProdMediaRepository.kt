@@ -273,6 +273,15 @@ class ProdMediaRepository(
     Result.success(it)
   }
 
+  override fun fetchSeason(
+    showId: Int,
+    seasonNumber: Int,
+  ): Flow<Result<Season>> = dao
+    .fetchSeason(
+      showId = showId,
+      seasonNumber = seasonNumber,
+    ).map { Result.success(it) }
+
   override suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>> =
     networkBoundResource(
       query = { dao.fetchGenres(mediaType) },

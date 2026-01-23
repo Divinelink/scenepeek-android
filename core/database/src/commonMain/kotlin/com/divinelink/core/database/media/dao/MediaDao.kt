@@ -41,6 +41,11 @@ interface MediaDao {
 
   fun fetchSeasons(id: Int): Flow<List<Season>>
 
+  fun fetchSeason(
+    showId: Int,
+    seasonNumber: Int,
+  ): Flow<Season>
+
   fun addToFavorites(
     mediaId: Int,
     mediaType: MediaType,
