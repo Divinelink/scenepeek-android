@@ -29,7 +29,7 @@ fun List<MultiSearchResultApi>.map(mediaType: String?): List<MediaItem> = this.m
       voteAverage = it.voteAverage?.round(1) ?: 0.0,
       voteCount = it.voteCount ?: 0,
       overview = it.overview ?: "",
-      popularity = it.popularity,
+      popularity = it.popularity ?: 0.0,
       isFavorite = false,
     )
     MediaType.MOVIE -> MediaItem.Media.Movie(
@@ -41,7 +41,7 @@ fun List<MultiSearchResultApi>.map(mediaType: String?): List<MediaItem> = this.m
       voteAverage = it.voteAverage?.round(1) ?: 0.0,
       voteCount = it.voteCount ?: 0,
       overview = it.overview!!,
-      popularity = it.popularity,
+      popularity = it.popularity ?: 0.0,
       isFavorite = false,
     )
     MediaType.PERSON -> MediaItem.Person(
