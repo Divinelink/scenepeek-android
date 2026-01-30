@@ -1,0 +1,32 @@
+CREATE TABLE SeasonDetailsEntity (
+  id INTEGER NOT NULL,
+  showId INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  overview TEXT NOT NULL,
+  posterPath TEXT,
+  airDate TEXT,
+  episodeCount INTEGER NOT NULL,
+  voteAverage REAL NOT NULL,
+  seasonNumber INTEGER NOT NULL,
+  runtime TEXT,
+  UNIQUE(id, seasonNumber)
+);
+
+insertSeasonDetails:
+INSERT OR REPLACE INTO SeasonDetailsEntity (
+  id,
+  showId,
+  name,
+  overview,
+  posterPath,
+  airDate,
+  episodeCount,
+  voteAverage,
+  seasonNumber,
+  runtime
+)
+VALUES ?;
+
+fetchSeasonDetails:
+SELECT * FROM SeasonDetailsEntity
+WHERE showId = ? AND seasonNumber = ?;

@@ -1,0 +1,42 @@
+CREATE TABLE EpisodeEntity (
+  id INTEGER NOT NULL,
+  showId INTEGER NOT NULL,
+  overview TEXT NOT NULL,
+  name TEXT NOT NULL,
+  runtime TEXT,
+  episodeNumber INTEGER NOT NULL,
+  seasonNumber INTEGER NOT NULL,
+  airDate TEXT,
+  stillPath TEXT,
+  voteAverage REAL NOT NULL,
+  UNIQUE(id, seasonNumber, showId)
+);
+
+insertEpisode:
+INSERT OR REPLACE INTO EpisodeEntity (
+  id,
+  showId,
+  overview,
+  name,
+  runtime,
+  episodeNumber,
+  seasonNumber,
+  airDate,
+  stillPath,
+  voteAverage
+)
+VALUES ?;
+
+fetchEpisodesForSeason:
+SELECT * FROM EpisodeEntity
+WHERE showId = ? AND seasonNumber = ?
+ORDER BY episodeNumber;
+
+fetchEpisodes:
+SELECT * FROM EpisodeEntity
+WHERE showId = ? AND seasonNumber = ?;
+
+fetchEpisode:
+SELECT * FROM EpisodeEntity
+WHERE showId = ? AND seasonNumber = ? AND episodeNumber = ?
+LIMIT 1;

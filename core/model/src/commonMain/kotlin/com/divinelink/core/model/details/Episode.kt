@@ -10,7 +10,7 @@ data class Episode(
   val overview: String,
   val runtime: String?,
   val number: Int,
-  val seasonNumber: String,
+  val seasonNumber: Int,
   val showId: Int,
   val stillPath: String?,
   val voteAverage: String?,

@@ -3,8 +3,10 @@ package com.divinelink.core.data.media.repository
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
@@ -294,13 +296,64 @@ class ProdMediaRepository(
       shouldFetch = { it.isEmpty() },
     )
 
-  override fun fetchSeasonDetails(showId: Int, seasonNumber: Int): Flow<Result<SeasonDetails>> =
-    flow {
-      emit(
+  override fun fetchSeasonDetails(showId: Int, seasonNumber: Int): Flow<Resource<SeasonDetails?>> =
+    networkBoundResource(
+      query = {
+        val episodes = dao.fetchEpisodes(
+          showId = showId,
+          seasonNumber = seasonNumber,
+        )
+
+        val details = dao.fetchSeasonDetails(
+          showId = showId,
+          seasonNumber = seasonNumber,
+        )
+
+        combine(
+          episodes,
+          details,
+        ) { episodes, details ->
+          details?.map(
+            episodes = episodes,
+          )
+        }
+      },
+      fetch = {
         remote.fetchSeason(
           showId = showId,
           seasonNumber = seasonNumber,
-        ).map { it.map() },
-      )
-    }
+        ).map { it.map() }
+      },
+      saveFetchResult = { result ->
+        val data = result.data
+
+        dao.insertSeasonDetails(
+          seasonDetails = data,
+          showId = showId,
+          seasonNumber = seasonNumber,
+        )
+        dao.insertEpisodes(data.episodes)
+        dao.insertGuestStars(
+          season = seasonNumber,
+          showId = showId,
+          guestStars = data.guestStars,
+        )
+      },
+      shouldFetch = { true },
+    )
 }
+
+fun SeasonDetailsEntity.map(
+  episodes: List<Episode>,
+) = SeasonDetails(
+  id = id.toInt(),
+  name = name,
+  overview = overview,
+  posterPath = posterPath,
+  airDate = airDate,
+  episodeCount = episodeCount.toInt(),
+  voteAverage = voteAverage,
+  episodes = episodes,
+  totalRuntime = runtime,
+  guestStars = emptyList(),
+)

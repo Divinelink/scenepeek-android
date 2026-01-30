@@ -97,5 +97,5 @@ interface MediaRepository {
   fun fetchSeasonDetails(
     showId: Int,
     seasonNumber: Int,
-  ): Flow<Result<SeasonDetails>>
+  ): Flow<Resource<SeasonDetails?>>
 }

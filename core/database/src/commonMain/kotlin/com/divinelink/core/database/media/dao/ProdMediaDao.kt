@@ -3,14 +3,20 @@ package com.divinelink.core.database.media.dao
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.database.SeasonEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.media.mapper.map
+import com.divinelink.core.database.season.EpisodeEntity
+import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.Episode
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
@@ -291,4 +297,106 @@ class ProdMediaDao(
       )
     }
   }
+
+  override fun insertEpisodes(episodes: List<Episode>) = database.transaction {
+    episodes.forEach { episode ->
+      database.episodeEntityQueries.insertEpisode(
+        EpisodeEntity(
+          id = episode.id.toLong(),
+          showId = episode.showId.toLong(),
+          overview = episode.overview,
+          name = episode.name,
+          runtime = episode.runtime,
+          episodeNumber = episode.number.toLong(),
+          seasonNumber = episode.seasonNumber.toLong(),
+          airDate = episode.airDate,
+          stillPath = episode.stillPath,
+          voteAverage = episode.voteAverage?.toDouble() ?: 0.0,
+        ),
+      )
+    }
+  }
+
+  override fun fetchEpisode(showId: Int, episodeNumber: Int, seasonNumber: Int): Episode = database
+    .transactionWithResult {
+      database
+        .episodeEntityQueries
+        .fetchEpisode(
+          showId = showId.toLong(),
+          seasonNumber = seasonNumber.toLong(),
+          episodeNumber = episodeNumber.toLong(),
+        )
+        .executeAsOne()
+        .map()
+    }
+
+  override fun fetchEpisodes(showId: Int, seasonNumber: Int): Flow<List<Episode>> = database
+    .transactionWithResult {
+      database
+        .episodeEntityQueries
+        .fetchEpisodes(
+          showId = showId.toLong(),
+          seasonNumber = seasonNumber.toLong(),
+        )
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { entities ->
+          entities.map { it.map() }
+        }
+    }
+
+  override fun insertSeasonDetails(
+    seasonDetails: SeasonDetails,
+    showId: Int,
+    seasonNumber: Int,
+  ) = database
+    .transaction {
+      database.seasonDetailsEntityQueries.insertSeasonDetails(
+        SeasonDetailsEntity = SeasonDetailsEntity(
+          id = seasonDetails.id.toLong(),
+          showId = showId.toLong(),
+          name = seasonDetails.name,
+          overview = seasonDetails.overview,
+          posterPath = seasonDetails.posterPath,
+          airDate = seasonDetails.airDate,
+          episodeCount = seasonDetails.episodeCount.toLong(),
+          voteAverage = seasonDetails.voteAverage,
+          seasonNumber = seasonNumber.toLong(),
+          runtime = seasonDetails.totalRuntime,
+        ),
+      )
+    }
+
+  override fun fetchSeasonDetails(seasonNumber: Int, showId: Int): Flow<SeasonDetailsEntity?> =
+    database
+      .transactionWithResult {
+        database
+          .seasonDetailsEntityQueries
+          .fetchSeasonDetails(
+            showId = showId.toLong(),
+            seasonNumber = seasonNumber.toLong(),
+          )
+          .asFlow()
+          .mapToOneOrNull(dispatcher.io)
+      }
+
+  override fun insertGuestStars(showId: Int, season: Int, guestStars: List<Person>) {
+
+  }
+
 }
+
+fun EpisodeEntity.map() = Episode(
+  id = id.toInt(),
+  name = name,
+  airDate = airDate,
+  overview = overview,
+  runtime = runtime,
+  number = episodeNumber.toInt(),
+  seasonNumber = seasonNumber.toInt(),
+  showId = showId.toInt(),
+  stillPath = stillPath,
+  voteAverage = voteAverage.toString(),
+  crew = emptyList(),
+  guestStars = emptyList(),
+)

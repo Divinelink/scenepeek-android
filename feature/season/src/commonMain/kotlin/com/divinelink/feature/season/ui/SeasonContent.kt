@@ -141,18 +141,19 @@ fun SharedTransitionScope.SeasonContent(
                     title = UIText.ResourceText(UiString.core_ui_no_cast_available),
                     description = UIText.ResourceText(
                       UiString.core_ui_no_cast_available_description,
-                      uiState.title,
+                      uiState.season.name,
                     ),
                   ),
                 )
                 is SeasonData.GuestStars -> PeopleFormContent(
+                  modifier = Modifier.fillMaxSize(),
                   cast = (form.data as SeasonData.GuestStars).cast,
                   onNavigate = onNavigate,
                   blankSlateState = BlankSlateState.Custom(
                     title = UIText.ResourceText(UiString.core_ui_no_guest_stars_available),
                     description = UIText.ResourceText(
                       UiString.core_ui_no_guest_stars_available_description,
-                      uiState.title,
+                      uiState.season.name,
                     ),
                   ),
                 )

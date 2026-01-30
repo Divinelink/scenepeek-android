@@ -27,3 +27,31 @@ CREATE TABLE ShowCastRoleEntity(
   creditOrder INTEGER NOT NULL,
   PRIMARY KEY (showId, creditId)
 );
+
+CREATE TABLE SeasonDetailsEntity (
+  id INTEGER NOT NULL,
+  showId INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  overview TEXT NOT NULL,
+  posterPath TEXT,
+  airDate TEXT,
+  episodeCount INTEGER NOT NULL,
+  voteAverage REAL NOT NULL,
+  seasonNumber INTEGER NOT NULL,
+  runtime TEXT,
+  UNIQUE(id, seasonNumber)
+);
+
+CREATE TABLE EpisodeEntity (
+  id INTEGER NOT NULL,
+  showId INTEGER NOT NULL,
+  overview TEXT NOT NULL,
+  name TEXT NOT NULL,
+  runtime TEXT,
+  episodeNumber INTEGER NOT NULL,
+  seasonNumber INTEGER NOT NULL,
+  airDate TEXT,
+  stillPath TEXT,
+  voteAverage REAL NOT NULL,
+  UNIQUE(id, seasonNumber, showId)
+);
