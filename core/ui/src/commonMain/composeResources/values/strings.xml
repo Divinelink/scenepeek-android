@@ -193,6 +193,11 @@
   <!-- September 2025 -->
   <string name="core_ui_localized_month_year">%1$s %2$s</string>
 
+  <string name="core_ui_no_cast_available">No cast available</string>
+  <string name="core_ui_no_cast_available_description">We don't have any cast information for %1$s</string>
+  <string name="core_ui_no_guest_stars_available">No guest appearances</string>
+  <string name="core_ui_no_guest_stars_available_description">There are not guest appearances for %1$s</string>
+
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

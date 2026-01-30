@@ -27,6 +27,7 @@ data class SeasonUiState(
           SeasonTab.Episodes -> SeasonForm.Loading
           SeasonTab.About -> SeasonForm.Loading
           SeasonTab.Cast -> SeasonForm.Loading
+          SeasonTab.GuestStars -> SeasonForm.Loading
         }
       },
     )

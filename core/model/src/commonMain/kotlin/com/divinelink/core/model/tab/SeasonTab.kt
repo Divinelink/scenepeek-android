@@ -4,6 +4,7 @@ import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.core_model_tab_about
 import com.divinelink.core.model.resources.core_model_tab_cast
 import com.divinelink.core.model.resources.core_model_tab_episodes
+import com.divinelink.core.model.resources.core_model_tab_guest_stars
 import org.jetbrains.compose.resources.StringResource
 
 sealed class SeasonTab(
@@ -26,8 +27,14 @@ sealed class SeasonTab(
 
   data object Cast : SeasonTab(
     order = 2,
-    value = "cast",
+    value = "guest_stars",
     titleRes = Res.string.core_model_tab_cast,
+  )
+
+  data object GuestStars : SeasonTab(
+    order = 3,
+    value = "guest_stars",
+    titleRes = Res.string.core_model_tab_guest_stars,
   )
 
   companion object {
@@ -35,7 +42,7 @@ sealed class SeasonTab(
       get() = listOf(
         Episodes,
         About,
-        Cast,
+        GuestStars,
       )
   }
 }

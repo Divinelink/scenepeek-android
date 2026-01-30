@@ -81,7 +81,7 @@ fun EpisodeItem(
           color = MaterialTheme.colorScheme.primary,
         )
 
-        episode.airDate.toLocalDate().localizeFull()?.let { airDate ->
+        episode.airDate?.toLocalDate().localizeFull()?.let { airDate ->
           Text(
             text = buildString {
               append(airDate)

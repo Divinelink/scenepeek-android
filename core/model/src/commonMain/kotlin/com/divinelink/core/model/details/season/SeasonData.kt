@@ -24,4 +24,8 @@ sealed interface SeasonData {
   data class Cast(
     val cast: List<Person>,
   ) : SeasonData
+
+  data class GuestStars(
+    val cast: List<Person>,
+  ) : SeasonData
 }

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class Episode(
   val id: Int,
   val name: String,
-  val airDate: String,
+  val airDate: String?,
   val overview: String,
   val runtime: String?,
   val number: Int,

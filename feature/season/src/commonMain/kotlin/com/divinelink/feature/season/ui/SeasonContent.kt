@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,23 +22,31 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.season.SeasonData
 import com.divinelink.core.model.details.season.SeasonForm
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.collapsingheader.ui.DetailCollapsibleContent
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.resources.core_ui_no_cast_available
+import com.divinelink.core.ui.resources.core_ui_no_cast_available_description
+import com.divinelink.core.ui.resources.core_ui_no_guest_stars_available
+import com.divinelink.core.ui.resources.core_ui_no_guest_stars_available_description
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.season.SeasonAction
 import com.divinelink.feature.season.SeasonUiState
 import com.divinelink.feature.season.ui.components.SeasonTitleDetails
+import com.divinelink.feature.season.ui.forms.PeopleFormContent
 import com.divinelink.feature.season.ui.forms.about.AboutFormContent
 import com.divinelink.feature.season.ui.forms.episodes.EpisodesFormContent
 import com.divinelink.feature.season.ui.provider.SeasonUiStateParameterProvider
@@ -125,8 +134,28 @@ fun SharedTransitionScope.SeasonContent(
                 is SeasonData.About -> AboutFormContent(
                   aboutData = form.data as SeasonData.About,
                 )
-                is SeasonData.Cast -> {
-                }
+                is SeasonData.Cast -> PeopleFormContent(
+                  cast = (form.data as SeasonData.Cast).cast,
+                  onNavigate = onNavigate,
+                  blankSlateState = BlankSlateState.Custom(
+                    title = UIText.ResourceText(UiString.core_ui_no_cast_available),
+                    description = UIText.ResourceText(
+                      UiString.core_ui_no_cast_available_description,
+                      uiState.title,
+                    ),
+                  ),
+                )
+                is SeasonData.GuestStars -> PeopleFormContent(
+                  cast = (form.data as SeasonData.GuestStars).cast,
+                  onNavigate = onNavigate,
+                  blankSlateState = BlankSlateState.Custom(
+                    title = UIText.ResourceText(UiString.core_ui_no_guest_stars_available),
+                    description = UIText.ResourceText(
+                      UiString.core_ui_no_guest_stars_available_description,
+                      uiState.title,
+                    ),
+                  ),
+                )
               }
 
               SeasonForm.Error -> Column(
@@ -138,11 +167,14 @@ fun SharedTransitionScope.SeasonContent(
                 BlankSlate(uiState = BlankSlateState.Contact)
               }
 
-              SeasonForm.Loading -> LoadingContent(
-                modifier = Modifier
-                  .fillMaxSize()
-                  .verticalScroll(rememberScrollState()),
-              )
+              SeasonForm.Loading -> Box(modifier = Modifier.fillMaxSize()) {
+                LoadingContent(
+                  modifier = Modifier
+                    .padding(top = MaterialTheme.dimensions.keyline_16)
+                    .align(Alignment.TopCenter)
+                    .verticalScroll(rememberScrollState()),
+                )
+              }
             }
           }
         }

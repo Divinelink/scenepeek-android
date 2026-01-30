@@ -89,6 +89,7 @@ class SeasonViewModel(
             _uiState.update { state ->
               val episodeTab = SeasonTab.Episodes
               val aboutTab = SeasonTab.About
+              val castTab = SeasonTab.GuestStars
 
               val updatedForms = state.forms.toMutableMap().apply {
                 this[episodeTab] = SeasonForm.Content(
@@ -105,6 +106,9 @@ class SeasonViewModel(
                       firstAirDate = data.airDate,
                     ),
                   ),
+                )
+                this[castTab] = SeasonForm.Content(
+                  SeasonData.GuestStars(cast = data.guestStars),
                 )
               }
 

@@ -39,6 +39,8 @@
   <string name="core_model_tab_movies">Movies</string>
   <string name="core_model_tab_tv_shows">TV Shows</string>
 
+  <string name="core_model_tab_guest_stars">Guest stars</string>
+
   <string name="core_model_status_unknown">Unknown</string>
   <string name="core_model_status_requested">Requested</string>
   <string name="core_model_status_pending">Pending</string>

@@ -13,4 +13,5 @@ data class SeasonDetails(
   val voteAverage: Double,
   val episodes: List<Episode>,
   val totalRuntime: String?,
+  val guestStars: List<Person>,
 )

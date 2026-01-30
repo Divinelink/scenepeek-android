@@ -212,7 +212,12 @@ fun CastApi.toPerson(): Person = Person(
         ),
       )
     }
-    is CastApi.TV -> listOf(PersonRole.Unknown)
+    is CastApi.TV -> listOf(
+      PersonRole.SeriesActor(
+        character = character,
+        creditId = creditId,
+      ),
+    )
   },
 )
 
