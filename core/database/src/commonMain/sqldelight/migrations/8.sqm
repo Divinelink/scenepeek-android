@@ -1,0 +1,1 @@
+ALTER TABLE PersonEntity RENAME TO PersonDetailsEntity;

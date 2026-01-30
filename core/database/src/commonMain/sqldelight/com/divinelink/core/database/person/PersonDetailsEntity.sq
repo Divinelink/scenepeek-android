@@ -1,4 +1,4 @@
-CREATE TABLE PersonEntity (
+CREATE TABLE PersonDetailsEntity (
   id INTEGER NOT NULL PRIMARY KEY,
   biography TEXT,
   birthday TEXT,
@@ -15,7 +15,7 @@ CREATE TABLE PersonEntity (
 );
 
 insertPerson:
-INSERT OR REPLACE INTO PersonEntity(
+INSERT OR REPLACE INTO PersonDetailsEntity(
   id,
   biography,
   birthday,
@@ -33,7 +33,7 @@ INSERT OR REPLACE INTO PersonEntity(
 VALUES ?;
 
 updatePerson:
-UPDATE PersonEntity
+UPDATE PersonDetailsEntity
 SET
   biography = CASE WHEN :biography IS NOT NULL THEN :biography ELSE biography END,
   name = CASE WHEN :name IS NOT NULL THEN :name ELSE name END,
@@ -49,7 +49,7 @@ SET
 WHERE id = :id;
 
 deleteFromPerson:
-UPDATE PersonEntity
+UPDATE PersonDetailsEntity
 SET
   biography = CASE WHEN :biography THEN NULL ELSE biography END,
   name = CASE WHEN :name THEN "" ELSE name END,
@@ -66,5 +66,5 @@ WHERE id = :id;
 
 fetchPersonById:
 SELECT *
-FROM PersonEntity
+FROM PersonDetailsEntity
 WHERE id = ?;

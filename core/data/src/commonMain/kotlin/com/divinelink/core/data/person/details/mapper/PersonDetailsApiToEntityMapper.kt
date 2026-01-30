@@ -1,9 +1,9 @@
 package com.divinelink.core.data.person.details.mapper
 
-import com.divinelink.core.database.person.PersonEntity
+import com.divinelink.core.database.person.PersonDetailsEntity
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
 
-fun PersonDetailsApi.mapToEntity(timestamp: String) = PersonEntity(
+fun PersonDetailsApi.mapToEntity(timestamp: String) = PersonDetailsEntity(
   id = id,
   biography = biography,
   birthday = birthday,

@@ -29,7 +29,7 @@ sqldelight {
     create("Database") {
       packageName.set("com.divinelink.core.database")
       migrationOutputDirectory.set(file("src/main/sqldelight/migrations"))
-      version = 7
+      version = 8
     }
   }
 }

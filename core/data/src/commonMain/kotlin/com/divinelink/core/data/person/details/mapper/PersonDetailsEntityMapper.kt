@@ -1,12 +1,12 @@
 package com.divinelink.core.data.person.details.mapper
 
-import com.divinelink.core.database.person.PersonEntity
+import com.divinelink.core.database.person.PersonDetailsEntity
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
 
-fun PersonEntity.map() = PersonDetails(
+fun PersonDetailsEntity.map() = PersonDetails(
   person = Person(
     id = id,
     name = name,
