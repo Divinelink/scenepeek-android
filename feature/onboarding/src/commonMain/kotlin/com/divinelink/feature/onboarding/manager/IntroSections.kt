@@ -36,6 +36,7 @@ import com.divinelink.feature.onboarding.resources.feature_onboarding_v33_update
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v34_add_discover_sorting_option
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v34_add_discover_year_filter
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v34_user_data_empty_state
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v35_add_email_support_field
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
 import com.divinelink.feature.onboarding.resources.Res as R
@@ -148,6 +149,15 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v34_user_data_empty_state)),
   )
 
+  val v35 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.25.1"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v35_add_email_support_field),
+    ),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -157,5 +167,6 @@ object IntroSections {
     32 to v32,
     33 to v33,
     34 to v34,
+    35 to v35,
   )
 }

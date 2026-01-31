@@ -42,4 +42,6 @@
   <string name="feature_onboarding_v34_add_discover_year_filter">- Discover now includes year filtering. Find movies by year, decade, or year range</string>
   <string name="feature_onboarding_v34_add_discover_sorting_option">- Discover now includes sorting options. Sort by year, ratings, revenue, and more</string>
   <string name="feature_onboarding_v34_user_data_empty_state">- Redesigned empty state visuals for watchlist, ratings, and empty lists</string>
+
+  <string name="feature_onboarding_v35_add_email_support_field">- Add experimental warning and email support field on Jellyseerr login</string>
 </resources>
