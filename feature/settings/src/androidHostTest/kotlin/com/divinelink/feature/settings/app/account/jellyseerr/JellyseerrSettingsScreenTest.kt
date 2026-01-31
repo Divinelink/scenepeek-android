@@ -139,7 +139,15 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
     ).assertIsNotEnabled()
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasText("Jellyfin"),
+    )
+
     onNodeWithText("Jellyfin").assertIsDisplayed().performClick()
+
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+    )
 
     onNodeWithTag(
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
@@ -225,7 +233,15 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
     ).assertIsNotEnabled()
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasText("Jellyseerr"),
+    )
+
     onNodeWithText("Jellyseerr").assertIsDisplayed().performClick()
+
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+    )
 
     onNodeWithTag(
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
@@ -313,7 +329,15 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
     ).assertIsNotEnabled()
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasText("Emby"),
+    )
+
     onNodeWithText("Emby").assertIsDisplayed().performClick()
+
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+    )
 
     onNodeWithTag(
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
@@ -465,7 +489,15 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
     ).assertIsNotEnabled()
 
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasText("Emby"),
+    )
+
     onNodeWithText("Emby").assertIsDisplayed().performClick()
+
+    onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+      hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+    )
 
     onNodeWithTag(
       TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,

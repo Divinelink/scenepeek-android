@@ -87,6 +87,13 @@
   <string name="feature_settings_episodes_rating_preference">Episodes</string>
   <string name="feature_settings_seasons_rating_preference">Seasons</string>
 
+  <string name="support_email">support@scenepeek.app</string>
+  <string name="seerr_support_email_subject">Trouble connecting to Seerr</string>
+  <string name="seerr_support_email_body">"Please specify your login method, server versions and attach the error logs to help identify the issue."\n\nSeerr version: (enter your Seerr server version)\nJellyfin version: (enter your Jellyfin version if applicable)\n%1$s</string>
+
+  <string name="seerr_login_info_placeholder_pt1">This is an experimental feature.\nIf you have trouble connecting, please get in contact at </string>
+  <string name="seerr_login_info_placeholder_pt2"> to troubleshoot the issue.</string>
+
   <!-- preferences.xml -->
   <string name="preferences__none">None</string>
   <string name="preferences__account">Account</string>

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
@@ -60,7 +61,40 @@ internal class AndroidIntentManager(
       data = Uri.fromParts(PACKAGE_SCHEME, context.packageName, null)
     }
 
-    context.startActivity(intent, null)
+    try {
+      context.startActivity(intent, null)
+    } catch (_: Exception) {
+      Toast.makeText(context, "Couldn't not open app settings", Toast.LENGTH_SHORT).show()
+    }
+  }
+
+  override fun launchEmail(
+    email: String,
+    subject: String?,
+    body: String?,
+  ) {
+    val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+      val uriString = buildString {
+        append("mailto:$email")
+
+        val params = mutableListOf<String>()
+        subject?.let { params.add("subject=${Uri.encode(it)}") }
+        body?.let { params.add("body=${Uri.encode(it)}") }
+
+        if (params.isNotEmpty()) {
+          append("?")
+          append(params.joinToString("&"))
+        }
+      }
+
+      data = uriString.toUri()
+    }
+
+    try {
+      context.startActivity(emailIntent)
+    } catch (_: Exception) {
+      Toast.makeText(context, "No email app installed", Toast.LENGTH_SHORT).show()
+    }
   }
 
   companion object {

@@ -40,12 +40,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.sp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -55,6 +53,7 @@ import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.app.account.jellyseerr.preview.JellyseerrLoginStatePreviewParameterProvider
+import com.divinelink.feature.settings.app.account.jellyseerr.ui.EmailSupportField
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.feature_settings_email
 import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_address_placeholder
@@ -129,6 +128,10 @@ fun JellyseerrLoginContent(
         enabled = state.isLoginEnabled,
         onClick = { interaction.invoke(JellyseerrInteraction.OnLoginClick) },
       )
+    }
+
+    item {
+      EmailSupportField()
     }
 
     item {
@@ -210,8 +213,7 @@ private fun AuthMethodButton(
     Text(
       text = method.displayName,
       color = textColor,
-      fontWeight = FontWeight.Medium,
-      fontSize = 14.sp,
+      style = MaterialTheme.typography.labelLarge,
       textAlign = TextAlign.Center,
     )
   }
