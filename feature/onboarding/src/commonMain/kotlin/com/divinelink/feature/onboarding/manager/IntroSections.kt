@@ -33,6 +33,9 @@ import com.divinelink.feature.onboarding.resources.feature_onboarding_v32_show_y
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v33_fix_duplicate_ids_crash
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v33_redesign_home_screen
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v33_update_favorites
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v34_add_discover_sorting_option
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v34_add_discover_year_filter
+import com.divinelink.feature.onboarding.resources.feature_onboarding_v34_user_data_empty_state
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
 import com.divinelink.feature.onboarding.resources.Res as R
@@ -131,6 +134,20 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_fix_duplicate_ids_crash)),
   )
 
+  val v34 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.25.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v34_add_discover_year_filter),
+    ),
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v34_add_discover_sorting_option),
+    ),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v34_user_data_empty_state)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -139,5 +156,6 @@ object IntroSections {
     30 to v30,
     32 to v32,
     33 to v33,
+    34 to v34,
   )
 }
