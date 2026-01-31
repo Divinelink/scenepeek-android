@@ -205,6 +205,7 @@ object TestTags {
       const val USERNAME_TEXT_FIELD = "Username input"
       const val PASSWORD_TEXT_FIELD = "Password input"
 
+      const val EMAIL_SUPPORT = "Email support field"
       const val JELLYSEERR_LOGIN_BUTTON = "Jellyseerr Login Button"
       const val JELLYSEERR_LOGOUT_BUTTON = "Jellyseerr Logout Button"
     }

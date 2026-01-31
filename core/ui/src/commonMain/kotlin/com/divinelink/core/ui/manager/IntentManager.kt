@@ -14,6 +14,12 @@ interface IntentManager {
 
   fun shareErrorReport(throwable: Throwable)
 
+  fun launchEmail(
+    email: String,
+    subject: String?,
+    body: String?,
+  )
+
   fun navigateToAppSettings()
 }
 

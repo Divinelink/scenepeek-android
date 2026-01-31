@@ -2,6 +2,13 @@ package com.divinelink.core.ui.manager
 
 import androidx.compose.runtime.Composable
 import com.divinelink.core.commons.provider.BuildConfigProvider
+import kotlinx.cinterop.BetaInteropApi
+import platform.Foundation.NSCharacterSet
+import platform.Foundation.NSString
+import platform.Foundation.NSURL
+import platform.Foundation.URLQueryAllowedCharacterSet
+import platform.Foundation.create
+import platform.Foundation.stringByAddingPercentEncodingWithAllowedCharacters
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
 import platform.UIKit.popoverPresentationController
@@ -48,6 +55,39 @@ class IOSIntentManager(
       .append("\n")
       .toString(),
   )
+
+  override fun launchEmail(
+    email: String,
+    subject: String?,
+    body: String?,
+  ) {
+    val urlString = buildString {
+      append("mailto:$email")
+
+      val params = mutableListOf<String>()
+      subject?.let { params.add("subject=${it.encodeURLComponent()}") }
+      body?.let { params.add("body=${it.encodeURLComponent()}") }
+
+      if (params.isNotEmpty()) {
+        append("?")
+        append(params.joinToString("&"))
+      }
+    }
+
+    val url = NSURL.URLWithString(urlString) ?: return
+
+    UIApplication.sharedApplication.openURL(url, options = emptyMap<Any?, Any?>()) { success ->
+      if (!success) {
+        println("Failed to open email app")
+      }
+    }
+  }
+
+  @OptIn(BetaInteropApi::class)
+  private fun String.encodeURLComponent(): String =
+    NSString.create(string = this).stringByAddingPercentEncodingWithAllowedCharacters(
+      NSCharacterSet.URLQueryAllowedCharacterSet,
+    ) ?: this
 
   override fun navigateToAppSettings() {
     // Do nothing
