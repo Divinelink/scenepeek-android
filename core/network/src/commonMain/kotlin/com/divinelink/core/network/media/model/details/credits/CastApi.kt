@@ -13,6 +13,9 @@ sealed class CastApi {
   abstract val knownForDepartment: String?
   abstract val gender: Int
 
+  @SerialName("credit_id")
+  abstract val creditId: String
+
   @Serializable
   data class Movie(
     val adult: Boolean,
@@ -25,7 +28,7 @@ sealed class CastApi {
     val popularity: Double,
     @SerialName("profile_path") override val profilePath: String?,
     override val character: String,
-    @SerialName("credit_id") val creditId: String,
+    @SerialName("credit_id") override val creditId: String,
     override val order: Int,
   ) : CastApi()
 
@@ -40,7 +43,7 @@ sealed class CastApi {
     val popularity: Double,
     @SerialName("profile_path") override val profilePath: String?,
     override val character: String,
-    @SerialName("credit_id") val creditId: String,
+    @SerialName("credit_id") override val creditId: String,
     override val order: Int,
   ) : CastApi()
 }

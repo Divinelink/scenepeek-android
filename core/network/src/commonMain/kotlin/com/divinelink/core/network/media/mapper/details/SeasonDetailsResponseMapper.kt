@@ -30,8 +30,7 @@ private fun aggregateGuestStars(allEpisodes: List<EpisodeResponse>): List<Person
   .map { (id, cast) ->
     val firstCast = cast.first()
 
-    val characterCounts = cast
-      .map { it.character }
+    val roles = cast
       .groupingBy { it }
       .eachCount()
 
@@ -41,11 +40,12 @@ private fun aggregateGuestStars(allEpisodes: List<EpisodeResponse>): List<Person
       profilePath = firstCast.profilePath,
       gender = Gender.from(firstCast.gender),
       knownForDepartment = firstCast.knownForDepartment,
-      role = characterCounts.map { (character, count) ->
+      role = roles.map { (cast, count) ->
         PersonRole.SeriesActor(
-          character = character,
-          creditId = null,
+          character = cast.character,
+          creditId = cast.creditId,
           totalEpisodes = count,
+          order = cast.order,
         )
       },
     )

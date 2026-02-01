@@ -162,9 +162,11 @@ private object CreditsUiStateParameters {
     role = listOf(
       PersonRole.SeriesActor(
         character = "Character 1",
+        creditId = "",
       ),
       PersonRole.SeriesActor(
         character = "Character 2",
+        creditId = "",
       ),
     ),
   )
@@ -178,6 +180,7 @@ private object CreditsUiStateParameters {
       PersonRole.SeriesActor(
         character = "",
         totalEpisodes = 10,
+        creditId = "",
       ),
     ),
   )
@@ -191,6 +194,7 @@ private object CreditsUiStateParameters {
       PersonRole.SeriesActor(
         character = "Character $it",
         totalEpisodes = it,
+        creditId = "",
       )
     },
   )

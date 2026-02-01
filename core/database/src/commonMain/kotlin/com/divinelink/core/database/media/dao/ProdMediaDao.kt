@@ -14,7 +14,6 @@ import com.divinelink.core.database.season.EpisodeEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Episode
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
@@ -317,7 +316,11 @@ class ProdMediaDao(
     }
   }
 
-  override fun fetchEpisode(showId: Int, episodeNumber: Int, seasonNumber: Int): Episode = database
+  override fun fetchEpisode(
+    showId: Int,
+    episodeNumber: Int,
+    seasonNumber: Int,
+  ): Episode = database
     .transactionWithResult {
       database
         .episodeEntityQueries
@@ -330,13 +333,16 @@ class ProdMediaDao(
         .map()
     }
 
-  override fun fetchEpisodes(showId: Int, seasonNumber: Int): Flow<List<Episode>> = database
+  override fun fetchEpisodes(
+    showId: Int,
+    season: Int,
+  ): Flow<List<Episode>> = database
     .transactionWithResult {
       database
         .episodeEntityQueries
         .fetchEpisodes(
           showId = showId.toLong(),
-          seasonNumber = seasonNumber.toLong(),
+          seasonNumber = season.toLong(),
         )
         .asFlow()
         .mapToList(dispatcher.io)
@@ -367,36 +373,18 @@ class ProdMediaDao(
       )
     }
 
-  override fun fetchSeasonDetails(seasonNumber: Int, showId: Int): Flow<SeasonDetailsEntity?> =
-    database
-      .transactionWithResult {
-        database
-          .seasonDetailsEntityQueries
-          .fetchSeasonDetails(
-            showId = showId.toLong(),
-            seasonNumber = seasonNumber.toLong(),
-          )
-          .asFlow()
-          .mapToOneOrNull(dispatcher.io)
-      }
-
-  override fun insertGuestStars(showId: Int, season: Int, guestStars: List<Person>) {
-
-  }
-
+  override fun fetchSeasonDetails(
+    season: Int,
+    showId: Int,
+  ): Flow<SeasonDetailsEntity?> = database
+    .transactionWithResult {
+      database
+        .seasonDetailsEntityQueries
+        .fetchSeasonDetails(
+          showId = showId.toLong(),
+          seasonNumber = season.toLong(),
+        )
+        .asFlow()
+        .mapToOneOrNull(dispatcher.io)
+    }
 }
-
-fun EpisodeEntity.map() = Episode(
-  id = id.toInt(),
-  name = name,
-  airDate = airDate,
-  overview = overview,
-  runtime = runtime,
-  number = episodeNumber.toInt(),
-  seasonNumber = seasonNumber.toInt(),
-  showId = showId.toInt(),
-  stillPath = stillPath,
-  voteAverage = voteAverage.toString(),
-  crew = emptyList(),
-  guestStars = emptyList(),
-)

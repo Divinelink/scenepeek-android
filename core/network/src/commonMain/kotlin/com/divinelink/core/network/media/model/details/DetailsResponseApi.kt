@@ -216,6 +216,7 @@ fun CastApi.toPerson(): Person = Person(
       PersonRole.SeriesActor(
         character = character,
         creditId = creditId,
+        order = order,
       ),
     )
   },

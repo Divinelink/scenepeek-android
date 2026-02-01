@@ -31,14 +31,20 @@ fun PersonItemPreview() {
               PersonRole.SeriesActor(
                 character = "Character 1",
                 totalEpisodes = 10,
+                creditId = "credit_1",
+                order = 1,
               ),
               PersonRole.SeriesActor(
                 character = "Character 2",
                 totalEpisodes = 5,
+                creditId = "credit_2",
+                order = 2,
               ),
               PersonRole.SeriesActor(
                 character = "Character 3",
                 totalEpisodes = 5,
+                creditId = "credit_3",
+                order = 3,
               ),
             ),
           ),
@@ -56,14 +62,20 @@ fun PersonItemPreview() {
               PersonRole.SeriesActor(
                 character = "Character 1",
                 totalEpisodes = 10,
+                creditId = "credit_1",
+                order = 1,
               ),
               PersonRole.SeriesActor(
                 character = "Character 2",
                 totalEpisodes = 5,
+                creditId = "credit_2",
+                order = 2,
               ),
               PersonRole.SeriesActor(
                 character = "Character 3",
                 totalEpisodes = 5,
+                creditId = "credit_3",
+                order = 3,
               ),
             ),
           ),

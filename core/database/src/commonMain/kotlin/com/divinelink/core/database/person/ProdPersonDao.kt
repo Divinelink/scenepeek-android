@@ -5,14 +5,20 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
+import com.divinelink.core.database.cast.PersonEntity
+import com.divinelink.core.database.cast.PersonRoleEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.person.credits.CastCreditsWithMedia
 import com.divinelink.core.database.person.credits.CrewCreditsWithMedia
 import com.divinelink.core.database.person.credits.PersonCastCreditEntity
 import com.divinelink.core.database.person.credits.PersonCreditsEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
+import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.person.Gender
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
 
 class ProdPersonDao(
@@ -138,4 +144,93 @@ class ProdPersonDao(
     .crewCreditsWithMedia(id)
     .asFlow()
     .mapToList(context = dispatcher.io)
+
+  override fun insertGuestStars(
+    showId: Int,
+    season: Int,
+    episode: Int,
+    guestStars: List<Person>,
+  ) {
+    database.transaction {
+      val insertedPersonIds = mutableSetOf<Long>()
+      val insertedCreditIds = mutableSetOf<String>()
+
+      guestStars.forEach { person ->
+        if (person.id !in insertedPersonIds) {
+          database.personEntityQueries.insertPerson(
+            PersonEntity(
+              id = person.id,
+              name = person.name,
+              originalName = person.name,
+              profilePath = person.profilePath,
+              knownForDepartment = person.knownForDepartment,
+              gender = person.gender.value.toLong(),
+            ),
+          )
+          insertedPersonIds += person.id
+        }
+
+        person.role
+          .filterIsInstance<PersonRole.SeriesActor>()
+          .forEach { role ->
+            if (role.creditId !in insertedCreditIds) {
+              database.personRoleEntityQueries.insertRole(
+                PersonRoleEntity(
+                  creditId = role.creditId,
+                  character = role.character,
+                  castId = person.id,
+                ),
+              )
+
+              database.seasonGuestStarRoleEntityQueries.insertSeasonGuestStarRole(
+                showId = showId.toLong(),
+                season = season.toLong(),
+                creditId = role.creditId,
+                episode = episode.toLong(),
+                episodeCount = role.totalEpisodes?.toLong(),
+                displayOrder = role.order?.toLong() ?: -1,
+              )
+              insertedCreditIds += role.creditId
+            }
+          }
+      }
+    }
+  }
+
+  override fun fetchGuestStars(
+    showId: Int,
+    season: Int,
+  ): Flow<List<Person>> = database
+    .transactionWithResult {
+      database
+        .seasonGuestStarRoleEntityQueries
+        .fetchSeasonGuestStars(
+          season = season.toLong(),
+          showId = showId.toLong(),
+        )
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { entities ->
+          entities
+            .groupBy { it.id }
+            .map { (personId, roles) ->
+              val firstRole = roles.first()
+              Person(
+                id = personId,
+                name = firstRole.name,
+                profilePath = firstRole.profilePath,
+                gender = Gender.from(firstRole.gender.toInt()),
+                knownForDepartment = firstRole.knownForDepartment,
+                role = listOf(
+                  PersonRole.SeriesActor(
+                    character = firstRole.character,
+                    creditId = firstRole.creditId,
+                    totalEpisodes = firstRole.episodeCount?.toInt(),
+                    order = firstRole.displayOrder.toInt(),
+                  ),
+                ),
+              )
+            }
+        }
+    }
 }

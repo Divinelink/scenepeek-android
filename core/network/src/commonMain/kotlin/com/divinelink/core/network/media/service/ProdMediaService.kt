@@ -256,13 +256,15 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     restClient.get<GenresListResponse>(url = buildGenreUrl(mediaType))
   }
 
-  override suspend fun fetchSeason(showId: Int, seasonNumber: Int): Result<SeasonDetailsResponse> =
-    runCatching {
-      restClient.get<SeasonDetailsResponse>(
-        url = buildSeasonDetailsUrl(
-          showId = showId,
-          seasonNumber = seasonNumber,
-        ),
-      )
-    }
+  override suspend fun fetchSeason(
+    showId: Int,
+    season: Int,
+  ): Result<SeasonDetailsResponse> = runCatching {
+    restClient.get<SeasonDetailsResponse>(
+      url = buildSeasonDetailsUrl(
+        showId = showId,
+        seasonNumber = season,
+      ),
+    )
+  }
 }

@@ -81,6 +81,6 @@ interface MediaService {
 
   suspend fun fetchSeason(
     showId: Int,
-    seasonNumber: Int,
+    season: Int,
   ): Result<SeasonDetailsResponse>
 }

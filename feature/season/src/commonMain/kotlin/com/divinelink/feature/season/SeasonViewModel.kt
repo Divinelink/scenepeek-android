@@ -79,7 +79,7 @@ class SeasonViewModel(
 
     repository.fetchSeasonDetails(
       showId = route.showId,
-      seasonNumber = route.seasonNumber,
+      season = route.seasonNumber,
     )
       .distinctUntilChanged()
       .catch {
@@ -109,9 +109,7 @@ class SeasonViewModel(
     }
   }
 
-  private fun handleSuccessResponse(
-    data: SeasonDetails,
-  ) {
+  private fun handleSuccessResponse(data: SeasonDetails) {
     _uiState.update { state ->
       val episodeTab = SeasonTab.Episodes
       val aboutTab = SeasonTab.About

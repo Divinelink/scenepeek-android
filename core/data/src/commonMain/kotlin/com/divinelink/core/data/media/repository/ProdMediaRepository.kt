@@ -3,10 +3,10 @@ package com.divinelink.core.data.media.repository
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.media.dao.MediaDao
-import com.divinelink.core.database.season.SeasonDetailsEntity
+import com.divinelink.core.database.media.mapper.map
+import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
-import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.map
 class ProdMediaRepository(
   private val remote: MediaService,
   private val dao: MediaDao,
+  private val personDao: PersonDao,
   private val dispatcher: DispatcherProvider,
 ) : MediaRepository {
 
@@ -296,64 +297,48 @@ class ProdMediaRepository(
       shouldFetch = { it.isEmpty() },
     )
 
-  override fun fetchSeasonDetails(showId: Int, seasonNumber: Int): Flow<Resource<SeasonDetails?>> =
-    networkBoundResource(
-      query = {
-        val episodes = dao.fetchEpisodes(
-          showId = showId,
-          seasonNumber = seasonNumber,
+  override fun fetchSeasonDetails(
+    showId: Int,
+    season: Int,
+  ): Flow<Resource<SeasonDetails?>> = networkBoundResource(
+    query = {
+      combine(
+        dao.fetchEpisodes(showId = showId, season = season),
+        dao.fetchSeasonDetails(showId = showId, season = season),
+        personDao.fetchGuestStars(showId = showId, season = season),
+      ) { episodes, details, guestStars ->
+        details?.map(
+          episodes = episodes,
+          guestStars = guestStars,
         )
+      }
+    },
+    fetch = {
+      remote.fetchSeason(
+        showId = showId,
+        season = season,
+      ).map { it.map() }
+    },
+    saveFetchResult = { result ->
+      val data = result.data
 
-        val details = dao.fetchSeasonDetails(
-          showId = showId,
-          seasonNumber = seasonNumber,
-        )
+      dao.insertSeasonDetails(
+        seasonDetails = data,
+        showId = showId,
+        seasonNumber = season,
+      )
 
-        combine(
-          episodes,
-          details,
-        ) { episodes, details ->
-          details?.map(
-            episodes = episodes,
-          )
-        }
-      },
-      fetch = {
-        remote.fetchSeason(
-          showId = showId,
-          seasonNumber = seasonNumber,
-        ).map { it.map() }
-      },
-      saveFetchResult = { result ->
-        val data = result.data
+      dao.insertEpisodes(data.episodes)
 
-        dao.insertSeasonDetails(
-          seasonDetails = data,
+      data.episodes.forEach { episode ->
+        personDao.insertGuestStars(
+          season = season,
           showId = showId,
-          seasonNumber = seasonNumber,
-        )
-        dao.insertEpisodes(data.episodes)
-        dao.insertGuestStars(
-          season = seasonNumber,
-          showId = showId,
+          episode = episode.number,
           guestStars = data.guestStars,
         )
-      },
-      shouldFetch = { true },
-    )
+      }
+    },
+    shouldFetch = { true },
+  )
 }
-
-fun SeasonDetailsEntity.map(
-  episodes: List<Episode>,
-) = SeasonDetails(
-  id = id.toInt(),
-  name = name,
-  overview = overview,
-  posterPath = posterPath,
-  airDate = airDate,
-  episodeCount = episodeCount.toInt(),
-  voteAverage = voteAverage,
-  episodes = episodes,
-  totalRuntime = runtime,
-  guestStars = emptyList(),
-)

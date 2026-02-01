@@ -13,12 +13,14 @@ class PersonParameterProvider : PreviewParameterProvider<Person> {
       name = "Brian Baumgartner",
       role = listOf(
         PersonRole.SeriesActor(
-          "Kevin Malone",
+          character = "Kevin Malone",
           totalEpisodes = 217,
+          creditId = "123456789",
         ),
         PersonRole.SeriesActor(
-          "Self",
+          character = "Self",
           totalEpisodes = 10,
+          creditId = "987654321",
         ),
       ),
       knownForDepartment = "Acting",

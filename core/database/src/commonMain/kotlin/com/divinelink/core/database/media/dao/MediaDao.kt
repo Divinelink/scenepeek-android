@@ -1,10 +1,11 @@
+@file:Suppress("TooManyFunctions")
+
 package com.divinelink.core.database.media.dao
 
 import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Episode
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
@@ -82,19 +83,17 @@ interface MediaDao {
 
   fun fetchEpisodes(
     showId: Int,
-    seasonNumber: Int,
+    season: Int,
   ): Flow<List<Episode>>
 
-  fun insertSeasonDetails(seasonDetails: SeasonDetails, showId: Int, seasonNumber: Int)
-
-  fun insertGuestStars(
+  fun insertSeasonDetails(
+    seasonDetails: SeasonDetails,
     showId: Int,
-    season: Int,
-    guestStars: List<Person>,
+    seasonNumber: Int,
   )
 
   fun fetchSeasonDetails(
-    seasonNumber: Int,
+    season: Int,
     showId: Int,
   ): Flow<SeasonDetailsEntity?>
 }

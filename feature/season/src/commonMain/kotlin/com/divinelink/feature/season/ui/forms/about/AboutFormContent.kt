@@ -48,7 +48,6 @@ fun AboutFormContent(
     ),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
-
     if (!aboutData.overview.isNullOrEmpty()) {
       item {
         Text(
@@ -72,9 +71,7 @@ fun AboutFormContent(
 }
 
 @Composable
-fun SeasonAboutInformation(
-  info: SeasonInformation,
-) {
+fun SeasonAboutInformation(info: SeasonInformation) {
   Column(
     modifier = Modifier.fillMaxWidth(),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
