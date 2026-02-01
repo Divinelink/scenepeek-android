@@ -2,23 +2,24 @@ package com.divinelink.core.database.credits.dao
 
 import app.cash.turbine.test
 import com.divinelink.core.database.Database
-import com.divinelink.core.database.credits.cast.SeriesCast
-import com.divinelink.core.database.credits.cast.SeriesCastRole
 import com.divinelink.core.database.credits.crew.SeriesCrew
 import com.divinelink.core.database.credits.crew.SeriesCrewJob
-import com.divinelink.core.database.credits.model.CrewEntity
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.details.person.PersonFactory
+import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.database.credits.AggregateCreditsFactory
-import com.divinelink.core.testing.factories.database.credits.cast.SeriesCastFactory
-import com.divinelink.core.testing.factories.database.credits.cast.SeriesCastRoleFactory
 import com.divinelink.core.testing.factories.database.credits.crew.SeriesCrewFactory
 import com.divinelink.core.testing.factories.database.credits.crew.SeriesCrewJobFactory
 import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEntityFactory
-import com.divinelink.core.testing.factories.entity.credits.CastEntityFactory
-import com.divinelink.core.testing.factories.entity.credits.CrewEntityFactory
+import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
+import com.divinelink.core.testing.factories.entity.person.PersonRoleEntityFactory
+import com.divinelink.core.testing.factories.entity.person.ShowCastRoleEntityFactory
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -131,23 +132,29 @@ class ProdCreditsDaoTest {
   fun `test fetchAllCastWithRoles with empty roles does not bring any data`() = runTest {
     dao.insertAggregateCredits(1)
 
-    dao.insertCast(cast = SeriesCastFactory.allCast())
+    dao.insertPersons(PersonEntityFactory.officeCast)
 
     val result = dao.fetchAllCastWithRoles(id = 1).first()
 
-    assertThat(result).isEqualTo(emptyList<SeriesCast>())
+    result shouldBe emptyList()
   }
 
   @Test
   fun `test fetchAllCastWithRoles with roles does successfully gets cast`() = runTest {
     dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
 
-    dao.insertCast(SeriesCastFactory.allCast())
-    dao.insertCastRoles(listOf(SeriesCastRoleFactory.kevinMalone()))
+    dao.insertPersons(PersonEntityFactory.officeCast)
+    dao.insertRoles(
+      listOf(
+        PersonRoleEntityFactory.kevinMalone to ShowCastRoleEntityFactory.kevinMalone,
+      ),
+    )
 
     val result = dao.fetchAllCastWithRoles(id = 2316).first()
 
-    assertThat(result).isEqualTo(listOf(CastEntityFactory.brianBaumgartner()))
+    result shouldBe listOf(
+      PersonFactory.SeriesActor.brianBaumgartner,
+    )
   }
 
   @Test
@@ -174,15 +181,20 @@ class ProdCreditsDaoTest {
       aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     ).first()
 
-    assertThat(result).isEqualTo(CrewEntityFactory.cameraDepartment())
+    assertThat(result).isEqualTo(PersonFactory.cameraDepartment())
   }
 
   @Test
   fun `test fetchAllCredits successfully fetches all credits`() = runTest {
     dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
 
-    dao.insertCast(SeriesCastFactory.allCast())
-    dao.insertCastRoles(SeriesCastRoleFactory.allCastRoles())
+    dao.insertPersons(PersonEntityFactory.officeCast)
+    dao.insertRoles(
+      listOf(
+        PersonRoleEntityFactory.kevinMalone to ShowCastRoleEntityFactory.kevinMalone,
+        PersonRoleEntityFactory.angelaMartin to ShowCastRoleEntityFactory.angelaMartin,
+      ),
+    )
 
     dao.insertCrew(SeriesCrewFactory.cameraDepartment())
     dao.insertCrewJobs(SeriesCrewJobFactory.allCrewJobs())
@@ -196,8 +208,13 @@ class ProdCreditsDaoTest {
   fun `test fetchAllCredits with invalid crew job id does not bring crew`() = runTest {
     dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
 
-    dao.insertCast(SeriesCastFactory.allCast())
-    dao.insertCastRoles(SeriesCastRoleFactory.allCastRoles())
+    dao.insertPersons(PersonEntityFactory.officeCast)
+    dao.insertRoles(
+      listOf(
+        PersonRoleEntityFactory.kevinMalone to ShowCastRoleEntityFactory.kevinMalone,
+        PersonRoleEntityFactory.angelaMartin to ShowCastRoleEntityFactory.angelaMartin,
+      ),
+    )
 
     dao.insertCrew(SeriesCrewFactory.cameraDepartment())
 
@@ -212,8 +229,12 @@ class ProdCreditsDaoTest {
   fun `test fetchAllCredits with partial valid cast`() = runTest {
     dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
 
-    dao.insertCast(SeriesCastFactory.allCast())
-    dao.insertCastRoles(listOf(SeriesCastRoleFactory.kevinMalone()))
+    dao.insertPersons(PersonEntityFactory.officeCast)
+    dao.insertRoles(
+      listOf(
+        PersonRoleEntityFactory.kevinMalone to ShowCastRoleEntityFactory.kevinMalone,
+      ),
+    )
 
     dao.insertCrew(SeriesCrewFactory.cameraDepartment())
 
@@ -223,7 +244,7 @@ class ProdCreditsDaoTest {
       AggregateCreditsEntityFactory
         .theOffice()
         .copy(
-          cast = listOf(CastEntityFactory.brianBaumgartner()),
+          cast = listOf(PersonFactory.SeriesActor.brianBaumgartner),
           crew = emptyList(),
         ),
     )
@@ -233,8 +254,13 @@ class ProdCreditsDaoTest {
   fun `test fetchAllCredits with partial valid crew`() = runTest {
     dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
 
-    dao.insertCast(SeriesCastFactory.allCast())
-    dao.insertCastRoles(SeriesCastRoleFactory.allCastRoles())
+    dao.insertPersons(PersonEntityFactory.officeCast)
+    dao.insertRoles(
+      listOf(
+        PersonRoleEntityFactory.kevinMalone to ShowCastRoleEntityFactory.kevinMalone,
+        PersonRoleEntityFactory.angelaMartin to ShowCastRoleEntityFactory.angelaMartin,
+      ),
+    )
 
     dao.insertCrew(SeriesCrewFactory.cameraDepartment())
     dao.insertCrewJobs(
@@ -250,8 +276,11 @@ class ProdCreditsDaoTest {
       AggregateCreditsEntityFactory
         .theOffice()
         .copy(
-          cast = CastEntityFactory.allCast(),
-          crew = listOf(CrewEntityFactory.daleAlexander(), CrewEntityFactory.randallEinhorn()),
+          cast = PersonFactory.officeCast,
+          crew = listOf(
+            PersonFactory.Camera.daleAlexander(),
+            PersonFactory.Camera.randallEinhorn(),
+          ),
         ),
     )
   }
@@ -274,30 +303,34 @@ class ProdCreditsDaoTest {
   fun `test fetchCast does not bring data with null character`() = runTest {
     dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
 
-    dao.insertCast(SeriesCastFactory.allCast())
-    dao.insertCastRoles(
-      listOf(SeriesCastRoleFactory.kevinMalone()),
+    dao.insertPersons(PersonEntityFactory.officeCast)
+    dao.insertRoles(
+      listOf(
+        PersonRoleEntityFactory.kevinMalone to ShowCastRoleEntityFactory.kevinMalone,
+      ),
     )
 
     val result = dao.fetchAllCastWithRoles(id = AggregateCreditsFactory.theOffice().id).first()
 
-    assertThat(result).isEqualTo(listOf((CastEntityFactory.brianBaumgartner())))
+    assertThat(result).isEqualTo(listOf((PersonFactory.SeriesActor.brianBaumgartner)))
   }
 
   @Test
   fun `test fetchCast for actors with multiple roles`() = runTest {
     dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
 
-    dao.insertCast(SeriesCastFactory.allCast())
-    dao.insertCastRoles(
+    dao.insertPersons(PersonEntityFactory.officeCast)
+    dao.insertRoles(
       listOf(
-        SeriesCastRoleFactory.kevinMalone(),
-        SeriesCastRole(
+        PersonRoleEntityFactory.kevinMalone to ShowCastRoleEntityFactory.kevinMalone,
+        PersonRoleEntityFactory.kevinMalone.copy(
           creditId = "Some Credit Id",
           character = "Some Character",
+        ) to ShowCastRoleEntityFactory.kevinMalone.copy(
+          showId = 2316,
+          creditId = "Some Credit Id",
           episodeCount = 3,
-          castId = 94622,
-          aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+          creditOrder = 216,
         ),
       ),
     )
@@ -306,15 +339,17 @@ class ProdCreditsDaoTest {
 
     assertThat(result).isEqualTo(
       listOf(
-        CastEntityFactory.brianBaumgartner().copy(
-          roles = listOf(
-            SeriesCastRoleFactory.kevinMalone(),
-            SeriesCastRole(
+        PersonFactory.SeriesActor.brianBaumgartner.copy(
+          role = listOf(
+            PersonRole.SeriesActor(
+              character = "Kevin Malone",
+              creditId = "525730a9760ee3776a3447f1",
+              totalEpisodes = 217,
+            ),
+            PersonRole.SeriesActor(
               creditId = "Some Credit Id",
               character = "Some Character",
-              episodeCount = 3,
-              castId = 94622,
-              aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+              totalEpisodes = 3,
             ),
           ),
         ),
@@ -345,16 +380,19 @@ class ProdCreditsDaoTest {
 
     assertThat(result).isEqualTo(
       listOf(
-        CrewEntityFactory.daleAlexander().copy(
-          roles = listOf(
-            SeriesCrewJobFactory.daleAlexander(),
-            SeriesCrewJob(
+        PersonFactory.Camera.daleAlexander().copy(
+          role = listOf(
+            PersonRole.Crew(
+              job = "Key Grip",
+              creditId = "5bdaa7d90e0a2603c60086d9",
+              totalEpisodes = 3,
+              department = "Camera",
+            ),
+            PersonRole.Crew(
               creditId = "5bdaa7d90e0a",
               job = "Key Grip 2",
-              episodeCount = 4,
-              crewId = 1879373,
+              totalEpisodes = 4,
               department = "Camera",
-              aggregateCreditId = AggregateCreditsFactory.theOffice().id,
             ),
           ),
         ),
@@ -408,28 +446,36 @@ class ProdCreditsDaoTest {
 
     assertThat(result).isEqualTo(
       listOf(
-        CrewEntityFactory.daleAlexander().copy(
-          roles = listOf(
-            SeriesCrewJobFactory.daleAlexander(),
-            SeriesCrewJob(
+        PersonFactory.Camera.daleAlexander().copy(
+          role = listOf(
+            PersonRole.Crew(
+              job = "Key Grip",
+              creditId = "5bdaa7d90e0a2603c60086d9",
+              totalEpisodes = 3,
+              department = "Camera",
+            ),
+            PersonRole.Crew(
               creditId = "5bdaa7d90e0a",
               job = "Key Grip 2",
-              episodeCount = 4,
-              crewId = 1879373,
+              totalEpisodes = 4,
               department = "Camera",
-              aggregateCreditId = AggregateCreditsFactory.theOffice().id,
             ),
           ),
         ),
-        CrewEntity(
+        Person(
           id = 1879373,
           name = "Dale Alexander",
-          originalName = "Dale Alexander",
           profilePath = null,
-          department = "Production",
+          gender = Gender.NOT_SET,
           knownForDepartment = "Camera",
-          gender = 0,
-          roles = listOf(daleAlexanderWritingJob),
+          role = listOf(
+            PersonRole.Crew(
+              creditId = "5bda7d90e0a56bcas",
+              job = "Writer",
+              totalEpisodes = 3,
+              department = "Production",
+            ),
+          ),
         ),
       ),
     )

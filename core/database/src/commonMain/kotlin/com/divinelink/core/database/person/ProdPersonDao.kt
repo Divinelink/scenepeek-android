@@ -21,14 +21,14 @@ class ProdPersonDao(
   private val dispatcher: DispatcherProvider,
 ) : PersonDao {
 
-  override fun fetchPersonById(id: Long): Flow<PersonEntity?> = database
-    .personEntityQueries
+  override fun fetchPersonById(id: Long): Flow<PersonDetailsEntity?> = database
+    .personDetailsEntityQueries
     .fetchPersonById(id)
     .asFlow()
     .mapToOneOrNull(context = dispatcher.io)
 
-  override fun insertPerson(person: PersonEntity) = database
-    .personEntityQueries
+  override fun insertPerson(person: PersonDetailsEntity) = database
+    .personDetailsEntityQueries
     .insertPerson(person)
 
   override fun updatePerson(
@@ -45,7 +45,7 @@ class ProdPersonDao(
     insertedAt: String?,
     id: Long,
   ) = database
-    .personEntityQueries
+    .personDetailsEntityQueries
     .updatePerson(
       biography = biography,
       name = name,
@@ -64,7 +64,7 @@ class ProdPersonDao(
   override fun deleteFromPerson(
     id: Long,
     field: PersonChangeField,
-  ) = database.personEntityQueries.deleteFromPerson(
+  ) = database.personDetailsEntityQueries.deleteFromPerson(
     biography = field == PersonChangeField.BIOGRAPHY,
     name = field == PersonChangeField.NAME,
     birthday = field == PersonChangeField.BIRTHDAY,

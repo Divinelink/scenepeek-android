@@ -7,7 +7,7 @@ import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
-import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
+import com.divinelink.core.testing.factories.entity.person.PersonDetailsEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCreditEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory
 import com.google.common.truth.Truth.assertThat
@@ -42,6 +42,6 @@ class PersonCreditsApiMapperTest {
 
       val mappedToEntity = personDetailsApi.mapToEntity("1628995200")
 
-      assertThat(mappedToEntity).isEqualTo(PersonEntityFactory.steveCarell())
+      assertThat(mappedToEntity).isEqualTo(PersonDetailsEntityFactory.steveCarell())
     }
 }

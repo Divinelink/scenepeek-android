@@ -6,16 +6,17 @@ import app.cash.sqldelight.coroutines.mapToOneOrDefault
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.cacheExpiresAtToEpochSeconds
+import com.divinelink.core.database.cast.PersonEntity
+import com.divinelink.core.database.cast.PersonRoleEntity
 import com.divinelink.core.database.credits.AggregateCredits
-import com.divinelink.core.database.credits.cast.SeriesCast
-import com.divinelink.core.database.credits.cast.SeriesCastRole
+import com.divinelink.core.database.credits.ShowCastRoleEntity
 import com.divinelink.core.database.credits.crew.SeriesCrew
 import com.divinelink.core.database.credits.crew.SeriesCrewJob
-import com.divinelink.core.database.credits.mapper.toEntity
+import com.divinelink.core.database.credits.mapper.toPerson
 import com.divinelink.core.database.credits.model.AggregateCreditsEntity
-import com.divinelink.core.database.credits.model.CastEntity
-import com.divinelink.core.database.credits.model.CrewEntity
 import com.divinelink.core.database.currentEpochSeconds
+import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.Person
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -53,11 +54,19 @@ class ProdCreditsDao(
       )
   }
 
-  override fun insertCast(cast: List<SeriesCast>) = database.transaction {
-    cast.forEach { castMember ->
-      database.seriesCastQueries.insertSeriesCast(castMember)
+  override fun insertPersons(persons: List<PersonEntity>) = database.transaction {
+    persons.forEach { person ->
+      database.personEntityQueries.insertPerson(person)
     }
   }
+
+  override fun insertRoles(roles: List<Pair<PersonRoleEntity, ShowCastRoleEntity>>) =
+    database.transaction {
+      roles.forEach { role ->
+        database.personRoleEntityQueries.insertRole(role.first)
+        database.showCastRoleEntityQueries.insertShowCastRole(role.second)
+      }
+    }
 
   override fun fetchAllCredits(id: Long): Flow<AggregateCreditsEntity> {
     val cast = fetchAllCastWithRoles(id)
@@ -72,31 +81,35 @@ class ProdCreditsDao(
     }
   }
 
-  override fun insertCastRoles(roles: List<SeriesCastRole>) = database.transaction {
-    roles.forEach { role ->
-      database.seriesCastRoleQueries.insertRole(seriesCastRole = role)
-    }
-  }
-
-  override fun fetchAllCastWithRoles(id: Long): Flow<List<CastEntity>> = database
+  override fun fetchAllCastWithRoles(id: Long): Flow<List<Person>> = database
     .transactionWithResult {
-      val rolesByCastId = database.seriesCastRoleQueries
-        .fetchRoles(aggregateCreditId = id)
+      val rolesByCastId = database
+        .showCastRoleEntityQueries
+        .fetchCastRoles(showId = id)
         .executeAsList()
         .groupBy { it.castId }
 
       database
-        .seriesCastQueries
-        .fetchSeriesCast(id)
+        .personEntityQueries
+        .fetchShowCast(id)
         .asFlow()
         .mapToList(dispatcher.io)
         .map { listOfCast ->
           listOfCast
             .map { cast ->
               val roles = rolesByCastId[cast.id] ?: emptyList()
-              cast.toEntity(roles = roles)
+              cast.toPerson(
+                roles = roles.map {
+                  PersonRole.SeriesActor(
+                    character = it.character,
+                    creditId = it.creditId,
+                    totalEpisodes = it.episodeCount.toInt(),
+                  )
+                },
+              )
             }
-            .filter { it.roles.isNotEmpty() }
+            .filter { it.role.isNotEmpty() }
+            .distinctBy { it.id }
         }
     }
 
@@ -112,7 +125,7 @@ class ProdCreditsDao(
     }
   }
 
-  override fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<CrewEntity>> =
+  override fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<Person>> =
     database.transactionWithResult {
       val crewJobs = database.seriesCrewJobQueries
         .fetchCrewJobs(aggregateCreditId)
@@ -128,9 +141,9 @@ class ProdCreditsDao(
           listOfCrew
             .map { crew ->
               val jobs = crewJobs[Pair(crew.id, crew.department)] ?: emptyList()
-              crew.toEntity(roles = jobs)
+              crew.toPerson(roles = jobs)
             }
-            .filter { it.roles.isNotEmpty() }
+            .filter { it.role.isNotEmpty() }
         }
     }
 }

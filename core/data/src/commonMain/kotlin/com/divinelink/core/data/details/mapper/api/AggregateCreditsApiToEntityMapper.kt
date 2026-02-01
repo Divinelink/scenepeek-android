@@ -1,34 +1,36 @@
 package com.divinelink.core.data.details.mapper.api
 
-import com.divinelink.core.database.credits.cast.SeriesCast
-import com.divinelink.core.database.credits.cast.SeriesCastRole
+import com.divinelink.core.database.cast.PersonEntity
+import com.divinelink.core.database.cast.PersonRoleEntity
+import com.divinelink.core.database.credits.ShowCastRoleEntity
 import com.divinelink.core.database.credits.crew.SeriesCrew
 import com.divinelink.core.database.credits.crew.SeriesCrewJob
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 
-fun AggregateCreditsApi.toSeriesCastEntity() = cast.map { cast ->
-  SeriesCast(
+fun AggregateCreditsApi.toPersonsEntity() = cast.map { cast ->
+  PersonEntity(
     id = cast.id,
     name = cast.name,
     profilePath = cast.profilePath,
     originalName = cast.name,
-    totalEpisodeCount = cast.totalEpisodeCount.toLong(),
     knownForDepartment = cast.knownForDepartment,
     gender = cast.gender,
-    aggregateCreditId = id,
   )
 }
 
-fun AggregateCreditsApi.toSeriesCastRoleEntity() = cast
+fun AggregateCreditsApi.toRolesEntity(): List<Pair<PersonRoleEntity, ShowCastRoleEntity>> = cast
   .filter { it.roles.isNotEmpty() }
   .flatMap { cast ->
     cast.roles.map { role ->
-      SeriesCastRole(
-        aggregateCreditId = id,
+      PersonRoleEntity(
         creditId = role.creditId,
         character = role.character,
-        episodeCount = role.episodeCount.toLong(),
         castId = cast.id,
+      ) to ShowCastRoleEntity(
+        showId = id,
+        creditId = role.creditId,
+        episodeCount = role.episodeCount.toLong(),
+        creditOrder = cast.order.toLong(),
       )
     }
   }

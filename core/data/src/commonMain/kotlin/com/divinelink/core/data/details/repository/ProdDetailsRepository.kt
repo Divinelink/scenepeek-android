@@ -3,8 +3,8 @@ package com.divinelink.core.data.details.repository
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.data.details.mapper.api.map
 import com.divinelink.core.data.details.mapper.api.reviews.map
-import com.divinelink.core.data.details.mapper.api.toSeriesCastEntity
-import com.divinelink.core.data.details.mapper.api.toSeriesCastRoleEntity
+import com.divinelink.core.data.details.mapper.api.toPersonsEntity
+import com.divinelink.core.data.details.mapper.api.toRolesEntity
 import com.divinelink.core.data.details.mapper.api.toSeriesCrewEntity
 import com.divinelink.core.data.details.mapper.api.toSeriesCrewJobEntity
 import com.divinelink.core.data.details.mapper.map
@@ -212,10 +212,10 @@ class ProdDetailsRepository(
     }
   }.flowOn(dispatcher.io)
 
-  private suspend fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsApi) {
+  private fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsApi) {
     creditsDao.insertAggregateCredits(aggregateCredits.id)
-    creditsDao.insertCastRoles(aggregateCredits.toSeriesCastRoleEntity())
-    creditsDao.insertCast(aggregateCredits.toSeriesCastEntity())
+    creditsDao.insertPersons(aggregateCredits.toPersonsEntity())
+    creditsDao.insertRoles(aggregateCredits.toRolesEntity())
     creditsDao.insertCrewJobs(aggregateCredits.toSeriesCrewJobEntity())
     creditsDao.insertCrew(aggregateCredits.toSeriesCrewEntity())
   }
@@ -226,7 +226,7 @@ class ProdDetailsRepository(
       Result.success(localCredits.map())
     }
 
-  private suspend fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>> =
+  private fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>> =
     mediaRemote.fetchAggregatedCredits(id)
       .onEach { apiResponse ->
         val duration = measureTime {

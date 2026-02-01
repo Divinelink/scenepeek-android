@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface PersonDao {
 
-  fun fetchPersonById(id: Long): Flow<PersonEntity?>
+  fun fetchPersonById(id: Long): Flow<PersonDetailsEntity?>
 
-  fun insertPerson(person: PersonEntity): QueryResult<Long>
+  fun insertPerson(person: PersonDetailsEntity): QueryResult<Long>
 
   fun updatePerson(
     biography: String? = null,
