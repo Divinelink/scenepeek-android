@@ -64,7 +64,7 @@ class ProdCreditsDao(
     database.transaction {
       roles.forEach { role ->
         database.personRoleEntityQueries.insertRole(role.first)
-        database.showCastRoleQueries.insertShowCastRole(role.second)
+        database.showCastRoleEntityQueries.insertShowCastRole(role.second)
       }
     }
 
@@ -84,7 +84,7 @@ class ProdCreditsDao(
   override fun fetchAllCastWithRoles(id: Long): Flow<List<Person>> = database
     .transactionWithResult {
       val rolesByCastId = database
-        .showCastRoleQueries
+        .showCastRoleEntityQueries
         .fetchCastRoles(showId = id)
         .executeAsList()
         .groupBy { it.castId }

@@ -1,1 +1,29 @@
 ALTER TABLE PersonEntity RENAME TO PersonDetailsEntity;
+
+DROP TABLE seriesCast;
+DROP TABLE seriesCastRole;
+
+DELETE FROM aggregateCredits;
+
+CREATE TABLE PersonRoleEntity(
+  creditId TEXT PRIMARY KEY NOT NULL,
+  character TEXT NOT NULL,
+  castId INTEGER NOT NULL REFERENCES PersonEntity(id)
+);
+
+CREATE TABLE PersonEntity(
+  id INTEGER PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  originalName TEXT NOT NULL,
+  profilePath TEXT,
+  knownForDepartment TEXT,
+  gender INTEGER NOT NULL
+);
+
+CREATE TABLE ShowCastRoleEntity(
+  showId INTEGER NOT NULL,
+  creditId TEXT NOT NULL REFERENCES PersonRoleEntity(creditId),
+  episodeCount INTEGER NOT NULL,
+  creditOrder INTEGER NOT NULL,
+  PRIMARY KEY (showId, creditId)
+);
