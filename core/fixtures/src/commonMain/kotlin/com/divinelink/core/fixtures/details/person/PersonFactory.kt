@@ -1,13 +1,48 @@
 package com.divinelink.core.fixtures.details.person
 
+import com.divinelink.core.fixtures.details.person.PersonFactory.Camera.daleAlexander
+import com.divinelink.core.fixtures.details.person.PersonFactory.Camera.peterSmokler
+import com.divinelink.core.fixtures.details.person.PersonFactory.Camera.randallEinhorn
+import com.divinelink.core.fixtures.details.person.PersonFactory.Camera.ronNichols
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 
 object PersonFactory {
 
-  object Camera {
+  object SeriesActor {
+    val brianBaumgartner = Person(
+      id = 94622,
+      name = "Brian Baumgartner",
+      profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
+      gender = Gender.MALE,
+      knownForDepartment = "Acting",
+      role = listOf(
+        PersonRole.SeriesActor(
+          character = "Kevin Malone",
+          creditId = "525730a9760ee3776a3447f1",
+          totalEpisodes = 217,
+        ),
+      ),
+    )
 
+    val angelaKinsey = Person(
+      id = 113867,
+      name = "Angela Kinsey",
+      profilePath = "/qHFidnMcFqUWdMFyjmXufBlYckd.jpg",
+      knownForDepartment = "Acting",
+      gender = Gender.FEMALE,
+      role = listOf(
+        PersonRole.SeriesActor(
+          character = "Angela Martin",
+          creditId = "525730ab760ee3776a344a0b",
+          totalEpisodes = 210,
+        ),
+      ),
+    )
+  }
+
+  object Camera {
     fun randallEinhorn() = Person(
       id = 1215572,
       name = "Randall Einhorn",
@@ -137,4 +172,16 @@ object PersonFactory {
       ),
     )
   }
+
+  val officeCast = listOf(
+    SeriesActor.brianBaumgartner,
+    SeriesActor.angelaKinsey,
+  )
+
+  fun cameraDepartment() = listOf(
+    daleAlexander(),
+    peterSmokler(),
+    randallEinhorn(),
+    ronNichols(),
+  )
 }

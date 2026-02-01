@@ -1,0 +1,9 @@
+CREATE TABLE PersonRoleEntity(
+  creditId TEXT PRIMARY KEY NOT NULL,
+  character TEXT NOT NULL,
+  castId INTEGER NOT NULL REFERENCES PersonEntity(id)
+);
+
+insertRole:
+INSERT OR REPLACE INTO PersonRoleEntity(creditId, character, castId)
+VALUES ?;

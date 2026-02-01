@@ -10,7 +10,7 @@ import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
-import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
+import com.divinelink.core.testing.factories.entity.person.PersonDetailsEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.CastCreditsWithMediaFactory
 import com.divinelink.core.testing.factories.entity.person.credits.CrewCreditsWithMediaFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCreditEntityFactory
@@ -46,7 +46,7 @@ class ProdPersonDaoTest {
 
   @Test
   fun `test fetch person by id`() = runTest {
-    val person = PersonEntityFactory.steveCarell()
+    val person = PersonDetailsEntityFactory.steveCarell()
 
     dao.insertPerson(person)
 
@@ -58,7 +58,7 @@ class ProdPersonDaoTest {
 
   @Test
   fun `test inserting existing person replaces the person`() = runTest {
-    val person = PersonEntityFactory.steveCarell()
+    val person = PersonDetailsEntityFactory.steveCarell()
 
     dao.insertPerson(person)
 
@@ -76,7 +76,7 @@ class ProdPersonDaoTest {
 
   @Test
   fun `test fetch person combined credits by id without initial credits`() = runTest {
-    val person = PersonEntityFactory.steveCarell()
+    val person = PersonDetailsEntityFactory.steveCarell()
     val cast = PersonCastCreditEntityFactory.despicableMe()
     val crew = PersonCrewCreditEntityFactory.riot()
 
@@ -107,7 +107,7 @@ class ProdPersonDaoTest {
   @Test
   fun `test fetch person combined credits by id without initial credits and inserted media`() =
     runTest {
-      val person = PersonEntityFactory.steveCarell()
+      val person = PersonDetailsEntityFactory.steveCarell()
       val cast = PersonCastCreditEntityFactory.despicableMe()
       val crew = PersonCrewCreditEntityFactory.riot()
 
@@ -133,7 +133,7 @@ class ProdPersonDaoTest {
 
   @Test
   fun `test fetch person combined credits are sorted by date`() = runTest {
-    val person = PersonEntityFactory.steveCarell()
+    val person = PersonDetailsEntityFactory.steveCarell()
     val cast = PersonCastCreditEntityFactory.all()
     val crew = PersonCrewCreditEntityFactory.all()
 
@@ -163,7 +163,7 @@ class ProdPersonDaoTest {
 
   @Test
   fun `test fetch person combined credits without inserted media returns empty`() = runTest {
-    val person = PersonEntityFactory.steveCarell()
+    val person = PersonDetailsEntityFactory.steveCarell()
     val cast = PersonCastCreditEntityFactory.all()
     val crew = PersonCrewCreditEntityFactory.all()
 

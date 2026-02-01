@@ -1,15 +1,15 @@
 package com.divinelink.core.database.credits.mapper
 
-import com.divinelink.core.database.credits.cast.SeriesCast
-import com.divinelink.core.database.credits.cast.SeriesCastRole
-import com.divinelink.core.database.credits.model.CastEntity
+import com.divinelink.core.database.cast.FetchShowCast
+import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.person.Gender
 
-fun SeriesCast.toEntity(roles: List<SeriesCastRole>): CastEntity = CastEntity(
+fun FetchShowCast.toPerson(roles: List<PersonRole>): Person = Person(
   id = id,
   name = name,
-  originalName = originalName,
   profilePath = profilePath,
   knownForDepartment = knownForDepartment,
-  gender = gender,
-  roles = roles,
+  gender = Gender.from(gender.toInt()),
+  role = roles,
 )

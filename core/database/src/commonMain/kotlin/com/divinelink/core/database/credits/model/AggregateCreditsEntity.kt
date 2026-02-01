@@ -1,7 +1,9 @@
 package com.divinelink.core.database.credits.model
 
+import com.divinelink.core.model.details.Person
+
 data class AggregateCreditsEntity(
   val id: Long,
-  val crew: List<CrewEntity>,
-  val cast: List<CastEntity>,
+  val crew: List<Person>,
+  val cast: List<Person>,
 )

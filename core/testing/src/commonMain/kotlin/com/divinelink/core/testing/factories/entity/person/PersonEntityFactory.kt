@@ -1,40 +1,30 @@
 package com.divinelink.core.testing.factories.entity.person
 
-import com.divinelink.core.database.person.PersonEntity
-import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.database.cast.PersonEntity
 import com.divinelink.core.model.person.Gender
 
 object PersonEntityFactory {
 
-  fun empty() = PersonEntity(
-    id = 4495,
-    biography = null,
-    birthday = null,
-    deathday = null,
-    gender = Gender.NOT_SET.value.toLong(),
-    homepage = null,
-    imdbId = null,
-    knownForDepartment = null,
-    name = "",
-    placeOfBirth = null,
-    popularity = 0.0,
-    profilePath = null,
-    insertedAt = "1628995200",
+  val brianBaumgartner = PersonEntity(
+    id = 94622,
+    name = "Brian Baumgartner",
+    originalName = "Brian Baumgartner",
+    profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
+    gender = Gender.MALE.value.toLong(),
+    knownForDepartment = "Acting",
   )
 
-  fun steveCarell(): PersonEntity = PersonEntity(
-    id = 4495,
-    biography = PersonDetailsFactory.BIOGRAPHY,
-    birthday = "1962-08-16",
-    deathday = null,
-    gender = 2,
-    homepage = null,
-    imdbId = "nm0136797",
+  val angelaKinsey = PersonEntity(
+    id = 113867,
+    name = "Angela Kinsey",
+    originalName = "Angela Kinsey",
+    profilePath = "/qHFidnMcFqUWdMFyjmXufBlYckd.jpg",
     knownForDepartment = "Acting",
-    name = "Steve Carell",
-    placeOfBirth = "Concord, Massachusetts, USA",
-    popularity = 77.108,
-    profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
-    insertedAt = "1628995200", // GMT: Sunday, 15 August 2021 02:40:00
+    gender = Gender.FEMALE.value.toLong(),
+  )
+
+  val officeCast = listOf(
+    brianBaumgartner,
+    angelaKinsey,
   )
 }

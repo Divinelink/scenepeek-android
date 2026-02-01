@@ -12,7 +12,7 @@ import com.divinelink.core.model.person.Gender
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
-import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
+import com.divinelink.core.testing.factories.entity.person.PersonDetailsEntityFactory
 import com.divinelink.core.testing.factories.model.change.PersonChangeItemSample
 import com.divinelink.core.testing.factories.model.change.PersonChangeItemSample.toWizard
 import com.divinelink.core.testing.service.TestPersonService
@@ -49,7 +49,7 @@ class ChangeHandlerTest {
       dispatcher = testDispatcher,
     )
     mediaDao = TestMediaDao()
-    dao.insertPerson(PersonEntityFactory.empty())
+    dao.insertPerson(PersonDetailsEntityFactory.empty())
 
     repository = ProdPersonRepository(
       service = TestPersonService().mock,

@@ -1,0 +1,20 @@
+CREATE TABLE PersonEntity(
+  id INTEGER PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  originalName TEXT NOT NULL,
+  profilePath TEXT,
+  knownForDepartment TEXT,
+  gender INTEGER NOT NULL
+);
+
+insertPerson:
+INSERT OR REPLACE INTO PersonEntity(id, name, originalName, profilePath, knownForDepartment, gender)
+VALUES ?;
+
+fetchShowCast:
+SELECT person.*, role.creditId, role.character, creditRole.episodeCount, creditRole.creditOrder
+FROM PersonEntity person
+JOIN PersonRoleEntity role ON person.id = role.castId
+JOIN ShowCastRoleEntity creditRole ON role.creditId = creditRole.creditId
+WHERE creditRole.showId = :showId
+ORDER BY creditRole.episodeCount DESC, creditOrder ASC;

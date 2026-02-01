@@ -25,7 +25,7 @@ import com.divinelink.core.network.media.model.changes.ChangesParameters
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.details.person.PersonDetailsApiFactory
-import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
+import com.divinelink.core.testing.factories.entity.person.PersonDetailsEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCreditEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory
 import com.divinelink.core.testing.factories.model.change.ChangeSample
@@ -78,10 +78,10 @@ class ProdPersonRepositoryTest {
 
   @Test
   fun `test fetchPersonDetails with local data only fetches from database`() = runTest {
-    dao.insertPerson(PersonEntityFactory.steveCarell())
+    dao.insertPerson(PersonDetailsEntityFactory.steveCarell())
 
     repository.fetchPersonDetails(id = 4495).test {
-      assertThat(awaitItem().getOrNull()).isEqualTo(PersonEntityFactory.steveCarell().map())
+      assertThat(awaitItem().getOrNull()).isEqualTo(PersonDetailsEntityFactory.steveCarell().map())
       expectNoEvents()
     }
   }
@@ -91,7 +91,7 @@ class ProdPersonRepositoryTest {
     service.mockFetchPersonDetails(response = PersonDetailsApiFactory.steveCarell())
 
     repository.fetchPersonDetails(id = 4495).test {
-      assertThat(awaitItem().getOrNull()).isEqualTo(PersonEntityFactory.steveCarell().map())
+      assertThat(awaitItem().getOrNull()).isEqualTo(PersonDetailsEntityFactory.steveCarell().map())
       expectNoEvents()
     }
   }
