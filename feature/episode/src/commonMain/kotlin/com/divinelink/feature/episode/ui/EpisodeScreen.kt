@@ -93,7 +93,9 @@ fun AnimatedVisibilityScope.EpisodeScreen(
     },
     content = {
       Column {
-        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+        if (uiState.episode?.stillPath?.isBlank() == true) {
+          Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+        }
 
         EpisodeContent(
           visibilityScope = this@EpisodeScreen,

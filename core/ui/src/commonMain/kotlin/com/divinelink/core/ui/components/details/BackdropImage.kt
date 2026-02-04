@@ -1,11 +1,6 @@
 package com.divinelink.core.ui.components.details
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -19,10 +14,8 @@ import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.platformContext
-import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.rememberConstants
 import com.divinelink.core.ui.resources.core_ui_backdrop_image_placeholder
 import org.jetbrains.compose.resources.stringResource
@@ -33,20 +26,11 @@ fun BackdropImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.FillWidth,
   onBackdropLoaded: () -> Unit,
-  applyOffset: Boolean = true,
 ) {
   val constants = rememberConstants()
-  val backdropOffset = WindowInsets.statusBars.asPaddingValues()
-    .calculateTopPadding() + MaterialTheme.dimensions.keyline_64
 
   AsyncImage(
     modifier = modifier
-      .conditional(
-        condition = applyOffset,
-        ifTrue = {
-          offset(y = -backdropOffset)
-        },
-      )
       .bottomFadeOut()
       .fillMaxWidth(),
     model = ImageRequest.Builder(platformContext())

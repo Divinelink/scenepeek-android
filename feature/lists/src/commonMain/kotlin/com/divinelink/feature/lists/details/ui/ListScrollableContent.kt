@@ -187,7 +187,6 @@ fun ListScrollableContent(
             },
           path = state.details.backdropPath,
           onBackdropLoaded = onBackdropLoaded,
-          applyOffset = false,
         )
       }
 

@@ -284,7 +284,9 @@ fun DetailsContent(
     },
     content = { paddingValues ->
       Column {
-        Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+        if (viewState.mediaDetails?.backdropPath?.isBlank() == true) {
+          Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+        }
 
         when (viewState.mediaDetails) {
           is Movie, is TV -> MediaDetailsContent(

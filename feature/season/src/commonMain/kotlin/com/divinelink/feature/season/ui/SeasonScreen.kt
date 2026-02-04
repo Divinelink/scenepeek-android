@@ -93,7 +93,9 @@ fun AnimatedVisibilityScope.SeasonScreen(
     },
     content = {
       Column {
-        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+        if (uiState.backdropPath?.isBlank() == true) {
+          Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+        }
 
         SeasonContent(
           visibilityScope = this@SeasonScreen,
