@@ -3,6 +3,8 @@ package com.divinelink.core.data.media
 import app.cash.turbine.test
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
+import com.divinelink.core.database.person.ProdPersonDao
+import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
@@ -13,6 +15,7 @@ import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestMediaDao
+import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.service.TestMediaService
 import io.kotest.matchers.shouldBe
@@ -28,12 +31,17 @@ class ProdMediaRepositoryTest {
     withFavorite(true)
   }
 
-  private var mediaDao = TestMediaDao()
-  private var mediaService = TestMediaService()
-
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
+
+  private var mediaDao = TestMediaDao()
+  private var personDao = ProdPersonDao(
+    clock = ClockFactory.augustFifteenth2021(),
+    database = TestDatabaseFactory.createInMemoryDatabase(),
+    dispatcher = testDispatcher,
+  )
+  private var mediaService = TestMediaService()
 
   private lateinit var repository: MediaRepository
 
@@ -41,6 +49,7 @@ class ProdMediaRepositoryTest {
   fun setUp() {
     repository = ProdMediaRepository(
       dao = mediaDao.mock,
+      personDao = personDao,
       remote = mediaService.mock,
       dispatcher = testDispatcher,
     )

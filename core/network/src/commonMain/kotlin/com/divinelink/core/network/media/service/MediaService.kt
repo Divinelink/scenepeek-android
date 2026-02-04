@@ -9,6 +9,7 @@ import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
+import com.divinelink.core.network.media.model.details.season.SeasonDetailsResponse
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
@@ -77,4 +78,9 @@ interface MediaService {
   fun findById(externalId: String): Flow<FindByIdResponseApi>
 
   suspend fun fetchGenres(mediaType: MediaType): Result<GenresListResponse>
+
+  suspend fun fetchSeason(
+    showId: Int,
+    season: Int,
+  ): Result<SeasonDetailsResponse>
 }

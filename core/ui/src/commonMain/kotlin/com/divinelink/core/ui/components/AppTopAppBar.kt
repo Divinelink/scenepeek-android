@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,11 +30,12 @@ import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppTopAppBar(
   modifier: Modifier = Modifier,
   text: UIText,
+  subtitle: UIText? = null,
   scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
   topAppBarColors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
     scrolledContainerColor = MaterialTheme.colorScheme.surface,
@@ -71,6 +73,20 @@ fun AppTopAppBar(
         style = MaterialTheme.typography.titleLarge,
         overflow = TextOverflow.Ellipsis,
       )
+    },
+    subtitle = {
+      subtitle?.let { subtitle ->
+        Text(
+          modifier = Modifier
+            .offset(y = offsetY.dp)
+            .alpha(alpha),
+          text = subtitle.getString(),
+          color = contentColor,
+          maxLines = 2,
+          style = MaterialTheme.typography.titleMedium,
+          overflow = TextOverflow.Ellipsis,
+        )
+      }
     },
     navigationIcon = {
       IconButton(

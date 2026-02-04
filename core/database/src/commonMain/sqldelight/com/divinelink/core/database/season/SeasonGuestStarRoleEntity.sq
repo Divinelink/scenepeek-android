@@ -1,0 +1,29 @@
+CREATE TABLE SeasonGuestStarRoleEntity(
+  showId INTEGER NOT NULL,
+  season INTEGER NOT NULL,
+  episode INTEGER NOT NULL,
+  creditId TEXT NOT NULL REFERENCES PersonRoleEntity(creditId),
+  episodeCount INTEGER,
+  displayOrder INTEGER NOT NULL,
+  PRIMARY KEY (showId, season, creditId)
+);
+
+insertSeasonGuestStarRole:
+INSERT OR REPLACE INTO SeasonGuestStarRoleEntity(showId, season, episode, creditId, episodeCount, displayOrder)
+VALUES (?,?, ?,?,?, ?);
+
+fetchSeasonGuestStars:
+SELECT DISTINCT p.*, r.creditId, r.character, sgsr.displayOrder, sgsr.episodeCount
+FROM PersonEntity p
+JOIN PersonRoleEntity r ON p.id = r.castId
+JOIN SeasonGuestStarRoleEntity sgsr ON r.creditId = sgsr.creditId
+WHERE sgsr.season = :season AND sgsr.showId = :showId
+ORDER BY sgsr.episodeCount DESC, sgsr.displayOrder ASC;
+
+fetchGuestStarsForEpisode:
+SELECT DISTINCT p.*, r.creditId, r.character, sgsr.displayOrder, sgsr.episodeCount
+FROM PersonEntity p
+JOIN PersonRoleEntity r ON p.id = r.castId
+JOIN SeasonGuestStarRoleEntity sgsr ON r.creditId = sgsr.creditId
+WHERE sgsr.season = :season AND sgsr.showId = :showId AND sgsr.episode = :episode
+ORDER BY sgsr.episodeCount DESC, sgsr.displayOrder ASC;

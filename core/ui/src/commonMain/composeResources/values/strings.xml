@@ -6,6 +6,8 @@
   <string name="core_ui_discover">Discover</string>
   <string name="core_ui_share_error_details">Share error details</string>
 
+  <string name="core_ui_information">Information</string>
+
   <string name="core_ui_approve">Approve</string>
   <string name="core_ui_decline">Decline</string>
 
@@ -102,6 +104,11 @@
   <string name="core_ui_episodes">Episodes</string>
   <string name="core_ui_status">Status</string>
 
+  <string name="core_ui_total_runtime">Total time</string>
+  <string name="core_ui_last_air_date">Last air date</string>
+  <string name="core_ui_first_air_date">First air date</string>
+  <string name="core_ui_aired_episodes">Aired episodes</string>
+
   <plurals name="core_ui_request_series_button">
     <item quantity="one">Request 1 season</item>
     <item quantity="other">Request %1$s seasons</item>
@@ -185,6 +192,11 @@
   <string name="core_ui_localized_date_full">%1$s %2$s, %3$s</string>
   <!-- September 2025 -->
   <string name="core_ui_localized_month_year">%1$s %2$s</string>
+
+  <string name="core_ui_no_cast_available">No cast available</string>
+  <string name="core_ui_no_cast_available_description">We don't have any cast information for %1$s</string>
+  <string name="core_ui_no_guest_stars_available">No guest appearances</string>
+  <string name="core_ui_no_guest_stars_available_description">There are no guest appearances for %1$s</string>
 
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>

@@ -197,7 +197,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
 
 private fun List<CastApi>.toActors(): List<Person> = this.map(CastApi::toPerson)
 
-private fun CastApi.toPerson(): Person = Person(
+fun CastApi.toPerson(): Person = Person(
   id = this.id,
   name = this.name,
   profilePath = this.profilePath,
@@ -212,17 +212,24 @@ private fun CastApi.toPerson(): Person = Person(
         ),
       )
     }
-    is CastApi.TV -> listOf(PersonRole.Unknown)
+    is CastApi.TV -> listOf(
+      PersonRole.SeriesActor(
+        character = character,
+        creditId = creditId,
+        order = order,
+      ),
+    )
   },
 )
 
 @Suppress("MagicNumber")
-private fun Int?.toHourMinuteFormat(): String? {
+fun Int?.toHourMinuteFormat(): String? {
   return this?.let { minutes ->
     val hours = minutes / 60
     val remainingMinutes = minutes % 60
     return when {
-      hours > 0 -> "${hours}h ${remainingMinutes}m"
+      hours > 0 && remainingMinutes > 0 -> "${hours}h ${remainingMinutes}m"
+      hours > 0 -> "${hours}h"
       remainingMinutes > 0 -> "${remainingMinutes}m"
       else -> null
     }

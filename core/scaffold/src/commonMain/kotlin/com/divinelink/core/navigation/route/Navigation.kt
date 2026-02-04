@@ -68,6 +68,14 @@ sealed interface Navigation {
   ) : Navigation
 
   @Serializable
+  data class SeasonRoute(
+    val showId: Int,
+    val seasonNumber: Int,
+    val backdropPath: String?,
+    val title: String,
+  ) : Navigation
+
+  @Serializable
   data object ProfileRoute : Navigation
 
   @Serializable

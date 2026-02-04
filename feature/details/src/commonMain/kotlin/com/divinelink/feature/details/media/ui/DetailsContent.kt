@@ -487,6 +487,16 @@ private fun SharedTransitionScope.MediaDetailsContent(
                 modifier = Modifier.fillMaxSize(),
                 title = uiState.mediaDetails.title,
                 reviews = form.data as DetailsData.Seasons,
+                onClick = { seasonNumber ->
+                  onNavigate(
+                    Navigation.SeasonRoute(
+                      showId = uiState.mediaDetails.id,
+                      backdropPath = uiState.mediaDetails.backdropPath,
+                      title = uiState.mediaDetails.title,
+                      seasonNumber = seasonNumber,
+                    ),
+                  )
+                },
               )
             }
           }

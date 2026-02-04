@@ -3,9 +3,12 @@ package com.divinelink.core.data.media.repository
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.database.media.mapper.map
+import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
@@ -14,6 +17,7 @@ import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
+import com.divinelink.core.network.media.mapper.details.map
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.map
@@ -33,6 +37,7 @@ import kotlinx.coroutines.flow.map
 class ProdMediaRepository(
   private val remote: MediaService,
   private val dao: MediaDao,
+  private val personDao: PersonDao,
   private val dispatcher: DispatcherProvider,
 ) : MediaRepository {
 
@@ -273,6 +278,15 @@ class ProdMediaRepository(
     Result.success(it)
   }
 
+  override fun fetchSeason(
+    showId: Int,
+    seasonNumber: Int,
+  ): Flow<Result<Season>> = dao
+    .fetchSeason(
+      showId = showId,
+      seasonNumber = seasonNumber,
+    ).map { Result.success(it) }
+
   override suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>> =
     networkBoundResource(
       query = { dao.fetchGenres(mediaType) },
@@ -282,4 +296,49 @@ class ProdMediaRepository(
       },
       shouldFetch = { it.isEmpty() },
     )
+
+  override fun fetchSeasonDetails(
+    showId: Int,
+    season: Int,
+  ): Flow<Resource<SeasonDetails?>> = networkBoundResource(
+    query = {
+      combine(
+        dao.fetchEpisodes(showId = showId, season = season),
+        dao.fetchSeasonDetails(showId = showId, season = season),
+        personDao.fetchGuestStars(showId = showId, season = season),
+      ) { episodes, details, guestStars ->
+        details?.map(
+          episodes = episodes,
+          guestStars = guestStars,
+        )
+      }
+    },
+    fetch = {
+      remote.fetchSeason(
+        showId = showId,
+        season = season,
+      ).map { it.map() }
+    },
+    saveFetchResult = { result ->
+      val data = result.data
+
+      dao.insertSeasonDetails(
+        seasonDetails = data,
+        showId = showId,
+        seasonNumber = season,
+      )
+
+      dao.insertEpisodes(data.episodes)
+
+      data.episodes.forEach { episode ->
+        personDao.insertGuestStars(
+          season = season,
+          showId = showId,
+          episode = episode.number,
+          guestStars = data.guestStars,
+        )
+      }
+    },
+    shouldFetch = { true },
+  )
 }

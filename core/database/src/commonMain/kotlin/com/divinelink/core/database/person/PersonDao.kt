@@ -3,6 +3,7 @@ package com.divinelink.core.database.person
 import app.cash.sqldelight.db.QueryResult
 import com.divinelink.core.database.person.credits.PersonCastCreditEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
+import com.divinelink.core.model.details.Person
 import kotlinx.coroutines.flow.Flow
 
 interface PersonDao {
@@ -36,4 +37,16 @@ interface PersonDao {
   fun insertPersonCredits(id: Long)
   fun insertPersonCastCredits(cast: List<PersonCastCreditEntity>)
   fun insertPersonCrewCredits(crew: List<PersonCrewCreditEntity>)
+
+  fun insertGuestStars(
+    showId: Int,
+    season: Int,
+    episode: Int,
+    guestStars: List<Person>,
+  )
+
+  fun fetchGuestStars(
+    showId: Int,
+    season: Int,
+  ): Flow<List<Person>>
 }

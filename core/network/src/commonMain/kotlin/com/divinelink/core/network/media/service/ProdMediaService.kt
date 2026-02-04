@@ -10,6 +10,7 @@ import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
+import com.divinelink.core.network.media.model.details.season.SeasonDetailsResponse
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
@@ -30,6 +31,7 @@ import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import com.divinelink.core.network.media.util.buildFetchMediaListUrl
 import com.divinelink.core.network.media.util.buildFindByIdUrl
 import com.divinelink.core.network.media.util.buildGenreUrl
+import com.divinelink.core.network.media.util.buildSeasonDetailsUrl
 import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -252,5 +254,17 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
   override suspend fun fetchGenres(mediaType: MediaType): Result<GenresListResponse> = runCatching {
     restClient.get<GenresListResponse>(url = buildGenreUrl(mediaType))
+  }
+
+  override suspend fun fetchSeason(
+    showId: Int,
+    season: Int,
+  ): Result<SeasonDetailsResponse> = runCatching {
+    restClient.get<SeasonDetailsResponse>(
+      url = buildSeasonDetailsUrl(
+        showId = showId,
+        seasonNumber = season,
+      ),
+    )
   }
 }

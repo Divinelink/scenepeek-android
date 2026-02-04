@@ -130,3 +130,16 @@ fun buildFetchMediaListUrl(
     }
   }
 }.toString()
+
+fun buildSeasonDetailsUrl(
+  showId: Int,
+  seasonNumber: Int,
+): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/tv/$showId/season/$seasonNumber"
+
+  parameters.apply {
+    append("language", "en")
+  }
+}.toString()

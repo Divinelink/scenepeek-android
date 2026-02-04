@@ -8,8 +8,9 @@ sealed class PersonRole(val title: String?) {
   @Serializable
   data class SeriesActor(
     val character: String,
-    val creditId: String? = null,
+    val creditId: String,
     val totalEpisodes: Int? = null,
+    val order: Int? = null,
   ) : PersonRole(character)
 
   @Serializable

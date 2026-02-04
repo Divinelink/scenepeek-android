@@ -3,6 +3,7 @@ package com.divinelink.core.data.media.repository
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
@@ -68,6 +69,11 @@ interface MediaRepository {
 
   fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>>
 
+  fun fetchSeason(
+    showId: Int,
+    seasonNumber: Int,
+  ): Flow<Result<Season>>
+
   /**
    * Add favorite [media] to local storage.
    */
@@ -87,4 +93,9 @@ interface MediaRepository {
   ): Result<Boolean>
 
   suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>>
+
+  fun fetchSeasonDetails(
+    showId: Int,
+    season: Int,
+  ): Flow<Resource<SeasonDetails?>>
 }

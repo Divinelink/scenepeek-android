@@ -109,7 +109,7 @@ complexity:
     ignoredLabels: [ ]
   LargeClass:
     active: true
-    excludes: [ '**Test.kt' ]
+    excludes: [ '**Test.kt', '**DatabaseImpl**' ]
     threshold: 600
   LongMethod:
     active: true

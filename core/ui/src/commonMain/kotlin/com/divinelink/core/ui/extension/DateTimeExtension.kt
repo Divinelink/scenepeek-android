@@ -34,3 +34,15 @@ fun LocalDate?.localizeMonthYear(useLong: Boolean = true): String? = this?.let {
     year,
   )
 }
+
+@Composable
+fun LocalDate?.localizeFull(useLong: Boolean = true): String? = this?.let {
+  stringResource(
+    UiString.core_ui_localized_date_full,
+    stringResource(
+      Month.from(month.number).run { if (useLong) long else short },
+    ),
+    day,
+    year,
+  )
+}

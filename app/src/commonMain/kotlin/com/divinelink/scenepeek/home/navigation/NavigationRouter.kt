@@ -17,6 +17,7 @@ import com.divinelink.core.navigation.route.navigateToPoster
 import com.divinelink.core.navigation.route.navigateToRequests
 import com.divinelink.core.navigation.route.navigateToSearchFromHome
 import com.divinelink.core.navigation.route.navigateToSearchFromTab
+import com.divinelink.core.navigation.route.navigateToSeason
 import com.divinelink.core.navigation.route.navigateToTMDBAuth
 import com.divinelink.core.navigation.route.navigateToUserData
 import com.divinelink.core.navigation.route.navigateToWebView
@@ -62,6 +63,7 @@ fun NavController.findNavigation(route: Navigation) {
     Navigation.DiscoverRoute -> navigateToDiscover()
     is Navigation.MediaPosterRoute -> navigateToPoster(route)
     is Navigation.MediaListsRoute -> navigateToMediaLists(route)
+    is Navigation.SeasonRoute -> navigateToSeason(route)
 
     // This is from top level navigation
     Navigation.HomeRoute -> Unit

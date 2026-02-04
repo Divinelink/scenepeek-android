@@ -23,6 +23,7 @@ import com.divinelink.feature.onboarding.navigation.modalOnboarding
 import com.divinelink.feature.profile.navigation.profileScreen
 import com.divinelink.feature.requests.ui.navigation.requestsScreen
 import com.divinelink.feature.search.navigation.searchScreen
+import com.divinelink.feature.season.ui.navigation.seasonScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
 import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
 import com.divinelink.feature.settings.navigation.account.jellyseerrSettingsScreen
@@ -283,6 +284,14 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.MediaListsRoute>()) {
     { navController, _ ->
       mediaListsScreen(
+        onNavigate = navController::findNavigation,
+      )
+    }
+  }
+
+  single<NavGraphExtension>(named<Navigation.SeasonRoute>()) {
+    { navController, _ ->
+      seasonScreen(
         onNavigate = navController::findNavigation,
       )
     }

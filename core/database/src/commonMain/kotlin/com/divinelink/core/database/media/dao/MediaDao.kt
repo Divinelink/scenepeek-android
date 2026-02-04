@@ -1,8 +1,13 @@
+@file:Suppress("TooManyFunctions")
+
 package com.divinelink.core.database.media.dao
 
 import com.divinelink.core.database.MediaItemEntity
+import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
@@ -41,6 +46,11 @@ interface MediaDao {
 
   fun fetchSeasons(id: Int): Flow<List<Season>>
 
+  fun fetchSeason(
+    showId: Int,
+    seasonNumber: Int,
+  ): Flow<Season>
+
   fun addToFavorites(
     mediaId: Int,
     mediaType: MediaType,
@@ -62,4 +72,28 @@ interface MediaDao {
     mediaType: MediaType,
     genres: List<Genre>,
   )
+
+  fun insertEpisodes(episodes: List<Episode>)
+
+  fun fetchEpisode(
+    showId: Int,
+    episodeNumber: Int,
+    seasonNumber: Int,
+  ): Episode
+
+  fun fetchEpisodes(
+    showId: Int,
+    season: Int,
+  ): Flow<List<Episode>>
+
+  fun insertSeasonDetails(
+    seasonDetails: SeasonDetails,
+    showId: Int,
+    seasonNumber: Int,
+  )
+
+  fun fetchSeasonDetails(
+    season: Int,
+    showId: Int,
+  ): Flow<SeasonDetailsEntity?>
 }
