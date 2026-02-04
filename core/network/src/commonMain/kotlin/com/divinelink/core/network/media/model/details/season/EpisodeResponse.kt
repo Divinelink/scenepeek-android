@@ -18,7 +18,7 @@ data class EpisodeResponse(
   @SerialName("show_id") val showId: Int,
   @SerialName("still_path") val stillPath: String?,
   @SerialName("vote_average") val voteAverage: String?,
-  @SerialName("vote_count") val voteCount: String,
+  @SerialName("vote_count") val voteCount: Int?,
   val crew: List<CrewApi>,
   @SerialName("guest_stars") val guestStars: List<CastApi>,
 )

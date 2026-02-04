@@ -311,6 +311,7 @@ class ProdMediaDao(
           airDate = episode.airDate,
           stillPath = episode.stillPath,
           voteAverage = episode.voteAverage?.toDouble() ?: 0.0,
+          voteCount = episode.voteCount?.toLong() ?: 0,
         ),
       )
     }
@@ -386,5 +387,20 @@ class ProdMediaDao(
         )
         .asFlow()
         .mapToOneOrNull(dispatcher.io)
+    }
+
+  override fun fetchSeasonEpisodesCount(
+    season: Int,
+    showId: Int,
+  ): List<Int> = database
+    .transactionWithResult {
+      database
+        .episodeEntityQueries
+        .countSeasonEpisodes(
+          showId = showId.toLong(),
+          seasonNumber = season.toLong(),
+        )
+        .executeAsList()
+        .map { it.toInt() }
     }
 }

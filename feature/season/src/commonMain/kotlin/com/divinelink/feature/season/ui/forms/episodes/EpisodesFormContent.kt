@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,30 +16,41 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import com.divinelink.core.commons.extensions.toLocalDate
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.season.SeasonData
-import com.divinelink.core.ui.extension.localizeFull
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.components.details.AirDateWithRuntime
 
 @Composable
 fun EpisodesFormContent(
   modifier: Modifier = Modifier,
+  showTitle: String,
+  seasonTitle: String,
   data: SeasonData.Episodes,
+  onNavigate: (Navigation.EpisodeRoute) -> Unit,
 ) {
   ScenePeekLazyColumn(
     modifier = modifier.fillMaxSize(),
   ) {
-    items(
+    itemsIndexed(
       items = data.episodes,
-      key = { it.id },
-    ) { episode ->
+      key = { _, episode -> episode.id },
+    ) { index, episode ->
       EpisodeItem(
         episode = episode,
         onClick = {
-          // TODO Navigate to episode details
+          onNavigate(
+            Navigation.EpisodeRoute(
+              showId = episode.showId,
+              showTitle = showTitle,
+              seasonTitle = seasonTitle,
+              seasonNumber = episode.seasonNumber,
+              episodeIndex = index,
+            ),
+          )
         },
       )
     }
@@ -81,19 +92,11 @@ fun EpisodeItem(
           color = MaterialTheme.colorScheme.primary,
         )
 
-        episode.airDate?.toLocalDate().localizeFull()?.let { airDate ->
-          Text(
-            text = buildString {
-              append(airDate)
-
-              episode.runtime?.let { runtime ->
-                append(" • $runtime")
-              }
-            },
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-          )
-        }
+        AirDateWithRuntime(
+          airDate = episode.airDate,
+          runtime = episode.runtime,
+          style = MaterialTheme.typography.bodySmall,
+        )
       }
     }
 

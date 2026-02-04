@@ -130,6 +130,9 @@ fun SharedTransitionScope.SeasonContent(
               is SeasonForm.Content -> when (form.data) {
                 is SeasonData.Episodes -> EpisodesFormContent(
                   data = form.data as SeasonData.Episodes,
+                  showTitle = uiState.title,
+                  seasonTitle = uiState.season.name,
+                  onNavigate = onNavigate,
                 )
                 is SeasonData.About -> AboutFormContent(
                   aboutData = form.data as SeasonData.About,

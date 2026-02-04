@@ -23,6 +23,7 @@ kotlin {
       implementation(projects.feature.credits)
       implementation(projects.feature.details)
       implementation(projects.feature.discover)
+      implementation(projects.feature.episode)
       implementation(projects.feature.home)
       implementation(projects.feature.lists)
       implementation(projects.feature.mediaLists)

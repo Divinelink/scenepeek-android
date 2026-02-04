@@ -30,6 +30,7 @@
   <string name="gender_female">Female</string>
   <string name="gender_non_binary">Non binary</string>
 
+  <string name="core_model_tab_episode">E%1$s</string>
   <string name="core_model_tab_episodes">Episodes</string>
   <string name="core_model_tab_about">About</string>
   <string name="core_model_tab_seasons">Seasons</string>

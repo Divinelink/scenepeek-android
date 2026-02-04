@@ -14,6 +14,7 @@ fun EpisodeEntity.map() = Episode(
   showId = showId.toInt(),
   stillPath = stillPath,
   voteAverage = voteAverage.toString(),
+  voteCount = voteCount.toInt(),
   crew = emptyList(),
   guestStars = emptyList(),
 )

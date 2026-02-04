@@ -71,21 +71,23 @@ fun SharedTransitionScope.CollapsibleHeaderContent(
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        PosterImage(
-          modifier = Modifier
-            .sharedElement(
-              sharedContentState = rememberSharedContentState(
-                SharedElementKeys.MediaPoster(posterPath ?: ""),
-              ),
-              animatedVisibilityScope = visibilityScope,
-            )
-            .mediaImageDropShadow()
-            .height(MaterialTheme.dimensions.posterSizeSmall)
-            .aspectRatio(2f / 3f),
-          path = posterPath,
-          quality = ImageQuality.QUALITY_342,
-          onClick = { onNavigateToMediaPoster(it) },
-        )
+        if (posterPath != null) {
+          PosterImage(
+            modifier = Modifier
+              .sharedElement(
+                sharedContentState = rememberSharedContentState(
+                  SharedElementKeys.MediaPoster(posterPath),
+                ),
+                animatedVisibilityScope = visibilityScope,
+              )
+              .mediaImageDropShadow()
+              .height(MaterialTheme.dimensions.posterSizeSmall)
+              .aspectRatio(2f / 3f),
+            path = posterPath,
+            quality = ImageQuality.QUALITY_342,
+            onClick = { onNavigateToMediaPoster(it) },
+          )
+        }
 
         content()
       }

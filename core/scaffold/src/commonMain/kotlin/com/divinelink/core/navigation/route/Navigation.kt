@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 sealed interface Navigation {
   @Serializable
   data object Back : Navigation
+  data object TwiceBack : Navigation
 
   @Serializable
   data object HomeRoute : Navigation
@@ -73,6 +74,16 @@ sealed interface Navigation {
     val seasonNumber: Int,
     val backdropPath: String?,
     val title: String,
+  ) : Navigation
+
+  @Serializable
+  data class EpisodeRoute(
+    val showId: Int,
+    val showTitle: String,
+    val seasonTitle: String,
+    val seasonNumber: Int,
+    val episodeIndex: Int,
+//    val availableEpisodes: List<Int>,
   ) : Navigation
 
   @Serializable

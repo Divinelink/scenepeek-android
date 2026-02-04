@@ -2,6 +2,7 @@ package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
@@ -98,4 +99,15 @@ interface MediaRepository {
     showId: Int,
     season: Int,
   ): Flow<Resource<SeasonDetails?>>
+
+  fun fetchEpisode(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Flow<Result<Episode>>
+
+  fun getSeasonEpisodesNumber(
+    showId: Int,
+    season: Int,
+  ): Result<List<Int>>
 }

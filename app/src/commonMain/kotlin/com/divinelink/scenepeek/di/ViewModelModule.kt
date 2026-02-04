@@ -8,6 +8,7 @@ import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
 import com.divinelink.feature.discover.DiscoverViewModel
 import com.divinelink.feature.discover.filters.SelectFilterViewModel
+import com.divinelink.feature.episode.EpisodeViewModel
 import com.divinelink.feature.home.HomeViewModel
 import com.divinelink.feature.lists.create.CreateListViewModel
 import com.divinelink.feature.lists.create.backdrop.SelectBackdropViewModel
@@ -57,6 +58,7 @@ val appViewModelModule = module {
   viewModelOf(::SelectFilterViewModel)
   viewModelOf(::MediaListsViewModel)
   viewModelOf(::SeasonViewModel)
+  viewModelOf(::EpisodeViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

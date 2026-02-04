@@ -7,6 +7,7 @@ import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
@@ -274,9 +275,8 @@ class ProdMediaRepository(
     }
   }
 
-  override fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>> = dao.fetchSeasons(id).map {
-    Result.success(it)
-  }
+  override fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>> = dao.fetchSeasons(id)
+    .map { runCatching { it } }
 
   override fun fetchSeason(
     showId: Int,
@@ -341,4 +341,30 @@ class ProdMediaRepository(
     },
     shouldFetch = { true },
   )
+
+  override fun getSeasonEpisodesNumber(
+    showId: Int,
+    season: Int,
+  ): Result<List<Int>> = runCatching {
+    dao.fetchSeasonEpisodesCount(
+      showId = showId,
+      season = season,
+    )
+  }
+
+  override fun fetchEpisode(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Flow<Result<Episode>> = flow {
+    emit(
+      runCatching {
+        dao.fetchEpisode(
+          showId = showId,
+          episodeNumber = number,
+          seasonNumber = season,
+        )
+      },
+    )
+  }
 }
