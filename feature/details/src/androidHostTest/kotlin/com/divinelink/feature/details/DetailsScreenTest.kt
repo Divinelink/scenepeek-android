@@ -392,7 +392,7 @@ class DetailsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
       swipeUp(
         startY = 200f,
-        endY = 50f,
+        endY = 120f,
       )
     }
 
@@ -622,7 +622,7 @@ class DetailsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
       swipeUp(
         startY = 200f,
-        endY = 50f,
+        endY = 120f,
       )
     }
 

@@ -1,0 +1,30 @@
+CREATE TABLE EpisodeGuestStarEntity(
+  showId INTEGER NOT NULL,
+  season INTEGER NOT NULL,
+  episode INTEGER NOT NULL,
+  creditId TEXT NOT NULL REFERENCES PersonRoleEntity(creditId),
+  displayOrder INTEGER NOT NULL,
+  PRIMARY KEY (showId, season, episode, creditId)
+);
+
+insertGuestStar:
+INSERT OR REPLACE INTO EpisodeGuestStarEntity(showId, season, episode, creditId, displayOrder)
+VALUES (?,?, ?,?, ?);
+
+fetchSeasonGuestStars:
+SELECT DISTINCT p.*, r.creditId, r.character, COUNT(m.episode) AS totalEpisodes, m.displayOrder
+FROM PersonEntity p
+JOIN PersonRoleEntity r ON p.id = r.castId
+LEFT JOIN EpisodeGuestStarEntity m ON r.creditId = m.creditId
+WHERE m.showId = ? AND m.season = ?
+GROUP BY p.id, r.creditId, r.character
+ORDER BY COUNT(m.episode) DESC, m.displayOrder ASC;
+
+fetchEpisodeGuestStars:
+SELECT DISTINCT p.*, r.creditId, r.character, m.displayOrder
+FROM PersonEntity p
+JOIN PersonRoleEntity r ON p.id = r.castId
+LEFT JOIN EpisodeGuestStarEntity m ON r.creditId = m.creditId
+WHERE m.showId = ? AND m.season = ? AND m.episode = ?
+GROUP BY p.id, r.creditId, r.character
+ORDER BY m.displayOrder ASC;

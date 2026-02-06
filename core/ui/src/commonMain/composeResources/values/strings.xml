@@ -198,6 +198,8 @@
   <string name="core_ui_no_guest_stars_available">No guest appearances</string>
   <string name="core_ui_no_guest_stars_available_description">There are no guest appearances for %1$s</string>
 
+  <string name="core_ui_empty_plot">No plot available for %1$s at this time.</string>
+
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

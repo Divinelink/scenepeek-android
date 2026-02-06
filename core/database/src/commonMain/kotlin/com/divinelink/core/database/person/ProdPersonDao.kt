@@ -155,6 +155,7 @@ class ProdPersonDao(
       val insertedPersonIds = mutableSetOf<Long>()
       val insertedCreditIds = mutableSetOf<String>()
 
+      // TODO Fix guest star insertion, only adds guest star to the last episode of the season.
       guestStars.forEach { person ->
         if (person.id !in insertedPersonIds) {
           database.personEntityQueries.insertPerson(
@@ -182,12 +183,12 @@ class ProdPersonDao(
                 ),
               )
 
-              database.seasonGuestStarRoleEntityQueries.insertSeasonGuestStarRole(
+              database.episodeGuestStarEntityQueries.insertGuestStar(
                 showId = showId.toLong(),
                 season = season.toLong(),
                 creditId = role.creditId,
                 episode = episode.toLong(),
-                episodeCount = role.totalEpisodes?.toLong(),
+//                episodeCount = role.totalEpisodes?.toLong(),
                 displayOrder = role.order?.toLong() ?: -1,
               )
               insertedCreditIds += role.creditId
@@ -203,7 +204,7 @@ class ProdPersonDao(
   ): Flow<List<Person>> = database
     .transactionWithResult {
       database
-        .seasonGuestStarRoleEntityQueries
+        .episodeGuestStarEntityQueries
         .fetchSeasonGuestStars(
           season = season.toLong(),
           showId = showId.toLong(),
@@ -225,8 +226,47 @@ class ProdPersonDao(
                   PersonRole.SeriesActor(
                     character = firstRole.character,
                     creditId = firstRole.creditId,
-                    totalEpisodes = firstRole.episodeCount?.toInt(),
-                    order = firstRole.displayOrder.toInt(),
+                    totalEpisodes = firstRole.totalEpisodes.toInt(),
+                    order = firstRole.displayOrder?.toInt(),
+                  ),
+                ),
+              )
+            }
+        }
+    }
+
+  override fun fetchEpisodeGuestStars(
+    showId: Int,
+    season: Int,
+    episode: Int,
+  ): Flow<List<Person>> = database
+    .transactionWithResult {
+      database
+        .episodeGuestStarEntityQueries
+        .fetchEpisodeGuestStars(
+          season = season.toLong(),
+          showId = showId.toLong(),
+          episode = episode.toLong(),
+        )
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { entities ->
+          entities
+            .groupBy { it.id }
+            .map { (personId, roles) ->
+              val firstRole = roles.first()
+              Person(
+                id = personId,
+                name = firstRole.name,
+                profilePath = firstRole.profilePath,
+                gender = Gender.from(firstRole.gender.toInt()),
+                knownForDepartment = firstRole.knownForDepartment,
+                role = listOf(
+                  PersonRole.SeriesActor(
+                    character = firstRole.character,
+                    creditId = firstRole.creditId,
+                    totalEpisodes = null,
+                    order = firstRole.displayOrder?.toInt(),
                   ),
                 ),
               )

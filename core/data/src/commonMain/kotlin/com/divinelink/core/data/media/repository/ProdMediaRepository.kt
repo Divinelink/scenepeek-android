@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ProdMediaRepository(
   private val remote: MediaService,
@@ -320,23 +321,25 @@ class ProdMediaRepository(
       ).map { it.map() }
     },
     saveFetchResult = { result ->
-      val data = result.data
+      withContext(dispatcher.io) {
+        val data = result.data
 
-      dao.insertSeasonDetails(
-        seasonDetails = data,
-        showId = showId,
-        seasonNumber = season,
-      )
-
-      dao.insertEpisodes(data.episodes)
-
-      data.episodes.forEach { episode ->
-        personDao.insertGuestStars(
-          season = season,
+        dao.insertSeasonDetails(
+          seasonDetails = data,
           showId = showId,
-          episode = episode.number,
-          guestStars = data.guestStars,
+          seasonNumber = season,
         )
+
+        dao.insertEpisodes(data.episodes)
+
+        data.episodes.forEach { episode ->
+          personDao.insertGuestStars(
+            season = season,
+            showId = showId,
+            episode = episode.number,
+            guestStars = episode.guestStars,
+          )
+        }
       }
     },
     shouldFetch = { true },
@@ -356,15 +359,24 @@ class ProdMediaRepository(
     showId: Int,
     season: Int,
     number: Int,
-  ): Flow<Result<Episode>> = flow {
-    emit(
-      runCatching {
-        dao.fetchEpisode(
-          showId = showId,
-          episodeNumber = number,
-          seasonNumber = season,
-        )
-      },
-    )
+  ): Flow<Result<Episode>> = combine(
+    personDao.fetchEpisodeGuestStars(
+      showId = showId,
+      episode = number,
+      season = season,
+    ),
+    flowOf(
+      dao.fetchEpisode(
+        showId = showId,
+        episodeNumber = number,
+        seasonNumber = season,
+      ),
+    ),
+  ) { guestStars, episode ->
+    runCatching {
+      episode.copy(
+        guestStars = guestStars,
+      )
+    }
   }
 }
