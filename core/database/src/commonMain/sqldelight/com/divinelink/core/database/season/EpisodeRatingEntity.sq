@@ -1,0 +1,28 @@
+CREATE TABLE EpisodeRatingEntity (
+  number INTEGER NOT NULL,
+  showId INTEGER NOT NULL,
+  season INTEGER NOT NULL,
+  rating INTEGER NOT NULL,
+  UNIQUE(number, showId, season)
+);
+
+insertEpisodeRating:
+INSERT OR REPLACE INTO EpisodeRatingEntity (
+  number,
+  showId,
+  season,
+  rating
+)
+VALUES ?;
+
+fetchEpisodeRating:
+SELECT * FROM EpisodeRatingEntity
+WHERE showId = ? AND season = ? AND number = ?;
+
+fetchEpisodesRatings:
+SELECT * FROM EpisodeRatingEntity
+WHERE showId = ? AND season = ?
+ORDER BY number;
+
+deleteListMediaItem:
+DELETE FROM EpisodeRatingEntity WHERE showId = ? AND season = ? AND number = ?;

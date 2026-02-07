@@ -1,5 +1,7 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.datastore.auth.tmdbSessionId
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
@@ -36,7 +38,10 @@ import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdMediaService(private val restClient: TMDbClient) : MediaService {
+class ProdMediaService(
+  private val restClient: TMDbClient,
+  private val encryptedStorage: SavedStateStorage,
+) : MediaService {
 
   override suspend fun fetchMediaLists(
     request: MediaListRequest,
@@ -264,6 +269,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
       url = buildSeasonDetailsUrl(
         showId = showId,
         seasonNumber = season,
+        sessionId = encryptedStorage.tmdbSessionId
       ),
     )
   }

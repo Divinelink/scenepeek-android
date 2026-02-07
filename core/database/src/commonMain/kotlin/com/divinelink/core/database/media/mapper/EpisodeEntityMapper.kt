@@ -3,7 +3,9 @@ package com.divinelink.core.database.media.mapper
 import com.divinelink.core.database.season.EpisodeEntity
 import com.divinelink.core.model.details.Episode
 
-fun EpisodeEntity.map() = Episode(
+fun EpisodeEntity.map(
+  accountRating: Int?,
+) = Episode(
   id = id.toInt(),
   name = name,
   airDate = airDate,
@@ -17,4 +19,5 @@ fun EpisodeEntity.map() = Episode(
   voteCount = voteCount.toInt(),
   crew = emptyList(),
   guestStars = emptyList(),
+  accountRating = accountRating,
 )

@@ -134,6 +134,7 @@ fun buildFetchMediaListUrl(
 fun buildSeasonDetailsUrl(
   showId: Int,
   seasonNumber: Int,
+  sessionId: String?,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
@@ -141,5 +142,9 @@ fun buildSeasonDetailsUrl(
 
   parameters.apply {
     append("language", "en")
+    sessionId?.let { id ->
+      append("append_to_response", "account_states")
+      append("session_id", id)
+    }
   }
 }.toString()

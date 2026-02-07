@@ -11,6 +11,7 @@ import com.divinelink.core.database.SeasonEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.database.season.EpisodeEntity
+import com.divinelink.core.database.season.EpisodeRatingEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Episode
@@ -22,6 +23,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
@@ -314,6 +316,17 @@ class ProdMediaDao(
           voteCount = episode.voteCount?.toLong() ?: 0,
         ),
       )
+
+      episode.accountRating?.toLong()?.let { rating ->
+        database.episodeRatingEntityQueries.insertEpisodeRating(
+          EpisodeRatingEntity(
+            number = episode.number.toLong(),
+            showId = episode.showId.toLong(),
+            season = episode.seasonNumber.toLong(),
+            rating = rating,
+          ),
+        )
+      }
     }
   }
 
@@ -323,6 +336,14 @@ class ProdMediaDao(
     seasonNumber: Int,
   ): Episode = database
     .transactionWithResult {
+      val accountRating = database.episodeRatingEntityQueries.fetchEpisodeRating(
+        number = episodeNumber.toLong(),
+        showId = showId.toLong(),
+        season = seasonNumber.toLong(),
+      )
+        .executeAsOneOrNull()
+        ?.rating
+
       database
         .episodeEntityQueries
         .fetchEpisode(
@@ -331,7 +352,9 @@ class ProdMediaDao(
           episodeNumber = episodeNumber.toLong(),
         )
         .executeAsOne()
-        .map()
+        .map(
+          accountRating = accountRating?.toInt(),
+        )
     }
 
   override fun fetchEpisodes(
@@ -339,7 +362,14 @@ class ProdMediaDao(
     season: Int,
   ): Flow<List<Episode>> = database
     .transactionWithResult {
-      database
+      val ratingsFlow = database.episodeRatingEntityQueries.fetchEpisodesRatings(
+        showId = showId.toLong(),
+        season = season.toLong(),
+      )
+        .asFlow()
+        .mapToList(dispatcher.io)
+
+      val episodesFlow = database
         .episodeEntityQueries
         .fetchEpisodes(
           showId = showId.toLong(),
@@ -347,9 +377,18 @@ class ProdMediaDao(
         )
         .asFlow()
         .mapToList(dispatcher.io)
-        .map { entities ->
-          entities.map { it.map() }
+
+      combine(
+        episodesFlow, ratingsFlow,
+      ) { episodes, ratings ->
+        episodes.map { episode ->
+          episode.map(
+            accountRating = ratings.find {
+              it.number == episode.episodeNumber
+            }?.rating?.toInt(),
+          )
         }
+      }
     }
 
   override fun insertSeasonDetails(

@@ -2,6 +2,7 @@ package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.database.Database
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.database.person.PersonDao
@@ -39,6 +40,7 @@ import kotlinx.coroutines.withContext
 class ProdMediaRepository(
   private val remote: MediaService,
   private val dao: MediaDao,
+  private val database: Database,
   private val personDao: PersonDao,
   private val dispatcher: DispatcherProvider,
 ) : MediaRepository {

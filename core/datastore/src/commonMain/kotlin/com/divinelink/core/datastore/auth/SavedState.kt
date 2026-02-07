@@ -79,6 +79,12 @@ val SavedStateStorage.observedTmdbSession
     .map { it.tmdbSession }
     .distinctUntilChanged()
 
+val SavedStateStorage.tmdbSessionId
+  get() = savedState
+    .value
+    .tmdbSession
+    ?.sessionId
+
 val SavedStateStorage.accessToken
   get() = savedState
     .value
