@@ -2,10 +2,6 @@
 <resources>
   <string name="feature_details__watchlist">Watchlist</string>
   <string name="feature_details__add_to_list">Add to list</string>
-  <string name="details__add_rating">Rate this</string>
-  <string name="details__add_rating_description"><![CDATA[What do you think of <b>%1$s</b>?]]></string>
-  <string name="details__clear_my_rating">Clear my rating</string>
-  <string name="details__submit_rating_button">Submit rating</string>
 
   <string name="details__rating_submitted_successfully">Rating submitted for %1$s</string>
   <string name="details__rating_deleted_successfully">Rating cleared for %1$s</string>

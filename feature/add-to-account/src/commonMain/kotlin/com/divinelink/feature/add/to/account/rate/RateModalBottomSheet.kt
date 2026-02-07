@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.media.ui.rate
+package com.divinelink.feature.add.to.account.rate
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet

@@ -18,4 +18,8 @@
   <string name="feature_add_to_account_remove_from_list_offline_error">You cannot remove from the list while you're offline</string>
   <string name="feature_add_to_account_remove_single_item_success">%1$s removed from %2$s</string>
   <string name="feature_add_to_account_remove_batch_items_success">%1$s items removed from %2$s</string>
+
+  <string name="add_rating_description"><![CDATA[What do you think of <b>%1$s</b>?]]></string>
+  <string name="clear_my_rating">Clear my rating</string>
+  <string name="submit_rating_button">Submit rating</string>
 </resources>
