@@ -18,3 +18,18 @@ internal fun buildFetchListsUrl(
     append("page", page.toString())
   }
 }.toString()
+
+internal fun buildSubmitEpisodeRating(
+  showId: Int,
+  season: Int,
+  number: Int,
+  sessionId: String,
+): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/tv/$showId/season/$season/episode/$number/rating"
+
+  parameters.apply {
+    append("session_id", sessionId)
+  }
+}.toString()

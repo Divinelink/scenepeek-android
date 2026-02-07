@@ -92,11 +92,10 @@ fun SharedTransitionScope.EpisodeContent(
         verticalArrangement = Arrangement.SpaceEvenly,
       ) {
         EpisodeTitleDetails(
+          uiState = uiState,
+          episode = episode,
           onNavigate = onNavigate,
           action = action,
-          title = uiState.showTitle,
-          season = uiState.seasonTitle,
-          episode = episode,
         )
       }
     },

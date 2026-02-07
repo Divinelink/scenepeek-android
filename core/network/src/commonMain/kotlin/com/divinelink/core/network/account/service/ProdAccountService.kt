@@ -1,12 +1,21 @@
 package com.divinelink.core.network.account.service
 
+import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.datastore.auth.tmdbSessionId
+import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.network.account.util.buildSubmitEpisodeRating
 import com.divinelink.core.network.client.TMDbClient
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
+import com.divinelink.core.network.model.ValueRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdAccountService(private val restClient: TMDbClient) : AccountService {
+class ProdAccountService(
+  private val restClient: TMDbClient,
+  private val storage: SavedStateStorage,
+) : AccountService {
 
   override fun fetchMoviesWatchlist(
     page: Int,
@@ -70,5 +79,28 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
     val response = restClient.get<TvResponseApi>(url = url)
 
     emit(response)
+  }
+
+  override suspend fun submitEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  ): Result<TMDBResponse> = runCatching {
+    if (storage.tmdbSessionId == null) {
+      throw SessionException.Unauthenticated()
+    } else {
+      val url = buildSubmitEpisodeRating(
+        showId = showId,
+        season = season,
+        number = number,
+        sessionId = storage.tmdbSessionId!!,
+      )
+
+      restClient.post<ValueRequest, TMDBResponse>(
+        url = url,
+        body = ValueRequest(rating.toFloat()),
+      )
+    }
   }
 }

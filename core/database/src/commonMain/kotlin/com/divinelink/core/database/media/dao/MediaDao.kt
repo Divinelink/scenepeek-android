@@ -79,7 +79,7 @@ interface MediaDao {
     showId: Int,
     episodeNumber: Int,
     seasonNumber: Int,
-  ): Episode
+  ): Flow<Episode>
 
   fun fetchEpisodes(
     showId: Int,
@@ -101,4 +101,11 @@ interface MediaDao {
     season: Int,
     showId: Int,
   ): List<Int>
+
+  fun insertEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  )
 }

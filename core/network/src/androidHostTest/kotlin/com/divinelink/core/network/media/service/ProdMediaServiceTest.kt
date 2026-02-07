@@ -3,7 +3,7 @@ package com.divinelink.core.network.media.service
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
@@ -49,7 +49,7 @@ class ProdMediaServiceTest {
 
     assertThat(result).isEqualTo(
       Result.success(
-        SubmitOnAccountResponse(
+        TMDBResponse(
           success = true,
           statusCode = 13,
           statusMessage = "The item/record was deleted successfully.",
@@ -142,7 +142,7 @@ class ProdMediaServiceTest {
 
     assertThat(result).isEqualTo(
       Result.success(
-        SubmitOnAccountResponse(
+        TMDBResponse(
           success = true,
           statusCode = 13,
           statusMessage = "The item/record was deleted successfully.",
@@ -177,7 +177,7 @@ class ProdMediaServiceTest {
 
     assertThat(result).isEqualTo(
       Result.success(
-        SubmitOnAccountResponse(
+        TMDBResponse(
           success = true,
           statusCode = 13,
           statusMessage = "The item/record was deleted successfully.",

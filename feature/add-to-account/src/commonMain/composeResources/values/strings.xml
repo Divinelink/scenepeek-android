@@ -22,4 +22,8 @@
   <string name="add_rating_description"><![CDATA[What do you think of <b>%1$s</b>?]]></string>
   <string name="clear_my_rating">Clear my rating</string>
   <string name="submit_rating_button">Submit rating</string>
+
+  <string name="must_be_logged_in_to_rate">Please login to submit your rating.</string>
+  <string name="rating_submitted_successfully">Rating submitted for %1$s</string>
+  <string name="rating_deleted_successfully">Rating cleared for %1$s</string>
 </resources>

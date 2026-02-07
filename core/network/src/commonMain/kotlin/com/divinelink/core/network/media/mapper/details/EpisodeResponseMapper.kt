@@ -5,9 +5,7 @@ import com.divinelink.core.network.media.model.details.season.EpisodeResponse
 import com.divinelink.core.network.media.model.details.toHourMinuteFormat
 import com.divinelink.core.network.media.model.details.toPerson
 
-fun EpisodeResponse.map(
-  accountRating: Int?
-) = Episode(
+fun EpisodeResponse.map(accountRating: Int?) = Episode(
   id = id,
   name = name,
   airDate = airDate,

@@ -54,12 +54,12 @@ import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.add.to.account.resources.must_be_logged_in_to_rate
+import com.divinelink.feature.add.to.account.resources.rating_deleted_successfully
+import com.divinelink.feature.add.to.account.resources.rating_submitted_successfully
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.details__added_to_watchlist
-import com.divinelink.feature.details.resources.details__must_be_logged_in_to_rate
 import com.divinelink.feature.details.resources.details__must_be_logged_in_to_watchlist
-import com.divinelink.feature.details.resources.details__rating_deleted_successfully
-import com.divinelink.feature.details.resources.details__rating_submitted_successfully
 import com.divinelink.feature.details.resources.details__removed_from_watchlist
 import com.divinelink.feature.details.resources.feature_details_jellyseerr_failed_request_delete
 import com.divinelink.feature.details.resources.feature_details_jellyseerr_failure_media_delete
@@ -78,6 +78,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class DetailsViewModel(
   getMediaDetailsUseCase: GetMediaDetailsUseCase,
@@ -392,7 +393,7 @@ class DetailsViewModel(
               userDetails = viewState.userDetails.copy(rating = rating.toFloat()),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
-                  Res.string.details__rating_submitted_successfully,
+                  AccountRes.string.rating_submitted_successfully,
                   viewState.mediaDetails?.title ?: "",
                 ),
               ),
@@ -405,7 +406,7 @@ class DetailsViewModel(
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(Res.string.details__must_be_logged_in_to_rate),
+                  text = UIText.ResourceText(AccountRes.string.must_be_logged_in_to_rate),
                   actionLabelText = UIText.ResourceText(Res.string.login),
                   onSnackbarResult = ::navigateToLogin,
                 ),
@@ -441,7 +442,7 @@ class DetailsViewModel(
               userDetails = viewState.userDetails.copy(rating = null),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
-                  Res.string.details__rating_deleted_successfully,
+                  AccountRes.string.rating_deleted_successfully,
                   viewState.mediaDetails?.title ?: "",
                 ),
               ),

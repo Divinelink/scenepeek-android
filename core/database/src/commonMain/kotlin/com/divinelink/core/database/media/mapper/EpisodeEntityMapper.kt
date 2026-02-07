@@ -3,9 +3,7 @@ package com.divinelink.core.database.media.mapper
 import com.divinelink.core.database.season.EpisodeEntity
 import com.divinelink.core.model.details.Episode
 
-fun EpisodeEntity.map(
-  accountRating: Int?,
-) = Episode(
+fun EpisodeEntity.map(accountRating: Int?) = Episode(
   id = id.toInt(),
   name = name,
   airDate = airDate,

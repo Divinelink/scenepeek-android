@@ -25,16 +25,16 @@ import com.divinelink.core.ui.components.details.AirDateWithRuntime
 import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.feature.add.to.account.rate.RateModalBottomSheet
 import com.divinelink.feature.episode.EpisodeAction
+import com.divinelink.feature.episode.EpisodeUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EpisodeTitleDetails(
   modifier: Modifier = Modifier,
+  uiState: EpisodeUiState,
+  episode: Episode,
   onNavigate: (Navigation) -> Unit,
   action: (EpisodeAction) -> Unit,
-  title: String,
-  season: String,
-  episode: Episode,
 ) {
   var showRateModal by rememberSaveable { mutableStateOf(false) }
 
@@ -43,11 +43,8 @@ fun EpisodeTitleDetails(
       modifier = modifier,
       value = episode.accountRating,
       mediaTitle = episode.name,
-      canClearRate = true,
-      onSubmitRate = {
-      },
-      onClearRate = {
-      },
+      onSubmitRate = { action(EpisodeAction.OnSubmitRate(it)) },
+      onClearRate = { action(EpisodeAction.OnClearRate) },
       onDismissRequest = { showRateModal = false },
     )
   }
@@ -61,7 +58,7 @@ fun EpisodeTitleDetails(
         modifier = Modifier.clickable { onNavigate(Navigation.TwiceBack) },
         color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.titleSmall,
-        text = title,
+        text = uiState.showTitle,
       )
 
       Text(
@@ -74,7 +71,7 @@ fun EpisodeTitleDetails(
         modifier = Modifier.clickable { onNavigate(Navigation.Back) },
         color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.titleSmall,
-        text = season,
+        text = uiState.seasonTitle,
       )
     }
 
@@ -89,26 +86,28 @@ fun EpisodeTitleDetails(
       style = MaterialTheme.typography.titleSmall,
     )
 
-    Row(
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      MediaRatingItem(
-        ratingDetails = RatingDetails.Score(
-          voteAverage = episode.voteAverage?.toDouble() ?: 0.0,
-          voteCount = episode.voteCount ?: 0,
-        ),
-        source = RatingSource.TMDB,
-      )
+    if (uiState.seasonNumber != 0) {
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        MediaRatingItem(
+          ratingDetails = RatingDetails.Score(
+            voteAverage = episode.voteAverage?.toDouble() ?: 0.0,
+            voteCount = episode.voteCount ?: 0,
+          ),
+          source = RatingSource.TMDB,
+        )
 
-      Spacer(
-        modifier = Modifier.weight(1f)
-      )
+        Spacer(
+          modifier = Modifier.weight(1f),
+        )
 
-      RatingButton(
-        accountRating = episode.accountRating,
-        onClick = { showRateModal = true },
-        isLoading = false,
-      )
+        RatingButton(
+          accountRating = episode.accountRating,
+          onClick = { showRateModal = true },
+          isLoading = uiState.submitLoading,
+        )
+      }
     }
   }
 }

@@ -3,7 +3,7 @@
 package com.divinelink.core.network
 
 import com.divinelink.core.network.list.model.add.AddToListResponse
-import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import io.ktor.client.plugins.ResponseException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -70,7 +70,7 @@ internal suspend inline fun <T : Any> runCatchingWithNetworkRetry(
   repeat(times) { retry ->
     try {
       when (val response = block()) {
-        is SubmitOnAccountResponse -> {
+        is TMDBResponse -> {
           if (response.success) {
             return Result.success(response as T)
           } else if (response.statusCode == 34) {

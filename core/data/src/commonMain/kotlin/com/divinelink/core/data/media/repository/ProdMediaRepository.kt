@@ -367,12 +367,10 @@ class ProdMediaRepository(
       episode = number,
       season = season,
     ),
-    flowOf(
-      dao.fetchEpisode(
-        showId = showId,
-        episodeNumber = number,
-        seasonNumber = season,
-      ),
+    dao.fetchEpisode(
+      showId = showId,
+      episodeNumber = number,
+      seasonNumber = season,
     ),
   ) { guestStars, episode ->
     runCatching {
@@ -380,5 +378,19 @@ class ProdMediaRepository(
         guestStars = guestStars,
       )
     }
+  }
+
+  override fun insertEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  ): Result<Unit> = runCatching {
+    dao.insertEpisodeRating(
+      showId = showId,
+      season = season,
+      number = number,
+      rating = rating,
+    )
   }
 }

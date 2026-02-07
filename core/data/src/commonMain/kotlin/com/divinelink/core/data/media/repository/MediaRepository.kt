@@ -110,4 +110,11 @@ interface MediaRepository {
     showId: Int,
     season: Int,
   ): Result<List<Int>>
+
+  fun insertEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  ): Result<Unit>
 }

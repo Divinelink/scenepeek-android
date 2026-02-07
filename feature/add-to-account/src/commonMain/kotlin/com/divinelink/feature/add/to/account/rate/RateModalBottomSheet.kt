@@ -14,7 +14,6 @@ fun RateModalBottomSheet(
   sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
   value: Int?,
   mediaTitle: String,
-  canClearRate: Boolean,
   onSubmitRate: (Int) -> Unit,
   onClearRate: () -> Unit,
   onDismissRequest: () -> Unit,
@@ -27,12 +26,15 @@ fun RateModalBottomSheet(
       modifier = modifier,
       value = value?.toFloat() ?: 0f,
       mediaTitle = mediaTitle,
-      onSubmitRate = onSubmitRate,
+      onSubmitRate = {
+        onSubmitRate(it)
+        onDismissRequest()
+      },
       onClearRate = {
         onClearRate()
         onDismissRequest()
       },
-      canClearRate = canClearRate,
+      canClearRate = value != null,
     )
   }
 }

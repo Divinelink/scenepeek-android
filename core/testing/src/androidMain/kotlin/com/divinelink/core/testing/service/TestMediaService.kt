@@ -8,7 +8,7 @@ import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -118,7 +118,7 @@ class TestMediaService {
 
   suspend fun mockSubmitRating(
     request: AddRatingRequestApi,
-    response: Result<SubmitOnAccountResponse>,
+    response: Result<TMDBResponse>,
   ) {
     whenever(
       mock.submitRating(request),
@@ -129,7 +129,7 @@ class TestMediaService {
 
   suspend fun mockDeleteRating(
     request: DeleteRatingRequestApi,
-    response: Result<SubmitOnAccountResponse>,
+    response: Result<TMDBResponse>,
   ) {
     whenever(
       mock.deleteRating(request),
@@ -140,7 +140,7 @@ class TestMediaService {
 
   suspend fun mockAddToWatchlist(
     request: AddToWatchlistRequestApi,
-    response: Result<SubmitOnAccountResponse>,
+    response: Result<TMDBResponse>,
   ) {
     whenever(
       mock.addToWatchlist(request),

@@ -92,7 +92,6 @@ fun DetailsScreen(
       },
       onClearRate = viewModel::onClearRating,
       onDismissRequest = { openRateBottomSheet = false },
-      canClearRate = viewState.userDetails.rating != null,
     )
   }
 

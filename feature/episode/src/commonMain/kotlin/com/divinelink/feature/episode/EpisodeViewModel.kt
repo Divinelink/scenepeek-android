@@ -1,21 +1,39 @@
 package com.divinelink.feature.episode
 
+import androidx.annotation.VisibleForTesting
+import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
+import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.tab.EpisodeTab
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_error_retry
+import com.divinelink.core.ui.resources.core_ui_login
+import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.add.to.account.resources.must_be_logged_in_to_rate
+import com.divinelink.feature.add.to.account.resources.rating_deleted_successfully
+import com.divinelink.feature.add.to.account.resources.rating_submitted_successfully
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class EpisodeViewModel(
   private val repository: MediaRepository,
+  private val accountRepository: AccountRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -31,6 +49,9 @@ class EpisodeViewModel(
     EpisodeUiState.initial(route),
   )
   val uiState: StateFlow<EpisodeUiState> = _uiState
+
+  private val _navigateToLogin = Channel<Unit>()
+  val navigateToLogin: Flow<Unit> = _navigateToLogin.receiveAsFlow()
 
   init {
     repository
@@ -75,6 +96,9 @@ class EpisodeViewModel(
   fun onAction(action: EpisodeAction) {
     when (action) {
       is EpisodeAction.OnSelectEpisode -> handleOnSelectEpisode(action)
+      EpisodeAction.OnClearRate -> handleOnClearRate()
+      is EpisodeAction.OnSubmitRate -> handleOnSubmitRate(action)
+      EpisodeAction.DismissSnackbar -> handleDismissSnackbar()
     }
   }
 
@@ -84,5 +108,93 @@ class EpisodeViewModel(
     }
 
     fetchEpisode()
+  }
+
+  private fun handleOnClearRate() {
+    SnackbarMessage.from(
+      text = UIText.ResourceText(
+        AccountRes.string.rating_deleted_successfully,
+        uiState.value.episode?.name ?: "",
+      ),
+    )
+  }
+
+  private fun handleOnSubmitRate(action: EpisodeAction.OnSubmitRate) {
+    viewModelScope.launch {
+      val showId = uiState.value.showId
+      val season = uiState.value.seasonNumber
+      val number = uiState.value.episode?.number ?: -1
+      val rating = action.rate
+
+      _uiState.update { it.copy(submitLoading = true) }
+
+      accountRepository.submitEpisodeRating(
+        showId = showId,
+        season = season,
+        number = number,
+        rating = rating,
+      )
+        .fold(
+          onSuccess = {
+            _uiState.update { uiState ->
+              uiState.copy(
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    AccountRes.string.rating_submitted_successfully,
+                    uiState.episode?.name ?: "",
+                  ),
+                ),
+                submitLoading = false,
+              )
+            }
+
+            repository.insertEpisodeRating(
+              showId = showId,
+              season = season,
+              number = number,
+              rating = rating,
+            )
+          },
+          onFailure = { error ->
+            val snackbarMessage = if (error is SessionException.Unauthenticated) {
+              SnackbarMessage.from(
+                text = UIText.ResourceText(AccountRes.string.must_be_logged_in_to_rate),
+                actionLabelText = UIText.ResourceText(UiString.core_ui_login),
+                onSnackbarResult = ::navigateToLogin,
+              )
+            } else {
+              SnackbarMessage.from(text = UIText.ResourceText(UiString.core_ui_error_retry))
+            }
+
+            _uiState.update { uiState ->
+              uiState.copy(
+                snackbarMessage = snackbarMessage,
+                submitLoading = false,
+              )
+            }
+          },
+        )
+    }
+  }
+
+  private fun handleDismissSnackbar() {
+    _uiState.update { uiState ->
+      uiState.copy(snackbarMessage = null)
+    }
+  }
+
+  @VisibleForTesting
+  fun navigateToLogin(snackbarResult: SnackbarResult) {
+    if (snackbarResult == SnackbarResult.ActionPerformed) {
+      _uiState.update { viewState ->
+        viewState.copy(
+          snackbarMessage = null,
+        )
+      }
+
+      viewModelScope.launch {
+        _navigateToLogin.send(Unit)
+      }
+    }
   }
 }

@@ -10,6 +10,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +28,8 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.AppTopAppBar
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
+import com.divinelink.feature.episode.EpisodeAction
 import com.divinelink.feature.episode.EpisodeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -59,12 +62,23 @@ fun AnimatedVisibilityScope.EpisodeScreen(
     }
   }
 
+  SnackbarMessageHandler(
+    snackbarMessage = uiState.snackbarMessage,
+    onDismissSnackbar = { viewModel.onAction(EpisodeAction.DismissSnackbar) },
+  )
+
   val surfaceColor = MaterialTheme.colorScheme.surface
   DisposableEffect(textColor) {
     val isLight = textColor == surfaceColor
     systemUiController.setStatusBarColor(isLight = !isLight && !isDarkTheme)
     onDispose {
       systemUiController.setStatusBarColor(isLight = !isDarkTheme)
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.navigateToLogin.collect {
+      onNavigate(Navigation.TMDBAuthRoute)
     }
   }
 

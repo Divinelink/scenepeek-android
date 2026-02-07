@@ -334,27 +334,33 @@ class ProdMediaDao(
     showId: Int,
     episodeNumber: Int,
     seasonNumber: Int,
-  ): Episode = database
+  ): Flow<Episode> = database
     .transactionWithResult {
       val accountRating = database.episodeRatingEntityQueries.fetchEpisodeRating(
         number = episodeNumber.toLong(),
         showId = showId.toLong(),
         season = seasonNumber.toLong(),
       )
-        .executeAsOneOrNull()
-        ?.rating
+        .asFlow()
+        .mapToOneOrNull(dispatcher.io)
+        .map { it?.rating }
 
-      database
+      val episode = database
         .episodeEntityQueries
         .fetchEpisode(
           showId = showId.toLong(),
           seasonNumber = seasonNumber.toLong(),
           episodeNumber = episodeNumber.toLong(),
         )
-        .executeAsOne()
-        .map(
-          accountRating = accountRating?.toInt(),
-        )
+        .asFlow()
+        .mapToOne(dispatcher.io)
+
+      combine(
+        episode,
+        accountRating,
+      ) { episode, rating ->
+        episode.map(rating?.toInt())
+      }
     }
 
   override fun fetchEpisodes(
@@ -379,7 +385,8 @@ class ProdMediaDao(
         .mapToList(dispatcher.io)
 
       combine(
-        episodesFlow, ratingsFlow,
+        episodesFlow,
+        ratingsFlow,
       ) { episodes, ratings ->
         episodes.map { episode ->
           episode.map(
@@ -441,5 +448,22 @@ class ProdMediaDao(
         )
         .executeAsList()
         .map { it.toInt() }
+    }
+
+  override fun insertEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  ) = database
+    .transaction {
+      database.episodeRatingEntityQueries.insertEpisodeRating(
+        EpisodeRatingEntity(
+          number = number.toLong(),
+          showId = showId.toLong(),
+          season = season.toLong(),
+          rating = rating.toLong(),
+        ),
+      )
     }
 }
