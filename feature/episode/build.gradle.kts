@@ -11,6 +11,8 @@ kotlin {
       implementation(projects.core.data)
       implementation(projects.core.domain)
 
+      implementation(projects.feature.addToAccount)
+
       implementation(libs.kotlinx.datetime)
     }
   }

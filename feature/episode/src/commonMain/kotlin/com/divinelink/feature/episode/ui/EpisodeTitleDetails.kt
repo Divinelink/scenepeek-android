@@ -4,26 +4,54 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.button.RatingButton
 import com.divinelink.core.ui.components.details.AirDateWithRuntime
 import com.divinelink.core.ui.rating.MediaRatingItem
+import com.divinelink.feature.add.to.account.rate.RateModalBottomSheet
+import com.divinelink.feature.episode.EpisodeAction
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EpisodeTitleDetails(
   modifier: Modifier = Modifier,
   onNavigate: (Navigation) -> Unit,
+  action: (EpisodeAction) -> Unit,
   title: String,
   season: String,
   episode: Episode,
 ) {
+  var showRateModal by rememberSaveable { mutableStateOf(false) }
+
+  if (showRateModal) {
+    RateModalBottomSheet(
+      modifier = modifier,
+      value = episode.accountRating,
+      mediaTitle = episode.name,
+      canClearRate = true,
+      onSubmitRate = {
+      },
+      onClearRate = {
+      },
+      onDismissRequest = { showRateModal = false },
+    )
+  }
+
   Column(
     modifier = modifier,
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -61,12 +89,26 @@ fun EpisodeTitleDetails(
       style = MaterialTheme.typography.titleSmall,
     )
 
-    MediaRatingItem(
-      ratingDetails = RatingDetails.Score(
-        voteAverage = episode.voteAverage?.toDouble() ?: 0.0,
-        voteCount = episode.voteCount ?: 0,
-      ),
-      source = RatingSource.TMDB,
-    )
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      MediaRatingItem(
+        ratingDetails = RatingDetails.Score(
+          voteAverage = episode.voteAverage?.toDouble() ?: 0.0,
+          voteCount = episode.voteCount ?: 0,
+        ),
+        source = RatingSource.TMDB,
+      )
+
+      Spacer(
+        modifier = Modifier.weight(1f)
+      )
+
+      RatingButton(
+        accountRating = episode.accountRating,
+        onClick = { showRateModal = true },
+        isLoading = false,
+      )
+    }
   }
 }

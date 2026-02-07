@@ -93,6 +93,7 @@ fun SharedTransitionScope.EpisodeContent(
       ) {
         EpisodeTitleDetails(
           onNavigate = onNavigate,
+          action = action,
           title = uiState.showTitle,
           season = uiState.seasonTitle,
           episode = episode,
