@@ -1,5 +1,6 @@
 package com.divinelink.core.data.auth
 
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.isJellyseerrEnabled
@@ -12,7 +13,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
-class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : AuthRepository {
+class ProdAuthRepository(
+  private val savedStateStorage: SavedStateStorage,
+  private val mediaDao: MediaDao,
+) : AuthRepository {
 
   override val isJellyseerrEnabled: Flow<Boolean> = savedStateStorage
     .savedState
@@ -67,7 +71,7 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
   }
 
   override suspend fun clearTMDBSession() {
-    // TODO Clear saved episode ratings data
+    mediaDao.clearAllEpisodeRatings()
     savedStateStorage.clearTMDBSession()
   }
 }
