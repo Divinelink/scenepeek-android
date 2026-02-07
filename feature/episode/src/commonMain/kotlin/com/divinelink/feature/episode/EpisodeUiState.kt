@@ -11,13 +11,12 @@ data class EpisodeUiState(
   val seasonTitle: String,
   val seasonNumber: Int,
   val selectedIndex: Int,
+  val episode: Episode?,
   val episodes: Map<Int, Episode>,
   val tabs: List<EpisodeTab>,
   val snackbarMessage: SnackbarMessage?,
   val ratingLoading: Boolean,
 ) {
-  val episode by lazy { episodes[selectedIndex] }
-
   companion object {
     fun initial(route: Navigation.EpisodeRoute) = EpisodeUiState(
       showId = route.showId,
@@ -27,6 +26,7 @@ data class EpisodeUiState(
       selectedIndex = route.episodeIndex,
       episodes = emptyMap(),
       tabs = emptyList(),
+      episode = null,
       snackbarMessage = null,
       ratingLoading = false,
     )

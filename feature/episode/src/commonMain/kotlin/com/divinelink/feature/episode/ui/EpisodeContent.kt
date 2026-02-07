@@ -61,7 +61,7 @@ fun SharedTransitionScope.EpisodeContent(
   onNavigate: (Navigation) -> Unit,
   action: (EpisodeAction) -> Unit,
 ) {
-  val episode = uiState.episode ?: return
+  uiState.episode ?: return
 
   val scope = rememberCoroutineScope()
 
@@ -81,7 +81,7 @@ fun SharedTransitionScope.EpisodeContent(
 
   DetailCollapsibleContent(
     visibilityScope = visibilityScope,
-    backdropPath = episode.stillPath,
+    backdropPath = uiState.episode.stillPath,
     posterPath = null,
     toolbarProgress = toolbarProgress,
     onBackdropLoaded = onBackdropLoaded,
@@ -93,7 +93,7 @@ fun SharedTransitionScope.EpisodeContent(
       ) {
         EpisodeTitleDetails(
           uiState = uiState,
-          episode = episode,
+          episode = uiState.episode,
           onNavigate = onNavigate,
           action = action,
         )

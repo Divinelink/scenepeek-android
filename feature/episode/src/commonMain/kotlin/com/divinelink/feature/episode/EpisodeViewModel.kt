@@ -74,23 +74,31 @@ class EpisodeViewModel(
   }
 
   private fun fetchEpisode() {
-    // TODO add check if episode does not exist to fetch it from DB
-    repository.fetchEpisode(
-      showId = uiState.value.showId,
-      season = uiState.value.seasonNumber,
-      number = uiState.value.tabs[uiState.value.selectedIndex].number,
-    )
-      .distinctUntilChanged()
-      .onEach {
-        _uiState.update { uiState ->
-          val episode = it.data
+    val cachedEpisode = uiState.value.episodes[uiState.value.selectedIndex]
 
-          uiState.copy(
-            episodes = uiState.episodes.plus(uiState.selectedIndex to episode),
-          )
+    if (cachedEpisode == null) {
+      repository.fetchEpisode(
+        showId = uiState.value.showId,
+        season = uiState.value.seasonNumber,
+        number = uiState.value.tabs[uiState.value.selectedIndex].number,
+      )
+        .distinctUntilChanged()
+        .onEach {
+          _uiState.update { uiState ->
+            val episode = it.data
+
+            uiState.copy(
+              episode = episode,
+              episodes = uiState.episodes.plus(uiState.selectedIndex to episode),
+            )
+          }
         }
+        .launchIn(viewModelScope)
+    } else {
+      _uiState.update { uiState ->
+        uiState.copy(episode = cachedEpisode)
       }
-      .launchIn(viewModelScope)
+    }
   }
 
   fun onAction(action: EpisodeAction) {
