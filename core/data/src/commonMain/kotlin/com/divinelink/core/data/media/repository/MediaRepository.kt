@@ -117,4 +117,6 @@ interface MediaRepository {
     number: Int,
     rating: Int,
   ): Result<Unit>
+
+  fun clearAllEpisodeRatings(): Result<Unit>
 }

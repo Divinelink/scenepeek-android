@@ -2,7 +2,6 @@ package com.divinelink.core.data.account
 
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {
@@ -42,5 +41,9 @@ interface AccountRepository {
     rating: Int,
   ): Result<Unit>
 
-  suspend fun deleteEpisodeRating(request: DeleteRatingRequestApi): Result<Unit>
+  suspend fun deleteEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Result<Unit>
 }

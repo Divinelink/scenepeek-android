@@ -41,4 +41,10 @@ interface AccountService {
     number: Int,
     rating: Int,
   ): Result<TMDBResponse>
+
+  suspend fun clearEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Result<TMDBResponse>
 }

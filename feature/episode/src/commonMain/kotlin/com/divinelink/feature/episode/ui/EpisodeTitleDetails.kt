@@ -105,7 +105,7 @@ fun EpisodeTitleDetails(
         RatingButton(
           accountRating = episode.accountRating,
           onClick = { showRateModal = true },
-          isLoading = uiState.submitLoading,
+          isLoading = uiState.ratingLoading,
         )
       }
     }

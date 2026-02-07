@@ -455,15 +455,30 @@ class ProdMediaDao(
     season: Int,
     number: Int,
     rating: Int,
-  ) = database
-    .transaction {
-      database.episodeRatingEntityQueries.insertEpisodeRating(
-        EpisodeRatingEntity(
-          number = number.toLong(),
-          showId = showId.toLong(),
-          season = season.toLong(),
-          rating = rating.toLong(),
-        ),
-      )
-    }
+  ) = database.transaction {
+    database.episodeRatingEntityQueries.insertEpisodeRating(
+      EpisodeRatingEntity(
+        number = number.toLong(),
+        showId = showId.toLong(),
+        season = season.toLong(),
+        rating = rating.toLong(),
+      ),
+    )
+  }
+
+  override fun deleteEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ) = database.transaction {
+    database.episodeRatingEntityQueries.deleteEpisodeRating(
+      number = number.toLong(),
+      showId = showId.toLong(),
+      season = season.toLong(),
+    )
+  }
+
+  override fun clearAllEpisodeRatings() = database.transaction {
+    database.episodeRatingEntityQueries.clearAllEpisodeRatings()
+  }
 }

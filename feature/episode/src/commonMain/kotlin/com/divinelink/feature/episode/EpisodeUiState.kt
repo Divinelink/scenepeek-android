@@ -14,7 +14,7 @@ data class EpisodeUiState(
   val episodes: Map<Int, Episode>,
   val tabs: List<EpisodeTab>,
   val snackbarMessage: SnackbarMessage?,
-  val submitLoading: Boolean,
+  val ratingLoading: Boolean,
 ) {
   val episode by lazy { episodes[selectedIndex] }
 
@@ -28,7 +28,7 @@ data class EpisodeUiState(
       episodes = emptyMap(),
       tabs = emptyList(),
       snackbarMessage = null,
-      submitLoading = false,
+      ratingLoading = false,
     )
   }
 }

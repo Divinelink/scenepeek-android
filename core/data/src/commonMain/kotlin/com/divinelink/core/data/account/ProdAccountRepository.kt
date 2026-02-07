@@ -7,7 +7,6 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.account.service.AccountService
 import com.divinelink.core.network.media.model.movie.map
-import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.tv.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -121,8 +120,25 @@ class ProdAccountRepository(
     Result.success(data.copy(list = updatedTvShows))
   }
 
-  override suspend fun deleteEpisodeRating(request: DeleteRatingRequestApi): Result<Unit> {
-    TODO("Not yet implemented")
+  override suspend fun deleteEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Result<Unit> = remote.clearEpisodeRating(
+    showId = showId,
+    season = season,
+    number = number,
+  ).map { response ->
+    if (response.success) {
+      dao.deleteEpisodeRating(
+        showId = showId,
+        season = season,
+        number = number,
+      )
+      Result.success(Unit)
+    } else {
+      Result.failure<Exception>(AppException.Unknown())
+    }
   }
 
   override suspend fun submitEpisodeRating(

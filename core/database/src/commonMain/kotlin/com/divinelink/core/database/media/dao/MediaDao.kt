@@ -108,4 +108,12 @@ interface MediaDao {
     number: Int,
     rating: Int,
   )
+
+  fun deleteEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  )
+
+  fun clearAllEpisodeRatings()
 }

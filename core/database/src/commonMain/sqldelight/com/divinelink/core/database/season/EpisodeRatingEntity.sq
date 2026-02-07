@@ -24,5 +24,8 @@ SELECT * FROM EpisodeRatingEntity
 WHERE showId = ? AND season = ?
 ORDER BY number;
 
-deleteListMediaItem:
+deleteEpisodeRating:
 DELETE FROM EpisodeRatingEntity WHERE showId = ? AND season = ? AND number = ?;
+
+clearAllEpisodeRatings:
+DELETE FROM EpisodeRatingEntity;

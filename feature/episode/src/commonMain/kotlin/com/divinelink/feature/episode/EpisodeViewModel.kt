@@ -111,12 +111,43 @@ class EpisodeViewModel(
   }
 
   private fun handleOnClearRate() {
-    SnackbarMessage.from(
-      text = UIText.ResourceText(
-        AccountRes.string.rating_deleted_successfully,
-        uiState.value.episode?.name ?: "",
-      ),
-    )
+    viewModelScope.launch {
+      val showId = uiState.value.showId
+      val season = uiState.value.seasonNumber
+      val number = uiState.value.episode?.number ?: -1
+
+      _uiState.update { it.copy(ratingLoading = true) }
+
+      accountRepository.deleteEpisodeRating(
+        showId = showId,
+        season = season,
+        number = number,
+      ).fold(
+        onSuccess = {
+          _uiState.update { uiState ->
+            uiState.copy(
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  AccountRes.string.rating_deleted_successfully,
+                  uiState.episode?.name ?: "",
+                ),
+              ),
+              ratingLoading = false,
+            )
+          }
+        },
+        onFailure = {
+          _uiState.update { uiState ->
+            uiState.copy(
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(UiString.core_ui_error_retry),
+              ),
+              ratingLoading = false,
+            )
+          }
+        },
+      )
+    }
   }
 
   private fun handleOnSubmitRate(action: EpisodeAction.OnSubmitRate) {
@@ -126,7 +157,7 @@ class EpisodeViewModel(
       val number = uiState.value.episode?.number ?: -1
       val rating = action.rate
 
-      _uiState.update { it.copy(submitLoading = true) }
+      _uiState.update { it.copy(ratingLoading = true) }
 
       accountRepository.submitEpisodeRating(
         showId = showId,
@@ -144,7 +175,7 @@ class EpisodeViewModel(
                     uiState.episode?.name ?: "",
                   ),
                 ),
-                submitLoading = false,
+                ratingLoading = false,
               )
             }
 
@@ -169,7 +200,7 @@ class EpisodeViewModel(
             _uiState.update { uiState ->
               uiState.copy(
                 snackbarMessage = snackbarMessage,
-                submitLoading = false,
+                ratingLoading = false,
               )
             }
           },

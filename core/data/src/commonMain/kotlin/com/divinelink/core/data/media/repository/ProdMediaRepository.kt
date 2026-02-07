@@ -393,4 +393,8 @@ class ProdMediaRepository(
       rating = rating,
     )
   }
+
+  override fun clearAllEpisodeRatings(): Result<Unit> = runCatching {
+    dao.clearAllEpisodeRatings()
+  }
 }

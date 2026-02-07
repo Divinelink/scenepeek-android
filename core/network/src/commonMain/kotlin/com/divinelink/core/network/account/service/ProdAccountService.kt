@@ -3,7 +3,7 @@ package com.divinelink.core.network.account.service
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.tmdbSessionId
 import com.divinelink.core.model.exception.SessionException
-import com.divinelink.core.network.account.util.buildSubmitEpisodeRating
+import com.divinelink.core.network.account.util.buildEpisodeRatingUrl
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
@@ -90,7 +90,7 @@ class ProdAccountService(
     if (storage.tmdbSessionId == null) {
       throw SessionException.Unauthenticated()
     } else {
-      val url = buildSubmitEpisodeRating(
+      val url = buildEpisodeRatingUrl(
         showId = showId,
         season = season,
         number = number,
@@ -101,6 +101,25 @@ class ProdAccountService(
         url = url,
         body = ValueRequest(rating.toFloat()),
       )
+    }
+  }
+
+  override suspend fun clearEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Result<TMDBResponse> = runCatching {
+    if (storage.tmdbSessionId == null) {
+      throw SessionException.Unauthenticated()
+    } else {
+      val url = buildEpisodeRatingUrl(
+        showId = showId,
+        season = season,
+        number = number,
+        sessionId = storage.tmdbSessionId!!,
+      )
+
+      restClient.delete<TMDBResponse>(url = url)
     }
   }
 }

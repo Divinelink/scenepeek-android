@@ -19,7 +19,7 @@ internal fun buildFetchListsUrl(
   }
 }.toString()
 
-internal fun buildSubmitEpisodeRating(
+internal fun buildEpisodeRatingUrl(
   showId: Int,
   season: Int,
   number: Int,
