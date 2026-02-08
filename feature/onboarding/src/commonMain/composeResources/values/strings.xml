@@ -44,4 +44,6 @@
   <string name="feature_onboarding_v34_user_data_empty_state">- Redesigned empty state visuals for watchlist, ratings, and empty lists</string>
 
   <string name="feature_onboarding_v35_add_email_support_field">- Add experimental warning and email support field on Jellyseerr login</string>
+
+  <string name="v36_season_and_episode_details_screen">- Introducing new season &amp; episode details screen! You can now view information about each season and episode, and if you're logged into to TMDB, you can also rate individual episodes.</string>
 </resources>

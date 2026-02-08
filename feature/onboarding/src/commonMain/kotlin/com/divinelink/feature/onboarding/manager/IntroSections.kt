@@ -39,6 +39,7 @@ import com.divinelink.feature.onboarding.resources.feature_onboarding_v34_user_d
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v35_add_email_support_field
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_welcome_page_title
+import com.divinelink.feature.onboarding.resources.v36_season_and_episode_details_screen
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -158,6 +159,13 @@ object IntroSections {
     ),
   )
 
+  val v36 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.26.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v36_season_and_episode_details_screen)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -168,5 +176,6 @@ object IntroSections {
     33 to v33,
     34 to v34,
     35 to v35,
+    36 to v36,
   )
 }
