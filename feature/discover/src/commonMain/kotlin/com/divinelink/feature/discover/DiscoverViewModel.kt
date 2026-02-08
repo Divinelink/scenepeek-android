@@ -72,7 +72,6 @@ class DiscoverViewModel(
     filterRepository
       .selectedLanguage
       .map { it[uiState.value.selectedMedia] }
-      .distinctUntilChanged()
       .onEach { language ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -88,7 +87,6 @@ class DiscoverViewModel(
     filterRepository
       .selectedCountry
       .map { it[uiState.value.selectedMedia] }
-      .distinctUntilChanged()
       .onEach { country ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -104,7 +102,6 @@ class DiscoverViewModel(
     filterRepository
       .voteAverage
       .map { it[uiState.value.selectedMedia] }
-      .distinctUntilChanged()
       .onEach { voteAverage ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -120,7 +117,6 @@ class DiscoverViewModel(
     filterRepository
       .minimumVotes
       .map { it[uiState.value.selectedMedia] }
-      .distinctUntilChanged()
       .onEach { votes ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -136,7 +132,6 @@ class DiscoverViewModel(
     filterRepository
       .year
       .map { it[uiState.value.selectedMedia] }
-      .distinctUntilChanged()
       .onEach { filter ->
         _uiState.update { uiState ->
           uiState.copy(
