@@ -14,6 +14,7 @@ fun EpisodeResponse.map() = Episode(
   seasonNumber = seasonNumber,
   showId = showId,
   stillPath = stillPath,
+  voteCount = voteCount,
   voteAverage = voteAverage,
   number = episodeNumber,
   crew = crew.map(),

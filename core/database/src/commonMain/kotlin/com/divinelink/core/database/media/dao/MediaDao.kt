@@ -96,4 +96,9 @@ interface MediaDao {
     season: Int,
     showId: Int,
   ): Flow<SeasonDetailsEntity?>
+
+  fun fetchSeasonEpisodesCount(
+    season: Int,
+    showId: Int,
+  ): List<Int>
 }

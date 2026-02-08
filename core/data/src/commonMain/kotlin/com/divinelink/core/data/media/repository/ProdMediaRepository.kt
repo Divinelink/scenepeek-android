@@ -7,6 +7,7 @@ import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.discover.DiscoverFilter
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ProdMediaRepository(
   private val remote: MediaService,
@@ -274,9 +276,8 @@ class ProdMediaRepository(
     }
   }
 
-  override fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>> = dao.fetchSeasons(id).map {
-    Result.success(it)
-  }
+  override fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>> = dao.fetchSeasons(id)
+    .map { runCatching { it } }
 
   override fun fetchSeason(
     showId: Int,
@@ -320,25 +321,62 @@ class ProdMediaRepository(
       ).map { it.map() }
     },
     saveFetchResult = { result ->
-      val data = result.data
+      withContext(dispatcher.io) {
+        val data = result.data
 
-      dao.insertSeasonDetails(
-        seasonDetails = data,
-        showId = showId,
-        seasonNumber = season,
-      )
-
-      dao.insertEpisodes(data.episodes)
-
-      data.episodes.forEach { episode ->
-        personDao.insertGuestStars(
-          season = season,
+        dao.insertSeasonDetails(
+          seasonDetails = data,
           showId = showId,
-          episode = episode.number,
-          guestStars = data.guestStars,
+          seasonNumber = season,
         )
+
+        dao.insertEpisodes(data.episodes)
+
+        data.episodes.forEach { episode ->
+          personDao.insertGuestStars(
+            season = season,
+            showId = showId,
+            episode = episode.number,
+            guestStars = episode.guestStars,
+          )
+        }
       }
     },
     shouldFetch = { true },
   )
+
+  override fun getSeasonEpisodesNumber(
+    showId: Int,
+    season: Int,
+  ): Result<List<Int>> = runCatching {
+    dao.fetchSeasonEpisodesCount(
+      showId = showId,
+      season = season,
+    )
+  }
+
+  override fun fetchEpisode(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Flow<Result<Episode>> = combine(
+    personDao.fetchEpisodeGuestStars(
+      showId = showId,
+      episode = number,
+      season = season,
+    ),
+    flowOf(
+      dao.fetchEpisode(
+        showId = showId,
+        episodeNumber = number,
+        seasonNumber = season,
+      ),
+    ),
+  ) { guestStars, episode ->
+    runCatching {
+      episode.copy(
+        guestStars = guestStars,
+      )
+    }
+  }
 }

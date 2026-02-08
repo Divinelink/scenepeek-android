@@ -49,4 +49,10 @@ interface PersonDao {
     showId: Int,
     season: Int,
   ): Flow<List<Person>>
+
+  fun fetchEpisodeGuestStars(
+    showId: Int,
+    season: Int,
+    episode: Int,
+  ): Flow<List<Person>>
 }

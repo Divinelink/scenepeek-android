@@ -8,6 +8,7 @@ import com.divinelink.core.navigation.route.navigateToCreateList
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToDiscover
 import com.divinelink.core.navigation.route.navigateToEditList
+import com.divinelink.core.navigation.route.navigateToEpisode
 import com.divinelink.core.navigation.route.navigateToListDetails
 import com.divinelink.core.navigation.route.navigateToLists
 import com.divinelink.core.navigation.route.navigateToMediaLists
@@ -34,6 +35,10 @@ import com.divinelink.feature.settings.navigation.settings.navigateToSettings
 fun NavController.findNavigation(route: Navigation) {
   when (route) {
     Navigation.Back -> navigateUp()
+    Navigation.TwiceBack -> {
+      navigateUp()
+      navigateUp()
+    }
     Navigation.AboutSettingsRoute -> navigateToAboutSettings()
     Navigation.AccountSettingsRoute -> navigateToAccountSettings()
     Navigation.DetailsPreferencesSettingsRoute -> navigateToDetailsPreferenceSettings()
@@ -64,6 +69,7 @@ fun NavController.findNavigation(route: Navigation) {
     is Navigation.MediaPosterRoute -> navigateToPoster(route)
     is Navigation.MediaListsRoute -> navigateToMediaLists(route)
     is Navigation.SeasonRoute -> navigateToSeason(route)
+    is Navigation.EpisodeRoute -> navigateToEpisode(route)
 
     // This is from top level navigation
     Navigation.HomeRoute -> Unit

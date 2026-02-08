@@ -12,6 +12,7 @@ import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
 import com.divinelink.feature.details.navigation.posterScreen
 import com.divinelink.feature.discover.ui.navigation.discoverScreen
+import com.divinelink.feature.episode.ui.navigation.episodeScreen
 import com.divinelink.feature.home.navigation.homeScreen
 import com.divinelink.feature.lists.create.ui.navigation.createListScreen
 import com.divinelink.feature.lists.create.ui.navigation.editListScreen
@@ -292,6 +293,14 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.SeasonRoute>()) {
     { navController, _ ->
       seasonScreen(
+        onNavigate = navController::findNavigation,
+      )
+    }
+  }
+
+  single<NavGraphExtension>(named<Navigation.EpisodeRoute>()) {
+    { navController, _ ->
+      episodeScreen(
         onNavigate = navController::findNavigation,
       )
     }

@@ -56,12 +56,11 @@ CREATE TABLE EpisodeEntity (
   UNIQUE(id, seasonNumber, showId)
 );
 
-CREATE TABLE SeasonGuestStarRoleEntity(
+CREATE TABLE EpisodeGuestStarEntity(
   showId INTEGER NOT NULL,
   season INTEGER NOT NULL,
   episode INTEGER NOT NULL,
   creditId TEXT NOT NULL REFERENCES PersonRoleEntity(creditId),
-  episodeCount INTEGER,
   displayOrder INTEGER NOT NULL,
-  PRIMARY KEY (season, creditId)
+  PRIMARY KEY (showId, season, episode, creditId)
 );

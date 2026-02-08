@@ -1,4 +1,4 @@
-package com.divinelink.feature.season.ui
+package com.divinelink.feature.episode.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
@@ -27,14 +27,14 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.AppTopAppBar
-import com.divinelink.feature.season.SeasonViewModel
+import com.divinelink.feature.episode.EpisodeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimatedVisibilityScope.SeasonScreen(
+fun AnimatedVisibilityScope.EpisodeScreen(
   onNavigate: (Navigation) -> Unit,
-  viewModel: SeasonViewModel = koinViewModel(),
+  viewModel: EpisodeViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -80,9 +80,9 @@ fun AnimatedVisibilityScope.SeasonScreen(
     topBar = {
       AppTopAppBar(
         scrollBehavior = scrollBehavior,
-        text = UIText.StringText(uiState.season?.name ?: ""),
+        text = UIText.StringText(uiState.episode?.name ?: ""),
+        subtitle = UIText.StringText(uiState.showTitle),
         contentColor = textColor,
-        subtitle = UIText.StringText(uiState.title),
         progress = toolbarProgress,
         onNavigateUp = { onNavigate(Navigation.Back) },
         topAppBarColors = TopAppBarDefaults.topAppBarColors(
@@ -93,12 +93,12 @@ fun AnimatedVisibilityScope.SeasonScreen(
     },
     content = {
       Column {
-        if (uiState.backdropPath?.isBlank() == true) {
+        if (uiState.episode?.stillPath?.isBlank() == true) {
           Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
         }
 
-        SeasonContent(
-          visibilityScope = this@SeasonScreen,
+        EpisodeContent(
+          visibilityScope = this@EpisodeScreen,
           uiState = uiState,
           onBackdropLoaded = { onBackdropLoaded = true },
           toolbarProgress = { progress -> toolbarProgress = progress },
