@@ -64,3 +64,11 @@ CREATE TABLE EpisodeGuestStarEntity(
   displayOrder INTEGER NOT NULL,
   PRIMARY KEY (showId, season, episode, creditId)
 );
+
+CREATE TABLE EpisodeRatingEntity (
+  number INTEGER NOT NULL,
+  showId INTEGER NOT NULL,
+  season INTEGER NOT NULL,
+  rating INTEGER NOT NULL,
+  UNIQUE(number, showId, season)
+);

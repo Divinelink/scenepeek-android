@@ -67,14 +67,14 @@ import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.core_ui_delete
 import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
 import com.divinelink.core.ui.resources.core_ui_view_all
+import com.divinelink.feature.add.to.account.resources.submit_rating_button
 import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.resources.Res
-import com.divinelink.feature.details.resources.details__add_rating
-import com.divinelink.feature.details.resources.details__submit_rating_button
 import com.divinelink.feature.details.resources.feature_details_manage_movie
 import com.divinelink.feature.details.resources.feature_details_manage_tv
 import com.divinelink.feature.details.resources.feature_details_request
@@ -92,6 +92,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class DetailsScreenTest : ComposeTest() {
 
@@ -530,7 +531,7 @@ class DetailsScreenTest : ComposeTest() {
       )
     }
 
-    val addRatingText = getString(Res.string.details__add_rating)
+    val addRatingText = getString(UiString.core_ui_add_rating)
 
     onAllNodesWithTag(TestTags.Details.YOUR_RATING, useUnmergedTree = true)
       .onFirst()
@@ -557,7 +558,7 @@ class DetailsScreenTest : ComposeTest() {
         swipeRight()
       }
 
-    val submitRatingText = getString(Res.string.details__submit_rating_button)
+    val submitRatingText = getString(AccountRes.string.submit_rating_button)
 
     onNodeWithText(submitRatingText).performClick()
 

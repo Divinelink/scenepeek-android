@@ -17,4 +17,5 @@ data class Episode(
   val voteCount: Int?,
   val crew: List<Person>,
   val guestStars: List<Person>,
+  val accountRating: Int?,
 )

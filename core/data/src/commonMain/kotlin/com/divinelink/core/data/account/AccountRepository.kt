@@ -33,4 +33,17 @@ interface AccountRepository {
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>>
+
+  suspend fun submitEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  ): Result<Unit>
+
+  suspend fun deleteEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Result<Unit>
 }

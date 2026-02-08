@@ -1,4 +1,4 @@
-package com.divinelink.feature.details
+package com.divinelink.feature.add.to.account.rate
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -9,11 +9,10 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.fromHtml
-import com.divinelink.feature.details.media.ui.rate.RateDialogContent
-import com.divinelink.feature.details.resources.Res
-import com.divinelink.feature.details.resources.details__add_rating_description
-import com.divinelink.feature.details.resources.details__clear_my_rating
-import com.divinelink.feature.details.resources.details__submit_rating_button
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.add_rating_description
+import com.divinelink.feature.add.to.account.resources.clear_my_rating
+import com.divinelink.feature.add.to.account.resources.submit_rating_button
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
@@ -40,11 +39,11 @@ class RateDialogContentTest : ComposeTest() {
     }
 
     val descriptionText = getString(
-      Res.string.details__add_rating_description,
+      Res.string.add_rating_description,
       movie.title,
     ).fromHtml()
 
-    val submitButtonText = getString(Res.string.details__submit_rating_button)
+    val submitButtonText = getString(Res.string.submit_rating_button)
 
     onNodeWithText(descriptionText.text).assertExists()
     onNodeWithText(submitButtonText).performClick()
@@ -70,11 +69,11 @@ class RateDialogContentTest : ComposeTest() {
     }
 
     val descriptionText = getString(
-      Res.string.details__add_rating_description,
+      Res.string.add_rating_description,
       movie.title,
     ).fromHtml()
 
-    val submitButtonText = getString(Res.string.details__submit_rating_button)
+    val submitButtonText = getString(Res.string.submit_rating_button)
 
     onNodeWithText(descriptionText.text).assertExists()
     onNodeWithText(submitButtonText).assertIsNotEnabled()
@@ -101,9 +100,9 @@ class RateDialogContentTest : ComposeTest() {
     }
 
     val descriptionText =
-      getString(Res.string.details__add_rating_description, movie.title).fromHtml()
+      getString(Res.string.add_rating_description, movie.title).fromHtml()
 
-    val deleteButtonText = getString(Res.string.details__clear_my_rating)
+    val deleteButtonText = getString(Res.string.clear_my_rating)
 
     onNodeWithText(descriptionText.text).assertExists()
     onNodeWithText(deleteButtonText).performClick()

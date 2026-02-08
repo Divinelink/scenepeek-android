@@ -1,14 +1,16 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.factories.json.model.GenreListResponseJsonFactory
 import com.divinelink.core.testing.network.TestRestClient
+import com.divinelink.core.testing.storage.TestSavedStateStorage
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
@@ -19,10 +21,12 @@ class ProdMediaServiceTest {
 
   private lateinit var service: ProdMediaService
   private lateinit var testRestClient: TestRestClient
+  private lateinit var storage: SavedStateStorage
 
   @BeforeTest
   fun setUp() {
     testRestClient = TestRestClient()
+    storage = TestSavedStateStorage()
   }
 
   @Test
@@ -38,7 +42,10 @@ class ProdMediaServiceTest {
       """.trimIndent(),
     )
 
-    service = ProdMediaService(testRestClient.restClient)
+    service = ProdMediaService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     val result = service.deleteRating(
       DeleteRatingRequestApi.Movie(
@@ -49,7 +56,7 @@ class ProdMediaServiceTest {
 
     assertThat(result).isEqualTo(
       Result.success(
-        SubmitOnAccountResponse(
+        TMDBResponse(
           success = true,
           statusCode = 13,
           statusMessage = "The item/record was deleted successfully.",
@@ -71,7 +78,10 @@ class ProdMediaServiceTest {
       """.trimIndent(),
     )
 
-    service = ProdMediaService(testRestClient.restClient)
+    service = ProdMediaService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     val result = service.deleteRating(
       DeleteRatingRequestApi.Movie(
@@ -100,7 +110,10 @@ class ProdMediaServiceTest {
       """.trimIndent(),
     )
 
-    service = ProdMediaService(testRestClient.restClient)
+    service = ProdMediaService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     val result = service.submitRating(
       AddRatingRequestApi.Movie(
@@ -130,7 +143,10 @@ class ProdMediaServiceTest {
       """.trimIndent(),
     )
 
-    service = ProdMediaService(testRestClient.restClient)
+    service = ProdMediaService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     val result = service.submitRating(
       AddRatingRequestApi.Movie(
@@ -142,7 +158,7 @@ class ProdMediaServiceTest {
 
     assertThat(result).isEqualTo(
       Result.success(
-        SubmitOnAccountResponse(
+        TMDBResponse(
           success = true,
           statusCode = 13,
           statusMessage = "The item/record was deleted successfully.",
@@ -164,7 +180,10 @@ class ProdMediaServiceTest {
       """.trimIndent(),
     )
 
-    service = ProdMediaService(testRestClient.restClient)
+    service = ProdMediaService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     val result = service.addToWatchlist(
       AddToWatchlistRequestApi.Movie(
@@ -177,7 +196,7 @@ class ProdMediaServiceTest {
 
     assertThat(result).isEqualTo(
       Result.success(
-        SubmitOnAccountResponse(
+        TMDBResponse(
           success = true,
           statusCode = 13,
           statusMessage = "The item/record was deleted successfully.",
@@ -193,7 +212,10 @@ class ProdMediaServiceTest {
       json = GenreListResponseJsonFactory.movieGenreJson,
     )
 
-    service = ProdMediaService(testRestClient.restClient)
+    service = ProdMediaService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     val result = service.fetchGenres(MediaType.MOVIE)
 
@@ -209,7 +231,10 @@ class ProdMediaServiceTest {
       json = GenreListResponseJsonFactory.tvGenreJson,
     )
 
-    service = ProdMediaService(testRestClient.restClient)
+    service = ProdMediaService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     val result = service.fetchGenres(MediaType.TV)
 

@@ -14,6 +14,7 @@
   <string name="core_ui_save">Save</string>
   <string name="core_ui_play_trailer">Watch Trailer</string>
 
+  <string name="core_ui_add_rating">Rate this</string>
   <string name="core_ui_your_rating">Your rating</string>
 
   <string name="core_ui_connected">You're back online</string>

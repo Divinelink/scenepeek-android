@@ -1,5 +1,7 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.datastore.auth.tmdbSessionId
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaType
@@ -14,7 +16,7 @@ import com.divinelink.core.network.media.model.details.season.SeasonDetailsRespo
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
-import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.find.FindByIdResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -36,7 +38,10 @@ import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdMediaService(private val restClient: TMDbClient) : MediaService {
+class ProdMediaService(
+  private val restClient: TMDbClient,
+  private val storage: SavedStateStorage,
+) : MediaService {
 
   override suspend fun fetchMediaLists(
     request: MediaListRequest,
@@ -197,7 +202,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  override suspend fun submitRating(request: AddRatingRequestApi): Result<SubmitOnAccountResponse> =
+  override suspend fun submitRating(request: AddRatingRequestApi): Result<TMDBResponse> =
     runCatchingWithNetworkRetry(
       maxDelay = 1000L,
       times = 10,
@@ -207,44 +212,42 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
         "${request.id}/rating?" +
         "&session_id=${request.sessionId}"
 
-      restClient.post<AddRatingRequestBodyApi, SubmitOnAccountResponse>(
+      restClient.post<AddRatingRequestBodyApi, TMDBResponse>(
         url = url,
         body = AddRatingRequestBodyApi(request.rating),
       )
     }
 
-  override suspend fun deleteRating(
-    request: DeleteRatingRequestApi,
-  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(
-    maxDelay = 1000L,
-    times = 10,
-  ) {
-    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
-    val url = baseUrl +
-      "${request.id}/rating?" +
-      "&session_id=${request.sessionId}"
+  override suspend fun deleteRating(request: DeleteRatingRequestApi): Result<TMDBResponse> =
+    runCatchingWithNetworkRetry(
+      maxDelay = 1000L,
+      times = 10,
+    ) {
+      val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
+      val url = baseUrl +
+        "${request.id}/rating?" +
+        "&session_id=${request.sessionId}"
 
-    restClient.delete<SubmitOnAccountResponse>(url = url)
-  }
+      restClient.delete<TMDBResponse>(url = url)
+    }
 
-  override suspend fun addToWatchlist(
-    request: AddToWatchlistRequestApi,
-  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(
-    maxDelay = 1000L,
-    times = 10,
-  ) {
-    val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
-      "?session_id=${request.sessionId}"
+  override suspend fun addToWatchlist(request: AddToWatchlistRequestApi): Result<TMDBResponse> =
+    runCatchingWithNetworkRetry(
+      maxDelay = 1000L,
+      times = 10,
+    ) {
+      val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
+        "?session_id=${request.sessionId}"
 
-    restClient.post<AddToWatchlistRequestBodyApi, SubmitOnAccountResponse>(
-      url = url,
-      body = AddToWatchlistRequestBodyApi(
-        mediaType = request.mediaType,
-        mediaId = request.mediaId,
-        watchlist = request.addToWatchlist,
-      ),
-    )
-  }
+      restClient.post<AddToWatchlistRequestBodyApi, TMDBResponse>(
+        url = url,
+        body = AddToWatchlistRequestBodyApi(
+          mediaType = request.mediaType,
+          mediaId = request.mediaId,
+          watchlist = request.addToWatchlist,
+        ),
+      )
+    }
 
   override fun findById(externalId: String): Flow<FindByIdResponseApi> = flow {
     val url = buildFindByIdUrl(externalId = externalId)
@@ -264,6 +267,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
       url = buildSeasonDetailsUrl(
         showId = showId,
         seasonNumber = season,
+        sessionId = storage.tmdbSessionId,
       ),
     )
   }

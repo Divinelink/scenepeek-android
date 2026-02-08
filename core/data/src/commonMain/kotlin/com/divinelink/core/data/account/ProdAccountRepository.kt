@@ -2,6 +2,7 @@ package com.divinelink.core.data.account
 
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.account.service.AccountService
@@ -117,5 +118,44 @@ class ProdAccountRepository(
     }
 
     Result.success(data.copy(list = updatedTvShows))
+  }
+
+  override suspend fun deleteEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Result<Unit> = remote.clearEpisodeRating(
+    showId = showId,
+    season = season,
+    number = number,
+  ).map { response ->
+    if (response.success) {
+      dao.deleteEpisodeRating(
+        showId = showId,
+        season = season,
+        number = number,
+      )
+      Result.success(Unit)
+    } else {
+      Result.failure<Exception>(AppException.Unknown())
+    }
+  }
+
+  override suspend fun submitEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  ): Result<Unit> = remote.submitEpisodeRating(
+    showId = showId,
+    season = season,
+    number = number,
+    rating = rating,
+  ).map { response ->
+    if (response.success) {
+      Result.success(Unit)
+    } else {
+      Result.failure(AppException.Unknown())
+    }
   }
 }

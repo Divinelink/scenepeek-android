@@ -12,9 +12,10 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.ui.IconWrapper
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
+import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.feature.details.resources.Res
-import com.divinelink.feature.details.resources.details__add_rating
 import com.divinelink.feature.details.resources.feature_details__add_to_list
 import com.divinelink.feature.details.resources.feature_details__watchlist
 import com.divinelink.feature.details.resources.feature_details_manage_movie
@@ -38,8 +39,8 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
       when (button) {
         DetailActionItem.Rate -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.Rounded.StarRate),
-          label = UIText.ResourceText(Res.string.details__add_rating),
-          contentDescription = UIText.ResourceText(Res.string.details__add_rating),
+          label = UIText.ResourceText(UiString.core_ui_add_rating),
+          contentDescription = UIText.ResourceText(UiString.core_ui_add_rating),
           onClick = onAddRateClicked,
         )
         DetailActionItem.Watchlist -> FloatingActionButtonItem(

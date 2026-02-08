@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.media.ui.rate
+package com.divinelink.feature.add.to.account.rate
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -19,17 +18,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.details.SpannableRating
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.fromHtml
 import com.divinelink.core.ui.resources.core_ui_your_rating
-import com.divinelink.feature.details.resources.Res
-import com.divinelink.feature.details.resources.details__add_rating_description
-import com.divinelink.feature.details.resources.details__clear_my_rating
-import com.divinelink.feature.details.resources.details__submit_rating_button
+import com.divinelink.feature.add.to.account.resources.Res
+import com.divinelink.feature.add.to.account.resources.add_rating_description
+import com.divinelink.feature.add.to.account.resources.clear_my_rating
+import com.divinelink.feature.add.to.account.resources.submit_rating_button
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 
@@ -51,7 +50,7 @@ fun RateDialogContent(
       .padding(MaterialTheme.dimensions.keyline_16),
   ) {
     Text(
-      text = stringResource(Res.string.details__add_rating_description, mediaTitle).fromHtml(),
+      text = stringResource(Res.string.add_rating_description, mediaTitle).fromHtml(),
     )
 
     Spacer(
@@ -81,7 +80,7 @@ fun RateDialogContent(
           .align(Alignment.End),
         onClick = onClearRate,
       ) {
-        Text(text = stringResource(Res.string.details__clear_my_rating))
+        Text(text = stringResource(Res.string.clear_my_rating))
       }
     }
 
@@ -91,7 +90,7 @@ fun RateDialogContent(
       onClick = { onSubmitRate(rating.roundToInt()) },
     ) {
       Text(
-        text = stringResource(Res.string.details__submit_rating_button),
+        text = stringResource(Res.string.submit_rating_button),
       )
     }
   }
@@ -100,31 +99,27 @@ fun RateDialogContent(
 @Previews
 @Composable
 private fun BottomSheetRateContentPreview() {
-  AppTheme {
-    Surface {
-      RateDialogContent(
-        value = 5f,
-        mediaTitle = "The Godfather",
-        onSubmitRate = {},
-        onClearRate = {},
-        canClearRate = true,
-      )
-    }
+  PreviewLocalProvider {
+    RateDialogContent(
+      value = 5f,
+      mediaTitle = "The Godfather",
+      onSubmitRate = {},
+      onClearRate = {},
+      canClearRate = true,
+    )
   }
 }
 
 @Previews
 @Composable
 private fun BottomSheetRateContentWithoutClearPreview() {
-  AppTheme {
-    Surface {
-      RateDialogContent(
-        value = 0f,
-        mediaTitle = "The Godfather",
-        onSubmitRate = {},
-        onClearRate = {},
-        canClearRate = false,
-      )
-    }
+  PreviewLocalProvider {
+    RateDialogContent(
+      value = 0f,
+      mediaTitle = "The Godfather",
+      onSubmitRate = {},
+      onClearRate = {},
+      canClearRate = false,
+    )
   }
 }

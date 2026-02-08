@@ -1,8 +1,9 @@
-package com.divinelink.feature.details.media.ui.rate
+package com.divinelink.feature.add.to.account.rate
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -10,10 +11,9 @@ import androidx.compose.ui.Modifier
 @Composable
 fun RateModalBottomSheet(
   modifier: Modifier = Modifier,
-  sheetState: SheetState,
+  sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
   value: Int?,
   mediaTitle: String,
-  canClearRate: Boolean,
   onSubmitRate: (Int) -> Unit,
   onClearRate: () -> Unit,
   onDismissRequest: () -> Unit,
@@ -26,12 +26,15 @@ fun RateModalBottomSheet(
       modifier = modifier,
       value = value?.toFloat() ?: 0f,
       mediaTitle = mediaTitle,
-      onSubmitRate = onSubmitRate,
+      onSubmitRate = {
+        onSubmitRate(it)
+        onDismissRequest()
+      },
       onClearRate = {
         onClearRate()
         onDismissRequest()
       },
-      canClearRate = canClearRate,
+      canClearRate = value != null,
     )
   }
 }

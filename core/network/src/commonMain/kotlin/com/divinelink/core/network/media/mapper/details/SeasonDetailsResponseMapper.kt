@@ -7,6 +7,8 @@ import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.model.details.season.EpisodeResponse
 import com.divinelink.core.network.media.model.details.season.SeasonDetailsResponse
 import com.divinelink.core.network.media.model.details.toHourMinuteFormat
+import com.divinelink.core.network.media.model.states.EpisodeAccountStatesResponse
+import com.divinelink.core.network.media.model.states.RateResponseApi
 
 fun SeasonDetailsResponse.map(): SeasonDetails = SeasonDetails(
   id = id,
@@ -20,9 +22,23 @@ fun SeasonDetailsResponse.map(): SeasonDetails = SeasonDetails(
     .filter { it.runtime != null }
     .sumOf { it.runtime!! }
     .toHourMinuteFormat(),
-  episodes = episodes.map { it.map() },
+  episodes = episodes.map { episode ->
+    episode.map(accountRating = ratings.map(episode.id))
+  },
   guestStars = aggregateGuestStars(episodes),
 )
+
+private fun EpisodeAccountStatesResponse?.map(episodeId: Int): Int? {
+  val episodeRating = this
+    ?.results
+    ?.find { ratingResponse -> ratingResponse.id == episodeId }
+
+  return when (episodeRating?.rated) {
+    RateResponseApi.False -> null
+    is RateResponseApi.Value -> episodeRating.rated.value.toInt()
+    null -> null
+  }
+}
 
 private fun aggregateGuestStars(allEpisodes: List<EpisodeResponse>): List<Person> = allEpisodes
   .flatMap { it.guestStars }

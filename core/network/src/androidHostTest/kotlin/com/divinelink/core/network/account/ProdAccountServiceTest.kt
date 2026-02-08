@@ -1,12 +1,14 @@
 package com.divinelink.core.network.account
 
 import app.cash.turbine.test
+import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.network.account.service.ProdAccountService
 import com.divinelink.core.network.media.model.movie.MovieResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvItemApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import com.divinelink.core.testing.network.TestRestClient
+import com.divinelink.core.testing.storage.TestSavedStateStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -16,10 +18,12 @@ class ProdAccountServiceTest {
 
   private lateinit var service: ProdAccountService
   private lateinit var testRestClient: TestRestClient
+  private lateinit var storage: SavedStateStorage
 
   @BeforeTest
   fun setUp() {
     testRestClient = TestRestClient()
+    storage = TestSavedStateStorage()
   }
 
   @Test
@@ -32,7 +36,10 @@ class ProdAccountServiceTest {
       jsonFileName = "watchlist-movie.json",
     )
 
-    service = ProdAccountService(testRestClient.restClient)
+    service = ProdAccountService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     service.fetchMoviesWatchlist(
       page = 1,
@@ -87,7 +94,10 @@ class ProdAccountServiceTest {
       jsonFileName = "watchlist-tv.json",
     )
 
-    service = ProdAccountService(testRestClient.restClient)
+    service = ProdAccountService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     service.fetchTvShowsWatchlist(
       page = 1,
@@ -138,7 +148,10 @@ class ProdAccountServiceTest {
       jsonFileName = "rated-tv.json",
     )
 
-    service = ProdAccountService(testRestClient.restClient)
+    service = ProdAccountService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     service.fetchRatedTvShows(
       page = 1,
@@ -190,7 +203,10 @@ class ProdAccountServiceTest {
       jsonFileName = "rated-movies.json",
     )
 
-    service = ProdAccountService(testRestClient.restClient)
+    service = ProdAccountService(
+      restClient = testRestClient.restClient,
+      storage = storage,
+    )
 
     service.fetchRatedMovies(
       page = 1,

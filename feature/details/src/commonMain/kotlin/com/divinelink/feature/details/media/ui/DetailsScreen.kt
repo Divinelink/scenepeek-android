@@ -27,7 +27,7 @@ import com.divinelink.core.navigation.route.toPersonRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
-import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
+import com.divinelink.feature.add.to.account.rate.RateModalBottomSheet
 import com.divinelink.feature.details.media.ui.ratings.AllRatingsModalBottomSheet
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -92,7 +92,6 @@ fun DetailsScreen(
       },
       onClearRate = viewModel::onClearRating,
       onDismissRequest = { openRateBottomSheet = false },
-      canClearRate = viewState.userDetails.rating != null,
     )
   }
 

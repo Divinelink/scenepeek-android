@@ -83,7 +83,6 @@ sealed interface Navigation {
     val seasonTitle: String,
     val seasonNumber: Int,
     val episodeIndex: Int,
-//    val availableEpisodes: List<Int>,
   ) : Navigation
 
   @Serializable

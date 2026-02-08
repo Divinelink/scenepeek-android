@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.model.details.season
 
+import com.divinelink.core.network.media.model.states.EpisodeAccountStatesResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,4 +13,5 @@ data class SeasonDetailsResponse(
   @SerialName("poster_path") val posterPath: String?,
   @SerialName("vote_average") val voteAverage: Double,
   val episodes: List<EpisodeResponse>,
+  @SerialName("account_states") val ratings: EpisodeAccountStatesResponse?,
 )

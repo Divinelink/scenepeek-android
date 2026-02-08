@@ -1,5 +1,6 @@
 package com.divinelink.core.network.account.service
 
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import kotlinx.coroutines.flow.Flow
@@ -33,4 +34,17 @@ interface AccountService {
     accountId: String,
     sessionId: String,
   ): Flow<TvResponseApi>
+
+  suspend fun submitEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+    rating: Int,
+  ): Result<TMDBResponse>
+
+  suspend fun clearEpisodeRating(
+    showId: Int,
+    season: Int,
+    number: Int,
+  ): Result<TMDBResponse>
 }

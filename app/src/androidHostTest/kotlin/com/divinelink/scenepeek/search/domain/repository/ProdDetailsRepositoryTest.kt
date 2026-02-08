@@ -33,7 +33,7 @@ import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
+import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
@@ -470,7 +470,7 @@ class ProdDetailsRepositoryTest {
     )
 
     val response = Result.success(
-      SubmitOnAccountResponse(
+      TMDBResponse(
         statusMessage = "Success",
         statusCode = 1,
         success = true,
@@ -499,7 +499,7 @@ class ProdDetailsRepositoryTest {
     )
 
     val response = Result.success(
-      SubmitOnAccountResponse(
+      TMDBResponse(
         statusMessage = "Success",
         statusCode = 1,
         success = true,
@@ -528,7 +528,7 @@ class ProdDetailsRepositoryTest {
     )
 
     val response = Result.success(
-      SubmitOnAccountResponse(
+      TMDBResponse(
         statusMessage = "Success",
         statusCode = 1,
         success = true,
@@ -559,7 +559,7 @@ class ProdDetailsRepositoryTest {
     )
 
     val response = Result.success(
-      SubmitOnAccountResponse(
+      TMDBResponse(
         statusMessage = "Success",
         statusCode = 1,
         success = true,

@@ -1,5 +1,6 @@
 package com.divinelink.feature.season.ui.forms.episodes
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.season.SeasonData
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.components.details.AirDateWithRuntime
+import com.divinelink.core.ui.extension.getColorRating
 
 @Composable
 fun EpisodesFormContent(
@@ -96,6 +98,18 @@ fun EpisodeItem(
           airDate = episode.airDate,
           runtime = episode.runtime,
           style = MaterialTheme.typography.bodySmall,
+        )
+      }
+
+      Spacer(modifier = Modifier.weight(1f))
+
+      AnimatedContent(
+        targetState = episode.accountRating != null,
+      ) {
+        Text(
+          modifier = Modifier.padding(end = MaterialTheme.dimensions.keyline_8),
+          text = episode.accountRating?.toString() ?: "",
+          color = episode.accountRating?.toDouble().getColorRating(),
         )
       }
     }
