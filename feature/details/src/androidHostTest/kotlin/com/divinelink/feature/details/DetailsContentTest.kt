@@ -52,6 +52,7 @@ import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.core_ui_add_to_watchlist_content_desc
 import com.divinelink.core.ui.resources.core_ui_hide_total_episodes_item
 import com.divinelink.core.ui.resources.core_ui_mark_as_favorite_button_content_description
@@ -63,7 +64,6 @@ import com.divinelink.core.ui.resources.core_ui_tmdb_user_score
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.resources.Res
-import com.divinelink.feature.details.resources.details__add_rating
 import com.divinelink.feature.details.resources.feature_details_request
 import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
@@ -400,10 +400,8 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
-    val addYourRate = getString(Res.string.details__add_rating)
-
     onAllNodesWithText(
-      text = addYourRate,
+      text = getString(UiString.core_ui_add_rating),
       useUnmergedTree = true,
     )
       .onLast()

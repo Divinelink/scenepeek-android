@@ -96,6 +96,10 @@ class TestMediaDao {
     )
   }
 
+  fun verifyClearAllEpisodeRatings() {
+    verify(mock).clearAllEpisodeRatings()
+  }
+
   fun mockCheckIfFavorite(
     id: Int,
     mediaType: MediaType,

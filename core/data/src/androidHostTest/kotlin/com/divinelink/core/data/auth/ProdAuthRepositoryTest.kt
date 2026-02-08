@@ -6,21 +6,32 @@ import com.divinelink.core.datastore.auth.observedTmdbSession
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.session.TmdbSessionFactory
+import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
 import com.divinelink.core.testing.storage.TestSavedStateStorage
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class ProdAuthRepositoryTest {
 
   private lateinit var savedStateStorage: TestSavedStateStorage
   private lateinit var repository: ProdAuthRepository
+  private lateinit var mediaDao: TestMediaDao
+
+  @BeforeTest
+  fun setup() {
+    mediaDao = TestMediaDao()
+  }
 
   @Test
   fun `test isJellyseerrEnabled is true when accountIds are not empty`() = runTest {
     savedStateStorage = TestSavedStateStorage()
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     repository.isJellyseerrEnabled.test {
       awaitItem() shouldBe false
@@ -38,7 +49,10 @@ class ProdAuthRepositoryTest {
   @Test
   fun `test jellyseerrAccounts`() = runTest {
     savedStateStorage = TestSavedStateStorage()
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     repository.jellyseerrCredentials.test {
       awaitItem() shouldBe emptyMap()
@@ -60,7 +74,10 @@ class ProdAuthRepositoryTest {
   @Test
   fun `test updateJellyseerrCredentials sets jellyseerrCredentials`() = runTest {
     savedStateStorage = TestSavedStateStorage()
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     savedStateStorage.savedState.value.jellyseerrCredentials shouldBe emptyMap()
 
@@ -74,7 +91,10 @@ class ProdAuthRepositoryTest {
   @Test
   fun `test updateJellyseerrProfile sets jellyseerrProfile`() = runTest {
     savedStateStorage = TestSavedStateStorage()
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     savedStateStorage.savedState.value.jellyseerrCredentials shouldBe emptyMap()
 
@@ -102,7 +122,10 @@ class ProdAuthRepositoryTest {
       ),
       selectedJellyseerrAccountId = "account_1",
     )
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     savedStateStorage.savedState.value.jellyseerrCredentials shouldBe mapOf(
       "account_1" to JellyseerrAccountFactory.cup10(),
@@ -139,7 +162,10 @@ class ProdAuthRepositoryTest {
     savedStateStorage = TestSavedStateStorage(
       tmdbAccount = null,
     )
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     repository.tmdbAccount.test {
       awaitItem() shouldBe null
@@ -155,7 +181,10 @@ class ProdAuthRepositoryTest {
     savedStateStorage = TestSavedStateStorage(
       tmdbAccount = null,
     )
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     savedStateStorage.observedTmdbSession.test {
       awaitItem() shouldBe null
@@ -172,7 +201,10 @@ class ProdAuthRepositoryTest {
       tmdbAccount = AccountDetailsFactory.Pinkman(),
       tmdbSession = TmdbSessionFactory.full(),
     )
-    repository = ProdAuthRepository(savedStateStorage)
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
 
     savedStateStorage.savedState.test {
       awaitItem() shouldBe InitialSavedState.copy(
@@ -183,6 +215,26 @@ class ProdAuthRepositoryTest {
       repository.clearTMDBSession()
 
       awaitItem() shouldBe InitialSavedState
+    }
+  }
+
+  @Test
+  fun `test clear tmdb session also clears episode ratings`() = runTest {
+    savedStateStorage = TestSavedStateStorage(
+      tmdbAccount = AccountDetailsFactory.Pinkman(),
+      tmdbSession = TmdbSessionFactory.full(),
+    )
+    repository = ProdAuthRepository(
+      savedStateStorage = savedStateStorage,
+      mediaDao = mediaDao.mock,
+    )
+
+    savedStateStorage.savedState.test {
+      awaitItem()
+      repository.clearTMDBSession()
+      awaitItem()
+
+      mediaDao.verifyClearAllEpisodeRatings()
     }
   }
 }

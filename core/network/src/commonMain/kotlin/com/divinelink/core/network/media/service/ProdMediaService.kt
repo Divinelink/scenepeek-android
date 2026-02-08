@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.flow
 
 class ProdMediaService(
   private val restClient: TMDbClient,
-  private val encryptedStorage: SavedStateStorage,
+  private val storage: SavedStateStorage,
 ) : MediaService {
 
   override suspend fun fetchMediaLists(
@@ -267,7 +267,7 @@ class ProdMediaService(
       url = buildSeasonDetailsUrl(
         showId = showId,
         seasonNumber = season,
-        sessionId = encryptedStorage.tmdbSessionId,
+        sessionId = storage.tmdbSessionId,
       ),
     )
   }
