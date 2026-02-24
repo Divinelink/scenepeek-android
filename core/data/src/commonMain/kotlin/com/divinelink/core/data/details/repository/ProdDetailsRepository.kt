@@ -19,6 +19,7 @@ import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.CollectionDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.ExternalRatings
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
@@ -260,4 +261,9 @@ class ProdDetailsRepository(
   override suspend fun fetchCollectionDetails(id: Int): Result<CollectionDetails> = mediaRemote
     .fetchCollectionDetails(id)
     .map { it.map() }
+
+  override suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProviders> =
+    mediaRemote
+      .fetchWatchProviders(media)
+      .map { it.map() }
 }

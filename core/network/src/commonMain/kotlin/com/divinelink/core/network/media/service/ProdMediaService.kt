@@ -4,6 +4,7 @@ import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.tmdbSessionId
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.client.TMDbClient
@@ -12,6 +13,7 @@ import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.CollectionDetailsResponse
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
+import com.divinelink.core.network.media.model.details.providers.WatchProvidersResponse
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.season.SeasonDetailsResponse
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
@@ -38,6 +40,7 @@ import com.divinelink.core.network.media.util.buildFindByIdUrl
 import com.divinelink.core.network.media.util.buildGenreUrl
 import com.divinelink.core.network.media.util.buildSearchKeywordUrl
 import com.divinelink.core.network.media.util.buildSeasonDetailsUrl
+import com.divinelink.core.network.media.util.buildWatchProvidersUrl
 import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -284,5 +287,10 @@ class ProdMediaService(
   override suspend fun searchKeywords(request: SearchRequestApi): Result<SearchKeywordResponse> =
     runCatching {
       restClient.get<SearchKeywordResponse>(url = buildSearchKeywordUrl(request = request))
+    }
+
+  override suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProvidersResponse> =
+    runCatching {
+      restClient.get<WatchProvidersResponse>(url = buildWatchProvidersUrl(media = media))
     }
 }

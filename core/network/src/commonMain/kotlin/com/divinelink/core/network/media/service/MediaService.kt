@@ -4,6 +4,7 @@ package com.divinelink.core.network.media.service
 
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.media.model.GenresListResponse
@@ -11,6 +12,7 @@ import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.CollectionDetailsResponse
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
+import com.divinelink.core.network.media.model.details.providers.WatchProvidersResponse
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.season.SeasonDetailsResponse
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
@@ -91,4 +93,6 @@ interface MediaService {
   suspend fun fetchCollectionDetails(id: Int): Result<CollectionDetailsResponse>
 
   suspend fun searchKeywords(request: SearchRequestApi): Result<SearchKeywordResponse>
+
+  suspend fun fetchWatchProviders(mediaReference: MediaReference): Result<WatchProvidersResponse>
 }
