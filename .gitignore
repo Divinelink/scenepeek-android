@@ -192,3 +192,5 @@ kotlin-native/
 *.cinteropLibraries.json
 
 iosApp/Config/Secret.xcconfig
+
+android/sentry.properties

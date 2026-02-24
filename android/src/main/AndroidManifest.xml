@@ -65,12 +65,19 @@
     </activity>
 
     <provider
+        android:name="io.sentry.android.core.SentryInitProvider"
+        android:authorities="io.sentry.android.core"
+        tools:node="remove" />
+    <provider
         android:name="androidx.startup.InitializationProvider"
         android:authorities="${applicationId}.androidx-startup"
         android:exported="false"
         tools:node="merge">
       <meta-data
           android:name="com.divinelink.scenepeek.initializer.NapierInitializer"
+          android:value="androidx.startup" />
+      <meta-data
+          android:name="com.divinelink.scenepeek.initializer.SentryInitializer"
           android:value="androidx.startup" />
     </provider>
   </application>

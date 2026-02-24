@@ -3,7 +3,6 @@ plugins {
   alias(libs.plugins.compose)
 
   alias(libs.plugins.firebase.appdistribution)
-  alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -63,8 +62,6 @@ dependencies {
   implementation(projects.app)
   implementation(projects.core.android)
 
-  implementation(libs.firebase.crashlytics)
-
   implementation(libs.androidx.startup)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -78,6 +75,7 @@ dependencies {
   implementation(libs.koin.compose.viewmodel)
   implementation(libs.koin.start.up)
 
+  implementation(libs.sentry.android)
   implementation(libs.napier)
 
   // Testing Libs
