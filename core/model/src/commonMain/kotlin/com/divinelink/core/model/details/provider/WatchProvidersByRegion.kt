@@ -7,5 +7,7 @@ data class WatchProvidersByRegion(
   val link: String,
   val buy: List<StreamingProvider>,
   val rent: List<StreamingProvider>,
-  val flatrate: List<StreamingProvider>,
-)
+  val stream: List<StreamingProvider>,
+) {
+  val isEmpty = buy.isEmpty() && rent.isEmpty() && stream.isEmpty()
+}

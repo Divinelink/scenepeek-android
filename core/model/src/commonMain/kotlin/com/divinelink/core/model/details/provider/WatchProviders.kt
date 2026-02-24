@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WatchProviders(
   val id: Int,
-  val results: Map<Country, WatchProvidersByRegion>,
+  val results: Map<Country?, WatchProvidersByRegion>,
 )

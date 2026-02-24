@@ -16,6 +16,7 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.model.ImageQuality
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.debouncedClickable
 
@@ -31,7 +32,7 @@ fun SmallLogoImage(
 
   AsyncImage(
     modifier = modifier
-      .size(MaterialTheme.dimensions.keyline_64)
+      .size(MaterialTheme.dimensions.keyline_32)
       .clip(MaterialTheme.shape.medium)
       .conditional(
         condition = path != null,
@@ -40,7 +41,7 @@ fun SmallLogoImage(
     model = ImageRequest.Builder(context)
       .memoryCachePolicy(CachePolicy.ENABLED)
       .diskCachePolicy(CachePolicy.ENABLED)
-      .data(path)
+      .data(ImageQuality.QUALITY_342.url + path)
       .build(),
     onError = { isError = true },
     onSuccess = { isError = false },

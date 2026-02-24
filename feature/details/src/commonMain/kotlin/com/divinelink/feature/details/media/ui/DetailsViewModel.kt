@@ -11,6 +11,7 @@ import com.divinelink.core.commons.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
+import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.AddToWatchlistParameters
@@ -46,6 +47,7 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.jellyseerr.permission.canRequest
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -91,6 +93,7 @@ class DetailsViewModel(
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,
+  repository: DetailsRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -384,6 +387,16 @@ class DetailsViewModel(
           viewState.copy(spoilersObfuscated = obfuscatedSpoilers.data)
         }
       }
+    }
+
+    viewModelScope.launch {
+      val mediaId = viewState.value.mediaId
+      val mediaType = viewState.value.mediaType
+      repository
+        .fetchWatchProviders(media = MediaReference(mediaId, mediaType))
+        .onSuccess { result ->
+          _viewState.update { it.copy(watchProviders = result) }
+        }
     }
   }
 

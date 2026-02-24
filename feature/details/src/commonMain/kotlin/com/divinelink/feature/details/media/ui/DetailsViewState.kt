@@ -10,6 +10,7 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsForms
+import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
@@ -38,6 +39,7 @@ data class DetailsViewState(
   val actionButtons: List<DetailActionItem> = emptyList(),
   val spoilersObfuscated: Boolean = false,
   val ratingSource: RatingSource = RatingSource.TMDB,
+  val watchProviders: WatchProviders? = null,
   val selectedTabIndex: Int = 0,
   val jellyseerrMediaInfo: JellyseerrMediaInfo? = null,
   val permissions: List<ProfilePermission> = emptyList(),
