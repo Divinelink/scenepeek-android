@@ -75,7 +75,7 @@ class StringExtensionsTest {
   fun `test extractDetailsFromDeeplink with valid url`() {
     val url = "https://www.themoviedb.org/tv/693134-dune-part-two"
 
-    val result = url.extractDetailsFromDeepLink()
+    val result = url.extractDetailsFromTMDBDeepLink()
 
     val expected = Pair(693134, "tv")
     expected shouldBe result
@@ -85,9 +85,36 @@ class StringExtensionsTest {
   fun `test extractDetailsFromDeeplink with invalid url`() {
     val url = "https://www.themoviedb.org/tv/"
 
-    val result = url.extractDetailsFromDeepLink()
+    val result = url.extractDetailsFromTMDBDeepLink()
 
     result shouldBe null
+  }
+
+  @Test
+  fun `test extractDetailsFromScenePeekDeepLink with valid url`() {
+    val url = "https://scenepeek.app/tv/693134-dune-part-two"
+
+    val result = url.extractDetailsFromScenePeekDeepLink()
+
+    val expected = Pair(693134, "tv")
+    expected shouldBe result
+  }
+
+  @Test
+  fun `test extractDetailsFromScenePeekDeepLink with valid movie url`() {
+    val url = "https://scenepeek.app/movie/693134-dune-part-two"
+
+    val result = url.extractDetailsFromScenePeekDeepLink()
+
+    val expected = Pair(693134, "movie")
+    expected shouldBe result
+  }
+
+  @Test
+  fun `test extractDetailsFromScenePeekDeepLink with invalid`() {
+    val url = "https://scenepeek.app/movie/"
+
+    url.extractDetailsFromScenePeekDeepLink() shouldBe null
   }
 
   @Test

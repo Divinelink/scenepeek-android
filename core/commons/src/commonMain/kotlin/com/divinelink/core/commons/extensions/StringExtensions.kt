@@ -42,7 +42,7 @@ fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime? = 
   null
 }
 
-fun String?.extractDetailsFromDeepLink(): Pair<Int, String>? {
+fun String?.extractDetailsFromTMDBDeepLink(): Pair<Int, String>? {
   // Example URL format: "https://www.themoviedb.org/tv/693134-dune-part-two"
   return this?.let {
     val segments = it.split("/")
@@ -54,6 +54,25 @@ fun String?.extractDetailsFromDeepLink(): Pair<Int, String>? {
       }
     }
     return null
+  }
+}
+
+fun String?.extractDetailsFromScenePeekDeepLink(): Pair<Int, String>? {
+  return this?.let { url ->
+    // Example URL format: "https://www.scenepeek.app/movie/693134-dune-part-two"
+    val segments = url.split("/").filter { it.isNotBlank() }
+
+    if (segments.size >= 3) {
+      val idSegment = segments.last()
+      val mediaType = segments[segments.size - 2]
+
+      val id = idSegment.substringBefore("-").toIntOrNull()
+
+      if (id != null) {
+        return Pair(id, mediaType)
+      }
+    }
+    null
   }
 }
 

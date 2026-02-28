@@ -3,7 +3,8 @@ package com.divinelink.scenepeek
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
-import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
+import com.divinelink.core.commons.extensions.extractDetailsFromScenePeekDeepLink
+import com.divinelink.core.commons.extensions.extractDetailsFromTMDBDeepLink
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FindByIdUseCase
@@ -32,9 +33,7 @@ class MainViewModel(
   val onboardingManager: OnboardingManager,
   val preferencesRepository: PreferencesRepository,
   val navigationProviders: List<NavGraphExtension>,
-//  themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel() {
-//    ThemedActivityDelegate by themedActivityDelegate {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
   val uiState: StateFlow<MainUiState> = _uiState
@@ -58,7 +57,7 @@ class MainViewModel(
     val deeplinkUri = DeepLinkUri.parse(uri) ?: return
 
     when {
-      deeplinkUri.isForTMDB() -> handleSchemeTMDBRedirect(
+      deeplinkUri.isForTMDBAuth() -> handleSchemeTMDBRedirect(
         uri = deeplinkUri,
         onAuthSuccess = {
           viewModelScope.launch {
@@ -66,6 +65,7 @@ class MainViewModel(
           }
         },
       )
+      deeplinkUri.isDeeplinkFromScenePeek() -> handleScenePeekDeeplink(deeplinkUri)
       deeplinkUri.isForIMDB() -> handleSchemeIMDB(
         uri = deeplinkUri,
         onHandleDeeplink = { imdbId ->
@@ -89,13 +89,12 @@ class MainViewModel(
         },
       )
       else -> {
-        val (id, type) = deeplinkUri.raw.extractDetailsFromDeepLink() ?: return
+        val (id, type) = deeplinkUri.raw.extractDetailsFromTMDBDeepLink() ?: return
 
-        when (val mediaType = MediaType.from(type)) {
-          MediaType.TV, MediaType.MOVIE -> navigateToMediaDetails(id, mediaType)
-          MediaType.PERSON -> navigateToPersonDetails(id)
-          MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.None)
-        }
+        handleNavigation(
+          mediaId = id,
+          mediaType = MediaType.from(type),
+        )
       }
     }
   }
@@ -148,6 +147,28 @@ class MainViewModel(
       .invoke(true)
       .launchIn(viewModelScope)
   }
+
+  private fun handleScenePeekDeeplink(
+    uri: DeepLinkUri,
+  ) {
+    val (id, type) = uri.raw.extractDetailsFromScenePeekDeepLink() ?: return
+
+    handleNavigation(
+      mediaId = id,
+      mediaType = MediaType.from(type),
+    )
+  }
+
+  private fun handleNavigation(
+    mediaId: Int,
+    mediaType: MediaType,
+  ) {
+    when (mediaType) {
+      MediaType.TV, MediaType.MOVIE -> navigateToMediaDetails(mediaId, mediaType)
+      MediaType.PERSON -> navigateToPersonDetails(mediaId)
+      MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.None)
+    }
+  }
 }
 
 private fun handleSchemeIMDB(
@@ -186,9 +207,12 @@ private fun handleSchemeTMDBRedirect(
   }
 }
 
-private fun DeepLinkUri.isForTMDB(): Boolean = scheme == "scenepeek" &&
+private fun DeepLinkUri.isForTMDBAuth(): Boolean = scheme == "scenepeek" &&
   host == "auth" &&
   path == "/redirect"
+
+private fun DeepLinkUri.isDeeplinkFromScenePeek(): Boolean = scheme == "scenepeek" &&
+  (host == "movie" || host == "tv")
 
 private fun DeepLinkUri.isForIMDB(): Boolean = scheme == "https" &&
   (host == "imdb.com" || host == "www.imdb.com" || host == "m.imdb.com")
