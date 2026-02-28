@@ -63,10 +63,6 @@ class FilterRepository {
     FilterState()
   }
 
-  fun clearFilterState(uuid: String) {
-    filterStates.remove(uuid)
-  }
-
   fun selectedGenres(uuid: String): StateFlow<Map<MediaType, List<Genre>>> =
     getFilterState(uuid).selectedGenres.asStateFlow()
 
@@ -181,6 +177,5 @@ class FilterRepository {
       minimumVotes.value += mediaType to null
       year.value += mediaType to null
     }
-    clearFilterState(uuid)
   }
 }
