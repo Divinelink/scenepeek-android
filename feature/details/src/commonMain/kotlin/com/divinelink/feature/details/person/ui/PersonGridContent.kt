@@ -117,10 +117,9 @@ internal fun PersonGridContent(
             )
           }
         }
-
         items(
           items = credit.value,
-          key = { "${it.media.id} ${it.role.title}" },
+          key = { "Person credit: ${it.media.uniqueIdentifier}-${it.role.title}-${it.creditId}" },
         ) { item ->
           if (isGrid) {
             MediaItem(
