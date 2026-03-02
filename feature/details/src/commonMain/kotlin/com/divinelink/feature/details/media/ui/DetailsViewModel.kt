@@ -12,6 +12,7 @@ import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.AddToWatchlistParameters
@@ -75,6 +76,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -94,6 +96,7 @@ class DetailsViewModel(
   private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,
   repository: DetailsRepository,
+  preferencesRepository: PreferencesRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -390,13 +393,15 @@ class DetailsViewModel(
     }
 
     viewModelScope.launch {
-      val mediaId = viewState.value.mediaId
-      val mediaType = viewState.value.mediaType
-      repository
-        .fetchWatchProviders(media = MediaReference(mediaId, mediaType))
-        .onSuccess { result ->
-          _viewState.update { it.copy(watchProviders = result) }
-        }
+      if (preferencesRepository.detailPreferences.first().streamProvidersVisible) {
+        val mediaId = viewState.value.mediaId
+        val mediaType = viewState.value.mediaType
+        repository
+          .fetchWatchProviders(media = MediaReference(mediaId, mediaType))
+          .onSuccess { result ->
+            _viewState.update { it.copy(watchProviders = result) }
+          }
+      }
     }
   }
 

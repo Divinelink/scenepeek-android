@@ -10,8 +10,6 @@ import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 
 class ProdPreferencesRepository(
   private val storage: UiSettingsStorage,
@@ -36,12 +34,14 @@ class ProdPreferencesRepository(
     }
 
   override val detailPreferences: Flow<DetailPreferences>
-    get() = preferenceStorage
-      .region
-      .distinctUntilChanged()
-      .map {
+    get() =
+      combine(
+        preferenceStorage.region,
+        preferenceStorage.streamProviderVisibility,
+      ) { region, providerVisibility ->
         DetailPreferences(
-          region = it,
+          region = region,
+          streamProvidersVisible = providerVisibility,
         )
       }
 

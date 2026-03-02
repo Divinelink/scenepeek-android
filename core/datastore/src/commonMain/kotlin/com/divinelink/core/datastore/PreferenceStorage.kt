@@ -15,6 +15,7 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_STREAM_PROVIDER_VISIBILITY
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
@@ -56,6 +57,9 @@ interface PreferenceStorage {
 
   suspend fun setRegion(country: Country)
   val region: Flow<Country>
+
+  suspend fun setStreamProvidersVisibility(visible: Boolean)
+  val streamProviderVisibility: Flow<Boolean>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -80,6 +84,7 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_EPISODES_RATING_SOURCE = stringPreferencesKey("episodes.rating.source")
     val PREF_SEASONS_RATING_SOURCE = stringPreferencesKey("seasons.rating.source")
     val PREF_REGION_CODE = stringPreferencesKey("details.region.code")
+    val PREF_STREAM_PROVIDER_VISIBILITY = booleanPreferencesKey("details.stream.providers.visible")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -168,5 +173,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override suspend fun setRegion(country: Country) {
     dataStore.edit { it[PREF_REGION_CODE] = country.code }
+  }
+
+  override val streamProviderVisibility: Flow<Boolean> = dataStore.data.map {
+    it[PREF_STREAM_PROVIDER_VISIBILITY] ?: true
+  }.distinctUntilChanged()
+
+  override suspend fun setStreamProvidersVisibility(visible: Boolean) {
+    dataStore.edit { it[PREF_STREAM_PROVIDER_VISIBILITY] = visible }
   }
 }
