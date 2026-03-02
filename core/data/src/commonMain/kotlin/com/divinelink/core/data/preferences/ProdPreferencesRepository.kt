@@ -5,10 +5,13 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class ProdPreferencesRepository(
   private val storage: UiSettingsStorage,
@@ -31,6 +34,16 @@ class ProdPreferencesRepository(
         isPureBlack = isPureBlack,
       )
     }
+
+  override val detailPreferences: Flow<DetailPreferences>
+    get() = preferenceStorage
+      .region
+      .distinctUntilChanged()
+      .map {
+        DetailPreferences(
+          region = it,
+        )
+      }
 
   override suspend fun switchViewMode(section: ViewableSection) {
     storage.updateViewMode(

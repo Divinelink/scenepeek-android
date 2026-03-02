@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.provider.WatchProviders
-import com.divinelink.core.model.locale.Country
+import com.divinelink.core.ui.composition.rememberDetailPreferences
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.available_on
 import com.divinelink.feature.details.resources.buy
@@ -32,7 +32,8 @@ fun WatchProvidersContent(
   modifier: Modifier = Modifier,
   watchProviders: WatchProviders,
 ) {
-  val forRegion = remember { watchProviders.results[Country.UNITED_STATES] }
+  val detailPreferences = rememberDetailPreferences()
+  val forRegion = remember { watchProviders.results[detailPreferences.region] }
 
   Column(
     modifier = modifier,
@@ -73,8 +74,8 @@ fun WatchProvidersContent(
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       ) {
         items(
-          items = watchProviders.results[Country.UNITED_STATES]?.stream ?: emptyList(),
-          key = { it.uniqueId },
+          items = forRegion.stream,
+          key = { it.uniqueId + "stream" },
         ) {
           StreamingProviderItem(
             provider = it,
@@ -82,8 +83,8 @@ fun WatchProvidersContent(
           )
         }
         items(
-          items = watchProviders.results[Country.UNITED_STATES]?.buy ?: emptyList(),
-          key = { it.uniqueId },
+          items = forRegion.buy,
+          key = { it.uniqueId + "buy" },
         ) {
           StreamingProviderItem(
             provider = it,
@@ -91,8 +92,8 @@ fun WatchProvidersContent(
           )
         }
         items(
-          items = watchProviders.results[Country.UNITED_STATES]?.rent ?: emptyList(),
-          key = { it.uniqueId },
+          items = forRegion.rent,
+          key = { it.uniqueId + "rent" },
         ) {
           StreamingProviderItem(
             provider = it,

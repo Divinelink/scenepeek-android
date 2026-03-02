@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.divinelink.core.ui.composition.LocalDetailPreferences
 import com.divinelink.core.ui.composition.LocalUiPreferences
 
 class ScaffoldState internal constructor(
@@ -72,10 +73,12 @@ fun ProvideScenePeekAppState(
   content: @Composable () -> Unit,
 ) {
   val uiPreferences by appState.uiPreferences.collectAsStateWithLifecycle()
+  val detailPreferences by appState.detailPreferences.collectAsStateWithLifecycle()
 
   CompositionLocalProvider(
     LocalScenePeekAppState provides appState,
     LocalUiPreferences provides uiPreferences,
+    LocalDetailPreferences provides detailPreferences,
     content = content,
   )
 }

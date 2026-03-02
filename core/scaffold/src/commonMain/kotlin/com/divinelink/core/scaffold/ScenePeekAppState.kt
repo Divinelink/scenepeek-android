@@ -16,6 +16,7 @@ import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.divinelink.core.domain.onboarding.OnboardingManager
+import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.navigation.route.navigateToHome
 import com.divinelink.core.navigation.route.navigateToProfile
@@ -92,6 +93,12 @@ class ScenePeekAppState internal constructor(
     scope = scope,
     started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
     initialValue = ThemePreferences.initial,
+  )
+
+  val detailPreferences = preferencesRepository.detailPreferences.stateIn(
+    scope = scope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
+    initialValue = DetailPreferences.initial,
   )
 
   val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
