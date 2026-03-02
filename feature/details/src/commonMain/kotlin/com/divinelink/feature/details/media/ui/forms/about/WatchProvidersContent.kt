@@ -18,14 +18,24 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.locale.Country
+import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.available_on
+import com.divinelink.feature.details.resources.buy
+import com.divinelink.feature.details.resources.by_justWatch
+import com.divinelink.feature.details.resources.no_available_stream_providers
+import com.divinelink.feature.details.resources.rent
+import com.divinelink.feature.details.resources.stream
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun WatchProvidersContent(
+  modifier: Modifier = Modifier,
   watchProviders: WatchProviders,
 ) {
   val forRegion = remember { watchProviders.results[Country.UNITED_STATES] }
 
   Column(
+    modifier = modifier,
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
     Row(
@@ -35,7 +45,7 @@ fun WatchProvidersContent(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Text(
-        text = "Available on",
+        text = stringResource(Res.string.available_on),
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.tertiary,
       )
@@ -43,7 +53,7 @@ fun WatchProvidersContent(
       Spacer(modifier = Modifier.weight(1f))
 
       Text(
-        text = "by JustWatch",
+        text = stringResource(Res.string.by_justWatch),
         style = MaterialTheme.typography.bodyMedium,
       )
     }
@@ -53,7 +63,7 @@ fun WatchProvidersContent(
         modifier = Modifier
           .padding(top = MaterialTheme.dimensions.keyline_8)
           .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-        text = "No streaming providers available for this region.",
+        text = stringResource(Res.string.no_available_stream_providers),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.secondary,
       )
@@ -64,21 +74,30 @@ fun WatchProvidersContent(
       ) {
         items(
           items = watchProviders.results[Country.UNITED_STATES]?.stream ?: emptyList(),
-          key = { it.displayPriority },
+          key = { it.uniqueId },
         ) {
-          StreamingProviderItem(it, subtitle = "Stream")
+          StreamingProviderItem(
+            provider = it,
+            subtitle = stringResource(Res.string.stream),
+          )
         }
         items(
           items = watchProviders.results[Country.UNITED_STATES]?.buy ?: emptyList(),
-          key = { it.displayPriority },
+          key = { it.uniqueId },
         ) {
-          StreamingProviderItem(it, subtitle = "Buy")
+          StreamingProviderItem(
+            provider = it,
+            subtitle = stringResource(Res.string.buy),
+          )
         }
         items(
           items = watchProviders.results[Country.UNITED_STATES]?.rent ?: emptyList(),
-          key = { it.displayPriority },
+          key = { it.uniqueId },
         ) {
-          StreamingProviderItem(it, subtitle = "Rent")
+          StreamingProviderItem(
+            provider = it,
+            subtitle = stringResource(Res.string.rent),
+          )
         }
       }
     }

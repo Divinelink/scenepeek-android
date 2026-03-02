@@ -71,13 +71,18 @@ fun AboutFormContent(
     }
 
     watchProviders?.let {
-      item {
-        WatchProvidersContent(it)
+      item(key = "watch-providers") {
+        WatchProvidersContent(
+          modifier = Modifier.animateItem(),
+          watchProviders = it,
+        )
       }
 
-      item {
+      item(key = "watch-providers-divider") {
         HorizontalDivider(
-          modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+          modifier = Modifier
+            .animateItem()
+            .padding(horizontal = MaterialTheme.dimensions.keyline_16),
         )
       }
     }

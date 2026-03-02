@@ -8,4 +8,7 @@ data class StreamingProvider(
   val providerId: Int,
   val providerName: String,
   val displayPriority: Int,
-)
+) {
+  val uniqueId
+    get() = "$providerId $providerName $displayPriority"
+}
