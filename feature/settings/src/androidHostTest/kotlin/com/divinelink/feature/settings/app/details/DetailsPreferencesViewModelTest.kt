@@ -27,7 +27,7 @@ class DetailsPreferencesViewModelTest {
       .mockMovieRatingSource(RatingSource.TRAKT)
       .buildViewModel()
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TRAKT,
           tvSource = RatingSource.IMDB,
           episodesSource = RatingSource.TMDB,
@@ -42,7 +42,7 @@ class DetailsPreferencesViewModelTest {
       .buildViewModel()
       .onSetMovieMediaRatingSource(RatingSource.IMDB)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.IMDB,
           tvSource = RatingSource.TMDB,
           episodesSource = RatingSource.TMDB,
@@ -51,7 +51,7 @@ class DetailsPreferencesViewModelTest {
       )
       .onSetMovieMediaRatingSource(RatingSource.TRAKT)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TRAKT,
           tvSource = RatingSource.TMDB,
           episodesSource = RatingSource.TMDB,
@@ -66,7 +66,7 @@ class DetailsPreferencesViewModelTest {
       .buildViewModel()
       .onSetTvMediaRatingSource(RatingSource.IMDB)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TMDB,
           tvSource = RatingSource.IMDB,
           episodesSource = RatingSource.TMDB,
@@ -75,7 +75,7 @@ class DetailsPreferencesViewModelTest {
       )
       .onSetTvMediaRatingSource(RatingSource.TRAKT)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TMDB,
           tvSource = RatingSource.TRAKT,
           episodesSource = RatingSource.TMDB,
@@ -90,7 +90,7 @@ class DetailsPreferencesViewModelTest {
       .buildViewModel()
       .onSetEpisodesMediaRatingSource(RatingSource.IMDB)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TMDB,
           tvSource = RatingSource.TMDB,
           episodesSource = RatingSource.IMDB,
@@ -99,7 +99,7 @@ class DetailsPreferencesViewModelTest {
       )
       .onSetEpisodesMediaRatingSource(RatingSource.TRAKT)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TMDB,
           tvSource = RatingSource.TMDB,
           episodesSource = RatingSource.TRAKT,
@@ -114,7 +114,7 @@ class DetailsPreferencesViewModelTest {
       .buildViewModel()
       .onSetSeasonsMediaRatingSource(RatingSource.IMDB)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TMDB,
           tvSource = RatingSource.TMDB,
           episodesSource = RatingSource.TMDB,
@@ -123,7 +123,7 @@ class DetailsPreferencesViewModelTest {
       )
       .onSetSeasonsMediaRatingSource(RatingSource.TRAKT)
       .assertUiState(
-        DetailsPreferencesUiState(
+        DetailsPreferencesUiState.initial().copy(
           movieSource = RatingSource.TMDB,
           tvSource = RatingSource.TMDB,
           episodesSource = RatingSource.TMDB,

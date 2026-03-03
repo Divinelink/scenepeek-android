@@ -11,6 +11,8 @@ import com.divinelink.core.commons.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
+import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.AddToWatchlistParameters
@@ -25,6 +27,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
+import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
@@ -46,6 +49,7 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.jellyseerr.permission.canRequest
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -73,6 +77,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -91,6 +96,8 @@ class DetailsViewModel(
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,
+  repository: DetailsRepository,
+  preferencesRepository: PreferencesRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -101,10 +108,10 @@ class DetailsViewModel(
   )
 
   private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
-    value = DetailsViewState(
+    value = DetailsViewState.initial(
+      isLoading = true,
       mediaId = route.id,
       mediaType = MediaType.from(route.mediaType),
-      isLoading = true,
       tabs = when (MediaType.from(route.mediaType)) {
         MediaType.TV -> TvTab.entries
         MediaType.MOVIE -> MovieTab.entries
@@ -383,6 +390,23 @@ class DetailsViewModel(
         _viewState.update { viewState ->
           viewState.copy(spoilersObfuscated = obfuscatedSpoilers.data)
         }
+      }
+    }
+
+    viewModelScope.launch {
+      if (preferencesRepository.detailPreferences.first().streamingServicesVisible) {
+        val mediaId = viewState.value.mediaId
+        val mediaType = viewState.value.mediaType
+        repository
+          .fetchWatchProviders(media = MediaReference(mediaId, mediaType))
+          .onSuccess { result ->
+            _viewState.update { it.copy(watchProviders = LCEState.Content(result)) }
+          }
+          .onFailure {
+            _viewState.update { it.copy(watchProviders = null) }
+          }
+      } else {
+        _viewState.update { it.copy(watchProviders = null) }
       }
     }
   }

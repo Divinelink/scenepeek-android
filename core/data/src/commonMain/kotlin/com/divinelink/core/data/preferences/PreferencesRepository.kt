@@ -3,6 +3,8 @@ package com.divinelink.core.data.preferences
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
@@ -13,6 +15,8 @@ interface PreferencesRepository {
   val uiPreferences: Flow<UiPreferences>
 
   val themePreferences: Flow<ThemePreferences>
+
+  val detailPreferences: Flow<DetailPreferences>
 
   suspend fun switchViewMode(section: ViewableSection)
   suspend fun switchSortDirection(section: ViewableSection)
@@ -25,4 +29,7 @@ interface PreferencesRepository {
   suspend fun updateColorSystem(system: ColorSystem)
   suspend fun updateThemeColor(color: Long)
   suspend fun setPureBlack(enabled: Boolean)
+
+  suspend fun setRegion(country: Country)
+  suspend fun setStreamingServicesVisible(visible: Boolean)
 }

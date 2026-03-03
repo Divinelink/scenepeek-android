@@ -11,14 +11,17 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_CUSTOM_COLOR_ID
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REGION_CODE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_STREAMING_SERVICES_VISIBLE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.Country
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -51,6 +54,12 @@ interface PreferenceStorage {
 
   suspend fun setSeasonsRatingSource(ratingSource: RatingSource)
   val seasonsRatingSource: Flow<RatingSource>
+
+  suspend fun setRegion(country: Country)
+  val region: Flow<Country>
+
+  suspend fun setStreamingServicesVisible(visible: Boolean)
+  val streamingServicesVisible: Flow<Boolean>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -74,6 +83,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_TV_RATING_SOURCE = stringPreferencesKey("tv.rating.source")
     val PREF_EPISODES_RATING_SOURCE = stringPreferencesKey("episodes.rating.source")
     val PREF_SEASONS_RATING_SOURCE = stringPreferencesKey("seasons.rating.source")
+    val PREF_REGION_CODE = stringPreferencesKey("details.region.code")
+    val PREF_STREAMING_SERVICES_VISIBLE = booleanPreferencesKey("streaming.services.visible")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -153,4 +164,22 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   override val customColor: Flow<Long> = dataStore.data.map {
     it[PREF_CUSTOM_COLOR_ID] ?: seedLong
   }.distinctUntilChanged()
+
+  override val region: Flow<Country> = dataStore.data.map {
+    it[PREF_REGION_CODE]?.let { countryCode ->
+      Country.fromCode(countryCode)
+    } ?: Country.UNITED_STATES
+  }.distinctUntilChanged()
+
+  override suspend fun setRegion(country: Country) {
+    dataStore.edit { it[PREF_REGION_CODE] = country.code }
+  }
+
+  override val streamingServicesVisible: Flow<Boolean> = dataStore.data.map {
+    it[PREF_STREAMING_SERVICES_VISIBLE] ?: true
+  }.distinctUntilChanged()
+
+  override suspend fun setStreamingServicesVisible(visible: Boolean) {
+    dataStore.edit { it[PREF_STREAMING_SERVICES_VISIBLE] = visible }
+  }
 }

@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.details
 
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.details.rating.MediaRatingSource
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.ViewModelTestRobot
@@ -11,6 +12,7 @@ class DetailsPreferencesViewModelTestRobot : ViewModelTestRobot<DetailsPreferenc
   private lateinit var viewModel: DetailsPreferencesViewModel
 
   private val mediaRatingPreferenceUseCase = TestMediaRatingPreferenceUseCase()
+  private val preferencesRepository = TestPreferencesRepository()
 
   private var movieRatingSource = RatingSource.TMDB
   private var tvRatingSource = RatingSource.TMDB
@@ -19,6 +21,7 @@ class DetailsPreferencesViewModelTestRobot : ViewModelTestRobot<DetailsPreferenc
 
   override fun buildViewModel() = apply {
     viewModel = DetailsPreferencesViewModel(
+      preferencesRepository = preferencesRepository,
       mediaRatingPreferenceUseCase = mediaRatingPreferenceUseCase.mock(
         movieRatingSource = movieRatingSource,
         tvRatingSource = tvRatingSource,

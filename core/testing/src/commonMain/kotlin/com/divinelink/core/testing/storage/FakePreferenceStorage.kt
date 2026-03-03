@@ -4,6 +4,7 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.Country
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -17,6 +18,8 @@ class FakePreferenceStorage(
   seasonsRatingSource: RatingSource = RatingSource.TMDB,
   colorSystem: ColorSystem = ColorSystem.Dynamic,
   customColor: Long = seedLong,
+  region: Country = Country.UNITED_STATES,
+  streamingServicesVisible: Boolean = false,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -45,6 +48,12 @@ class FakePreferenceStorage(
 
   private val _seasonsRatingSource = MutableStateFlow(seasonsRatingSource)
   override val seasonsRatingSource: Flow<RatingSource> = _seasonsRatingSource
+
+  private val _region = MutableStateFlow(region)
+  override val region: Flow<Country> = _region
+
+  private val _streamingServicesVisible = MutableStateFlow(streamingServicesVisible)
+  override val streamingServicesVisible: Flow<Boolean> = _streamingServicesVisible
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -80,5 +89,13 @@ class FakePreferenceStorage(
 
   override suspend fun setThemeColor(color: Long) {
     _customColor.value = color
+  }
+
+  override suspend fun setRegion(country: Country) {
+    _region.value = country
+  }
+
+  override suspend fun setStreamingServicesVisible(visible: Boolean) {
+    _streamingServicesVisible.value = visible
   }
 }

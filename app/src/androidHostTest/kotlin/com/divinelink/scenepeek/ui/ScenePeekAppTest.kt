@@ -48,6 +48,7 @@ import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
@@ -138,6 +139,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var deleteRequestUseCase: TestDeleteRequestUseCase
   private lateinit var deleteMediaUseCase: TestDeleteMediaUseCase
   private lateinit var authRepository: TestAuthRepository
+  private lateinit var detailsRepository: TestDetailsRepository
 
   // Onboarding use cases
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
@@ -166,6 +168,7 @@ class ScenePeekAppTest : ComposeTest() {
     deleteRequestUseCase = TestDeleteRequestUseCase()
     deleteMediaUseCase = TestDeleteMediaUseCase()
     authRepository = TestAuthRepository()
+    detailsRepository = TestDetailsRepository()
 
     startKoin {
       modules(
@@ -671,6 +674,8 @@ class ScenePeekAppTest : ComposeTest() {
         deleteRequestUseCase = deleteRequestUseCase.mock,
         deleteMediaUseCase = deleteMediaUseCase.mock,
         authRepository = authRepository.mock,
+        repository = detailsRepository.mock,
+        preferencesRepository = preferencesRepository,
         savedStateHandle = SavedStateHandle(
           mapOf(
             "id" to 1,

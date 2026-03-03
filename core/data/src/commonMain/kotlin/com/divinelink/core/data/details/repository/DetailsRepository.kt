@@ -5,6 +5,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.CollectionDetails
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.ExternalRatings
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
@@ -63,4 +64,6 @@ interface DetailsRepository {
   fun findById(id: String): Flow<Result<MediaItem>>
 
   suspend fun fetchCollectionDetails(id: Int): Result<CollectionDetails>
+
+  suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProviders>
 }

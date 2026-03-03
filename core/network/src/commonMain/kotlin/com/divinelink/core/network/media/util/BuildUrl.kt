@@ -2,6 +2,7 @@ package com.divinelink.core.network.media.util
 
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Routes
@@ -171,4 +172,10 @@ fun buildSearchKeywordUrl(request: SearchRequestApi): String = buildUrl {
     append("query", request.query)
     append("page", request.page.toString())
   }
+}.toString()
+
+fun buildWatchProvidersUrl(media: MediaReference): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/${media.mediaType.value}/${media.mediaId}/watch/providers"
 }.toString()

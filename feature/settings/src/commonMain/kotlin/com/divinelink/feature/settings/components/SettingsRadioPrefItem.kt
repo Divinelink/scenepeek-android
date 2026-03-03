@@ -23,13 +23,13 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 
 @Composable
-fun SettingsRadioPrefItem(
+fun <T> SettingsRadioPrefItem(
   icon: Painter? = null,
   title: String,
-  selected: String,
-  selectedIndex: Int,
-  listItems: List<String>,
-  onSelected: (Int) -> Unit,
+  listItems: List<T>,
+  selectedOption: T,
+  displayText: @Composable (T) -> String,
+  onSelected: (T) -> Unit,
 ) {
   var showDialog by remember { mutableStateOf(false) }
 
@@ -37,11 +37,12 @@ fun SettingsRadioPrefItem(
     AlertDialogSelectOption(
       title = title,
       listItems = listItems,
-      selectedOption = selectedIndex,
+      selectedOption = selectedOption,
       onSelected = {
         showDialog = false
         onSelected(it)
       },
+      displayText = displayText,
       onDismissRequest = { showDialog = false },
     )
   }
@@ -71,7 +72,7 @@ fun SettingsRadioPrefItem(
         style = MaterialTheme.typography.bodyLarge,
       )
       Text(
-        text = selected,
+        text = displayText(selectedOption),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.secondary,
       )
@@ -86,9 +87,9 @@ private fun SettingsScreenPreview() {
     Surface {
       SettingsRadioPrefItem(
         title = "Theme",
-        selected = "System default",
-        selectedIndex = 0,
+        selectedOption = "System default",
         listItems = listOf("System default", "Light", "Dark"),
+        displayText = { it },
         onSelected = {},
       )
     }

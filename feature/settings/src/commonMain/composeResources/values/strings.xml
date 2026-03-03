@@ -79,7 +79,10 @@
   <string name="feature_settings_about__source_code">View source code</string>
   <string name="feature_settings_about__developed_by">Developed by </string>
 
-  <!-- DetailPreferencesSettingsScreen -->
+  <string name="feature_settings_region_title">Select your region to see streaming services available in your area.</string>
+  <string name="feature_settings_region">Region</string>
+  <string name="feature_settings_streaming_services">Streaming services</string>
+  <string name="feature_settings_streaming_services_subtitle">Display streaming services information.</string>
   <string name="feature_settings_ratings">Ratings</string>
   <string name="feature_settings_ratings_summary">Choose the rating system you want to use.\nIt will be displayed in the details screen of movies and TV shows.</string>
   <string name="feature_settings_movie_rating_preference">Movies</string>

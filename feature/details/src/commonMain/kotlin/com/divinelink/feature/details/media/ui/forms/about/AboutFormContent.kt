@@ -16,8 +16,10 @@ import com.divinelink.core.commons.util.encodeToString
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.MediaDetailsInformation
+import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.toPersonRoute
 import com.divinelink.core.ui.TestTags
@@ -34,6 +36,7 @@ import kotlin.uuid.Uuid
 fun AboutFormContent(
   modifier: Modifier = Modifier,
   aboutData: DetailsData.About,
+  watchProviders: LCEState<WatchProviders>?,
   onNavigate: (Navigation) -> Unit,
 ) {
   ScenePeekLazyColumn(
@@ -64,6 +67,15 @@ fun AboutFormContent(
       item {
         HorizontalDivider(
           modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+        )
+      }
+    }
+
+    watchProviders?.let {
+      item {
+        WatchProvidersContent(
+          modifier = Modifier.animateItem(),
+          watchProviders = watchProviders,
         )
       }
     }

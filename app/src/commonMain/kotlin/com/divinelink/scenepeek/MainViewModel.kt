@@ -148,9 +148,7 @@ class MainViewModel(
       .launchIn(viewModelScope)
   }
 
-  private fun handleScenePeekDeeplink(
-    uri: DeepLinkUri,
-  ) {
+  private fun handleScenePeekDeeplink(uri: DeepLinkUri) {
     val (id, type) = uri.raw.extractDetailsFromScenePeekDeepLink() ?: return
 
     handleNavigation(

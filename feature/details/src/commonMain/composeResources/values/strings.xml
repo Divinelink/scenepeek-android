@@ -95,4 +95,11 @@
   </plurals>
 
   <string name="login">Login</string>
+
+  <string name="available_on">Available on</string>
+  <string name="by_justWatch">by JustWatch</string>
+  <string name="no_available_stream_providers">No streaming providers available.</string>
+  <string name="stream">Stream</string>
+  <string name="buy">Buy</string>
+  <string name="rent">Rent</string>
 </resources>

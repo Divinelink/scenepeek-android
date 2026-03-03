@@ -5,6 +5,7 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.ExternalRatings
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
@@ -137,5 +138,11 @@ class TestDetailsRepository {
 
   fun mockFindById(response: Result<MediaItem>) {
     whenever(mock.findById(any())).thenReturn(flowOf(response))
+  }
+
+  suspend fun mockFetchWatchProviders(
+    response: Result<WatchProviders>,
+  ) {
+    whenever(mock.fetchWatchProviders(any())).thenReturn(response)
   }
 }

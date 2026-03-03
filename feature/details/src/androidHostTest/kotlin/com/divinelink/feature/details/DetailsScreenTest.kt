@@ -40,6 +40,7 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.navigation.route.Navigation
@@ -48,6 +49,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -111,8 +113,13 @@ class DetailsScreenTest : ComposeTest() {
   private val deleteRequestUseCase = TestDeleteRequestUseCase()
   private val deleteMediaUseCase = TestDeleteMediaUseCase()
   private val authRepository = TestAuthRepository()
+  private val detailsRepository = TestDetailsRepository()
 
-  private val preferencesRepository = TestPreferencesRepository()
+  private val preferencesRepository = TestPreferencesRepository(
+    detailPreferences = DetailPreferences.initial.copy(
+      streamingServicesVisible = false,
+    ),
+  )
   private val switchViewButtonViewModel = SwitchViewButtonViewModel(
     repository = preferencesRepository,
   )
@@ -165,6 +172,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -231,6 +240,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -297,6 +308,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -378,6 +391,8 @@ class DetailsScreenTest : ComposeTest() {
           deleteRequestUseCase = deleteRequestUseCase.mock,
           deleteMediaUseCase = deleteMediaUseCase.mock,
           authRepository = authRepository.mock,
+          repository = detailsRepository.mock,
+          preferencesRepository = preferencesRepository,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -454,6 +469,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -513,6 +530,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -608,6 +627,8 @@ class DetailsScreenTest : ComposeTest() {
           deleteRequestUseCase = deleteRequestUseCase.mock,
           deleteMediaUseCase = deleteMediaUseCase.mock,
           authRepository = authRepository.mock,
+          repository = detailsRepository.mock,
+          preferencesRepository = preferencesRepository,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -677,6 +698,8 @@ class DetailsScreenTest : ComposeTest() {
           deleteRequestUseCase = deleteRequestUseCase.mock,
           deleteMediaUseCase = deleteMediaUseCase.mock,
           authRepository = authRepository.mock,
+          repository = detailsRepository.mock,
+          preferencesRepository = preferencesRepository,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -733,6 +756,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -793,6 +818,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -907,6 +934,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -1036,6 +1065,8 @@ class DetailsScreenTest : ComposeTest() {
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
