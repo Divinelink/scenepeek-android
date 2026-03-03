@@ -72,7 +72,6 @@ import com.divinelink.feature.details.resources.feature_details_jellyseerr_succe
 import com.divinelink.feature.details.resources.login
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -109,10 +108,10 @@ class DetailsViewModel(
   )
 
   private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
-    value = DetailsViewState(
+    value = DetailsViewState.initial(
+      isLoading = true,
       mediaId = route.id,
       mediaType = MediaType.from(route.mediaType),
-      isLoading = true,
       tabs = when (MediaType.from(route.mediaType)) {
         MediaType.TV -> TvTab.entries
         MediaType.MOVIE -> MovieTab.entries
@@ -402,6 +401,9 @@ class DetailsViewModel(
           .fetchWatchProviders(media = MediaReference(mediaId, mediaType))
           .onSuccess { result ->
             _viewState.update { it.copy(watchProviders = LCEState.Content(result)) }
+          }
+          .onFailure {
+            _viewState.update { it.copy(watchProviders = null) }
           }
       } else {
         _viewState.update { it.copy(watchProviders = null) }

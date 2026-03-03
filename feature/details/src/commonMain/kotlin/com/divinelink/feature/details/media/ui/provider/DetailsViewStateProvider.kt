@@ -6,7 +6,9 @@ import com.divinelink.core.fixtures.details.media.DetailsDataFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toTvWzd
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.provider.WatchProvidersFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
+import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.TvStatus
@@ -21,63 +23,78 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
   override val values: Sequence<DetailsViewState>
     get() {
       return sequenceOf(
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
-          isLoading = true,
+          tabs = emptyList(),
+          forms = emptyMap(),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.full(),
+        ).copy(
           userDetails = AccountMediaDetails(
             id = 8679,
             favorite = false,
             rating = 9.0f,
             watchlist = false,
           ),
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
-          forms = DetailsFormFactory.Movie.full(),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
+          forms = DetailsFormFactory.Tv.full(),
+          tabs = TvTab.entries,
+        ).copy(
           mediaDetails = MediaDetailsFactory.TheOffice(),
-          forms = DetailsFormFactory.Tv.full(),
-          tabs = TvTab.entries,
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.full(),
+        ).copy(
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             numberOfSeasons = 0,
           ),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
+          forms = emptyMap(),
+        ).copy(
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             information = MediaDetailsFactory.TheOffice().information.copy(
               status = TvStatus.UNKNOWN,
             ),
           ),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          mediaDetails = MediaDetailsFactory.FightClub(),
           forms = DetailsFormFactory.Movie.full(),
+        ).copy(
+          mediaDetails = MediaDetailsFactory.FightClub(),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          mediaDetails = MediaDetailsFactory.FightClub(),
           forms = DetailsFormFactory.Movie.full(),
+        ).copy(
+          mediaDetails = MediaDetailsFactory.FightClub(),
           userDetails = AccountMediaDetails(
             id = 0,
             favorite = false,
@@ -85,55 +102,89 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             watchlist = true,
           ),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
+          forms = emptyMap(),
+        ).copy(
           error = UIText.StringText("Something went wrong."),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          mediaDetails = MediaDetailsFactory.FightClub(),
           forms = DetailsFormFactory.Movie.full(),
+        ).copy(
+          mediaDetails = MediaDetailsFactory.FightClub(),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.pending(),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          mediaDetails = MediaDetailsFactory.TheOffice(),
           forms = DetailsFormFactory.Tv.full(),
+        ).copy(
+          mediaDetails = MediaDetailsFactory.TheOffice(),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          selectedTabIndex = 1,
           forms = DetailsFormFactory.Tv.full().toTvWzd {
             withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
           },
+        ).copy(
+          selectedTabIndex = 1,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          selectedTabIndex = 1,
           forms = DetailsFormFactory.Tv.error(),
+        ).copy(
+          selectedTabIndex = 1,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
         ),
-        DetailsViewState(
+        DetailsViewState.initial(
+          isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          selectedTabIndex = MovieTab.Recommendations.order,
           forms = DetailsFormFactory.Movie.error(),
+        ).copy(
           mediaDetails = MediaDetailsFactory.FightClub(),
+          selectedTabIndex = MovieTab.Recommendations.order,
+        ),
+        DetailsViewState.initial(
+          isLoading = false,
+          mediaId = MediaDetailsFactory.FightClub().id,
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.error(),
+        ).copy(
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          selectedTabIndex = MovieTab.Recommendations.order,
+        ),
+        DetailsViewState.initial(
+          isLoading = false,
+          mediaId = MediaDetailsFactory.FightClub().id,
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.error(),
+        ).copy(
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          selectedTabIndex = MovieTab.Recommendations.order,
+          watchProviders = LCEState.Content(data = WatchProvidersFactory.all),
         ),
       )
     }

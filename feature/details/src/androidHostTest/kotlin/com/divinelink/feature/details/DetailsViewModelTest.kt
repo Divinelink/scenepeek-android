@@ -11,6 +11,7 @@ import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.provider.WatchProvidersFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.fixtures.model.details.video.VideoFactory
@@ -18,19 +19,27 @@ import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFa
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.media.MediaDetailsResult
+import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
@@ -96,7 +105,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -126,7 +135,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -156,7 +165,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -186,7 +195,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -226,7 +235,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -271,7 +280,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -313,7 +322,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           mediaId = mediaId,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -356,7 +365,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -399,7 +408,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -442,7 +451,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -480,7 +489,7 @@ class DetailsViewModelTest {
       )
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -497,7 +506,7 @@ class DetailsViewModelTest {
       )
       .onMarkAsFavorite()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -536,7 +545,7 @@ class DetailsViewModelTest {
         )
         .buildViewModel()
         .assertViewState(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -551,7 +560,7 @@ class DetailsViewModelTest {
         )
         .onMarkAsFavorite()
         .assertViewState(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -595,7 +604,7 @@ class DetailsViewModelTest {
       )
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -632,7 +641,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -661,7 +670,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -693,7 +702,7 @@ class DetailsViewModelTest {
       .expectUiStates(
         action = { onSubmitRate(5) },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -708,7 +717,7 @@ class DetailsViewModelTest {
               withRating(null)
             },
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -727,7 +736,7 @@ class DetailsViewModelTest {
               AccountDataSection.Rating to true,
             ),
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -774,7 +783,7 @@ class DetailsViewModelTest {
           onSubmitRate(5)
         },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -791,7 +800,7 @@ class DetailsViewModelTest {
               AccountDataSection.Rating to false,
             ),
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -808,7 +817,7 @@ class DetailsViewModelTest {
               AccountDataSection.Rating to true,
             ),
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -848,7 +857,7 @@ class DetailsViewModelTest {
       }
       .onSubmitRate(5)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -868,7 +877,7 @@ class DetailsViewModelTest {
       )
       .onNavigateToLogin(SnackbarResult.ActionPerformed)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -900,7 +909,7 @@ class DetailsViewModelTest {
       .buildViewModel()
       .onNavigateToLogin(SnackbarResult.ActionPerformed)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -915,7 +924,7 @@ class DetailsViewModelTest {
       )
       .consumeNavigation()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -946,7 +955,7 @@ class DetailsViewModelTest {
       .buildViewModel()
       .onSubmitRate(5)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -970,7 +979,7 @@ class DetailsViewModelTest {
       )
       .consumeSnackbar()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1006,7 +1015,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1021,7 +1030,7 @@ class DetailsViewModelTest {
       )
       .onDeleteRating()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1067,7 +1076,7 @@ class DetailsViewModelTest {
       .expectUiStates(
         action = { onAddToWatchlist() },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1080,7 +1089,7 @@ class DetailsViewModelTest {
             userDetails = AccountMediaDetailsFactory.NotRated(),
             snackbarMessage = null,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1097,7 +1106,7 @@ class DetailsViewModelTest {
               AccountDataSection.Rating to false,
             ),
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1134,7 +1143,7 @@ class DetailsViewModelTest {
       .buildViewModel()
       .onAddToWatchlist()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1168,7 +1177,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1184,7 +1193,7 @@ class DetailsViewModelTest {
       .expectUiStates(
         action = { onAddToWatchlist() },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1197,7 +1206,7 @@ class DetailsViewModelTest {
             userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
             snackbarMessage = null,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1214,7 +1223,7 @@ class DetailsViewModelTest {
               AccountDataSection.Rating to false,
             ),
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1252,7 +1261,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1267,7 +1276,7 @@ class DetailsViewModelTest {
       )
       .onAddToWatchlist()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1307,7 +1316,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1336,7 +1345,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1369,7 +1378,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1409,7 +1418,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1462,7 +1471,7 @@ class DetailsViewModelTest {
           }
         },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading(),
@@ -1471,7 +1480,7 @@ class DetailsViewModelTest {
             isLoading = true,
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1485,7 +1494,7 @@ class DetailsViewModelTest {
             mediaDetails = tvDetails,
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1534,7 +1543,7 @@ class DetailsViewModelTest {
         ).mediaInfo,
       )
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1579,7 +1588,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1607,7 +1616,7 @@ class DetailsViewModelTest {
       )
       .onUpdateMediaInfo(JellyseerrMediaRequestResponseFactory.tvAllRequested().mediaInfo)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1642,7 +1651,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1658,7 +1667,7 @@ class DetailsViewModelTest {
       )
       .onObfuscateSpoilers()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1685,7 +1694,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1717,7 +1726,7 @@ class DetailsViewModelTest {
           }
         },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1745,7 +1754,7 @@ class DetailsViewModelTest {
               ),
             ),
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1773,7 +1782,7 @@ class DetailsViewModelTest {
             ),
             spoilersObfuscated = false,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1815,7 +1824,7 @@ class DetailsViewModelTest {
       .buildViewModel()
       .onMediaSourceClick(RatingSource.TMDB)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -1859,7 +1868,7 @@ class DetailsViewModelTest {
       .buildViewModel()
       .onMediaSourceClick(RatingSource.TMDB)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1903,7 +1912,7 @@ class DetailsViewModelTest {
       .buildViewModel()
       .onMediaSourceClick(RatingSource.TMDB)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1947,7 +1956,7 @@ class DetailsViewModelTest {
       .withNavArguments(movieDetails.id, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1980,7 +1989,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -1997,7 +2006,7 @@ class DetailsViewModelTest {
       )
       .onTabSelected(1)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2036,7 +2045,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2066,7 +2075,7 @@ class DetailsViewModelTest {
       )
       .onDeleteRequest(3)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2118,7 +2127,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2149,7 +2158,7 @@ class DetailsViewModelTest {
           onDeleteRequest(3)
         },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2169,7 +2178,7 @@ class DetailsViewModelTest {
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2189,7 +2198,7 @@ class DetailsViewModelTest {
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2240,7 +2249,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2270,7 +2279,7 @@ class DetailsViewModelTest {
       )
       .onDeleteRequest(3)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2322,7 +2331,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2350,7 +2359,7 @@ class DetailsViewModelTest {
       )
       .onDeleteMedia(true)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2403,7 +2412,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2431,7 +2440,7 @@ class DetailsViewModelTest {
       )
       .onDeleteMedia(false)
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2484,7 +2493,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2513,7 +2522,7 @@ class DetailsViewModelTest {
       .expectUiStates(
         action = { onDeleteMedia(false) },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2536,7 +2545,7 @@ class DetailsViewModelTest {
             snackbarMessage = null,
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2559,7 +2568,7 @@ class DetailsViewModelTest {
             snackbarMessage = null,
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2613,7 +2622,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2638,7 +2647,7 @@ class DetailsViewModelTest {
       .expectUiStates(
         action = { onDeleteMedia(true) },
         uiStates = listOf(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2658,7 +2667,7 @@ class DetailsViewModelTest {
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2678,7 +2687,7 @@ class DetailsViewModelTest {
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
             permissions = ProfilePermission.entries,
           ),
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
             forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2731,7 +2740,7 @@ class DetailsViewModelTest {
         .withNavArguments(mediaId, MediaType.TV)
         .buildViewModel()
         .assertViewState(
-          DetailsViewState(
+          createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2778,7 +2787,7 @@ class DetailsViewModelTest {
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
@@ -2824,7 +2833,7 @@ class DetailsViewModelTest {
         JellyseerrMediaRequestResponseFactory.movieWithRequest().mediaInfo,
       )
       .assertViewState(
-        DetailsViewState(
+        createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.loading().toMovieWzd {
@@ -2846,4 +2855,123 @@ class DetailsViewModelTest {
         ),
       )
   }
+
+  @Test
+  fun `test fetch watch providers with visible streaming providers preference`() = runTest {
+    testRobot
+      .mockFetchWatchProvidersResponse(
+        streamingServicesVisible = true,
+        response = Result.success(WatchProvidersFactory.all),
+      )
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        createUiState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+          watchProviders = LCEState.Content(
+            data = WatchProvidersFactory.all,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test fetch watch providers with failure`() = runTest {
+    testRobot
+      .mockFetchWatchProvidersResponse(
+        streamingServicesVisible = true,
+        response = Result.failure(AppException.Unknown("Failed to get providers")),
+      )
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        createUiState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+          watchProviders = null,
+        ),
+      )
+  }
+
+  private fun createUiState(
+    mediaId: Int,
+    mediaType: MediaType,
+    isLoading: Boolean = false,
+    mediaDetails: MediaDetails? = null,
+    userDetails: AccountMediaDetails = AccountMediaDetails.initial,
+    error: UIText? = null,
+    trailer: Video? = null,
+    tabs: List<Tab> = emptyList(),
+    forms: DetailsForms = emptyMap(),
+    selectedTabIndex: Int = 0,
+    ratingSource: RatingSource = RatingSource.TMDB,
+    menuOptions: List<DetailsMenuOptions> = emptyList(),
+    spoilersObfuscated: Boolean = false,
+    actionButtons: List<DetailActionItem> = emptyList(),
+    jellyseerrMediaInfo: JellyseerrMediaInfo? = null,
+    permissions: List<ProfilePermission> = emptyList(),
+    snackbarMessage: SnackbarMessage? = null,
+    accountDataState: Map<AccountDataSection, Boolean> = AccountDataSection
+      .entries
+      .associateWith { false },
+    navigateToLogin: Boolean? = null,
+    watchProviders: LCEState<WatchProviders>? = null,
+  ) = DetailsViewState.initial(
+    isLoading = isLoading,
+    mediaId = mediaId,
+    mediaType = mediaType,
+    tabs = tabs,
+    forms = forms,
+  ).copy(
+    error = error,
+    trailer = trailer,
+    mediaDetails = mediaDetails,
+    userDetails = userDetails,
+    selectedTabIndex = selectedTabIndex,
+    ratingSource = ratingSource,
+    menuOptions = menuOptions,
+    spoilersObfuscated = spoilersObfuscated,
+    actionButtons = actionButtons,
+    jellyseerrMediaInfo = jellyseerrMediaInfo,
+    permissions = permissions,
+    snackbarMessage = snackbarMessage,
+    accountDataState = accountDataState,
+    navigateToLogin = navigateToLogin,
+    watchProviders = watchProviders,
+  )
 }

@@ -24,29 +24,58 @@ import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 @Immutable
 data class DetailsViewState(
-  val isLoading: Boolean = false,
+  val isLoading: Boolean,
   val mediaType: MediaType,
   val mediaId: Int,
-  val mediaDetails: MediaDetails? = null,
-  val userDetails: AccountMediaDetails = AccountMediaDetails.initial,
-  val accountDataState: Map<AccountDataSection, Boolean> = AccountDataSection
-    .entries
-    .associateWith { false },
-  val trailer: Video? = null,
-  val error: UIText? = null,
-  val snackbarMessage: SnackbarMessage? = null,
-  val navigateToLogin: Boolean? = null,
-  val menuOptions: List<DetailsMenuOptions> = emptyList(),
-  val actionButtons: List<DetailActionItem> = emptyList(),
-  val spoilersObfuscated: Boolean = false,
-  val ratingSource: RatingSource = RatingSource.TMDB,
-  val watchProviders: LCEState<WatchProviders>? = LCEState.Loading,
-  val selectedTabIndex: Int = 0,
-  val jellyseerrMediaInfo: JellyseerrMediaInfo? = null,
-  val permissions: List<ProfilePermission> = emptyList(),
-  val tabs: List<Tab> = emptyList(),
-  val forms: DetailsForms = emptyMap(),
+  val mediaDetails: MediaDetails?,
+  val userDetails: AccountMediaDetails,
+  val accountDataState: Map<AccountDataSection, Boolean>,
+  val trailer: Video?,
+  val error: UIText?,
+  val snackbarMessage: SnackbarMessage?,
+  val navigateToLogin: Boolean?,
+  val menuOptions: List<DetailsMenuOptions>,
+  val actionButtons: List<DetailActionItem>,
+  val spoilersObfuscated: Boolean,
+  val ratingSource: RatingSource,
+  val watchProviders: LCEState<WatchProviders>?,
+  val selectedTabIndex: Int,
+  val jellyseerrMediaInfo: JellyseerrMediaInfo?,
+  val permissions: List<ProfilePermission>,
+  val tabs: List<Tab>,
+  val forms: DetailsForms,
 ) {
+  companion object {
+    fun initial(
+      isLoading: Boolean,
+      mediaId: Int,
+      mediaType: MediaType,
+      tabs: List<Tab>,
+      forms: DetailsForms,
+    ) = DetailsViewState(
+      isLoading = isLoading,
+      mediaType = mediaType,
+      mediaId = mediaId,
+      mediaDetails = null,
+      userDetails = AccountMediaDetails.initial,
+      accountDataState = AccountDataSection.entries.associateWith { false },
+      trailer = null,
+      error = null,
+      snackbarMessage = null,
+      navigateToLogin = null,
+      menuOptions = emptyList(),
+      actionButtons = emptyList(),
+      spoilersObfuscated = false,
+      ratingSource = RatingSource.TMDB,
+      watchProviders = LCEState.Loading,
+      selectedTabIndex = 0,
+      jellyseerrMediaInfo = null,
+      permissions = emptyList(),
+      tabs = tabs,
+      forms = forms,
+    )
+  }
+
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(
       id = mediaDetails.id,

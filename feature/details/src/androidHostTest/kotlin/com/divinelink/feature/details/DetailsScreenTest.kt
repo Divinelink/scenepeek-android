@@ -40,6 +40,7 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.navigation.route.Navigation
@@ -114,7 +115,11 @@ class DetailsScreenTest : ComposeTest() {
   private val authRepository = TestAuthRepository()
   private val detailsRepository = TestDetailsRepository()
 
-  private val preferencesRepository = TestPreferencesRepository()
+  private val preferencesRepository = TestPreferencesRepository(
+    detailPreferences = DetailPreferences.initial.copy(
+      streamingServicesVisible = false,
+    ),
+  )
   private val switchViewButtonViewModel = SwitchViewButtonViewModel(
     repository = preferencesRepository,
   )

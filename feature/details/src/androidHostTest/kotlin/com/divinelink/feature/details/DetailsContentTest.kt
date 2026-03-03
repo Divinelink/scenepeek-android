@@ -23,6 +23,7 @@ import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.provider.WatchProvidersFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.video.VideoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
@@ -31,14 +32,24 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanc
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.TvStatus
+import com.divinelink.core.model.details.media.DetailsForms
+import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.fatal_error_fetching_details
 import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.repository.TestAuthRepository
@@ -61,6 +72,7 @@ import com.divinelink.core.ui.resources.core_ui_remove_from_watchlist_content_de
 import com.divinelink.core.ui.resources.core_ui_share
 import com.divinelink.core.ui.resources.core_ui_show_total_episodes_item
 import com.divinelink.core.ui.resources.core_ui_tmdb_user_score
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.resources.Res
@@ -97,7 +109,7 @@ class DetailsContentTest : ComposeTest() {
     var hasClickedMarkAsFavorite = false
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
         ),
@@ -136,7 +148,7 @@ class DetailsContentTest : ComposeTest() {
   fun loadingTest() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           isLoading = true,
           mediaType = MediaType.MOVIE,
@@ -168,7 +180,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test reviews form is empty when reviews are empty`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -203,7 +215,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test render movie reviews`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -241,7 +253,7 @@ class DetailsContentTest : ComposeTest() {
   fun testErrorAlert() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           error = UIText.ResourceText(
@@ -285,7 +297,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test render watch trailer button with trailer is available`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -323,7 +335,7 @@ class DetailsContentTest : ComposeTest() {
   fun `given user rating score is displayed`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           userDetails = AccountMediaDetailsFactory.Rated(),
@@ -373,7 +385,7 @@ class DetailsContentTest : ComposeTest() {
   fun `given unrated movie add your rate button is displayed`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -412,7 +424,7 @@ class DetailsContentTest : ComposeTest() {
   fun `given movie is not on watchlist add to watchlist button is displayed`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -451,7 +463,7 @@ class DetailsContentTest : ComposeTest() {
   fun `given movie is on watchlist added to watchlist button is displayed`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -492,7 +504,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test addToWatchlist button updates button state`() = uiTest {
     var hasClickedAddToWatchlist = false
     val viewState = mutableStateOf(
-      DetailsViewState(
+      createUiState(
         mediaId = 0,
         mediaType = MediaType.MOVIE,
         mediaDetails = MediaDetailsFactory.FightClub(),
@@ -558,7 +570,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test open and close dropdown menu`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -595,7 +607,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test open and close share dialog`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -633,7 +645,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test dropdown menu is not available without media details`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = null,
@@ -693,7 +705,7 @@ class DetailsContentTest : ComposeTest() {
     }
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           actionButtons = listOf(
@@ -762,7 +774,7 @@ class DetailsContentTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           actionButtons = listOf(
@@ -811,7 +823,7 @@ class DetailsContentTest : ComposeTest() {
     var hasClickedObfuscateSpoilers = false
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -858,7 +870,7 @@ class DetailsContentTest : ComposeTest() {
     var hasClickedObfuscateSpoilers = false
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -906,7 +918,7 @@ class DetailsContentTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -946,7 +958,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test rating item with IMDB preferences shows IMDB Rating`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub().copy(
@@ -991,7 +1003,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test rating item with Trakt preferences shows Trakt Rating`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub().copy(
@@ -1035,7 +1047,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test rating item with tmdb preferences shows tmdb Rating`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub().copy(
@@ -1079,7 +1091,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test tv status is visible when is not unknown`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
@@ -1127,7 +1139,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test tv status is not visible when is unknown`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
@@ -1173,7 +1185,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test number of seasons is visible when available`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1208,7 +1220,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test about form for movies with data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -1243,7 +1255,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test about form for tv shows with data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1278,7 +1290,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test cast form for movies with data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -1319,7 +1331,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test cast form for tv with data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1358,7 +1370,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test cast form for tv with empty data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1393,7 +1405,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test recommendations form for movies with data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -1432,7 +1444,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test recommendations form for tv with data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1470,7 +1482,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test recommendations form for tv with empty data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1505,7 +1517,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test seasons form for tv with data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1544,7 +1556,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test seasons form for tv with empty data`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1579,7 +1591,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test loading forms for shows loading indicator`() = uiTest {
     setVisibilityScopeContent {
       DetailsContent(
-        viewState = DetailsViewState(
+        viewState = createUiState(
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -1609,4 +1621,91 @@ class DetailsContentTest : ComposeTest() {
 
     onNodeWithTag(LOADING_CONTENT).assertIsDisplayed()
   }
+
+  @Test
+  fun `test watch providers are visible`() = uiTest {
+    setVisibilityScopeContent {
+      DetailsContent(
+        viewState = createUiState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          selectedTabIndex = MovieTab.About.order,
+          forms = DetailsFormFactory.Movie.full(),
+          watchProviders = LCEState.Content(WatchProvidersFactory.all),
+        ),
+        onMarkAsFavoriteClicked = {},
+        onMediaItemClick = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        onUpdateMediaInfo = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+        onDeleteRequest = {},
+        onDeleteMedia = {},
+        onNavigate = {},
+        onSwitchPreferences = {},
+        animatedVisibilityScope = this,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.About.FORM)
+      .assertIsDisplayed()
+      .performScrollToNode(
+        hasText("by JustWatch"),
+      )
+  }
+
+  private fun createUiState(
+    mediaId: Int,
+    mediaType: MediaType,
+    isLoading: Boolean = false,
+    mediaDetails: MediaDetails? = null,
+    userDetails: AccountMediaDetails = AccountMediaDetails.initial,
+    error: UIText? = null,
+    trailer: Video? = null,
+    tabs: List<Tab> = emptyList(),
+    forms: DetailsForms = emptyMap(),
+    selectedTabIndex: Int = 0,
+    ratingSource: RatingSource = RatingSource.TMDB,
+    menuOptions: List<DetailsMenuOptions> = emptyList(),
+    spoilersObfuscated: Boolean = false,
+    actionButtons: List<DetailActionItem> = emptyList(),
+    jellyseerrMediaInfo: JellyseerrMediaInfo? = null,
+    permissions: List<ProfilePermission> = emptyList(),
+    snackbarMessage: SnackbarMessage? = null,
+    accountDataState: Map<AccountDataSection, Boolean> = AccountDataSection
+      .entries
+      .associateWith { false },
+    navigateToLogin: Boolean? = null,
+    watchProviders: LCEState<WatchProviders>? = null,
+  ) = DetailsViewState.initial(
+    isLoading = isLoading,
+    mediaId = mediaId,
+    mediaType = mediaType,
+    tabs = tabs,
+    forms = forms,
+  ).copy(
+    error = error,
+    trailer = trailer,
+    mediaDetails = mediaDetails,
+    userDetails = userDetails,
+    selectedTabIndex = selectedTabIndex,
+    ratingSource = ratingSource,
+    menuOptions = menuOptions,
+    spoilersObfuscated = spoilersObfuscated,
+    actionButtons = actionButtons,
+    jellyseerrMediaInfo = jellyseerrMediaInfo,
+    permissions = permissions,
+    snackbarMessage = snackbarMessage,
+    accountDataState = accountDataState,
+    navigateToLogin = navigateToLogin,
+    watchProviders = watchProviders,
+  )
 }
