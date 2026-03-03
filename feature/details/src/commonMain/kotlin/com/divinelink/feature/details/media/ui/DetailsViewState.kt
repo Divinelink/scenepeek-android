@@ -1,6 +1,7 @@
 package com.divinelink.feature.details.media.ui
 
 import androidx.compose.runtime.Immutable
+import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
@@ -39,7 +40,7 @@ data class DetailsViewState(
   val actionButtons: List<DetailActionItem> = emptyList(),
   val spoilersObfuscated: Boolean = false,
   val ratingSource: RatingSource = RatingSource.TMDB,
-  val watchProviders: WatchProviders? = null,
+  val watchProviders: LCEState<WatchProviders>? = LCEState.Loading,
   val selectedTabIndex: Int = 0,
   val jellyseerrMediaInfo: JellyseerrMediaInfo? = null,
   val permissions: List<ProfilePermission> = emptyList(),

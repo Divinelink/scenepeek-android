@@ -9,6 +9,5 @@ data class StreamingProvider(
   val providerName: String,
   val displayPriority: Int,
 ) {
-  val uniqueId
-    get() = "$providerId $providerName $displayPriority "
+  fun uniqueId(section: String) = "$providerId $providerName $displayPriority $section"
 }

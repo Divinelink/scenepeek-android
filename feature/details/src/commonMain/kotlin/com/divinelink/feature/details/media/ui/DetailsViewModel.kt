@@ -27,6 +27,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
+import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
@@ -71,6 +72,7 @@ import com.divinelink.feature.details.resources.feature_details_jellyseerr_succe
 import com.divinelink.feature.details.resources.login
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -399,8 +401,10 @@ class DetailsViewModel(
         repository
           .fetchWatchProviders(media = MediaReference(mediaId, mediaType))
           .onSuccess { result ->
-            _viewState.update { it.copy(watchProviders = result) }
+            _viewState.update { it.copy(watchProviders = LCEState.Content(result)) }
           }
+      } else {
+        _viewState.update { it.copy(watchProviders = null) }
       }
     }
   }
