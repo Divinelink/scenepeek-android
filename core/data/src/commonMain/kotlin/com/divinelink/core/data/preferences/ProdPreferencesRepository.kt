@@ -5,6 +5,7 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.ViewableSection
@@ -37,11 +38,11 @@ class ProdPreferencesRepository(
     get() =
       combine(
         preferenceStorage.region,
-        preferenceStorage.streamProviderVisibility,
+        preferenceStorage.streamingServicesVisible,
       ) { region, providerVisibility ->
         DetailPreferences(
           region = region,
-          streamProvidersVisible = providerVisibility,
+          streamingServicesVisible = providerVisibility,
         )
       }
 
@@ -76,5 +77,13 @@ class ProdPreferencesRepository(
 
   override suspend fun setPureBlack(enabled: Boolean) {
     preferenceStorage.setBlackBackgrounds(enabled)
+  }
+
+  override suspend fun setRegion(country: Country) {
+    preferenceStorage.setRegion(country)
+  }
+
+  override suspend fun setStreamingServicesVisible(visible: Boolean) {
+    preferenceStorage.setStreamingServicesVisible(visible)
   }
 }

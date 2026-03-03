@@ -4,6 +4,7 @@ import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.other
@@ -86,6 +87,18 @@ class TestPreferencesRepository(
   override suspend fun setPureBlack(enabled: Boolean) {
     _themePreferences.value = _themePreferences.value.copy(
       isPureBlack = enabled,
+    )
+  }
+
+  override suspend fun setRegion(country: Country) {
+    _detailPreferences.value = _detailPreferences.value.copy(
+      region = country,
+    )
+  }
+
+  override suspend fun setStreamingServicesVisible(visible: Boolean) {
+    _detailPreferences.value = _detailPreferences.value.copy(
+      streamingServicesVisible = visible,
     )
   }
 }

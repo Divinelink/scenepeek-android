@@ -4,12 +4,12 @@ import com.divinelink.core.model.locale.Country
 
 data class DetailPreferences(
   val region: Country,
-  val streamProvidersVisible: Boolean,
+  val streamingServicesVisible: Boolean,
 ) {
   companion object {
     val initial = DetailPreferences(
       region = Country.UNITED_STATES,
-      streamProvidersVisible = true,
+      streamingServicesVisible = true,
     )
   }
 }

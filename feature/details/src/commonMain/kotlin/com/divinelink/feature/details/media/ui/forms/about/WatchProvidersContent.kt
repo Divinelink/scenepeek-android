@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +31,10 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun WatchProvidersContent(
   modifier: Modifier = Modifier,
-  watchProviders: WatchProviders,
+  watchProviders: WatchProviders?,
 ) {
+  if (watchProviders == null) return
+
   val detailPreferences = rememberDetailPreferences()
   val forRegion = remember { watchProviders.results[detailPreferences.region] }
 
@@ -48,7 +51,6 @@ fun WatchProvidersContent(
       Text(
         text = stringResource(Res.string.available_on),
         style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.tertiary,
       )
 
       Spacer(modifier = Modifier.weight(1f))
@@ -102,5 +104,9 @@ fun WatchProvidersContent(
         }
       }
     }
+
+    HorizontalDivider(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+    )
   }
 }

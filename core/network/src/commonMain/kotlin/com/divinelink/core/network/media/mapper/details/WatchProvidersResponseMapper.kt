@@ -13,13 +13,11 @@ fun WatchProvidersResponse.map() = WatchProviders(
   results = results.map(),
 )
 
-fun Map<String, WatchProvidersByRegionResponse>.map(): Map<Country?, WatchProvidersByRegion> =
-  this
-    .entries
-    .associate { result ->
-      Country.fromCode(result.key) to result.value.map()
-    }
-
+fun Map<String, WatchProvidersByRegionResponse>.map(): Map<Country?, WatchProvidersByRegion> = this
+  .entries
+  .associate { result ->
+    Country.fromCode(result.key) to result.value.map()
+  }
 
 fun WatchProvidersByRegionResponse.map() = WatchProvidersByRegion(
   link = link,

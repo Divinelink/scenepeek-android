@@ -70,21 +70,11 @@ fun AboutFormContent(
       }
     }
 
-    watchProviders?.let {
-      item(key = "watch-providers") {
-        WatchProvidersContent(
-          modifier = Modifier.animateItem(),
-          watchProviders = it,
-        )
-      }
-
-      item(key = "watch-providers-divider") {
-        HorizontalDivider(
-          modifier = Modifier
-            .animateItem()
-            .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-        )
-      }
+    item {
+      WatchProvidersContent(
+        modifier = Modifier.animateItem(),
+        watchProviders = watchProviders,
+      )
     }
 
     aboutData.genres?.let { genres ->

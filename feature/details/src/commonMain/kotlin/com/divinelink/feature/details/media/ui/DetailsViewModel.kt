@@ -393,7 +393,7 @@ class DetailsViewModel(
     }
 
     viewModelScope.launch {
-      if (preferencesRepository.detailPreferences.first().streamProvidersVisible) {
+      if (preferencesRepository.detailPreferences.first().streamingServicesVisible) {
         val mediaId = viewState.value.mediaId
         val mediaType = viewState.value.mediaType
         repository

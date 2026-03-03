@@ -1,3 +1,5 @@
+@file:Suppress("NestedBlockDepth")
+
 package com.divinelink.core.commons.extensions
 
 import kotlinx.datetime.DatePeriod
@@ -42,45 +44,40 @@ fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime? = 
   null
 }
 
-fun String?.extractDetailsFromTMDBDeepLink(): Pair<Int, String>? {
+fun String?.extractDetailsFromTMDBDeepLink(): Pair<Int, String>? = this?.let {
   // Example URL format: "https://www.themoviedb.org/tv/693134-dune-part-two"
-  return this?.let {
-    try {
-      val segments = it.split("/")
-      if (segments.size in 4..5) {
-        val mediaType = segments[3]
-        val id = segments[4].substringBefore("-").toIntOrNull()
-        id?.let { safeId ->
-          return Pair(safeId, mediaType)
-        }
+  try {
+    val segments = it.split("/")
+    if (segments.size in 4..5) {
+      val mediaType = segments[3]
+      val id = segments[4].substringBefore("-").toIntOrNull()
+      id?.let { safeId ->
+        return Pair(safeId, mediaType)
       }
-      return null
-    } catch (_: Exception) {
-      null
     }
+    return null
+  } catch (_: Exception) {
+    null
   }
 }
 
-fun String?.extractDetailsFromScenePeekDeepLink(): Pair<Int, String>? {
-  return this?.let { url ->
-    try {
-      // Example URL format: "https://www.scenepeek.app/movie/693134-dune-part-two"
-      val segments = url.split("/").filter { it.isNotBlank() }
+fun String?.extractDetailsFromScenePeekDeepLink(): Pair<Int, String>? = this?.let { url ->
+  // Example URL format: "https://www.scenepeek.app/movie/693134-dune-part-two"
+  try {
+    val segments = url.split("/").filter { it.isNotBlank() }
+    if (segments.size >= 3) {
+      val idSegment = segments.last()
+      val mediaType = segments[segments.size - 2]
 
-      if (segments.size >= 3) {
-        val idSegment = segments.last()
-        val mediaType = segments[segments.size - 2]
+      val id = idSegment.substringBefore("-").toIntOrNull()
 
-        val id = idSegment.substringBefore("-").toIntOrNull()
-
-        if (id != null) {
-          return Pair(id, mediaType)
-        }
+      if (id != null) {
+        return Pair(id, mediaType)
       }
-      null
-    } catch (_: Exception) {
-      null
     }
+    null
+  } catch (_: Exception) {
+    null
   }
 }
 

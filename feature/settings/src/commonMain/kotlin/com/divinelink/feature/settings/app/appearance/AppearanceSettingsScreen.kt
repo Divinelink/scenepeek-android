@@ -52,7 +52,6 @@ fun AppearanceSettingsScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  val themeValues = uiState.availableThemes.map { it.storageKey }
   var showColorWheel by remember { mutableStateOf(false) }
 
   if (showColorWheel) {
@@ -74,14 +73,11 @@ fun AppearanceSettingsScreen(
       item {
         SettingsRadioPrefItem(
           title = stringResource(Res.string.preferences__theme),
-          selected = stringResource(uiState.themePreferences.theme.label),
-          selectedIndex = themeValues.indexOf(uiState.themePreferences.theme.storageKey),
-          listItems = uiState.availableThemes.map { theme ->
-            stringResource(theme.label)
-          },
-          onSelected = { index ->
-            viewModel.setTheme(uiState.availableThemes[index])
-          },
+          displayText = { stringResource(it.label) },
+          listItems = uiState.availableThemes,
+          onSelected = viewModel::setTheme,
+          icon = null,
+          selectedOption = uiState.themePreferences.theme,
         )
       }
 
