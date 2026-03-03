@@ -4,10 +4,13 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.model.details.rating.MediaRatingSource
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsSwitchItem
@@ -37,7 +40,9 @@ fun DetailPreferencesSettingsScreen(
     title = stringResource(Res.string.feature_settings_details_preferences),
     onNavigationClick = onNavigateUp,
   ) {
-    ScenePeekLazyColumn {
+    ScenePeekLazyColumn(
+      modifier = Modifier.testTag(TestTags.LAZY_COLUMN),
+    ) {
       item {
         SettingsSwitchItem(
           title = stringResource(Res.string.feature_settings_streaming_services),

@@ -291,6 +291,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
     declare {
       DetailsPreferencesViewModel(
+        preferencesRepository = preferencesRepository,
         mediaRatingPreferenceUseCase = MediaRatingPreferenceUseCase(
           fakePreferenceStorage,
           testDispatcher,

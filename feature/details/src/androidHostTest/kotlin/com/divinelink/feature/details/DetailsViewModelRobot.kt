@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
@@ -16,6 +17,7 @@ import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeDeleteRatingUseCase
@@ -58,6 +60,8 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     dispatcherProvider = mainDispatcherRule.testDispatcher,
   )
   private val authRepository = TestAuthRepository()
+  private val detailsRepository = TestDetailsRepository()
+  private val preferencesRepository = TestPreferencesRepository()
 
   override fun buildViewModel() = apply {
     viewModel = DetailsViewModel(
@@ -71,6 +75,8 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       deleteRequestUseCase = testDeleteRequestUseCase.mock,
       deleteMediaUseCase = testDeleteMediaUseCase.mock,
       authRepository = authRepository.mock,
+      repository = detailsRepository.mock,
+      preferencesRepository = preferencesRepository,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,
