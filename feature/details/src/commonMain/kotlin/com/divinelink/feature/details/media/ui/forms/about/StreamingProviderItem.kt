@@ -13,13 +13,19 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.provider.StreamingProvider
 import com.divinelink.core.ui.coil.SmallLogoImage
+import com.divinelink.core.ui.manager.url.rememberUrlHandler
 
 @Composable
 fun StreamingProviderItem(
   provider: StreamingProvider,
   subtitle: String,
+  link: String,
 ) {
-  Card {
+  val urlHandler = rememberUrlHandler()
+
+  Card(
+    onClick = { urlHandler.openUrl(link) },
+  ) {
     Row(
       modifier = Modifier.padding(
         horizontal = MaterialTheme.dimensions.keyline_12,
@@ -30,6 +36,7 @@ fun StreamingProviderItem(
     ) {
       SmallLogoImage(
         path = provider.logoPath,
+        onClick = { urlHandler.openUrl(link) },
       )
 
       Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_2)) {

@@ -82,6 +82,7 @@ fun WatchProvidersContent(
           StreamingProviderItem(
             provider = it,
             subtitle = stringResource(Res.string.stream),
+            link = forRegion.link,
           )
         }
         items(
@@ -91,6 +92,7 @@ fun WatchProvidersContent(
           StreamingProviderItem(
             provider = it,
             subtitle = stringResource(Res.string.buy),
+            link = forRegion.link,
           )
         }
         items(
@@ -100,13 +102,16 @@ fun WatchProvidersContent(
           StreamingProviderItem(
             provider = it,
             subtitle = stringResource(Res.string.rent),
+            link = forRegion.link,
           )
         }
       }
     }
 
     HorizontalDivider(
-      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+      modifier = Modifier
+        .padding(top = MaterialTheme.dimensions.keyline_8)
+        .padding(horizontal = MaterialTheme.dimensions.keyline_16),
     )
   }
 }
