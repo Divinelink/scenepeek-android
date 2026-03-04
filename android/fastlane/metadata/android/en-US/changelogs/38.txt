@@ -1,0 +1,8 @@
+🎉 Update v0.28.0
+
+- Introduce streaming providers! Find where a movie or show is available for streaming, rent or purchase
+- Add sort by creation date on ratings and watchlist
+- Localize dates on various places in the app, to make date information more readable
+- Fix an issue on discover where new filters where not applied after clearing all filters
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

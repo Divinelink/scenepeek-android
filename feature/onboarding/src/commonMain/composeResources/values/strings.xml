@@ -51,4 +51,9 @@
   <string name="v37_discover_by_keyword">- Discover now also include the keyword filter</string>
   <string name="v37_detail_keywords">- Show keywords on a movie or TV show information that describe its plot or mood</string>
   <string name="v37_clickable_genres_and_keywords">- Genres and keywords are now clickable, taking you to Discover with the corresponding filter applied</string>
+
+  <string name="v38_streaming_providers">- Introduce streaming providers! Find where a movie or show is available for streaming, rent or purchase</string>
+  <string name="v38_discover_sorting">- Add sort by creation date on ratings and watchlist</string>
+  <string name="v38_localize_dates">- Localize dates on various places in the app, to make date information more readable</string>
+  <string name="v38_discover_filter_issue">- Fix an issue on discover where new filters where not applied after clearing all filters</string>
 </resources>

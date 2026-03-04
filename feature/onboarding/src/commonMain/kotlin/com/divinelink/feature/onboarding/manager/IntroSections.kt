@@ -44,6 +44,10 @@ import com.divinelink.feature.onboarding.resources.v37_clickable_genres_and_keyw
 import com.divinelink.feature.onboarding.resources.v37_detail_keywords
 import com.divinelink.feature.onboarding.resources.v37_discover_by_keyword
 import com.divinelink.feature.onboarding.resources.v37_movies_collection
+import com.divinelink.feature.onboarding.resources.v38_discover_filter_issue
+import com.divinelink.feature.onboarding.resources.v38_discover_sorting
+import com.divinelink.feature.onboarding.resources.v38_localize_dates
+import com.divinelink.feature.onboarding.resources.v38_streaming_providers
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -180,6 +184,17 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v37_clickable_genres_and_keywords)),
   )
 
+  val v39 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.28.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v38_streaming_providers)),
+    IntroSection.Text(UIText.ResourceText(R.string.v38_discover_sorting)),
+    IntroSection.Text(UIText.ResourceText(R.string.v38_localize_dates)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.v38_discover_filter_issue)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -192,5 +207,6 @@ object IntroSections {
     35 to v35,
     36 to v36,
     37 to v37,
+    39 to v39,
   )
 }
