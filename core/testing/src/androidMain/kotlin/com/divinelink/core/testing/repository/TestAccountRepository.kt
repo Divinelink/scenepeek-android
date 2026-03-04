@@ -15,7 +15,7 @@ class TestAccountRepository {
     whenever(
       mock.fetchMoviesWatchlist(
         page = any(),
-        sortBy = any(),
+        sortOption = any(),
         accountId = any(),
         sessionId = any(),
       ),
@@ -26,7 +26,7 @@ class TestAccountRepository {
     whenever(
       mock.fetchTvShowsWatchlist(
         page = any(),
-        sortBy = any(),
+        sortOption = any(),
         accountId = any(),
         sessionId = any(),
       ),
@@ -37,7 +37,7 @@ class TestAccountRepository {
     whenever(
       mock.fetchRatedMovies(
         page = any(),
-        sortBy = any(),
+        sortOption = any(),
         accountId = any(),
         sessionId = any(),
       ),
@@ -48,7 +48,7 @@ class TestAccountRepository {
     whenever(
       mock.fetchRatedTvShows(
         page = any(),
-        sortBy = any(),
+        sortOption = any(),
         accountId = any(),
         sessionId = any(),
       ),

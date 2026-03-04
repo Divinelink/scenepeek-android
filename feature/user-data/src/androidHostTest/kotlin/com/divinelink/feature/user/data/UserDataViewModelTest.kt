@@ -1,10 +1,14 @@
 package com.divinelink.feature.user.data
 
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortDirection
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.testing.MainDispatcherRule
@@ -436,6 +440,126 @@ class UserDataViewModelTest {
       )
   }
 
+  @Test
+  fun `test switch sort direction completely refreshes data`() = runTest {
+    testRobot
+      .mockObserveAccount {
+        mockResponse(Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())))
+      }
+      .mockFetchUserData { mockSuccess(Result.success(UserDataResponseFactory.movies())) }
+      .withSection(UserDataSection.Watchlist)
+      .buildViewModel()
+      .expectUiStates(
+        action = {
+          mockFetchUserData {
+            mockSuccess(
+              Result.success(
+                UserDataResponseFactory.movies(
+                  page = 2,
+                  canFetchMore = false,
+                ),
+              ),
+            )
+          }
+          onLoadMore()
+        },
+        uiStates = listOf(
+          createUiState(
+            section = UserDataSection.Watchlist,
+            forms = mapOf(
+              MediaType.MOVIE to UserDataForm.Data(
+                mediaType = MediaType.MOVIE,
+                paginationData = mapOf(
+                  1 to UserDataResponseFactory.movies().data,
+                ),
+                totalResults = UserDataResponseFactory.movies().totalResults,
+              ),
+              MediaType.TV to UserDataForm.Loading,
+            ),
+            pages = mapOf(
+              MediaType.MOVIE to 2,
+              MediaType.TV to 1,
+            ),
+            tabs = mapOf(
+              MediaTab.Movie to UserDataResponseFactory.movies().totalResults,
+              MediaTab.TV to null,
+            ),
+          ),
+          createUiState(
+            section = UserDataSection.Watchlist,
+            forms = mapOf(
+              MediaType.MOVIE to UserDataForm.Data(
+                mediaType = MediaType.MOVIE,
+                paginationData = mapOf(
+                  1 to UserDataResponseFactory.movies().data,
+                  2 to UserDataResponseFactory.movies(2).data,
+                ),
+                totalResults = UserDataResponseFactory.movies().totalResults,
+              ),
+              MediaType.TV to UserDataForm.Loading,
+            ),
+            pages = mapOf(
+              MediaType.MOVIE to 3,
+              MediaType.TV to 1,
+            ),
+            canFetchMore = mapOf(
+              MediaType.MOVIE to false,
+              MediaType.TV to true,
+            ),
+            tabs = mapOf(
+              MediaTab.Movie to UserDataResponseFactory.movies().totalResults,
+              MediaTab.TV to null,
+            ),
+          ),
+        ),
+      )
+      .mockFetchUserData {
+        mockSuccess(
+          Result.success(
+            UserDataResponseFactory.movies(
+              page = 1,
+              canFetchMore = true,
+            ).copy(
+              data = MediaItemFactory.movies(),
+              totalResults = MediaItemFactory.movies().size,
+            ),
+          ),
+        )
+      }
+      .switchSortDirection()
+      .assertUiState(
+        createUiState(
+          section = UserDataSection.Watchlist,
+          forms = mapOf(
+            MediaType.MOVIE to UserDataForm.Data(
+              mediaType = MediaType.MOVIE,
+              paginationData = mapOf(
+                1 to MediaItemFactory.movies(),
+              ),
+              totalResults = MediaItemFactory.movies().size,
+            ),
+            MediaType.TV to UserDataForm.Loading,
+          ),
+          pages = mapOf(
+            MediaType.MOVIE to 2,
+            MediaType.TV to 1,
+          ),
+          canFetchMore = mapOf(
+            MediaType.MOVIE to true,
+            MediaType.TV to true,
+          ),
+          tabs = mapOf(
+            MediaTab.Movie to MediaItemFactory.movies().size,
+            MediaTab.TV to null,
+          ),
+          sortOption = SortOption(
+            sortBy = SortBy.CREATED_AT,
+            direction = SortDirection.ASC,
+          ),
+        ),
+      )
+  }
+
   private fun createUiState(
     selectedTabIndex: Int = 0,
     tabs: Map<MediaTab, Int?> = mapOf(
@@ -455,6 +579,7 @@ class UserDataViewModelTest {
       MediaType.TV to true,
     ),
     section: UserDataSection,
+    sortOption: SortOption = SortOption.defaultUserDataSortOption,
   ): UserDataUiState = UserDataUiState(
     selectedTabIndex = selectedTabIndex,
     tabs = tabs,
@@ -462,5 +587,6 @@ class UserDataViewModelTest {
     forms = forms,
     canFetchMore = canFetchMore,
     section = section,
+    sortOption = sortOption,
   )
 }

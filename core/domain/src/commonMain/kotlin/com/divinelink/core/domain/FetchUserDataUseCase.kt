@@ -44,7 +44,7 @@ class FetchUserDataUseCase(
     if (parameters.mediaType == MediaType.TV) {
       accountRepository.fetchRatedTvShows(
         page = parameters.page,
-        sortBy = parameters.sortBy.value,
+        sortOption = parameters.sortOption,
         accountId = accountId,
         sessionId = sessionId,
       ).collect { result ->
@@ -64,7 +64,7 @@ class FetchUserDataUseCase(
     } else {
       accountRepository.fetchRatedMovies(
         page = parameters.page,
-        sortBy = parameters.sortBy.value,
+        sortOption = parameters.sortOption,
         accountId = accountId,
         sessionId = sessionId,
       ).collect { result ->
@@ -92,7 +92,7 @@ class FetchUserDataUseCase(
     if (parameters.mediaType == MediaType.TV) {
       accountRepository.fetchTvShowsWatchlist(
         page = parameters.page,
-        sortBy = parameters.sortBy.value,
+        sortOption = parameters.sortOption,
         accountId = accountId,
         sessionId = sessionId,
       ).collect { result ->
@@ -112,7 +112,7 @@ class FetchUserDataUseCase(
     } else {
       accountRepository.fetchMoviesWatchlist(
         page = parameters.page,
-        sortBy = parameters.sortBy.value,
+        sortOption = parameters.sortOption,
         accountId = accountId,
         sessionId = sessionId,
       ).collect { result ->

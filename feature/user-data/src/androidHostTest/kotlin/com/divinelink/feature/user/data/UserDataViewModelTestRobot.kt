@@ -1,6 +1,8 @@
 package com.divinelink.feature.user.data
 
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation.UserDataRoute
 import com.divinelink.core.testing.ViewModelTestRobot
@@ -15,6 +17,7 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
 
   private val observeAccountUseCase = TestObserveAccountUseCase()
   private val fetchUserDataUseCase = TestFetchUserDataUseCase()
+  private val preferencesRepository = TestPreferencesRepository()
 
   fun withSection(section: UserDataSection) = apply {
     this.navArgs = UserDataRoute(section)
@@ -22,6 +25,7 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
 
   override fun buildViewModel() = apply {
     viewModel = UserDataViewModel(
+      preferencesRepository = preferencesRepository,
       observeAccountUseCase = observeAccountUseCase.mock,
       fetchUserDataUseCase = fetchUserDataUseCase.mock,
       savedStateHandle = SavedStateHandle(
@@ -53,5 +57,9 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
 
   fun onRefresh() = apply {
     viewModel.onRefresh()
+  }
+
+  suspend fun switchSortDirection() = apply {
+    preferencesRepository.switchSortDirection(section = ViewableSection.USER_DATA)
   }
 }

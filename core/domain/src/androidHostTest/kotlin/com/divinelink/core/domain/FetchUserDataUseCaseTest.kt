@@ -5,6 +5,7 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.model.user.data.UserDataSection
@@ -40,6 +41,7 @@ class FetchUserDataUseCaseTest {
     val result = useCase.invoke(
       parameters = UserDataParameters(
         page = 1,
+        sortOption = SortOption.defaultUserDataSortOption,
         mediaType = MediaType.MOVIE,
         section = UserDataSection.Watchlist,
       ),
@@ -62,6 +64,7 @@ class FetchUserDataUseCaseTest {
     val result = useCase.invoke(
       parameters = UserDataParameters(
         page = 1,
+        sortOption = SortOption.defaultUserDataSortOption,
         mediaType = MediaType.MOVIE,
         section = UserDataSection.Watchlist,
       ),
@@ -88,6 +91,7 @@ class FetchUserDataUseCaseTest {
     useCase.invoke(
       parameters = UserDataParameters(
         page = 1,
+        sortOption = SortOption.defaultUserDataSortOption,
         mediaType = MediaType.TV,
         section = UserDataSection.Watchlist,
       ),
@@ -124,6 +128,7 @@ class FetchUserDataUseCaseTest {
     useCase.invoke(
       parameters = UserDataParameters(
         page = 1,
+        sortOption = SortOption.defaultUserDataSortOption,
         mediaType = MediaType.MOVIE,
         section = UserDataSection.Watchlist,
       ),
@@ -160,6 +165,7 @@ class FetchUserDataUseCaseTest {
     useCase.invoke(
       parameters = UserDataParameters(
         page = 1,
+        sortOption = SortOption.defaultUserDataSortOption,
         mediaType = MediaType.TV,
         section = UserDataSection.Ratings,
       ),
@@ -196,6 +202,7 @@ class FetchUserDataUseCaseTest {
     useCase.invoke(
       parameters = UserDataParameters(
         page = 1,
+        sortOption = SortOption.defaultUserDataSortOption,
         mediaType = MediaType.MOVIE,
         section = UserDataSection.Ratings,
       ),
@@ -232,6 +239,7 @@ class FetchUserDataUseCaseTest {
     useCase.invoke(
       parameters = UserDataParameters(
         page = 3,
+        sortOption = SortOption.defaultUserDataSortOption,
         mediaType = MediaType.MOVIE,
         section = UserDataSection.Ratings,
       ),

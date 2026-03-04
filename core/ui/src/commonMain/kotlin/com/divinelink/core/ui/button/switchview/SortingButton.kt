@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDownward
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -17,7 +18,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,11 +43,20 @@ fun SortingButton(
   val sortBy = rememberSortBy(section)
 
   var showDropdownSortByOptions by remember { mutableStateOf(false) }
-  var descending by rememberSaveable(sortBy) {
+  var descending by remember(sortBy.direction) {
     mutableStateOf(sortBy.direction == SortDirection.DESC)
   }
-  val rotationState by remember(sortBy) { derivedStateOf { if (descending) 0f else 180f } }
+
+  val rotationState by remember(sortBy.direction) {
+    derivedStateOf { if (descending) 0f else 180f }
+  }
   val rotation by animateFloatAsState(targetValue = rotationState)
+
+  val options = when (section) {
+    ViewableSection.DISCOVER_SHOWS -> SortBy.discoverShowEntries
+    ViewableSection.DISCOVER_MOVIES -> SortBy.discoverMovieEntries
+    else -> emptyList()
+  }
 
   if (showDropdownSortByOptions) {
     DropdownMenu(
@@ -57,12 +66,6 @@ fun SortingButton(
       expanded = showDropdownSortByOptions,
       onDismissRequest = { showDropdownSortByOptions = false },
     ) {
-      val options = when (section) {
-        ViewableSection.DISCOVER_SHOWS -> SortBy.discoverShowEntries
-        ViewableSection.DISCOVER_MOVIES -> SortBy.discoverMovieEntries
-        else -> emptyList()
-      }
-
       options.forEach { option ->
         SortDropdownMenuItem(
           sortBy = option,
@@ -76,7 +79,11 @@ fun SortingButton(
   }
 
   TextButton(
+    enabled = options.isNotEmpty() && options.size != 1,
     onClick = { showDropdownSortByOptions = true },
+    colors = ButtonDefaults.textButtonColors().copy(
+      disabledContentColor = ButtonDefaults.textButtonColors().contentColor,
+    ),
   ) {
     Text(stringResource(sortBy.sortBy.label))
   }

@@ -1,6 +1,7 @@
 package com.divinelink.core.model.sort
 
 import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.created_at
 import com.divinelink.core.model.resources.first_air_date
 import com.divinelink.core.model.resources.name
 import com.divinelink.core.model.resources.popularity
@@ -20,6 +21,7 @@ enum class SortBy(val value: String, val label: StringResource) {
   TITLE("title", Res.string.title),
   VOTE_AVERAGE("vote_average", Res.string.vote_average),
   VOTE_COUNT("vote_count", Res.string.vote_count),
+  CREATED_AT("created_at", Res.string.created_at)
   ;
 
   companion object {
@@ -40,6 +42,10 @@ enum class SortBy(val value: String, val label: StringResource) {
       NAME,
     )
 
+    val userDataEntries = listOf(
+      CREATED_AT,
+    )
+
     fun findDiscoverMovieOption(value: String?): SortBy = discoverMovieEntries.find {
       it.value == value
     } ?: POPULARITY
@@ -47,6 +53,10 @@ enum class SortBy(val value: String, val label: StringResource) {
     fun findDiscoverShowOption(value: String?): SortBy = discoverShowEntries.find {
       it.value == value
     } ?: POPULARITY
+
+    fun findUserDataOption(value: String?): SortBy = userDataEntries.find {
+      it.value == value
+    } ?: CREATED_AT
 
     fun from(value: String): SortBy? = entries.find { it.value == value }
   }

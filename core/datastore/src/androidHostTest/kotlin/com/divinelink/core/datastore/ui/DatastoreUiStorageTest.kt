@@ -190,6 +190,10 @@ class DatastoreUiStorageTest {
             SortBy.POPULARITY,
             SortDirection.DESC,
           ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
+            SortDirection.DESC,
+          ),
         ),
       )
     }
@@ -210,6 +214,10 @@ class DatastoreUiStorageTest {
             SortBy.POPULARITY,
             SortDirection.DESC,
           ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
+            SortDirection.DESC,
+          ),
         ),
       )
 
@@ -223,6 +231,10 @@ class DatastoreUiStorageTest {
           ),
           ViewableSection.DISCOVER_SHOWS to SortOption(
             SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
             SortDirection.DESC,
           ),
         ),
@@ -239,6 +251,10 @@ class DatastoreUiStorageTest {
           ViewableSection.DISCOVER_SHOWS to SortOption(
             SortBy.POPULARITY,
             SortDirection.ASC,
+          ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
+            SortDirection.DESC,
           ),
         ),
       )
@@ -264,6 +280,10 @@ class DatastoreUiStorageTest {
             SortBy.POPULARITY,
             SortDirection.DESC,
           ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
+            SortDirection.DESC,
+          ),
         ),
       )
 
@@ -277,6 +297,10 @@ class DatastoreUiStorageTest {
           ),
           ViewableSection.DISCOVER_SHOWS to SortOption(
             SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
             SortDirection.DESC,
           ),
         ),
@@ -303,6 +327,10 @@ class DatastoreUiStorageTest {
             SortBy.FIRST_AIR_DATE,
             SortDirection.DESC,
           ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
+            SortDirection.DESC,
+          ),
         ),
       )
 
@@ -316,6 +344,10 @@ class DatastoreUiStorageTest {
           ),
           ViewableSection.DISCOVER_SHOWS to SortOption(
             SortBy.VOTE_AVERAGE,
+            SortDirection.DESC,
+          ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
             SortDirection.DESC,
           ),
         ),

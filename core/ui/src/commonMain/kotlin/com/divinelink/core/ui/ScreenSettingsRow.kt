@@ -23,6 +23,7 @@ fun ScreenSettingsRow(
     when (section) {
       ViewableSection.DISCOVER_SHOWS,
       ViewableSection.DISCOVER_MOVIES,
+      ViewableSection.USER_DATA,
         -> SortingButton(
           section = section,
           onSwitchSortDirection = {

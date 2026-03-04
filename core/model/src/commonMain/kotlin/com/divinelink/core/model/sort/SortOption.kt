@@ -11,5 +11,9 @@ data class SortOption(
       sortBy = SortBy.POPULARITY,
       direction = SortDirection.DESC,
     )
+    val defaultUserDataSortOption = SortOption(
+      sortBy = SortBy.CREATED_AT,
+      direction = SortDirection.DESC,
+    )
   }
 }

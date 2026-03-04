@@ -59,6 +59,10 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
           sortBy = SortBy.findDiscoverShowOption(it[sortByKey(ViewableSection.DISCOVER_SHOWS)]),
           direction = SortDirection.from(it[sortDirectionKey(ViewableSection.DISCOVER_SHOWS)]),
         ),
+        ViewableSection.USER_DATA to SortOption(
+          sortBy = SortBy.findUserDataOption(it[sortByKey(ViewableSection.USER_DATA)]),
+          direction = SortDirection.from(it[sortDirectionKey(ViewableSection.USER_DATA)]),
+        ),
       ),
     )
   }.distinctUntilChanged()
