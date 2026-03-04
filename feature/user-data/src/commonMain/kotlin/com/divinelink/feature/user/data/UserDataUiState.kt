@@ -2,7 +2,6 @@ package com.divinelink.feature.user.data
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.user.data.UserDataSection
