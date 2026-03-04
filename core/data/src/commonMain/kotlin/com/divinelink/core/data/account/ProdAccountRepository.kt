@@ -5,6 +5,7 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.account.service.AccountService
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.tv.map
@@ -18,13 +19,13 @@ class ProdAccountRepository(
 
   override suspend fun fetchMoviesWatchlist(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
     remote.fetchMoviesWatchlist(
       page = page,
-      sortBy = sortBy,
+      sortOption = sortOption,
       accountId = accountId,
       sessionId = sessionId,
     ),
@@ -44,13 +45,13 @@ class ProdAccountRepository(
 
   override suspend fun fetchTvShowsWatchlist(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
     remote.fetchTvShowsWatchlist(
       page = page,
-      sortBy = sortBy,
+      sortOption = sortOption,
       accountId = accountId,
       sessionId = sessionId,
     ),
@@ -70,13 +71,13 @@ class ProdAccountRepository(
 
   override suspend fun fetchRatedMovies(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
     remote.fetchRatedMovies(
       page = page,
-      sortBy = sortBy,
+      sortOption = sortOption,
       accountId = accountId,
       sessionId = sessionId,
     ),
@@ -96,13 +97,13 @@ class ProdAccountRepository(
 
   override suspend fun fetchRatedTvShows(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
     remote.fetchRatedTvShows(
       page = page,
-      sortBy = sortBy,
+      sortOption = sortOption,
       accountId = accountId,
       sessionId = sessionId,
     ),

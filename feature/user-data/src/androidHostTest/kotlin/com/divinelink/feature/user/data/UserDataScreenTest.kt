@@ -65,6 +65,7 @@ class UserDataScreenTest : ComposeTest() {
       UserDataScreen(
         onNavigate = {},
         viewModel = UserDataViewModel(
+          preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
@@ -98,6 +99,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
+          preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
@@ -134,6 +136,7 @@ class UserDataScreenTest : ComposeTest() {
         },
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
+          preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
@@ -169,6 +172,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
+          preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
@@ -209,6 +213,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
+          preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
@@ -244,6 +249,7 @@ class UserDataScreenTest : ComposeTest() {
     )
 
     val viewModel = UserDataViewModel(
+      preferencesRepository = preferencesRepository,
       observeAccountUseCase = observeAccountUseCase.mock,
       fetchUserDataUseCase = fetchWatchlistUseCase.mock,
       savedStateHandle = SavedStateHandle(
@@ -296,6 +302,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
+          preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
@@ -370,6 +377,7 @@ class UserDataScreenTest : ComposeTest() {
         },
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
+          preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
@@ -421,6 +429,7 @@ class UserDataScreenTest : ComposeTest() {
     )
 
     val viewModel = UserDataViewModel(
+      preferencesRepository = preferencesRepository,
       observeAccountUseCase = observeAccountUseCase.mock,
       fetchUserDataUseCase = fetchWatchlistUseCase.mock,
       savedStateHandle = SavedStateHandle(

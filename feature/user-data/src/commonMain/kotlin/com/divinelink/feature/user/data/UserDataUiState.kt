@@ -2,6 +2,8 @@ package com.divinelink.feature.user.data
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortDirection
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.user.data.UserDataSection
 
@@ -15,6 +17,7 @@ data class UserDataUiState(
   val pages: Map<MediaType, Int>,
   val forms: Map<MediaType, UserDataForm<MediaItem.Media>>,
   val canFetchMore: Map<MediaType, Boolean>,
+  val sortOption: SortOption,
 ) {
   val mediaType = MediaType.from(MediaTab.entries[selectedTabIndex].value)
   val canFetchMoreForSelectedTab = canFetchMore[mediaType] == true

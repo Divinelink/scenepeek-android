@@ -15,7 +15,7 @@ class TestAccountService {
     whenever(
       mock.fetchMoviesWatchlist(
         page = any(),
-        sortBy = any(),
+        sortOption = any(),
         accountId = any(),
         sessionId = any(),
       ),
@@ -26,7 +26,7 @@ class TestAccountService {
     whenever(
       mock.fetchTvShowsWatchlist(
         page = any(),
-        sortBy = any(),
+        sortOption = any(),
         accountId = any(),
         sessionId = any(),
       ),

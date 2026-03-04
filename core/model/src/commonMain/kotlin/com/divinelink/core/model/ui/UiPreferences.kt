@@ -31,6 +31,10 @@ data class UiPreferences(
           SortBy.POPULARITY,
           SortDirection.DESC,
         ),
+        ViewableSection.USER_DATA to SortOption(
+          SortBy.CREATED_AT,
+          SortDirection.DESC,
+        ),
       ),
     )
   }

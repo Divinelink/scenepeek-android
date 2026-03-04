@@ -9,7 +9,7 @@ import com.divinelink.core.datastore.auth.accessToken
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListItem
-import com.divinelink.core.model.user.data.UserDataSorting
+import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 
 data class UserListsParameters(
   val page: Int,
-  val sortBy: UserDataSorting = UserDataSorting.DESCENDING,
+  val sortBy: SortDirection = SortDirection.DESC,
 )
 
 class FetchUserListsUseCase(

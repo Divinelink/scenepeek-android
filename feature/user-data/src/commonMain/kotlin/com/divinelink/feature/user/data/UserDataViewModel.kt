@@ -4,13 +4,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.tab.MediaTab
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.model.user.data.UserDataSection
@@ -19,12 +22,16 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class UserDataViewModel(
   private val observeAccountUseCase: ObserveAccountUseCase,
   private val fetchUserDataUseCase: FetchUserDataUseCase,
+  preferencesRepository: PreferencesRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -52,6 +59,7 @@ class UserDataViewModel(
         MediaType.MOVIE to true,
         MediaType.TV to true,
       ),
+      sortOption = SortOption.defaultUserDataSortOption,
     ),
   )
   val uiState: StateFlow<UserDataUiState> = _uiState
@@ -69,18 +77,26 @@ class UserDataViewModel(
               setLoading(MediaType.MOVIE)
               setLoading(MediaType.TV)
             }
-
-            is TMDBAccount.LoggedIn -> {
-              fetchUserData(
-                section = UserDataSection.from(route.section),
-                mediaType = MediaType.TV,
-              )
-              fetchUserData(
-                section = UserDataSection.from(route.section),
-                mediaType = MediaType.MOVIE,
-              )
+            is TMDBAccount.LoggedIn -> preferencesRepository
+              .uiPreferences
+              .mapNotNull { it.sortOption[ViewableSection.USER_DATA] }
+              .distinctUntilChanged()
+              .onEach { sortOption ->
+                _uiState.update { uiState -> uiState.copy(sortOption = sortOption) }
+                resetPages()
+                fetchUserData(
+                  section = UserDataSection.from(route.section),
+                  refresh = true,
+                  mediaType = MediaType.TV,
+                )
+                fetchUserData(
+                  section = UserDataSection.from(route.section),
+                  refresh = true,
+                  mediaType = MediaType.MOVIE,
+                )
+              }
+              .launchIn(viewModelScope)
             }
-          }
         }.onFailure { throwable ->
           updateUiOnFailure(MediaType.TV, throwable)
           updateUiOnFailure(MediaType.MOVIE, throwable)
@@ -99,6 +115,7 @@ class UserDataViewModel(
     if (canFetchMore) {
       fetchUserData(
         section = section,
+        refresh = false,
         mediaType = mediaType,
       )
     }
@@ -117,6 +134,7 @@ class UserDataViewModel(
 
     fetchUserData(
       section = uiState.value.section,
+      refresh = false,
       mediaType = mediaType,
     )
   }
@@ -128,6 +146,7 @@ class UserDataViewModel(
   }
 
   private fun fetchUserData(
+    refresh: Boolean,
     section: UserDataSection,
     mediaType: MediaType,
   ) {
@@ -135,6 +154,7 @@ class UserDataViewModel(
       fetchUserDataUseCase.invoke(
         UserDataParameters(
           page = uiState.value.pages[mediaType] ?: 1,
+          sortOption = uiState.value.sortOption,
           section = section,
           mediaType = mediaType,
         ),
@@ -142,7 +162,10 @@ class UserDataViewModel(
         .collect { result ->
           result
             .onSuccess { response ->
-              updateUiOnSuccess(response)
+              updateUiOnSuccess(
+                refresh = refresh,
+                response = response,
+              )
             }
             .onFailure { throwable ->
               updateUiOnFailure(
@@ -188,7 +211,10 @@ class UserDataViewModel(
     }
   }
 
-  private fun updateUiOnSuccess(response: UserDataResponse) {
+  private fun updateUiOnSuccess(
+    refresh: Boolean,
+    response: UserDataResponse,
+  ) {
     _uiState.update { uiState ->
       val data = (uiState.forms[response.type] as? UserDataForm.Data)?.paginationData
 
@@ -196,9 +222,11 @@ class UserDataViewModel(
         forms = uiState.forms + (
           response.type to UserDataForm.Data(
             mediaType = response.type,
-            paginationData = data?.plus((response.page to response.data)) ?: mapOf(
-              1 to response.data,
-            ),
+            paginationData = if (refresh) {
+              mapOf(1 to response.data)
+            } else {
+              data?.plus((response.page to response.data)) ?: mapOf(1 to response.data)
+            },
             totalResults = response.totalResults,
           )
           ),

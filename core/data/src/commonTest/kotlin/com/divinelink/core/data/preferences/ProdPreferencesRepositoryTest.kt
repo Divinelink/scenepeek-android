@@ -49,6 +49,10 @@ class ProdPreferencesRepositoryTest {
             SortBy.POPULARITY,
             SortDirection.DESC,
           ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
+            SortDirection.DESC,
+          ),
         ),
       )
     }
@@ -77,6 +81,10 @@ class ProdPreferencesRepositoryTest {
           ),
           ViewableSection.DISCOVER_SHOWS to SortOption(
             SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
             SortDirection.DESC,
           ),
         ),
@@ -108,6 +116,10 @@ class ProdPreferencesRepositoryTest {
             SortBy.POPULARITY,
             SortDirection.DESC,
           ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
+            SortDirection.DESC,
+          ),
         ),
       )
 
@@ -135,6 +147,10 @@ class ProdPreferencesRepositoryTest {
           ),
           ViewableSection.DISCOVER_SHOWS to SortOption(
             SortBy.POPULARITY,
+            SortDirection.DESC,
+          ),
+          ViewableSection.USER_DATA to SortOption(
+            SortBy.CREATED_AT,
             SortDirection.DESC,
           ),
         ),

@@ -24,6 +24,7 @@
   <string name="title">Title</string>
   <string name="vote_average">Rating</string>
   <string name="vote_count">Total votes</string>
+  <string name="created_at">Date added</string>
 
   <string name="gender_not_set">-</string>
   <string name="gender_male">Male</string>

@@ -3,6 +3,7 @@ package com.divinelink.core.network.account.service
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.tmdbSessionId
 import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.account.util.buildEpisodeRatingUrl
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
@@ -19,14 +20,14 @@ class ProdAccountService(
 
   override fun fetchMoviesWatchlist(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/movies" +
       "?page=$page" +
       "&session_id=$sessionId" +
-      "&sort_by=created_at.$sortBy"
+      "&sort_by=${sortOption.sortValue}"
 
     val response = restClient.get<MoviesResponseApi>(url = url)
 
@@ -35,14 +36,14 @@ class ProdAccountService(
 
   override fun fetchTvShowsWatchlist(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<TvResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/tv" +
       "?page=$page" +
       "&session_id=$sessionId" +
-      "&sort_by=created_at.$sortBy"
+      "&sort_by=${sortOption.sortValue}"
 
     val response = restClient.get<TvResponseApi>(url = url)
 
@@ -51,14 +52,14 @@ class ProdAccountService(
 
   override fun fetchRatedMovies(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/rated/movies" +
       "?page=$page" +
       "&session_id=$sessionId" +
-      "&sort_by=created_at.$sortBy"
+      "&sort_by=${sortOption.sortValue}"
 
     val response = restClient.get<MoviesResponseApi>(url = url)
 
@@ -67,14 +68,14 @@ class ProdAccountService(
 
   override fun fetchRatedTvShows(
     page: Int,
-    sortBy: String,
+    sortOption: SortOption,
     accountId: String,
     sessionId: String,
   ): Flow<TvResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/rated/tv" +
       "?page=$page" +
       "&session_id=$sessionId" +
-      "&sort_by=created_at.$sortBy"
+      "&sort_by=${sortOption.sortValue}"
 
     val response = restClient.get<TvResponseApi>(url = url)
 

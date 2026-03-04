@@ -2,6 +2,7 @@ package com.divinelink.core.network.account
 
 import app.cash.turbine.test
 import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.account.service.ProdAccountService
 import com.divinelink.core.network.media.model.movie.MovieResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
@@ -43,7 +44,7 @@ class ProdAccountServiceTest {
 
     service.fetchMoviesWatchlist(
       page = 1,
-      sortBy = "desc",
+      sortOption = SortOption.defaultUserDataSortOption,
       accountId = "12345",
       sessionId = "session12345",
     ).test {
@@ -101,7 +102,7 @@ class ProdAccountServiceTest {
 
     service.fetchTvShowsWatchlist(
       page = 1,
-      sortBy = "desc",
+      sortOption = SortOption.defaultUserDataSortOption,
       accountId = "12345",
       sessionId = "session12345",
     ).test {
@@ -155,7 +156,7 @@ class ProdAccountServiceTest {
 
     service.fetchRatedTvShows(
       page = 1,
-      sortBy = "desc",
+      sortOption = SortOption.defaultUserDataSortOption,
       accountId = "12345",
       sessionId = "session12345",
     ).test {
@@ -210,7 +211,7 @@ class ProdAccountServiceTest {
 
     service.fetchRatedMovies(
       page = 1,
-      sortBy = "desc",
+      sortOption = SortOption.defaultUserDataSortOption,
       accountId = "12345",
       sessionId = "session12345",
     ).test {
