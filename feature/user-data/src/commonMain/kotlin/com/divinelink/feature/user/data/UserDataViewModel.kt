@@ -77,26 +77,27 @@ class UserDataViewModel(
               setLoading(MediaType.MOVIE)
               setLoading(MediaType.TV)
             }
-            is TMDBAccount.LoggedIn -> preferencesRepository
-              .uiPreferences
-              .mapNotNull { it.sortOption[ViewableSection.USER_DATA] }
-              .distinctUntilChanged()
-              .onEach { sortOption ->
-                _uiState.update { uiState -> uiState.copy(sortOption = sortOption) }
-                resetPages()
-                fetchUserData(
-                  section = UserDataSection.from(route.section),
-                  refresh = true,
-                  mediaType = MediaType.TV,
-                )
-                fetchUserData(
-                  section = UserDataSection.from(route.section),
-                  refresh = true,
-                  mediaType = MediaType.MOVIE,
-                )
-              }
-              .launchIn(viewModelScope)
-            }
+            is TMDBAccount.LoggedIn ->
+              preferencesRepository
+                .uiPreferences
+                .mapNotNull { it.sortOption[ViewableSection.USER_DATA] }
+                .distinctUntilChanged()
+                .onEach { sortOption ->
+                  _uiState.update { uiState -> uiState.copy(sortOption = sortOption) }
+                  resetPages()
+                  fetchUserData(
+                    section = UserDataSection.from(route.section),
+                    refresh = true,
+                    mediaType = MediaType.TV,
+                  )
+                  fetchUserData(
+                    section = UserDataSection.from(route.section),
+                    refresh = true,
+                    mediaType = MediaType.MOVIE,
+                  )
+                }
+                .launchIn(viewModelScope)
+          }
         }.onFailure { throwable ->
           updateUiOnFailure(MediaType.TV, throwable)
           updateUiOnFailure(MediaType.MOVIE, throwable)

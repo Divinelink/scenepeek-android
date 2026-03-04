@@ -140,9 +140,7 @@ class TestDetailsRepository {
     whenever(mock.findById(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockFetchWatchProviders(
-    response: Result<WatchProviders>,
-  ) {
+  suspend fun mockFetchWatchProviders(response: Result<WatchProviders>) {
     whenever(mock.fetchWatchProviders(any())).thenReturn(response)
   }
 }

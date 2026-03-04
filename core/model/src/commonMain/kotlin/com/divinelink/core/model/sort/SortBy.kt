@@ -21,7 +21,7 @@ enum class SortBy(val value: String, val label: StringResource) {
   TITLE("title", Res.string.title),
   VOTE_AVERAGE("vote_average", Res.string.vote_average),
   VOTE_COUNT("vote_count", Res.string.vote_count),
-  CREATED_AT("created_at", Res.string.created_at)
+  CREATED_AT("created_at", Res.string.created_at),
   ;
 
   companion object {
