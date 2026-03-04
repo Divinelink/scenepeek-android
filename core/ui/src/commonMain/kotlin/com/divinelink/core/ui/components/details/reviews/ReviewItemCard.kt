@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.extensions.markdownToHtml
+import com.divinelink.core.commons.extensions.toLocalDate
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.details.review.ReviewFactory
@@ -32,6 +33,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.extension.getColorRating
+import com.divinelink.core.ui.extension.localizeFull
 import com.divinelink.core.ui.fromHtml
 import com.divinelink.core.ui.text.SimpleExpandingText
 
@@ -62,11 +64,11 @@ fun ReviewItemCard(
           color = MaterialTheme.colorScheme.onSurface,
         )
 
-        review.date?.let {
+        review.date?.toLocalDate().localizeFull()?.let { date ->
           Text(
-            text = it,
+            text = date,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.8f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
         }
       }

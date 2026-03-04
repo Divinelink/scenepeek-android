@@ -9,21 +9,21 @@ object ReviewFactory {
     author = AuthorFactory.eledriel(),
     rating = 10,
     content = loremIpsum(100),
-    date = "13-02-2017",
+    date = "2017-02-13",
   )
 
   fun Review_2() = Review(
     author = AuthorFactory.andreas(),
     rating = 6,
     content = loremIpsum(80),
-    date = "13-02-2018",
+    date = "2018-02-13",
   )
 
   fun Review_3() = Review(
     author = AuthorFactory.john(),
     rating = 9,
     content = loremIpsum(60),
-    date = "13-02-2019",
+    date = "2019-02-13",
   )
 
   fun all() = listOf(
