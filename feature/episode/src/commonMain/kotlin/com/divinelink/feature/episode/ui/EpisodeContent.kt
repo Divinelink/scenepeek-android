@@ -25,6 +25,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -56,6 +57,7 @@ import com.divinelink.core.model.resources.Res as modelRes
 fun SharedTransitionScope.EpisodeContent(
   visibilityScope: AnimatedVisibilityScope,
   uiState: EpisodeUiState,
+  topPadding: Dp,
   onBackdropLoaded: () -> Unit,
   toolbarProgress: (Float) -> Unit,
   onNavigate: (Navigation) -> Unit,
@@ -85,12 +87,14 @@ fun SharedTransitionScope.EpisodeContent(
     posterPath = null,
     toolbarProgress = toolbarProgress,
     onBackdropLoaded = onBackdropLoaded,
+    heightDifference = topPadding,
     onNavigateToMediaPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
     headerContent = {
       Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.Bottom,
       ) {
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_56))
         EpisodeTitleDetails(
           uiState = uiState,
           episode = uiState.episode,
@@ -205,6 +209,7 @@ fun EpisodeContentPreview(
       scope.EpisodeContent(
         visibilityScope = this,
         uiState = state,
+        topPadding = MaterialTheme.dimensions.keyline_0,
         onBackdropLoaded = {},
         toolbarProgress = {},
         onNavigate = {},

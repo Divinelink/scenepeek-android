@@ -69,7 +69,7 @@ fun AppTopAppBar(
           .alpha(alpha),
         text = text.getString(),
         color = contentColor,
-        maxLines = 2,
+        maxLines = 1,
         style = MaterialTheme.typography.titleLarge,
         overflow = TextOverflow.Ellipsis,
       )

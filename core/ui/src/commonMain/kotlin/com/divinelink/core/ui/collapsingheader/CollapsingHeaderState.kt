@@ -15,6 +15,7 @@ import androidx.compose.ui.util.packFloats
 import androidx.compose.ui.util.unpackFloat1
 import androidx.compose.ui.util.unpackFloat2
 import kotlin.jvm.JvmInline
+import kotlin.math.roundToInt
 
 private const val DEFAULT_SNAP_THRESHOLD = 0.25f
 private const val HALF_PROGRESS = 0.5f
@@ -26,6 +27,7 @@ fun rememberCollapsingHeaderState(
   snapThreshold: Float = DEFAULT_SNAP_THRESHOLD,
   initialStatus: CollapsingHeaderStatus = CollapsingHeaderStatus.Expanded,
   flingBehavior: FlingBehavior? = null,
+  heightDifference: Float = 0f,
 ): CollapsingHeaderState = rememberSaveable(
   saver = CollapsingHeaderState.saver(
     collapsedHeight = collapsedHeight,
@@ -38,6 +40,7 @@ fun rememberCollapsingHeaderState(
       snapThreshold = snapThreshold,
       initialStatus = initialStatus,
       flingBehavior = flingBehavior,
+      heightDifference = heightDifference,
     )
   },
 )
@@ -48,6 +51,7 @@ class CollapsingHeaderState(
   initialExpandedHeight: Float,
   internal val snapThreshold: Float,
   initialStatus: CollapsingHeaderStatus = CollapsingHeaderStatus.Expanded,
+  internal val heightDifference: Float = 0f,
   internal val flingBehavior: FlingBehavior? = null,
 ) {
 
@@ -62,7 +66,7 @@ class CollapsingHeaderState(
    * The height of the header when it is fully expanded.
    */
   var expandedHeight: Float
-    get() = Anchors(anchors).expandedHeight
+    get() = Anchors(anchors).expandedHeight - heightDifference
     internal set(value) {
       anchors = createAnchors(
         collapsedHeight = collapsedHeight,
@@ -85,11 +89,11 @@ class CollapsingHeaderState(
     }
 
   val translation: Float
-    get() = expandedHeight - anchoredDraggableState.requireOffset()
+    get() = expandedHeight - anchoredDraggableState.requireOffset() + heightDifference.roundToInt()
 
   val progress: Float
     get() {
-      val range = (expandedHeight - collapsedHeight)
+      val range = (expandedHeight - collapsedHeight + heightDifference)
       return if (range == 0f) 0f else (translation / range).coerceIn(0f, 1f)
     }
 
@@ -119,9 +123,10 @@ class CollapsingHeaderState(
           headerState.expandedHeight,
           headerState.progress,
           headerState.snapThreshold,
+          headerState.heightDifference,
         )
       },
-      restore = { (expandedHeight, progress, snapThreshold) ->
+      restore = { (expandedHeight, progress, snapThreshold, heightDifference) ->
         CollapsingHeaderState(
           collapsedHeight = collapsedHeight,
           initialExpandedHeight = expandedHeight,
@@ -132,6 +137,7 @@ class CollapsingHeaderState(
             CollapsingHeaderStatus.Expanded
           },
           flingBehavior = flingBehavior,
+          heightDifference = heightDifference,
         )
       },
     )

@@ -94,13 +94,12 @@ fun AnimatedVisibilityScope.CollectionsScreen(
     },
     content = {
       Column {
-        if (uiState.backdropPath?.isBlank() == true) {
-          Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
-        }
+        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
         CollectionsContent(
           visibilityScope = this@CollectionsScreen,
           uiState = uiState,
+          topPadding = it.calculateTopPadding(),
           onBackdropLoaded = { onBackdropLoaded = true },
           toolbarProgress = { progress -> toolbarProgress = progress },
           onSwitchPreferences = switchViewButtonViewModel::onAction,

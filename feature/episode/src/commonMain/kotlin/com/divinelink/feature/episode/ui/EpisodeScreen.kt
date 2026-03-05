@@ -107,13 +107,12 @@ fun AnimatedVisibilityScope.EpisodeScreen(
     },
     content = {
       Column {
-        if (uiState.episode?.stillPath?.isBlank() == true) {
-          Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
-        }
+        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
         EpisodeContent(
           visibilityScope = this@EpisodeScreen,
           uiState = uiState,
+          topPadding = it.calculateTopPadding(),
           onBackdropLoaded = { onBackdropLoaded = true },
           toolbarProgress = { progress -> toolbarProgress = progress },
           action = viewModel::onAction,

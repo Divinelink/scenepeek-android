@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.SwitchPreferencesAction
@@ -41,6 +42,7 @@ import com.divinelink.feature.collections.ui.provider.CollectionsUiStateParamete
 fun SharedTransitionScope.CollectionsContent(
   visibilityScope: AnimatedVisibilityScope,
   uiState: CollectionsUiState,
+  topPadding: Dp,
   onBackdropLoaded: () -> Unit,
   toolbarProgress: (Float) -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
@@ -53,6 +55,7 @@ fun SharedTransitionScope.CollectionsContent(
     posterPath = uiState.posterPath,
     toolbarProgress = toolbarProgress,
     onBackdropLoaded = onBackdropLoaded,
+    heightDifference = topPadding,
     onNavigateToMediaPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
     headerContent = {
       Column(
@@ -119,6 +122,7 @@ fun CollectionsContentPreview(
       scope.CollectionsContent(
         visibilityScope = this,
         uiState = state,
+        topPadding = MaterialTheme.dimensions.keyline_0,
         onBackdropLoaded = {},
         toolbarProgress = {},
         onSwitchPreferences = {},

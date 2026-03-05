@@ -93,13 +93,12 @@ fun AnimatedVisibilityScope.SeasonScreen(
     },
     content = {
       Column {
-        if (uiState.backdropPath?.isBlank() == true) {
-          Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
-        }
+        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
         SeasonContent(
           visibilityScope = this@SeasonScreen,
           uiState = uiState,
+          topPadding = it.calculateTopPadding(),
           onBackdropLoaded = { onBackdropLoaded = true },
           toolbarProgress = { progress -> toolbarProgress = progress },
           action = viewModel::onAction,

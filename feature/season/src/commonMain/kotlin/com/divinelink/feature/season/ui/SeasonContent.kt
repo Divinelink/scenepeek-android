@@ -25,6 +25,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.season.SeasonData
@@ -58,6 +59,7 @@ import kotlinx.coroutines.launch
 fun SharedTransitionScope.SeasonContent(
   visibilityScope: AnimatedVisibilityScope,
   uiState: SeasonUiState,
+  topPadding: Dp,
   onBackdropLoaded: () -> Unit,
   toolbarProgress: (Float) -> Unit,
   onNavigate: (Navigation) -> Unit,
@@ -87,6 +89,7 @@ fun SharedTransitionScope.SeasonContent(
     posterPath = uiState.season.posterPath,
     toolbarProgress = toolbarProgress,
     onBackdropLoaded = onBackdropLoaded,
+    heightDifference = topPadding,
     onNavigateToMediaPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
     headerContent = {
       Column(
@@ -196,6 +199,7 @@ fun SeasonContentPreview(
     scope.SeasonContent(
       visibilityScope = this,
       uiState = state,
+      topPadding = MaterialTheme.dimensions.keyline_0,
       onBackdropLoaded = {},
       toolbarProgress = {},
       onNavigate = {},
