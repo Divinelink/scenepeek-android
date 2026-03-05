@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
@@ -23,6 +24,7 @@ fun SharedTransitionScope.DetailCollapsibleContent(
   toolbarProgress: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
   onNavigateToMediaPoster: (String) -> Unit,
+  heightDifference: Dp = MaterialTheme.dimensions.keyline_0,
   headerContent: @Composable () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -31,6 +33,7 @@ fun SharedTransitionScope.DetailCollapsibleContent(
   val collapsingHeaderState = rememberCollapsingHeaderState(
     collapsedHeight = with(density) { MaterialTheme.dimensions.keyline_0.toPx() },
     initialExpandedHeight = with(density) { 400.dp.toPx() },
+    heightDifference = with(density) { heightDifference.toPx() },
   )
 
   LaunchedEffect(collapsingHeaderState.progress) {

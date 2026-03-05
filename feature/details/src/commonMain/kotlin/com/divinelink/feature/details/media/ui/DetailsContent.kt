@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -284,12 +285,11 @@ fun DetailsContent(
     },
     content = { paddingValues ->
       Column {
-        if (viewState.mediaDetails?.backdropPath?.isBlank() == true) {
-          Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
-        }
+        Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
 
         when (viewState.mediaDetails) {
           is Movie, is TV -> MediaDetailsContent(
+            topPadding = paddingValues.calculateTopPadding(),
             uiState = viewState,
             onNavigate = onNavigate,
             visibilityScope = animatedVisibilityScope,
@@ -332,6 +332,7 @@ fun DetailsContent(
 
 @Composable
 private fun SharedTransitionScope.MediaDetailsContent(
+  topPadding: Dp,
   uiState: DetailsViewState,
   visibilityScope: AnimatedVisibilityScope,
   onNavigate: (Navigation) -> Unit,
@@ -372,6 +373,7 @@ private fun SharedTransitionScope.MediaDetailsContent(
   val collapsingHeaderState = rememberCollapsingHeaderState(
     collapsedHeight = with(density) { MaterialTheme.dimensions.keyline_0.toPx() },
     initialExpandedHeight = with(density) { 400.dp.toPx() },
+    heightDifference = with(density) { topPadding.toPx() },
   )
 
   LaunchedEffect(collapsingHeaderState.progress) {
