@@ -57,6 +57,9 @@ class CollectionsViewModel(
                 loading = false,
                 error = null,
                 overview = details.overview,
+                collectionName = details.collection.name,
+                backdropPath = details.collection.backdropPath,
+                posterPath = details.collection.posterPath,
                 movies = details.movies.sortedWith(
                   compareBy<MediaItem.Media.Movie> { it.releaseDate.isBlank() }
                     .thenBy { it.releaseDate.ifBlank { it.name } },
