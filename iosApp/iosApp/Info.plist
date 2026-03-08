@@ -31,5 +31,12 @@
     <string>UIInterfaceOrientationLandscapeLeft</string>
     <string>UIInterfaceOrientationLandscapeRight</string>
   </array>
+
+  <key>CFBundleURLName</key>
+  <string>com.divinelink.scenepeek</string>
+  <key>CFBundleURLSchemes</key>
+  <array>
+    <string>scenepeek.app</string>
+  </array>
 </dict>
 </plist>
