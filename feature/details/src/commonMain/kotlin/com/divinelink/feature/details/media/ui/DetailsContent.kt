@@ -15,11 +15,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
@@ -53,6 +49,7 @@ import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
@@ -74,7 +71,6 @@ import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
-import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
@@ -91,6 +87,7 @@ import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.composition.PreviewLocalProvider
+import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
@@ -122,7 +119,6 @@ fun DetailsContent(
   onAddRateClick: () -> Unit,
   onAddToWatchlistClick: () -> Unit,
   onViewAllCreditsClick: () -> Unit,
-  onObfuscateSpoilers: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
   onTabSelected: (Int) -> Unit,
   onPlayTrailerClick: (String) -> Unit,
@@ -136,7 +132,6 @@ fun DetailsContent(
   val scope = rememberCoroutineScope()
 
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-  var showDropdownMenu by remember { mutableStateOf(false) }
   var toolbarProgress by remember { mutableFloatStateOf(0F) }
   var onBackdropLoaded by remember { mutableStateOf(false) }
   var showRequestModal by remember { mutableStateOf(false) }
@@ -229,27 +224,20 @@ fun DetailsContent(
             inactiveColor = textColor,
           )
 
-          IconButton(
-            modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
-            onClick = { showDropdownMenu = !showDropdownMenu },
-          ) {
-            Icon(
-              imageVector = Icons.Outlined.MoreVert,
-              contentDescription = "More",
-              tint = textColor,
-            )
-          }
-
-          viewState.mediaDetails?.let {
-            DetailsDropdownMenu(
-              mediaDetails = viewState.mediaDetails,
-              expanded = showDropdownMenu,
-              options = viewState.menuOptions,
-              spoilersObfuscated = viewState.spoilersObfuscated,
-              onDismissDropdown = { showDropdownMenu = false },
-              onObfuscateClick = onObfuscateSpoilers,
-            )
-          }
+          DropdownMenuButton(
+            screenType = when (viewState.mediaDetails) {
+              is Movie -> ScreenType.Movie(
+                id = viewState.mediaDetails.id,
+                name = viewState.mediaDetails.title,
+              )
+              is TV -> ScreenType.Show(
+                id = viewState.mediaDetails.id,
+                name = viewState.mediaDetails.title,
+                spoilersObfuscated = viewState.spoilersObfuscated,
+              )
+              null -> ScreenType.Unknown
+            },
+          )
         },
         onNavigateUp = {
           onNavigate(Navigation.Back)
@@ -541,7 +529,7 @@ fun DetailsContentPreview(
               onAddToWatchlistClick = {},
               onPersonClick = {},
               onViewAllCreditsClick = {},
-              onObfuscateSpoilers = {},
+//              onObfuscateSpoilers = {},
               onShowAllRatingsClick = {},
               onTabSelected = {},
               onPlayTrailerClick = {},

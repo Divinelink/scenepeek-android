@@ -10,10 +10,12 @@ kotlin {
       api(projects.core.model)
 
       implementation(projects.core.commons)
+      implementation(projects.core.domain)
       implementation(libs.compose.multiplatform.resources)
 
       implementation(libs.coil)
       implementation(libs.coil.ktor)
+      implementation(libs.koin.compose.viewmodel)
 
       implementation(libs.kotlinx.datetime)
 

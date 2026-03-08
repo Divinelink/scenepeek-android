@@ -6,7 +6,6 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
-import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
@@ -34,7 +33,6 @@ data class DetailsViewState(
   val error: UIText?,
   val snackbarMessage: SnackbarMessage?,
   val navigateToLogin: Boolean?,
-  val menuOptions: List<DetailsMenuOptions>,
   val actionButtons: List<DetailActionItem>,
   val spoilersObfuscated: Boolean,
   val ratingSource: RatingSource,
@@ -63,7 +61,6 @@ data class DetailsViewState(
       error = null,
       snackbarMessage = null,
       navigateToLogin = null,
-      menuOptions = emptyList(),
       actionButtons = emptyList(),
       spoilersObfuscated = false,
       ratingSource = RatingSource.TMDB,

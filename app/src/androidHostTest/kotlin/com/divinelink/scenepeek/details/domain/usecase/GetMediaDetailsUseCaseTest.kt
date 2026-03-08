@@ -16,7 +16,6 @@ import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFa
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory.Tv.betterCallSaul1
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory.Tv.betterCallSaul2
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
-import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingCount
@@ -38,7 +37,6 @@ import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeFetchAccountMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDetailsActionItemsUseCase
-import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
@@ -61,7 +59,6 @@ class GetMediaDetailsUseCaseTest {
   private lateinit var authRepository: TestAuthRepository
 
   private lateinit var fakeFetchAccountMediaDetailsUseCase: FakeFetchAccountMediaDetailsUseCase
-  private lateinit var fakeGetDropdownMenuItemsUseCase: FakeGetDropdownMenuItemsUseCase
   private lateinit var fakeGetDetailsActionItemsUseCase: FakeGetDetailsActionItemsUseCase
   private lateinit var preferenceStorage: FakePreferenceStorage
 
@@ -77,7 +74,6 @@ class GetMediaDetailsUseCaseTest {
     jellyseerrRepository = TestJellyseerrRepository()
     authRepository = TestAuthRepository()
     fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
-    fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     fakeGetDetailsActionItemsUseCase = FakeGetDetailsActionItemsUseCase()
     preferenceStorage = FakePreferenceStorage()
   }
@@ -761,37 +757,6 @@ class GetMediaDetailsUseCaseTest {
   }
 
   @Test
-  fun `test getMenuItemsUseCase with success successfully emits data`() = runTest {
-    val menuItems = listOf(
-      DetailsMenuOptions.SHARE,
-    )
-
-    val expectedResult = Result.success(MediaDetailsResult.MenuOptionsSuccess(menuItems))
-
-    repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
-
-    fakeGetDropdownMenuItemsUseCase.mockSuccess(flowOf(Result.success(menuItems)))
-
-    val useCase = createGetMediaDetailsUseCase()
-
-    useCase(movieRequest).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          MediaDetailsResult.DetailsSuccess(
-            mediaDetails = movieDetails,
-            ratingSource = RatingSource.TMDB,
-          ),
-        ),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
-      assertThat(awaitItem()).isEqualTo(expectedResult)
-      awaitComplete()
-    }
-  }
-
-  @Test
   fun `test getMenuItemsUseCase with failure does not emit data`() = runTest {
     repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
 
@@ -1092,7 +1057,6 @@ class GetMediaDetailsUseCaseTest {
     jellyseerrRepository = jellyseerrRepository.mock,
     dispatcher = testDispatcher,
     fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-    getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
     getDetailsActionItemsUseCase = fakeGetDetailsActionItemsUseCase.mock,
     authRepository = authRepository.mock,
     preferenceStorage = preferenceStorage,

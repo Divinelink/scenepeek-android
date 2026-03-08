@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.person.ui
 
-import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.model.tab.PersonTab
@@ -26,7 +25,6 @@ data class PersonUiState(
     PersonTab.TVShows.order to emptyMap(),
   ),
   val knownForCredits: List<PersonCredit>? = null,
-  val dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
 ) {
   val aboutForm = forms.getOrElse(PersonTab.About.order) { null } as? PersonForm.About
 }

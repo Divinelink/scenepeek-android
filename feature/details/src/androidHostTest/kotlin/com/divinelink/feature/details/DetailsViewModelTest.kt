@@ -24,7 +24,6 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
-import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.media.MediaDetailsResult
@@ -1298,41 +1297,6 @@ class DetailsViewModelTest {
   }
 
   @Test
-  fun `test MediaDetailsResult MenuOption updates menu items`() = runTest {
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-          Result.success(
-            MediaDetailsResult.MenuOptionsSuccess(listOf(DetailsMenuOptions.SHARE)),
-          ),
-        ),
-      )
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel()
-      .assertViewState(
-        createUiState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = movieDetails,
-          menuOptions = listOf(DetailsMenuOptions.SHARE),
-        ),
-      )
-  }
-
-  @Test
   fun `test on CreditsSuccess MediaDetailsResult update tvCredits`() = runTest {
     val credits = AggregatedCreditsFactory.credits()
     testRobot
@@ -1637,48 +1601,6 @@ class DetailsViewModelTest {
             DetailActionItem.ManageTvShow,
           ),
           permissions = ProfilePermission.entries,
-        ),
-      )
-  }
-
-  @Test
-  fun `test obfuscateSpoilers with initially hidden should show them`() = runTest {
-    testRobot
-      .mockFetchMediaDetails(
-        response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
-      )
-      .mockSpoilersObfuscation(false)
-      .withNavArguments(mediaId, MediaType.TV)
-      .buildViewModel()
-      .assertViewState(
-        createUiState(
-          mediaType = MediaType.TV,
-          tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
-            withAbout(DetailsDataFactory.Tv.about())
-            withSeasons(DetailsDataFactory.Tv.seasons())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          mediaDetails = tvDetails,
-          spoilersObfuscated = false,
-        ),
-      )
-      .onObfuscateSpoilers()
-      .assertViewState(
-        createUiState(
-          mediaType = MediaType.TV,
-          tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
-            withAbout(DetailsDataFactory.Tv.about())
-            withSeasons(DetailsDataFactory.Tv.seasons())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          mediaDetails = tvDetails,
-          spoilersObfuscated = true,
         ),
       )
   }
@@ -2940,7 +2862,6 @@ class DetailsViewModelTest {
     forms: DetailsForms = emptyMap(),
     selectedTabIndex: Int = 0,
     ratingSource: RatingSource = RatingSource.TMDB,
-    menuOptions: List<DetailsMenuOptions> = emptyList(),
     spoilersObfuscated: Boolean = false,
     actionButtons: List<DetailActionItem> = emptyList(),
     jellyseerrMediaInfo: JellyseerrMediaInfo? = null,
@@ -2964,7 +2885,6 @@ class DetailsViewModelTest {
     userDetails = userDetails,
     selectedTabIndex = selectedTabIndex,
     ratingSource = ratingSource,
-    menuOptions = menuOptions,
     spoilersObfuscated = spoilersObfuscated,
     actionButtons = actionButtons,
     jellyseerrMediaInfo = jellyseerrMediaInfo,

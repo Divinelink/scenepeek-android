@@ -4,7 +4,6 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.DetailActionItem
-import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
@@ -48,8 +47,6 @@ sealed class MediaDetailsResult {
     data object NotRequested : MediaDetailsResult()
     data class Requested(val info: JellyseerrMediaInfo) : MediaDetailsResult()
   }
-
-  data class MenuOptionsSuccess(val menuOptions: List<DetailsMenuOptions>) : MediaDetailsResult()
 
   data class ActionButtonsSuccess(val actionButtons: List<DetailActionItem>) : MediaDetailsResult()
 

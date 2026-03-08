@@ -24,7 +24,7 @@ class SpoilersObfuscationUseCaseTest {
 
     useCase.invoke(Unit).test {
       assertThat(awaitItem()).isEqualTo(Result.success(false))
-      useCase.setSpoilersObfuscation(true)
+      useCase.setSpoilersObfuscation()
       assertThat(awaitItem()).isEqualTo(Result.success(true))
     }
   }
@@ -40,7 +40,7 @@ class SpoilersObfuscationUseCaseTest {
 
     useCase.invoke(Unit).test {
       assertThat(awaitItem()).isEqualTo(Result.success(true))
-      useCase.setSpoilersObfuscation(false)
+      useCase.setSpoilersObfuscation()
       assertThat(awaitItem()).isEqualTo(Result.success(false))
     }
   }

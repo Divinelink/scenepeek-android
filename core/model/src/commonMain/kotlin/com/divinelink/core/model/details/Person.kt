@@ -13,12 +13,3 @@ data class Person(
   val knownForDepartment: String?,
   val role: List<PersonRole>,
 )
-
-fun Person.shareUrl(): String {
-  val urlName = name
-    .lowercase()
-    .replace(":", "")
-    .replace(regex = "[\\s|/]".toRegex(), replacement = "-")
-
-  return "https://themoviedb.org/person/$id-$urlName"
-}

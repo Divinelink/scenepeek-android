@@ -4,7 +4,6 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.person.KnownForDepartment
@@ -463,7 +462,6 @@ class PersonViewModelTest {
     movies: GroupedPersonCredits = emptyMap(),
     tvShows: GroupedPersonCredits = emptyMap(),
     credits: List<PersonCredit>? = null,
-    dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
     tabs: List<Tab> = PersonTab.entries,
     filters: Map<Int, List<CreditFilter>> = mapOf(
       PersonTab.Movies.order to emptyList(),
@@ -484,7 +482,6 @@ class PersonViewModelTest {
       isLoading = isLoading,
       isError = isError,
       knownForCredits = credits,
-      dropdownMenuItems = dropdownMenuItems,
       selectedTabIndex = selectedTabIndex,
       tabs = tabs,
       forms = forms,

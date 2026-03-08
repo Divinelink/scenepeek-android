@@ -147,10 +147,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     viewModel.onFetchAllRatings()
   }
 
-  fun onObfuscateSpoilers() = apply {
-    viewModel.onObfuscateSpoilers()
-  }
-
   fun onDeleteRequest(id: Int) = apply {
     viewModel.onDeleteRequest(id)
   }
@@ -234,10 +230,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun onMediaSourceClick(source: RatingSource) = apply {
     viewModel.onMediaSourceClick(source)
-  }
-
-  suspend fun mockSpoilersObfuscation(obfuscated: Boolean) = apply {
-    spoilersObfuscationUseCase.setSpoilersObfuscation(obfuscated)
   }
 
   fun mockFetchAllRatingsUseCase(response: Channel<Result<Pair<RatingSource, RatingDetails>>>) =

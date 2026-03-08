@@ -13,7 +13,6 @@ import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
-import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.media.MediaDetailsResult
@@ -44,7 +43,6 @@ open class GetMediaDetailsUseCase(
   private val preferenceStorage: PreferenceStorage,
   private val authRepository: AuthRepository,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
-  private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   private val getDetailsActionItemsUseCase: GetDetailsActionItemsUseCase,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<MediaRequestApi, MediaDetailsResult>(dispatcher.default) {
@@ -242,16 +240,6 @@ open class GetMediaDetailsUseCase(
           .collect { result ->
             result.onSuccess {
               send(Result.success(MediaDetailsResult.AccountDetailsSuccess(result.data)))
-            }
-          }
-      }
-
-      launch(dispatcher.default) {
-        getMenuItemsUseCase(requestApi.mediaType)
-          .catch { Napier.e("$it") }
-          .collect { result ->
-            result.onSuccess {
-              send(Result.success(MediaDetailsResult.MenuOptionsSuccess(result.data)))
             }
           }
       }
