@@ -47,7 +47,9 @@ class ActionMenuViewModel(
   fun onAction(intent: ActionMenuIntent) {
     when (intent) {
       ActionMenuIntent.Share -> viewModelScope.launch {
-        _shareUrl.send(_uiState.value.media.shareUrl())
+        _shareUrl.send(
+          _uiState.value.media.shareUrl(domain = "themoviedb.org"),
+        )
       }
       ActionMenuIntent.AddToList -> viewModelScope.launch {
         _addToList.send(_uiState.value.media)

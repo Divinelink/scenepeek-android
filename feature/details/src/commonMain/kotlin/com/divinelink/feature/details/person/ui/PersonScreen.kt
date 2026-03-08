@@ -7,26 +7,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
@@ -34,9 +29,9 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
-import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.menu.DropdownMenuButton
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +44,6 @@ fun PersonScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-  var showDropdownMenu by remember { mutableStateOf(false) }
   var toolbarProgress by remember { mutableFloatStateOf(0F) }
 
   val scope = rememberCoroutineScope()
@@ -76,17 +70,11 @@ fun PersonScreen(
             scrolledContainerColor = Color.Transparent,
           ),
           actions = {
-            IconButton(
-              modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
-              onClick = { showDropdownMenu = !showDropdownMenu },
-            ) {
-              Icon(Icons.Outlined.MoreVert, "More")
-            }
-
-            PersonDropdownMenu(
-              person = (personDetails as PersonDetailsUiState.Data).personDetails.person,
-              expanded = showDropdownMenu,
-              onDismissDropdown = { showDropdownMenu = false },
+            DropdownMenuButton(
+              screenType = ScreenType.Person(
+                id = (personDetails as PersonDetailsUiState.Data).personDetails.person.id.toInt(),
+                name = (personDetails as PersonDetailsUiState.Data).personDetails.person.name,
+              ),
             )
           },
         )

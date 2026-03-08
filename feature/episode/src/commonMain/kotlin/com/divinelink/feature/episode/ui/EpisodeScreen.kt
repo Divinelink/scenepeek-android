@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.rememberSystemUiController
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -28,6 +29,7 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.AppTopAppBar
+import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.episode.EpisodeAction
 import com.divinelink.feature.episode.EpisodeViewModel
@@ -103,6 +105,16 @@ fun AnimatedVisibilityScope.EpisodeScreen(
           containerColor = Color.Transparent,
           scrolledContainerColor = Color.Transparent,
         ),
+        actions = {
+          DropdownMenuButton(
+            screenType = ScreenType.Episode(
+              id = uiState.showId,
+              name = uiState.showTitle,
+              seasonNumber = uiState.seasonNumber,
+              episodeNumber = uiState.episode?.number ?: -1,
+            ),
+          )
+        },
       )
     },
     content = {

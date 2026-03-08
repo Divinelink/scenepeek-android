@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.rememberSystemUiController
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -28,6 +29,7 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.AppTopAppBar
+import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.feature.collections.CollectionsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -90,6 +92,14 @@ fun AnimatedVisibilityScope.CollectionsScreen(
           containerColor = Color.Transparent,
           scrolledContainerColor = Color.Transparent,
         ),
+        actions = {
+          DropdownMenuButton(
+            screenType = ScreenType.Collection(
+              id = uiState.id,
+              name = uiState.collectionName,
+            ),
+          )
+        },
       )
     },
     content = {

@@ -334,13 +334,6 @@ class DetailsViewModel(
                 )
               }
 
-              is MediaDetailsResult.MenuOptionsSuccess -> {
-                val successData = (result.data as MediaDetailsResult.MenuOptionsSuccess)
-                viewState.copy(
-                  menuOptions = successData.menuOptions,
-                )
-              }
-
               is MediaDetailsResult.ActionButtonsSuccess -> {
                 val successData = (result.data as MediaDetailsResult.ActionButtonsSuccess)
                 viewState.copy(
@@ -602,14 +595,6 @@ class DetailsViewModel(
           seasons = updatedForms.second,
           permissions = viewState.permissions,
         ),
-      )
-    }
-  }
-
-  fun onObfuscateSpoilers() {
-    viewModelScope.launch {
-      spoilersObfuscationUseCase.setSpoilersObfuscation(
-        !viewState.value.spoilersObfuscated,
       )
     }
   }

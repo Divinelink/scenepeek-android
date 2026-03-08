@@ -127,7 +127,6 @@ fun DetailsScreen(
       onConsumeSnackbar = viewModel::consumeSnackbarMessage,
       onAddRateClick = { openRateBottomSheet = true },
       onAddToWatchlistClick = viewModel::onAddToWatchlist,
-      onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
       onViewAllCreditsClick = {
         viewState.mediaDetails?.id?.let { id ->
           onNavigate(
