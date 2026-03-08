@@ -50,7 +50,7 @@ fun DropdownMenuButton(
     Icon(imageVector = Icons.Outlined.MoreVert, contentDescription = "Show actions")
   }
 
-  if (showDropdownMenu) {
+  if (showDropdownMenu && uiState.availableIntents.isNotEmpty()) {
     DropdownMenu(
       modifier = Modifier
         .widthIn(min = 180.dp)

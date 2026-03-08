@@ -17,6 +17,7 @@ import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -28,6 +29,7 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.toWizard
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.person.Gender
@@ -39,19 +41,27 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
+import com.divinelink.core.ui.menu.DropdownMenuViewModel
 import com.divinelink.core.ui.resources.core_ui_filter_button_content_desc
 import com.divinelink.core.ui.resources.core_ui_movie_image_placeholder
 import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.Channel
 import org.jetbrains.compose.resources.getString
+import org.junit.Rule
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.mock.declare
+import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -68,8 +78,28 @@ class PersonScreenTest : ComposeTest() {
     repository = preferencesRepository,
   )
 
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+
   @BeforeTest
   override fun setUp() {
+    startKoin {
+      // Do nothing
+    }
+
+    declare {
+      DropdownMenuViewModel(
+        entryPoint = ScreenType.Person(
+          id = PersonDetailsFactory.steveCarell().person.id.toInt(),
+          name = PersonDetailsFactory.steveCarell().person.name,
+        ),
+        spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
+          preferenceStorage = FakePreferenceStorage(spoilersObfuscation = true),
+          dispatcherProvider = mainDispatcherRule.testDispatcher,
+        ),
+      )
+    }
+
     navArgs = PersonRoute(
       id = PersonDetailsFactory.steveCarell().person.id,
       knownForDepartment = null,
@@ -88,6 +118,11 @@ class PersonScreenTest : ComposeTest() {
         "gender" to navArgs.gender,
       ),
     )
+  }
+
+  @AfterTest
+  fun tearDown() {
+    stopKoin()
   }
 
   @Test

@@ -27,8 +27,8 @@ data class DropDownMenuUiState(
       DropdownMenuIntent.Share,
     )
     is ScreenType.Show -> listOf(
-      DropdownMenuIntent.Share,
       DropdownMenuIntent.ShowOrHideSpoilers(entryPoint.spoilersObfuscated),
+      DropdownMenuIntent.Share,
     )
     is ScreenType.Season -> listOf(
       DropdownMenuIntent.Share,

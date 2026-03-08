@@ -15,6 +15,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.media.DetailsDataFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory
@@ -33,6 +34,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanc
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.LCEState
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
@@ -51,10 +53,12 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
@@ -62,6 +66,7 @@ import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.menu.DropdownMenuViewModel
 import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.core_ui_add_to_watchlist_content_desc
 import com.divinelink.core.ui.resources.core_ui_hide_total_episodes_item
@@ -80,6 +85,7 @@ import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.google.common.truth.Truth.assertThat
 import org.jetbrains.compose.resources.getString
+import org.junit.Rule
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.mock.declare
@@ -91,10 +97,28 @@ class DetailsContentTest : ComposeTest() {
 
   private val reviews = ReviewFactory.ReviewList()
 
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+
+  private val spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
+    preferenceStorage = FakePreferenceStorage(spoilersObfuscation = false),
+    dispatcherProvider = mainDispatcherRule.testDispatcher,
+  )
+
   @BeforeTest
   fun setup() {
     startKoin {
       // Do nothing
+    }
+
+    declare {
+      DropdownMenuViewModel(
+        entryPoint = ScreenType.Movie(
+          id = 0,
+          name = "",
+        ),
+        spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      )
     }
   }
 
@@ -106,6 +130,7 @@ class DetailsContentTest : ComposeTest() {
   @Test
   fun clickMarkAsFavoriteTest() = uiTest {
     var hasClickedMarkAsFavorite = false
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
@@ -802,16 +827,28 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test on obfuscate spoilers when initial is shown`() = uiTest {
-    var hasClickedObfuscateSpoilers = false
+    declare {
+      DropdownMenuViewModel(
+        entryPoint = ScreenType.Show(
+          id = MediaDetailsFactory.TheOffice().id,
+          name = MediaDetailsFactory.TheOffice().title,
+          spoilersObfuscated = true,
+        ),
+        spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
+          preferenceStorage = FakePreferenceStorage(spoilersObfuscation = true),
+          dispatcherProvider = mainDispatcherRule.testDispatcher,
+        ),
+      )
+    }
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
-          mediaType = MediaType.MOVIE,
-          mediaDetails = MediaDetailsFactory.FightClub(),
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
-          spoilersObfuscated = false,
+          mediaId = MediaDetailsFactory.TheOffice().id,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.empty(),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -834,24 +871,30 @@ class DetailsContentTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
     onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
-    onNodeWithTag(
-      TestTags.Menu.item(getString(UiString.core_ui_hide_total_episodes_item)),
-    )
+    onNodeWithTag(TestTags.Menu.item(getString(UiString.core_ui_hide_total_episodes_item)))
       .assertIsDisplayed()
       .performClick()
-
-    assertThat(hasClickedObfuscateSpoilers).isTrue()
   }
 
   @Test
   fun `test on obfuscate spoilers when initially is hidden`() = uiTest {
-    var hasClickedObfuscateSpoilers = false
+    declare {
+      DropdownMenuViewModel(
+        entryPoint = ScreenType.Show(
+          id = MediaDetailsFactory.TheOffice().id,
+          name = MediaDetailsFactory.TheOffice().title,
+          spoilersObfuscated = true,
+        ),
+        spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      )
+    }
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
-          mediaType = MediaType.MOVIE,
-          mediaDetails = MediaDetailsFactory.FightClub(),
+          mediaId = MediaDetailsFactory.TheOffice().id,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.empty(),
           spoilersObfuscated = true,
@@ -882,8 +925,6 @@ class DetailsContentTest : ComposeTest() {
     )
       .assertIsDisplayed()
       .performClick()
-
-    assertThat(hasClickedObfuscateSpoilers).isTrue()
   }
 
   @Test

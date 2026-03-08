@@ -18,6 +18,7 @@ import androidx.compose.ui.test.swipeUp
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
@@ -34,6 +35,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanc
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingDetails
@@ -53,6 +55,7 @@ import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeDeleteRatingUseCase
@@ -69,6 +72,7 @@ import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.menu.DropdownMenuViewModel
 import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.core_ui_delete
 import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
@@ -128,6 +132,18 @@ class DetailsScreenTest : ComposeTest() {
   fun setup() {
     startKoin {
       // Do nothing
+    }
+    declare {
+      DropdownMenuViewModel(
+        entryPoint = ScreenType.Movie(
+          id = MediaDetailsFactory.FightClub().id,
+          name = MediaDetailsFactory.FightClub().title,
+        ),
+        spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
+          preferenceStorage = FakePreferenceStorage(spoilersObfuscation = true),
+          dispatcherProvider = mainDispatcherRule.testDispatcher,
+        ),
+      )
     }
   }
 
