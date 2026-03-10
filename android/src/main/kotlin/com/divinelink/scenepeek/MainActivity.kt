@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
         networkMonitor = viewModel.networkMonitor,
         preferencesRepository = viewModel.preferencesRepository,
         navigationProvider = viewModel.navigationProviders,
+        appInfoRepository = viewModel.appInfoRepository,
       )
 
       ScenePeekApp(

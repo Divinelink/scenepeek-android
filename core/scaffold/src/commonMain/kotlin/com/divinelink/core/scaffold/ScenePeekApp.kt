@@ -41,6 +41,7 @@ fun ScenePeekApp(
 ) {
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
+  val updateAvailable by state.updateAvailable.collectAsStateWithLifecycle()
   val isFirstLaunch by state.isInitialOnboarding.collectAsStateWithLifecycle()
   val theme by state.themePreferences.collectAsStateWithLifecycle()
 
@@ -88,6 +89,12 @@ fun ScenePeekApp(
   LaunchedEffect(showOnboarding) {
     if (showOnboarding) {
       state.navController.navigateToOnboarding(fullscreen = isFirstLaunch)
+    }
+  }
+
+  LaunchedEffect(updateAvailable) {
+    if (updateAvailable) {
+      // TODO
     }
   }
 

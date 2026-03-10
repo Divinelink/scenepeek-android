@@ -6,5 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AppInfoRepository {
 
+  val updateAvailable: Flow<Boolean>
+
   fun fetchLatestAppVersion(): Flow<Resource<AppVersion?>>
 }

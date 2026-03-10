@@ -9,6 +9,7 @@ import com.divinelink.core.network.Resource
 import com.divinelink.core.network.app.AppInfoService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlin.time.Clock
 
@@ -18,6 +19,8 @@ class ProdAppInfoRepository(
   private val buildConfigProvider: BuildConfigProvider,
   private val clock: Clock,
 ) : AppInfoRepository {
+
+  private val _updateAvailable: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
   override fun fetchLatestAppVersion(): Flow<Resource<AppVersion?>> = networkBoundResource(
     query = {
@@ -47,8 +50,14 @@ class ProdAppInfoRepository(
           latestVersion = latestVersion,
           currentEpochSeconds = clock.currentEpochSeconds(),
         )
+
+        _updateAvailable.emit(
+          buildConfigProvider.versionName < latestVersion,
+        )
       }
     },
     shouldFetch = { it?.canSearchForUpdate == null || it.canSearchForUpdate },
   )
+
+  override val updateAvailable: Flow<Boolean> = _updateAvailable
 }

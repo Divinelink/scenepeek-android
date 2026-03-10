@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
@@ -224,6 +225,7 @@ private fun ExpandableFloatingActionButton() {
     networkMonitor = TestNetworkMonitor(),
     onboardingManager = TestOnboardingManager(),
     preferencesRepository = TestPreferencesRepository(),
+    appInfoRepository = TestAppInfoRepository(),
     navigationProvider = emptyList(),
   )
 

@@ -52,6 +52,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
@@ -448,6 +449,7 @@ fun PersonContentListPreview(
         viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
       ),
     ),
+    appInfoRepository = TestAppInfoRepository(),
     navigationProvider = emptyList(),
   )
 
@@ -480,6 +482,7 @@ fun PersonContentGridPreview() {
         viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
       ),
     ),
+    appInfoRepository = TestAppInfoRepository(),
     navigationProvider = emptyList(),
   )
   ProvideScenePeekAppState(appState = appState) {

@@ -5,6 +5,6 @@ data class AppVersion(
   val latestVersion: String,
   val canSearchForUpdate: Boolean,
 ) {
-  val hasNewUpdate
+  val updateAvailable
     get() = currentVersion < latestVersion
 }

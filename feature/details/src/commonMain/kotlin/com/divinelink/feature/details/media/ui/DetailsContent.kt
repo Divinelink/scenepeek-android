@@ -47,6 +47,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.rememberSystemUiController
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.ScreenType
@@ -508,6 +509,7 @@ fun DetailsContentPreview(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = TestPreferencesRepository(),
+      appInfoRepository = TestAppInfoRepository(),
       navigationProvider = emptyList(),
     )
 
@@ -529,7 +531,6 @@ fun DetailsContentPreview(
               onAddToWatchlistClick = {},
               onPersonClick = {},
               onViewAllCreditsClick = {},
-//              onObfuscateSpoilers = {},
               onShowAllRatingsClick = {},
               onTabSelected = {},
               onPlayTrailerClick = {},
