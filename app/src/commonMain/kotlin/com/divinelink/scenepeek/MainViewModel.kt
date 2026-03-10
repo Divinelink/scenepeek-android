@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
 import com.divinelink.core.commons.extensions.extractDetailsFromScenePeekDeepLink
 import com.divinelink.core.commons.extensions.extractDetailsFromTMDBDeepLink
+import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FindByIdUseCase
@@ -19,6 +20,7 @@ import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -33,6 +35,7 @@ class MainViewModel(
   val onboardingManager: OnboardingManager,
   val preferencesRepository: PreferencesRepository,
   val navigationProviders: List<NavGraphExtension>,
+  val appInfoRepository: AppInfoRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
@@ -43,6 +46,17 @@ class MainViewModel(
 
   init {
     refreshJellyseerrSession()
+
+    viewModelScope.launch {
+      appInfoRepository.fetchLatestAppVersion().fold(
+        onSuccess = { result ->
+          Napier.d { result.toString() }
+        },
+        onFailure = {
+          Napier.d { it.message.toString() }
+        },
+      )
+    }
   }
 
   private fun updateUiEvent(event: MainUiEvent) {

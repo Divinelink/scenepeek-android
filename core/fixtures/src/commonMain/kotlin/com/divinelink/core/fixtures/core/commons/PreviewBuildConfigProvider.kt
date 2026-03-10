@@ -8,4 +8,5 @@ class PreviewBuildConfigProvider : BuildConfigProvider {
   override val versionCode: Int = 25
   override val versionName: String = "0.17.0"
   override val versionData: String = "0.17.0 25"
+  override val versionCheckerUrl: String? = null
 }

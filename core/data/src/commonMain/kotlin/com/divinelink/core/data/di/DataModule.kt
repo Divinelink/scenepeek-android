@@ -3,6 +3,8 @@ package com.divinelink.core.data.di
 import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.account.ProdAccountRepository
+import com.divinelink.core.data.app.AppInfoRepository
+import com.divinelink.core.data.app.ProdAppInfoRepository
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.auth.ProdAuthRepository
 import com.divinelink.core.data.details.repository.DetailsRepository
@@ -36,5 +38,6 @@ val dataModule = module {
   singleOf(::ProdPersonRepository) { bind<PersonRepository>() }
   singleOf(::ProdPreferencesRepository) { bind<PreferencesRepository>() }
   singleOf(::ProdAuthRepository) { bind<AuthRepository>() }
+  singleOf(::ProdAppInfoRepository) { bind<AppInfoRepository>() }
   singleOf(::FilterRepository)
 }

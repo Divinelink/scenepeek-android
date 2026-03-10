@@ -5,4 +5,5 @@ object AndroidConstants {
   val isDebug: Boolean = BuildConfig.DEBUG
   const val VERSION_NAME: String = BuildConfig.VERSION_NAME
   const val BUILD_TYPE: String = BuildConfig.BUILD_TYPE
+  const val VERSION_CHECKER_URL: String = BuildConfig.VERSION_CHECKER_URL
 }
