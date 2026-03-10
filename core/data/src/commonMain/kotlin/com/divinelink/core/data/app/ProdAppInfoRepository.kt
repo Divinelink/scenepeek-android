@@ -20,44 +20,49 @@ class ProdAppInfoRepository(
   private val clock: Clock,
 ) : AppInfoRepository {
 
-  private val _updateAvailable: MutableStateFlow<Boolean> = MutableStateFlow(false)
+  private val _updateAvailable: MutableStateFlow<AppVersion?> = MutableStateFlow(null)
 
-  override fun fetchLatestAppVersion(): Flow<Resource<AppVersion?>> = networkBoundResource(
-    query = {
-      flowOf(
-        dao.fetchAppVersion()?.map(
-          clock = clock,
-          defaultVersion = buildConfigProvider.versionName,
-        ),
-      )
-    },
-    fetch = {
-      buildConfigProvider.versionCheckerUrl?.let { url ->
+  override fun fetchLatestAppVersion(fetchRemote: Boolean): Flow<Resource<AppVersion?>> =
+    networkBoundResource(
+      query = {
+        flowOf(
+          dao.fetchAppVersion()?.map(
+            clock = clock,
+            defaultVersion = buildConfigProvider.versionName,
+          ),
+        )
+      },
+      fetch = {
         service
-          .fetchLatestAppVersion(url = url)
+          .fetchLatestAppVersion(url = buildConfigProvider.versionCheckerUrl)
           .map { response ->
             val regex = Regex("""\[\["(\d+\.\d+[\d.]*)"]]""")
             regex.find(response)?.groupValues?.lastOrNull()
           }
-      } ?: Result.success(null)
-    },
-    saveFetchResult = {
-      val latestVersion = it.getOrNull()
+      },
+      saveFetchResult = {
+        val latestVersion = it.getOrNull()
 
-      latestVersion?.let {
-        dao.updateAppVersion(
-          currentVersion = buildConfigProvider.versionName,
-          latestVersion = latestVersion,
-          currentEpochSeconds = clock.currentEpochSeconds(),
-        )
+        latestVersion?.let {
+          dao.updateAppVersion(
+            currentVersion = buildConfigProvider.versionName,
+            latestVersion = latestVersion,
+            currentEpochSeconds = clock.currentEpochSeconds(),
+          )
 
-        _updateAvailable.emit(
-          buildConfigProvider.versionName < latestVersion,
-        )
-      }
-    },
-    shouldFetch = { it?.canSearchForUpdate == null || it.canSearchForUpdate },
-  )
+          val appVersion = AppVersion(
+            currentVersion = buildConfigProvider.versionName,
+            latestVersion = latestVersion,
+            canSearchForUpdate = false,
+          )
 
-  override val updateAvailable: Flow<Boolean> = _updateAvailable
+          _updateAvailable.emit(appVersion)
+        }
+      },
+      shouldFetch = {
+        (it?.canSearchForUpdate == null || it.canSearchForUpdate) && fetchRemote
+      },
+    )
+
+  override val updateAvailable: Flow<AppVersion?> = _updateAvailable
 }

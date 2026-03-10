@@ -51,7 +51,7 @@ class MainViewModel(
     refreshJellyseerrSession()
 
     appInfoRepository
-      .fetchLatestAppVersion()
+      .fetchLatestAppVersion(fetchRemote = true)
       .distinctUntilChanged()
       .onEach { result ->
         when (result) {

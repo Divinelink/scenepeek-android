@@ -28,6 +28,7 @@ import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettings
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
+import com.divinelink.feature.updater.UpdaterViewModel
 import com.divinelink.feature.user.data.UserDataViewModel
 import com.divinelink.scenepeek.MainViewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -62,6 +63,7 @@ val appViewModelModule = module {
   viewModelOf(::MediaListsViewModel)
   viewModelOf(::SeasonViewModel)
   viewModelOf(::EpisodeViewModel)
+  viewModelOf(::UpdaterViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

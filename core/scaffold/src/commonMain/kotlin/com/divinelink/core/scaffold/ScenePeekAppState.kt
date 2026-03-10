@@ -83,7 +83,7 @@ class ScenePeekAppState internal constructor(
   val updateAvailable = appInfoRepository.updateAvailable.stateIn(
     scope = scope,
     started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
-    initialValue = false,
+    initialValue = null,
   )
 
   val isInitialOnboarding = onboardingManager.isInitialOnboarding

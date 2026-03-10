@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class TestAppInfoRepository : AppInfoRepository {
-  override val updateAvailable: Flow<Boolean>
-    get() = flowOf(false)
+  override val updateAvailable: Flow<AppVersion?>
+    get() = flowOf(null)
 
-  override fun fetchLatestAppVersion(): Flow<Resource<AppVersion?>> {
+  override fun fetchLatestAppVersion(fetchRemote: Boolean): Flow<Resource<AppVersion?>> {
     return flowOf(Resource.Loading(null))
   }
 }

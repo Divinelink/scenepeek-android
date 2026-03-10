@@ -170,4 +170,7 @@ sealed interface Navigation {
     val backdropPath: String?,
     val posterPath: String?,
   ) : Navigation
+
+  @Serializable
+  data object UpdaterRoute : Navigation
 }
