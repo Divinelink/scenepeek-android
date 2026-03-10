@@ -1,6 +1,8 @@
 package com.divinelink.core.database.di
 
 import com.divinelink.core.database.Database
+import com.divinelink.core.database.app.dao.AppInfoDao
+import com.divinelink.core.database.app.dao.ProdAppInfoDao
 import com.divinelink.core.database.credits.dao.CreditsDao
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.database.list.ListDao
@@ -21,4 +23,5 @@ val databaseModule = module {
   singleOf(::ProdPersonDao) { bind<PersonDao>() }
   singleOf(::ProdListDao) { bind<ListDao>() }
   singleOf(::ProdMediaDao) { bind<MediaDao>() }
+  singleOf(::ProdAppInfoDao) { bind<AppInfoDao>() }
 }

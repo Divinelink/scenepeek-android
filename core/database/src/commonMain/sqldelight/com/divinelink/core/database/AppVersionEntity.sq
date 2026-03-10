@@ -1,0 +1,18 @@
+CREATE TABLE AppVersionEntity (
+  id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  currentVersion TEXT,
+  latestVersion TEXT,
+  lastCheck TEXT
+);
+
+updateAppVersion:
+INSERT OR REPLACE INTO AppVersionEntity (
+  id,
+  currentVersion,
+  latestVersion,
+  lastCheck
+)
+VALUES (1,?,?,?);
+
+fetchAppVersion:
+SELECT * FROM AppVersionEntity;
