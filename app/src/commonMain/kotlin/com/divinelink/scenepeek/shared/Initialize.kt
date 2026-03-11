@@ -3,7 +3,7 @@ package com.divinelink.scenepeek.shared
 import com.divinelink.core.commons.di.commonModule
 import com.divinelink.core.commons.di.dispatcherModule
 import com.divinelink.core.data.di.dataModule
-import com.divinelink.core.data.di.networkMonitorModule
+import com.divinelink.core.data.di.sharedDataModule
 import com.divinelink.core.database.di.databaseModule
 import com.divinelink.core.database.di.sqlDriverModule
 import com.divinelink.core.datastore.di.storageModule
@@ -47,7 +47,7 @@ fun KoinApplication.configKoinModules() {
     useCaseModule,
     storageModule,
     navigationModule,
-    networkMonitorModule,
+    sharedDataModule,
   )
 }
 

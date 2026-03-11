@@ -18,41 +18,48 @@ class ProdAppInfoRepository(
   private val dao: AppInfoDao,
   private val buildConfigProvider: BuildConfigProvider,
   private val clock: Clock,
+  private val installSourceDetector: InstallSourceDetector,
 ) : AppInfoRepository {
 
   private val _updateAvailable: MutableStateFlow<AppVersion?> = MutableStateFlow(null)
 
-  override fun fetchLatestAppVersion(fetchRemote: Boolean): Flow<Resource<AppVersion?>> =
-    networkBoundResource(
+  override fun fetchLatestAppVersion(fetchRemote: Boolean): Flow<Resource<AppVersion?>> {
+    val installSource = installSourceDetector.getInstallSource()
+
+    return networkBoundResource(
       query = {
         flowOf(
           dao.fetchAppVersion()?.map(
             clock = clock,
             defaultVersion = buildConfigProvider.versionName,
+            installSource = installSource,
           ),
         )
       },
       fetch = {
-        service
-          .fetchLatestAppVersion(url = buildConfigProvider.versionCheckerUrl)
-          .map { response ->
-            val regex = Regex("""\[\["(\d+\.\d+[\d.]*)"]]""")
-            regex.find(response)?.groupValues?.lastOrNull()
-          }
+        installSource.versionCheckUrl?.let { versionCheckUrl ->
+          service
+            .fetchLatestAppVersion(url = versionCheckUrl)
+            .map { response ->
+              val regex = Regex(installSource.versionRegex)
+              regex.find(response)?.groupValues?.lastOrNull()
+            }
+        }
       },
       saveFetchResult = {
-        val latestVersion = it.getOrNull()
+        val latestVersion = it?.getOrNull()
 
         latestVersion?.let {
           dao.updateAppVersion(
             currentVersion = buildConfigProvider.versionName,
-            latestVersion = latestVersion,
+            latestVersion = latestVersion.trimStart { char -> char == 'v' },
             currentEpochSeconds = clock.currentEpochSeconds(),
           )
 
           val appVersion = AppVersion(
             currentVersion = buildConfigProvider.versionName,
             latestVersion = latestVersion,
+            installSource = installSource,
             canSearchForUpdate = false,
           )
 
@@ -63,6 +70,7 @@ class ProdAppInfoRepository(
         (it?.canSearchForUpdate == null || it.canSearchForUpdate) && fetchRemote
       },
     )
+  }
 
   override val updateAvailable: Flow<AppVersion?> = _updateAvailable
 }

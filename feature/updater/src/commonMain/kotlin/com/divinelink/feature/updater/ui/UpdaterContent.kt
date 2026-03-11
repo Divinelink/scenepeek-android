@@ -22,7 +22,6 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
-import com.divinelink.core.ui.rememberConfigProvider
 import com.divinelink.core.ui.resources.core_ui_cancel
 import com.divinelink.core.ui.resources.core_ui_update
 import com.divinelink.feature.updater.Res
@@ -41,7 +40,6 @@ fun UpdaterContent(
   action: (UpdaterAction) -> Unit,
 ) {
   val urlHandler = rememberUrlHandler()
-  val config = rememberConfigProvider()
 
   LazyColumn(
     modifier = Modifier.fillMaxWidth(),
@@ -98,13 +96,13 @@ fun UpdaterContent(
               Text(text = stringResource(UiString.core_ui_cancel))
             }
 
-            Button(
-              modifier = Modifier.weight(1f),
-              onClick = {
-                urlHandler.openUrl(config.versionCheckerUrl)
-              },
-            ) {
-              Text(text = stringResource(UiString.core_ui_update))
+            uiState.appVersion.data.installSource.versionCheckUrl?.let { url ->
+              Button(
+                modifier = Modifier.weight(1f),
+                onClick = { urlHandler.openUrl(url) },
+              ) {
+                Text(text = stringResource(UiString.core_ui_update))
+              }
             }
           }
         }
