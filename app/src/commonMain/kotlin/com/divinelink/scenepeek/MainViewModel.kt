@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
 import com.divinelink.core.commons.extensions.extractDetailsFromScenePeekDeepLink
 import com.divinelink.core.commons.extensions.extractDetailsFromTMDBDeepLink
+import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FindByIdUseCase
@@ -33,6 +34,7 @@ class MainViewModel(
   val onboardingManager: OnboardingManager,
   val preferencesRepository: PreferencesRepository,
   val navigationProviders: List<NavGraphExtension>,
+  val appInfoRepository: AppInfoRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
@@ -43,6 +45,10 @@ class MainViewModel(
 
   init {
     refreshJellyseerrSession()
+
+    appInfoRepository
+      .fetchLatestAppVersion(fetchRemote = true)
+      .launchIn(viewModelScope)
   }
 
   private fun updateUiEvent(event: MainUiEvent) {

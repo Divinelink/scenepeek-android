@@ -21,6 +21,7 @@ import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToOnboarding
 import com.divinelink.core.navigation.route.navigateToPerson
+import com.divinelink.core.navigation.route.openUpdaterModal
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.components.LoadingContent
@@ -41,6 +42,7 @@ fun ScenePeekApp(
 ) {
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
+  val updateAvailable by state.updateAvailable.collectAsStateWithLifecycle()
   val isFirstLaunch by state.isInitialOnboarding.collectAsStateWithLifecycle()
   val theme by state.themePreferences.collectAsStateWithLifecycle()
 
@@ -88,6 +90,12 @@ fun ScenePeekApp(
   LaunchedEffect(showOnboarding) {
     if (showOnboarding) {
       state.navController.navigateToOnboarding(fullscreen = isFirstLaunch)
+    }
+  }
+
+  LaunchedEffect(updateAvailable) {
+    updateAvailable?.let {
+      state.navController.openUpdaterModal()
     }
   }
 

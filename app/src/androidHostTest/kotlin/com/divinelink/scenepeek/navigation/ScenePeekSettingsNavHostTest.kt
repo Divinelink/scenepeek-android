@@ -21,6 +21,7 @@ import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.navigation.route.Navigation.AboutSettingsRoute
@@ -151,6 +152,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         onboardingManager = TestOnboardingManager(),
         navController = navController,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = TestAppInfoRepository(),
         navigationProvider = get<List<NavGraphExtension>>(),
       )
 

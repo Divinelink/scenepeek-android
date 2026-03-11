@@ -24,6 +24,7 @@ import com.divinelink.core.navigation.route.navigateToTMDBAuth
 import com.divinelink.core.navigation.route.navigateToUserData
 import com.divinelink.core.navigation.route.navigateToWebView
 import com.divinelink.core.navigation.route.openDefaultActionMenuModal
+import com.divinelink.core.navigation.route.openUpdaterModal
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.settings.navigation.about.navigateToAboutSettings
 import com.divinelink.feature.settings.navigation.account.navigateToAccountSettings
@@ -32,6 +33,7 @@ import com.divinelink.feature.settings.navigation.appearance.navigateToAppearanc
 import com.divinelink.feature.settings.navigation.details.navigateToDetailsPreferenceSettings
 import com.divinelink.feature.settings.navigation.links.navigateToLinkHandlingSettings
 import com.divinelink.feature.settings.navigation.settings.navigateToSettings
+import com.divinelink.feature.settings.navigation.updates.navigateToAppUpdates
 
 fun NavController.findNavigation(route: Navigation) {
   when (route) {
@@ -72,6 +74,8 @@ fun NavController.findNavigation(route: Navigation) {
     is Navigation.SeasonRoute -> navigateToSeason(route)
     is Navigation.EpisodeRoute -> navigateToEpisode(route)
     is Navigation.CollectionRoute -> navigateToCollection(route)
+    is Navigation.UpdaterRoute -> openUpdaterModal()
+    is Navigation.AppUpdatesSettingsRoute -> navigateToAppUpdates()
 
     // This is from top level navigation
     Navigation.HomeRoute -> Unit

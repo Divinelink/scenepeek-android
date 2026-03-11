@@ -108,6 +108,11 @@
   <string name="preferences__dark_theme">Dark</string>
   <string name="preferences__system_default">System default</string>
 
+  <string name="version">Version</string>
+  <string name="app_updates">App updates</string>
+  <string name="check_for_updates">Check for updates</string>
+  <string name="last_checked">Last checked: %1$s</string>
+
   <string-array name="pref_theme_values" translatable="false">
     <item>system</item>
     <item>light</item>
@@ -116,5 +121,5 @@
 
   <!-- Accessibility -->
   <string name="feature_settings_show_password">Show password</string>
-  <string name="feature_settings_hide_password">Show password</string>
+  <string name="feature_settings_hide_password">Hide password</string>
 </resources>

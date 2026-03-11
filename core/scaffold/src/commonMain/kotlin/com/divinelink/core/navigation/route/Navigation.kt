@@ -23,6 +23,9 @@ sealed interface Navigation {
   data object AboutSettingsRoute : Navigation
 
   @Serializable
+  data object AppUpdatesSettingsRoute : Navigation
+
+  @Serializable
   data class JellyseerrSettingsRoute(val withNavigationBar: Boolean) : Navigation
 
   @Serializable
@@ -170,4 +173,7 @@ sealed interface Navigation {
     val backdropPath: String?,
     val posterPath: String?,
   ) : Navigation
+
+  @Serializable
+  data object UpdaterRoute : Navigation
 }

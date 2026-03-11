@@ -8,6 +8,7 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.DisplaySettings
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Update
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -21,6 +22,7 @@ import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.resources.Res
+import com.divinelink.feature.settings.resources.app_updates
 import com.divinelink.feature.settings.resources.feature_settings_about
 import com.divinelink.feature.settings.resources.feature_settings_details_preferences
 import com.divinelink.feature.settings.resources.feature_settings_link_handling
@@ -66,19 +68,11 @@ fun SettingsScreen(
       }
 
       item {
-        SettingsDivider()
-      }
-
-      item {
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.DisplaySettings),
           text = stringResource(Res.string.feature_settings_details_preferences),
           onClick = { onNavigate(Navigation.DetailsPreferencesSettingsRoute) },
         )
-      }
-
-      item {
-        SettingsDivider()
       }
 
       if (currentPlatform == Platform.Android) {
@@ -89,10 +83,18 @@ fun SettingsScreen(
             onClick = { onNavigate(Navigation.LinkHandlingSettingsRoute) },
           )
         }
+      }
 
-        item {
-          SettingsDivider()
-        }
+      item {
+        SettingsClickItem(
+          icon = IconWrapper.Vector(Icons.Outlined.Update),
+          text = stringResource(Res.string.app_updates),
+          onClick = { onNavigate(Navigation.AppUpdatesSettingsRoute) },
+        )
+      }
+
+      item {
+        SettingsDivider()
       }
 
       item {

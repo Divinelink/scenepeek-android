@@ -36,6 +36,7 @@ kotlin {
       implementation(projects.feature.season)
       implementation(projects.feature.settings)
       implementation(projects.feature.tmdbAuth)
+      implementation(projects.feature.updater)
       implementation(projects.feature.userData)
       implementation(projects.feature.webview)
     }

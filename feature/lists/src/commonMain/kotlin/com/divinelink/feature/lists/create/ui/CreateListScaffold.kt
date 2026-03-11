@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
@@ -113,9 +115,10 @@ fun CreateListScaffoldPreview(
 ) {
   SharedTransitionScopeProvider {
     val appState = rememberScenePeekAppState(
-      networkMonitor = com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor(),
+      networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = TestPreferencesRepository(),
+      appInfoRepository = TestAppInfoRepository(),
       navigationProvider = emptyList(),
     )
 

@@ -6,6 +6,7 @@ import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
+import kotlin.time.Duration
 
 const val CACHE_DURATION_IN_MONTHS = 1
 
@@ -19,6 +20,11 @@ fun Clock.cacheExpiresAtToEpochSeconds(): String {
 }
 
 fun Clock.currentEpochSeconds(): String = now().epochSeconds.toString()
+
+fun String.isOlderThanCurrentTime(
+  clock: Clock,
+  duration: Duration,
+): Boolean = this.toLong() > clock.now().plus(duration).epochSeconds
 
 fun Clock.currentTimeInUTC(): String {
   val utcTimeZone = TimeZone.UTC

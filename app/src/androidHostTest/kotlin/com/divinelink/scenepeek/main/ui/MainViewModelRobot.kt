@@ -2,6 +2,7 @@ package com.divinelink.scenepeek.main.ui
 
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.media.MediaItem
@@ -34,6 +35,7 @@ class MainViewModelRobot {
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = TestPreferencesRepository(),
+      appInfoRepository = TestAppInfoRepository(),
       navigationProviders = emptyList(),
     )
   }

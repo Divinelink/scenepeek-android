@@ -3,6 +3,7 @@ package com.divinelink.feature.settings.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ fun SettingsClickItem(
   modifier: Modifier = Modifier,
   icon: IconWrapper? = null,
   text: String,
+  summary: String? = null,
   onClick: () -> Unit,
 ) {
   Row(
@@ -55,10 +57,22 @@ fun SettingsClickItem(
       }
     }
 
-    Text(
-      text = text,
-      style = MaterialTheme.typography.bodyLarge,
-    )
+    Column(
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+    ) {
+      Text(
+        text = text,
+        style = MaterialTheme.typography.bodyLarge,
+      )
+
+      summary?.let {
+        Text(
+          text = summary,
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.secondary,
+        )
+      }
+    }
   }
 }
 
@@ -70,6 +84,7 @@ private fun SettingsScreenPreview() {
       SettingsClickItem(
         icon = IconWrapper.Vector(Icons.Outlined.AutoAwesome),
         text = "Appearance",
+        summary = null,
         onClick = {},
       )
     }

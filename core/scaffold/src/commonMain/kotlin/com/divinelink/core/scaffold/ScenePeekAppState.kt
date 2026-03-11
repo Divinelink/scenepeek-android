@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
@@ -32,6 +33,7 @@ fun rememberScenePeekAppState(
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager,
   preferencesRepository: PreferencesRepository,
+  appInfoRepository: AppInfoRepository,
   navigationProvider: List<NavGraphExtension>,
   scope: CoroutineScope = rememberCoroutineScope(),
   snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -44,6 +46,7 @@ fun rememberScenePeekAppState(
     networkMonitor = networkMonitor,
     onboardingManager = onboardingManager,
     snackbarHostState = snackbarHostState,
+    appInfoRepository = appInfoRepository,
     preferencesRepository = preferencesRepository,
   )
 }
@@ -55,6 +58,7 @@ class ScenePeekAppState internal constructor(
   val navigationExtension: List<NavGraphExtension>,
   val snackbarHostState: SnackbarHostState,
   preferencesRepository: PreferencesRepository,
+  appInfoRepository: AppInfoRepository,
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager,
 ) {
@@ -75,6 +79,12 @@ class ScenePeekAppState internal constructor(
       started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
       initialValue = false,
     )
+
+  val updateAvailable = appInfoRepository.updateAvailable.stateIn(
+    scope = scope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
+    initialValue = null,
+  )
 
   val isInitialOnboarding = onboardingManager.isInitialOnboarding
     .stateIn(
