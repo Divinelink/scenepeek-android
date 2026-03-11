@@ -18,6 +18,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.toStub
@@ -31,8 +32,10 @@ import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
+import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.menu.DropdownMenuViewModel
 import com.divinelink.core.ui.resources.core_ui_close_multiple_select
 import com.divinelink.core.ui.resources.core_ui_deselect_all
 import com.divinelink.core.ui.resources.core_ui_select
@@ -63,6 +66,16 @@ class ListDetailsScreenTest : ComposeTest() {
   fun setup() {
     startKoin {
       // Do nothing
+    }
+
+    declare {
+      DropdownMenuViewModel(
+        entryPoint = ScreenType.List(
+          id = ListDetailsFactory.mustWatch().id,
+          name = ListDetailsFactory.mustWatch().name,
+        ),
+        spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase(),
+      )
     }
 
     preferencesRepository = TestPreferencesRepository()
