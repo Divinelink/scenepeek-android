@@ -4,12 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.data.app.AppInfoRepository
-import com.divinelink.core.model.LCEState
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -45,6 +43,5 @@ class AppUpdatesViewModel(
         force = true,
       )
       .launchIn(viewModelScope)
-
   }
 }

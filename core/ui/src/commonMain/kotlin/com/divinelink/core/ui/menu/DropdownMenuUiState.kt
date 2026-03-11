@@ -6,9 +6,7 @@ data class DropDownMenuUiState(
   val entryPoint: ScreenType,
 ) {
   companion object {
-    fun initial(
-      entryPoint: ScreenType,
-    ): DropDownMenuUiState = DropDownMenuUiState(
+    fun initial(entryPoint: ScreenType): DropDownMenuUiState = DropDownMenuUiState(
       entryPoint = entryPoint,
     )
   }

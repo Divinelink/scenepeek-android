@@ -13,7 +13,5 @@ class TestAppInfoRepository : AppInfoRepository {
   override fun fetchLatestAppVersion(
     fetchRemote: Boolean,
     force: Boolean,
-  ): Flow<Resource<AppVersion?>> {
-    return flowOf(Resource.Loading(null))
-  }
+  ): Flow<Resource<AppVersion?>> = flowOf(Resource.Loading(null))
 }

@@ -6,4 +6,3 @@ import com.divinelink.feature.updater.UpdaterUiState
 class UpdaterUiStateParameterProvider : PreviewParameterProvider<UpdaterUiState> {
   override val values: Sequence<UpdaterUiState> = sequenceOf()
 }
-

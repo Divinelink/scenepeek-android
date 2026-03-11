@@ -35,4 +35,3 @@ class UpdaterViewModel(
       .launchIn(viewModelScope)
   }
 }
-
