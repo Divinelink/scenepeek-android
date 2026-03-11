@@ -23,6 +23,9 @@ sealed interface Navigation {
   data object AboutSettingsRoute : Navigation
 
   @Serializable
+  data object AppUpdatesSettingsRoute : Navigation
+
+  @Serializable
   data class JellyseerrSettingsRoute(val withNavigationBar: Boolean) : Navigation
 
   @Serializable

@@ -94,7 +94,7 @@ fun ScenePeekApp(
   }
 
   LaunchedEffect(updateAvailable) {
-    updateAvailable?.let { info ->
+    updateAvailable?.let {
       state.navController.openUpdaterModal()
     }
   }

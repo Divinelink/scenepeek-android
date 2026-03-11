@@ -8,5 +8,8 @@ interface AppInfoRepository {
 
   val updateAvailable: Flow<AppVersion?>
 
-  fun fetchLatestAppVersion(fetchRemote: Boolean): Flow<Resource<AppVersion?>>
+  fun fetchLatestAppVersion(
+    fetchRemote: Boolean,
+    force: Boolean = false,
+  ): Flow<Resource<AppVersion?>>
 }

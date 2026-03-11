@@ -10,7 +10,7 @@ import com.divinelink.core.network.app.AppInfoService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
 
 class ProdAppInfoRepository(
@@ -23,18 +23,23 @@ class ProdAppInfoRepository(
 
   private val _updateAvailable: MutableStateFlow<AppVersion?> = MutableStateFlow(null)
 
-  override fun fetchLatestAppVersion(fetchRemote: Boolean): Flow<Resource<AppVersion?>> {
+  override fun fetchLatestAppVersion(
+    fetchRemote: Boolean,
+    force: Boolean,
+  ): Flow<Resource<AppVersion?>> {
     val installSource = installSourceDetector.getInstallSource()
 
     return networkBoundResource(
       query = {
-        flowOf(
-          dao.fetchAppVersion()?.map(
-            clock = clock,
-            defaultVersion = buildConfigProvider.versionName,
-            installSource = installSource,
-          ),
-        )
+        dao
+          .fetchAppVersion()
+          .map { entity ->
+            entity?.map(
+              clock = clock,
+              defaultVersion = buildConfigProvider.versionName,
+              installSource = installSource,
+            )
+          }
       },
       fetch = {
         installSource.versionCheckUrl?.let { versionCheckUrl ->
@@ -47,12 +52,12 @@ class ProdAppInfoRepository(
         }
       },
       saveFetchResult = {
-        val latestVersion = it?.getOrNull()
+        val latestVersion = it?.getOrNull()?.trimStart { char -> char == 'v' }
 
         latestVersion?.let {
           dao.updateAppVersion(
             currentVersion = buildConfigProvider.versionName,
-            latestVersion = latestVersion.trimStart { char -> char == 'v' },
+            latestVersion = latestVersion,
             currentEpochSeconds = clock.currentEpochSeconds(),
           )
 
@@ -60,14 +65,17 @@ class ProdAppInfoRepository(
             currentVersion = buildConfigProvider.versionName,
             latestVersion = latestVersion,
             installSource = installSource,
+            lastCheck = clock.currentEpochSeconds(),
             canSearchForUpdate = false,
           )
 
-          _updateAvailable.emit(appVersion)
+          if (appVersion.currentVersion != latestVersion) {
+            _updateAvailable.emit(appVersion)
+          }
         }
       },
       shouldFetch = {
-        (it?.canSearchForUpdate == null || it.canSearchForUpdate) && fetchRemote
+        force || ((it?.canSearchForUpdate == null || it.canSearchForUpdate) && fetchRemote)
       },
     )
   }

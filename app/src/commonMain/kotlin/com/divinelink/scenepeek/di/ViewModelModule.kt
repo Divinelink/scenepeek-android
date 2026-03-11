@@ -27,6 +27,7 @@ import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
+import com.divinelink.feature.settings.app.updates.AppUpdatesViewModel
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.feature.updater.UpdaterViewModel
 import com.divinelink.feature.user.data.UserDataViewModel
@@ -64,6 +65,7 @@ val appViewModelModule = module {
   viewModelOf(::SeasonViewModel)
   viewModelOf(::EpisodeViewModel)
   viewModelOf(::UpdaterViewModel)
+  viewModelOf(::AppUpdatesViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

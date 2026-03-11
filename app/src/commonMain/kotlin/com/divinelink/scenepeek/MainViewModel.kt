@@ -17,17 +17,13 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
-import com.divinelink.core.network.Resource
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -52,14 +48,6 @@ class MainViewModel(
 
     appInfoRepository
       .fetchLatestAppVersion(fetchRemote = true)
-      .distinctUntilChanged()
-      .onEach { result ->
-        when (result) {
-          is Resource.Error -> Napier.d { result.toString() }
-          is Resource.Loading -> Napier.d { result.toString() }
-          is Resource.Success -> Napier.d { result.toString() }
-        }
-      }
       .launchIn(viewModelScope)
   }
 

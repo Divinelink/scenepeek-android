@@ -33,6 +33,7 @@ import com.divinelink.feature.settings.navigation.appearance.appearanceSettingsS
 import com.divinelink.feature.settings.navigation.details.detailsPreferencesSettingsScreen
 import com.divinelink.feature.settings.navigation.links.linkHandlingSettingsScreen
 import com.divinelink.feature.settings.navigation.settings.settingsScreen
+import com.divinelink.feature.settings.navigation.updates.appUpdatesScreen
 import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.updater.ui.navigation.updaterScreen
 import com.divinelink.feature.user.data.navigation.userDataScreen
@@ -319,6 +320,14 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.UpdaterRoute>()) {
     { navController, _ ->
       updaterScreen(
+        onNavigate = navController::findNavigation,
+      )
+    }
+  }
+
+  single<NavGraphExtension>(named<Navigation.AppUpdatesSettingsRoute>()) {
+    { navController, _ ->
+      appUpdatesScreen(
         onNavigate = navController::findNavigation,
       )
     }

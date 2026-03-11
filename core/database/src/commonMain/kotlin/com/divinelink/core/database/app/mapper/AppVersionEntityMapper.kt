@@ -15,6 +15,7 @@ fun AppVersionEntity.map(
   currentVersion = currentVersion ?: defaultVersion,
   latestVersion = latestVersion ?: defaultVersion,
   installSource = installSource,
+  lastCheck = lastCheck,
   canSearchForUpdate = lastCheck?.isOlderThanCurrentTime(
     clock = clock,
     duration = 4.hours,
