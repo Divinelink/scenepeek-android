@@ -58,4 +58,7 @@
   <string name="v38_discover_filter_issue">- Fix an issue on discover where new filters where not applied after clearing all filters</string>
 
   <string name="v40_fix_tabs_overlapping_on_details">- Fixed an issue where tabs stopped sticking and became hidden when scrolling to the bottom of the details page</string>
+
+  <string name="v41_add_version_checker">- Add version checker that informs the user if a new app version is available</string>
+  <string name="v41_add_share_menu_options">- Add share menu option on collections, season, episode and list details</string>
 </resources>

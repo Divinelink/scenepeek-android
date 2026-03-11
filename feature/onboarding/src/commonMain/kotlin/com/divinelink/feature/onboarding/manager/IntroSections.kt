@@ -49,6 +49,8 @@ import com.divinelink.feature.onboarding.resources.v38_discover_sorting
 import com.divinelink.feature.onboarding.resources.v38_localize_dates
 import com.divinelink.feature.onboarding.resources.v38_streaming_providers
 import com.divinelink.feature.onboarding.resources.v40_fix_tabs_overlapping_on_details
+import com.divinelink.feature.onboarding.resources.v41_add_share_menu_options
+import com.divinelink.feature.onboarding.resources.v41_add_version_checker
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -199,9 +201,16 @@ object IntroSections {
   val v40 = listOf(
     IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
     IntroSection.WhatsNew("v0.28.1"),
-    IntroSection.SecondaryHeader.Added,
     IntroSection.SecondaryHeader.Fixed,
     IntroSection.Text(UIText.ResourceText(R.string.v40_fix_tabs_overlapping_on_details)),
+  )
+
+  val v41 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.29.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v41_add_version_checker)),
+    IntroSection.Text(UIText.ResourceText(R.string.v41_add_share_menu_options)),
   )
 
   /**
@@ -218,5 +227,6 @@ object IntroSections {
     37 to v37,
     39 to v39,
     40 to v40,
+    41 to v41,
   )
 }
