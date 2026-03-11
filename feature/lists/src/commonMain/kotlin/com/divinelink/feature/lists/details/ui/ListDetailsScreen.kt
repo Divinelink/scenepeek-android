@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.rememberSystemUiController
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -38,6 +39,7 @@ import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
+import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsViewModel
@@ -113,6 +115,14 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
         text = UIText.StringText(uiState.details.name),
         progress = toolbarProgress,
         onNavigateUp = { onNavigate(Navigation.Back) },
+        actions = {
+          DropdownMenuButton(
+            screenType = ScreenType.List(
+              id = uiState.id,
+              name = uiState.details.name,
+            ),
+          )
+        }
       )
     },
     floatingActionButton = {
