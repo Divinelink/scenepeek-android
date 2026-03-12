@@ -46,6 +46,9 @@
         <data android:scheme="scenepeek" />
         <data android:host="movie" />
         <data android:host="tv" />
+        <data android:host="person" />
+        <data android:host="list" />
+        <data android:host="collection" />
       </intent-filter>
 
       <intent-filter android:autoVerify="true">
@@ -59,6 +62,8 @@
         <data android:pathPattern="/movie/.*" />
         <data android:pathPattern="/person/.*" />
         <data android:pathPattern="/tv/.*" />
+        <data android:pathPattern="/list/.*" />
+        <data android:pathPattern="/collection/.*" />
       </intent-filter>
 
       <intent-filter>

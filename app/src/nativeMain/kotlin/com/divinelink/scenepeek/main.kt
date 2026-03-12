@@ -23,6 +23,7 @@ fun MainViewController(): UIViewController = ComposeUIViewController {
     networkMonitor = viewModel.networkMonitor,
     preferencesRepository = viewModel.preferencesRepository,
     navigationProvider = viewModel.navigationProviders,
+    appInfoRepository = viewModel.appInfoRepository,
   )
 
   DisposableEffect(Unit) {

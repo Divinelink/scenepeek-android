@@ -44,7 +44,7 @@ class MainViewModelTest {
       .assertUiEvent(MainUiEvent.None)
       .onHandleDeeplink(url)
       .assertUiEvent(
-        MainUiEvent.NavigateToDetails(
+        MainUiEvent.Navigate(
           DetailsRoute(
             id = 693134,
             mediaType = MediaType.MOVIE.value,
@@ -65,7 +65,7 @@ class MainViewModelTest {
       .assertUiEvent(MainUiEvent.None)
       .onHandleDeeplink(url)
       .assertUiEvent(
-        MainUiEvent.NavigateToDetails(
+        MainUiEvent.Navigate(
           DetailsRoute(
             id = 693134,
             mediaType = MediaType.TV.value,
@@ -86,7 +86,7 @@ class MainViewModelTest {
       .assertUiEvent(MainUiEvent.None)
       .onHandleDeeplink(url)
       .assertUiEvent(
-        MainUiEvent.NavigateToPersonDetails(
+        MainUiEvent.Navigate(
           PersonRoute(
             id = 693134,
             knownForDepartment = null,
@@ -143,7 +143,7 @@ class MainViewModelTest {
       .mockFindById(Result.success(MediaItemFactory.FightClub()))
       .onHandleDeeplink(url)
       .assertUiEvent(
-        MainUiEvent.NavigateToDetails(
+        MainUiEvent.Navigate(
           DetailsRoute(
             id = 550,
             mediaType = MediaType.MOVIE.value,
@@ -162,7 +162,7 @@ class MainViewModelTest {
       .mockFindById(Result.success(MediaItemFactory.theOffice()))
       .onHandleDeeplink(url)
       .assertUiEvent(
-        MainUiEvent.NavigateToDetails(
+        MainUiEvent.Navigate(
           DetailsRoute(
             id = 2316,
             mediaType = MediaType.TV.value,
@@ -181,7 +181,7 @@ class MainViewModelTest {
       .mockFindById(Result.success(MediaItemFactory.Person()))
       .onHandleDeeplink(url)
       .assertUiEvent(
-        MainUiEvent.NavigateToPersonDetails(
+        MainUiEvent.Navigate(
           PersonRoute(
             id = 1215572,
             name = "Randall Einhorn",

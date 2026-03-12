@@ -44,43 +44,6 @@ fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.UTC): LocalDateTime? = 
   null
 }
 
-fun String?.extractDetailsFromTMDBDeepLink(): Pair<Int, String>? = this?.let {
-  // Example URL format: "https://www.themoviedb.org/tv/693134-dune-part-two"
-  try {
-    val segments = it.split("/")
-    if (segments.size in 4..5) {
-      val mediaType = segments[3]
-      val id = segments[4].substringBefore("-").toIntOrNull()
-      id?.let { safeId ->
-        return Pair(safeId, mediaType)
-      }
-    }
-    return null
-  } catch (_: Exception) {
-    null
-  }
-}
-
-fun String?.extractDetailsFromScenePeekDeepLink(): Pair<Int, String>? = this?.let { url ->
-  // Example URL format: "https://www.scenepeek.app/movie/693134-dune-part-two"
-  try {
-    val segments = url.split("/").filter { it.isNotBlank() }
-    if (segments.size >= 3) {
-      val idSegment = segments.last()
-      val mediaType = segments[segments.size - 2]
-
-      val id = idSegment.substringBefore("-").toIntOrNull()
-
-      if (id != null) {
-        return Pair(id, mediaType)
-      }
-    }
-    null
-  } catch (_: Exception) {
-    null
-  }
-}
-
 fun calculateAge(
   fromDate: String,
   toDate: String? = null,
@@ -88,7 +51,7 @@ fun calculateAge(
 ): Int {
   // Parse the birthday string into a LocalDate object
   val birthDate = LocalDate.parse(fromDate)
-  // Get the current date or the the date of death in the specified timezone
+  // Get the current date or the date of death in the specified timezone
   val currentDate = if (toDate == null) {
     clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
   } else {
