@@ -122,7 +122,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               name = uiState.details.name,
             ),
           )
-        }
+        },
       )
     },
     floatingActionButton = {

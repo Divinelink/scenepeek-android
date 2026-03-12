@@ -18,9 +18,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import com.divinelink.core.commons.provider.getBuildConfigProvider
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.network.NetworkState
-import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToOnboarding
-import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.navigation.route.openUpdaterModal
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
@@ -73,16 +71,10 @@ fun ScenePeekApp(
 
   LaunchedEffect(uiEvent) {
     when (uiEvent) {
-      is MainUiEvent.NavigateToDetails -> {
-        state.navController.navigateToDetails(uiEvent.route)
+      MainUiEvent.None -> Unit
+      is MainUiEvent.Navigate -> {
+        state.navController.navigate(uiEvent.route)
         onConsumeEvent()
-      }
-      is MainUiEvent.NavigateToPersonDetails -> {
-        state.navController.navigateToPerson(uiEvent.route)
-        onConsumeEvent()
-      }
-      MainUiEvent.None -> {
-        // Do nothing
       }
     }
   }

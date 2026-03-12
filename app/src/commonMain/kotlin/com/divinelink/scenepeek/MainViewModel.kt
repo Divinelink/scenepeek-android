@@ -3,8 +3,6 @@ package com.divinelink.scenepeek
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
-import com.divinelink.core.commons.extensions.extractDetailsFromScenePeekDeepLink
-import com.divinelink.core.commons.extensions.extractDetailsFromTMDBDeepLink
 import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
@@ -12,9 +10,12 @@ import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.domain.session.CreateSessionUseCase
+import com.divinelink.core.model.deeplink.DeeplinkPath
+import com.divinelink.core.model.deeplink.extractRouteFromDeeplink
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.scaffold.NavGraphExtension
@@ -82,10 +83,17 @@ class MainViewModel(
               .fold(
                 onSuccess = { mediaItem ->
                   when (mediaItem) {
-                    is MediaItem.Media.Movie,
-                    is MediaItem.Media.TV,
-                      -> navigateToMediaDetails(mediaItem.id, mediaItem.mediaType)
-                    is MediaItem.Person -> navigateToPersonDetails(mediaItem)
+                    is MediaItem.Media.Movie -> navigate(DeeplinkPath.Movie(mediaItem.id.toLong()))
+                    is MediaItem.Media.TV -> navigate(DeeplinkPath.TV(mediaItem.id.toLong()))
+                    is MediaItem.Person -> navigate(
+                      DeeplinkPath.Person(
+                        id = mediaItem.id.toLong(),
+                        knownForDepartment = mediaItem.knownForDepartment,
+                        name = mediaItem.name,
+                        profilePath = mediaItem.profilePath,
+                        gender = mediaItem.gender.value,
+                      ),
+                    )
                     MediaItem.Unknown -> updateUiEvent(MainUiEvent.None)
                   }
                 },
@@ -94,58 +102,8 @@ class MainViewModel(
           }
         },
       )
-      else -> {
-        val (id, type) = deeplinkUri.raw.extractDetailsFromTMDBDeepLink() ?: return
-
-        handleNavigation(
-          mediaId = id,
-          mediaType = MediaType.from(type),
-        )
-      }
+      else -> handleScenePeekDeeplink(deeplinkUri)
     }
-  }
-
-  private fun navigateToPersonDetails(it: MediaItem.Person) {
-    updateUiEvent(
-      MainUiEvent.NavigateToPersonDetails(
-        PersonRoute(
-          id = it.id.toLong(),
-          knownForDepartment = it.knownForDepartment,
-          name = it.name,
-          profilePath = it.profilePath,
-          gender = it.gender.value,
-        ),
-      ),
-    )
-  }
-
-  private fun navigateToPersonDetails(id: Int) {
-    updateUiEvent(
-      MainUiEvent.NavigateToPersonDetails(
-        PersonRoute(
-          id = id.toLong(),
-          knownForDepartment = null,
-          name = null,
-          profilePath = null,
-          gender = Gender.NOT_SET.value,
-        ),
-      ),
-    )
-  }
-
-  private fun navigateToMediaDetails(
-    id: Int,
-    mediaType: MediaType,
-  ) {
-    updateUiEvent(
-      MainUiEvent.NavigateToDetails(
-        DetailsRoute(
-          id = id,
-          mediaType = mediaType.value,
-          isFavorite = false,
-        ),
-      ),
-    )
   }
 
   private fun refreshJellyseerrSession() {
@@ -155,23 +113,59 @@ class MainViewModel(
   }
 
   private fun handleScenePeekDeeplink(uri: DeepLinkUri) {
-    val (id, type) = uri.raw.extractDetailsFromScenePeekDeepLink() ?: return
+    val route = uri.raw.extractRouteFromDeeplink() ?: return
 
-    handleNavigation(
-      mediaId = id,
-      mediaType = MediaType.from(type),
-    )
+    navigate(route)
   }
 
-  private fun handleNavigation(
-    mediaId: Int,
-    mediaType: MediaType,
-  ) {
-    when (mediaType) {
-      MediaType.TV, MediaType.MOVIE -> navigateToMediaDetails(mediaId, mediaType)
-      MediaType.PERSON -> navigateToPersonDetails(mediaId)
-      MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.None)
+  private fun navigate(deeplink: DeeplinkPath) {
+    val route = when (deeplink) {
+      is DeeplinkPath.Collection -> Navigation.CollectionRoute(
+        id = deeplink.id.toInt(),
+        name = "",
+        backdropPath = null,
+        posterPath = "",
+      )
+      is DeeplinkPath.Episode -> Navigation.EpisodeRoute(
+        showId = deeplink.showId.toInt(),
+        showTitle = "",
+        seasonTitle = "",
+        seasonNumber = deeplink.seasonNumber,
+        episodeIndex = deeplink.episodeNumber,
+      )
+      is DeeplinkPath.List -> Navigation.ListDetailsRoute(
+        id = deeplink.id.toInt(),
+        name = "",
+        backdropPath = null,
+        description = "",
+        public = false,
+      )
+      is DeeplinkPath.Person -> PersonRoute(
+        id = deeplink.id,
+        knownForDepartment = deeplink.knownForDepartment,
+        name = deeplink.name,
+        profilePath = deeplink.profilePath,
+        gender = deeplink.gender ?: Gender.NOT_SET.value,
+      )
+      is DeeplinkPath.Season -> Navigation.SeasonRoute(
+        showId = deeplink.showId.toInt(),
+        seasonNumber = deeplink.seasonNumber,
+        backdropPath = null,
+        title = "",
+      )
+      is DeeplinkPath.Movie -> DetailsRoute(
+        id = deeplink.id.toInt(),
+        mediaType = MediaType.MOVIE.value,
+        isFavorite = false,
+      )
+      is DeeplinkPath.TV -> DetailsRoute(
+        id = deeplink.id.toInt(),
+        mediaType = MediaType.TV.value,
+        isFavorite = false,
+      )
     }
+
+    updateUiEvent(MainUiEvent.Navigate(route))
   }
 }
 
@@ -216,7 +210,7 @@ private fun DeepLinkUri.isForTMDBAuth(): Boolean = scheme == "scenepeek" &&
   path == "/redirect"
 
 private fun DeepLinkUri.isDeeplinkFromScenePeek(): Boolean = scheme == "scenepeek" &&
-  (host == "movie" || host == "tv")
+  (host == "movie" || host == "tv" || host == "person" || host == "collection" || host == "list")
 
 private fun DeepLinkUri.isForIMDB(): Boolean = scheme == "https" &&
   (host == "imdb.com" || host == "www.imdb.com" || host == "m.imdb.com")
