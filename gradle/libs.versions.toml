@@ -6,7 +6,6 @@ compile-sdk = "36"
 target-sdk = "36"
 min-sdk = "26"
 
-firebase-appdistribution-gradle = "5.0.0"
 kotlin = "2.3.0"
 ksp = "2.3.2"
 android-tools = "31.13.2"
@@ -204,7 +203,6 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
-firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-appdistribution-gradle" }
 screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
 
 #detekt-cli = { module = "io.gitlab.arturbosch.detekt:detekt-cli", version.ref = "detekt-cli" }

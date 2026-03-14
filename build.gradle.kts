@@ -11,7 +11,6 @@ plugins {
   alias(libs.plugins.kover) apply false
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.kotlin.serialization) apply false
-  alias(libs.plugins.firebase.appdistribution) apply false
   alias(libs.plugins.secrets) apply false
   alias(libs.plugins.sqldelight) apply false
   alias(libs.plugins.screenshot) apply false

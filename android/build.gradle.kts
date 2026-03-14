@@ -1,8 +1,6 @@
 plugins {
   alias(libs.plugins.divinelink.android.application)
   alias(libs.plugins.compose)
-
-  alias(libs.plugins.firebase.appdistribution)
 }
 
 android {
@@ -42,11 +40,6 @@ android {
       isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
       signingConfig = signingConfigs.getByName("release")
-      firebaseAppDistribution {
-        artifactType = "APK"
-        artifactPath = "app/build/outputs/apk/release/app-release.apk"
-        groups = "development"
-      }
     }
   }
 
