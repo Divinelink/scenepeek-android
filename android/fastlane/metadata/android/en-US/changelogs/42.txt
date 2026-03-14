@@ -1,0 +1,7 @@
+🎉 Update v0.29.1
+
+- Add version checker that informs the user if a new app version is available
+- Add share menu option on collections, season, episode and list details
+- Add deeplink support for collections and lists
+
+We're constantly working on improvements and new features. Stay tuned for more updates!
