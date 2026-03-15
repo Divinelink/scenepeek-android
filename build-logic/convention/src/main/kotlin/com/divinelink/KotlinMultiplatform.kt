@@ -1,12 +1,19 @@
 package com.divinelink
 
-import com.android.build.api.dsl.androidLibrary
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
+internal fun KotlinMultiplatformExtension.androidLibrary(
+  block: KotlinMultiplatformAndroidLibraryTarget.() -> Unit,
+) {
+  configure<KotlinMultiplatformAndroidLibraryTarget>(block)
+}
 
 internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatformExtension) =
   extension.apply {
@@ -39,7 +46,6 @@ internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatform
         failOnNoDiscoveredTests.set(false)
       }
 
-    // targets
     androidLibrary {
       val moduleName = path.split(":").drop(1).joinToString(".") { it.replace("-", ".") }
       namespace = if (moduleName.isNotEmpty()) {

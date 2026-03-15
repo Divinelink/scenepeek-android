@@ -6,11 +6,11 @@ compile-sdk = "36"
 target-sdk = "36"
 min-sdk = "26"
 
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 ksp = "2.3.2"
-android-tools = "31.13.2"
+android-tools = "32.1.0"
 # android-tools and agp should be updated together
-agp = "8.13.2"
+agp = "9.1.0"
 core-ktx = "1.17.0"
 coil = "3.3.0"
 junit = "4.13.2"
@@ -196,7 +196,6 @@ compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-m
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

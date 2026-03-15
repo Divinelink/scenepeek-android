@@ -1,6 +1,7 @@
 package com.divinelink
 
-import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
@@ -15,8 +16,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 /**
  * Configure base Kotlin with Android options
  */
-internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
-  commonExtension.apply {
+internal fun Project.configureKotlinAndroid(extension: LibraryExtension) {
+  extension.apply {
     val moduleName = path.split(":").drop(1).joinToString(".") { it.replace("-", ".") }
     namespace = if (moduleName.isNotEmpty()) {
       "com.divinelink.$moduleName"
@@ -26,10 +27,6 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
     println("namespace: $namespace")
 
     compileSdk = libs.versions.compile.sdk.get().toInt()
-
-    defaultConfig {
-      minSdk = libs.versions.min.sdk.get().toInt()
-    }
 
     compileOptions {
       // https://developer.android.com/studio/write/java11-minimal-support-table
@@ -41,6 +38,30 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
     configureKotlin<KotlinAndroidProjectExtension>()
   }
 }
+
+internal fun Project.configureApplicationKotlinAndroid(extension: ApplicationExtension) = extension
+  .apply {
+    val moduleName = path.split(":").drop(1).joinToString(".") { it.replace("-", ".") }
+    namespace = if (moduleName.isNotEmpty()) {
+      "com.divinelink.$moduleName"
+    } else {
+      "com.divinelink"
+    }
+    println("namespace: $namespace")
+
+    defaultConfig.targetSdk = libs.versions.target.sdk.get().toInt()
+    defaultConfig.minSdk = libs.versions.min.sdk.get().toInt()
+    compileSdk = libs.versions.compile.sdk.get().toInt()
+
+    compileOptions {
+      // https://developer.android.com/studio/write/java11-minimal-support-table
+      sourceCompatibility = JavaVersion.VERSION_21
+      targetCompatibility = JavaVersion.VERSION_21
+      isCoreLibraryDesugaringEnabled = false
+    }
+
+    configureKotlin<KotlinAndroidProjectExtension>()
+  }
 
 /**
  * Configure base Kotlin options for JVM (non-Android)
