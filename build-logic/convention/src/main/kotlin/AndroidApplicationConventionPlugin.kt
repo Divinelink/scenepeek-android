@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.divinelink.configureApplicationKotlinAndroid
 import com.divinelink.configureKotlinAndroid
 import com.divinelink.libs
 import org.gradle.api.Plugin
@@ -10,13 +11,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
     with(target) {
       with(pluginManager) {
         apply("com.android.application")
-        apply("org.jetbrains.kotlin.android")
         apply("org.jetbrains.kotlinx.kover")
       }
 
       extensions.configure<ApplicationExtension> {
-        configureKotlinAndroid(this)
-        defaultConfig.targetSdk = libs.versions.target.sdk.get().toInt()
+        configureApplicationKotlinAndroid(this)
         testOptions.animationsDisabled = true
       }
     }
