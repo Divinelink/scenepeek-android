@@ -44,6 +44,22 @@ android {
 
   testOptions.unitTests.isIncludeAndroidResources = true
 
+  tasks.withType<AbstractArchiveTask>().configureEach {
+    isPreserveFileTimestamps = false
+    isReproducibleFileOrder = true
+  }
+
+  packaging {
+    resources {
+      // Prevent timestamp variations
+      excludes += setOf(
+        "META-INF/**",
+        "**/**.prof",
+        "**/**.prof.txt",
+      )
+    }
+  }
+
   lint {
     checkReleaseBuilds = false
     abortOnError = false

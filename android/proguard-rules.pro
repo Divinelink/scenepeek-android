@@ -44,3 +44,6 @@
 -dontwarn org.slf4j.impl.StaticMDCBinder
 -dontwarn sun.nio.fs.DefaultFileSystemProvider
 -dontwarn com.google.auto.service.AutoService
+
+-keep class kotlinx.coroutines.CoroutineExceptionHandler
+-keep class kotlinx.coroutines.internal.MainDispatcherFactory
