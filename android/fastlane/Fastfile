@@ -69,27 +69,34 @@ platform :android do
     )
   end
 
-  desc "Submit a new GitHub release"
+  desc "Submit a new GitHub release for both FDroid and Full flavors"
   lane :github do
-    gradle(
-      task: "clean assembleRelease",
-      project_dir: "..",
-      properties: {
-        "android.injected.signing.store.file"     => keystore_path,
-        "android.injected.signing.store.password" => keystore_props["keystore.password"],
-        "android.injected.signing.key.alias"      => keystore_props["keyAlias"],
-        "android.injected.signing.key.password"   => keystore_props["keyPassword"],
-      }
-    )
+    flavors = ["fdroid", "full"]
+    uploaded_apks = []
 
-    app_name = "scenepeek-android"
-    apk_original = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
-    apk_renamed = File.join(File.dirname(apk_original), "#{app_name}-#{version_name}.apk")
-    # rename/copy to new name
-    FileUtils.cp(apk_original, apk_renamed)
+    flavors.each do |flavor_name|
+      gradle(
+        task: "clean assembleRelease",
+        project_dir: "..",
+        properties: {
+          "flavor"                                  => flavor_name,
+          "android.injected.signing.store.file"     => keystore_path,
+          "android.injected.signing.store.password" => keystore_props["keystore.password"],
+          "android.injected.signing.key.alias"      => keystore_props["keyAlias"],
+          "android.injected.signing.key.password"   => keystore_props["keyPassword"],
+        }
+      )
 
-    # Create GitHub Release
-    github_release = set_github_release(
+      apk_original = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+
+      app_name = "scenepeek-android"
+      apk_renamed = File.join(File.dirname(apk_original), "#{app_name}-#{version_name}-#{flavor_name}.apk")
+
+      FileUtils.cp(apk_original, apk_renamed)
+      uploaded_apks << apk_renamed
+    end
+
+    set_github_release(
       repository_name: "Divinelink/scenepeek-android",
       api_token: keystore_props["github"],
       name: "v#{version_name}",
@@ -97,7 +104,7 @@ platform :android do
       commitish: "main",
       is_generate_release_notes: true,
       is_prerelease: false,
-      upload_assets: [apk_renamed]
+      upload_assets: uploaded_apks
     )
   end
 
