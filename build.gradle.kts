@@ -26,3 +26,25 @@ allprojects {
     }
   }
 }
+
+val isWindows = System.getProperty("os.name").lowercase().contains("windows")
+val gradleExecutable = if (isWindows) "gradlew.bat" else "./gradlew"
+
+tasks.register<Exec>("assembleReleaseFdroid") {
+  group = "build"
+  description = "Builds the app with the fdroid flavor properties."
+
+  commandLine(gradleExecutable, "assembleRelease", "-flavor=fdroid")
+}
+
+tasks.register<Exec>("assembleDebugFdroid") {
+  group = "build"
+  description = "Builds the app with the fdroid flavor properties."
+
+  val isWindows = println(System.getProperty("os.name")).let {
+    System.getProperty("os.name").lowercase().contains("windows")
+  }
+  val command = if (isWindows) "gradlew.bat" else "./gradlew"
+
+  commandLine(command, "assembleDebug", "-flavor=fdroid")
+}

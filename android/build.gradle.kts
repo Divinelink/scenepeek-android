@@ -42,6 +42,21 @@ android {
     }
   }
 
+  flavorDimensions += "version"
+  productFlavors {
+    create("fdroid") {
+      dimension = "version"
+      applicationIdSuffix = ".fdroid"
+      versionNameSuffix = " F-Droid"
+
+      manifestPlaceholders["sentryInitializer"] = ""
+    }
+    create("full") {
+      dimension = "version"
+      manifestPlaceholders["sentryInitializer"] = "androidx.startup"
+    }
+  }
+
   testOptions.unitTests.isIncludeAndroidResources = true
 
   lint {
