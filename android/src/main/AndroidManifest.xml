@@ -106,7 +106,7 @@
           android:value="androidx.startup" />
       <meta-data
           android:name="com.divinelink.scenepeek.initializer.SentryInitializer"
-          android:value="androidx.startup" />
+          android:value="${sentryInitializer}" />
     </provider>
   </application>
 

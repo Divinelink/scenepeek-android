@@ -42,6 +42,8 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+secrets.fdroid.properties
+secrets.full.properties
 
 # Windows thumbnail db
 Thumbs.db
@@ -190,3 +192,4 @@ kotlin-native/
 iosApp/Config/Secret.xcconfig
 
 android/sentry.properties
+/android/src/main/config.properties
