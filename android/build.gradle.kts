@@ -63,6 +63,11 @@ android {
     checkReleaseBuilds = false
     abortOnError = false
   }
+
+  dependenciesInfo {
+    includeInApk = false
+    includeInBundle = false
+  }
 }
 
 dependencies {
