@@ -69,14 +69,17 @@ platform :android do
     )
   end
 
-  desc "Submit a new GitHub release for both FDroid and Full flavors"
+  desc "Submit a new GitHub release"
   lane :github do
     flavors = ["fdroid", "full"]
     uploaded_apks = []
 
+    release_dir = "../release"
+    FileUtils.mkdir_p(release_dir) unless File.directory?(release_dir)
+
     flavors.each do |flavor_name|
       gradle(
-        task: "clean assembleRelease",
+        task: "clean assemble#{flavor_name}",
         project_dir: "..",
         properties: {
           "flavor"                                  => flavor_name,
@@ -89,11 +92,18 @@ platform :android do
 
       apk_original = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
 
-      app_name = "scenepeek-android"
-      apk_renamed = File.join(File.dirname(apk_original), "#{app_name}-#{version_name}-#{flavor_name}.apk")
+      apk_filename = "scenepeek-#{flavor_name}-#{version_name}.apk"
+      apk_renamed = File.join(release_dir, apk_filename)
 
-      FileUtils.cp(apk_original, apk_renamed)
-      uploaded_apks << apk_renamed
+      if File.exist?(apk_original)
+        FileUtils.cp(apk_original, apk_renamed)
+        uploaded_apks << File.absolute_path(apk_renamed)
+      else
+        UI.user_error!(
+          "Could not find the generated APK at: #{apk_original}.
+          Check your Gradle output configuration."
+        )
+      end
     end
 
     set_github_release(
