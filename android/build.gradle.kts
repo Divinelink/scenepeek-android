@@ -46,7 +46,6 @@ android {
   productFlavors {
     create("fdroid") {
       dimension = "version"
-      applicationIdSuffix = ".fdroid"
       versionNameSuffix = " F-Droid"
 
       manifestPlaceholders["sentryInitializer"] = ""
