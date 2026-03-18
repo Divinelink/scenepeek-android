@@ -1,0 +1,6 @@
+🎉 Update v0.29.3
+
+- Add missing www subdomain on share URLs
+- Fix an issue where version checker would not display if update is available
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

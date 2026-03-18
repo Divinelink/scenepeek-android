@@ -61,4 +61,7 @@
 
   <string name="v41_add_version_checker">- Add version checker that informs the user if a new app version is available</string>
   <string name="v41_add_share_menu_options">- Add share menu option on collections, season, episode and list details</string>
+
+  <string name="v44_add_missing_www_subdomain_on_share_urls">- Add missing www subdomain on share URLs</string>
+  <string name="v44_fix_version_checker">- Fix an issue where version checker would not display if update is available</string>
 </resources>
