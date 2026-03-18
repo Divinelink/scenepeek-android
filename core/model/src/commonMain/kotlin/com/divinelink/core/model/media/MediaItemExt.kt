@@ -3,7 +3,7 @@ package com.divinelink.core.model.media
 import kotlinx.serialization.json.Json
 
 fun MediaItem.shareUrl(domain: String): String {
-  val scheme = "https://$domain"
+  val scheme = "https://www.$domain"
   val urlName = name
     .lowercase()
     .replace(":", "")
