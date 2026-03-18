@@ -96,7 +96,7 @@ fun UpdaterContent(
               Text(text = stringResource(UiString.core_ui_cancel))
             }
 
-            uiState.appVersion.data.installSource.versionCheckUrl?.let { url ->
+            uiState.appVersion.data.installSource.updateUrl?.let { url ->
               Button(
                 modifier = Modifier.weight(1f),
                 onClick = { urlHandler.openUrl(url) },

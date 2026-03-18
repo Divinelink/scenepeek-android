@@ -1,5 +1,6 @@
 package com.divinelink.core.data.app
 
+import com.divinelink.core.commons.extensions.isNewerThan
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.database.app.dao.AppInfoDao
 import com.divinelink.core.database.app.mapper.map
@@ -69,7 +70,7 @@ class ProdAppInfoRepository(
             canSearchForUpdate = false,
           )
 
-          if (appVersion.currentVersion != latestVersion) {
+          if (latestVersion.isNewerThan(appVersion.currentVersion)) {
             _updateAvailable.emit(appVersion)
           }
         }

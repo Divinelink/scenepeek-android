@@ -141,3 +141,22 @@ fun String.formatAsDisplayHex(): String {
 
   return "#$value"
 }
+
+fun String.compareVersions(other: String): Int {
+  val thisParts = this.split(".").map { it.toIntOrNull() ?: 0 }
+  val otherParts = other.split(".").map { it.toIntOrNull() ?: 0 }
+
+  val maxLength = maxOf(thisParts.size, otherParts.size)
+
+  for (i in 0 until maxLength) {
+    val v1 = thisParts.getOrElse(i) { 0 }
+    val v2 = otherParts.getOrElse(i) { 0 }
+
+    if (v1 > v2) return 1
+    if (v1 < v2) return -1
+  }
+
+  return 0
+}
+
+fun String.isNewerThan(other: String): Boolean = compareVersions(other) > 0
