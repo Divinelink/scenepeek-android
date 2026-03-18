@@ -53,7 +53,7 @@ fun ScreenType.shareUrl(
   domain: String,
   name: String,
 ): String {
-  val scheme = "https://$domain"
+  val scheme = "https://www.$domain"
   val urlName = name
     .lowercase()
     .replace(":", "")
