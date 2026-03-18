@@ -45,10 +45,12 @@ platform :android do
     )
   end
 
-  desc "Submit a new GitHub release & Google Play"
-  lane :release do
-    playstore
-    github
+  desc "Run linters"
+  lane :lint do
+    gradle(
+      task: "detektFormat ktlintFormat",
+      project_dir: "..",
+    )
   end
 
   desc "Deploy a new version to the Google Play"
@@ -133,4 +135,16 @@ platform :android do
 
     upload_to_play_store(track: 'beta')
   end
+
+  desc "Submit a new GitHub release & Google Play"
+    lane :release do
+      playstore
+      github
+    end
+
+    desc "Run tests and static analysis"
+      lane :check_code do
+        test
+        lint
+      end
 end
