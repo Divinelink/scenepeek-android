@@ -24,7 +24,12 @@ fun Clock.currentEpochSeconds(): String = now().epochSeconds.toString()
 fun String.isOlderThanCurrentTime(
   clock: Clock,
   duration: Duration,
-): Boolean = this.toLong() > clock.now().plus(duration).epochSeconds
+): Boolean {
+  val targetEpochSeconds = this.toLongOrNull() ?: return false
+  val nowInstant = clock.now()
+  val thresholdInstant = nowInstant.minus(duration)
+  return targetEpochSeconds < thresholdInstant.epochSeconds
+}
 
 fun Clock.currentTimeInUTC(): String {
   val utcTimeZone = TimeZone.UTC
