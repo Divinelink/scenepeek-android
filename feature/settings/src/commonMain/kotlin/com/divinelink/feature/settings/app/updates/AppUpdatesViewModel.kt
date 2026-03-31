@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class AppUpdatesViewModel(
   private val appInfoRepository: AppInfoRepository,
@@ -34,6 +35,16 @@ class AppUpdatesViewModel(
         }
       }
       .launchIn(viewModelScope)
+
+    appInfoRepository
+      .updaterOptIn
+      .distinctUntilChanged()
+      .onEach { enabled ->
+        _uiState.update { state ->
+          state.copy(updaterOptIn = enabled)
+        }
+      }
+      .launchIn(viewModelScope)
   }
 
   fun checkForUpdates() {
@@ -43,5 +54,11 @@ class AppUpdatesViewModel(
         force = true,
       )
       .launchIn(viewModelScope)
+  }
+
+  fun updateOptIn(enabled: Boolean) {
+    viewModelScope.launch {
+      appInfoRepository.updateUpdaterOptIn(enabled)
+    }
   }
 }

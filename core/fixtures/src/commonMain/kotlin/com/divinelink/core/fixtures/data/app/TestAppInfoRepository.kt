@@ -10,8 +10,15 @@ class TestAppInfoRepository : AppInfoRepository {
   override val updateAvailable: Flow<AppVersion?>
     get() = flowOf(null)
 
+  override val updaterOptIn: Flow<Boolean>
+    get() = flowOf(true)
+
   override fun fetchLatestAppVersion(
     fetchRemote: Boolean,
     force: Boolean,
   ): Flow<Resource<AppVersion?>> = flowOf(Resource.Loading(null))
+
+  override suspend fun updateUpdaterOptIn(enabled: Boolean) {
+    // Implement when needed
+  }
 }

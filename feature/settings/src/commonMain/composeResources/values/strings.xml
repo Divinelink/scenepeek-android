@@ -108,8 +108,11 @@
   <string name="preferences__dark_theme">Dark</string>
   <string name="preferences__system_default">System default</string>
 
+  <string name="auto_update_app_title">Auto-update ScenePeek</string>
+  <string name="auto_update_app_summary">Periodically check for new releases and ask to install them</string>
   <string name="version">Version</string>
   <string name="app_updates">App updates</string>
+  <string name="check_for_updates_on_github">Check for updates on GitHub</string>
   <string name="check_for_updates">Check for updates</string>
   <string name="last_checked">Last checked: %1$s</string>
 
