@@ -1,0 +1,5 @@
+🎉 Update v0.29.4
+
+- Under the hood improvements to make the app run smoothly
+
+We're constantly working on improvements and new features. Stay tuned for more updates!
