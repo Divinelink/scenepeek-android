@@ -68,6 +68,8 @@ platform :android do
 
     upload_to_play_store(
       skip_upload_apk: true,
+      skip_upload_images: true,
+      sync_image_upload: true,
     )
   end
 
