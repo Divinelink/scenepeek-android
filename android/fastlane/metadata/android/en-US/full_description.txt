@@ -1,12 +1,12 @@
-ScenePeek is a TMDB & Jellyseerr Android client designed to provide you with comprehensive information on movies and TV shows. 
+ScenePeek is a TMDB & Seerr Android client designed to provide you with comprehensive information on movies and TV shows.
 
 Explore detailed information about your favorite movies and TV shows, complete with cast and crew details, plot summaries, and reviews. 
 
 ScenePeek also aggregates ratings from trusted sources like IMDb and Trakt, giving you a holistic view of popular entertainment content.
 
-Use jellyseerr account and request media to your server on the go!
+Use your seerr account and request media to your server on the go!
 
 ScenePeek does not stream movies or TV shows.
-Note that you need to have a running Jellyseerr server if you want to access the Jellyseerr features.
+Note that you need to have a running seerr server if you want to access the seerr features.
 
-This app uses TMDB and Jellyseerr APIs but is not endorsed or affiliated with either service.
+This app uses TMDB and Seerr APIs but is not endorsed or affiliated with either service.
