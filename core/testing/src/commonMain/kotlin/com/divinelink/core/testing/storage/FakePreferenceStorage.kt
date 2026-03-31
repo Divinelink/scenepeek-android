@@ -20,6 +20,7 @@ class FakePreferenceStorage(
   customColor: Long = seedLong,
   region: Country = Country.UNITED_STATES,
   streamingServicesVisible: Boolean = false,
+  updaterOptIn: Boolean = true,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -54,6 +55,9 @@ class FakePreferenceStorage(
 
   private val _streamingServicesVisible = MutableStateFlow(streamingServicesVisible)
   override val streamingServicesVisible: Flow<Boolean> = _streamingServicesVisible
+
+  private val _updaterOptIn = MutableStateFlow(updaterOptIn)
+  override val updaterOptIn: Flow<Boolean> = _updaterOptIn
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -97,5 +101,9 @@ class FakePreferenceStorage(
 
   override suspend fun setStreamingServicesVisible(visible: Boolean) {
     _streamingServicesVisible.value = visible
+  }
+
+  override suspend fun setUpdaterOptIn(checkForUpdates: Boolean) {
+    _updaterOptIn.value = checkForUpdates
   }
 }

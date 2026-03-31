@@ -23,13 +23,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Runs tests
 
-### android release
+### android lint
 
 ```sh
-[bundle exec] fastlane android release
+[bundle exec] fastlane android lint
 ```
 
-Submit a new GitHub release & Google Play
+Run linters
 
 ### android playstore
 
@@ -54,6 +54,22 @@ Submit a new GitHub release
 ```
 
 Submit a new Beta Build
+
+### android release
+
+```sh
+[bundle exec] fastlane android release
+```
+
+Submit a new GitHub release & Google Play
+
+### android check_code
+
+```sh
+[bundle exec] fastlane android check_code
+```
+
+Run tests and static analysis
 
 ----
 

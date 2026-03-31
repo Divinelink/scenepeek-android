@@ -1,6 +1,5 @@
 package com.divinelink.scenepeek.initializer
 
-
 import android.content.Context
 import androidx.startup.Initializer
 import com.divinelink.core.android.BuildConfig

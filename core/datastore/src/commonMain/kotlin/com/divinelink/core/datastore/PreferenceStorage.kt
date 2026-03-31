@@ -17,6 +17,7 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_STREAMING_SERVICES_VISIBLE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_UPDATER_OPT_IN
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
@@ -60,6 +61,9 @@ interface PreferenceStorage {
 
   suspend fun setStreamingServicesVisible(visible: Boolean)
   val streamingServicesVisible: Flow<Boolean>
+
+  suspend fun setUpdaterOptIn(checkForUpdates: Boolean)
+  val updaterOptIn: Flow<Boolean>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -85,6 +89,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_SEASONS_RATING_SOURCE = stringPreferencesKey("seasons.rating.source")
     val PREF_REGION_CODE = stringPreferencesKey("details.region.code")
     val PREF_STREAMING_SERVICES_VISIBLE = booleanPreferencesKey("streaming.services.visible")
+
+    val PREF_UPDATER_OPT_IN = booleanPreferencesKey("updater.opt.in")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -181,5 +187,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override suspend fun setStreamingServicesVisible(visible: Boolean) {
     dataStore.edit { it[PREF_STREAMING_SERVICES_VISIBLE] = visible }
+  }
+
+  override val updaterOptIn: Flow<Boolean> = dataStore.data.map {
+    it[PREF_UPDATER_OPT_IN] ?: true
+  }.distinctUntilChanged()
+
+  override suspend fun setUpdaterOptIn(checkForUpdates: Boolean) {
+    dataStore.edit { it[PREF_UPDATER_OPT_IN] = checkForUpdates }
   }
 }

@@ -7,9 +7,12 @@ import kotlinx.coroutines.flow.Flow
 interface AppInfoRepository {
 
   val updateAvailable: Flow<AppVersion?>
+  val updaterOptIn: Flow<Boolean>
 
   fun fetchLatestAppVersion(
     fetchRemote: Boolean,
     force: Boolean = false,
   ): Flow<Resource<AppVersion?>>
+
+  suspend fun updateUpdaterOptIn(enabled: Boolean)
 }

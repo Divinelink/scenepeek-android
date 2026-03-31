@@ -3,6 +3,10 @@ plugins {
   alias(libs.plugins.compose)
 }
 
+val fullImplementation: Configuration by configurations.creating {
+  extendsFrom(configurations["implementation"])
+}
+
 android {
   namespace = "com.divinelink.scenepeek"
 
@@ -56,6 +60,15 @@ android {
     }
   }
 
+  sourceSets {
+    getByName("fdroid") {
+      kotlin.directories.add("src/fdroid/kotlin")
+    }
+    getByName("full") {
+      kotlin.directories.add("src/full/kotlin")
+    }
+  }
+
   testOptions.unitTests.isIncludeAndroidResources = true
 
   lint {
@@ -86,7 +99,7 @@ dependencies {
   implementation(libs.koin.compose.viewmodel)
   implementation(libs.koin.start.up)
 
-  implementation(libs.sentry.android)
+  fullImplementation(libs.sentry.android)
   implementation(libs.napier)
 
   // Testing Libs
