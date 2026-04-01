@@ -28,6 +28,10 @@ internal fun Project.configureKotlinAndroid(extension: LibraryExtension) {
 
     compileSdk = libs.versions.compile.sdk.get().toInt()
 
+    defaultConfig {
+      minSdk = libs.versions.min.sdk.get().toInt()
+    }
+
     compileOptions {
       // https://developer.android.com/studio/write/java11-minimal-support-table
       sourceCompatibility = JavaVersion.VERSION_21
