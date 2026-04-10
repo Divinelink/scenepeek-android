@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.person.ui
 
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
@@ -24,17 +23,9 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
 
   override fun buildViewModel() = apply {
     viewModel = PersonViewModel(
+      route = navArgs,
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "knownForDepartment" to navArgs.knownForDepartment,
-          "name" to navArgs.name,
-          "profilePath" to navArgs.profilePath,
-          "gender" to navArgs.gender,
-        ),
-      ),
     )
   }
 

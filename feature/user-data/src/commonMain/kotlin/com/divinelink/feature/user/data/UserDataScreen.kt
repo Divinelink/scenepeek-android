@@ -40,12 +40,14 @@ import com.divinelink.core.ui.resources.core_ui_section_watchlist
 import com.divinelink.feature.user.data.ui.provider.UserDataUiStateParameterProvider
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.UserDataScreen(
+  route: Navigation.UserDataRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: UserDataViewModel = koinViewModel(),
+  viewModel: UserDataViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()

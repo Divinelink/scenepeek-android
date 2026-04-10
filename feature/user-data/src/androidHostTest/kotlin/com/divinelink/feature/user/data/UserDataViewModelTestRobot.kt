@@ -1,6 +1,5 @@
 package com.divinelink.feature.user.data
 
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.user.data.UserDataSection
@@ -25,14 +24,10 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
 
   override fun buildViewModel() = apply {
     viewModel = UserDataViewModel(
+      route = navArgs,
       preferencesRepository = preferencesRepository,
       observeAccountUseCase = observeAccountUseCase.mock,
       fetchUserDataUseCase = fetchUserDataUseCase.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "section" to navArgs.section,
-        ),
-      ),
     )
   }
 

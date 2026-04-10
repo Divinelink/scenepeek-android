@@ -4,7 +4,6 @@ package com.divinelink.feature.details.media.ui
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.material3.SnackbarResult
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
@@ -86,6 +85,7 @@ import kotlinx.coroutines.launch
 import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class DetailsViewModel(
+  route: DetailsRoute,
   getMediaDetailsUseCase: GetMediaDetailsUseCase,
   private val fetchAllRatingsUseCase: FetchAllRatingsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
@@ -98,14 +98,7 @@ class DetailsViewModel(
   authRepository: AuthRepository,
   repository: DetailsRepository,
   preferencesRepository: PreferencesRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route: DetailsRoute = DetailsRoute(
-    id = savedStateHandle.get<Int>("id") ?: -1,
-    mediaType = savedStateHandle.get<String>("mediaType") ?: MediaType.UNKNOWN.value,
-    isFavorite = savedStateHandle.get<Boolean>("isFavorite") ?: false,
-  )
 
   private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
     value = DetailsViewState.initial(

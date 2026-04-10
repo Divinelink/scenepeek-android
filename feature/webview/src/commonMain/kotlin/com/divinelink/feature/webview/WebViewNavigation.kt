@@ -1,15 +1,12 @@
 package com.divinelink.feature.webview
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
+import androidx.navigation3.runtime.EntryProviderScope
 import com.divinelink.core.navigation.route.Navigation
 
-fun NavGraphBuilder.webViewScreen(onNavigate: (Navigation) -> Unit) {
-  composable<Navigation.WebViewRoute> {
-    val route = it.toRoute<Navigation.WebViewRoute>()
+fun EntryProviderScope<Navigation>.webViewScreen(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.WebViewRoute> { key ->
     WebViewScreen(
-      route = route,
+      route = key,
       onNavigate = onNavigate,
     )
   }

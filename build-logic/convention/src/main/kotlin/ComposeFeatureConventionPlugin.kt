@@ -38,6 +38,9 @@ class ComposeFeatureConventionPlugin : Plugin<Project> {
           implementation(project(":core:designsystem"))
           implementation(project(":core:scaffold"))
 
+          implementation(libs.navigation3.ui)
+          implementation(libs.lifecycle.multiplatform.viewmodel.navigation3)
+
           implementation(libs.koin.compose.viewmodel)
           implementation(libs.compose.multiplatform.navigation)
         }

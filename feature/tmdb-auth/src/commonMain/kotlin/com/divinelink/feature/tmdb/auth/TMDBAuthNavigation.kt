@@ -1,11 +1,10 @@
 package com.divinelink.feature.tmdb.auth
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
 import com.divinelink.core.navigation.route.Navigation
 
-fun NavGraphBuilder.tmdbAuthScreen(onNavigate: (Navigation) -> Unit) {
-  composable<Navigation.TMDBAuthRoute> {
+fun EntryProviderScope<Navigation>.tmdbAuthScreen(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.TMDBAuthRoute> { _ ->
     TMDBAuthScreen(onNavigate)
   }
 }

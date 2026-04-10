@@ -23,12 +23,14 @@ import com.divinelink.core.ui.components.ObfuscateSpoilersButton
 import com.divinelink.feature.credits.resources.Res
 import com.divinelink.feature.credits.resources.feature_credits_cast_and_crew_title
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.CreditsScreen(
+  route: Navigation.CreditsRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: CreditsViewModel = koinViewModel(),
+  viewModel: CreditsViewModel = koinViewModel { parametersOf(route) },
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()

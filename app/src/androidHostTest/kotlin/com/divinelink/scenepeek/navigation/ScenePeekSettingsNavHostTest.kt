@@ -1,6 +1,5 @@
 package com.divinelink.scenepeek.navigation
 
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -11,10 +10,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.compose.ComposeNavigator
-import androidx.navigation.compose.DialogNavigator
-import androidx.navigation.testing.TestNavHostController
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
@@ -24,6 +19,7 @@ import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.AboutSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AppearanceSettingsRoute
@@ -32,10 +28,10 @@ import com.divinelink.core.navigation.route.Navigation.JellyseerrSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.LinkHandlingSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.SettingsRoute
 import com.divinelink.core.navigation.route.Navigation.TMDBAuthRoute
-import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.core.scaffold.NavEntryProvider
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
+import com.divinelink.core.scaffold.ScenePeekAppState
 import com.divinelink.core.scaffold.ScenePeekNavHost
-import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
@@ -91,7 +87,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
   private val clock: Clock = ClockFactory.decemberFirst2021()
 
-  private lateinit var navController: TestNavHostController
+  private lateinit var appState: ScenePeekAppState
   private lateinit var fakePreferenceStorage: FakePreferenceStorage
   private lateinit var preferencesRepository: TestPreferencesRepository
   private lateinit var mediaRepository: TestMediaRepository
@@ -144,26 +140,21 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
   private fun ComposeUiTest.setupContent() {
     setContentWithTheme {
-      navController = TestNavHostController(LocalContext.current)
-      navController.navigatorProvider.addNavigator(ComposeNavigator())
-      navController.navigatorProvider.addNavigator(DialogNavigator())
       val state = rememberScenePeekAppState(
         networkMonitor = TestNetworkMonitor(),
         onboardingManager = TestOnboardingManager(),
-        navController = navController,
         preferencesRepository = preferencesRepository,
         appInfoRepository = TestAppInfoRepository(),
-        navigationProvider = get<List<NavGraphExtension>>(),
+        navigationProvider = get<List<NavEntryProvider>>(),
       )
+      appState = state
 
       ProvideScenePeekAppState(appState = state) {
         PreviewLocalProvider {
           SharedTransitionScopeProvider {
             state.sharedTransitionScope = it
 
-            rememberScaffoldState(
-              animatedVisibilityScope = this,
-            ).ScenePeekNavHost()
+            ScenePeekNavHost()
           }
         }
       }
@@ -174,7 +165,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   fun `test navigate to AccountSettingsScreen`() = uiTest {
     setupContent()
 
-    navController.navigate(SettingsRoute)
+    appState.navigate(Navigation.SettingsRoute)
 
     declare {
       AccountSettingsViewModel(
@@ -185,25 +176,21 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     }
 
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
 
     onNodeWithText(getString(R.string.feature_settings_account)).assertExists().performClick()
 
     onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
+    assertThat(appState.backStack.last()).isEqualTo(AccountSettingsRoute)
 
     onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
   }
 
   @Test
   fun `test navigate to JellyseerrAccountSettings`() = uiTest {
     setupContent()
-
-    navController.navigate(SettingsRoute)
-    navController.navigate(AccountSettingsRoute)
 
     declare {
       AccountSettingsViewModel(
@@ -221,32 +208,26 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
+    appState.navigate(Navigation.SettingsRoute)
+    appState.navigate(Navigation.AccountSettingsRoute)
+
     onNodeWithText(getString(R.string.feature_settings_account)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
-    assertThat(
-      navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(AccountSettingsRoute)
 
     onNodeWithText(getString(R.string.feature_settings_jellyseerr_integration)).assertExists()
       .performClick()
 
     onNodeWithText(getString(R.string.feature_settings_account)).assertDoesNotExist()
-    assertThat(
-      navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
-    ).isTrue()
+    assertThat(appState.backStack.last()).isInstanceOf(JellyseerrSettingsRoute::class.java)
 
     onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
     onNodeWithText(getString(R.string.feature_settings_account)).assertIsDisplayed()
-    assertThat(
-      navController.currentDestination?.hasRoute(JellyseerrSettingsRoute::class),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(AccountSettingsRoute)
   }
 
   @Test
   fun `test navigate to AppearanceSettingsScreen`() = uiTest {
     setupContent()
-
-    navController.navigate(SettingsRoute)
 
     fakePreferenceStorage = FakePreferenceStorage()
 
@@ -264,30 +245,23 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
+    appState.navigate(Navigation.SettingsRoute)
+
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-    assertThat(
-      navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
 
     onNodeWithText(getString(R.string.preferences__appearance)).assertExists().performClick()
 
-    assertThat(
-      navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
-    ).isTrue()
+    assertThat(appState.backStack.last()).isEqualTo(AppearanceSettingsRoute)
 
     onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(
-      navController.currentDestination?.hasRoute(AppearanceSettingsRoute::class),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
   }
 
   @Test
   fun `test navigate to Details Preferences`() = uiTest {
     setupContent()
-
-    navController.navigate(SettingsRoute)
 
     fakePreferenceStorage = FakePreferenceStorage()
 
@@ -301,69 +275,52 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
+    appState.navigate(Navigation.SettingsRoute)
+
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-    assertThat(
-      navController.currentDestination?.hasRoute(
-        DetailsPreferencesSettingsRoute::class,
-      ),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
 
     onNodeWithText(
       getString(R.string.feature_settings_details_preferences),
     ).assertExists().performClick()
 
     onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-    assertThat(
-      navController.currentDestination?.hasRoute(DetailsPreferencesSettingsRoute::class),
-    ).isTrue()
+    assertThat(appState.backStack.last()).isEqualTo(DetailsPreferencesSettingsRoute)
 
     onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(
-      navController.currentDestination?.hasRoute(DetailsPreferencesSettingsRoute::class),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
   }
 
   @Test
   fun `test navigate to Link Handling`() = uiTest {
     setupContent()
 
-    navController.navigate(SettingsRoute)
+    appState.navigate(Navigation.SettingsRoute)
 
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-    assertThat(
-      navController.currentDestination?.hasRoute(
-        DetailsPreferencesSettingsRoute::class,
-      ),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
 
     onNodeWithText(
       getString(R.string.feature_settings_link_handling),
     ).assertExists().performClick()
 
     onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-    assertThat(
-      navController.currentDestination?.hasRoute(LinkHandlingSettingsRoute::class),
-    ).isTrue()
+    assertThat(appState.backStack.last()).isEqualTo(LinkHandlingSettingsRoute)
 
     onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(
-      navController.currentDestination?.hasRoute(LinkHandlingSettingsRoute::class),
-    ).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
   }
 
   @Test
   fun `test navigate to AboutSettingsScreen`() = uiTest {
     setupContent()
 
-    navController.navigate(SettingsRoute)
+    appState.navigate(Navigation.SettingsRoute)
 
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
-    assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
 
     onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToNode(
       hasText(getString(R.string.feature_settings_about)),
@@ -379,11 +336,11 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     onNodeWithText(getString(R.string.feature_settings_about)).assertExists().performClick()
 
     onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
-    assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isTrue()
+    assertThat(appState.backStack.last()).isEqualTo(AboutSettingsRoute)
 
     onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
-    assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
+    assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
   }
 
   @Test
@@ -398,14 +355,13 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    navController.navigate(AccountSettingsRoute)
+    appState.navigate(Navigation.AccountSettingsRoute)
 
-    navController.currentDestination?.hasRoute(AccountSettingsRoute::class) shouldBe true
-    navController.currentDestination?.hasRoute(TMDBAuthRoute::class) shouldBe false
+    assertThat(appState.backStack.last()).isEqualTo(AccountSettingsRoute)
 
     onNodeWithText(getString(R.string.login)).assertExists().performClick()
 
     onNodeWithText(getString(R.string.settings)).assertIsNotDisplayed()
-    navController.currentDestination?.hasRoute(TMDBAuthRoute::class) shouldBe true
+    assertThat(appState.backStack.last()).isEqualTo(TMDBAuthRoute)
   }
 }

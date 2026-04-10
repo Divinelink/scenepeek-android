@@ -31,12 +31,14 @@ import com.divinelink.core.ui.resources.core_ui_discover
 import com.divinelink.feature.discover.DiscoverViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.DiscoverScreen(
+  route: Navigation.DiscoverRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: DiscoverViewModel = koinViewModel(),
+  viewModel: DiscoverViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()

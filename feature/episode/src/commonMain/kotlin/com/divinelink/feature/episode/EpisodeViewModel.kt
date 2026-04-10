@@ -2,7 +2,6 @@ package com.divinelink.feature.episode
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.material3.SnackbarResult
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
@@ -32,18 +31,10 @@ import kotlinx.coroutines.launch
 import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class EpisodeViewModel(
+  private val route: Navigation.EpisodeRoute,
   private val repository: MediaRepository,
   private val accountRepository: AccountRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route = Navigation.EpisodeRoute(
-    showId = savedStateHandle.get<Int>("showId") ?: -1,
-    showTitle = savedStateHandle.get<String>("showTitle") ?: "",
-    seasonTitle = savedStateHandle.get<String>("seasonTitle") ?: "",
-    seasonNumber = savedStateHandle.get<Int>("seasonNumber") ?: -1,
-    episodeIndex = savedStateHandle.get<Int>("episodeIndex") ?: -1,
-  )
 
   private val _uiState: MutableStateFlow<EpisodeUiState> = MutableStateFlow(
     EpisodeUiState.initial(route),

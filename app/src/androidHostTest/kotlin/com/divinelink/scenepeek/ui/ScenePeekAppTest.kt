@@ -1,10 +1,6 @@
 package com.divinelink.scenepeek.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
@@ -19,10 +15,6 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.compose.ComposeNavigator
-import androidx.navigation.compose.composable
-import androidx.navigation.createGraph
-import androidx.navigation.testing.TestNavHostController
 import app.cash.turbine.test
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -41,7 +33,7 @@ import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.core.scaffold.NavEntryProvider
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.ScenePeekAppState
 import com.divinelink.core.scaffold.TopLevelDestination
@@ -111,7 +103,7 @@ class ScenePeekAppTest : ComposeTest() {
   private val mediaRepository = TestMediaRepository()
   private val clock: Clock = ClockFactory.decemberFirst2021()
 
-  private lateinit var navigationProvider: List<NavGraphExtension>
+  private lateinit var navigationProvider: List<NavEntryProvider>
 
   private val homeTab = "Home"
   private val profileTab = "Profile"
@@ -179,7 +171,7 @@ class ScenePeekAppTest : ComposeTest() {
       )
     }
 
-    navigationProvider = get<List<NavGraphExtension>>()
+    navigationProvider = get<List<NavEntryProvider>>()
   }
 
   @AfterTest
@@ -727,11 +719,9 @@ class ScenePeekAppTest : ComposeTest() {
     uiState = MainUiState.Loading
 
     setContentWithTheme {
-      val navController = rememberTestNavController()
       val scope = rememberCoroutineScope()
       ScenePeekApp(
         state = rememberScenePeekAppState(
-          navController = navController,
           scope = scope,
           onboardingManager = onboardingManager,
           networkMonitor = networkMonitor,
@@ -825,10 +815,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   fun `test currentDestination`() = uiTest {
     runTest {
-      var currentDestination: String? = null
-
       setContentWithTheme {
-        val navController = rememberTestNavController()
         state = rememberScenePeekAppState(
           scope = backgroundScope,
           networkMonitor = networkMonitor,
@@ -837,15 +824,9 @@ class ScenePeekAppTest : ComposeTest() {
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
         )
-
-        currentDestination = state.currentDestination?.route
-
-        LaunchedEffect(Unit) {
-          navController.setCurrentDestination("Screen B")
-        }
       }
 
-      assertThat(currentDestination).isEqualTo("Screen B")
+      assertThat(state.currentTab).isEqualTo(TopLevelDestination.HOME)
     }
   }
 
@@ -1003,17 +984,3 @@ class ScenePeekAppTest : ComposeTest() {
   }
 }
 
-@Composable
-private fun rememberTestNavController(): TestNavHostController {
-  val context = LocalContext.current
-  return remember {
-    TestNavHostController(context).apply {
-      navigatorProvider.addNavigator(ComposeNavigator())
-      graph = createGraph(startDestination = "Screen A") {
-        composable("Screen A") { }
-        composable("Screen B") { }
-        composable("Screen C") { }
-      }
-    }
-  }
-}

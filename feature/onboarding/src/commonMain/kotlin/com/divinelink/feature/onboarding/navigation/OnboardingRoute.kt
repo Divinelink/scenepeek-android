@@ -4,16 +4,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.testTag
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.scene.DialogSceneStrategy
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.onboarding.ui.IntroModalBottomSheet
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun NavGraphBuilder.fullscreenOnboarding(onNavigate: (Navigation) -> Unit) {
-  composable<Navigation.Onboarding.FullScreenRoute> {
+fun EntryProviderScope<Navigation>.fullscreenOnboarding(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.Onboarding.FullScreenRoute> { _ ->
     BackHandler(enabled = true) {
       // Disable back button
     }
@@ -26,8 +25,8 @@ fun NavGraphBuilder.fullscreenOnboarding(onNavigate: (Navigation) -> Unit) {
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun NavGraphBuilder.modalOnboarding(onNavigate: (Navigation) -> Unit) {
-  dialog<Navigation.Onboarding.ModalRoute> {
+fun EntryProviderScope<Navigation>.modalOnboarding(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.Onboarding.ModalRoute>(metadata = DialogSceneStrategy.dialog()) { _ ->
     BackHandler(enabled = true) {
       // Disable back button
     }

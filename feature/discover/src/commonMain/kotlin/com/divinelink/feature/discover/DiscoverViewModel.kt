@@ -1,6 +1,5 @@
 package com.divinelink.feature.discover
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.util.decodeFromString
@@ -26,23 +25,13 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 class DiscoverViewModel(
+  private val route: Navigation.DiscoverRoute,
   private val filterRepository: FilterRepository,
   private val discoverUseCase: DiscoverMediaUseCase,
   preferencesRepository: PreferencesRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  @OptIn(ExperimentalUuidApi::class)
-  private val route = Navigation.DiscoverRoute(
-    entryPointUuid = savedStateHandle.get<String>("entryPointUuid") ?: Uuid.random().toHexString(),
-    mediaType = savedStateHandle.get<String>("mediaType"),
-    encodedGenre = savedStateHandle.get<String>("encodedGenre"),
-    encodedKeyword = savedStateHandle.get<String>("encodedKeyword"),
-  )
 
   private val _uiState: MutableStateFlow<DiscoverUiState> = MutableStateFlow(
     DiscoverUiState.initial(route),

@@ -1,7 +1,7 @@
 package com.divinelink.feature.lists.create
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.EditListRoute
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.testing.MainDispatcherRule
@@ -25,22 +25,9 @@ class CreateListViewModelTestRobot : ViewModelTestRobot<CreateListUiState>() {
 
   override fun buildViewModel() = apply {
     viewModel = CreateListViewModel(
+      route = if (::editNavArgs.isInitialized) editNavArgs else Navigation.CreateListRoute,
       createListUseCase = createListUseCase.mock,
       repository = repository.mock,
-      savedStateHandle = if (::editNavArgs.isInitialized) {
-        SavedStateHandle(
-          mapOf(
-            "id" to editNavArgs.id,
-            "name" to editNavArgs.name,
-            "backdropPath" to editNavArgs.backdropPath,
-            "description" to editNavArgs.description,
-            "public" to editNavArgs.public,
-          ),
-        )
-      } else {
-        SavedStateHandle()
-      },
-
     )
   }
 

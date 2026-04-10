@@ -12,14 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
 import com.divinelink.core.commons.provider.getBuildConfigProvider
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.network.NetworkState
-import com.divinelink.core.navigation.route.navigateToOnboarding
-import com.divinelink.core.navigation.route.openUpdaterModal
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.components.LoadingContent
@@ -27,7 +23,6 @@ import com.divinelink.core.ui.composition.LocalProvider
 import com.divinelink.core.ui.network.NetworkStatusIndicator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.reflect.KClass
 
 private const val NETWORK_STATUS_ANIMATION_DURATION = 4000L
 
@@ -73,7 +68,7 @@ fun ScenePeekApp(
     when (uiEvent) {
       MainUiEvent.None -> Unit
       is MainUiEvent.Navigate -> {
-        state.navController.navigate(uiEvent.route)
+        state.navigate(uiEvent.route)
         onConsumeEvent()
       }
     }
@@ -81,13 +76,19 @@ fun ScenePeekApp(
 
   LaunchedEffect(showOnboarding) {
     if (showOnboarding) {
-      state.navController.navigateToOnboarding(fullscreen = isFirstLaunch)
+      state.navigate(
+        if (isFirstLaunch) {
+          Navigation.Onboarding.FullScreenRoute
+        } else {
+          Navigation.Onboarding.ModalRoute
+        },
+      )
     }
   }
 
   LaunchedEffect(updateAvailable) {
     updateAvailable?.let {
-      state.navController.openUpdaterModal()
+      state.navigate(Navigation.UpdaterRoute)
     }
   }
 
@@ -118,7 +119,3 @@ fun ScenePeekApp(
     }
   }
 }
-
-fun NavDestination?.isRouteInHierarchy(route: KClass<*>) = this?.hierarchy?.any {
-  it.hasRoute(route)
-} ?: false

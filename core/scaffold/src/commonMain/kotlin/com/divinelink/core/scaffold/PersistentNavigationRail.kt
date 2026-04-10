@@ -41,7 +41,7 @@ fun ScaffoldState.PersistentNavigationRail(
       val state = LocalScenePeekAppState.current
       NavigationRail {
         state.topLevelDestinations.forEach { destination ->
-          val selected = state.currentDestination.isRouteInHierarchy(destination.route::class)
+          val selected = state.currentTab == destination
 
           NavigationRailItem(
             selected = selected,

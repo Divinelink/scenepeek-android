@@ -31,12 +31,14 @@ import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.feature.season.SeasonViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.SeasonScreen(
+  route: Navigation.SeasonRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: SeasonViewModel = koinViewModel(),
+  viewModel: SeasonViewModel = koinViewModel { parametersOf(route) },
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())

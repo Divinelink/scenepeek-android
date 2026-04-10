@@ -1,6 +1,5 @@
 package com.divinelink.feature.lists.details
 
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
@@ -26,17 +25,9 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
 
   override fun buildViewModel() = apply {
     viewModel = ListDetailsViewModel(
+      route = navArgs,
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       repository = repository.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "name" to navArgs.name,
-          "backdropPath" to navArgs.backdropPath,
-          "description" to navArgs.description,
-          "public" to navArgs.public,
-        ),
-      ),
     )
   }
 

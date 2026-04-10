@@ -32,38 +32,39 @@ import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.feature.updater.UpdaterViewModel
 import com.divinelink.feature.user.data.UserDataViewModel
 import com.divinelink.scenepeek.MainViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appViewModelModule = module {
   viewModelOf(::AccountSettingsViewModel)
   viewModelOf(::AppearanceSettingsViewModel)
-  viewModelOf(::CollectionsViewModel)
-  viewModelOf(::CreditsViewModel)
-  viewModelOf(::DetailsViewModel)
+  viewModel { params -> CollectionsViewModel(params.get(), get()) }
+  viewModel { params -> CreditsViewModel(params.get(), get(), get()) }
+  viewModel { params -> DetailsViewModel(params.get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
   viewModelOf(::HomeViewModel)
   viewModelOf(::MainViewModel)
-  viewModelOf(::PersonViewModel)
+  viewModel { params -> PersonViewModel(params.get(), get(), get()) }
   viewModelOf(::SearchViewModel)
   viewModelOf(::JellyseerrSettingsViewModel)
-  viewModelOf(::UserDataViewModel)
+  viewModel { params -> UserDataViewModel(params.get(), get(), get(), get()) }
   viewModelOf(::DetailsPreferencesViewModel)
   viewModelOf(::TMDBAuthViewModel)
   viewModelOf(::IntroViewModel)
   viewModelOf(::ProfileViewModel)
   viewModelOf(::ListsViewModel)
-  viewModelOf(::AddToListViewModel)
-  viewModelOf(::ListDetailsViewModel)
-  viewModelOf(::CreateListViewModel)
+  viewModel { params -> AddToListViewModel(params.get(), get(), get(), get()) }
+  viewModel { params -> ListDetailsViewModel(params.get(), get(), get()) }
+  viewModel { params -> CreateListViewModel(params.get(), get(), get()) }
   viewModelOf(::SelectBackdropViewModel)
   viewModelOf(::ActionMenuViewModel)
   viewModelOf(::RequestMediaViewModel)
   viewModelOf(::RequestsViewModel)
-  viewModelOf(::DiscoverViewModel)
+  viewModel { params -> DiscoverViewModel(params.get(), get(), get(), get()) }
   viewModelOf(::SelectFilterViewModel)
-  viewModelOf(::MediaListsViewModel)
-  viewModelOf(::SeasonViewModel)
-  viewModelOf(::EpisodeViewModel)
+  viewModel { params -> MediaListsViewModel(params.get(), get()) }
+  viewModel { params -> SeasonViewModel(params.get(), get()) }
+  viewModel { params -> EpisodeViewModel(params.get(), get(), get()) }
   viewModelOf(::UpdaterViewModel)
   viewModelOf(::AppUpdatesViewModel)
 

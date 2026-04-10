@@ -4,24 +4,23 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.preferences.DetailPreferences
+import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.ui.UiPreferences
-import com.divinelink.core.navigation.route.navigateToHome
-import com.divinelink.core.navigation.route.navigateToProfile
-import com.divinelink.core.navigation.route.navigateToSearchFromTab
+import com.divinelink.core.navigation.route.Navigation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -34,14 +33,12 @@ fun rememberScenePeekAppState(
   onboardingManager: OnboardingManager,
   preferencesRepository: PreferencesRepository,
   appInfoRepository: AppInfoRepository,
-  navigationProvider: List<NavGraphExtension>,
+  navigationProvider: List<NavEntryProvider>,
   scope: CoroutineScope = rememberCoroutineScope(),
   snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-  navController: NavHostController = rememberNavController(),
 ): ScenePeekAppState = remember(networkMonitor, scope) {
   ScenePeekAppState(
     scope = scope,
-    navController = navController,
     navigationExtension = navigationProvider,
     networkMonitor = networkMonitor,
     onboardingManager = onboardingManager,
@@ -53,17 +50,29 @@ fun rememberScenePeekAppState(
 
 @Stable
 class ScenePeekAppState internal constructor(
-  val navController: NavHostController,
   val scope: CoroutineScope,
-  val navigationExtension: List<NavGraphExtension>,
+  val navigationExtension: List<NavEntryProvider>,
   val snackbarHostState: SnackbarHostState,
   preferencesRepository: PreferencesRepository,
   appInfoRepository: AppInfoRepository,
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager,
 ) {
-  val currentDestination: NavDestination?
-    @Composable get() = navController.currentBackStackEntryAsState().value?.destination
+  private val homeBackStack = mutableStateListOf<Navigation>(Navigation.HomeRoute)
+  private val profileBackStack = mutableStateListOf<Navigation>(Navigation.ProfileRoute)
+  private val searchBackStack = mutableStateListOf<Navigation>(
+    Navigation.SearchRoute(entryPoint = SearchEntryPoint.SEARCH_TAB),
+  )
+
+  var currentTab: TopLevelDestination by mutableStateOf(TopLevelDestination.HOME)
+    private set
+
+  val backStack: SnapshotStateList<Navigation>
+    get() = when (currentTab) {
+      TopLevelDestination.HOME -> homeBackStack
+      TopLevelDestination.PROFILE -> profileBackStack
+      TopLevelDestination.SEARCH -> searchBackStack
+    }
 
   val isOffline = networkMonitor.isOnline
     .map(Boolean::not)
@@ -115,27 +124,48 @@ class ScenePeekAppState internal constructor(
 
   lateinit var sharedTransitionScope: SharedTransitionScope
 
-  fun navigateToTopLevelDestination(destination: TopLevelDestination) {
-    val topLevelNavOptions = navOptions {
-      popUpTo(navController.graph.findStartDestination().id) {
-        saveState = true
+  fun navigate(route: Navigation) {
+    when (route) {
+      Navigation.Back -> navigateBack()
+      Navigation.TwiceBack -> {
+        navigateBack()
+        navigateBack()
       }
-      // Avoid multiple copies of the same destination when re-selecting the same item
-      launchSingleTop = true
-      // Restore state when re-selecting a previously selected item
-      restoreState = true
+      Navigation.HomeRoute -> navigateToTopLevelDestination(TopLevelDestination.HOME)
+      Navigation.ProfileRoute -> navigateToTopLevelDestination(TopLevelDestination.PROFILE)
+      is Navigation.SearchRoute -> when (route.entryPoint) {
+        SearchEntryPoint.SEARCH_TAB -> navigateToTopLevelDestination(TopLevelDestination.SEARCH)
+        SearchEntryPoint.HOME -> backStack.add(route)
+      }
+      Navigation.ListsRoute -> {
+        val idx = backStack.indexOfLast { it == Navigation.ListsRoute }
+        if (idx >= 0) {
+          repeat(backStack.size - idx - 1) { backStack.removeLast() }
+        } else {
+          backStack.add(route)
+        }
+      }
+      else -> backStack.add(route)
     }
+  }
 
-    when (destination) {
-      TopLevelDestination.HOME -> navController.navigateToHome(topLevelNavOptions)
-      TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
-      TopLevelDestination.SEARCH -> navController.navigateToSearchFromTab(topLevelNavOptions)
+  fun navigateBack() {
+    if (backStack.size > 1) {
+      backStack.removeLastOrNull()
     }
+  }
 
-    navController.popBackStack(
-      route = destination.route,
-      inclusive = false,
-    )
+  fun navigateToTopLevelDestination(destination: TopLevelDestination) {
+    if (currentTab == destination) {
+      val stack = backStack
+      if (stack.size > 1) {
+        val root = stack.first()
+        stack.clear()
+        stack.add(root)
+      }
+    } else {
+      currentTab = destination
+    }
   }
 
   companion object {

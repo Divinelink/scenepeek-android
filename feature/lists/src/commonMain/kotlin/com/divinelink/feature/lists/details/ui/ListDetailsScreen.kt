@@ -44,12 +44,14 @@ import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.ListDetailsScreen(
+  route: Navigation.ListDetailsRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: ListDetailsViewModel = koinViewModel(),
+  viewModel: ListDetailsViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val systemUiController = rememberSystemUiController()

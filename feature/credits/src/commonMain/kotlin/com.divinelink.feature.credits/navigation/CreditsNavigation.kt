@@ -1,15 +1,16 @@
 package com.divinelink.feature.credits.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.scaffold.TwoPaneScene
 import com.divinelink.feature.credits.ui.CreditsScreen
 
-fun NavController.navigateToCredits(route: Navigation.CreditsRoute) = navigate(route = route)
-
-fun NavGraphBuilder.creditsScreen(onNavigate: (Navigation) -> Unit) {
-  composable<Navigation.CreditsRoute> {
-    CreditsScreen(onNavigate = onNavigate)
+fun EntryProviderScope<Navigation>.creditsScreen(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.CreditsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    LocalNavAnimatedContentScope.current.CreditsScreen(
+      route = key,
+      onNavigate = onNavigate,
+    )
   }
 }

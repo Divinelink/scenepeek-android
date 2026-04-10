@@ -1,28 +1,18 @@
 package com.divinelink.feature.settings.navigation.account
 
-import androidx.compose.animation.SharedTransitionScope
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.scaffold.LocalScenePeekAppState
+import com.divinelink.core.scaffold.TwoPaneScene
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsScreen
 
-fun NavController.navigateToJellyseerrSettings(withNavigationBar: Boolean) = navigate(
-  route = Navigation.JellyseerrSettingsRoute(withNavigationBar),
-)
-
-fun NavGraphBuilder.jellyseerrSettingsScreen(
-  sharedTransitionScope: SharedTransitionScope,
-  onNavigateUp: () -> Unit,
-) {
-  composable<Navigation.JellyseerrSettingsRoute> {
-    val route = it.toRoute<Navigation.JellyseerrSettingsRoute>()
-
-    JellyseerrSettingsScreen(
-      sharedTransitionScope = sharedTransitionScope,
-      onNavigateUp = onNavigateUp,
-      withNavigationBar = route.withNavigationBar,
+fun EntryProviderScope<Navigation>.jellyseerrSettingsScreen(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.JellyseerrSettingsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    LocalNavAnimatedContentScope.current.JellyseerrSettingsScreen(
+      sharedTransitionScope = LocalScenePeekAppState.current.sharedTransitionScope,
+      onNavigateUp = { onNavigate(Navigation.Back) },
+      withNavigationBar = key.withNavigationBar,
     )
   }
 }

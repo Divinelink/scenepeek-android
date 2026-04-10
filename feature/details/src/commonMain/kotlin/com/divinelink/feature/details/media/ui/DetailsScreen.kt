@@ -30,13 +30,15 @@ import com.divinelink.core.ui.manager.url.rememberUrlHandler
 import com.divinelink.feature.add.to.account.rate.RateModalBottomSheet
 import com.divinelink.feature.details.media.ui.ratings.AllRatingsModalBottomSheet
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun DetailsScreen(
+  route: Navigation.DetailsRoute,
   onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  viewModel: DetailsViewModel = koinViewModel(),
+  viewModel: DetailsViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   var videoUrl by rememberSaveable { mutableStateOf<String?>(null) }

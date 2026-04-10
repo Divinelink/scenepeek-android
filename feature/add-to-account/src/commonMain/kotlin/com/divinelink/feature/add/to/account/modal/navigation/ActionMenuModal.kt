@@ -1,22 +1,15 @@
 package com.divinelink.feature.add.to.account.modal.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.dialog
-import androidx.navigation.toRoute
-import com.divinelink.core.model.media.MediaItem
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.scene.DialogSceneStrategy
 import com.divinelink.core.model.media.decodeToMediaItem
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.utilities.NavType
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuModal
-import kotlin.reflect.typeOf
 
-fun NavGraphBuilder.defaultMediaActionMenu(onNavigation: (Navigation) -> Unit) {
-  dialog<Navigation.ActionMenuRoute.Media>(
-    typeMap = mapOf(typeOf<MediaItem>() to NavType.MediaItem),
-  ) {
-    val route = it.toRoute<Navigation.ActionMenuRoute.Media>()
-    val mediaItem = route.encodedMediaItem.decodeToMediaItem()
+fun EntryProviderScope<Navigation>.defaultMediaActionMenu(onNavigation: (Navigation) -> Unit) {
+  entry<Navigation.ActionMenuRoute.Media>(metadata = DialogSceneStrategy.dialog()) { key ->
+    val mediaItem = key.encodedMediaItem.decodeToMediaItem()
 
     ActionMenuModal(
       mediaItem = mediaItem,

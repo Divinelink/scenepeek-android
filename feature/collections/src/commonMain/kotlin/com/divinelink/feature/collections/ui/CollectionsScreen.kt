@@ -32,12 +32,14 @@ import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.feature.collections.CollectionsViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.CollectionsScreen(
+  route: Navigation.CollectionRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: CollectionsViewModel = koinViewModel(),
+  viewModel: CollectionsViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
