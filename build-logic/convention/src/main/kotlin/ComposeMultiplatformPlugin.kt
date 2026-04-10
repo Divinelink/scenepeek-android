@@ -37,6 +37,8 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
           implementation(libs.lifecycle.multiplatform.runtime.compose)
 
           api(libs.compose.multiplatform.navigation)
+          api(libs.navigation3.ui)
+          api(libs.lifecycle.multiplatform.viewmodel.navigation3)
           implementation(libs.compose.multiplatform.backhandler)
         }
 

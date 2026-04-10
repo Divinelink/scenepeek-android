@@ -2,7 +2,6 @@
 
 package com.divinelink.feature.lists.details
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.onError
@@ -31,18 +30,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ListDetailsViewModel(
+  private val route: ListDetailsRoute,
   private val fetchListDetailsUseCase: FetchListDetailsUseCase,
   private val repository: ListRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route: ListDetailsRoute = ListDetailsRoute(
-    id = savedStateHandle.get<Int>("id") ?: -1,
-    name = savedStateHandle.get<String>("name") ?: "",
-    backdropPath = savedStateHandle.get<String>("backdropPath") ?: "",
-    description = savedStateHandle.get<String>("description") ?: "",
-    public = savedStateHandle.get<Boolean>("public") ?: false,
-  )
 
   private val _uiState: MutableStateFlow<ListDetailsUiState> = MutableStateFlow(
     ListDetailsUiState.initial(

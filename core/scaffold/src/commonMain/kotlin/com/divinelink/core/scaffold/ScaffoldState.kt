@@ -83,6 +83,6 @@ fun ProvideScenePeekAppState(
   )
 }
 
-internal val LocalScenePeekAppState = staticCompositionLocalOf<ScenePeekAppState> {
+val LocalScenePeekAppState = staticCompositionLocalOf<ScenePeekAppState> {
   throw IllegalArgumentException("AppState must be provided in the app scaffolding.")
 }

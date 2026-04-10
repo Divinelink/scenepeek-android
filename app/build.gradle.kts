@@ -50,7 +50,6 @@ kotlin {
     }
 
     androidHostTest.dependencies {
-      implementation(libs.androidx.navigation.testing)
       implementation(libs.robolectric)
     }
   }

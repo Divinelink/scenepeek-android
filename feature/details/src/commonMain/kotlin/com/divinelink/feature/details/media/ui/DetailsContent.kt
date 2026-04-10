@@ -267,7 +267,7 @@ fun DetailsContent(
       )
     },
     navigationRail = {
-      PersistentNavigationRail()
+//      PersistentNavigationRail()
     },
     navigationBar = {
       PersistentNavigationBar()

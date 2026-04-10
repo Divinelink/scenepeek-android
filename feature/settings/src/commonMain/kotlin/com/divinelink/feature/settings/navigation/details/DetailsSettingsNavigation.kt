@@ -1,20 +1,16 @@
 package com.divinelink.feature.settings.navigation.details
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.scaffold.TwoPaneScene
 import com.divinelink.feature.settings.app.details.DetailPreferencesSettingsScreen
 
-fun NavController.navigateToDetailsPreferenceSettings() = navigate(
-  route = Navigation.DetailsPreferencesSettingsRoute,
-)
-
-fun NavGraphBuilder.detailsPreferencesSettingsScreen(onNavigateUp: () -> Unit) {
-  composable<Navigation.DetailsPreferencesSettingsRoute> {
+fun EntryProviderScope<Navigation>.detailsPreferencesSettingsScreen(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.DetailsPreferencesSettingsRoute>(metadata = TwoPaneScene.twoPane()) { _ ->
     DetailPreferencesSettingsScreen(
-      animatedVisibilityScope = this,
-      onNavigateUp = onNavigateUp,
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      onNavigateUp = { onNavigate(Navigation.Back) },
     )
   }
 }

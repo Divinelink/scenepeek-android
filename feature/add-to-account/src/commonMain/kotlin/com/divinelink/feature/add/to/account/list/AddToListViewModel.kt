@@ -2,7 +2,6 @@
 
 package com.divinelink.feature.add.to.account.list
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
@@ -18,7 +17,6 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListException
-import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -37,16 +35,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddToListViewModel(
+  private val route: AddToListRoute,
   private val fetchUserListsUseCase: FetchUserListsUseCase,
   private val addItemToListUseCase: AddItemToListUseCase,
   private val repository: ListRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route: AddToListRoute = AddToListRoute(
-    id = savedStateHandle.get<Int>("id") ?: -1,
-    mediaType = savedStateHandle.get<String>("mediaType") ?: MediaType.UNKNOWN.value,
-  )
 
   private val _uiState: MutableStateFlow<AddToListUiState> = MutableStateFlow(
     AddToListUiState.initial(route),

@@ -1,6 +1,5 @@
 package com.divinelink.feature.credits.ui
 
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.testing.MainDispatcherRule
@@ -27,14 +26,9 @@ class CreditsViewModelTestRobot : ViewModelTestRobot<CreditsUiState>() {
 
   override fun buildViewModel() = apply {
     viewModel = CreditsViewModel(
+      route = navArgs,
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "mediaType" to navArgs.mediaType,
-        ),
-      ),
     )
   }
 

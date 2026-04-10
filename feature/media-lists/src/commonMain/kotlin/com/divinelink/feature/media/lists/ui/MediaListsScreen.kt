@@ -24,12 +24,14 @@ import com.divinelink.core.ui.components.NavigateUpButton
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.media.lists.MediaListsViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.MediaListsScreen(
+  route: Navigation.MediaListsRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: MediaListsViewModel = koinViewModel(),
+  viewModel: MediaListsViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()

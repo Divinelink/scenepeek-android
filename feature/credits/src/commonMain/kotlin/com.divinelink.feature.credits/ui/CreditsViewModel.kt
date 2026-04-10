@@ -1,6 +1,5 @@
 package com.divinelink.feature.credits.ui
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
@@ -15,15 +14,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CreditsViewModel(
+  route: CreditsRoute,
   fetchCreditsUseCase: FetchCreditsUseCase,
-  savedStateHandle: SavedStateHandle,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
 ) : ViewModel() {
-
-  private val route: CreditsRoute = CreditsRoute(
-    id = savedStateHandle.get<Long>("id")!!,
-    mediaType = savedStateHandle["mediaType"],
-  )
 
   private val _uiState: MutableStateFlow<CreditsUiState> = MutableStateFlow(
     CreditsUiState.initial(),

@@ -1,6 +1,5 @@
 package com.divinelink.feature.user.data
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
@@ -29,15 +28,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class UserDataViewModel(
+  private val route: UserDataRoute,
   private val observeAccountUseCase: ObserveAccountUseCase,
   private val fetchUserDataUseCase: FetchUserDataUseCase,
   preferencesRepository: PreferencesRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route: UserDataRoute = UserDataRoute(
-    section = UserDataSection.from(savedStateHandle.get<String>("section")!!),
-  )
 
   private val _uiState: MutableStateFlow<UserDataUiState> = MutableStateFlow(
     UserDataUiState(

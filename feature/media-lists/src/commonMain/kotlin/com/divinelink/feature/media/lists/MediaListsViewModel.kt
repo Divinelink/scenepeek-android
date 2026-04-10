@@ -1,9 +1,9 @@
 package com.divinelink.feature.media.lists
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.home.MediaListSection
@@ -17,16 +17,15 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 
 class MediaListsViewModel(
+  private val route: Navigation.MediaListsRoute,
   private val repository: MediaRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<MediaListsUiState> = MutableStateFlow(
     MediaListsUiState.initial(
-      section = Json.decodeFromString<MediaListSection>(savedStateHandle.get<String>("section")!!),
+      section = route.section,
     ),
   )
   val uiState: StateFlow<MediaListsUiState> = _uiState

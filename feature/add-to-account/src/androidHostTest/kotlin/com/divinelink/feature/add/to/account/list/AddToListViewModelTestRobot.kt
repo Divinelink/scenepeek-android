@@ -1,6 +1,5 @@
 package com.divinelink.feature.add.to.account.list
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.ListItem
@@ -29,15 +28,10 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
 
   override fun buildViewModel() = apply {
     viewModel = AddToListViewModel(
+      route = navArgs,
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
       repository = listRepository.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "mediaType" to navArgs.mediaType,
-        ),
-      ),
     )
   }
 

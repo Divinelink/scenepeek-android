@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.person.ui
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
@@ -20,18 +19,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PersonViewModel(
+  private val route: PersonRoute,
   fetchPersonDetailsUseCase: FetchPersonDetailsUseCase,
   fetchChangesUseCase: FetchChangesUseCase,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route: PersonRoute = PersonRoute(
-    id = savedStateHandle.get<Long>("id") ?: -1,
-    knownForDepartment = savedStateHandle["knownForDepartment"],
-    name = savedStateHandle["name"],
-    profilePath = savedStateHandle["profilePath"],
-    gender = savedStateHandle["gender"] ?: 0,
-  )
 
   private val _uiState: MutableStateFlow<PersonUiState> = MutableStateFlow(
     if (route.name == null) {

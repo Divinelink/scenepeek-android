@@ -14,7 +14,7 @@ import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
-import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.core.scaffold.NavEntryProvider
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
@@ -64,7 +64,7 @@ fun ComposeUiTest.setVisibilityScopeContent(
 }
 
 fun ComposeUiTest.setScaffoldContent(
-  navigationProvider: List<NavGraphExtension> = listOf(),
+  navigationProvider: List<NavEntryProvider> = listOf(),
   content: @Composable ScaffoldState.() -> Unit,
 ) {
   setContent {

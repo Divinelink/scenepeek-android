@@ -33,13 +33,15 @@ import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.menu.DropdownMenuButton
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PersonScreen(
+  route: Navigation.PersonRoute,
   onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  viewModel: PersonViewModel = koinViewModel(),
+  viewModel: PersonViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()

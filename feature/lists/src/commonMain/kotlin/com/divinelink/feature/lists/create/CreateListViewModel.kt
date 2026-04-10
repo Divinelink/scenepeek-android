@@ -1,6 +1,5 @@
 package com.divinelink.feature.lists.create
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.list.ListRepository
@@ -27,22 +26,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CreateListViewModel(
+  private val route: Navigation,
   private val createListUseCase: CreateListUseCase,
   private val repository: ListRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route: Any = if (savedStateHandle.get<Int>("id") != null) {
-    Navigation.EditListRoute(
-      id = savedStateHandle.get<Int>("id") ?: 0,
-      name = savedStateHandle.get<String>("name") ?: "",
-      backdropPath = savedStateHandle.get<String>("backdropPath") ?: "",
-      description = savedStateHandle.get<String>("description") ?: "",
-      public = savedStateHandle.get<Boolean>("public") ?: false,
-    )
-  } else {
-    Navigation.CreateListRoute
-  }
 
   private val _uiState: MutableStateFlow<CreateListUiState> = MutableStateFlow(
     if (route is Navigation.EditListRoute) {

@@ -4,7 +4,7 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AppearanceSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.JellyseerrSettingsRoute
-import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.core.scaffold.NavEntryProvider
 import com.divinelink.feature.add.to.account.list.navigation.addToListScreen
 import com.divinelink.feature.add.to.account.modal.navigation.defaultMediaActionMenu
 import com.divinelink.feature.collections.ui.navigation.collectionsScreen
@@ -38,302 +38,236 @@ import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.updater.ui.navigation.updaterScreen
 import com.divinelink.feature.user.data.navigation.userDataScreen
 import com.divinelink.feature.webview.webViewScreen
-import com.divinelink.scenepeek.home.navigation.findNavigation
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val navigationModule = module {
 
-  single<NavGraphExtension>(named<Navigation.HomeRoute>()) {
-    { navController, _ ->
-      homeScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.HomeRoute>()) {
+    { onNavigate ->
+      homeScreen(onNavigate = onNavigate)
     }
   }
 
 // Person Navigation
-  single<NavGraphExtension>(named<Navigation.PersonRoute>()) {
-    { navController, _ ->
-      personScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.PersonRoute>()) {
+    { onNavigate ->
+      personScreen(onNavigate = onNavigate)
     }
   }
 
 // Details Navigation
-  single<NavGraphExtension>(named<Navigation.DetailsRoute>()) {
-    { navController, _ ->
-      detailsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.DetailsRoute>()) {
+    { onNavigate ->
+      detailsScreen(onNavigate = onNavigate)
     }
   }
 
 // Search Navigation
-  single<NavGraphExtension>(named<Navigation.SearchRoute>()) {
-    { navController, _ ->
-      searchScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.SearchRoute>()) {
+    { onNavigate ->
+      searchScreen(onNavigate = onNavigate)
     }
   }
 
 // Settings Navigation
-  single<NavGraphExtension>(named<Navigation.SettingsRoute>()) {
-    { navController, _ ->
-      settingsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.SettingsRoute>()) {
+    { onNavigate ->
+      settingsScreen(onNavigate = onNavigate)
     }
   }
 
 // Account Settings Navigation
-  single<NavGraphExtension>(named<AccountSettingsRoute>()) {
-    { navController, transitionScope ->
-      accountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<AccountSettingsRoute>()) {
+    { onNavigate ->
+      accountSettingsScreen(onNavigate = onNavigate)
     }
   }
 
 // Jellyseerr Settings Navigation
-  single<NavGraphExtension>(named<JellyseerrSettingsRoute>()) {
-    { navController, transitionScope ->
-      jellyseerrSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        onNavigateUp = navController::navigateUp,
-      )
+  single<NavEntryProvider>(named<JellyseerrSettingsRoute>()) {
+    { onNavigate ->
+      jellyseerrSettingsScreen(onNavigate = onNavigate)
     }
   }
 
   // Appearance Settings Navigation
-  single<NavGraphExtension>(named<AppearanceSettingsRoute>()) {
-    { navController, _ ->
-      appearanceSettingsScreen(
-        onNavigateUp = navController::navigateUp,
-      )
+  single<NavEntryProvider>(named<AppearanceSettingsRoute>()) {
+    { onNavigate ->
+      appearanceSettingsScreen(onNavigate = onNavigate)
     }
   }
 
   // Details Preferences Settings Navigation
-  single<NavGraphExtension>(named<Navigation.DetailsPreferencesSettingsRoute>()) {
-    { navController, _ ->
-      detailsPreferencesSettingsScreen(
-        onNavigateUp = navController::navigateUp,
-      )
+  single<NavEntryProvider>(named<Navigation.DetailsPreferencesSettingsRoute>()) {
+    { onNavigate ->
+      detailsPreferencesSettingsScreen(onNavigate = onNavigate)
     }
   }
 
 // Link Handling Settings Navigation
-  single<NavGraphExtension>(named<Navigation.LinkHandlingSettingsRoute>()) {
-    { navController, _ ->
-      linkHandlingSettingsScreen(
-        onNavigateUp = navController::navigateUp,
-      )
+  single<NavEntryProvider>(named<Navigation.LinkHandlingSettingsRoute>()) {
+    { onNavigate ->
+      linkHandlingSettingsScreen(onNavigate = onNavigate)
     }
   }
 
 // About Settings Navigation
-  single<NavGraphExtension>(named<Navigation.AboutSettingsRoute>()) {
-    { navController, _ ->
-      aboutSettingsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.AboutSettingsRoute>()) {
+    { onNavigate ->
+      aboutSettingsScreen(onNavigate = onNavigate)
     }
   }
 
   // Credits Navigation
-  single<NavGraphExtension>(named<Navigation.CreditsRoute>()) {
-    { navController, _ ->
-      creditsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.CreditsRoute>()) {
+    { onNavigate ->
+      creditsScreen(onNavigate = onNavigate)
     }
   }
 
   // UserData Navigation (Watchlist, Ratings)
-  single<NavGraphExtension>(named<Navigation.UserDataRoute>()) {
-    { navController, _ ->
-      userDataScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.UserDataRoute>()) {
+    { onNavigate ->
+      userDataScreen(onNavigate = onNavigate)
     }
   }
 
   // Fullscreen Onboarding Navigation
-  single<NavGraphExtension>(named<Navigation.Onboarding.FullScreenRoute>()) {
-    { navController, _ ->
-      fullscreenOnboarding(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.Onboarding.FullScreenRoute>()) {
+    { onNavigate ->
+      fullscreenOnboarding(onNavigate = onNavigate)
     }
   }
 
   // Modal Onboarding Navigation
-  single<NavGraphExtension>(named<Navigation.Onboarding.ModalRoute>()) {
-    { navController, _ ->
-      modalOnboarding(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.Onboarding.ModalRoute>()) {
+    { onNavigate ->
+      modalOnboarding(onNavigate = onNavigate)
     }
   }
 
   // TMDB Auth Navigation
-  single<NavGraphExtension>(named<Navigation.TMDBAuthRoute>()) {
-    { navController, _ ->
-      tmdbAuthScreen(navController::findNavigation)
+  single<NavEntryProvider>(named<Navigation.TMDBAuthRoute>()) {
+    { onNavigate ->
+      tmdbAuthScreen(onNavigate = onNavigate)
     }
   }
 
   // Profile Navigation
-  single<NavGraphExtension>(named<Navigation.ProfileRoute>()) {
-    { navController, _ ->
-      profileScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.ProfileRoute>()) {
+    { onNavigate ->
+      profileScreen(onNavigate = onNavigate)
     }
   }
 
   // User Lists Navigation
-  single<NavGraphExtension>(named<Navigation.ListsRoute>()) {
-    { navController, _ ->
-      listsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.ListsRoute>()) {
+    { onNavigate ->
+      listsScreen(onNavigate = onNavigate)
     }
   }
 
   // List Details Navigation
-  single<NavGraphExtension>(named<Navigation.ListDetailsRoute>()) {
-    { navController, _ ->
-      listDetailsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.ListDetailsRoute>()) {
+    { onNavigate ->
+      listDetailsScreen(onNavigate = onNavigate)
     }
   }
 
   // Create List Navigation
-  single<NavGraphExtension>(named<Navigation.CreateListRoute>()) {
-    { navController, _ ->
-      createListScreen(
-        onNavigateUp = navController::navigateUp,
-
-      )
+  single<NavEntryProvider>(named<Navigation.CreateListRoute>()) {
+    { onNavigate ->
+      createListScreen(onNavigate = onNavigate)
     }
   }
 
-  // Create List Navigation
-  single<NavGraphExtension>(named<Navigation.EditListRoute>()) {
-    { navController, _ ->
-      editListScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateBackToLists = {
-          navController.popBackStack(
-            route = Navigation.ListsRoute,
-            inclusive = false,
-          )
-        },
-      )
+  // Edit List Navigation
+  single<NavEntryProvider>(named<Navigation.EditListRoute>()) {
+    { onNavigate ->
+      editListScreen(onNavigate = onNavigate)
     }
   }
 
   // Add To List Navigation
-  single<NavGraphExtension>(named<Navigation.AddToListRoute>()) {
-    { navController, _ ->
-      addToListScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.AddToListRoute>()) {
+    { onNavigate ->
+      addToListScreen(onNavigate = onNavigate)
     }
   }
 
   // WebView Navigation
-  single<NavGraphExtension>(named<Navigation.WebViewRoute>()) {
-    { navController, _ ->
-      webViewScreen(navController::findNavigation)
+  single<NavEntryProvider>(named<Navigation.WebViewRoute>()) {
+    { onNavigate ->
+      webViewScreen(onNavigate = onNavigate)
     }
   }
 
   // Requests Navigation
-  single<NavGraphExtension>(named<Navigation.JellyseerrRequestsRoute>()) {
-    { navController, _ ->
-      requestsScreen(navController::findNavigation)
+  single<NavEntryProvider>(named<Navigation.JellyseerrRequestsRoute>()) {
+    { onNavigate ->
+      requestsScreen(onNavigate = onNavigate)
     }
   }
 
   // Action Menu Navigation
-  single<NavGraphExtension>(named<Navigation.ActionMenuRoute.Media>()) {
-    { navController, _ ->
-      defaultMediaActionMenu(navController::findNavigation)
+  single<NavEntryProvider>(named<Navigation.ActionMenuRoute.Media>()) {
+    { onNavigate ->
+      defaultMediaActionMenu(onNavigation = onNavigate)
     }
   }
 
   // Discover Navigation
-  single<NavGraphExtension>(named<Navigation.DiscoverRoute>()) {
-    { navController, _ ->
-      discoverScreen(navController::findNavigation)
+  single<NavEntryProvider>(named<Navigation.DiscoverRoute>()) {
+    { onNavigate ->
+      discoverScreen(onNavigate = onNavigate)
     }
   }
 
-  // Discover Navigation
-  single<NavGraphExtension>(named<Navigation.MediaPosterRoute>()) {
-    { navController, _ ->
-      posterScreen(
-        onNavigate = navController::findNavigation,
-      )
+  // Poster Navigation
+  single<NavEntryProvider>(named<Navigation.MediaPosterRoute>()) {
+    { onNavigate ->
+      posterScreen(onNavigate = onNavigate)
     }
   }
 
-  single<NavGraphExtension>(named<Navigation.MediaListsRoute>()) {
-    { navController, _ ->
-      mediaListsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.MediaListsRoute>()) {
+    { onNavigate ->
+      mediaListsScreen(onNavigate = onNavigate)
     }
   }
 
-  single<NavGraphExtension>(named<Navigation.SeasonRoute>()) {
-    { navController, _ ->
-      seasonScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.SeasonRoute>()) {
+    { onNavigate ->
+      seasonScreen(onNavigate = onNavigate)
     }
   }
 
-  single<NavGraphExtension>(named<Navigation.EpisodeRoute>()) {
-    { navController, _ ->
-      episodeScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.EpisodeRoute>()) {
+    { onNavigate ->
+      episodeScreen(onNavigate = onNavigate)
     }
   }
 
-  single<NavGraphExtension>(named<Navigation.CollectionRoute>()) {
-    { navController, _ ->
-      collectionsScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.CollectionRoute>()) {
+    { onNavigate ->
+      collectionsScreen(onNavigate = onNavigate)
     }
   }
 
-  single<NavGraphExtension>(named<Navigation.UpdaterRoute>()) {
-    { navController, _ ->
-      updaterScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.UpdaterRoute>()) {
+    { onNavigate ->
+      updaterScreen(onNavigate = onNavigate)
     }
   }
 
-  single<NavGraphExtension>(named<Navigation.AppUpdatesSettingsRoute>()) {
-    { navController, _ ->
-      appUpdatesScreen(
-        onNavigate = navController::findNavigation,
-      )
+  single<NavEntryProvider>(named<Navigation.AppUpdatesSettingsRoute>()) {
+    { onNavigate ->
+      appUpdatesScreen(onNavigate = onNavigate)
     }
   }
 
-  single<List<NavGraphExtension>> {
-    getAll<NavGraphExtension>()
+  single<List<NavEntryProvider>> {
+    getAll<NavEntryProvider>()
   }
 }

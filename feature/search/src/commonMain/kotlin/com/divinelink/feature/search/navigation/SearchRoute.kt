@@ -1,17 +1,13 @@
 package com.divinelink.feature.search.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import com.divinelink.core.model.search.SearchEntryPoint
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.utilities.NavType
+import com.divinelink.core.scaffold.TwoPaneScene
 import com.divinelink.feature.search.ui.SearchScreen
-import kotlin.reflect.typeOf
 
-fun NavGraphBuilder.searchScreen(onNavigate: (Navigation) -> Unit) {
-  composable<Navigation.SearchRoute>(
-    typeMap = mapOf(typeOf<SearchEntryPoint>() to NavType.SearchEntryPoint),
-  ) {
-    SearchScreen(onNavigate = onNavigate)
+fun EntryProviderScope<Navigation>.searchScreen(onNavigate: (Navigation) -> Unit) {
+  entry<Navigation.SearchRoute>(metadata = TwoPaneScene.twoPane()) { _ ->
+    LocalNavAnimatedContentScope.current.SearchScreen(onNavigate = onNavigate)
   }
 }

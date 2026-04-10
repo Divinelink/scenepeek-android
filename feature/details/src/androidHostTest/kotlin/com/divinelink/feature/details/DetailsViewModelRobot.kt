@@ -1,7 +1,6 @@
 package com.divinelink.feature.details
 
 import androidx.compose.material3.SnackbarResult
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -71,6 +70,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   override fun buildViewModel() = apply {
     viewModel = DetailsViewModel(
+      route = navArgs,
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMediaDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
@@ -83,13 +83,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "mediaType" to navArgs.mediaType,
-          "isFavorite" to false,
-        ),
-      ),
     )
   }
 

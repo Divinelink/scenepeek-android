@@ -1,38 +1,38 @@
 package com.divinelink.core.scaffold
 
-import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.NavHost
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.scene.DialogSceneStrategy
+import androidx.navigation3.scene.SinglePaneSceneStrategy
+import androidx.navigation3.ui.NavDisplay
 import com.divinelink.core.navigation.route.Navigation
 
-typealias NavGraphExtension = NavGraphBuilder.(
-  navController: NavController,
-  sharedTransitionScope: SharedTransitionScope,
+typealias NavEntryProvider = EntryProviderScope<Navigation>.(
+  onNavigate: (Navigation) -> Unit,
 ) -> Unit
 
 @Composable
-fun SharedTransitionScope.ScenePeekNavHost() {
+fun ScenePeekNavHost() {
   val state = LocalScenePeekAppState.current
-  val navController = state.navController
-
-  NavHost(
-    navController = navController,
-    startDestination = Navigation.HomeRoute,
-    enterTransition = {
-      fadeIn(animationSpec = tween(durationMillis = 300, easing = LinearEasing))
+  val twoPaneStrategy = rememberTwoPaneSceneStrategy<Navigation>()
+  NavDisplay(
+    backStack = state.backStack,
+    entryDecorators = listOf(
+      rememberSaveableStateHolderNavEntryDecorator(),
+      rememberViewModelStoreNavEntryDecorator(),
+    ),
+    sceneStrategy = DialogSceneStrategy<Navigation>()
+      then
+      twoPaneStrategy
+      then
+      SinglePaneSceneStrategy(),
+    entryProvider = entryProvider {
+      state.navigationExtension.forEach { extension ->
+        extension(state::navigate)
+      }
     },
-    exitTransition = {
-      fadeOut(animationSpec = tween(durationMillis = 300, easing = LinearEasing))
-    },
-  ) {
-    state.navigationExtension.forEach { extension ->
-      extension(navController, this@ScenePeekNavHost)
-    }
-  }
+  )
 }

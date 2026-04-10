@@ -1,6 +1,5 @@
 package com.divinelink.feature.collections
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.details.repository.DetailsRepository
@@ -13,16 +12,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CollectionsViewModel(
+  private val route: Navigation.CollectionRoute,
   private val repository: DetailsRepository,
-  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-  private val route = Navigation.CollectionRoute(
-    id = savedStateHandle.get<Int>("id") ?: -1,
-    name = savedStateHandle.get<String>("name") ?: "",
-    backdropPath = savedStateHandle.get<String>("backdropPath") ?: "",
-    posterPath = savedStateHandle.get<String>("posterPath") ?: "",
-  )
 
   private val _uiState: MutableStateFlow<CollectionsUiState> = MutableStateFlow(
     CollectionsUiState.initial(route),

@@ -6,13 +6,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun AnimatedVisibilityScope.AddToListScreen(
+  route: AddToListRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: AddToListViewModel = koinViewModel(),
+  viewModel: AddToListViewModel = koinViewModel { parametersOf(route) },
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
