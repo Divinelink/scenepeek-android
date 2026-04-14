@@ -67,6 +67,7 @@ import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
@@ -450,7 +451,7 @@ fun PersonContentListPreview(
       ),
     ),
     appInfoRepository = TestAppInfoRepository(),
-    navigationProvider = emptyList(),
+    navigator = Navigator()
   )
 
   ProvideScenePeekAppState(appState = appState) {
@@ -483,7 +484,7 @@ fun PersonContentGridPreview() {
       ),
     ),
     appInfoRepository = TestAppInfoRepository(),
-    navigationProvider = emptyList(),
+    navigator = Navigator()
   )
   ProvideScenePeekAppState(appState = appState) {
     SharedTransitionScopeProvider { scope ->

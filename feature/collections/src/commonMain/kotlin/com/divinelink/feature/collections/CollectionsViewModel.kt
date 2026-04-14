@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CollectionsViewModel(
-  private val route: Navigation.CollectionRoute,
+  route: Navigation.CollectionRoute,
   private val repository: DetailsRepository,
 ) : ViewModel() {
 

@@ -58,7 +58,7 @@ fun ScaffoldState.PersistentNavigationBar(
         },
       ) {
         state.topLevelDestinations.forEach { destination ->
-          val selected = state.currentTab == destination
+          val selected = state.currentTab.value == destination
 
           NavigationBarItem(
             modifier = Modifier.testTag(TestTags.TOP_LEVEL_DESTINATION.format(destination)),

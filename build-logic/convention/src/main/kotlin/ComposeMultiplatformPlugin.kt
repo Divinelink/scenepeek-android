@@ -9,6 +9,7 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
     pluginManager.apply {
       apply("org.jetbrains.compose")
       apply("org.jetbrains.kotlin.plugin.compose")
+//      kotlin("plugin.serialization")
     }
 
     extensions.configure<KotlinMultiplatformExtension> {
@@ -35,6 +36,9 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
           implementation(libs.lifecycle.multiplatform.viewmodel.compose)
           implementation(libs.lifecycle.multiplatform.runtime)
           implementation(libs.lifecycle.multiplatform.runtime.compose)
+
+          api(libs.kotlinx.serialization.core)
+          api(libs.koin.compose.nav3)
 
           api(libs.compose.multiplatform.navigation)
           api(libs.navigation3.ui)

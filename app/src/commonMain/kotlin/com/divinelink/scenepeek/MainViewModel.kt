@@ -15,10 +15,10 @@ import com.divinelink.core.model.deeplink.extractRouteFromDeeplink
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
-import com.divinelink.core.scaffold.NavEntryProvider
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +36,7 @@ class MainViewModel(
   val networkMonitor: NetworkMonitor,
   val onboardingManager: OnboardingManager,
   val preferencesRepository: PreferencesRepository,
-  val navigationProviders: List<NavEntryProvider>,
+  val navigator: Navigator,
   val appInfoRepository: AppInfoRepository,
 ) : ViewModel() {
 

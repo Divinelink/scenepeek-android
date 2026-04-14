@@ -36,11 +36,11 @@ kotlinx-coroutines = '1.10.2'
 
 # Network & Serialization
 ktor = "3.3.3"
-kotlinx-serialization = "1.9.0"
+kotlinx-serialization = "1.11.0"
 kotlinx-io = "0.8.2"
 
 # Depedency Injection
-koin = "4.1.1"
+koin = "4.2.1"
 
 # Compose Multiplatform
 compose-multiplatform = "1.10.0"
@@ -136,6 +136,7 @@ ktor-client-mock = { group = 'io.ktor', name = 'ktor-client-mock', version.ref =
 ktor-client-content-negotiation = { group = 'io.ktor', name = 'ktor-client-content-negotiation', version.ref = 'ktor' }
 ktor-serialization-kotlinx-json = { group = 'io.ktor', name = 'ktor-serialization-kotlinx-json', version.ref = 'ktor' }
 kotlinx-serialization-json = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-serialization-json', version.ref = 'kotlinx-serialization' }
+kotlinx-serialization-core = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-serialization-core', version.ref = 'kotlinx-serialization' }
 
 # Depedency Injection
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
@@ -144,6 +145,7 @@ koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = 
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-start-up = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
+koin-compose-nav3 = { group = "io.insert-koin", name = "koin-compose-navigation3", version.ref = "koin" }
 
 # Misc
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }

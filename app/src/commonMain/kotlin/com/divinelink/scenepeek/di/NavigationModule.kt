@@ -1,273 +1,339 @@
 package com.divinelink.scenepeek.di
 
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.platform.testTag
+import androidx.navigation3.scene.DialogSceneStrategy
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.divinelink.core.model.media.decodeToMediaItem
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AppearanceSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.JellyseerrSettingsRoute
-import com.divinelink.core.scaffold.NavEntryProvider
-import com.divinelink.feature.add.to.account.list.navigation.addToListScreen
-import com.divinelink.feature.add.to.account.modal.navigation.defaultMediaActionMenu
-import com.divinelink.feature.collections.ui.navigation.collectionsScreen
-import com.divinelink.feature.credits.navigation.creditsScreen
-import com.divinelink.feature.details.navigation.detailsScreen
-import com.divinelink.feature.details.navigation.personScreen
-import com.divinelink.feature.details.navigation.posterScreen
-import com.divinelink.feature.discover.ui.navigation.discoverScreen
-import com.divinelink.feature.episode.ui.navigation.episodeScreen
-import com.divinelink.feature.home.navigation.homeScreen
-import com.divinelink.feature.lists.create.ui.navigation.createListScreen
-import com.divinelink.feature.lists.create.ui.navigation.editListScreen
-import com.divinelink.feature.lists.details.ui.navigation.listDetailsScreen
-import com.divinelink.feature.lists.user.navigation.listsScreen
-import com.divinelink.feature.media.lists.navigation.mediaListsScreen
-import com.divinelink.feature.onboarding.navigation.fullscreenOnboarding
-import com.divinelink.feature.onboarding.navigation.modalOnboarding
-import com.divinelink.feature.profile.navigation.profileScreen
-import com.divinelink.feature.requests.ui.navigation.requestsScreen
-import com.divinelink.feature.search.navigation.searchScreen
-import com.divinelink.feature.season.ui.navigation.seasonScreen
-import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
-import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
-import com.divinelink.feature.settings.navigation.account.jellyseerrSettingsScreen
-import com.divinelink.feature.settings.navigation.appearance.appearanceSettingsScreen
-import com.divinelink.feature.settings.navigation.details.detailsPreferencesSettingsScreen
-import com.divinelink.feature.settings.navigation.links.linkHandlingSettingsScreen
-import com.divinelink.feature.settings.navigation.settings.settingsScreen
-import com.divinelink.feature.settings.navigation.updates.appUpdatesScreen
-import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
-import com.divinelink.feature.updater.ui.navigation.updaterScreen
-import com.divinelink.feature.user.data.navigation.userDataScreen
-import com.divinelink.feature.webview.webViewScreen
-import org.koin.core.qualifier.named
+import com.divinelink.core.scaffold.LocalScenePeekAppState
+import com.divinelink.core.scaffold.TwoPaneScene
+import com.divinelink.core.ui.TestTags
+import com.divinelink.feature.add.to.account.list.ui.AddToListScreen
+import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
+import com.divinelink.feature.add.to.account.modal.ActionMenuModal
+import com.divinelink.feature.collections.ui.CollectionsScreen
+import com.divinelink.feature.credits.ui.CreditsScreen
+import com.divinelink.feature.details.media.ui.DetailsScreen
+import com.divinelink.feature.details.person.ui.PersonScreen
+import com.divinelink.feature.details.poster.PosterScreen
+import com.divinelink.feature.discover.ui.DiscoverScreen
+import com.divinelink.feature.episode.ui.EpisodeScreen
+import com.divinelink.feature.home.HomeScreen
+import com.divinelink.feature.lists.create.ui.CreateListScreen
+import com.divinelink.feature.lists.details.ui.ListDetailsScreen
+import com.divinelink.feature.lists.user.ListsScreen
+import com.divinelink.feature.media.lists.ui.MediaListsScreen
+import com.divinelink.feature.onboarding.ui.IntroModalBottomSheet
+import com.divinelink.feature.profile.ProfileScreen
+import com.divinelink.feature.requests.ui.RequestsScreen
+import com.divinelink.feature.search.ui.SearchScreen
+import com.divinelink.feature.season.ui.SeasonScreen
+import com.divinelink.feature.settings.app.SettingsScreen
+import com.divinelink.feature.settings.app.about.AboutSettingsScreen
+import com.divinelink.feature.settings.app.account.AccountSettingsScreen
+import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsScreen
+import com.divinelink.feature.settings.app.appearance.AppearanceSettingsScreen
+import com.divinelink.feature.settings.app.details.DetailPreferencesSettingsScreen
+import com.divinelink.feature.settings.app.links.LinkHandlingSettingsScreen
+import com.divinelink.feature.settings.app.updates.AppUpdatesScreen
+import com.divinelink.feature.tmdb.auth.TMDBAuthScreen
+import com.divinelink.feature.updater.ui.UpdaterScreen
+import com.divinelink.feature.user.data.UserDataScreen
+import com.divinelink.feature.webview.WebViewScreen
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.module
+import org.koin.dsl.navigation3.navigation
 
+@OptIn(KoinExperimentalAPI::class, ExperimentalComposeUiApi::class)
 val navigationModule = module {
 
-  single<NavEntryProvider>(named<Navigation.HomeRoute>()) {
-    { onNavigate ->
-      homeScreen(onNavigate = onNavigate)
-    }
+  single { Navigator() }
+
+  navigation<Navigation.HomeRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    HomeScreen(
+      onNavigate = navigator::navigate,
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+    )
   }
 
-// Person Navigation
-  single<NavEntryProvider>(named<Navigation.PersonRoute>()) {
-    { onNavigate ->
-      personScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.PersonRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    PersonScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+    )
   }
 
-// Details Navigation
-  single<NavEntryProvider>(named<Navigation.DetailsRoute>()) {
-    { onNavigate ->
-      detailsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.DetailsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    DetailsScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+    )
   }
 
-// Search Navigation
-  single<NavEntryProvider>(named<Navigation.SearchRoute>()) {
-    { onNavigate ->
-      searchScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.SearchRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.SearchScreen(onNavigate = navigator::navigate)
   }
 
-// Settings Navigation
-  single<NavEntryProvider>(named<Navigation.SettingsRoute>()) {
-    { onNavigate ->
-      settingsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.SettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    SettingsScreen(
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      onNavigate = navigator::navigate,
+    )
   }
 
-// Account Settings Navigation
-  single<NavEntryProvider>(named<AccountSettingsRoute>()) {
-    { onNavigate ->
-      accountSettingsScreen(onNavigate = onNavigate)
-    }
+  navigation<AccountSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    AccountSettingsScreen(
+      onNavigate = navigator::navigate,
+      sharedTransitionScope = LocalScenePeekAppState.current.sharedTransitionScope, // TODO
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+    )
   }
 
-// Jellyseerr Settings Navigation
-  single<NavEntryProvider>(named<JellyseerrSettingsRoute>()) {
-    { onNavigate ->
-      jellyseerrSettingsScreen(onNavigate = onNavigate)
-    }
+  navigation<JellyseerrSettingsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.JellyseerrSettingsScreen(
+      sharedTransitionScope = LocalScenePeekAppState.current.sharedTransitionScope,
+      onNavigateUp = { navigator.goBack() },
+      withNavigationBar = key.withNavigationBar,
+    )
   }
 
-  // Appearance Settings Navigation
-  single<NavEntryProvider>(named<AppearanceSettingsRoute>()) {
-    { onNavigate ->
-      appearanceSettingsScreen(onNavigate = onNavigate)
-    }
+  navigation<AppearanceSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    AppearanceSettingsScreen(
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      onNavigateUp = { navigator.goBack() },
+    )
   }
 
-  // Details Preferences Settings Navigation
-  single<NavEntryProvider>(named<Navigation.DetailsPreferencesSettingsRoute>()) {
-    { onNavigate ->
-      detailsPreferencesSettingsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.DetailsPreferencesSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    DetailPreferencesSettingsScreen(
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      onNavigateUp = { navigator.goBack() },
+    )
   }
 
-// Link Handling Settings Navigation
-  single<NavEntryProvider>(named<Navigation.LinkHandlingSettingsRoute>()) {
-    { onNavigate ->
-      linkHandlingSettingsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.LinkHandlingSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    LinkHandlingSettingsScreen(
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      navigateUp = { navigator.goBack() },
+    )
   }
 
-// About Settings Navigation
-  single<NavEntryProvider>(named<Navigation.AboutSettingsRoute>()) {
-    { onNavigate ->
-      aboutSettingsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.AboutSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    AboutSettingsScreen(
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // Credits Navigation
-  single<NavEntryProvider>(named<Navigation.CreditsRoute>()) {
-    { onNavigate ->
-      creditsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.CreditsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.CreditsScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // UserData Navigation (Watchlist, Ratings)
-  single<NavEntryProvider>(named<Navigation.UserDataRoute>()) {
-    { onNavigate ->
-      userDataScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.UserDataRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.UserDataScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // Fullscreen Onboarding Navigation
-  single<NavEntryProvider>(named<Navigation.Onboarding.FullScreenRoute>()) {
-    { onNavigate ->
-      fullscreenOnboarding(onNavigate = onNavigate)
+  navigation<Navigation.Onboarding.FullScreenRoute> {
+    val navigator = get<Navigator>()
+    BackHandler(enabled = true) {
+      // Disable back button
     }
+
+    IntroModalBottomSheet(
+      modifier = Modifier.testTag(TestTags.Onboarding.FULLSCREEN),
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // Modal Onboarding Navigation
-  single<NavEntryProvider>(named<Navigation.Onboarding.ModalRoute>()) {
-    { onNavigate ->
-      modalOnboarding(onNavigate = onNavigate)
+  navigation<Navigation.Onboarding.ModalRoute>(metadata = DialogSceneStrategy.dialog()) {
+    val navigator = get<Navigator>()
+    BackHandler(enabled = true) {
+      // Disable back button
     }
+
+    IntroModalBottomSheet(
+      modifier = Modifier.testTag(TestTags.Onboarding.MODAL),
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // TMDB Auth Navigation
-  single<NavEntryProvider>(named<Navigation.TMDBAuthRoute>()) {
-    { onNavigate ->
-      tmdbAuthScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.TMDBAuthRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    TMDBAuthScreen(onNavigate = navigator::navigate)
   }
 
-  // Profile Navigation
-  single<NavEntryProvider>(named<Navigation.ProfileRoute>()) {
-    { onNavigate ->
-      profileScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.ProfileRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.ProfileScreen(
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // User Lists Navigation
-  single<NavEntryProvider>(named<Navigation.ListsRoute>()) {
-    { onNavigate ->
-      listsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.ListsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.ListsScreen(
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // List Details Navigation
-  single<NavEntryProvider>(named<Navigation.ListDetailsRoute>()) {
-    { onNavigate ->
-      listDetailsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.ListDetailsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.ListDetailsScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // Create List Navigation
-  single<NavEntryProvider>(named<Navigation.CreateListRoute>()) {
-    { onNavigate ->
-      createListScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.CreateListRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.CreateListScreen(
+      route = key,
+      onNavigateUp = navigator::goBack,
+      onNavigateBackToLists = {},
+    )
   }
 
-  // Edit List Navigation
-  single<NavEntryProvider>(named<Navigation.EditListRoute>()) {
-    { onNavigate ->
-      editListScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.EditListRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.CreateListScreen(
+      route = key,
+      onNavigateUp = navigator::goBack,
+      onNavigateBackToLists = { navigator.navigate(Navigation.ListsRoute) },
+    )
   }
 
-  // Add To List Navigation
-  single<NavEntryProvider>(named<Navigation.AddToListRoute>()) {
-    { onNavigate ->
-      addToListScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.AddToListRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.AddToListScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // WebView Navigation
-  single<NavEntryProvider>(named<Navigation.WebViewRoute>()) {
-    { onNavigate ->
-      webViewScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.WebViewRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    WebViewScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // Requests Navigation
-  single<NavEntryProvider>(named<Navigation.JellyseerrRequestsRoute>()) {
-    { onNavigate ->
-      requestsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.JellyseerrRequestsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.RequestsScreen(
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // Action Menu Navigation
-  single<NavEntryProvider>(named<Navigation.ActionMenuRoute.Media>()) {
-    { onNavigate ->
-      defaultMediaActionMenu(onNavigation = onNavigate)
-    }
+  navigation<Navigation.ActionMenuRoute.Media>(DialogSceneStrategy.dialog()) { key ->
+    val navigator = get<Navigator>()
+    val mediaItem = key.encodedMediaItem.decodeToMediaItem()
+
+    ActionMenuModal(
+      mediaItem = mediaItem,
+      entryPoint = ActionMenuEntryPoint.Other,
+      onDismissRequest = navigator::goBack,
+      onMultiSelect = {},
+      onNavigateToAddToList = {
+        navigator.navigate(
+          Navigation.AddToListRoute(
+            id = mediaItem.id,
+            mediaType = mediaItem.mediaType.value,
+          ),
+        )
+      },
+    )
   }
 
-  // Discover Navigation
-  single<NavEntryProvider>(named<Navigation.DiscoverRoute>()) {
-    { onNavigate ->
-      discoverScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.DiscoverRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.DiscoverScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  // Poster Navigation
-  single<NavEntryProvider>(named<Navigation.MediaPosterRoute>()) {
-    { onNavigate ->
-      posterScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.MediaPosterRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.PosterScreen(
+      path = key.posterPath,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  single<NavEntryProvider>(named<Navigation.MediaListsRoute>()) {
-    { onNavigate ->
-      mediaListsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.MediaListsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.MediaListsScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  single<NavEntryProvider>(named<Navigation.SeasonRoute>()) {
-    { onNavigate ->
-      seasonScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.SeasonRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.SeasonScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  single<NavEntryProvider>(named<Navigation.EpisodeRoute>()) {
-    { onNavigate ->
-      episodeScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.EpisodeRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.EpisodeScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  single<NavEntryProvider>(named<Navigation.CollectionRoute>()) {
-    { onNavigate ->
-      collectionsScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.CollectionRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.CollectionsScreen(
+      route = key,
+      onNavigate = navigator::navigate,
+    )
   }
 
-  single<NavEntryProvider>(named<Navigation.UpdaterRoute>()) {
-    { onNavigate ->
-      updaterScreen(onNavigate = onNavigate)
-    }
+  navigation<Navigation.UpdaterRoute>(metadata = DialogSceneStrategy.dialog()) {
+    val navigator = get<Navigator>()
+    UpdaterScreen(
+      onNavigate = navigator::navigate,
+    )
+
   }
 
-  single<NavEntryProvider>(named<Navigation.AppUpdatesSettingsRoute>()) {
-    { onNavigate ->
-      appUpdatesScreen(onNavigate = onNavigate)
-    }
-  }
-
-  single<List<NavEntryProvider>> {
-    getAll<NavEntryProvider>()
+  navigation<Navigation.AppUpdatesSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+    val navigator = get<Navigator>()
+    AppUpdatesScreen(
+      animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      onNavigate = navigator::navigate,
+    )
   }
 }

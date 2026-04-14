@@ -45,6 +45,7 @@ import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.ScaffoldFab
@@ -226,7 +227,7 @@ private fun ExpandableFloatingActionButton() {
     onboardingManager = TestOnboardingManager(),
     preferencesRepository = TestPreferencesRepository(),
     appInfoRepository = TestAppInfoRepository(),
-    navigationProvider = emptyList(),
+    navigator = Navigator()
   )
 
   ProvideScenePeekAppState(

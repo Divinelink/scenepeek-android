@@ -4,23 +4,20 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.navigation3.runtime.rememberNavBackStack
 import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.preferences.DetailPreferences
-import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.ui.UiPreferences
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.utilities.isSameDestinationType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -33,13 +30,13 @@ fun rememberScenePeekAppState(
   onboardingManager: OnboardingManager,
   preferencesRepository: PreferencesRepository,
   appInfoRepository: AppInfoRepository,
-  navigationProvider: List<NavEntryProvider>,
+  navigator: Navigator,
   scope: CoroutineScope = rememberCoroutineScope(),
   snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ): ScenePeekAppState = remember(networkMonitor, scope) {
   ScenePeekAppState(
     scope = scope,
-    navigationExtension = navigationProvider,
+    navigator = navigator,
     networkMonitor = networkMonitor,
     onboardingManager = onboardingManager,
     snackbarHostState = snackbarHostState,
@@ -51,28 +48,17 @@ fun rememberScenePeekAppState(
 @Stable
 class ScenePeekAppState internal constructor(
   val scope: CoroutineScope,
-  val navigationExtension: List<NavEntryProvider>,
+  val navigator: Navigator,
   val snackbarHostState: SnackbarHostState,
   preferencesRepository: PreferencesRepository,
   appInfoRepository: AppInfoRepository,
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager,
 ) {
-  private val homeBackStack = mutableStateListOf<Navigation>(Navigation.HomeRoute)
-  private val profileBackStack = mutableStateListOf<Navigation>(Navigation.ProfileRoute)
-  private val searchBackStack = mutableStateListOf<Navigation>(
-    Navigation.SearchRoute(entryPoint = SearchEntryPoint.SEARCH_TAB),
-  )
-
-  var currentTab: TopLevelDestination by mutableStateOf(TopLevelDestination.HOME)
-    private set
-
-  val backStack: SnapshotStateList<Navigation>
-    get() = when (currentTab) {
-      TopLevelDestination.HOME -> homeBackStack
-      TopLevelDestination.PROFILE -> profileBackStack
-      TopLevelDestination.SEARCH -> searchBackStack
-    }
+  val backStack = navigator.backStack
+  val currentTab: State<TopLevelDestination?> = derivedStateOf {
+    getCurrentTopLevelDestination(backStack)
+  }
 
   val isOffline = networkMonitor.isOnline
     .map(Boolean::not)
@@ -126,45 +112,44 @@ class ScenePeekAppState internal constructor(
 
   fun navigate(route: Navigation) {
     when (route) {
-      Navigation.Back -> navigateBack()
+      Navigation.Back -> navigator.goBack()
       Navigation.TwiceBack -> {
-        navigateBack()
-        navigateBack()
+        navigator.goBack()
+        navigator.goBack()
       }
       Navigation.HomeRoute -> navigateToTopLevelDestination(TopLevelDestination.HOME)
       Navigation.ProfileRoute -> navigateToTopLevelDestination(TopLevelDestination.PROFILE)
-      is Navigation.SearchRoute -> when (route.entryPoint) {
-        SearchEntryPoint.SEARCH_TAB -> navigateToTopLevelDestination(TopLevelDestination.SEARCH)
-        SearchEntryPoint.HOME -> backStack.add(route)
-      }
+      is Navigation.SearchRoute -> navigateToTopLevelDestination(TopLevelDestination.SEARCH)
       Navigation.ListsRoute -> {
-        val idx = backStack.indexOfLast { it == Navigation.ListsRoute }
+        val idx = navigator.backStack.indexOfLast { it == Navigation.ListsRoute }
         if (idx >= 0) {
-          repeat(backStack.size - idx - 1) { backStack.removeLast() }
+          repeat(navigator.backStack.size - idx - 1) { navigator.backStack.removeLast() }
         } else {
-          backStack.add(route)
+          navigator.navigate(route)
         }
       }
-      else -> backStack.add(route)
-    }
-  }
-
-  fun navigateBack() {
-    if (backStack.size > 1) {
-      backStack.removeLastOrNull()
+      else -> navigator.navigate(route)
     }
   }
 
   fun navigateToTopLevelDestination(destination: TopLevelDestination) {
-    if (currentTab == destination) {
-      val stack = backStack
-      if (stack.size > 1) {
-        val root = stack.first()
-        stack.clear()
-        stack.add(root)
+    if (currentTab.value?.route?.isSameDestinationType(destination.route) == true) return
+
+    if (backStack.size > 1) {
+      navigator.clear()
+    }
+
+    navigator.navigate(destination.route)
+  }
+
+  private fun getCurrentTopLevelDestination(backStack: List<Navigation>): TopLevelDestination? {
+    return backStack.lastOrNull()?.let { entry ->
+      when (entry) {
+        is Navigation.HomeRoute -> TopLevelDestination.HOME
+        is Navigation.SearchRoute -> TopLevelDestination.SEARCH
+        is Navigation.ProfileRoute -> TopLevelDestination.PROFILE
+        else -> null
       }
-    } else {
-      currentTab = destination
     }
   }
 

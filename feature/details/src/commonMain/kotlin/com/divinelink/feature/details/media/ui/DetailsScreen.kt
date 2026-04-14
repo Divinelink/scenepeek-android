@@ -20,9 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.route.Navigation.CreditsRoute
-import com.divinelink.core.navigation.route.Navigation.DetailsRoute
-import com.divinelink.core.navigation.route.Navigation.TMDBAuthRoute
 import com.divinelink.core.navigation.route.toPersonRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
@@ -58,7 +55,7 @@ fun DetailsScreen(
 
   LaunchedEffect(viewState.navigateToLogin) {
     viewState.navigateToLogin?.let {
-      onNavigate(TMDBAuthRoute)
+      onNavigate(Navigation.TMDBAuthRoute)
 
       viewModel.consumeNavigateToLogin()
     }
@@ -118,7 +115,7 @@ fun DetailsScreen(
       animatedVisibilityScope = animatedVisibilityScope,
       onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
       onMediaItemClick = { media ->
-        val route = DetailsRoute(
+        val route = Navigation.DetailsRoute(
           id = media.id,
           mediaType = media.mediaType.value,
           isFavorite = (media as? MediaItem.Media)?.isFavorite,
@@ -132,7 +129,7 @@ fun DetailsScreen(
       onViewAllCreditsClick = {
         viewState.mediaDetails?.id?.let { id ->
           onNavigate(
-            CreditsRoute(
+            Navigation.CreditsRoute(
               mediaType = viewState.mediaType.value,
               id = id.toLong(),
             ),

@@ -65,6 +65,7 @@ import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.SwitchPreferencesAction
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -267,7 +268,7 @@ fun DetailsContent(
       )
     },
     navigationRail = {
-//      PersistentNavigationRail()
+      PersistentNavigationRail()
     },
     navigationBar = {
       PersistentNavigationBar()
@@ -510,7 +511,7 @@ fun DetailsContentPreview(
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = TestPreferencesRepository(),
       appInfoRepository = TestAppInfoRepository(),
-      navigationProvider = emptyList(),
+      navigator = Navigator(),
     )
 
     ProvideScenePeekAppState(
