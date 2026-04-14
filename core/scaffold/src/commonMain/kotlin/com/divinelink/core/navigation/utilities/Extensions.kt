@@ -18,3 +18,7 @@ fun MediaItem.toRoute(): Navigation? = when (this) {
   )
   else -> null
 }
+
+fun Navigation.isSameDestinationType(other: Navigation): Boolean {
+  return this::class == other::class
+}

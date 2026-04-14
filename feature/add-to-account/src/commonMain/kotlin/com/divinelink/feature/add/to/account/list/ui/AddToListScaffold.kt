@@ -21,6 +21,7 @@ import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -105,7 +106,7 @@ fun AddToListScaffoldPreview(
     onboardingManager = TestOnboardingManager(),
     preferencesRepository = TestPreferencesRepository(),
     appInfoRepository = TestAppInfoRepository(),
-    navigationProvider = emptyList(),
+    navigator = Navigator(),
   )
 
   ProvideScenePeekAppState(

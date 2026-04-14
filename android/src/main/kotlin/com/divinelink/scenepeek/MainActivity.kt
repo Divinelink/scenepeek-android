@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         onboardingManager = viewModel.onboardingManager,
         networkMonitor = viewModel.networkMonitor,
         preferencesRepository = viewModel.preferencesRepository,
-        navigationProvider = viewModel.navigationProviders,
+        navigator = viewModel.navigator,
         appInfoRepository = viewModel.appInfoRepository,
       )
 
