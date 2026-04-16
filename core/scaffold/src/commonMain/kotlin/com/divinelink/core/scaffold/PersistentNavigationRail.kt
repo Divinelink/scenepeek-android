@@ -5,6 +5,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
@@ -40,6 +41,7 @@ fun ScaffoldState.PersistentNavigationRail(
     content = {
       val state = LocalScenePeekAppState.current
       NavigationRail {
+        Spacer(Modifier.weight(1f))
         state.topLevelDestinations.forEach { destination ->
           val selected = state.currentTab.value == destination
 
@@ -84,6 +86,7 @@ fun ScaffoldState.PersistentNavigationRail(
             },
           )
         }
+        Spacer(Modifier.weight(1f))
       }
     },
   )
