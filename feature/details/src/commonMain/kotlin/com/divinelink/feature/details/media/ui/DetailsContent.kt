@@ -2,14 +2,9 @@ package com.divinelink.feature.details.media.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,7 +15,6 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,10 +27,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.rememberSystemUiController
@@ -77,6 +69,7 @@ import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.extensions.collapsingScrollConnection
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.composition.PreviewLocalProvider
+import com.divinelink.core.ui.list.LazyColumnWithOffset
 import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
@@ -91,7 +84,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -347,63 +339,12 @@ private fun SharedTransitionScope.MediaDetailsContent(
       }
   }
 
-  val progress by remember {
-    derivedStateOf {
-      if (state.firstVisibleItemIndex > 0) {
-        1f
-      } else {
-        val offset = state.firstVisibleItemScrollOffset.toFloat()
-        val firstItemHeight = state.layoutInfo.visibleItemsInfo
-          .firstOrNull()?.size?.toFloat() ?: 1f
-        (offset / firstItemHeight).coerceIn(0f, 1f)
-      }
-    }
-  }
-
-  LaunchedEffect(progress) {
-    onShowTitle(progress)
-  }
-
-  val offsetFraction by remember {
-    val tabsIndex = 2
-    derivedStateOf {
-      when {
-        state.firstVisibleItemIndex >= tabsIndex -> 1f
-        state.firstVisibleItemIndex == tabsIndex - 1 -> {
-          val itemInfo = state.layoutInfo.visibleItemsInfo
-            .firstOrNull { it.index == tabsIndex - 1 }
-          if (itemInfo != null && itemInfo.size > 0) {
-            val scrolled = -itemInfo.offset.toFloat()
-            (scrolled / itemInfo.size).coerceIn(0f, 1f)
-          } else {
-            0f
-          }
-        }
-        else -> 0f
-      }
-    }
-  }
-
-  LazyColumn(
+  LazyColumnWithOffset(
+    paddingOffset = topPadding,
+    stickyIndex = 2,
+    onScrollUpdate = onShowTitle,
     state = state,
-    contentPadding = PaddingValues(bottom = topPadding),
-    modifier = Modifier
-      .fillMaxSize()
-      .offset {
-        IntOffset(0, (topPadding.roundToPx() * offsetFraction).roundToInt())
-      }
-      .layout { measurable, constraints ->
-        val topBarHeightPx = topPadding.roundToPx()
-        val placeable = measurable.measure(
-          constraints.copy(maxHeight = constraints.maxHeight + topBarHeightPx),
-        )
-        layout(placeable.width, constraints.maxHeight) {
-          placeable.place(0, -topBarHeightPx)
-        }
-      }
-      .background(MaterialTheme.colorScheme.background),
   ) {
-
     item {
       BackdropImage(
         path = uiState.mediaDetails.backdropPath,
@@ -459,6 +400,7 @@ private fun SharedTransitionScope.MediaDetailsContent(
     }
   }
 }
+
 
 @Previews
 @Composable
