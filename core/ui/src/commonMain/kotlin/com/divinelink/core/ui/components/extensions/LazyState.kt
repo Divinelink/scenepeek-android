@@ -7,6 +7,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
@@ -122,4 +125,31 @@ fun LazyListState.showExpandedFab(): Boolean {
   }
 
   return scrollToTop.value
+}
+
+@Composable
+fun LazyListState.collapsingScrollConnection(): NestedScrollConnection = remember {
+  object : NestedScrollConnection {
+    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+      // Scrolling up: collapse header first
+      if (available.y < 0) {
+        val consumed = this@collapsingScrollConnection.dispatchRawDelta(-available.y)
+        return Offset(0f, -consumed)
+      }
+      return Offset.Zero
+    }
+
+    override fun onPostScroll(
+      consumed: Offset,
+      available: Offset,
+      source: NestedScrollSource,
+    ): Offset {
+      // Scrolling down: expand header with leftover
+      if (available.y > 0) {
+        val consumed = this@collapsingScrollConnection.dispatchRawDelta(-available.y)
+        return Offset(0f, -consumed)
+      }
+      return Offset.Zero
+    }
+  }
 }
