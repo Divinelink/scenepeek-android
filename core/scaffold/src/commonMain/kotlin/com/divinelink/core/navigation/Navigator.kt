@@ -2,13 +2,13 @@ package com.divinelink.core.navigation
 
 import androidx.compose.runtime.mutableStateListOf
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.utilities.isSameDestinationType
+import com.divinelink.core.navigation.utilities.isSameTopLevelDestination
 
 class Navigator {
   val backStack = mutableStateListOf<Navigation>(Navigation.HomeRoute)
 
   fun navigate(destination: Navigation) {
-    if (backStack.lastOrNull()?.isSameDestinationType(destination) == true) return
+    if (backStack.lastOrNull()?.isSameTopLevelDestination(destination) == true) return
 
     when (destination) {
       Navigation.Back -> goBack()
@@ -25,8 +25,8 @@ class Navigator {
   }
 
   private fun popToTopLevelDestination(destination: Navigation) {
-    val existing = backStack.firstOrNull { it.isSameDestinationType(destination) }
-    val filtered = backStack.filter { !it.isSameDestinationType(destination) }
+    val existing = backStack.firstOrNull { it.isSameTopLevelDestination(destination) }
+    val filtered = backStack.filter { !it.isSameTopLevelDestination(destination) }
     backStack.clear()
     backStack.addAll(filtered)
     backStack.add(existing ?: destination)
