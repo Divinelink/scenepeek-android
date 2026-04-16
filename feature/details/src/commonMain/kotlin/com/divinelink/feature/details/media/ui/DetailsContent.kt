@@ -212,6 +212,7 @@ fun DetailsContent(
           )
 
           DropdownMenuButton(
+            color = textColor,
             screenType = when (viewState.mediaDetails) {
               is Movie -> ScreenType.Movie(
                 id = viewState.mediaDetails.id,

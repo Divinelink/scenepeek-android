@@ -119,6 +119,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
         onNavigateUp = { onNavigate(Navigation.Back) },
         actions = {
           DropdownMenuButton(
+            color = textColor,
             screenType = ScreenType.List(
               id = uiState.id,
               name = uiState.details.name,
