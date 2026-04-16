@@ -19,6 +19,10 @@ fun MediaItem.toRoute(): Navigation? = when (this) {
   else -> null
 }
 
-fun Navigation.isSameDestinationType(other: Navigation): Boolean {
-  return this::class == other::class
+fun Navigation.isSameTopLevelDestination(other: Navigation): Boolean {
+  return this::class == other::class && other.isTopLevelDestination()
 }
+
+private fun Navigation.isTopLevelDestination() = this is Navigation.HomeRoute ||
+  this is Navigation.ProfileRoute ||
+  this is Navigation.SearchRoute

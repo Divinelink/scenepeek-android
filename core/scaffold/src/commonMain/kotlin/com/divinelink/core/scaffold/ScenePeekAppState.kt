@@ -17,7 +17,7 @@ import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.utilities.isSameDestinationType
+import com.divinelink.core.navigation.utilities.isSameTopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -133,7 +133,7 @@ class ScenePeekAppState internal constructor(
   }
 
   fun navigateToTopLevelDestination(destination: TopLevelDestination) {
-    if (currentTab.value?.route?.isSameDestinationType(destination.route) == true) return
+    if (currentTab.value?.route?.isSameTopLevelDestination(destination.route) == true) return
 
     if (backStack.size > 1) {
       navigator.clear()
