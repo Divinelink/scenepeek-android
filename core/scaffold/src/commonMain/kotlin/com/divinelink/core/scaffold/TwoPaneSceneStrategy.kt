@@ -73,12 +73,12 @@ fun <T : Any> rememberTwoPaneSceneStrategy(): TwoPaneSceneStrategy<T> {
  */
 class TwoPaneSceneStrategy<T : Any>(val windowSizeClass: WindowSizeClass) : SceneStrategy<T> {
   override fun SceneStrategyScope<T>.calculateScene(entries: List<NavEntry<T>>): Scene<T>? {
-    if (!windowSizeClass.isWidthAtLeastBreakpoint(200)) return null
-//    if (!windowSizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND)) return null
+    if (!windowSizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND)) return null
 
     val lastTwoEntries = entries.takeLast(2)
 
-    return if (lastTwoEntries.size == 2 &&
+    return if (
+      lastTwoEntries.size == 2 &&
       lastTwoEntries.all { it.metadata[TwoPaneScene.TWO_PANE_KEY] == true }
     ) {
       val firstEntry = lastTwoEntries.first()

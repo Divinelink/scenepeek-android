@@ -13,7 +13,6 @@ import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AppearanceSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.JellyseerrSettingsRoute
 import com.divinelink.core.scaffold.LocalScenePeekAppState
-import com.divinelink.core.scaffold.TwoPaneScene
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.add.to.account.list.ui.AddToListScreen
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
@@ -56,7 +55,7 @@ val navigationModule = module {
 
   single { Navigator() }
 
-  navigation<Navigation.HomeRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.HomeRoute> {
     val navigator = get<Navigator>()
     HomeScreen(
       onNavigate = navigator::navigate,
@@ -64,7 +63,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.PersonRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.PersonRoute> { key ->
     val navigator = get<Navigator>()
     PersonScreen(
       route = key,
@@ -73,7 +72,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.DetailsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.DetailsRoute> { key ->
     val navigator = get<Navigator>()
     DetailsScreen(
       route = key,
@@ -82,12 +81,12 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.SearchRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.SearchRoute> {
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.SearchScreen(onNavigate = navigator::navigate)
   }
 
-  navigation<Navigation.SettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.SettingsRoute> {
     val navigator = get<Navigator>()
     SettingsScreen(
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
@@ -95,16 +94,16 @@ val navigationModule = module {
     )
   }
 
-  navigation<AccountSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<AccountSettingsRoute> {
     val navigator = get<Navigator>()
     AccountSettingsScreen(
       onNavigate = navigator::navigate,
-      sharedTransitionScope = LocalScenePeekAppState.current.sharedTransitionScope, // TODO
+      sharedTransitionScope = LocalScenePeekAppState.current.sharedTransitionScope,
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
     )
   }
 
-  navigation<JellyseerrSettingsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<JellyseerrSettingsRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.JellyseerrSettingsScreen(
       sharedTransitionScope = LocalScenePeekAppState.current.sharedTransitionScope,
@@ -113,7 +112,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<AppearanceSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<AppearanceSettingsRoute> {
     val navigator = get<Navigator>()
     AppearanceSettingsScreen(
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
@@ -121,7 +120,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.DetailsPreferencesSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.DetailsPreferencesSettingsRoute> {
     val navigator = get<Navigator>()
     DetailPreferencesSettingsScreen(
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
@@ -129,7 +128,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.LinkHandlingSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.LinkHandlingSettingsRoute> {
     val navigator = get<Navigator>()
     LinkHandlingSettingsScreen(
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
@@ -137,7 +136,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.AboutSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.AboutSettingsRoute> {
     val navigator = get<Navigator>()
     AboutSettingsScreen(
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
@@ -145,7 +144,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.CreditsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.CreditsRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.CreditsScreen(
       route = key,
@@ -153,7 +152,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.UserDataRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.UserDataRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.UserDataScreen(
       route = key,
@@ -185,26 +184,26 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.TMDBAuthRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.TMDBAuthRoute> {
     val navigator = get<Navigator>()
     TMDBAuthScreen(onNavigate = navigator::navigate)
   }
 
-  navigation<Navigation.ProfileRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.ProfileRoute> {
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.ProfileScreen(
       onNavigate = navigator::navigate,
     )
   }
 
-  navigation<Navigation.ListsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.ListsRoute> {
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.ListsScreen(
       onNavigate = navigator::navigate,
     )
   }
 
-  navigation<Navigation.ListDetailsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.ListDetailsRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.ListDetailsScreen(
       route = key,
@@ -212,7 +211,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.CreateListRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.CreateListRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.CreateListScreen(
       route = key,
@@ -221,7 +220,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.EditListRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.EditListRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.CreateListScreen(
       route = key,
@@ -230,7 +229,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.AddToListRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.AddToListRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.AddToListScreen(
       route = key,
@@ -238,7 +237,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.WebViewRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.WebViewRoute> { key ->
     val navigator = get<Navigator>()
     WebViewScreen(
       route = key,
@@ -246,7 +245,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.JellyseerrRequestsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.JellyseerrRequestsRoute> {
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.RequestsScreen(
       onNavigate = navigator::navigate,
@@ -273,7 +272,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.DiscoverRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.DiscoverRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.DiscoverScreen(
       route = key,
@@ -281,7 +280,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.MediaPosterRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.MediaPosterRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.PosterScreen(
       path = key.posterPath,
@@ -289,7 +288,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.MediaListsRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.MediaListsRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.MediaListsScreen(
       route = key,
@@ -297,7 +296,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.SeasonRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.SeasonRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.SeasonScreen(
       route = key,
@@ -305,7 +304,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.EpisodeRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.EpisodeRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.EpisodeScreen(
       route = key,
@@ -313,7 +312,7 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.CollectionRoute>(metadata = TwoPaneScene.twoPane()) { key ->
+  navigation<Navigation.CollectionRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.CollectionsScreen(
       route = key,
@@ -329,7 +328,7 @@ val navigationModule = module {
 
   }
 
-  navigation<Navigation.AppUpdatesSettingsRoute>(metadata = TwoPaneScene.twoPane()) {
+  navigation<Navigation.AppUpdatesSettingsRoute> {
     val navigator = get<Navigator>()
     AppUpdatesScreen(
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
