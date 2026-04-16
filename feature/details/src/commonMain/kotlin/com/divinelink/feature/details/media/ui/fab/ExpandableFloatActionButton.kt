@@ -102,12 +102,6 @@ fun ScaffoldState.ExpandableFloatActionButton(
       horizontalAlignment = Alignment.End,
       verticalArrangement = Arrangement.Bottom,
       modifier = Modifier
-        .conditional(
-          condition = canShowNavRail,
-          ifTrue = {
-            Modifier.windowInsetsPadding(WindowInsets.navigationBars)
-          },
-        )
         .fillMaxSize(),
     ) {
       StaggeredFloatingActionsButtons(
