@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -48,6 +52,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
@@ -55,6 +60,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.LayoutDirection
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.designsystem.theme.dimensions
@@ -93,6 +99,11 @@ fun ScenePeekSearchBar(
   val focusRequester = remember { FocusRequester() }
   val focusManager = LocalFocusManager.current
   val keyboardController = LocalSoftwareKeyboardController.current
+  val density = LocalDensity.current
+  val rightNavBarInset = WindowInsets.navigationBars.getRight(
+    density = density,
+    layoutDirection = LayoutDirection.Ltr,
+  )
 
   // Sync external state changes to local state
   LaunchedEffect(state) {
@@ -137,7 +148,16 @@ fun ScenePeekSearchBar(
   }
 
   TopAppBar(
-    modifier = modifier.testTag(TestTags.Components.SearchBar.SEARCH_BAR.format(toolbarState.name)),
+    windowInsets = WindowInsets.statusBars,
+    modifier = modifier
+      .testTag(TestTags.Components.SearchBar.SEARCH_BAR.format(toolbarState.name))
+      .padding(
+        end = if (rightNavBarInset > 0) {
+          with(density) { rightNavBarInset.toDp() }
+        } else {
+          MaterialTheme.dimensions.keyline_0
+        },
+      ),
     scrollBehavior = scrollBehavior,
     colors = TopAppBarDefaults.topAppBarColors(
       containerColor = Color.Transparent,
