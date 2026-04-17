@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
@@ -29,9 +31,10 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.collapsingheader.ui.DetailCollapsibleContent
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.extensions.collapsingScrollConnection
 import com.divinelink.core.ui.composition.PreviewLocalProvider
+import com.divinelink.core.ui.list.LazyColumnWithOffset
 import com.divinelink.core.ui.list.ScrollableMediaContent
 import com.divinelink.core.ui.text.SimpleExpandingText
 import com.divinelink.feature.collections.CollectionsAction
@@ -49,14 +52,15 @@ fun SharedTransitionScope.CollectionsContent(
   onAction: (CollectionsAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
-  DetailCollapsibleContent(
-    visibilityScope = visibilityScope,
+  val state = rememberLazyListState()
+  val headerScrollConnection = state.collapsingScrollConnection()
+
+  LazyColumnWithOffset(
     backdropPath = uiState.backdropPath,
-    posterPath = uiState.posterPath,
-    toolbarProgress = toolbarProgress,
     onBackdropLoaded = onBackdropLoaded,
-    heightDifference = topPadding,
-    onNavigateToMediaPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
+    posterPath = uiState.posterPath,
+    visibilityScope = visibilityScope,
+    onNavigateToPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
     headerContent = {
       Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -73,9 +77,14 @@ fun SharedTransitionScope.CollectionsContent(
         )
       }
     },
-    content = {
-      when {
-        uiState.loading -> Box(modifier = Modifier.fillMaxSize()) {
+    paddingOffset = topPadding,
+    stickyIndex = 2,
+    onScrollUpdate = toolbarProgress,
+    state = state,
+  ) {
+    when {
+      uiState.loading -> item {
+        Box(modifier = Modifier.fillParentMaxSize()) {
           LoadingContent(
             modifier = Modifier
               .padding(top = MaterialTheme.dimensions.keyline_16)
@@ -83,10 +92,12 @@ fun SharedTransitionScope.CollectionsContent(
               .verticalScroll(rememberScrollState()),
           )
         }
+      }
 
-        uiState.error != null -> Column(
+      uiState.error != null -> item {
+        Column(
           modifier = Modifier
-            .fillMaxHeight()
+            .fillParentMaxSize()
             .padding(vertical = MaterialTheme.dimensions.keyline_16)
             .verticalScroll(rememberScrollState()),
         ) {
@@ -95,8 +106,12 @@ fun SharedTransitionScope.CollectionsContent(
             onRetry = { onAction(CollectionsAction.Refresh) },
           )
         }
-        uiState.movies.isNotEmpty() -> ScrollableMediaContent(
-          modifier = Modifier,
+      }
+      uiState.movies.isNotEmpty() -> item {
+        ScrollableMediaContent(
+          modifier = Modifier
+            .fillParentMaxSize()
+            .nestedScroll(headerScrollConnection),
           items = uiState.movies,
           onLoadMore = { /* Do nothing */ },
           onSwitchPreferences = onSwitchPreferences,
@@ -108,8 +123,8 @@ fun SharedTransitionScope.CollectionsContent(
           canLoadMore = false,
         )
       }
-    },
-  )
+    }
+  }
 }
 
 @Composable
