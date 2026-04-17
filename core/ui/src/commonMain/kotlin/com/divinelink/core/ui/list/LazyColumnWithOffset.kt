@@ -125,16 +125,17 @@ fun SharedTransitionScope.LazyColumnWithOffset(
       )
     }
 
-    if (posterPath != null) {
-      item {
-        Row(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = MaterialTheme.dimensions.keyline_16)
-            .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-          verticalAlignment = Alignment.CenterVertically,
-        ) {
+
+    item {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(bottom = MaterialTheme.dimensions.keyline_16)
+          .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        if (posterPath != null) {
           PosterImage(
             modifier = Modifier
               .align(Alignment.CenterVertically)
@@ -151,9 +152,9 @@ fun SharedTransitionScope.LazyColumnWithOffset(
             quality = ImageQuality.QUALITY_342,
             onClick = { onNavigateToPoster(it) },
           )
-
-          headerContent()
         }
+
+        headerContent()
       }
     }
 
