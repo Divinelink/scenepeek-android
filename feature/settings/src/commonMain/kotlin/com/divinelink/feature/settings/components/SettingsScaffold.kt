@@ -3,8 +3,10 @@ package com.divinelink.feature.settings.components
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,7 +58,9 @@ fun SettingsScaffold(
       .nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       TopAppBar(
-        modifier = Modifier.testTag(TestTags.Settings.TOP_APP_BAR),
+        windowInsets = WindowInsets.statusBars,
+        modifier = Modifier
+          .testTag(TestTags.Settings.TOP_APP_BAR),
         colors = topAppBarColors(
           scrolledContainerColor = Color.Transparent,
           containerColor = Color.Transparent,
