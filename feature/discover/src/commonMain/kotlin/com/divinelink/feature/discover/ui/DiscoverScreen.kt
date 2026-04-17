@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +17,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -26,10 +25,9 @@ import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.components.NavigateUpButton
+import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.resources.core_ui_discover
 import com.divinelink.feature.discover.DiscoverViewModel
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -67,15 +65,11 @@ fun AnimatedVisibilityScope.DiscoverScreen(
           )
         }
 
-        TopAppBar(
-          colors = topAppBarColor,
+        AppTopAppBar(
+          text = UIText.ResourceText(UiString.core_ui_discover),
           scrollBehavior = scrollBehavior,
-          title = {
-            Text(text = stringResource(UiString.core_ui_discover))
-          },
-          navigationIcon = {
-            NavigateUpButton(onClick = { onNavigate(Navigation.Back) })
-          },
+          topAppBarColors = topAppBarColor,
+          onNavigateUp = { onNavigate(Navigation.Back) },
         )
       }
     },
