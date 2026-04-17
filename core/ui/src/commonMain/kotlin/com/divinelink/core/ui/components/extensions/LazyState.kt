@@ -31,10 +31,11 @@ fun LazyListState.EndlessScrollHandler(
       val layoutInfo = this.layoutInfo
       val visibleItemsInfo = layoutInfo.visibleItemsInfo
       val totalItems = layoutInfo.totalItemsCount
+      if (totalItems == 0) return@derivedStateOf false
       val totalItemsFitInScreen = totalItems == visibleItemsInfo.size
 
       if (totalItemsFitInScreen) {
-        false
+        true
       } else {
         val lastVisibleItemIndex = (visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
         lastVisibleItemIndex > (totalItems - buffer)
@@ -43,11 +44,15 @@ fun LazyListState.EndlessScrollHandler(
   }
 
   LaunchedEffect(loadMore) {
+    var lastLoadedAt = -1
     snapshotFlow { loadMore.value to this@EndlessScrollHandler.layoutInfo.totalItemsCount }
       .distinctUntilChanged()
       .filter { it.first }
-      .collect {
-        onLoadMore()
+      .collect { (_, totalItems) ->
+        if (totalItems != lastLoadedAt) {
+          lastLoadedAt = totalItems
+          onLoadMore()
+        }
       }
   }
 }
@@ -62,10 +67,11 @@ fun LazyGridState.EndlessScrollHandler(
       val layoutInfo = this.layoutInfo
       val visibleItemsInfo = layoutInfo.visibleItemsInfo
       val totalItems = layoutInfo.totalItemsCount
+      if (totalItems == 0) return@derivedStateOf false
       val totalItemsFitInScreen = totalItems == visibleItemsInfo.size
 
       if (totalItemsFitInScreen) {
-        false
+        true
       } else {
         val lastVisibleItemIndex = (visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
         lastVisibleItemIndex > (totalItems - buffer)
@@ -74,11 +80,15 @@ fun LazyGridState.EndlessScrollHandler(
   }
 
   LaunchedEffect(loadMore) {
+    var lastLoadedAt = -1
     snapshotFlow { loadMore.value to this@EndlessScrollHandler.layoutInfo.totalItemsCount }
       .distinctUntilChanged()
       .filter { it.first }
-      .collect {
-        onLoadMore()
+      .collect { (_, totalItems) ->
+        if (totalItems != lastLoadedAt) {
+          lastLoadedAt = totalItems
+          onLoadMore()
+        }
       }
   }
 }
