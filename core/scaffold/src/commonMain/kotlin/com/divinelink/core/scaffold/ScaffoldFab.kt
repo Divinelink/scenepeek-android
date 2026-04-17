@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.UiTokens
 import com.divinelink.core.ui.conditional
+import com.divinelink.core.ui.rightNavBarInset
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -42,6 +43,7 @@ fun ScaffoldState.ScaffoldFab(
     content = {
       FloatingActionButton(
         modifier = modifier
+          .rightNavBarInset()
           .sharedElement(
             sharedContentState = rememberSharedContentState(
               FabSharedElementKey,

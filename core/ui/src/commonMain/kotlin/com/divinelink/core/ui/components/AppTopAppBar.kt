@@ -3,9 +3,7 @@ package com.divinelink.core.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -24,17 +22,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
+import com.divinelink.core.ui.rightNavBarInset
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -61,22 +57,11 @@ fun AppTopAppBar(
       0f to 32f
     }
   }
-  val density = LocalDensity.current
-  val rightNavBarInset = WindowInsets.navigationBars.getRight(
-    density = density,
-    layoutDirection = LayoutDirection.Ltr,
-  )
 
   TopAppBar(
     windowInsets = WindowInsets.statusBars,
     modifier = modifier
-      .padding(
-        end = if (rightNavBarInset > 0) {
-          with(density) { rightNavBarInset.toDp() }
-        } else {
-          MaterialTheme.dimensions.keyline_0
-        },
-      )
+      .rightNavBarInset()
       .background(animateColorFromProgress(alpha))
       .testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
     scrollBehavior = scrollBehavior,

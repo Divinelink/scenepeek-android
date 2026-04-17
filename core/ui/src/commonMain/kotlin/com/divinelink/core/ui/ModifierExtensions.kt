@@ -1,6 +1,9 @@
 package com.divinelink.core.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,6 +18,8 @@ import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.LayoutDirection
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import kotlinx.coroutines.delay
@@ -83,4 +88,23 @@ fun Modifier.debouncedClickable(
       }
     }
   }
+}
+
+@Composable
+fun Modifier.rightNavBarInset(): Modifier {
+  val density = LocalDensity.current
+  val rightNavBarInset = WindowInsets.navigationBars.getRight(
+    density = density,
+    layoutDirection = LayoutDirection.Ltr,
+  )
+
+  return Modifier.then(
+    padding(
+      end = if (rightNavBarInset > 0) {
+        with(density) { rightNavBarInset.toDp() }
+      } else {
+        MaterialTheme.dimensions.keyline_0
+      },
+    ),
+  )
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
@@ -75,6 +74,7 @@ import com.divinelink.core.ui.resources.core_ui_people
 import com.divinelink.core.ui.resources.core_ui_toolbar_search
 import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
 import com.divinelink.core.ui.resources.core_ui_tv_shows
+import com.divinelink.core.ui.rightNavBarInset
 import com.divinelink.core.ui.text.BasicTextFieldWithCursorAtEnd
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.StringResource
@@ -151,13 +151,7 @@ fun ScenePeekSearchBar(
     windowInsets = WindowInsets.statusBars,
     modifier = modifier
       .testTag(TestTags.Components.SearchBar.SEARCH_BAR.format(toolbarState.name))
-      .padding(
-        end = if (rightNavBarInset > 0) {
-          with(density) { rightNavBarInset.toDp() }
-        } else {
-          MaterialTheme.dimensions.keyline_0
-        },
-      ),
+      .rightNavBarInset(),
     scrollBehavior = scrollBehavior,
     colors = TopAppBarDefaults.topAppBarColors(
       containerColor = Color.Transparent,
