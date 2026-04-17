@@ -63,7 +63,6 @@ import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.extensions.collapsingScrollConnection
@@ -340,31 +339,26 @@ private fun SharedTransitionScope.MediaDetailsContent(
   }
 
   LazyColumnWithOffset(
-    paddingOffset = topPadding,
-    stickyIndex = 2,
-    onScrollUpdate = onShowTitle,
-    state = state,
-  ) {
-    item {
-      BackdropImage(
-        path = uiState.mediaDetails.backdropPath,
-        onBackdropLoaded = onBackdropLoaded,
-      )
-    }
-
-    item {
+    backdropPath = uiState.mediaDetails.backdropPath,
+    onBackdropLoaded = onBackdropLoaded,
+    posterPath = uiState.mediaDetails.posterPath,
+    visibilityScope = visibilityScope,
+    onNavigateToPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
+    headerContent = {
       HeaderDetails(
         mediaDetails = uiState.mediaDetails,
-        visibilityScope = visibilityScope,
-        onNavigate = onNavigate,
         uiState = uiState,
         onOpenManageModal = onOpenManageModal,
         trailer = trailer,
         onWatchTrailer = onWatchTrailer,
         viewAllRatingsClick = viewAllRatingsClick,
       )
-    }
-
+    },
+    paddingOffset = topPadding,
+    stickyIndex = 2,
+    onScrollUpdate = onShowTitle,
+    state = state,
+  ) {
     item {
       DetailActions(
         onAddRateClick = onAddRateClick,

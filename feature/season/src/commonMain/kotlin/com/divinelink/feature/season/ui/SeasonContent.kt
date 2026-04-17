@@ -3,12 +3,12 @@ package com.divinelink.feature.season.ui
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import com.divinelink.core.designsystem.theme.dimensions
@@ -36,9 +37,10 @@ import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.collapsingheader.ui.DetailCollapsibleContent
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.extensions.collapsingScrollConnection
+import com.divinelink.core.ui.list.LazyColumnWithOffset
 import com.divinelink.core.ui.resources.core_ui_no_cast_available
 import com.divinelink.core.ui.resources.core_ui_no_cast_available_description
 import com.divinelink.core.ui.resources.core_ui_no_guest_stars_available
@@ -74,6 +76,9 @@ fun SharedTransitionScope.SeasonContent(
     pageCount = { uiState.tabs.size },
   )
 
+  val state = rememberLazyListState()
+  val headerScrollConnection = state.collapsingScrollConnection()
+
   LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }
       .distinctUntilChanged()
@@ -83,19 +88,18 @@ fun SharedTransitionScope.SeasonContent(
       }
   }
 
-  DetailCollapsibleContent(
-    visibilityScope = visibilityScope,
+  LazyColumnWithOffset(
+    paddingOffset = topPadding,
+    stickyIndex = 2,
+    state = state,
+    onScrollUpdate = toolbarProgress,
     backdropPath = uiState.backdropPath,
-    posterPath = uiState.season.posterPath,
-    toolbarProgress = toolbarProgress,
     onBackdropLoaded = onBackdropLoaded,
-    heightDifference = topPadding,
-    onNavigateToMediaPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
+    posterPath = uiState.season.posterPath,
+    visibilityScope = visibilityScope,
+    onNavigateToPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
     headerContent = {
-      Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-      ) {
+      Column {
         SeasonTitleDetails(
           onNavigate = onNavigate,
           title = uiState.title,
@@ -110,84 +114,88 @@ fun SharedTransitionScope.SeasonContent(
         }
       }
     },
-    content = {
-      Column(
+  ) {
+    stickyHeader {
+      ScenePeekTabs(
+        tabs = uiState.tabs,
+        selectedIndex = selectedPage,
+        onClick = { scope.launch { pagerState.animateScrollToPage(it) } },
+      )
+    }
+
+    item {
+      HorizontalPager(
         modifier = Modifier
-          .fillMaxSize()
+          .fillParentMaxSize()
           .background(MaterialTheme.colorScheme.background),
-      ) {
-        ScenePeekTabs(
-          tabs = uiState.tabs,
-          selectedIndex = selectedPage,
-          onClick = { scope.launch { pagerState.animateScrollToPage(it) } },
-        )
-
-        HorizontalPager(
-          modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-          state = pagerState,
-        ) { page ->
-          uiState.forms.values.elementAt(page).let { form ->
-            when (form) {
-              is SeasonForm.Content -> when (form.data) {
-                is SeasonData.Episodes -> EpisodesFormContent(
-                  data = form.data as SeasonData.Episodes,
-                  showTitle = uiState.title,
-                  seasonTitle = uiState.season.name,
-                  onNavigate = onNavigate,
-                )
-                is SeasonData.About -> AboutFormContent(
-                  aboutData = form.data as SeasonData.About,
-                )
-                is SeasonData.Cast -> PeopleFormContent(
-                  cast = (form.data as SeasonData.Cast).cast,
-                  onNavigate = onNavigate,
-                  blankSlateState = BlankSlateState.Custom(
-                    title = UIText.ResourceText(UiString.core_ui_no_cast_available),
-                    description = UIText.ResourceText(
-                      UiString.core_ui_no_cast_available_description,
-                      uiState.season.name,
-                    ),
+        state = pagerState,
+      ) { page ->
+        uiState.forms.values.elementAt(page).let { form ->
+          when (form) {
+            is SeasonForm.Content -> when (form.data) {
+              is SeasonData.Episodes -> EpisodesFormContent(
+                modifier = Modifier.nestedScroll(headerScrollConnection),
+                data = form.data as SeasonData.Episodes,
+                showTitle = uiState.title,
+                seasonTitle = uiState.season.name,
+                onNavigate = onNavigate,
+              )
+              is SeasonData.About -> AboutFormContent(
+                modifier = Modifier.nestedScroll(headerScrollConnection),
+                aboutData = form.data as SeasonData.About,
+              )
+              is SeasonData.Cast -> PeopleFormContent(
+                modifier = Modifier.nestedScroll(headerScrollConnection),
+                cast = (form.data as SeasonData.Cast).cast,
+                onNavigate = onNavigate,
+                blankSlateState = BlankSlateState.Custom(
+                  title = UIText.ResourceText(UiString.core_ui_no_cast_available),
+                  description = UIText.ResourceText(
+                    UiString.core_ui_no_cast_available_description,
+                    uiState.season.name,
                   ),
-                )
-                is SeasonData.GuestStars -> PeopleFormContent(
-                  modifier = Modifier.fillMaxSize(),
-                  cast = (form.data as SeasonData.GuestStars).cast,
-                  onNavigate = onNavigate,
-                  blankSlateState = BlankSlateState.Custom(
-                    title = UIText.ResourceText(UiString.core_ui_no_guest_stars_available),
-                    description = UIText.ResourceText(
-                      UiString.core_ui_no_guest_stars_available_description,
-                      uiState.season.name,
-                    ),
-                  ),
-                )
-              }
-
-              SeasonForm.Error -> Column(
+                ),
+              )
+              is SeasonData.GuestStars -> PeopleFormContent(
                 modifier = Modifier
-                  .fillMaxHeight()
-                  .padding(vertical = MaterialTheme.dimensions.keyline_16)
-                  .verticalScroll(rememberScrollState()),
-              ) {
-                BlankSlate(uiState = BlankSlateState.Contact)
-              }
+                  .fillMaxSize()
+                  .nestedScroll(headerScrollConnection),
+                cast = (form.data as SeasonData.GuestStars).cast,
+                onNavigate = onNavigate,
+                blankSlateState = BlankSlateState.Custom(
+                  title = UIText.ResourceText(UiString.core_ui_no_guest_stars_available),
+                  description = UIText.ResourceText(
+                    UiString.core_ui_no_guest_stars_available_description,
+                    uiState.season.name,
+                  ),
+                ),
+              )
+            }
 
-              SeasonForm.Loading -> Box(modifier = Modifier.fillMaxSize()) {
-                LoadingContent(
-                  modifier = Modifier
-                    .padding(top = MaterialTheme.dimensions.keyline_16)
-                    .align(Alignment.TopCenter)
-                    .verticalScroll(rememberScrollState()),
-                )
-              }
+            SeasonForm.Error -> Column(
+              modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = MaterialTheme.dimensions.keyline_16)
+                .nestedScroll(headerScrollConnection)
+                .verticalScroll(rememberScrollState()),
+            ) {
+              BlankSlate(uiState = BlankSlateState.Contact)
+            }
+
+            SeasonForm.Loading -> Box(modifier = Modifier.fillMaxSize()) {
+              LoadingContent(
+                modifier = Modifier
+                  .padding(top = MaterialTheme.dimensions.keyline_16)
+                  .align(Alignment.TopCenter)
+                  .nestedScroll(headerScrollConnection)
+                  .verticalScroll(rememberScrollState()),
+              )
             }
           }
         }
       }
-    },
-  )
+    }
+  }
 }
 
 @Composable
