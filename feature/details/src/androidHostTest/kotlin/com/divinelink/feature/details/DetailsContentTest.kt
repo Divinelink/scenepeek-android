@@ -15,6 +15,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.media.DetailsDataFactory
@@ -229,6 +231,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.Reviews.FORM).assertIsDisplayed()
   }
 
@@ -260,6 +269,13 @@ class DetailsContentTest : ComposeTest() {
         onNavigate = {},
         onSwitchPreferences = {},
         animatedVisibilityScope = this,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
       )
     }
 
@@ -1255,6 +1271,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.About.FORM).assertIsDisplayed()
   }
 
@@ -1289,6 +1312,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.About.FORM).assertIsDisplayed()
   }
 
@@ -1320,6 +1350,13 @@ class DetailsContentTest : ComposeTest() {
         onNavigate = {},
         onSwitchPreferences = {},
         animatedVisibilityScope = this,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
       )
     }
 
@@ -1363,6 +1400,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.Cast.FORM)
       .assertIsDisplayed()
       .performScrollToIndex(1)
@@ -1401,6 +1445,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.Cast.EMPTY).assertIsDisplayed()
   }
 
@@ -1432,6 +1483,13 @@ class DetailsContentTest : ComposeTest() {
         onNavigate = {},
         onSwitchPreferences = {},
         animatedVisibilityScope = this,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
       )
     }
 
@@ -1473,6 +1531,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.Recommendations.FORM)
       .assertIsDisplayed()
       .performScrollToIndex(1)
@@ -1510,6 +1575,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.Recommendations.EMPTY).assertIsDisplayed()
   }
 
@@ -1541,6 +1613,13 @@ class DetailsContentTest : ComposeTest() {
         onNavigate = {},
         onSwitchPreferences = {},
         animatedVisibilityScope = this,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
       )
     }
 
@@ -1582,6 +1661,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
+      )
+    }
+
     onNodeWithTag(TestTags.Details.Seasons.EMPTY).assertIsDisplayed()
   }
 
@@ -1613,6 +1699,13 @@ class DetailsContentTest : ComposeTest() {
         onNavigate = {},
         onSwitchPreferences = {},
         animatedVisibilityScope = this,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
       )
     }
 
@@ -1648,6 +1741,13 @@ class DetailsContentTest : ComposeTest() {
         onNavigate = {},
         onSwitchPreferences = {},
         animatedVisibilityScope = this,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 200f,
+        endY = 50f,
       )
     }
 

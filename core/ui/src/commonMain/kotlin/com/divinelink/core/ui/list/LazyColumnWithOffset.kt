@@ -26,11 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.ImageQuality
 import com.divinelink.core.ui.SharedElementKeys
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.PosterImage
 import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.mediaImageDropShadow
@@ -104,6 +106,7 @@ fun SharedTransitionScope.LazyColumnWithOffset(
     contentPadding = PaddingValues(bottom = paddingOffset),
     modifier = Modifier
       .fillMaxSize()
+      .testTag(TestTags.Details.COLLAPSIBLE_LAYOUT)
       .offset {
         IntOffset(0, (paddingOffset.roundToPx() * offsetFraction).roundToInt())
       }

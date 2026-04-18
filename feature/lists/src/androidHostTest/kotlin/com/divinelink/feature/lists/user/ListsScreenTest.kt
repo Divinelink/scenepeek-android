@@ -252,7 +252,7 @@ class ListsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsNotDisplayed()
 
     channel.trySend(
-      Result.success(ListItemFactory.page1()),
+      Result.success(ListItemFactory.page2()),
     )
 
     onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsDisplayed().performClick()
