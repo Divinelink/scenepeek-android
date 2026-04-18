@@ -15,7 +15,6 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.compose.ui.test.swipeUp
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -177,6 +176,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      mediaType = MediaType.MOVIE.value,
+      isFavorite = false,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -190,17 +195,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -245,6 +245,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -258,17 +264,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -313,6 +314,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -326,17 +333,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -388,8 +390,15 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {
           if (it is Navigation.DetailsRoute) {
             detailsRoute = it
@@ -409,13 +418,7 @@ class DetailsScreenTest : ComposeTest() {
           authRepository = authRepository.mock,
           repository = detailsRepository.mock,
           preferencesRepository = preferencesRepository,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "id" to 0,
-              "isFavorite" to false,
-              "mediaType" to MediaType.MOVIE.value,
-            ),
-          ),
+          route = route,
         ),
         animatedVisibilityScope = this,
       )
@@ -474,6 +477,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -487,17 +496,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -535,6 +539,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -548,17 +558,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -606,7 +611,7 @@ class DetailsScreenTest : ComposeTest() {
   @Test
   fun `test navigate to credits screen with tv credits`() = uiTest {
     // Initial navigation to DETAILS screen
-    var route: CreditsRoute? = null
+    var creditsRoute: CreditsRoute? = null
 
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
@@ -624,11 +629,18 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 2316,
+      isFavorite = false,
+      mediaType = MediaType.TV.value,
+    )
+
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {
           if (it is CreditsRoute) {
-            route = it
+            creditsRoute = it
           }
         },
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -645,13 +657,7 @@ class DetailsScreenTest : ComposeTest() {
           authRepository = authRepository.mock,
           repository = detailsRepository.mock,
           preferencesRepository = preferencesRepository,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "id" to 2316,
-              "isFavorite" to false,
-              "mediaType" to MediaType.TV.value,
-            ),
-          ),
+          route = route,
         ),
         animatedVisibilityScope = this,
       )
@@ -672,7 +678,7 @@ class DetailsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.VIEW_ALL).assertIsDisplayed().performClick()
 
-    route shouldBe CreditsRoute(
+    creditsRoute shouldBe CreditsRoute(
       id = 2316,
       mediaType = MediaType.TV.value,
     )
@@ -699,8 +705,15 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 2316,
+      isFavorite = false,
+      mediaType = MediaType.TV.value,
+    )
+
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = DetailsViewModel(
@@ -716,13 +729,7 @@ class DetailsScreenTest : ComposeTest() {
           authRepository = authRepository.mock,
           repository = detailsRepository.mock,
           preferencesRepository = preferencesRepository,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "id" to 2316,
-              "isFavorite" to false,
-              "mediaType" to MediaType.TV.value,
-            ),
-          ),
+          route = route,
         ),
         animatedVisibilityScope = this,
       )
@@ -761,6 +768,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -774,17 +787,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -823,6 +831,12 @@ class DetailsScreenTest : ComposeTest() {
 
     fetchAllRatingsUseCase.mockSuccess(allRatingsChannel)
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -836,17 +850,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -939,6 +948,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.MOVIE.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -952,17 +967,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -1070,6 +1080,12 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    val route = Navigation.DetailsRoute(
+      id = 0,
+      isFavorite = false,
+      mediaType = MediaType.TV.value,
+    )
+
     val viewModel = DetailsViewModel(
       getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -1083,17 +1099,12 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to 0,
-          "isFavorite" to false,
-          "mediaType" to MediaType.TV.value,
-        ),
-      ),
+      route = route,
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,

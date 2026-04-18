@@ -451,7 +451,7 @@ fun PersonContentListPreview(
       ),
     ),
     appInfoRepository = TestAppInfoRepository(),
-    navigator = Navigator()
+    navigator = Navigator(),
   )
 
   ProvideScenePeekAppState(appState = appState) {
@@ -484,7 +484,7 @@ fun PersonContentGridPreview() {
       ),
     ),
     appInfoRepository = TestAppInfoRepository(),
-    navigator = Navigator()
+    navigator = Navigator(),
   )
   ProvideScenePeekAppState(appState = appState) {
     SharedTransitionScopeProvider { scope ->

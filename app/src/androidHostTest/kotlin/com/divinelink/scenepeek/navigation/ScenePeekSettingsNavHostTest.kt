@@ -19,6 +19,7 @@ import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.AboutSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
@@ -28,7 +29,6 @@ import com.divinelink.core.navigation.route.Navigation.JellyseerrSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.LinkHandlingSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.SettingsRoute
 import com.divinelink.core.navigation.route.Navigation.TMDBAuthRoute
-import com.divinelink.core.scaffold.NavEntryProvider
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.ScenePeekAppState
 import com.divinelink.core.scaffold.ScenePeekNavHost
@@ -70,12 +70,11 @@ import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.scenepeek.di.appModule
 import com.divinelink.scenepeek.di.navigationModule
 import com.google.common.truth.Truth.assertThat
-import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import org.junit.Rule
+import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
-import org.koin.test.get
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -91,6 +90,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   private lateinit var fakePreferenceStorage: FakePreferenceStorage
   private lateinit var preferencesRepository: TestPreferencesRepository
   private lateinit var mediaRepository: TestMediaRepository
+  private lateinit var navigator: Navigator
 
   // HOME use cases
   private lateinit var fetchMultiInfoSearchUseCase: FakeFetchMultiInfoSearchUseCase
@@ -108,6 +108,8 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         navigationModule,
       )
     }
+
+    navigator = get<Navigator>()
 
     fakePreferenceStorage = FakePreferenceStorage()
     preferencesRepository = TestPreferencesRepository()
@@ -145,7 +147,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         onboardingManager = TestOnboardingManager(),
         preferencesRepository = preferencesRepository,
         appInfoRepository = TestAppInfoRepository(),
-        navigationProvider = get<List<NavEntryProvider>>(),
+        navigator = navigator,
       )
       appState = state
 
@@ -208,8 +210,8 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    appState.navigate(Navigation.SettingsRoute)
-    appState.navigate(Navigation.AccountSettingsRoute)
+    appState.navigate(SettingsRoute)
+    appState.navigate(AccountSettingsRoute)
 
     onNodeWithText(getString(R.string.feature_settings_account)).assertIsDisplayed()
     assertThat(appState.backStack.last()).isEqualTo(AccountSettingsRoute)
@@ -245,7 +247,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    appState.navigate(Navigation.SettingsRoute)
+    appState.navigate(SettingsRoute)
 
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
     assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
@@ -275,7 +277,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    appState.navigate(Navigation.SettingsRoute)
+    appState.navigate(SettingsRoute)
 
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
     assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
@@ -296,7 +298,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   fun `test navigate to Link Handling`() = uiTest {
     setupContent()
 
-    appState.navigate(Navigation.SettingsRoute)
+    appState.navigate(SettingsRoute)
 
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
     assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
@@ -317,7 +319,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   fun `test navigate to AboutSettingsScreen`() = uiTest {
     setupContent()
 
-    appState.navigate(Navigation.SettingsRoute)
+    appState.navigate(SettingsRoute)
 
     onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
     assertThat(appState.backStack.last()).isEqualTo(SettingsRoute)
@@ -355,7 +357,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    appState.navigate(Navigation.AccountSettingsRoute)
+    appState.navigate(AccountSettingsRoute)
 
     assertThat(appState.backStack.last()).isEqualTo(AccountSettingsRoute)
 

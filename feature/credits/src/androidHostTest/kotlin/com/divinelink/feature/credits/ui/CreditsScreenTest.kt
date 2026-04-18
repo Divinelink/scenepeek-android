@@ -9,9 +9,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -38,17 +38,15 @@ class CreditsScreenTest : ComposeTest() {
 
   private lateinit var fetchCreditsUseCase: TestFetchCreditsUseCase
   private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
-  private lateinit var savedStateHandle: SavedStateHandle
+  private lateinit var route: Navigation.CreditsRoute
 
   @BeforeTest
   override fun setUp() {
     fetchCreditsUseCase = TestFetchCreditsUseCase()
     spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase(false)
-    savedStateHandle = SavedStateHandle(
-      mapOf(
-        "id" to 2316L,
-        "mediaType" to MediaType.TV.value,
-      ),
+    route = Navigation.CreditsRoute(
+      id = 2316L,
+      mediaType = MediaType.TV.value,
     )
   }
 
@@ -57,13 +55,14 @@ class CreditsScreenTest : ComposeTest() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       CreditsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        route = route,
       )
     }
 
@@ -75,13 +74,14 @@ class CreditsScreenTest : ComposeTest() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       CreditsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        route = route,
       )
     }
 
@@ -98,13 +98,14 @@ class CreditsScreenTest : ComposeTest() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       CreditsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        route = route,
       )
     }
 
@@ -130,13 +131,14 @@ class CreditsScreenTest : ComposeTest() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       CreditsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        route = route,
       )
     }
 
@@ -166,13 +168,14 @@ class CreditsScreenTest : ComposeTest() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       CreditsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        route = route,
       )
     }
 
@@ -190,13 +193,14 @@ class CreditsScreenTest : ComposeTest() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       CreditsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        route = route,
       )
     }
 
@@ -214,15 +218,16 @@ class CreditsScreenTest : ComposeTest() {
       flowOf(Result.success(AggregatedCreditsFactory.credits())),
     )
     val viewModel = CreditsViewModel(
+      route = route,
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      savedStateHandle = savedStateHandle,
     )
 
     setVisibilityScopeContent {
       CreditsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        route = route,
       )
     }
 

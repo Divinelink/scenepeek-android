@@ -325,7 +325,6 @@ val navigationModule = module {
     UpdaterScreen(
       onNavigate = navigator::navigate,
     )
-
   }
 
   navigation<Navigation.AppUpdatesSettingsRoute> {

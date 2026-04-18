@@ -14,7 +14,6 @@ import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -69,8 +68,6 @@ class PersonScreenTest : ComposeTest() {
 
   private lateinit var fetchPersonDetailsUseCase: TestFetchPersonDetailsUseCase
   private lateinit var fetchChangesUseCase: TestFetchChangesUseCase
-  private lateinit var savedStateHandle: SavedStateHandle
-
   private lateinit var navArgs: PersonRoute
 
   private val preferencesRepository = TestPreferencesRepository()
@@ -109,15 +106,6 @@ class PersonScreenTest : ComposeTest() {
     )
     fetchPersonDetailsUseCase = TestFetchPersonDetailsUseCase()
     fetchChangesUseCase = TestFetchChangesUseCase()
-    savedStateHandle = SavedStateHandle(
-      mapOf(
-        "id" to navArgs.id,
-        "knownForDepartment" to navArgs.knownForDepartment,
-        "name" to navArgs.name,
-        "profilePath" to navArgs.profilePath,
-        "gender" to navArgs.gender,
-      ),
-    )
   }
 
   @AfterTest
@@ -136,19 +124,18 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "knownForDepartment" to navArgs.knownForDepartment,
-          "name" to null,
-          "profilePath" to navArgs.profilePath,
-          "gender" to navArgs.gender,
-        ),
+      route = PersonRoute(
+        id = navArgs.id,
+        knownForDepartment = navArgs.knownForDepartment,
+        name = null,
+        profilePath = navArgs.profilePath,
+        gender = navArgs.gender,
       ),
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -163,19 +150,18 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "knownForDepartment" to navArgs.knownForDepartment,
-          "name" to null,
-          "profilePath" to navArgs.profilePath,
-          "gender" to navArgs.gender,
-        ),
+      route = PersonRoute(
+        id = navArgs.id,
+        knownForDepartment = navArgs.knownForDepartment,
+        name = null,
+        profilePath = navArgs.profilePath,
+        gender = navArgs.gender,
       ),
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -194,11 +180,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -219,11 +206,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -246,11 +234,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -279,11 +268,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -323,11 +313,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -420,19 +411,18 @@ class PersonScreenTest : ComposeTest() {
       val viewModel = PersonViewModel(
         fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
         fetchChangesUseCase = fetchChangesUseCase.mock,
-        savedStateHandle = SavedStateHandle(
-          mapOf(
-            "id" to navArgs.id,
-            "knownForDepartment" to null,
-            "name" to null,
-            "profilePath" to null,
-            "gender" to null,
-          ),
+        route = PersonRoute(
+          id = navArgs.id,
+          knownForDepartment = null,
+          name = null,
+          profilePath = null,
+          gender = Gender.NOT_SET.value,
         ),
       )
 
       setVisibilityScopeContent {
         PersonScreen(
+          route = navArgs,
           onNavigate = {},
           viewModel = viewModel,
           switchViewButtonViewModel = switchViewButtonViewModel,
@@ -464,19 +454,18 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "id" to navArgs.id,
-          "knownForDepartment" to null,
-          "name" to null,
-          "profilePath" to null,
-          "gender" to null,
-        ),
+      route = PersonRoute(
+        id = navArgs.id,
+        knownForDepartment = null,
+        name = null,
+        profilePath = null,
+        gender = Gender.NOT_SET.value,
       ),
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -519,11 +508,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {
           if (it is DetailsRoute) {
             detailsRoute = it
@@ -584,11 +574,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = { route = it },
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -640,11 +631,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -677,11 +669,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -724,11 +717,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -753,13 +747,14 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent(
       preferencesRepository = preferencesRepository,
     ) {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -803,13 +798,14 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent(
       preferencesRepository = preferencesRepository,
     ) {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -866,11 +862,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -916,11 +913,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -968,11 +966,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -1024,13 +1023,14 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent(
       preferencesRepository = preferencesRepository,
     ) {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -1085,11 +1085,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -1173,11 +1174,12 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = navArgs,
     )
 
     setVisibilityScopeContent {
       PersonScreen(
+        route = navArgs,
         onNavigate = { route = it },
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,

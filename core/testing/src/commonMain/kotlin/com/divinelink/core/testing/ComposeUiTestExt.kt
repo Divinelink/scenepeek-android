@@ -9,18 +9,19 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.runComposeUiTest
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
-import com.divinelink.core.scaffold.NavEntryProvider
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.composition.PreviewLocalProvider
+import org.koin.compose.KoinApplication
+import org.koin.dsl.KoinConfiguration
 
 @OptIn(ExperimentalTestApi::class)
 fun uiTest(test: suspend ComposeUiTest.() -> Unit) = runComposeUiTest {
@@ -32,7 +33,9 @@ fun ComposeUiTest.setContentWithTheme(content: @Composable () -> Unit) {
   setContent {
     InitPreviewContextConfiguration()
     PreviewLocalProvider {
-      AppTheme {
+      KoinApplication(
+        configuration = KoinConfiguration {},
+      ) {
         content()
       }
     }
@@ -50,7 +53,7 @@ fun ComposeUiTest.setVisibilityScopeContent(
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = preferencesRepository,
       appInfoRepository = TestAppInfoRepository(),
-      navigationProvider = listOf(),
+      navigator = Navigator(),
     )
     ProvideScenePeekAppState(appState = state) {
       PreviewLocalProvider {
@@ -64,7 +67,7 @@ fun ComposeUiTest.setVisibilityScopeContent(
 }
 
 fun ComposeUiTest.setScaffoldContent(
-  navigationProvider: List<NavEntryProvider> = listOf(),
+  navigator: Navigator = Navigator(),
   content: @Composable ScaffoldState.() -> Unit,
 ) {
   setContent {
@@ -74,7 +77,7 @@ fun ComposeUiTest.setScaffoldContent(
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = TestPreferencesRepository(),
       appInfoRepository = TestAppInfoRepository(),
-      navigationProvider = navigationProvider,
+      navigator = navigator,
     )
 
     ProvideScenePeekAppState(appState = state) {

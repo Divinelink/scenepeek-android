@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddToListViewModel(
-  private val route: AddToListRoute,
+  route: AddToListRoute,
   private val fetchUserListsUseCase: FetchUserListsUseCase,
   private val addItemToListUseCase: AddItemToListUseCase,
   private val repository: ListRepository,

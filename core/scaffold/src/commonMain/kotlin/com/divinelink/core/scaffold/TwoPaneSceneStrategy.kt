@@ -66,7 +66,7 @@ fun <T : Any> rememberTwoPaneSceneStrategy(): TwoPaneSceneStrategy<T> {
 
 /**
  * A [SceneStrategy] that activates a [TwoPaneScene] on expanded screens when both
- * of the top two back stack entries declare support for two-pane display via [TwoPaneScene.twoPane].
+ * of the top two back stack entries declare support for two-pane display via [TwoPaneScene.twoPane]
  *
  * On smaller screens (width < [WIDTH_DP_EXPANDED_LOWER_BOUND]) returns `null` so the next
  * strategy in the chain takes over.

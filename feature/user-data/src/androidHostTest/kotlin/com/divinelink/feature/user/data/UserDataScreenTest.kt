@@ -12,7 +12,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
@@ -57,22 +56,20 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test unknown error`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     observeAccountUseCase.mockResponse(
       Result.success(TMDBAccountFactory.loggedIn()),
     )
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {},
         viewModel = UserDataViewModel(
           preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "section" to UserDataSection.Watchlist.value,
-            ),
-          ),
+          route = viewModelRoute,
         ),
         switchViewButtonViewModel = switchViewButtonViewModel,
       )
@@ -89,6 +86,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test network error`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(Result.failure(AppException.Offline())),
@@ -96,17 +94,14 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "section" to UserDataSection.Watchlist.value,
-            ),
-          ),
+          route = viewModelRoute,
         ),
       )
     }
@@ -121,6 +116,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test unauthenticated error`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     var verifyNavigatedToTMDBLogin = false
 
     observeAccountUseCase.mockResponse(
@@ -129,6 +125,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {
           if (it is Navigation.TMDBAuthRoute) {
             verifyNavigatedToTMDBLogin = true
@@ -139,11 +136,7 @@ class UserDataScreenTest : ComposeTest() {
           preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "section" to UserDataSection.Watchlist.value,
-            ),
-          ),
+          route = viewModelRoute,
         ),
       )
     }
@@ -165,21 +158,19 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist tabs are visible with movies and tv tabs`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "section" to UserDataSection.Watchlist.value,
-            ),
-          ),
+          route = viewModelRoute,
         ),
 
       )
@@ -200,6 +191,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with empty content`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
@@ -210,17 +202,14 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "section" to UserDataSection.Watchlist.value,
-            ),
-          ),
+          route = viewModelRoute,
         ),
       )
     }
@@ -243,6 +232,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test tv watching is loading`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = Result.success(UserDataResponseFactory.emptyMovies()),
@@ -252,15 +242,12 @@ class UserDataScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
       observeAccountUseCase = observeAccountUseCase.mock,
       fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "section" to UserDataSection.Watchlist.value,
-        ),
-      ),
+      route = viewModelRoute,
     )
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -289,6 +276,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with movies and tv content`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
@@ -299,17 +287,14 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "section" to UserDataSection.Watchlist.value,
-            ),
-          ),
+          route = viewModelRoute,
         ),
       )
     }
@@ -356,6 +341,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test navigate to details from tv content`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     var verifyNavigatedToMediaDetails = false
     var navArgs: Navigation.DetailsRoute? = null
 
@@ -369,6 +355,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = {
           if (it is Navigation.DetailsRoute) {
             verifyNavigatedToMediaDetails = true
@@ -380,11 +367,7 @@ class UserDataScreenTest : ComposeTest() {
           preferencesRepository = preferencesRepository,
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "section" to UserDataSection.Watchlist.value,
-            ),
-          ),
+          route = viewModelRoute,
         ),
       )
     }
@@ -418,6 +401,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test open action modal on long press`() = uiTest {
+    val viewModelRoute = Navigation.UserDataRoute(UserDataSection.Watchlist)
     var route: Navigation? = null
 
     observeAccountUseCase.mockResponse(response = Result.success(TMDBAccountFactory.loggedIn()))
@@ -432,15 +416,12 @@ class UserDataScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
       observeAccountUseCase = observeAccountUseCase.mock,
       fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-      savedStateHandle = SavedStateHandle(
-        mapOf(
-          "section" to UserDataSection.Watchlist.value,
-        ),
-      ),
+      route = viewModelRoute,
     )
 
     setVisibilityScopeContent {
       UserDataScreen(
+        route = viewModelRoute,
         onNavigate = { route = it },
         switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = viewModel,

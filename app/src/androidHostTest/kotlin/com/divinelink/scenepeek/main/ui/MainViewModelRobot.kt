@@ -6,6 +6,7 @@ import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
@@ -36,7 +37,7 @@ class MainViewModelRobot {
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = TestPreferencesRepository(),
       appInfoRepository = TestAppInfoRepository(),
-      navigationProviders = emptyList(),
+      navigator = Navigator(),
     )
   }
 
