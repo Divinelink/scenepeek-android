@@ -395,7 +395,6 @@ private fun SharedTransitionScope.MediaDetailsContent(
   }
 }
 
-
 @Previews
 @Composable
 fun DetailsContentPreview(

@@ -140,7 +140,10 @@ fun LazyListState.showExpandedFab(): Boolean {
 @Composable
 fun LazyListState.collapsingScrollConnection(): NestedScrollConnection = remember {
   object : NestedScrollConnection {
-    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+    override fun onPreScroll(
+      available: Offset,
+      source: NestedScrollSource,
+    ): Offset {
       // Scrolling up: collapse header first
       if (available.y < 0) {
         val consumed = this@collapsingScrollConnection.dispatchRawDelta(-available.y)

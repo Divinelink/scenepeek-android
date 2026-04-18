@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adb
 import androidx.compose.material.icons.filled.Brush
@@ -57,7 +54,6 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
-import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.getString
 import org.jetbrains.compose.resources.painterResource
 

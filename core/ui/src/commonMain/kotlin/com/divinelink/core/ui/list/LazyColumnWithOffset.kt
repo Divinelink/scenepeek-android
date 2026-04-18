@@ -125,7 +125,6 @@ fun SharedTransitionScope.LazyColumnWithOffset(
       )
     }
 
-
     item {
       Row(
         modifier = Modifier
