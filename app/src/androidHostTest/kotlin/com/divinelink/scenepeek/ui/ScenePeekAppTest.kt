@@ -13,8 +13,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.swipeDown
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -33,7 +33,8 @@ import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.scaffold.NavEntryProvider
+import com.divinelink.core.navigation.Navigator
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.ScenePeekAppState
 import com.divinelink.core.scaffold.TopLevelDestination
@@ -82,9 +83,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.compose.resources.getString
+import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
-import org.koin.test.get
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -102,8 +103,7 @@ class ScenePeekAppTest : ComposeTest() {
   private val preferencesRepository = TestPreferencesRepository()
   private val mediaRepository = TestMediaRepository()
   private val clock: Clock = ClockFactory.decemberFirst2021()
-
-  private lateinit var navigationProvider: List<NavEntryProvider>
+  private lateinit var navigator: Navigator
 
   private val homeTab = "Home"
   private val profileTab = "Profile"
@@ -171,7 +171,7 @@ class ScenePeekAppTest : ComposeTest() {
       )
     }
 
-    navigationProvider = get<List<NavEntryProvider>>()
+    navigator = get<Navigator>()
   }
 
   @AfterTest
@@ -196,7 +196,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -254,7 +254,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -326,7 +326,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -377,7 +377,6 @@ class ScenePeekAppTest : ComposeTest() {
    */
   @Test
   fun `test search bar remains unfocused when navigating between home and search`() = uiTest {
-    mediaRepository
     mockHomeData()
 
     declare {
@@ -406,7 +405,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -469,7 +468,7 @@ class ScenePeekAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test navigate to search`() = uiTest {
+  fun `test navigate to search`() = runComposeUiTest {
     mockHomeData()
 
     declare {
@@ -498,7 +497,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -566,7 +565,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -677,12 +676,10 @@ class ScenePeekAppTest : ComposeTest() {
         authRepository = authRepository.mock,
         repository = detailsRepository.mock,
         preferencesRepository = preferencesRepository,
-        savedStateHandle = SavedStateHandle(
-          mapOf(
-            "id" to 1,
-            "isFavorite" to false,
-            "mediaType" to MediaType.MOVIE.value,
-          ),
+        route = Navigation.DetailsRoute(
+          id = 1,
+          isFavorite = false,
+          mediaType = MediaType.MOVIE.value,
         ),
       )
     }
@@ -691,7 +688,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -725,7 +722,7 @@ class ScenePeekAppTest : ComposeTest() {
           scope = scope,
           onboardingManager = onboardingManager,
           networkMonitor = networkMonitor,
-          navigationProvider = navigationProvider,
+          navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
         ),
@@ -748,7 +745,7 @@ class ScenePeekAppTest : ComposeTest() {
           scope = backgroundScope,
           networkMonitor = networkMonitor,
           onboardingManager = onboardingManager,
-          navigationProvider = navigationProvider,
+          navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
         )
@@ -785,7 +782,7 @@ class ScenePeekAppTest : ComposeTest() {
           scope = backgroundScope,
           networkMonitor = networkMonitor,
           onboardingManager = onboardingManager,
-          navigationProvider = navigationProvider,
+          navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
         )
@@ -820,7 +817,7 @@ class ScenePeekAppTest : ComposeTest() {
           scope = backgroundScope,
           networkMonitor = networkMonitor,
           onboardingManager = onboardingManager,
-          navigationProvider = navigationProvider,
+          navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
         )
@@ -840,7 +837,7 @@ class ScenePeekAppTest : ComposeTest() {
           scope = backgroundScope,
           networkMonitor = networkMonitor,
           onboardingManager = onboardingManager,
-          navigationProvider = navigationProvider,
+          navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
         )
@@ -883,7 +880,7 @@ class ScenePeekAppTest : ComposeTest() {
       state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -946,7 +943,7 @@ class ScenePeekAppTest : ComposeTest() {
       state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
+        navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
       )
@@ -983,4 +980,3 @@ class ScenePeekAppTest : ComposeTest() {
     )
   }
 }
-

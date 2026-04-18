@@ -25,7 +25,6 @@ import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
-import org.koin.core.parameter.parametersOf
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
@@ -35,6 +34,7 @@ import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.episode.EpisodeAction
 import com.divinelink.feature.episode.EpisodeViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

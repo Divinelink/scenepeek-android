@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ListDetailsViewModel(
-  private val route: ListDetailsRoute,
+  route: ListDetailsRoute,
   private val fetchListDetailsUseCase: FetchListDetailsUseCase,
   private val repository: ListRepository,
 ) : ViewModel() {

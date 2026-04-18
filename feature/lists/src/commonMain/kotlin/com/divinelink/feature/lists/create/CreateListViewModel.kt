@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CreateListViewModel(
-  private val route: Navigation,
+  route: Navigation,
   private val createListUseCase: CreateListUseCase,
   private val repository: ListRepository,
 ) : ViewModel() {

@@ -142,8 +142,8 @@ class ScenePeekAppState internal constructor(
     navigator.navigate(destination.route)
   }
 
-  private fun getCurrentTopLevelDestination(backStack: List<Navigation>): TopLevelDestination? {
-    return backStack.lastOrNull()?.let { entry ->
+  private fun getCurrentTopLevelDestination(backStack: List<Navigation>): TopLevelDestination? =
+    backStack.lastOrNull()?.let { entry ->
       when (entry) {
         is Navigation.HomeRoute -> TopLevelDestination.HOME
         is Navigation.SearchRoute -> TopLevelDestination.SEARCH
@@ -151,7 +151,6 @@ class ScenePeekAppState internal constructor(
         else -> null
       }
     }
-  }
 
   companion object {
     val SUBSCRIPTION_TIMEOUT = 5.seconds.inWholeMilliseconds

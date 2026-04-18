@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
-import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.hasClickLabel
@@ -53,25 +53,25 @@ class CreateListScreenTest : ComposeTest() {
   @Test
   fun `test on delete click open delete dialog`() = uiTest {
     var navigatedBackToLists = false
+    val route = Navigation.EditListRoute(
+      id = 0,
+      name = "List name",
+      backdropPath = "",
+      description = "Description of the list",
+      public = true,
+    )
     setVisibilityScopeContent {
       CreateListScreen(
         viewModel = CreateListViewModel(
           createListUseCase = createListUseCase.mock,
           repository = repository.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "id" to 0,
-              "name" to "List name",
-              "backdropPath" to "",
-              "description" to "Description of the list",
-              "public" to true,
-            ),
-          ),
+          route = route,
         ),
         onNavigateBackToLists = {
           navigatedBackToLists = true
         },
         onNavigateUp = {},
+        route = route,
       )
     }
 
@@ -93,6 +93,13 @@ class CreateListScreenTest : ComposeTest() {
 
   @Test
   fun `test select backdrop and update list`() = uiTest {
+    val route = Navigation.EditListRoute(
+      id = 1234,
+      name = "List name",
+      backdropPath = "/path/to/backdrop.jpg",
+      description = "Description of the list",
+      public = true,
+    )
     var navigatedUp = false
     repository.mockFetchListsBackdrops(
       flowOf(
@@ -124,20 +131,13 @@ class CreateListScreenTest : ComposeTest() {
         viewModel = CreateListViewModel(
           createListUseCase = createListUseCase.mock,
           repository = repository.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "id" to 1234,
-              "name" to "List name",
-              "backdropPath" to "/path/to/backdrop.jpg",
-              "description" to "Description of the list",
-              "public" to true,
-            ),
-          ),
+          route = route,
         ),
         onNavigateBackToLists = {},
         onNavigateUp = {
           navigatedUp = true
         },
+        route = route,
       )
     }
 

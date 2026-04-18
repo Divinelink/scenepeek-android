@@ -227,7 +227,7 @@ private fun ExpandableFloatingActionButton() {
     onboardingManager = TestOnboardingManager(),
     preferencesRepository = TestPreferencesRepository(),
     appInfoRepository = TestAppInfoRepository(),
-    navigator = Navigator()
+    navigator = Navigator(),
   )
 
   ProvideScenePeekAppState(

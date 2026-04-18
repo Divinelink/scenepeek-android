@@ -14,7 +14,6 @@ import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
@@ -26,6 +25,7 @@ import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.EditListRoute
+import com.divinelink.core.navigation.route.Navigation.ListDetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -89,14 +89,12 @@ class ListDetailsScreenTest : ComposeTest() {
     stopKoin()
   }
 
-  private val savedStateHandle = SavedStateHandle(
-    mapOf(
-      "id" to 1,
-      "name" to ListDetailsFactory.mustWatch().name,
-      "backdropPath" to ListDetailsFactory.mustWatch().backdropPath,
-      "description" to ListDetailsFactory.mustWatch().description,
-      "public" to ListDetailsFactory.mustWatch().public,
-    ),
+  private val route = ListDetailsRoute(
+    id = 1,
+    name = ListDetailsFactory.mustWatch().name,
+    backdropPath = ListDetailsFactory.mustWatch().backdropPath,
+    description = ListDetailsFactory.mustWatch().description,
+    public = ListDetailsFactory.mustWatch().public,
   )
 
   @Test
@@ -106,12 +104,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {
           if (it is Navigation.Back) {
             navigatedUp = true
@@ -137,12 +136,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -178,12 +178,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {
           if (it is DetailsRoute) {
             detailsRoute = it
@@ -220,12 +221,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -273,12 +275,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -309,12 +312,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -357,12 +361,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -392,12 +397,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {
           if (it is EditListRoute) {
             editListRoute = it
@@ -443,12 +449,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -554,12 +561,13 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
     setVisibilityScopeContent {
       ListDetailsScreen(
+        route = route,
         onNavigate = {
           if (it is Navigation.AddToListRoute) {
             addToListRoute = it
@@ -613,7 +621,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
       repository = repository.mock,
     )
 
@@ -621,6 +629,7 @@ class ListDetailsScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
     ) {
       ListDetailsScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,

@@ -10,7 +10,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
-import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.AppException
@@ -19,6 +18,7 @@ import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -43,11 +43,9 @@ class AddToListScreenTest : ComposeTest() {
   private val fetchUserListsUseCase = TestFetchUserListsUseCase()
   private val addItemToListUseCase = TestAddItemToListUseCase()
   private val listRepository = TestListRepository()
-  private val savedStateHandle = SavedStateHandle(
-    mapOf(
-      "id" to 1234,
-      "mediaType" to MediaType.MOVIE.value,
-    ),
+  private val route = AddToListRoute(
+    id = 1234,
+    mediaType = MediaType.MOVIE.value,
   )
 
   @Test
@@ -62,11 +60,12 @@ class AddToListScreenTest : ComposeTest() {
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
       repository = listRepository.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       AddToListScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
       )
@@ -89,11 +88,12 @@ class AddToListScreenTest : ComposeTest() {
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
       repository = listRepository.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       AddToListScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
       )
@@ -114,11 +114,12 @@ class AddToListScreenTest : ComposeTest() {
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
       repository = listRepository.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       AddToListScreen(
+        route = route,
         onNavigate = {
           if (it is Navigation.TMDBAuthRoute) {
             navigatedToTMDBAuth = true
@@ -162,11 +163,12 @@ class AddToListScreenTest : ComposeTest() {
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
       repository = listRepository.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       AddToListScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
       )
@@ -196,11 +198,12 @@ class AddToListScreenTest : ComposeTest() {
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
       repository = listRepository.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       AddToListScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
       )
@@ -254,11 +257,12 @@ class AddToListScreenTest : ComposeTest() {
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
       repository = listRepository.mock,
-      savedStateHandle = savedStateHandle,
+      route = route,
     )
 
     setVisibilityScopeContent {
       AddToListScreen(
+        route = route,
         onNavigate = {},
         viewModel = viewModel,
       )
