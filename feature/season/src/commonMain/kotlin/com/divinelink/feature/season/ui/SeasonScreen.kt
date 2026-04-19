@@ -95,6 +95,7 @@ fun AnimatedVisibilityScope.SeasonScreen(
         ),
         actions = {
           DropdownMenuButton(
+            color = textColor,
             screenType = ScreenType.Season(
               id = uiState.season?.id ?: -1,
               name = uiState.title,

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -73,6 +74,7 @@ fun PersonScreen(
           ),
           actions = {
             DropdownMenuButton(
+              color = MaterialTheme.colorScheme.onSurface,
               screenType = ScreenType.Person(
                 id = (personDetails as PersonDetailsUiState.Data).personDetails.person.id.toInt(),
                 name = (personDetails as PersonDetailsUiState.Data).personDetails.person.name,

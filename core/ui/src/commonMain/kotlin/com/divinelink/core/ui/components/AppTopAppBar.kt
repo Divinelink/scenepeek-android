@@ -2,7 +2,9 @@ package com.divinelink.core.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,6 +30,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
+import com.divinelink.core.ui.rightNavBarInset
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -56,7 +59,9 @@ fun AppTopAppBar(
   }
 
   TopAppBar(
+    windowInsets = WindowInsets.statusBars,
     modifier = modifier
+      .rightNavBarInset()
       .background(animateColorFromProgress(alpha))
       .testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
     scrollBehavior = scrollBehavior,

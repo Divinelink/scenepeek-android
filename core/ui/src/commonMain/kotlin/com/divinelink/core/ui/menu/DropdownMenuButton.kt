@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +26,7 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun DropdownMenuButton(
+  color: Color,
   screenType: ScreenType,
   viewModel: DropdownMenuViewModel = koinViewModel { parametersOf(screenType) },
 ) {
@@ -47,7 +49,11 @@ fun DropdownMenuButton(
     modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
     onClick = { showDropdownMenu = !showDropdownMenu },
   ) {
-    Icon(imageVector = Icons.Outlined.MoreVert, contentDescription = "Show actions")
+    Icon(
+      imageVector = Icons.Outlined.MoreVert,
+      contentDescription = "Show actions",
+      tint = color,
+    )
   }
 
   if (showDropdownMenu && uiState.availableIntents.isNotEmpty()) {

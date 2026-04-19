@@ -2,19 +2,11 @@ package com.divinelink.feature.details.media.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -35,15 +27,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.rememberSystemUiController
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
@@ -55,15 +42,12 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.media.DetailsData
-import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
@@ -76,37 +60,29 @@ import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
-import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.blankslate.BlankSlate
-import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.collapsingheader.CollapsingHeaderLayout
-import com.divinelink.core.ui.collapsingheader.rememberCollapsingHeaderState
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
+import com.divinelink.core.ui.components.extensions.collapsingScrollConnection
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.composition.PreviewLocalProvider
+import com.divinelink.core.ui.list.LazyColumnWithOffset
 import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
-import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
+import com.divinelink.feature.details.media.ui.components.DetailActions
+import com.divinelink.feature.details.media.ui.components.HeaderDetails
+import com.divinelink.feature.details.media.ui.components.MediaDetailsPager
 import com.divinelink.feature.details.media.ui.fab.DetailsExpandableFloatingActionButton
-import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
-import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
-import com.divinelink.feature.details.media.ui.forms.recommendation.RecommendationsFormContent
-import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
-import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
 import com.divinelink.feature.request.media.RequestMediaModal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -227,6 +203,7 @@ fun DetailsContent(
           )
 
           DropdownMenuButton(
+            color = textColor,
             screenType = when (viewState.mediaDetails) {
               is Movie -> ScreenType.Movie(
                 id = viewState.mediaDetails.id,
@@ -343,13 +320,14 @@ private fun SharedTransitionScope.MediaDetailsContent(
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
-  val density = LocalDensity.current
 
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
     pageCount = { uiState.tabs.size },
   )
+  val state = rememberLazyListState()
+  val headerScrollConnection = state.collapsingScrollConnection()
 
   LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }
@@ -360,142 +338,59 @@ private fun SharedTransitionScope.MediaDetailsContent(
       }
   }
 
-  val collapsingHeaderState = rememberCollapsingHeaderState(
-    collapsedHeight = with(density) { MaterialTheme.dimensions.keyline_0.toPx() },
-    initialExpandedHeight = with(density) { 400.dp.toPx() },
-    heightDifference = with(density) { topPadding.toPx() },
-  )
-
-  LaunchedEffect(collapsingHeaderState.progress) {
-    onShowTitle(collapsingHeaderState.progress)
-  }
-
-  CollapsingHeaderLayout(
-    modifier = Modifier
-      .testTag(TestTags.Details.COLLAPSIBLE_LAYOUT)
-      .fillMaxSize(),
-    state = collapsingHeaderState,
+  LazyColumnWithOffset(
+    backdropPath = uiState.mediaDetails.backdropPath,
+    onBackdropLoaded = onBackdropLoaded,
+    posterPath = uiState.mediaDetails.posterPath,
+    visibilityScope = visibilityScope,
+    onNavigateToPoster = { onNavigate(Navigation.MediaPosterRoute(it)) },
     headerContent = {
-      Box(
-        modifier = Modifier.offset {
-          IntOffset(
-            x = 0,
-            y = -collapsingHeaderState.translation.roundToInt(),
-          )
-        },
-      ) {
-        BackdropImage(
-          path = uiState.mediaDetails.backdropPath,
-          onBackdropLoaded = onBackdropLoaded,
-        )
-        CollapsibleDetailsContent(
-          modifier = Modifier
-            .fillMaxWidth(),
-          mediaDetails = uiState.mediaDetails,
-          visibilityScope = visibilityScope,
-          accountDataState = uiState.accountDataState,
-          onNavigate = onNavigate,
-          status = uiState.jellyseerrMediaInfo?.status,
-          isOnWatchlist = uiState.userDetails.watchlist,
-          hasTrailer = uiState.trailer != null,
-          canManageRequests = uiState.canManageRequests,
-          userDetails = uiState.userDetails,
-          ratingSource = uiState.ratingSource,
-          ratingCount = uiState.mediaDetails.ratingCount,
-          onAddToWatchListClick = onAddToWatchlistClick,
-          onAddRateClick = onAddRateClick,
-          onShowAllRatingsClick = viewAllRatingsClick,
-          onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
-          onOpenManageModal = onOpenManageModal,
-        )
-      }
+      HeaderDetails(
+        mediaDetails = uiState.mediaDetails,
+        uiState = uiState,
+        onOpenManageModal = onOpenManageModal,
+        trailer = trailer,
+        onWatchTrailer = onWatchTrailer,
+        viewAllRatingsClick = viewAllRatingsClick,
+      )
     },
+    paddingOffset = topPadding,
+    stickyIndex = 2,
+    onScrollUpdate = onShowTitle,
+    state = state,
   ) {
-    Column(
-      modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background),
-    ) {
+    item {
+      DetailActions(
+        onAddRateClick = onAddRateClick,
+        uiState = uiState,
+        onAddToWatchlistClick = onAddToWatchlistClick,
+        onNavigate = onNavigate,
+      )
+    }
+
+    stickyHeader {
       ScenePeekTabs(
         tabs = uiState.tabs,
         selectedIndex = selectedPage,
-        onClick = {
-          scope.launch {
-            pagerState.animateScrollToPage(it)
-          }
-        },
+        onClick = { scope.launch { pagerState.animateScrollToPage(it) } },
       )
+    }
 
-      HorizontalPager(
+    item {
+      MediaDetailsPager(
         modifier = Modifier
-          .fillMaxSize()
-          .background(MaterialTheme.colorScheme.background),
-        state = pagerState,
-      ) { page ->
-        uiState.forms.values.elementAt(page).let { form ->
-          when (form) {
-            DetailsForm.Error -> Column(
-              modifier = Modifier
-                .fillMaxHeight()
-                .padding(vertical = MaterialTheme.dimensions.keyline_16)
-                .verticalScroll(rememberScrollState()),
-            ) {
-              BlankSlate(uiState = BlankSlateState.Contact)
-            }
-
-            DetailsForm.Loading -> LoadingContent(
-              modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            )
-
-            is DetailsForm.Content<*> -> when (form.data) {
-              is DetailsData.About -> AboutFormContent(
-                modifier = Modifier.fillMaxSize(),
-                aboutData = form.data as DetailsData.About,
-                watchProviders = uiState.watchProviders,
-                onNavigate = onNavigate,
-              )
-              is DetailsData.Cast -> CastFormContent(
-                modifier = Modifier.fillMaxSize(),
-                cast = form.data as DetailsData.Cast,
-                title = uiState.mediaDetails.title,
-                onPersonClick = onPersonClick,
-                obfuscateSpoilers = obfuscateEpisodes,
-                onViewAllClick = viewAllCreditsClick,
-              )
-              is DetailsData.Recommendations -> RecommendationsFormContent(
-                modifier = Modifier.fillMaxSize(),
-                recommendations = form.data as DetailsData.Recommendations,
-                title = uiState.mediaDetails.title,
-                onSwitchPreferences = onSwitchPreferences,
-                onItemClick = onMediaItemClick,
-                onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
-              )
-              is DetailsData.Reviews -> ReviewsFormContent(
-                modifier = Modifier.fillMaxSize(),
-                title = uiState.mediaDetails.title,
-                reviews = form.data as DetailsData.Reviews,
-              )
-              is DetailsData.Seasons -> SeasonsFormContent(
-                modifier = Modifier.fillMaxSize(),
-                title = uiState.mediaDetails.title,
-                reviews = form.data as DetailsData.Seasons,
-                onClick = { seasonNumber ->
-                  onNavigate(
-                    Navigation.SeasonRoute(
-                      showId = uiState.mediaDetails.id,
-                      backdropPath = uiState.mediaDetails.backdropPath,
-                      title = uiState.mediaDetails.title,
-                      seasonNumber = seasonNumber,
-                    ),
-                  )
-                },
-              )
-            }
-          }
-        }
-      }
+          .fillParentMaxSize(),
+        pagerState = pagerState,
+        scroll = headerScrollConnection,
+        uiState = uiState,
+        onNavigate = onNavigate,
+        mediaDetails = uiState.mediaDetails,
+        onPersonClick = onPersonClick,
+        obfuscateEpisodes = obfuscateEpisodes,
+        viewAllCreditsClick = viewAllCreditsClick,
+        onSwitchPreferences = onSwitchPreferences,
+        onMediaItemClick = onMediaItemClick,
+      )
     }
   }
 }

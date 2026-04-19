@@ -85,7 +85,6 @@ import com.divinelink.feature.details.resources.feature_details_manage_tv
 import com.divinelink.feature.details.resources.feature_details_request
 import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
-import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
@@ -213,7 +212,7 @@ class DetailsScreenTest : ComposeTest() {
     // Add swipe up to avoid overlapping of tabs with bottom navigation
     onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
       swipeUp(
-        startY = 100f,
+        startY = 200f,
         endY = 50f,
       )
     }
@@ -282,7 +281,7 @@ class DetailsScreenTest : ComposeTest() {
     // Add swipe up to avoid overlapping of tabs with bottom navigation
     onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
       swipeUp(
-        startY = 100f,
+        startY = 200f,
         endY = 50f,
       )
     }
@@ -353,6 +352,13 @@ class DetailsScreenTest : ComposeTest() {
       swipeUp(
         startY = 100f,
         endY = 50f,
+      )
+    }
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 100f,
+        endY = 80f,
       )
     }
 
@@ -427,7 +433,7 @@ class DetailsScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
       swipeUp(
         startY = 200f,
-        endY = 120f,
+        endY = 80f,
       )
     }
 
@@ -438,6 +444,13 @@ class DetailsScreenTest : ComposeTest() {
       .performScrollToNode(
         matcher = hasText(MediaItemFactory.MoviesList()[0].name),
       )
+
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 100f,
+        endY = 50f,
+      )
+    }
 
     onNodeWithText(MediaItemFactory.MoviesList()[0].name)
       .assertIsDisplayed()
@@ -450,12 +463,10 @@ class DetailsScreenTest : ComposeTest() {
     onNodeWithContentDescription(navigateUpContentDescription)
       .performClick()
 
-    assertThat(detailsRoute).isEqualTo(
-      Navigation.DetailsRoute(
-        id = MediaItemFactory.MoviesList()[0].id,
-        mediaType = MediaItemFactory.MoviesList()[0].mediaType.value,
-        isFavorite = false,
-      ),
+    detailsRoute shouldBe Navigation.DetailsRoute(
+      id = MediaItemFactory.MoviesList()[0].id,
+      mediaType = MediaItemFactory.MoviesList()[0].mediaType.value,
+      isFavorite = false,
     )
   }
 
@@ -676,6 +687,13 @@ class DetailsScreenTest : ComposeTest() {
       .performScrollToNode(hasText(SeriesCastFactory.cast().first().name))
       .assertIsDisplayed()
 
+    onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+      swipeUp(
+        startY = 100f,
+        endY = 80f,
+      )
+    }
+
     onNodeWithTag(TestTags.VIEW_ALL).assertIsDisplayed().performClick()
 
     creditsRoute shouldBe CreditsRoute(
@@ -737,7 +755,7 @@ class DetailsScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
       swipeUp(
-        startY = 100f,
+        startY = 200f,
         endY = 50f,
       )
     }

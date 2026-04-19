@@ -83,7 +83,6 @@ object TestTags {
 
   object Details {
     const val COLLAPSIBLE_LAYOUT = "Details Collapsible Layout"
-    const val COLLAPSIBLE_CONTENT = "Details Collapsible Content"
 
     const val RATE_THIS_BUTTON = "Rate This Button"
     const val YOUR_RATING = "Details Your Rating %s"

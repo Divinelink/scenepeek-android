@@ -109,6 +109,7 @@ fun AnimatedVisibilityScope.EpisodeScreen(
         ),
         actions = {
           DropdownMenuButton(
+            color = textColor,
             screenType = ScreenType.Episode(
               id = uiState.showId,
               name = uiState.showTitle,

@@ -1,6 +1,9 @@
 package com.divinelink.core.ui.components.details
 
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -14,8 +17,10 @@ import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.platformContext
+import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.rememberConstants
 import com.divinelink.core.ui.resources.core_ui_backdrop_image_placeholder
 import org.jetbrains.compose.resources.stringResource
@@ -32,6 +37,11 @@ fun BackdropImage(
   AsyncImage(
     modifier = modifier
       .bottomFadeOut()
+      .conditional(
+        condition = path?.isNotBlank() == true,
+        ifTrue = { aspectRatio(16 / 9f) },
+        ifFalse = { height(MaterialTheme.dimensions.keyline_64 * 2) },
+      )
       .fillMaxWidth(),
     model = ImageRequest.Builder(platformContext())
       .memoryCachePolicy(CachePolicy.ENABLED)

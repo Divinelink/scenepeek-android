@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -69,6 +71,7 @@ import com.divinelink.core.ui.resources.core_ui_people
 import com.divinelink.core.ui.resources.core_ui_toolbar_search
 import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
 import com.divinelink.core.ui.resources.core_ui_tv_shows
+import com.divinelink.core.ui.rightNavBarInset
 import com.divinelink.core.ui.text.BasicTextFieldWithCursorAtEnd
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.StringResource
@@ -137,7 +140,10 @@ fun ScenePeekSearchBar(
   }
 
   TopAppBar(
-    modifier = modifier.testTag(TestTags.Components.SearchBar.SEARCH_BAR.format(toolbarState.name)),
+    windowInsets = WindowInsets.statusBars,
+    modifier = modifier
+      .testTag(TestTags.Components.SearchBar.SEARCH_BAR.format(toolbarState.name))
+      .rightNavBarInset(),
     scrollBehavior = scrollBehavior,
     colors = TopAppBarDefaults.topAppBarColors(
       containerColor = Color.Transparent,

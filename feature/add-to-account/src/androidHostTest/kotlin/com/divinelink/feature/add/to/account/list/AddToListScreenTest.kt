@@ -32,11 +32,11 @@ import com.divinelink.feature.add.to.account.list.ui.AddToListScreen
 import com.divinelink.feature.add.to.account.resources.Res
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_empty_lists
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_title
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 class AddToListScreenTest : ComposeTest() {
 
@@ -136,11 +136,9 @@ class AddToListScreenTest : ComposeTest() {
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
     onNodeWithText(getString(UiString.core_ui_login)).assertIsDisplayed().performClick()
 
-    assertTrue { navigatedToTMDBAuth }
+    navigatedToTMDBAuth shouldBe true
 
-    channel.trySend(
-      Result.success(ListItemFactory.page1()),
-    )
+    channel.send(Result.success(ListItemFactory.page2()))
 
     onNodeWithText(getString(Res.string.feature_add_to_account_list_title)).assertIsDisplayed()
   }
