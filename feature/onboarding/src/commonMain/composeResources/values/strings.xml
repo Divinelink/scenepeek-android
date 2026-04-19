@@ -64,4 +64,6 @@
 
   <string name="v44_add_missing_www_subdomain_on_share_urls">- Add missing www subdomain on share URLs</string>
   <string name="v44_fix_version_checker">- Fix an issue where version checker would not display if update is available</string>
+
+  <string name="v46_improve_ui_for_large_screens">- Improve UI and compatibility for large screens, tablets and landscape mode</string>
 </resources>

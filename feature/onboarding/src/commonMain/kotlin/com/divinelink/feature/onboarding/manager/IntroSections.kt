@@ -53,6 +53,7 @@ import com.divinelink.feature.onboarding.resources.v41_add_share_menu_options
 import com.divinelink.feature.onboarding.resources.v41_add_version_checker
 import com.divinelink.feature.onboarding.resources.v44_add_missing_www_subdomain_on_share_urls
 import com.divinelink.feature.onboarding.resources.v44_fix_version_checker
+import com.divinelink.feature.onboarding.resources.v46_improve_ui_for_large_screens
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -224,6 +225,13 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v44_fix_version_checker)),
   )
 
+  val v46 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.30.0"),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.v46_improve_ui_for_large_screens)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -240,5 +248,6 @@ object IntroSections {
     40 to v40,
     41 to v41,
     44 to v44,
+    46 to v46,
   )
 }

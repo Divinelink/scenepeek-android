@@ -310,7 +310,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 6NU6XQB8GP;
 				ENABLE_PREVIEWS = YES;
@@ -321,7 +321,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.29.3;
+				MARKETING_VERSION = 0.30.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.divinelink.scenepeek;
 				PRODUCT_NAME = DebugPeek;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -341,7 +341,7 @@
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 6NU6XQB8GP;
 				ENABLE_PREVIEWS = YES;
@@ -352,7 +352,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.29.3;
+				MARKETING_VERSION = 0.30.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.divinelink.scenepeek;
 				PRODUCT_NAME = ScenePeek;
 				PROVISIONING_PROFILE_SPECIFIER = "";
