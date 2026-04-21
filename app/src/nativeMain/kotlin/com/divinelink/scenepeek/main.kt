@@ -22,7 +22,7 @@ fun MainViewController(): UIViewController = ComposeUIViewController {
     onboardingManager = viewModel.onboardingManager,
     networkMonitor = viewModel.networkMonitor,
     preferencesRepository = viewModel.preferencesRepository,
-    navigationProvider = viewModel.navigationProviders,
+    navigator = viewModel.navigator,
     appInfoRepository = viewModel.appInfoRepository,
   )
 

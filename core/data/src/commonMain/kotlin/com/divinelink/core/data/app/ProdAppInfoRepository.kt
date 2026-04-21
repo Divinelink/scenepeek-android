@@ -10,7 +10,6 @@ import com.divinelink.core.model.app.AppVersion
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.app.AppInfoService
 import com.divinelink.core.network.networkBoundResource
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -49,7 +48,6 @@ class ProdAppInfoRepository(
           }
       },
       fetch = {
-        Napier.d { "fetching version: that's right!" }
         installSource.versionCheckUrl?.let { versionCheckUrl ->
           service
             .fetchLatestAppVersion(url = versionCheckUrl)
