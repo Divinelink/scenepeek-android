@@ -26,6 +26,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.resources.core_ui_apply_filters
+import com.divinelink.core.ui.resources.core_ui_apply_num_of_filters
 import com.divinelink.core.ui.resources.core_ui_clear_all
 import com.divinelink.core.ui.resources.core_ui_genres
 import com.divinelink.feature.discover.FilterType
@@ -98,7 +99,7 @@ fun SelectGenresContent(
               stringResource(UiString.core_ui_apply_filters)
             } else {
               pluralStringResource(
-                UiPlurals.core_ui_apply_filters,
+                UiPlurals.core_ui_apply_num_of_filters,
                 filterType.selectedOptions.size,
                 filterType.selectedOptions.size,
               )

@@ -41,6 +41,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.button.action.ActionButton
 import com.divinelink.core.ui.components.JellyseerrStatusPill
@@ -62,6 +63,7 @@ import com.divinelink.feature.request.media.components.JellyseerrGradientText
 import com.divinelink.feature.request.media.components.QualityProfileDropDownMenu
 import com.divinelink.feature.request.media.components.RootFolderDropDownMenu
 import com.divinelink.feature.request.media.provider.RequestMediaUiStateProvider
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -154,7 +156,7 @@ fun RequestMediaContent(
             )
 
             Text(
-              text = stringResource(UiString.core_ui_season),
+              text = pluralStringResource(UiPlurals.core_ui_season, 1),
               modifier = Modifier
                 .weight(1f),
               style = MaterialTheme.typography.titleSmall,
