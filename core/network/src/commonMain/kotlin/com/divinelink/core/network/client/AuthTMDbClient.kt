@@ -24,7 +24,7 @@ class AuthTMDbClient(
       contentType(ContentType.Application.Json)
       encryptedStorage.accessToken?.let { accessToken ->
         bearerAuth(accessToken)
-      }
+      } ?: bearerAuth(secret.tmdbAuth)
     }
   }
 
