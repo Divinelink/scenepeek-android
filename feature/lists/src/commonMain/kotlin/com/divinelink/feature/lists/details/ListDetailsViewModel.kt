@@ -5,6 +5,7 @@ package com.divinelink.feature.lists.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.onError
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.domain.list.FetchListDetailsUseCase
 import com.divinelink.core.domain.list.FetchListParameters
@@ -26,6 +27,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -33,6 +36,7 @@ class ListDetailsViewModel(
   route: ListDetailsRoute,
   private val fetchListDetailsUseCase: FetchListDetailsUseCase,
   private val repository: ListRepository,
+  private val authRepository: AuthRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<ListDetailsUiState> = MutableStateFlow(
@@ -95,6 +99,8 @@ class ListDetailsViewModel(
                   loadingMore = false,
                   refreshing = false,
                   error = null,
+                  canEdit = authRepository.tmdbAccount.firstOrNull()?.username ==
+                    listDetails.createdBy.username,
                 )
               }
             }

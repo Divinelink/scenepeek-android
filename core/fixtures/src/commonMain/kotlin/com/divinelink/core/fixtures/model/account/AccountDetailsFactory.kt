@@ -10,4 +10,11 @@ object AccountDetailsFactory {
     name = "Jessee Pinkman",
     tmdbAvatarPath = "/avatar/pinkman.jpg",
   )
+
+  val elsa = AccountDetails(
+    id = 2,
+    username = "Elsa",
+    name = "Elsa Skilouri",
+    tmdbAvatarPath = "/avatar/elsa.jpg",
+  )
 }
