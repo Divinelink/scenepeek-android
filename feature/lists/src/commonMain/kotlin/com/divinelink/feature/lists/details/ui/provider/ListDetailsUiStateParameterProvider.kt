@@ -28,6 +28,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -44,6 +45,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -58,6 +60,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -72,6 +75,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -88,6 +92,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -104,6 +109,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -118,6 +124,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -132,6 +139,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -149,6 +157,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -163,6 +172,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       snackbarMessage = null,
       selectedMedia = emptyList(),
       multipleSelectMode = false,
+      canEdit = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -178,6 +188,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = MediaItemFactory.MoviesList()
         .take(2),
       multipleSelectMode = true,
+      canEdit = true,
     ),
     ListDetailsUiState(
       id = 1,
@@ -193,6 +204,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = MediaItemFactory.MoviesList()
         .take(2),
       multipleSelectMode = true,
+      canEdit = true,
     ),
   )
 }

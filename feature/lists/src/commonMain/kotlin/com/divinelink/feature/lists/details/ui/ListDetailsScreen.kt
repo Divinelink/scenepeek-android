@@ -130,7 +130,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
     },
     floatingActionButton = {
       AnimatedVisibility(
-        visible = !uiState.multipleSelectMode,
+        visible = !uiState.multipleSelectMode && uiState.canEdit,
         enter = fadeIn(tween(easing = EaseIn)),
         exit = fadeOut(tween(easing = EaseOut)),
       ) {

@@ -16,6 +16,7 @@ data class ListDetailsUiState(
   val selectedMedia: List<MediaItem.Media>,
   val multipleSelectMode: Boolean,
   val snackbarMessage: SnackbarMessage?,
+  val canEdit: Boolean,
 ) {
   companion object {
     fun initial(
@@ -39,6 +40,7 @@ data class ListDetailsUiState(
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       snackbarMessage = null,
+      canEdit = false,
     )
   }
 
