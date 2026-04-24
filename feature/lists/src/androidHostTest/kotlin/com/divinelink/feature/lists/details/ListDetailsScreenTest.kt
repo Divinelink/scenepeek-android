@@ -16,6 +16,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.exception.AppException
@@ -27,6 +28,7 @@ import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.EditListRoute
 import com.divinelink.core.navigation.route.Navigation.ListDetailsRoute
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
@@ -57,6 +59,7 @@ import com.divinelink.feature.add.to.account.resources.Res as R
 class ListDetailsScreenTest : ComposeTest() {
 
   private val repository = TestListRepository()
+  private val authRepository = TestAuthRepository()
   private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
   private lateinit var preferencesRepository: TestPreferencesRepository
@@ -102,10 +105,13 @@ class ListDetailsScreenTest : ComposeTest() {
     var navigatedUp = false
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -127,6 +133,35 @@ class ListDetailsScreenTest : ComposeTest() {
   }
 
   @Test
+  fun `test on edit fab is not visible on other users list`() = uiTest {
+    val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
+
+    fetchListDetailsUseCase.mockResponse(
+      Result.success(ListDetailsFactory.mustWatch()),
+    )
+
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
+
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      route = route,
+      repository = repository.mock,
+      authRepository = authRepository.mock,
+    )
+
+    setVisibilityScopeContent {
+      ListDetailsScreen(
+        route = route,
+        onNavigate = {},
+        viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
+      )
+    }
+
+    onNodeWithTag(TestTags.Lists.Details.EDIT_LIST_FAB).assertIsNotDisplayed()
+  }
+
+  @Test
   fun `test refresh action`() = uiTest {
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
 
@@ -134,10 +169,13 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.empty()),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -176,10 +214,13 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.mustWatch()),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -219,10 +260,13 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.page1()),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -273,10 +317,13 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.failure(AppException.Offline()),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -310,10 +357,13 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.failure(Exception("Foo")),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -359,10 +409,13 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -395,10 +448,13 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.page1()),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -447,10 +503,13 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -559,10 +618,13 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -619,10 +681,13 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.elsa)
+
     val viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       route = route,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent(

@@ -1,10 +1,12 @@
 package com.divinelink.feature.lists.details
 
+import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.google.common.truth.Truth.assertThat
@@ -19,6 +21,7 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
 
   private val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
   private val repository = TestListRepository()
+  private val authRepository = TestAuthRepository()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -28,6 +31,7 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
       route = navArgs,
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
       repository = repository.mock,
+      authRepository = authRepository.mock,
     )
   }
 
@@ -68,6 +72,10 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
 
   fun assertUiState(expectedUiState: ListDetailsUiState) = apply {
     assertThat(viewModel.uiState.value).isEqualTo(expectedUiState)
+  }
+
+  fun mockTMDBAccount(accountDetails: AccountDetails?) = apply {
+    authRepository.mockTMDBAccount(accountDetails)
   }
 
   fun mockListDetails(response: Result<ListDetails>) = apply {

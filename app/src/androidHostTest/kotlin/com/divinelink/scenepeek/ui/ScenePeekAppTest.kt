@@ -39,6 +39,8 @@ import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.ScenePeekAppState
 import com.divinelink.core.scaffold.TopLevelDestination
 import com.divinelink.core.scaffold.rememberScenePeekAppState
+import com.divinelink.core.scaffold.resources.top_level_navigation_content_description_selected
+import com.divinelink.core.scaffold.resources.top_level_navigation_content_description_unselected
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
@@ -76,8 +78,6 @@ import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.scenepeek.di.navigationModule
-import com.divinelink.scenepeek.resources.top_level_navigation_content_description_selected
-import com.divinelink.scenepeek.resources.top_level_navigation_content_description_unselected
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
@@ -91,7 +91,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.time.Clock
-import com.divinelink.scenepeek.resources.Res as R
+import com.divinelink.core.scaffold.resources.Res as scaffoldR
 
 class ScenePeekAppTest : ComposeTest() {
 
@@ -213,17 +213,17 @@ class ScenePeekAppTest : ComposeTest() {
     onNodeWithText(profileTab).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, profileTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, profileTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, searchTab),
       useUnmergedTree = true,
     ).assertExists()
   }
@@ -271,24 +271,24 @@ class ScenePeekAppTest : ComposeTest() {
     onNodeWithText(profileTab).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, profileTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, profileTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithText(profileTab).performClick()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, profileTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, profileTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
   }
@@ -342,24 +342,24 @@ class ScenePeekAppTest : ComposeTest() {
     onNodeWithText(homeTab).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, homeTab),
       useUnmergedTree = true,
     ).assertIsDisplayed()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, searchTab),
       useUnmergedTree = true,
     ).assertIsDisplayed()
 
     onNodeWithTag(TestTags.Components.SearchBar.CLICKABLE_SEARCH_BAR).performClick()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, searchTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
 
@@ -421,24 +421,24 @@ class ScenePeekAppTest : ComposeTest() {
     onNodeWithText(homeTab).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, homeTab),
       useUnmergedTree = true,
     ).assertIsDisplayed()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, searchTab),
       useUnmergedTree = true,
     ).assertIsDisplayed()
 
     onNodeWithTag(TestTags.Components.SearchBar.CLICKABLE_SEARCH_BAR).performClick()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, searchTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
 
@@ -453,12 +453,12 @@ class ScenePeekAppTest : ComposeTest() {
     ).assertIsDisplayed()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, homeTab),
       useUnmergedTree = true,
     ).performClick()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, searchTab),
       useUnmergedTree = true,
     ).performClick()
 
@@ -513,24 +513,24 @@ class ScenePeekAppTest : ComposeTest() {
     onNodeWithText(homeTab).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, searchTab),
       useUnmergedTree = true,
     )
       .assertExists()
       .performClick()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, searchTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
   }
@@ -581,24 +581,24 @@ class ScenePeekAppTest : ComposeTest() {
     onNodeWithText(homeTab).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, searchTab),
       useUnmergedTree = true,
     )
       .assertExists()
       .performClick()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, searchTab),
       useUnmergedTree = true,
     ).assertExists()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_unselected, homeTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_unselected, homeTab),
       useUnmergedTree = true,
     ).assertExists()
 
@@ -611,7 +611,7 @@ class ScenePeekAppTest : ComposeTest() {
     ).assertIsNotDisplayed()
 
     onNodeWithContentDescription(
-      getString(R.string.top_level_navigation_content_description_selected, searchTab),
+      getString(scaffoldR.string.top_level_navigation_content_description_selected, searchTab),
       useUnmergedTree = true,
     ).performClick()
 

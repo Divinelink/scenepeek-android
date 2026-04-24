@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -98,7 +99,7 @@ class ListDetailsViewModel(
                   loadingMore = false,
                   refreshing = false,
                   error = null,
-                  canEdit = authRepository.tmdbAccount.first()?.username ==
+                  canEdit = authRepository.tmdbAccount.firstOrNull()?.username ==
                     listDetails.createdBy.username,
                 )
               }

@@ -1,5 +1,6 @@
 package com.divinelink.feature.lists.details
 
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
@@ -36,6 +37,7 @@ class ListDetailsViewModelTest {
   fun `test fetch data`() {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -54,6 +56,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
   }
@@ -62,6 +65,7 @@ class ListDetailsViewModelTest {
   fun `test refresh correctly clears pages`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.page1()),
       )
@@ -80,8 +84,10 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.page2()),
       )
@@ -103,8 +109,10 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -129,6 +137,7 @@ class ListDetailsViewModelTest {
             snackbarMessage = null,
             selectedMedia = emptyList(),
             multipleSelectMode = false,
+            canEdit = true,
           ),
           ListDetailsUiState(
             id = 1,
@@ -146,6 +155,7 @@ class ListDetailsViewModelTest {
             snackbarMessage = null,
             selectedMedia = emptyList(),
             multipleSelectMode = false,
+            canEdit = true,
           ),
           ListDetailsUiState(
             id = 1,
@@ -162,6 +172,7 @@ class ListDetailsViewModelTest {
             snackbarMessage = null,
             selectedMedia = emptyList(),
             multipleSelectMode = false,
+            canEdit = true,
           ),
         ),
       )
@@ -171,6 +182,7 @@ class ListDetailsViewModelTest {
   fun `test load more when cannot load more`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -189,6 +201,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onLoadMore()
@@ -206,6 +219,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
   }
@@ -214,6 +228,7 @@ class ListDetailsViewModelTest {
   fun `test load more correctly sets loading more`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.page1()),
       )
@@ -232,8 +247,10 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.page2()),
       )
@@ -255,6 +272,7 @@ class ListDetailsViewModelTest {
             snackbarMessage = null,
             selectedMedia = emptyList(),
             multipleSelectMode = false,
+            canEdit = true,
           ),
           ListDetailsUiState(
             id = 1,
@@ -269,6 +287,7 @@ class ListDetailsViewModelTest {
             snackbarMessage = null,
             selectedMedia = emptyList(),
             multipleSelectMode = false,
+            canEdit = true,
           ),
           ListDetailsUiState(
             id = 1,
@@ -286,6 +305,7 @@ class ListDetailsViewModelTest {
             snackbarMessage = null,
             selectedMedia = emptyList(),
             multipleSelectMode = false,
+            canEdit = true,
           ),
         ),
       )
@@ -295,6 +315,7 @@ class ListDetailsViewModelTest {
   fun `test load more with error when data not initial does not set error`() {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -313,8 +334,10 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.failure(Exception("Foo")),
       )
@@ -333,6 +356,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
   }
@@ -341,6 +365,7 @@ class ListDetailsViewModelTest {
   fun `test initial with error`() {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.failure(Exception("Foo")),
       )
@@ -361,6 +386,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = false,
         ),
       )
   }
@@ -369,6 +395,7 @@ class ListDetailsViewModelTest {
   fun `test initial with connection error sets offline blank slate`() {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.failure(AppException.Offline()),
       )
@@ -389,6 +416,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = false,
         ),
       )
   }
@@ -397,6 +425,7 @@ class ListDetailsViewModelTest {
   fun `test on select all items`() {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -415,6 +444,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onSelectMedia(
@@ -434,6 +464,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
       .onSelectAll()
@@ -451,6 +482,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
   }
@@ -459,6 +491,7 @@ class ListDetailsViewModelTest {
   fun `test on deselect all items`() {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -477,6 +510,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onSelectAll()
@@ -494,6 +528,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onDeselectAll()
@@ -511,6 +546,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
   }
@@ -521,6 +557,7 @@ class ListDetailsViewModelTest {
   fun `test on remove single selected item`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -539,6 +576,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onSelectMedia(
@@ -558,6 +596,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
       .mockRemoveItems(Result.success(1))
@@ -582,6 +621,7 @@ class ListDetailsViewModelTest {
           ),
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
   }
@@ -590,6 +630,7 @@ class ListDetailsViewModelTest {
   fun `test on batch remove items`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -608,6 +649,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onSelectMedia(ListDetailsFactory.mustWatch().media[0])
@@ -627,6 +669,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
       .mockRemoveItems(Result.success(3))
@@ -651,6 +694,7 @@ class ListDetailsViewModelTest {
           ),
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
   }
@@ -659,6 +703,7 @@ class ListDetailsViewModelTest {
   fun `test on remove selected items with 0 result`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -677,6 +722,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onSelectMedia(
@@ -696,6 +742,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
       .mockRemoveItems(Result.success(0))
@@ -714,6 +761,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
   }
@@ -722,6 +770,7 @@ class ListDetailsViewModelTest {
   fun `test on remove selected items with error`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -740,6 +789,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onSelectMedia(
@@ -759,6 +809,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
       .mockRemoveItems(Result.failure(Exception("Failed to remove items")))
@@ -777,6 +828,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(UIText.StringText("Failed to remove items")),
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
       .onConsumeSnackbarMessage()
@@ -794,6 +846,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
   }
@@ -802,6 +855,7 @@ class ListDetailsViewModelTest {
   fun `test on remove selected items when offline`() = runTest {
     robot
       .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
         Result.success(ListDetailsFactory.mustWatch()),
       )
@@ -820,6 +874,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = emptyList(),
           multipleSelectMode = false,
+          canEdit = true,
         ),
       )
       .onSelectMedia(
@@ -839,6 +894,7 @@ class ListDetailsViewModelTest {
           snackbarMessage = null,
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
       .mockRemoveItems(Result.failure(AppException.Offline()))
@@ -861,6 +917,7 @@ class ListDetailsViewModelTest {
           ),
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
+          canEdit = true,
         ),
       )
   }
