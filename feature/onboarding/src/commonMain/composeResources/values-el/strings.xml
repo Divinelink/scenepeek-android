@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_onboarding_changelog">Αρχείο αλλαγών</string>
+    <string name="feature_onboarding_get_started">Ξεκινήστε</string>
+    <string name="feature_onboarding_skip">Παράβλεψη</string>
+    <string name="feature_onboarding_welcome_page_title">Καλώς ορίσατε στο ScenePeek</string>
+    <string name="feature_onboarding_welcome_page_description">Μία δωρεάν και ανοιχτού κώδικα εφαρμογή για τα TMDB &amp; Seerr</string>
+    <string name="feature_onboarding_tmdb_page_title">TMDB</string>
+    <string name="feature_onboarding_tmdb_page_description">Συνδέστε τον λογαριασμό σας TMDB για να αποκτήσετε πρόσβαση στη λίστα παρακολούθησής σας, στις αξιολογήσεις σας, στις λίστες σας και σε πολλά άλλα.</string>
+    <string name="feature_onboarding_jellyseerr_page_description">Συνδέστε το Seerr σας για να ζητήσετε ταινίες και τηλεοπτικές εκπομπές αμέσως.</string>
+    <string name="feature_onboarding_link_handling_page_title">Διαχείριση Συνδέσμων IMDb &amp; TMDB</string>
+</resources>

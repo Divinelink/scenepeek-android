@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_request_media_destination_server">Προοριζόμενος Διακομιστής</string>
+    <string name="feature_request_media_root_folder">Ριζικός φάκελος</string>
+    <string name="feature_request_media_quality_profile">Προφίλ ποιότητας</string>
+    <string name="feature_request_media_default">Προεπιλογή</string>
+    <string name="feature_request_media_cancel_request_success">Το αίτημα ακυρώθηκε με επιτυχία</string>
+    <string name="feature_request_media_cancel_request_failure">Η ακύρωση του αιτήματος απέτυχε</string>
+    <string name="feature_request_media_update_request_failure">Απέτυχε η ενημέρωση του αιτήματος</string>
+    <string name="feature_request_media_request_exists">Το αίτημα για αυτό το πολυμέσο υπάρχει ήδη.</string>
+</resources>

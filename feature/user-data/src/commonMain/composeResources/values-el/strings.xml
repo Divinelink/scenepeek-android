@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_user_data_empty_watchlist">H λίστα παρακολούθησης είναι κενή</string>
+    <string name="feature_user_data_empty_watchlist_description">Ξεκινήστε την εξερεύνηση, προσθέστε τα στη λίστα παρακολούθησης για να τα δείτε εδώ!</string>
+    <string name="feature_user_data_empty_movies_ratings">Δεν έχετε βαθμολογήσει καμία ταινία</string>
+    <string name="feature_user_data_empty_tv_shows_ratings">Δεν έχετε βαθμολογήσει καμία σειρά</string>
+    <string name="feature_user_data_empty_movies_rating_description">Ξεκινήστε την εξερεύνηση, αξιολογήστε ταινίες για να τις δείτε εδώ!</string>
+    <string name="feature_user_data_empty_shows_rating_description">Ξεκινήστε την εξερεύνηση, αξιολογήστε σειρές για να τις δείτε εδώ!</string>
+    <string name="feature_user_data_login_rated_description">Πρέπει να συνδεθείτε για να δείτε τις αξιολογήσεις σας.</string>
+    <string name="feature_user_data_login_watchlist_description">Πρέπει να συνδεθείτε για να δείτε τη λίστα παρακολούθησής σας.</string>
+</resources>

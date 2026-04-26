@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_details__watchlist">Λίστα παρακολούθησης</string>
+    <string name="login">Σύνδεση</string>
+    <string name="feature_details__add_to_list">Προσθήκη σε λίστα</string>
+    <string name="details__added_to_watchlist">%1$s προστέθηκε στη λίστα παρακολούθησης</string>
+    <string name="details__removed_from_watchlist">%1$s αφαιρέθηκε από τη λίστα παρακολούθησης</string>
+    <string name="details__must_be_logged_in_to_watchlist">Παρακαλώ συνδεθείτε για να προσθέσετε στη λίστα παρακολούθησής σας.</string>
+    <string name="feature_details_information">Πληοροφορίες</string>
+    <string name="feature_details_jellyseerr_success_request_delete">Το αίτημα διαγράφηκε επιτυχώς</string>
+    <string name="feature_details_jellyseerr_failure_media_delete">Η αφαίρεση της <b>%1$s</b> απέτυχε</string>
+    <string name="feature_details_jellyseerr_failed_request_delete">Απέτυχε η διαγραφή του αιτήματος</string>
+    <string name="feature_details_request">Αίτημα</string>
+    <string name="feature_details_season">Κύκλος %1$s</string>
+    <string name="feature_details_known_for_section">Γνωστός/η για</string>
+    <string name="feature_details_gender_section">Φύλο</string>
+    <string name="feature_details_birthday_section">Ημερομηνία γέννησης</string>
+    <string name="feature_details_day_of_death_section">Ημερομηνία θανάτου</string>
+    <string name="feature_details_biography_section">Βιογραφία</string>
+    <string name="feature_details_place_of_birth_section">Τόπος γέννησης</string>
+    <string name="feature_details_person_credits_known_for_section">Γνωστός/η για</string>
+    <string name="feature_details_person_credits_department_size">%1$s (%2$s)</string>
+    <string name="feature_details_filter_sort_release_date">Ημερομηνία κυκλοφορίας</string>
+    <plurals name="feature_details_number_of_seasons">
+        <item quantity="one">%1$s κύκλος</item>
+        <item quantity="other">%1$s κύκλοι</item>
+    </plurals>
+    <plurals name="feature_details_movies">
+        <item quantity="one">%1$s ταινία</item>
+        <item quantity="other">%1$s ταινίες</item>
+    </plurals>
+    <plurals name="feature_details_tv_shows">
+        <item quantity="one">%1$s σειρά</item>
+        <item quantity="other">%1$s σειρές</item>
+    </plurals>
+    <string name="feature_details_person_birthday">%1$s (%2$s ετών)</string>
+    <string name="feature_details_person_blank_biography">Δεν έχουμε βιογραφία για τον/την %1$s.</string>
+</resources>

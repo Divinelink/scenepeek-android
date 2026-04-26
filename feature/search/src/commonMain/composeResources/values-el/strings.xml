@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_search__initial_title">Αναζήτηση</string>
+    <string name="feature_search__initial_description">Βρείτε ταινίες, σειρές και άτομα.</string>
+    <string name="search__empty_result_title">Ωχ. Δεν μπορέσαμε να το βρούμε.</string>
+    <string name="search__empty_result_description">Προσπαθήστε να ψάξετε για κάτι άλλο.</string>
+    <string name="feature_search_settings_button_content_description">Μετάβαση στο κουμπί ρυθμίσεων</string>
+</resources>

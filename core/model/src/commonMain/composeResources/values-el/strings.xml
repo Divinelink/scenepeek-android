@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general_error_message">Κάτι πήγε στραβά.</string>
+    <string name="fatal_error_fetching_details">Δεν ήταν δυνατή η φόρτωση λεπτομερειών. Επιστροφή στην προηγούμενη οθόνη.</string>
+    <string name="any">Οποιοδήποτε</string>
+    <string name="decade">Δεκαετία</string>
+    <string name="people_tab">Άτομα</string>
+    <string name="tv_tab">Σειρές</string>
+    <string name="tv_show_tab">Σειρές</string>
+    <string name="name">Όνομα</string>
+    <string name="revenue">Τζίρος</string>
+    <string name="primary_release_date">Ημερομηνία κυκλοφορίας</string>
+    <string name="title">Τίτλος</string>
+    <string name="vote_average">Βαθμολογία</string>
+    <string name="gender_not_set">-</string>
+    <string name="gender_male">Άνδρας</string>
+    <string name="gender_non_binary">Μη δυαδικό</string>
+    <string name="core_model_tab_episode">E%1$s</string>
+    <string name="core_model_tab_episodes">Επεισόδια</string>
+    <string name="core_model_tab_about">Σχετικά</string>
+    <string name="core_model_tab_seasons">Κύκλοι</string>
+    <string name="core_model_tab_cast">Ηθοποιοί</string>
+    <string name="core_model_tab_reviews">Κριτικές</string>
+    <string name="core_model_tab_movies">Ταινίες</string>
+    <string name="core_model_tab_tv_shows">Σειρές</string>
+</resources>

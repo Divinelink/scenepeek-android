@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_requests_title">Αιτήματα</string>
+    <string name="feature_requests_profile">Προφίλ</string>
+    <string name="feature_requests_requested">Ζητήθηκε</string>
+    <string name="feature_requests_modifier">Τροποποιήθηκε</string>
+    <string name="feature_requests_no_requests_available">Δεν υπάρχουν διαθέσιμα αιτήματα.</string>
+</resources>

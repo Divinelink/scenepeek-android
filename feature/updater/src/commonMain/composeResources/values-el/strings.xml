@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_available_description">Για να αξιοποιήσετε καλύτερα την εφαρμογή, κατεβάστε την πιο πρόσφατη έκδοση.</string>
+    <string name="current_version">Τρέχουσα έκδοση: %1$s</string>
+    <string name="latest_version">Τελευταία έκδοση: %1$s</string>
+    <string name="update_available_title">Διαθέσιμη ενημέρωση</string>
+</resources>

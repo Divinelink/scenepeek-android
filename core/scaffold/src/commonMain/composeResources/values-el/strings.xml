@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Αρχική</string>
+    <string name="search">Αναζήτηση</string>
+    <string name="profile">Προφίλ</string>
+</resources>
