@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_discover_movies_title">Ανακαλύψτε ταινίες</string>
+    <string name="feature_discover_tv_title">Ανακάλυψη Σειρών</string>
+    <string name="feature_discover_description_first">Χρησιμοποιήστε φίλτρα για να βρείτε ακριβώς αυτό που ψάχνετε</string>
+    <string name="feature_discover_description_second">Φιλτράρισμα κατά έτος, χώρα, γλώσσα, είδος και άλλα</string>
+    <string name="feature_discover_empty_result_title">Χμμ, δεν υπάρχει τίποτα που να ταιριάζει με τα φίλτρα σας αυτήν τη στιγμή</string>
+    <string name="feature_discover_empty_result_description">Προσαρμόστε τα φίλτρα σας για να δείτε περισσότερα αποτελέσματα</string>
+    <string name="feature_discover_user_score">Βαθμολογία χρήστη: %1$s - %2$s</string>
+    <string name="feature_discover_minimum_user_votes">Ελάχιστες ψήφοι χρηστών: %1$s</string>
+</resources>

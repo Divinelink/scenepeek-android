@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_tmdb_auth_login">Σύνδεση στο TMDB</string>
+    <string name="feature_tmdb_auth_loading_text">Παρακαλώ περιμένετε όσο ο ελέγχου ταυτότητας βρίσκεται σε εξέλιξη…</string>
+</resources>

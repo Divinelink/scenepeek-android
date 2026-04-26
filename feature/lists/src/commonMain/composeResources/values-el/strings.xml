@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_lists_title">Λίστες</string>
+    <string name="feature_lists_login_description">Πρέπει να είστε συνδεδεμένοι για να δείτε τις λίστες σας.</string>
+    <string name="feature_lists_empty">Δεν έχετε δημιουργήσει καμία λίστα</string>
+    <string name="feature_lists_empty_description">Ξεκινήστε να δημιουργείτε λίστες για να παρακολουθείτε ταινίες, σειρές και προσαρμόστε τις ώστε να ταιριάζουν στο στυλ σας</string>
+    <string name="feature_lists_empty_list">Δεν έχουν προστεθεί στοιχεία σε αυτήν τη λίστα.</string>
+    <string name="feature_lists_delete_list">Διαγραφή λίστας</string>
+    <string name="feature_lists_edit_list">Επεξεργασία λίστας</string>
+    <string name="feature_lists_description">Περιγραφή</string>
+    <string name="feature_lists_public_description">Οι δημόσιες λίστες μπορούν να προβληθούν από άλλους χρήστες.</string>
+</resources>

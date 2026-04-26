@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ui_approve">Αποδοχή</string>
+    <string name="core_ui_update">Αναβάθμιση</string>
+    <string name="core_ui_delete">Διαγραφή</string>
+    <string name="core_ui_discover">Ανακάλυψε</string>
+    <string name="core_ui_save">Αποθήκευση</string>
+    <string name="core_ui_decline">Απόρριψη</string>
+    <string name="core_ui_confirm">Επιβεβαίωση</string>
+    <string name="core_ui_keywords">Λέξεις κλειδιά</string>
+    <string name="core_ui_share_error_details">Κοινοποίηση σφάλματος</string>
+    <string name="core_ui_information">Πληροφορίες</string>
+    <string name="core_ui_cancel">Ακύρωση</string>
+    <string name="core_ui_play_trailer">Προβολή Τρέιλερ</string>
+    <string name="core_ui_okay">Εντάξει</string>
+    <string name="core_ui_add_rating">Βαθμολογήστε το</string>
+    <string name="core_ui_not_connected">Είστε εκτός σύνδεσης</string>
+    <string name="core_ui_select">Επιλογή</string>
+    <string name="core_ui_share">Κοινοποίηση</string>
+    <string name="core_ui_show_total_episodes_item">Εμφάνιση spoilers</string>
+    <string name="core_ui_hide_total_episodes_item">Απόκρυψη spoilers</string>
+    <string name="core_ui_login">Σύνδεση</string>
+    <string name="core_ui_logout">Αποσύνδεση</string>
+    <string name="core_ui_view_all">Εμφάνιση όλων</string>
+    <string name="core_ui_create_list">Δημιουργία λίστας</string>
+    <string name="core_ui_create">Δημιουργία</string>
+    <string name="core_ui_edit">Αποθήκευση</string>
+    <plurals name="core_ui_character_episode_episodes">
+        <item quantity="one">(%1$s Επεισόδιο)</item>
+        <item quantity="other">(%1$s Επεισόδια)</item>
+    </plurals>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="system">Σύστημα</string>
+    <string name="light">Φωτεινό</string>
+    <string name="dark">Σκοτεινό</string>
+    <string name="default_theme">Προεπιλεγμένο</string>
+    <string name="dynamic_theme">Δυναμικό</string>
+</resources>

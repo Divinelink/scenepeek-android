@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_credits_cast_and_crew_title">Ηθοποιοί &amp; Συντελεστές</string>
+    <string name="feature_credits_cast">Ηθοποιοί Σειράς (%1$s)</string>
+    <string name="feature_credits_crew">Πλήρωμα Σειράς (%1$s)</string>
+    <string name="feature_credits_cast_missing">Δεν υπάρχουν διαθέσιμες πληροφορίες για τους ηθοποιούς</string>
+    <string name="feature_credits_crew_missing">Δεν υπάρχουν διαθέσιμες πληροφορίες για τους συντελεστές</string>
+</resources>

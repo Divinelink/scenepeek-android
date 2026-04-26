@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_add_to_account_list_login_description">Πρέπει να είστε συνδεδεμένος για να προσθέσετε στις λίστες σας.</string>
+    <string name="feature_add_to_account_empty_lists">Δεν έχετε δημιουργήσει καμία λίστα</string>
+    <string name="feature_add_to_account_list_title">Προσθήκη σε λίστα</string>
+    <string name="feature_add_to_account_list_create">Δημιουργία νέας λίστας</string>
+    <string name="feature_add_to_account_action_remove_from_list">Αφαίρεση από τη λίστα</string>
+    <string name="feature_add_to_account_item_added_to_list_failure"><![CDATA[Το αντικείμενο υπάρχει ήδη στη λίστα <b>%1$s</b>]]></string>
+    <string name="feature_add_to_account_item_add_to_list_unexpected_failure"><![CDATA[Αποτυχία προσθήκης στη λίστα <b>%1$s</b>]]></string>
+    <string name="feature_add_to_account_remove_batch_items_success">Αφαιρέθηκαν %1$s αντικείμενα από %2$s</string>
+    <string name="clear_my_rating">Εκκαθάριση της βαθμολογίας μου</string>
+    <string name="submit_rating_button">Υποβολή βαθμολογίας</string>
+    <string name="must_be_logged_in_to_rate">Παρακαλούμε συνδεθείτε για να υποβάλετε τη βαθμολογία σας.</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_theme_values" translatable="false">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="login">Σύνδεση</string>
+    <string name="AppearanceSettingsScreen__black_backgrounds_summary">Σκούρα χρώματα βελτιστοποιημένα για οθόνες OLED</string>
+    <string name="AppearanceSettingsScreen__material_you">Δυναμικό</string>
+    <string name="feature_settings_color_preference">Χρώματα</string>
+    <string name="feature_settings_color">Χρώμα</string>
+    <string name="feature_settings_account">Λογαριασμός</string>
+    <string name="feature_settings_logout">Αποσύνδεση</string>
+    <string name="feature_settings_logged_in">Συνδεδεμένος • </string>
+    <string name="feature_settings_tmdb_account">Λογαριασμός TMDB</string>
+    <string name="feature_settings_not_logged_in">Δεν είστε συνδεδεμένος</string>
+    <string name="feature_settings_jellyseerr_address_placeholder">π.χ. http(s)://your-seerr-url.com</string>
+    <string name="feature_settings_sign_in_with">Συνδεθείτε με %1$s</string>
+    <string name="feature_settings_signing_in">Σύνδεση…</string>
+    <string name="feature_settings_username">Όνομα χρήστη</string>
+    <string name="feature_settings_email">Διεύθυνση email</string>
+    <string name="feature_settings_password">Κωδικός</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_media_list_title">Δεν βρέθηκαν αποτελέσματα</string>
+    <string name="empty_media_list_description">Μπορείτε να δοκιμάσετε να αλλάξετε τα φίλτρα ή να αναζητήσετε κάτι άλλο.</string>
+    <string name="empty_favorite_list_title">Δεν υπάρχει κάτι στα αγαπημένα</string>
+    <string name="empty_favorite_list_description">Ξεκινήστε την εξερεύνηση και προσθέστε τα αγαπημένα σας για να τα δείτε εδώ!</string>
+</resources>
