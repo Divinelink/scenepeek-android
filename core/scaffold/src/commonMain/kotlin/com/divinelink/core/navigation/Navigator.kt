@@ -12,6 +12,10 @@ class Navigator {
 
     when (destination) {
       Navigation.Back -> goBack()
+      Navigation.TwiceBack -> {
+        goBack()
+        goBack()
+      }
       else -> {
         when (destination) {
           is Navigation.HomeRoute,
