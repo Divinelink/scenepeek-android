@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="core_commons_app_name">ScenePeek</string>
+  <string name="core_commons_app_name" translatable="false">ScenePeek</string>
 </resources>

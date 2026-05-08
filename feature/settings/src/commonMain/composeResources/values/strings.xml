@@ -64,9 +64,9 @@
   <!-- AboutSettingsScreen -->
   <string name="feature_settings_about">About</string>
   <string name="feature_settings_about__privacy_policy">Privacy Policy</string>
-  <string name="feature_settings_about__privacy_policy_url">https://scenepeek.github.io/privacy-policy</string>
+  <string name="feature_settings_about__privacy_policy_url" translatable="false">https://www.scenepeek.app/privacy</string>
 
-  <string name="feature_settings_about__github">Github</string>
+  <string name="feature_settings_about__github" translatable="false">Github</string>
   <string name="feature_settings_about__version">Version %1$s</string>
   <string name="feature_settings_about__developer_github_url">https://github.com/%1$s</string>
   <string name="feature_settings_about__repository_url">https://github.com/Divinelink/scenepeek-android</string>
