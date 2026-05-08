@@ -85,6 +85,7 @@ sealed class DetailsResponseApi {
     val status: String? = null,
     @SerialName("belongs_to_collection") val collection: BelongsToCollectionResponse?,
     override val keywords: KeywordsResponse?,
+    @SerialName("release_dates") val releaseDates: ReleaseDatesResponse,
   ) : DetailsResponseApi()
 
   @Serializable
