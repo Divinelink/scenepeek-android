@@ -11,11 +11,12 @@ import com.divinelink.core.designsystem.theme.dimensions
 
 @Composable
 fun SimpleInformationRow(
+  modifier: Modifier = Modifier,
   title: String,
   data: String,
 ) {
   Row(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
     Text(

@@ -58,7 +58,6 @@ sealed class MediaDetails {
       collection = collection,
       information = information,
       keywords = keywords,
-      releaseDates = releaseDates,
     )
     is TV -> TV(
       id = id,

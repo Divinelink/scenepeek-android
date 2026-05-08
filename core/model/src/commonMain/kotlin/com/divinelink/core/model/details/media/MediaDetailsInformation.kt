@@ -1,6 +1,7 @@
 package com.divinelink.core.model.details.media
 
 import com.divinelink.core.model.details.TvStatus
+import com.divinelink.core.model.details.release.CountryRelease
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 
@@ -15,6 +16,7 @@ sealed interface MediaDetailsInformation {
     val revenue: String,
     val companies: List<String>,
     val countries: List<Country>,
+    val releaseDates: List<CountryRelease>?,
   ) : MediaDetailsInformation
 
   data class TV(

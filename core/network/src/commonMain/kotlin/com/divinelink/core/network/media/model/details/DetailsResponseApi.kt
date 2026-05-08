@@ -119,12 +119,14 @@ sealed class DetailsResponseApi {
   ) : DetailsResponseApi()
 }
 
-fun DetailsResponseApi.toDomainMedia(): MediaDetails = when (this) {
-  is DetailsResponseApi.Movie -> this.toDomainMovie()
+fun DetailsResponseApi.toDomainMedia(selectedRegion: Country?): MediaDetails = when (this) {
+  is DetailsResponseApi.Movie -> this.toDomainMovie(selectedRegion)
   is DetailsResponseApi.TV -> this.toDomainTVShow()
 }
 
-private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
+private fun DetailsResponseApi.Movie.toDomainMovie(
+  selectedRegion: Country?,
+): MediaDetails = Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
   backdropPath = this.backdropPath ?: "",
@@ -163,9 +165,9 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
     } else {
       "$${revenue.formatWithCommas()}"
     },
+    releaseDates = releaseDates.map(selectedRegion),
   ),
   keywords = keywords.map(),
-  releaseDates = releaseDates.map(),
 )
 
 private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(

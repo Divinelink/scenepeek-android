@@ -3,7 +3,6 @@ package com.divinelink.core.model.details
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
-import com.divinelink.core.model.details.release.CountryRelease
 
 /**
  * Represents details of a movie.
@@ -27,5 +26,4 @@ data class Movie(
   override val popularity: Double,
   override val isFavorite: Boolean,
   override val keywords: List<Keyword>?,
-  val releaseDates: List<CountryRelease>?,
 ) : MediaDetails()

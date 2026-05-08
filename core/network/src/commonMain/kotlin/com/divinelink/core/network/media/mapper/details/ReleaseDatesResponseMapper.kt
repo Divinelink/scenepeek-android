@@ -9,20 +9,31 @@ import com.divinelink.core.network.media.model.details.CountryReleaseResponse
 import com.divinelink.core.network.media.model.details.ReleaseDatesResponse
 import com.divinelink.core.network.media.model.details.ReleaseDetailResponse
 
-fun ReleaseDatesResponse?.map() = this
+fun ReleaseDatesResponse?.map(selectedRegion: Country?) = this
   ?.results
-  ?.map()
+  ?.mapToSortedReleases(selectedRegion)
 
-fun List<CountryReleaseResponse>.map() = mapNotNull { it.map() }
+fun List<CountryReleaseResponse>.mapToSortedReleases(
+  selectedRegion: Country?,
+): List<CountryRelease> = flatMap { release ->
+  release.releases.mapNotNull { detail ->
+    val country = Country.fromCode(release.countryCode) ?: return@mapNotNull null
+    val releaseDetail = detail.map() ?: return@mapNotNull null
 
-fun CountryReleaseResponse.map(): CountryRelease? {
-  val country = Country.fromCode(countryCode) ?: return null
-
-  return CountryRelease(
-    country = country,
-    releaseDetails = releases.mapNotNull { it.map() },
-  )
-}
+    CountryRelease(
+      country = country,
+      releaseDetail = releaseDetail,
+    )
+  }
+}.sortedWith(
+  compareBy { item ->
+    when (item.country) {
+      selectedRegion -> 0
+      Country.UNITED_STATES -> 1
+      else -> 2
+    }
+  },
+)
 
 fun ReleaseDetailResponse.map(): ReleaseDetail? {
   val type = ReleaseType.from(type) ?: return null
