@@ -47,9 +47,6 @@
 
   <string name="core_ui_general_error_title">An error has occurred</string>
 
-  <string name="details__reviews">Reviews</string>
-  <string name="details__more_like_this">Recommendations</string>
-
   <string name="details__director_title">Director</string>
   <string name="details__cast_title">Cast</string>
   <string name="core_ui_series_cast_title">Series Cast</string>

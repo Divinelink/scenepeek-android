@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.resources.revenue
 import com.divinelink.core.ui.SimpleInformationRow
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_information
@@ -21,9 +22,9 @@ import com.divinelink.feature.details.resources.feature_details_information_comp
 import com.divinelink.feature.details.resources.feature_details_information_countries
 import com.divinelink.feature.details.resources.feature_details_information_original_language
 import com.divinelink.feature.details.resources.feature_details_information_original_title
-import com.divinelink.feature.details.resources.feature_details_information_revenue
 import com.divinelink.feature.details.resources.feature_details_information_runtime
 import com.divinelink.feature.details.resources.feature_details_information_status
+import com.divinelink.core.model.resources.Res as ModelRes
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -74,7 +75,7 @@ fun MovieInformationSection(
     )
 
     SimpleInformationRow(
-      title = stringResource(Res.string.feature_details_information_revenue),
+      title = stringResource(ModelRes.string.revenue),
       data = information.revenue,
     )
   }

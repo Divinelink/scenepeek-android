@@ -26,7 +26,7 @@
   <string name="vote_count">Total votes</string>
   <string name="created_at">Date added</string>
 
-  <string name="gender_not_set">-</string>
+  <string name="gender_not_set" translatable="false">-</string>
   <string name="gender_male">Male</string>
   <string name="gender_female">Female</string>
   <string name="gender_non_binary">Non binary</string>
