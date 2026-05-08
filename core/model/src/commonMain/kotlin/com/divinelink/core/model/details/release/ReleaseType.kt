@@ -1,4 +1,4 @@
-package com.divinelink.core.model.details
+package com.divinelink.core.model.details.release
 
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.digital
@@ -19,6 +19,6 @@ enum class ReleaseType(val type: Int, val resource: StringResource) {
   ;
 
   companion object {
-    fun from(type: Int) = ReleaseType.entries.find { it.type == type }
+    fun from(type: Int) = entries.find { it.type == type }
   }
 }

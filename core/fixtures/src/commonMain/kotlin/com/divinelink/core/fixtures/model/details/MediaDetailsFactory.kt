@@ -67,6 +67,7 @@ object MediaDetailsFactory {
       ),
     ),
     keywords = KeywordFactory.fightClub,
+    releaseDates = null,
   )
 
   fun TheOffice() = TV(

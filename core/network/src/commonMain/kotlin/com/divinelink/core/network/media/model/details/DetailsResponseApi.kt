@@ -165,6 +165,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
     },
   ),
   keywords = keywords.map(),
+  releaseDates = releaseDates.map(),
 )
 
 private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
