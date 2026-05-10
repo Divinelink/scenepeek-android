@@ -86,5 +86,6 @@ object DetailsResponseApiFactory {
     voteCount = 30_452,
     credits = CreditsFactory.all(),
     keywords = KeywordsResponseFactory.fightClub,
+    releaseDates = null,
   )
 }
