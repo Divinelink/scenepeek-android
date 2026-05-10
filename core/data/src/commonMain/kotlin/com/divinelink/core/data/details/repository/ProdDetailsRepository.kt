@@ -11,6 +11,7 @@ import com.divinelink.core.data.details.mapper.map
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.database.credits.dao.CreditsDao
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.PaginationData
@@ -52,6 +53,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -66,12 +68,15 @@ class ProdDetailsRepository(
   private val traktService: TraktService,
   private val mediaDao: MediaDao,
   val dispatcher: DispatcherProvider,
+  val preferencesRepository: PreferencesRepository,
 ) : DetailsRepository {
 
   override fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>> = mediaRemote
     .fetchDetails(request = request, appendToResponse = true)
     .map { apiResponse ->
-      val details = apiResponse.toDomainMedia()
+      val selectedRegion = preferencesRepository.detailPreferences.firstOrNull()?.region
+
+      val details = apiResponse.toDomainMedia(selectedRegion)
       val mediaItem = details.toMediaItem()
 
       mediaDao.insertMedia(
@@ -117,7 +122,7 @@ class ProdDetailsRepository(
         ).first()
       },
       saveFetchResult = { remoteData ->
-        val mediaDetails = remoteData.toDomainMedia()
+        val mediaDetails = remoteData.toDomainMedia(null)
         mediaDao.insertMedia(
           media = mediaDetails.toMediaItem(),
           seasons = if (mediaDetails is TV) {

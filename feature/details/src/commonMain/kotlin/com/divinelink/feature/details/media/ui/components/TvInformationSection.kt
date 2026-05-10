@@ -92,8 +92,8 @@ fun TvInformationSection(
       } ?: "-",
     )
 
-    CountriesRow(information.countries)
+    CountriesRow(countries = information.countries)
 
-    CompaniesRow(information.companies)
+    CompaniesRow(companies = information.companies)
   }
 }

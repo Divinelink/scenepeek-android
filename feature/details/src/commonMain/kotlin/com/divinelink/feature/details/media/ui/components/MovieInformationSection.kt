@@ -24,9 +24,9 @@ import com.divinelink.feature.details.resources.feature_details_information_orig
 import com.divinelink.feature.details.resources.feature_details_information_original_title
 import com.divinelink.feature.details.resources.feature_details_information_runtime
 import com.divinelink.feature.details.resources.feature_details_information_status
-import com.divinelink.core.model.resources.Res as ModelRes
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
+import com.divinelink.core.model.resources.Res as ModelRes
 
 @Composable
 fun MovieInformationSection(
@@ -38,43 +38,61 @@ fun MovieInformationSection(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
     Text(
-      modifier = Modifier.padding(bottom = MaterialTheme.dimensions.keyline_8),
+      modifier = Modifier
+        .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+        .padding(bottom = MaterialTheme.dimensions.keyline_8),
       text = stringResource(UiString.core_ui_information),
       style = MaterialTheme.typography.titleMedium,
     )
 
+    information.releaseDates?.let { releaseInfo ->
+      ReleaseInformation(releaseInfo)
+    }
+
     SimpleInformationRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
       title = stringResource(Res.string.feature_details_information_original_title),
       data = information.originalTitle,
     )
 
     SimpleInformationRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
       title = stringResource(Res.string.feature_details_information_status),
       data = information.status,
     )
 
     SimpleInformationRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
       title = stringResource(Res.string.feature_details_information_runtime),
       data = information.runtime ?: "-",
     )
 
     SimpleInformationRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
       title = stringResource(Res.string.feature_details_information_original_language),
       data = information.originalLanguage?.let { language ->
         stringResource(language.nameRes)
       } ?: "-",
     )
 
-    CountriesRow(information.countries)
+    CountriesRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+      countries = information.countries,
+    )
 
-    CompaniesRow(information.companies)
+    CompaniesRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+      companies = information.companies,
+    )
 
     SimpleInformationRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
       title = stringResource(Res.string.feature_details_information_budget),
       data = information.budget,
     )
 
     SimpleInformationRow(
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
       title = stringResource(ModelRes.string.revenue),
       data = information.revenue,
     )
@@ -82,9 +100,12 @@ fun MovieInformationSection(
 }
 
 @Composable
-fun CountriesRow(countries: List<Country>) {
+fun CountriesRow(
+  modifier: Modifier = Modifier,
+  countries: List<Country>,
+) {
   Row(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
     Text(
@@ -107,9 +128,12 @@ fun CountriesRow(countries: List<Country>) {
 }
 
 @Composable
-fun CompaniesRow(companies: List<String>) {
+fun CompaniesRow(
+  modifier: Modifier = Modifier,
+  companies: List<String>,
+) {
   Row(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
     Text(

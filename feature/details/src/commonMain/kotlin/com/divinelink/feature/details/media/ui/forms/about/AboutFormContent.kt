@@ -118,7 +118,7 @@ fun AboutFormContent(
       item {
         when (information) {
           is MediaDetailsInformation.Movie -> MovieInformationSection(
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+            modifier = Modifier,
             information = information,
           )
           is MediaDetailsInformation.TV -> TvInformationSection(

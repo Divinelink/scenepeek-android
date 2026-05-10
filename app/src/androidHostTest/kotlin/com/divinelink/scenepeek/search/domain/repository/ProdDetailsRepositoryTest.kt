@@ -10,6 +10,7 @@ import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
@@ -145,6 +146,7 @@ class ProdDetailsRepositoryTest {
   private var omdbService = TestOMDbService()
   private var traktService = TestTraktService()
   private var mediaDao = TestMediaDao()
+  private val preferencesRepository = TestPreferencesRepository()
 
   private lateinit var repository: DetailsRepository
 
@@ -156,6 +158,7 @@ class ProdDetailsRepositoryTest {
       omdbService = omdbService.mock,
       traktService = traktService.mock,
       mediaDao = mediaDao.mock,
+      preferencesRepository = preferencesRepository,
       dispatcher = testDispatcher,
     )
   }
@@ -218,7 +221,11 @@ class ProdDetailsRepositoryTest {
       request = MediaRequestApiFactory.movie(),
     ).first()
 
-    mediaDao.verifyItemInserted(detailsResponseApi.toDomainMedia().toMediaItem())
+    mediaDao.verifyItemInserted(
+      detailsResponseApi.toDomainMedia(
+        selectedRegion = null,
+      ).toMediaItem(),
+    )
   }
 
   @Test
@@ -623,6 +630,7 @@ class ProdDetailsRepositoryTest {
       omdbService = omdbService.mock,
       traktService = traktService.mock,
       mediaDao = mediaDao.mock,
+      preferencesRepository = preferencesRepository,
       dispatcher = testDispatcher,
     )
 
@@ -708,7 +716,11 @@ class ProdDetailsRepositoryTest {
       awaitItem() shouldBe Resource.Loading(null)
       awaitItem() shouldBe Resource.Success(MediaItemFactory.FightClub())
       awaitComplete()
-      mediaDao.verifyItemInserted(detailsResponseApi.toDomainMedia().toMediaItem())
+      mediaDao.verifyItemInserted(
+        detailsResponseApi.toDomainMedia(
+          selectedRegion = null,
+        ).toMediaItem(),
+      )
     }
   }
 
@@ -749,7 +761,7 @@ class ProdDetailsRepositoryTest {
       awaitItem() shouldBe Resource.Success(MediaItemFactory.theOffice())
       awaitComplete()
       mediaDao.verifyItemInserted(
-        item = response.toDomainMedia().toMediaItem(),
+        item = response.toDomainMedia(selectedRegion = null).toMediaItem(),
         seasons = SeasonFactory.all(),
       )
     }

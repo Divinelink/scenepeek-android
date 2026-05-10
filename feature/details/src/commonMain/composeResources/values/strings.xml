@@ -71,6 +71,7 @@
   <string name="feature_details_no_seasons_available">No seasons available</string>
   <string name="feature_details_no_seasons_available_desc">We don't have any seasons for %1$s.</string>
 
+  <string name="feature_details_information_release_dates">Release dates</string>
   <string name="feature_details_information_original_title">Original title</string>
   <string name="feature_details_information_status">Status</string>
   <string name="feature_details_information_runtime">Runtime</string>
