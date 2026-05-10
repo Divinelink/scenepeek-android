@@ -400,6 +400,7 @@ formatting:
   SpacingAroundParens:
     active: true
     autoCorrect: true
+    excludes: [ '**/generated/**', ]
   SpacingAroundRangeOperator:
     active: true
     autoCorrect: true
