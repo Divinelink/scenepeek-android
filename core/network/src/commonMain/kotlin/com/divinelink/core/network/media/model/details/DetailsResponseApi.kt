@@ -124,9 +124,7 @@ fun DetailsResponseApi.toDomainMedia(selectedRegion: Country?): MediaDetails = w
   is DetailsResponseApi.TV -> this.toDomainTVShow()
 }
 
-private fun DetailsResponseApi.Movie.toDomainMovie(
-  selectedRegion: Country?,
-): MediaDetails = Movie(
+private fun DetailsResponseApi.Movie.toDomainMovie(selectedRegion: Country?): MediaDetails = Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
   backdropPath = this.backdropPath ?: "",

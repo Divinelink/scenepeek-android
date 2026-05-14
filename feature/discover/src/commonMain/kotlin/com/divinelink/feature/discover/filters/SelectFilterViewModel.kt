@@ -181,47 +181,51 @@ class SelectFilterViewModel(
         )
       }
 
-      repository.fetchGenres(mediaType).distinctUntilChanged().onEach { result ->
-        when (result) {
-          is Resource.Error -> _uiState.update {
-            val blankSlate = when (result.error) {
-              is AppException.Offline -> BlankSlateState.Offline
-              else -> BlankSlateState.Generic
+      repository
+        .fetchGenres(mediaType)
+        .distinctUntilChanged()
+        .onEach { result ->
+          when (result) {
+            is Resource.Error -> _uiState.update {
+              val blankSlate = when (result.error) {
+                is AppException.Offline -> BlankSlateState.Offline
+                else -> BlankSlateState.Generic
+              }
+
+              it.copy(
+                error = blankSlate,
+                loading = false,
+              )
             }
+            is Resource.Loading -> _uiState.update { uiState ->
+              val selected = (uiState.filterType as? FilterType.Searchable.Genres)?.selectedOptions
 
-            it.copy(
-              error = blankSlate,
-              loading = false,
-            )
-          }
-          is Resource.Loading -> _uiState.update { uiState ->
-            val selected = (uiState.filterType as? FilterType.Searchable.Genres)?.selectedOptions
+              uiState.copy(
+                loading = false,
+                filterType = FilterType.Searchable.Genres(
+                  options = result.data ?: emptyList(),
+                  selectedOptions = selected ?: emptyList(),
+                  query = null,
+                ),
+                error = null,
+              )
+            }
+            is Resource.Success -> _uiState.update { uiState ->
+              val selected = (uiState.filterType as? FilterType.Searchable.Genres)?.selectedOptions
 
-            uiState.copy(
-              loading = false,
-              filterType = FilterType.Searchable.Genres(
-                options = result.data ?: emptyList(),
-                selectedOptions = selected ?: emptyList(),
-                query = null,
-              ),
-              error = null,
-            )
-          }
-          is Resource.Success -> _uiState.update { uiState ->
-            val selected = (uiState.filterType as? FilterType.Searchable.Genres)?.selectedOptions
-
-            uiState.copy(
-              loading = false,
-              filterType = FilterType.Searchable.Genres(
-                options = result.data,
-                selectedOptions = selected ?: emptyList(),
-                query = null,
-              ),
-              error = null,
-            )
+              uiState.copy(
+                loading = false,
+                filterType = FilterType.Searchable.Genres(
+                  options = result.data,
+                  selectedOptions = selected ?: emptyList(),
+                  query = null,
+                ),
+                error = null,
+              )
+            }
           }
         }
-      }.launchIn(viewModelScope)
+        .launchIn(viewModelScope)
     }
   }
 

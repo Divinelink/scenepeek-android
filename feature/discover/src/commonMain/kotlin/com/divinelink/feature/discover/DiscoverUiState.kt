@@ -16,6 +16,7 @@ data class DiscoverUiState(
   val canFetchMore: Map<MediaType, Boolean>,
   val sortOption: Map<MediaType, SortOption>,
   val filters: Map<MediaType, MediaTypeFilters>,
+  val lastFilters: Map<MediaType, MediaTypeFilters>,
   val loadingMap: Map<MediaType, Boolean>,
 ) {
   companion object {
@@ -46,6 +47,10 @@ data class DiscoverUiState(
           MediaType.MOVIE to MediaTypeFilters.initial,
           MediaType.TV to MediaTypeFilters.initial,
         ),
+        lastFilters = mapOf(
+          MediaType.MOVIE to MediaTypeFilters.initial,
+          MediaType.TV to MediaTypeFilters.initial,
+        ),
         sortOption = emptyMap(),
         loadingMap = mapOf(
           MediaType.MOVIE to false,
@@ -58,6 +63,7 @@ data class DiscoverUiState(
   val selectedTab = tabs[selectedTabIndex]
   val selectedMedia = selectedTab.mediaType
   val currentFilters = filters[selectedTab.mediaType] ?: MediaTypeFilters.initial
+  val currentLastFilters = lastFilters[selectedTab.mediaType] ?: MediaTypeFilters.initial
   val canFetchMoreForSelectedTab = canFetchMore[selectedMedia] == true
   val isLoading = loadingMap[selectedMedia] == true
 }
