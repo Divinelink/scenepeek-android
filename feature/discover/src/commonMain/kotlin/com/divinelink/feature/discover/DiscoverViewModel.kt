@@ -180,7 +180,7 @@ class DiscoverViewModel(
       .distinctUntilChanged()
       .onEach { sortMap ->
         _uiState.update { uiState -> uiState.copy(sortOption = sortMap) }
-        handleDiscoverMedia(reset = true)
+        handleDiscoverMedia(reset = true, fetchMore = false)
       }
       .launchIn(viewModelScope)
   }
@@ -188,7 +188,7 @@ class DiscoverViewModel(
   fun onAction(action: DiscoverAction) {
     when (action) {
       is DiscoverAction.OnSelectTab -> handleSelectTab(action)
-      DiscoverAction.DiscoverMedia -> handleDiscoverMedia(reset = true)
+      DiscoverAction.DiscoverMedia -> handleDiscoverMedia(reset = true, fetchMore = false)
       DiscoverAction.LoadMore -> handleLoadMore()
       DiscoverAction.ClearFilters -> handleClearFilters()
     }
@@ -199,7 +199,7 @@ class DiscoverViewModel(
       uuid = route.entryPointUuid,
       mediaType = _uiState.value.selectedMedia,
     )
-    handleDiscoverMedia(reset = true)
+    handleDiscoverMedia(reset = true, fetchMore = false)
   }
 
   private fun handleSelectTab(action: DiscoverAction.OnSelectTab) {
@@ -214,58 +214,65 @@ class DiscoverViewModel(
     val canFetchMore = _uiState.value.canFetchMore[selectedMedia] == true
 
     if (form is DiscoverForm.Data && canFetchMore) {
-      handleDiscoverMedia(reset = false)
+      handleDiscoverMedia(reset = false, fetchMore = canFetchMore)
     }
   }
 
-  private fun handleDiscoverMedia(reset: Boolean) {
+  private fun handleDiscoverMedia(
+    reset: Boolean,
+    fetchMore: Boolean,
+  ) {
     val mediaType = uiState.value.selectedMedia
     val currentFilters = uiState.value.currentFilters
+    val lastFilters = uiState.value.currentLastFilters
 
-    if (reset) {
-      _uiState.update { uiState ->
-        uiState.copy(
-          pages = uiState.pages + (uiState.selectedMedia to 1),
-          loadingMap = uiState.loadingMap + (uiState.selectedMedia to true),
-        )
-      }
-    }
-
-    if (currentFilters.hasSelectedFilters) {
-      discoverUseCase.invoke(
-        parameters = DiscoverParameters(
-          page = uiState.value.pages[uiState.value.selectedMedia] ?: 1,
-          sortOption = uiState.value.sortOption[uiState.value.selectedMedia]
-            ?: SortOption.defaultDiscoverSortOption,
-          mediaType = mediaType,
-          filters = currentFilters,
-        ),
-      )
-        .distinctUntilChanged()
-        .onEach { result ->
-          result.fold(
-            onSuccess = { response ->
-              updateUiOnSuccess(
-                reset = reset,
-                response = response,
-              )
-            },
-            onFailure = { error ->
-              updateUiOnFailure(
-                type = mediaType,
-                error = error,
-                reset = reset,
-              )
-            },
+    if (currentFilters != lastFilters || fetchMore) {
+      if (reset) {
+        _uiState.update { uiState ->
+          uiState.copy(
+            pages = uiState.pages + (uiState.selectedMedia to 1),
+            loadingMap = uiState.loadingMap + (uiState.selectedMedia to true),
           )
         }
-        .launchIn(viewModelScope)
-    } else {
-      _uiState.update { uiState ->
-        uiState.copy(
-          forms = uiState.forms.plus(uiState.selectedMedia to DiscoverForm.Initial),
-          loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+      }
+
+      if (currentFilters.hasSelectedFilters) {
+        discoverUseCase.invoke(
+          parameters = DiscoverParameters(
+            page = uiState.value.pages[uiState.value.selectedMedia] ?: 1,
+            sortOption = uiState.value.sortOption[uiState.value.selectedMedia]
+              ?: SortOption.defaultDiscoverSortOption,
+            mediaType = mediaType,
+            filters = currentFilters,
+          ),
         )
+          .distinctUntilChanged()
+          .onEach { result ->
+            result.fold(
+              onSuccess = { response ->
+                updateUiOnSuccess(
+                  reset = reset,
+                  response = response,
+                  filters = currentFilters,
+                )
+              },
+              onFailure = { error ->
+                updateUiOnFailure(
+                  type = mediaType,
+                  error = error,
+                  reset = reset,
+                )
+              },
+            )
+          }
+          .launchIn(viewModelScope)
+      } else {
+        _uiState.update { uiState ->
+          uiState.copy(
+            forms = uiState.forms.plus(uiState.selectedMedia to DiscoverForm.Initial),
+            loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+          )
+        }
       }
     }
   }
@@ -273,6 +280,7 @@ class DiscoverViewModel(
   private fun updateUiOnSuccess(
     reset: Boolean,
     response: UserDataResponse,
+    filters: MediaTypeFilters,
   ) {
     _uiState.update { uiState ->
       val data = (uiState.forms[response.type] as? DiscoverForm.Data)?.paginationData ?: mapOf(
@@ -294,6 +302,10 @@ class DiscoverViewModel(
         pages = uiState.pages + (response.type to response.page + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
         loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+        lastFilters = uiState.filters.updateFilters(
+          mediaType = uiState.selectedTab.mediaType,
+          update = { filters },
+        ),
       )
     }
   }
