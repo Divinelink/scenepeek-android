@@ -61,6 +61,27 @@
 
   <string name="feature_settings_jellyseerr_joined_on">Joined on %1$s | User ID: %2$s</string>
 
+  <!-- Contribution -->
+  <string name="feature_settings_join_the_community_title">Join the community</string>
+  <string name="feature_settings_join_the_community_summary">Be up to date with the ScenePeek project</string>
+  <string name="feature_settings_rate_the_application_title">Rate the application</string>
+  <string name="feature_settings_rate_the_application_summary">Enjoying ScenePeek? Consider rating or starring it on GitHub!</string>
+  <string name="feature_settings_send_feedback_title">Send feedback</string>
+  <string name="feature_settings_send_feedback_summary">Report a bug or a new idea</string>
+  <string name="feature_settings_help_with_translation_title">Help with translation</string>
+  <string name="feature_settings_help_with_translation_summary">We can use your language skills to bring the app to more languages</string>
+
+  <string name="rate_on_google_play">Rate on Google Play</string>
+  <string name="rate_on_app_store">Rate on App Store</string>
+  <string name="star_on_github">Star on GitHub</string>
+  <string name="raise_an_issue_on_github">Raise an issue on GitHub</string>
+  <string name="send_an_email">Send an email</string>
+
+  <string name="matrix_url" translatable="false">https://matrix.to/#/#scenepeek:matrix.org</string>
+  <string name="weblate_url" translatable="false">https://hosted.weblate.org/engage/scenepeek/</string>
+  <string name="google_play_url" translatable="false">https://play.google.com/store/apps/details?id=com.divinelink.scenepeek</string>
+  <string name="raise_github_issue_url" translatable="false">https://github.com/Divinelink/scenepeek-android/issues/new</string>
+
   <!-- AboutSettingsScreen -->
   <string name="feature_settings_about">About</string>
   <string name="feature_settings_about__privacy_policy">Privacy Policy</string>
@@ -69,7 +90,7 @@
   <string name="feature_settings_about__github" translatable="false">Github</string>
   <string name="feature_settings_about__version">Version %1$s</string>
   <string name="feature_settings_about__developer_github_url">https://github.com/%1$s</string>
-  <string name="feature_settings_about__repository_url">https://github.com/Divinelink/scenepeek-android</string>
+  <string name="feature_settings_about__repository_url" translatable="false">https://github.com/Divinelink/scenepeek-android</string>
   <string name="feature_settings_about__tmdb_endorsement">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
 
   <string name="feature_settings_about__ad_free">Ad Free</string>
