@@ -6,37 +6,37 @@ compile-sdk = "36"
 target-sdk = "36"
 min-sdk = "26"
 
-kotlin = "2.3.10"
+kotlin = "2.3.21"
 ksp = "2.3.2"
-android-tools = "32.1.0"
+android-tools = "32.2.1"
 # android-tools and agp should be updated together
-agp = "9.1.0"
-core-ktx = "1.17.0"
-coil = "3.3.0"
+agp = "9.1.1"
+core-ktx = "1.18.0"
+coil = "3.4.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.3.0"
 androidx-tracing = "1.3.0"
-androidx-browser = "1.9.0"
+androidx-browser = "1.10.0"
 lifecycle-runtime-ktx = "2.10.0"
 activity-compose = "1.11.0"
 start-up = "1.2.0"
-kotlinx-datetime = "0.7.1"
+kotlinx-datetime = "0.8.0"
 ktlint-cli = "1.8.0"
 secrets = "2.0.1"
 detekt = "1.23.6"
-sentry-android = "8.33.0"
+sentry-android = "8.41.0"
 
 # Internal Database
-sqldelight = "2.2.1"
-datastore = '1.2.0'
+sqldelight = "2.3.2"
+datastore = '1.2.1'
 
 # Multithreading
-kotlinx-coroutines = '1.10.2'
+kotlinx-coroutines = '1.11.0'
 
 # Network & Serialization
-ktor = "3.3.3"
+ktor = "3.4.3"
 kotlinx-serialization = "1.11.0"
-kotlinx-io = "0.8.2"
+kotlinx-io = "0.9.0"
 
 # Depedency Injection
 koin = "4.2.1"
@@ -55,7 +55,7 @@ materialkolor = "4.1.0"
 # Misc
 napier = "2.7.1"
 android-youtube-player = "13.0.0"
-cryptography = "0.5.0"
+cryptography = "0.6.0"
 
 # Testing
 kover = "0.9.4"
@@ -63,7 +63,7 @@ screenshot = "0.0.1-alpha11"
 androidx-test = "1.7.0"
 truth = "1.4.5"
 turbine = "1.2.1"
-kotest = "6.0.5"
+kotest = "6.1.11"
 
 # UI
 robolectric = "4.16.1"
