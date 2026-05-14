@@ -1,5 +1,7 @@
 🎉 Update v0.31.0
 
 - Add movie release dates showing premiere, theatrical, digital and physical format information
+- Add setting sections for joining the matrix community, help translating the project and more
+- Only fetch new discover content when the applied filters are different from the previous search
 
 We're constantly working on improvements and new features. Stay tuned for more updates!
