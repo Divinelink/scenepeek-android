@@ -54,6 +54,7 @@ import com.divinelink.feature.onboarding.resources.v41_add_version_checker
 import com.divinelink.feature.onboarding.resources.v44_add_missing_www_subdomain_on_share_urls
 import com.divinelink.feature.onboarding.resources.v44_fix_version_checker
 import com.divinelink.feature.onboarding.resources.v46_improve_ui_for_large_screens
+import com.divinelink.feature.onboarding.resources.v47_contribution_setting_sections
 import com.divinelink.feature.onboarding.resources.v47_discover_fetch_only_with_different_filters
 import com.divinelink.feature.onboarding.resources.v47_movie_release_dates
 import com.divinelink.feature.onboarding.resources.Res as R
@@ -239,6 +240,7 @@ object IntroSections {
     IntroSection.WhatsNew("v0.31.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v47_movie_release_dates)),
+    IntroSection.Text(UIText.ResourceText(R.string.v47_contribution_setting_sections)),
     IntroSection.SecondaryHeader.Fixed,
     IntroSection.Text(UIText.ResourceText(R.string.v47_discover_fetch_only_with_different_filters)),
   )
