@@ -28,31 +28,35 @@ fun LazyListState.EndlessScrollHandler(
 ) {
   val loadMore = remember {
     derivedStateOf {
-      val layoutInfo = this.layoutInfo
+      val layoutInfo = layoutInfo
       val visibleItemsInfo = layoutInfo.visibleItemsInfo
       val totalItems = layoutInfo.totalItemsCount
-      if (totalItems == 0) return@derivedStateOf false
-      val totalItemsFitInScreen = totalItems == visibleItemsInfo.size
 
-      if (totalItemsFitInScreen) {
-        true
-      } else {
-        val lastVisibleItemIndex = (visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
-        lastVisibleItemIndex > (totalItems - buffer)
+      if (totalItems == 0 || visibleItemsInfo.isEmpty()) {
+        return@derivedStateOf false
       }
+
+      val hasScrolled = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
+
+      if (!hasScrolled) {
+        return@derivedStateOf false
+      }
+
+      val lastVisibleItemIndex = visibleItemsInfo.last().index
+      val shouldLoadMore = lastVisibleItemIndex >= (totalItems - buffer)
+
+      shouldLoadMore
     }
   }
 
-  LaunchedEffect(loadMore) {
-    var lastLoadedAt = -1
-    snapshotFlow { loadMore.value to this@EndlessScrollHandler.layoutInfo.totalItemsCount }
+  LaunchedEffect(this) {
+    snapshotFlow {
+      loadMore.value to layoutInfo.totalItemsCount
+    }
       .distinctUntilChanged()
-      .filter { it.first }
-      .collect { (_, totalItems) ->
-        if (totalItems != lastLoadedAt) {
-          lastLoadedAt = totalItems
-          onLoadMore()
-        }
+      .filter { (shouldLoad, _) -> shouldLoad }
+      .collect {
+        onLoadMore()
       }
   }
 }
@@ -64,31 +68,35 @@ fun LazyGridState.EndlessScrollHandler(
 ) {
   val loadMore = remember {
     derivedStateOf {
-      val layoutInfo = this.layoutInfo
+      val layoutInfo = layoutInfo
       val visibleItemsInfo = layoutInfo.visibleItemsInfo
       val totalItems = layoutInfo.totalItemsCount
-      if (totalItems == 0) return@derivedStateOf false
-      val totalItemsFitInScreen = totalItems == visibleItemsInfo.size
 
-      if (totalItemsFitInScreen) {
-        true
-      } else {
-        val lastVisibleItemIndex = (visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
-        lastVisibleItemIndex > (totalItems - buffer)
+      if (totalItems == 0 || visibleItemsInfo.isEmpty()) {
+        return@derivedStateOf false
       }
+
+      val hasScrolled = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
+
+      if (!hasScrolled) {
+        return@derivedStateOf false
+      }
+
+      val lastVisibleItemIndex = visibleItemsInfo.last().index
+      val shouldLoadMore = lastVisibleItemIndex >= (totalItems - buffer)
+
+      shouldLoadMore
     }
   }
 
-  LaunchedEffect(loadMore) {
-    var lastLoadedAt = -1
-    snapshotFlow { loadMore.value to this@EndlessScrollHandler.layoutInfo.totalItemsCount }
+  LaunchedEffect(this) {
+    snapshotFlow {
+      loadMore.value to layoutInfo.totalItemsCount
+    }
       .distinctUntilChanged()
-      .filter { it.first }
-      .collect { (_, totalItems) ->
-        if (totalItems != lastLoadedAt) {
-          lastLoadedAt = totalItems
-          onLoadMore()
-        }
+      .filter { (shouldLoad, _) -> shouldLoad }
+      .collect {
+        onLoadMore()
       }
   }
 }
