@@ -26,6 +26,7 @@ import com.divinelink.core.domain.list.FetchListDetailsUseCase
 import com.divinelink.core.domain.list.FetchUserListsUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
+import com.divinelink.core.domain.session.AwaitSessionUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
@@ -72,6 +73,7 @@ val useCaseModule = module {
   factoryOf(::CreateSessionUseCase)
   factoryOf(::LogoutUseCase)
   factoryOf(::ObserveAccountUseCase)
+  factoryOf(::AwaitSessionUseCase)
 
   factoryOf(::CreateRequestTokenUseCase)
   factoryOf(::FetchUserDataUseCase)

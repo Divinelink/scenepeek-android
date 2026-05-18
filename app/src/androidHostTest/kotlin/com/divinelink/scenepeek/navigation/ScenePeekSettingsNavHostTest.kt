@@ -41,6 +41,7 @@ import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
+import com.divinelink.core.testing.usecase.FakeAwaitSessionUseCase
 import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
@@ -131,6 +132,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       TMDBAuthViewModel(
         createRequestTokenUseCase = FakeCreateRequestTokenUseCase().mock,
         createSessionUseCase = TestCreateSessionUseCase().mock,
+        awaitSessionUseCase = FakeAwaitSessionUseCase().mock,
       )
     }
   }

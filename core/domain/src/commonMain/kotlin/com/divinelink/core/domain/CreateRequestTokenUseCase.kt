@@ -3,22 +3,23 @@ package com.divinelink.core.domain
 import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.domain.session.TMDB_AUTH_DELAY
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 
 class CreateRequestTokenUseCase(
   private val repository: SessionRepository,
+  private val authRepository: AuthRepository,
   val dispatcher: DispatcherProvider,
 ) : UseCase<Unit, String>(dispatcher.default) {
 
   override suspend fun execute(parameters: Unit): String {
-    Napier.d("Creating new token")
+    authRepository.clearTMDBSession()
+
     val result = repository
       .createRequestToken()
       .onSuccess { result ->
-        Napier.d("Token created successfully")
         repository.setRequestToken(result)
 
         result.token

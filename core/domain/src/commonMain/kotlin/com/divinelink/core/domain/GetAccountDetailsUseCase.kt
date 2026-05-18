@@ -26,10 +26,7 @@ class GetAccountDetailsUseCase(
         .tmdbAccount
         .distinctUntilChanged()
         .collect { accountDetails ->
-          if (accountDetails == null) {
-            send(Result.failure(SessionException.Unauthenticated()))
-            authRepository.clearTMDBSession()
-          } else {
+          if (accountDetails != null) {
             send(Result.success(TMDBAccount.LoggedIn(accountDetails)))
           }
         }
