@@ -3,11 +3,10 @@ package com.divinelink.feature.tmdb.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.CreateRequestTokenUseCase
+import com.divinelink.core.domain.session.AwaitSessionUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
-import com.divinelink.core.domain.session.TMDB_AUTH_DELAY
 import com.divinelink.core.network.session.util.buildRequestTokenApproveUrl
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +18,7 @@ import kotlinx.coroutines.launch
 class TMDBAuthViewModel(
   private val createRequestTokenUseCase: CreateRequestTokenUseCase,
   private val createSessionUseCase: CreateSessionUseCase,
+  private val awaitSessionUseCase: AwaitSessionUseCase,
 ) : ViewModel() {
 
   private val _openUrlTab = Channel<String>()
@@ -51,15 +51,16 @@ class TMDBAuthViewModel(
   }
 
   /**
-   * There's a delay to make sure the session is properly created before proceeding
-   * Also check [com.divinelink.core.domain.session.CreateSessionUseCase]
+   * On the Custom Tab path the session is created by MainViewModel after the auth
+   * deeplink is caught. Wait for it to actually land in storage before navigating
+   * up so the caller screen doesn't see a stale (empty) session on slow networks.
    */
   fun handleCloseWeb(createSession: Boolean) {
     if (createSession) {
       createSession()
     } else {
       viewModelScope.launch {
-        delay(TMDB_AUTH_DELAY)
+        awaitSessionUseCase.invoke(Unit)
         _onNavigateUp.trySend(Unit)
       }
     }

@@ -8,6 +8,7 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
+import com.divinelink.core.testing.usecase.FakeAwaitSessionUseCase
 import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.ui.TestTags
@@ -27,6 +28,7 @@ class TMDBAuthScreenTest : ComposeTest() {
     val viewModel = TMDBAuthViewModel(
       createRequestTokenUseCase = createRequestTokenUseCase.mock,
       createSessionUseCase = createSessionUseCase.mock,
+      awaitSessionUseCase = FakeAwaitSessionUseCase().mock,
     )
     setContentWithTheme {
       TMDBAuthScreen(

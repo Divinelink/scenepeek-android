@@ -6,8 +6,6 @@ import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.datastore.auth.accessToken
-import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.exception.SessionException
 
 class LogoutUseCase(
   private val repository: SessionRepository,
@@ -17,20 +15,19 @@ class LogoutUseCase(
 ) : UseCase<Unit, Unit>(dispatcher.default) {
 
   override suspend fun execute(parameters: Unit) {
-    val accessToken: String = sessionStorage.savedState.accessToken
-      ?: throw SessionException.Unauthenticated()
+    val accessToken: String? = sessionStorage.savedState.accessToken
 
-    repository
-      .deleteSession(accessToken)
-      .onSuccess {
-        authRepository.clearTMDBSession()
-      }
-      .onFailure {
-        if (it is AppException.Unauthorized) {
+    if (accessToken == null) {
+      authRepository.clearTMDBSession()
+    } else {
+      repository
+        .deleteSession(accessToken)
+        .onSuccess {
           authRepository.clearTMDBSession()
-        } else {
-          throw it
         }
-      }
+        .onFailure {
+          authRepository.clearTMDBSession()
+        }
+    }
   }
 }

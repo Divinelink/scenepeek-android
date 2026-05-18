@@ -2,6 +2,7 @@ package com.divinelink.feature.tmdb.auth
 
 import app.cash.turbine.test
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.usecase.FakeAwaitSessionUseCase
 import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.google.common.truth.Truth.assertThat
@@ -16,6 +17,7 @@ class TMDBAuthViewModelTest {
 
   private val createRequestTokenUseCase = FakeCreateRequestTokenUseCase()
   private val createSessionUseCase = TestCreateSessionUseCase()
+  private val awaitSessionUseCase = FakeAwaitSessionUseCase()
 
   @Test
   fun `test initialise viewModel with success request token emits openUrlTab`() = runTest {
@@ -24,6 +26,7 @@ class TMDBAuthViewModelTest {
     val viewModel = TMDBAuthViewModel(
       createRequestTokenUseCase = createRequestTokenUseCase.mock,
       createSessionUseCase = createSessionUseCase.mock,
+      awaitSessionUseCase = awaitSessionUseCase.mock,
     )
 
     viewModel.openUrlTab.test {
@@ -40,6 +43,7 @@ class TMDBAuthViewModelTest {
     val viewModel = TMDBAuthViewModel(
       createRequestTokenUseCase = createRequestTokenUseCase.mock,
       createSessionUseCase = createSessionUseCase.mock,
+      awaitSessionUseCase = awaitSessionUseCase.mock,
     )
 
     viewModel.openUrlTab.test {
@@ -54,6 +58,7 @@ class TMDBAuthViewModelTest {
     val viewModel = TMDBAuthViewModel(
       createRequestTokenUseCase = createRequestTokenUseCase.mock,
       createSessionUseCase = createSessionUseCase.mock,
+      awaitSessionUseCase = awaitSessionUseCase.mock,
     )
 
     viewModel.onNavigateUp.test {
@@ -68,6 +73,7 @@ class TMDBAuthViewModelTest {
     val viewModel = TMDBAuthViewModel(
       createRequestTokenUseCase = createRequestTokenUseCase.mock,
       createSessionUseCase = createSessionUseCase.mock,
+      awaitSessionUseCase = awaitSessionUseCase.mock,
     )
 
     viewModel.uiState.test {
@@ -89,6 +95,7 @@ class TMDBAuthViewModelTest {
     val viewModel = TMDBAuthViewModel(
       createRequestTokenUseCase = createRequestTokenUseCase.mock,
       createSessionUseCase = createSessionUseCase.mock,
+      awaitSessionUseCase = awaitSessionUseCase.mock,
     )
 
     viewModel.onNavigateUp.test {
@@ -104,6 +111,7 @@ class TMDBAuthViewModelTest {
     val viewModel = TMDBAuthViewModel(
       createRequestTokenUseCase = createRequestTokenUseCase.mock,
       createSessionUseCase = createSessionUseCase.mock,
+      awaitSessionUseCase = awaitSessionUseCase.mock,
     )
 
     viewModel.onNavigateUp.test {

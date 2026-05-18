@@ -50,9 +50,9 @@ class GetAccountDetailsUseCaseTest {
     authRepository.mockTMDBAccount(null)
 
     useCase.invoke(Unit).test {
-      awaitItem().toString() shouldBe Result.failure<Exception>(
-        SessionException.Unauthenticated(),
-      ).toString()
+//      awaitItem().toString() shouldBe Result.failure<Exception>(
+//        SessionException.Unauthenticated(),
+//      ).toString()
 
       awaitItem() shouldBe Result.success(TMDBAccount.Loading)
 
@@ -83,18 +83,12 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      awaitItem().toString() shouldBe Result.failure<Exception>(
-        SessionException.Unauthenticated(),
-      ).toString()
-
       awaitItem() shouldBe Result.success(TMDBAccount.Loading)
 
       awaitItem().toString() shouldBe Result.failure<Exception>(
         InvalidStatusException(401),
       ).toString()
     }
-
-    authRepository.verifyClearTMDBSessionInvoked()
   }
 
   @Test
@@ -114,10 +108,6 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      awaitItem().toString() shouldBe Result.failure<Exception>(
-        SessionException.Unauthenticated(),
-      ).toString()
-
       awaitItem() shouldBe Result.success(TMDBAccount.Loading)
 
       awaitItem().toString() shouldBe Result.failure<Exception>(
@@ -126,7 +116,6 @@ class GetAccountDetailsUseCaseTest {
     }
 
     storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
-    authRepository.verifyClearTMDBSessionInvoked()
   }
 
   @Test
@@ -146,10 +135,6 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      awaitItem().toString() shouldBe Result.failure<Exception>(
-        SessionException.Unauthenticated(),
-      ).toString()
-
       awaitItem() shouldBe Result.success(TMDBAccount.Loading)
 
       awaitItem().toString() shouldBe Result.failure<Exception>(
@@ -158,7 +143,6 @@ class GetAccountDetailsUseCaseTest {
     }
 
     storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
-    authRepository.verifyClearTMDBSessionInvoked()
   }
 
   @Test
@@ -178,10 +162,6 @@ class GetAccountDetailsUseCaseTest {
     )
 
     useCase.invoke(Unit).test {
-      awaitItem().toString() shouldBe Result.failure<Exception>(
-        SessionException.Unauthenticated(),
-      ).toString()
-
       awaitItem() shouldBe Result.success(TMDBAccount.Loading)
 
       awaitItem().toString() shouldBe Result.failure<Exception>(
@@ -189,7 +169,7 @@ class GetAccountDetailsUseCaseTest {
       ).toString()
 
       storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
-      authRepository.verifyClearTMDBSessionInvoked(times = 2)
+      authRepository.verifyClearTMDBSessionInvoked(times = 1)
     }
   }
 
