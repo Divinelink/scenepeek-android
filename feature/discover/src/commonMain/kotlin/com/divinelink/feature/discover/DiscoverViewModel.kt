@@ -180,7 +180,7 @@ class DiscoverViewModel(
       .distinctUntilChanged()
       .onEach { sortMap ->
         _uiState.update { uiState -> uiState.copy(sortOption = sortMap) }
-        handleDiscoverMedia(reset = true, fetchMore = false)
+        handleDiscoverMedia(reset = true, shouldFetch = true)
       }
       .launchIn(viewModelScope)
   }
@@ -188,7 +188,7 @@ class DiscoverViewModel(
   fun onAction(action: DiscoverAction) {
     when (action) {
       is DiscoverAction.OnSelectTab -> handleSelectTab(action)
-      DiscoverAction.DiscoverMedia -> handleDiscoverMedia(reset = true, fetchMore = false)
+      DiscoverAction.DiscoverMedia -> handleDiscoverMedia(reset = true, shouldFetch = false)
       DiscoverAction.LoadMore -> handleLoadMore()
       DiscoverAction.ClearFilters -> handleClearFilters()
     }
@@ -199,7 +199,7 @@ class DiscoverViewModel(
       uuid = route.entryPointUuid,
       mediaType = _uiState.value.selectedMedia,
     )
-    handleDiscoverMedia(reset = true, fetchMore = false)
+    handleDiscoverMedia(reset = true, shouldFetch = false)
   }
 
   private fun handleSelectTab(action: DiscoverAction.OnSelectTab) {
@@ -214,19 +214,19 @@ class DiscoverViewModel(
     val canFetchMore = _uiState.value.canFetchMore[selectedMedia] == true
 
     if (form is DiscoverForm.Data && canFetchMore) {
-      handleDiscoverMedia(reset = false, fetchMore = canFetchMore)
+      handleDiscoverMedia(reset = false, shouldFetch = canFetchMore)
     }
   }
 
   private fun handleDiscoverMedia(
     reset: Boolean,
-    fetchMore: Boolean,
+    shouldFetch: Boolean,
   ) {
     val mediaType = uiState.value.selectedMedia
     val currentFilters = uiState.value.currentFilters
     val lastFilters = uiState.value.currentLastFilters
 
-    if (currentFilters != lastFilters || fetchMore) {
+    if (currentFilters != lastFilters || shouldFetch) {
       if (reset) {
         _uiState.update { uiState ->
           uiState.copy(
