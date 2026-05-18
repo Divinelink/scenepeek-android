@@ -70,4 +70,7 @@
   <string name="v47_movie_release_dates">- Add movie release dates showing premiere, theatrical, digital and physical format information</string>
   <string name="v47_contribution_setting_sections">- Add setting sections for joining the matrix community, help translating the project and more</string>
   <string name="v47_discover_fetch_only_with_different_filters">- Only fetch new discover content when the filter settings are different from the previous search</string>
+
+  <string name="v48_fix_tmdb_auth_issue">- Fix an issue where users would not get logged in on TMDB on their first try</string>
+  <string name="v48_fix_discover_sorting_options">- Fix an issue where sorting options where not applied on discover screen</string>
 </resources>

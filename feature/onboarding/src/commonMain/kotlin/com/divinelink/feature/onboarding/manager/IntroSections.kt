@@ -57,6 +57,8 @@ import com.divinelink.feature.onboarding.resources.v46_improve_ui_for_large_scre
 import com.divinelink.feature.onboarding.resources.v47_contribution_setting_sections
 import com.divinelink.feature.onboarding.resources.v47_discover_fetch_only_with_different_filters
 import com.divinelink.feature.onboarding.resources.v47_movie_release_dates
+import com.divinelink.feature.onboarding.resources.v48_fix_discover_sorting_options
+import com.divinelink.feature.onboarding.resources.v48_fix_tmdb_auth_issue
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -245,6 +247,14 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v47_discover_fetch_only_with_different_filters)),
   )
 
+  val v48 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.31.1"),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.v48_fix_tmdb_auth_issue)),
+    IntroSection.Text(UIText.ResourceText(R.string.v48_fix_discover_sorting_options)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -263,5 +273,6 @@ object IntroSections {
     44 to v44,
     46 to v46,
     47 to v47,
+    48 to v48,
   )
 }
