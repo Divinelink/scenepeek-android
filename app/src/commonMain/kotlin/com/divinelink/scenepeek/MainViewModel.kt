@@ -57,6 +57,10 @@ class MainViewModel(
           .launchIn(viewModelScope)
       }
       .launchIn(viewModelScope)
+
+    viewModelScope.launch {
+      appInfoRepository.fetchRemoteConfig()
+    }
   }
 
   private fun updateUiEvent(event: MainUiEvent) {

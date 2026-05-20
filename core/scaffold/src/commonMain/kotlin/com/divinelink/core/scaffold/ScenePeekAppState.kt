@@ -22,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -51,7 +52,7 @@ class ScenePeekAppState internal constructor(
   val navigator: Navigator,
   val snackbarHostState: SnackbarHostState,
   preferencesRepository: PreferencesRepository,
-  appInfoRepository: AppInfoRepository,
+  private val appInfoRepository: AppInfoRepository,
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager,
 ) {
@@ -76,6 +77,12 @@ class ScenePeekAppState internal constructor(
     )
 
   val updateAvailable = appInfoRepository.updateAvailable.stateIn(
+    scope = scope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
+    initialValue = null,
+  )
+
+  val announcement = appInfoRepository.announcement.stateIn(
     scope = scope,
     started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
     initialValue = null,
@@ -140,6 +147,10 @@ class ScenePeekAppState internal constructor(
     }
 
     navigator.navigate(destination.route)
+  }
+
+  fun dismissAnnouncement(uuid: String) = scope.launch {
+    appInfoRepository.dismissAnnouncement(uuid)
   }
 
   private fun getCurrentTopLevelDestination(backStack: List<Navigation>): TopLevelDestination? =

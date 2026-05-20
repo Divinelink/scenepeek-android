@@ -1,0 +1,14 @@
+CREATE TABLE ConfigMessagesEntity (
+  uuid TEXT NOT NULL PRIMARY KEY
+);
+
+dismissMessage:
+INSERT OR REPLACE INTO ConfigMessagesEntity (
+  uuid
+)
+VALUES (?);
+
+isDismisssed:
+SELECT COUNT(*) > 0 AS isDismissed
+FROM ConfigMessagesEntity
+WHERE uuid = ?;

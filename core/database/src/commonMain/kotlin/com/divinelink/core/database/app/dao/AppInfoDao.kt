@@ -12,4 +12,8 @@ interface AppInfoDao {
     latestVersion: String,
     currentEpochSeconds: String,
   )
+
+  fun dismissMessage(uuid: String)
+
+  fun isDismissed(uuid: String): Flow<Boolean>
 }
