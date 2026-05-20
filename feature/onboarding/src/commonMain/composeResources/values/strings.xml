@@ -73,4 +73,6 @@
 
   <string name="v48_fix_tmdb_auth_issue">- Fix an issue where users would not get logged in on TMDB on their first try</string>
   <string name="v48_fix_discover_sorting_options">- Fix an issue where sorting options where not applied on discover screen</string>
+
+  <string name="v49_add_custom_remote_config">- Implement a mechanism to easily inform the users about any potential TMDB server incidents</string>
 </resources>

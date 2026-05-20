@@ -1,0 +1,7 @@
+🎉 Update v0.31.2
+
+- Implement a mechanism to easily inform the users about any potential TMDB server incidents
+- Fix an issue where users would not get logged in on TMDB on their first try
+- Fix an issue where sorting options where not applied on discover screen
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

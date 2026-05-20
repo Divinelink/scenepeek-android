@@ -255,6 +255,13 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v48_fix_discover_sorting_options)),
   )
 
+  val v49 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.31.2"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v48_fix_discover_sorting_options)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
