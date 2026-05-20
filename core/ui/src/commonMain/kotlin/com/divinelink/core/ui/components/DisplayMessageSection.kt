@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -25,11 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.AnnotatedString
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.fromHtml
 import com.divinelink.core.ui.getString
 import kotlinx.coroutines.Job
@@ -37,7 +36,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DisplayMessageSection(
+  modifier: Modifier = Modifier,
   message: DisplayMessage?,
+  duration: DisplayMessageDuration = DisplayMessageDuration.SHORT,
   onTimeout: () -> Unit,
 ) {
   var progress by remember { mutableFloatStateOf(1f) }
@@ -74,11 +75,13 @@ fun DisplayMessageSection(
   LaunchedEffect(message) {
     progress = 1f
     currentJob.value?.cancel()
-    currentJob.value = scope.launch {
-      animate(1f, 0f, animationSpec = tween(5000)) { value, _ ->
-        progress = value
+    if (duration != DisplayMessageDuration.INDEFINITE) {
+      currentJob.value = scope.launch {
+        animate(1f, 0f, animationSpec = tween(duration.value)) { value, _ ->
+          progress = value
+        }
+        onTimeout()
       }
-      onTimeout()
     }
   }
 
@@ -89,50 +92,56 @@ fun DisplayMessageSection(
   }
 
   Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(MaterialTheme.dimensions.keyline_8)
-      .clip(MaterialTheme.shapes.medium)
-      .clickable { onTimeout() }
-      .background(containerColor),
+    modifier = modifier.fillMaxWidth().padding(MaterialTheme.dimensions.keyline_8)
+      .clip(MaterialTheme.shapes.medium).clickable { onTimeout() }.background(containerColor),
   ) {
     Text(
       text = message?.message?.getString()?.fromHtml() ?: AnnotatedString(""),
-      modifier = Modifier
-        .padding(MaterialTheme.dimensions.keyline_16),
+      modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
       color = color,
       style = MaterialTheme.typography.bodySmall,
     )
-    LinearProgressIndicator(
-      progress = { progress },
-      modifier = Modifier.fillMaxWidth(),
-      color = primary,
-      trackColor = containerColor,
-    )
+    if (duration != DisplayMessageDuration.INDEFINITE) {
+      LinearProgressIndicator(
+        progress = { progress },
+        modifier = Modifier.fillMaxWidth(),
+        color = primary,
+        trackColor = containerColor,
+      )
+    }
   }
+}
+
+enum class DisplayMessageDuration(val value: Int) {
+  SHORT(5000),
+  LONG(25000),
+  INDEFINITE(Int.MAX_VALUE),
 }
 
 @Composable
 @Previews
 fun DisplayMessageSectionPreview() {
-  AppTheme {
-    Surface {
-      Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-      ) {
-        DisplayMessageSection(
-          message = DisplayMessage.Success(UIText.StringText("This is a <b>success message</b>")),
-          onTimeout = {},
-        )
-        DisplayMessageSection(
-          message = DisplayMessage.Error(UIText.StringText("This is an <b>error message</b>")),
-          onTimeout = {},
-        )
-        DisplayMessageSection(
-          message = null,
-          onTimeout = {},
-        )
-      }
+  PreviewLocalProvider {
+    Column(
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    ) {
+      DisplayMessageSection(
+        message = DisplayMessage.Success(UIText.StringText("This is a <b>success message</b>")),
+        onTimeout = {},
+      )
+      DisplayMessageSection(
+        message = DisplayMessage.Error(UIText.StringText("This is an <b>error message</b>")),
+        onTimeout = {},
+      )
+      DisplayMessageSection(
+        message = null,
+        onTimeout = {},
+      )
+      DisplayMessageSection(
+        message = DisplayMessage.Error(UIText.StringText("This is an <b>error message</b>")),
+        duration = DisplayMessageDuration.INDEFINITE,
+        onTimeout = {},
+      )
     }
   }
 }
