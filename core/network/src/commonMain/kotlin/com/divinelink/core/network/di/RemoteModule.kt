@@ -8,6 +8,7 @@ import com.divinelink.core.network.client.AuthTMDbClient
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.OMDbClient
 import com.divinelink.core.network.client.PersistentCookieStorage
+import com.divinelink.core.network.client.RestClient
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.client.TraktClient
 import com.divinelink.core.network.client.ktorClient
@@ -34,6 +35,7 @@ val remoteModule = module {
       config = get(),
     )
   }
+  singleOf(::RestClient) { bind<RestClient>() }
   singleOf(::AuthTMDbClient) { bind<AuthTMDbClient>() }
   singleOf(::TMDbClient) { bind<TMDbClient>() }
   singleOf(::JellyseerrRestClient) { bind<JellyseerrRestClient>() }

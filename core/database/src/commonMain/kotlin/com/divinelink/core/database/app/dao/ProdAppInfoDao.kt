@@ -1,6 +1,7 @@
 package com.divinelink.core.database.app.dao
 
 import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToOneOrDefault
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.AppVersionEntity
@@ -33,4 +34,15 @@ class ProdAppInfoDao(
       lastCheck = currentEpochSeconds,
     )
   }
+
+  override fun dismissMessage(uuid: String) {
+    database.configMessagesEntityQueries.dismissMessage(uuid)
+  }
+
+  override fun isDismissed(uuid: String): Flow<Boolean> = database
+    .configMessagesEntityQueries
+    .isDismisssed(uuid)
+    .asFlow()
+    .mapToOneOrDefault(context = dispatcher.io, defaultValue = false)
+    .distinctUntilChanged()
 }

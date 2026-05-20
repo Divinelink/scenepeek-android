@@ -3,6 +3,7 @@ package com.divinelink.core.scaffold
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,18 +15,26 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.provider.getBuildConfigProvider
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.config.ConfigMessage
 import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.dialog.AlertDialogUiState
+import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.composition.LocalProvider
+import com.divinelink.core.ui.network.AnnouncementPopup
 import com.divinelink.core.ui.network.NetworkStatusIndicator
+import com.divinelink.core.ui.resources.core_ui_okay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val NETWORK_STATUS_ANIMATION_DURATION = 4000L
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScenePeekApp(
   state: ScenePeekAppState,
@@ -38,8 +47,10 @@ fun ScenePeekApp(
   val updateAvailable by state.updateAvailable.collectAsStateWithLifecycle()
   val isFirstLaunch by state.isInitialOnboarding.collectAsStateWithLifecycle()
   val theme by state.themePreferences.collectAsStateWithLifecycle()
+  val announcement by state.announcement.collectAsStateWithLifecycle()
 
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
+  var announcementMessage by remember { mutableStateOf<ConfigMessage?>(null) }
 
   LaunchedEffect(isOffline) {
     state.scope.launch {
@@ -92,7 +103,24 @@ fun ScenePeekApp(
     }
   }
 
+  LaunchedEffect(announcement) {
+    announcementMessage = announcement
+  }
+
   AppTheme(theme = theme) {
+    announcementMessage?.let { announcement ->
+      if (announcement.dismissable) {
+        SimpleAlertDialog(
+          confirmClick = { state.dismissAnnouncement(announcement.id) },
+          confirmText = UIText.ResourceText(UiString.core_ui_okay),
+          uiState = AlertDialogUiState(
+            title = null,
+            text = UIText.StringText(announcement.content),
+          ),
+        )
+      }
+    }
+
     LocalProvider(
       snackbarHostState = state.snackbarHostState,
       coroutineScope = state.scope,
@@ -113,6 +141,9 @@ fun ScenePeekApp(
               }
             }
           }
+        }
+        announcementMessage?.let { message ->
+          AnnouncementPopup(configMessage = message)
         }
         NetworkStatusIndicator(networkState = networkState)
       }

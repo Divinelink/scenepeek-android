@@ -41,7 +41,9 @@ fun SimpleAlertDialog(
       }
     },
     title = {
-      Text(text = uiState.title.getString())
+      uiState.title?.let { title ->
+        Text(text = title.getString())
+      }
     },
     text = {
       Text(text = uiState.text.getString())
