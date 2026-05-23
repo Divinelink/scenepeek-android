@@ -105,7 +105,6 @@ dependencies {
   // Testing Libs
   testImplementation(projects.core.testing)
 
-  testImplementation(libs.androidx.compose.ui.test)
   testImplementation(libs.robolectric)
   testImplementation(libs.ui.automator)
   debugImplementation(libs.androidx.test.ktx)
