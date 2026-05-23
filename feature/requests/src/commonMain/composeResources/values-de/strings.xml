@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_requests_title">Anfragen</string>
+    <string name="feature_requests_profile">Profil</string>
+    <string name="feature_requests_requested">Angefragt</string>
+    <string name="feature_requests_modifier">Bearbeitet</string>
+    <string name="feature_requests_no_requests_available">Keine Anfragen verfügbar.</string>
+    <string name="feature_requests_request_by">%1$s von %2$s</string>
+</resources>

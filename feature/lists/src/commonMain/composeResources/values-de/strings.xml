@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_lists_title">Listen</string>
+    <string name="feature_lists_login_description">Du musst angemeldet sein um deine Listen zu sehen.</string>
+    <string name="feature_lists_empty">Du hast keine Listen erstellt</string>
+    <string name="feature_lists_empty_description">Fang an Listen zu erstellen, um Filme und Serien zu verfolgen und personalisiere sie um sie deinem Stil anzupassen</string>
+    <string name="feature_lists_empty_list">Dieser Liste wurden keine Elemente hinzugefügt.</string>
+    <string name="feature_lists_delete_list">Liste löschen</string>
+    <string name="feature_lists_delete_list_alert_message">Bist du sicher, dass du diese Liste löschen willst? Diese Aktion kann nicht rückgängig gemacht werden.</string>
+    <string name="feature_lists_edit_list">Liste bearbeiten</string>
+    <string name="feature_lists_add_list">Liste erstellen</string>
+    <string name="feature_lists_name">Name</string>
+    <string name="feature_lists_description">Beschreibung</string>
+    <string name="feature_lists_public_description">Öffentliche Listen können von anderen Benutzern angesehen werden.</string>
+    <string name="feature_lists_update_successfully">%1$s erfolgreich aktualisiert</string>
+    <string name="feature_lists_update_failure">Aktualisierung von %1$s fehlgeschlagen</string>
+    <string name="feature_lists_delete_successfully">%1$s erfolgreich gelöscht</string>
+    <string name="feature_lists_delete_failure">Löschen von %1$s fehlgeschlagen</string>
+    <string name="feature_lists_create_successfully">%1$s erfolgreich erstellt</string>
+    <string name="feature_lists_create_failure">Erstellen von %1$s fehlgeschlagen</string>
+    <string name="feature_lists_backdrops_empty">Es sind keine Bilder für diese Liste vorhanden. Füge Elemente hinzu, um das Bild zu ändern.</string>
+    <string name="feature_lists_change_image">Bild ändern</string>
+    <string name="feature_lists_selected">%1$s/%2$s ausgewählt</string>
+    <string name="feature_lists_selected_media_content_desc">Medium %1$s ausgewählt</string>
+</resources>

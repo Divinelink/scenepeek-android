@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_request_media_destination_server">Zielserver</string>
+    <string name="feature_request_media_root_folder">Stammordner</string>
+    <string name="feature_request_media_quality_profile">Qualitätsprofil</string>
+    <string name="feature_request_media_default">Standard</string>
+    <string name="feature_request_media_cancel_request_success">Anfrage erfolgreich storniert</string>
+    <string name="feature_request_media_cancel_request_failure">Fehler beim Stornieren der Anfrage</string>
+    <string name="feature_request_media_update_request_success">Anfrage erfolgreich aktualisiert</string>
+    <string name="feature_request_media_update_request_failure">Fehler beim Aktualisieren der Anfrage</string>
+    <string name="feature_request_media_success_request">%1$s erfolgreich angefragt</string>
+    <string name="feature_request_media_failed_request">Fehler bei der Anfrage von %1$s</string>
+    <string name="feature_request_media_request_exists">Eine Anfrage für dieses Medium existiert bereits.</string>
+</resources>

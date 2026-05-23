@@ -29,4 +29,12 @@
         <item quantity="one">(%1$s Επεισόδιο)</item>
         <item quantity="other">(%1$s Επεισόδια)</item>
     </plurals>
+    <string name="core_ui_your_rating">Η βαθμολογία σας</string>
+    <string name="core_ui_connected">Είστε ξανά συνδεδεμένοι</string>
+    <string name="core_ui_show_spoilers_tooltip">Εμφάνιση αριθμού επεισοδίων συντελεστών</string>
+    <string name="core_ui_hide_spoilers_tooltip">Απόκρυψη του αριθμού επεισοδίων των συντελεστών για αποφυγή spoilers</string>
+    <string name="core_ui_retry">Προσπαθήστε ξανά</string>
+    <string name="core_ui_error_retry">Κάτι πήγε στραβά. Παρακαλώ προσπαθήστε ξανά.</string>
+    <string name="core_ui_password">Κωδικός</string>
+    <string name="core_ui_general_error_title">Παρουσιάστηκε σφάλμα</string>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_user_data_empty_watchlist">Deine Beobachtungsliste ist leer</string>
+    <string name="feature_user_data_empty_watchlist_description">Fang an zu stöbern - füge Elemente zu deiner Beobachtungsliste hinzu, um sie hier zu sehen!</string>
+    <string name="feature_user_data_empty_movies_ratings">Du hast keine Filme bewertet</string>
+    <string name="feature_user_data_empty_tv_shows_ratings">Du hast keine Serien bewertet</string>
+    <string name="feature_user_data_empty_movies_rating_description">Fang an zu erkunden, bewerte Filme, um sie hier zu sehen!</string>
+    <string name="feature_user_data_empty_shows_rating_description">Fang an zu erkunden, bewerte Serien, um sie hier zu sehen!</string>
+    <string name="feature_user_data_login_rated_description">Du musst angemeldet sein, um deine Bewertungen zu sehen.</string>
+    <string name="feature_user_data_login_watchlist_description">Du musst angemeldet sein, um deine Beobachtungsliste zu sehen.</string>
+</resources>

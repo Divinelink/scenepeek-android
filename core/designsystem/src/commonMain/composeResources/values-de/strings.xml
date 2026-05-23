@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="system">System</string>
+    <string name="light">Hell</string>
+    <string name="dark">Dunkel</string>
+    <string name="default_theme">Standard</string>
+    <string name="dynamic_theme">Dynamisch</string>
+    <string name="custom_theme">Benutzerdefiniert</string>
+</resources>
