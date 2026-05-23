@@ -15,13 +15,14 @@ fun buildFetchDetailsUrl(
   id: Int,
   media: MediaType,
   appendToResponse: Boolean,
+  language: String,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/${media.value}" + "/$id"
 
   parameters.apply {
-    append("language", "en-US")
+    append("language", language)
     if (appendToResponse) {
       when (media) {
         MediaType.MOVIE -> append("append_to_response", "credits,keywords,release_dates")
@@ -45,13 +46,16 @@ fun buildFindByIdUrl(
   }
 }.toString()
 
-fun buildGenreUrl(media: MediaType): String = buildUrl {
+fun buildGenreUrl(
+  media: MediaType,
+  language: String,
+): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/genre/${media.value}/list"
 
   parameters.apply {
-    append("language", "en")
+    append("language", language)
   }
 }.toString()
 
@@ -60,6 +64,7 @@ fun buildDiscoverUrl(
   media: MediaType,
   sortOption: SortOption,
   filters: List<DiscoverFilter>,
+  language: String,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
@@ -67,7 +72,7 @@ fun buildDiscoverUrl(
 
   parameters.apply {
     append("page", page.toString())
-    append("language", "en-US")
+    append("language", language)
     append("include_adult", "false")
     append("sort_by", sortOption.sortValue)
     filters.forEach { filter ->
@@ -105,6 +110,7 @@ fun buildDiscoverUrl(
 fun buildFetchMediaListUrl(
   request: MediaListRequest,
   page: Int,
+  language: String,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
@@ -116,7 +122,7 @@ fun buildFetchMediaListUrl(
   }
 
   parameters.apply {
-    append("language", "en-US")
+    append("language", language)
     append("page", page.toString())
     when (request) {
       is MediaListRequest.Popular -> {
@@ -138,13 +144,14 @@ fun buildSeasonDetailsUrl(
   showId: Int,
   seasonNumber: Int,
   sessionId: String?,
+  language: String,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/tv/$showId/season/$seasonNumber"
 
   parameters.apply {
-    append("language", "en")
+    append("language", language)
     sessionId?.let { id ->
       append("append_to_response", "account_states")
       append("session_id", id)
@@ -152,23 +159,27 @@ fun buildSeasonDetailsUrl(
   }
 }.toString()
 
-fun buildCollectionsUrl(id: Int): String = buildUrl {
+fun buildCollectionsUrl(
+  id: Int,
+  language: String,
+): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/collection/$id"
 
   parameters.apply {
-    append("language", "en")
+    append("language", language)
   }
 }.toString()
 
-fun buildSearchKeywordUrl(request: SearchRequestApi): String = buildUrl {
+fun buildSearchKeywordUrl(
+  request: SearchRequestApi,
+): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/search/keyword"
 
   parameters.apply {
-    append("language", "en")
     append("query", request.query)
     append("page", request.page.toString())
   }

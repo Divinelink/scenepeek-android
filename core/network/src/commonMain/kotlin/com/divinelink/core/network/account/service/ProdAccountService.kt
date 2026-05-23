@@ -26,6 +26,7 @@ class ProdAccountService(
   ): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/movies" +
       "?page=$page" +
+      "&language=${restClient.language()}" +
       "&session_id=$sessionId" +
       "&sort_by=${sortOption.sortValue}"
 
@@ -42,6 +43,7 @@ class ProdAccountService(
   ): Flow<TvResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/tv" +
       "?page=$page" +
+      "&language=${restClient.language()}" +
       "&session_id=$sessionId" +
       "&sort_by=${sortOption.sortValue}"
 
@@ -58,6 +60,7 @@ class ProdAccountService(
   ): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/rated/movies" +
       "?page=$page" +
+      "&language=${restClient.language()}" +
       "&session_id=$sessionId" +
       "&sort_by=${sortOption.sortValue}"
 
@@ -74,6 +77,7 @@ class ProdAccountService(
   ): Flow<TvResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/rated/tv" +
       "?page=$page" +
+      "&language=${restClient.language()}" +
       "&session_id=$sessionId" +
       "&sort_by=${sortOption.sortValue}"
 

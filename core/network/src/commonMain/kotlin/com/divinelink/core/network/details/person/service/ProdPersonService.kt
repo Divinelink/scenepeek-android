@@ -11,13 +11,15 @@ import kotlinx.coroutines.flow.flow
 class ProdPersonService(private val restClient: TMDbClient) : PersonService {
 
   override fun fetchPersonDetails(id: Long): Flow<PersonDetailsApi> = flow {
-    val url = "${restClient.tmdbUrl}/person/$id"
+    val url = "${restClient.tmdbUrl}/person/$id" +
+      "?language=${restClient.language()}"
 
     emit(restClient.get<PersonDetailsApi>(url = url))
   }
 
   override fun fetchPersonCombinedCredits(id: Long): Flow<PersonCreditsApi> = flow {
-    val url = "${restClient.tmdbUrl}/person/$id/combined_credits"
+    val url = "${restClient.tmdbUrl}/person/$id/combined_credits" +
+      "?language=${restClient.language()}"
 
     emit(restClient.get<PersonCreditsApi>(url = url))
   }
