@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_tmdb_auth_login">Bei TMDB anmelden</string>
+    <string name="feature_tmdb_auth_loading_text">Bitte warte während die Authentifizierung läuft…</string>
+</resources>

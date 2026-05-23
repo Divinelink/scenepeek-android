@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_available_title">Update verfügbar</string>
+    <string name="update_available_description">Um das Beste aus der App herauszuholen, lade die neueste Version herunter.</string>
+    <string name="current_version">Aktuelle Version: %1$s</string>
+    <string name="latest_version">Neuste Version: %1$s</string>
+</resources>

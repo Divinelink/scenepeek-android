@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_details__watchlist">Beobachtungsliste</string>
+    <string name="login">Anmelden</string>
+    <string name="feature_details__add_to_list">Zur Liste hinzufügen</string>
+    <string name="details__added_to_watchlist">%1$s zur Beobachtungsliste hinzugefügt</string>
+    <string name="details__removed_from_watchlist">%1$s von der Beobachtungsliste entfernt</string>
+    <string name="details__must_be_logged_in_to_watchlist">Bitte melde dich an, um deiner Beobachtungsliste hinzuzufügen.</string>
+    <string name="feature_details_genres">Genres</string>
+    <string name="feature_details_information">Informationen</string>
+    <string name="feature_details_jellyseerr_success_request_delete">Anfrage erfolgreich gelöscht</string>
+    <string name="feature_details_jellyseerr_success_media_delete"><b>%1$s</b> erfolgreich entfernt</string>
+    <string name="feature_details_jellyseerr_failure_media_delete">Entfernen von <b>%1$s</b> fehlgeschlagen</string>
+    <string name="feature_details_jellyseerr_failed_request_delete">Fehler beim Löschen der Anfrage</string>
+    <string name="feature_details_request">Anfrage</string>
+    <string name="feature_details_manage_movie">Film verwalten</string>
+    <string name="feature_details_manage_tv">Serie verwalten</string>
+    <string name="feature_details_season">Staffel %1$s</string>
+    <string name="feature_details_personal_info_section">Persönliche Infos</string>
+    <string name="feature_details_known_for_section">Bekannt für</string>
+    <string name="feature_details_gender_section">Geschlecht</string>
+    <string name="feature_details_birthday_section">Geburtstag</string>
+    <string name="feature_details_day_of_death_section">Todestag</string>
+    <string name="feature_details_biography_section">Biographie</string>
+    <string name="feature_details_place_of_birth_section">Geburtsort</string>
+    <string name="feature_details_person_credits_known_for_section">Bekannt für</string>
+    <string name="feature_details_person_credits_department">Abteilung</string>
+    <string name="feature_details_person_credits_department_size">%1$s (%2$s)</string>
+    <string name="feature_details_filter_sort_release_date">Veröffentlichungsdatum</string>
+    <plurals name="feature_details_number_of_seasons">
+        <item quantity="one">%1$s Staffel</item>
+        <item quantity="other">%1$s Staffeln</item>
+    </plurals>
+    <plurals name="feature_details_movies">
+        <item quantity="one">%1$s Film</item>
+        <item quantity="other">%1$s Filme</item>
+    </plurals>
+    <plurals name="feature_details_tv_shows">
+        <item quantity="one">%1$s Serie</item>
+        <item quantity="other">%1$s Serien</item>
+    </plurals>
+    <string name="feature_details_person_birthday">%1$s (%2$s Jahre alt)</string>
+    <string name="feature_details_person_blank_biography">Wir haben keine Biographie für %1$s.</string>
+    <string name="feature_details_no_movies_available">Keine Filme verfügbar</string>
+    <string name="feature_details_no_movies_available_desc">%1$s ist bislang in keinen Filmen aufgetreten.</string>
+    <string name="feature_details_no_tv_shows_available">Keine Serien verfügbar</string>
+    <string name="feature_details_no_tv_shows_available_desc">%1$s ist bislang in keiner Serie aufgetreten.</string>
+    <string name="feature_details_no_cast_available">Keine Besetzung verfügbar</string>
+    <string name="feature_details_no_cast_available_desc">Uns stehen keine Informationen zu der Besetzung von %1$s zur Verfügung.</string>
+    <string name="feature_details_no_recommendation_available">Keine Vorschläge verfügbar</string>
+    <string name="feature_details_no_recommendations_available_desc">Wir haben keine Vorschläge für %1$s.</string>
+    <string name="feature_details_no_reviews_available">Keine Rezensionen verfügbar</string>
+    <string name="feature_details_no_reviews_available_desc">Es sind keine Rezensionen für %1$s verfügbar.</string>
+    <string name="feature_details_no_seasons_available">Keine Staffeln verfügbar</string>
+    <string name="feature_details_no_seasons_available_desc">Wir haben keine Staffeln für %1$s.</string>
+    <string name="feature_details_information_release_dates">Veröffentlichungsdaten</string>
+    <string name="feature_details_information_original_title">Originaltitel</string>
+    <string name="feature_details_information_status">Status</string>
+    <string name="feature_details_information_runtime">Laufzeit</string>
+    <string name="feature_details_information_original_language">Originalsprache</string>
+    <string name="feature_details_information_budget">Budget</string>
+    <string name="feature_details_information_last_air_date">Letzter Ausstrahlungstermin</string>
+    <string name="feature_details_information_next_episode_air_date">Ausstrahlungstermin der nächsten Folge</string>
+    <string name="feature_details_information_seasons">Staffeln</string>
+    <string name="feature_details_part_of_collection">Teil von der %1$s</string>
+    <string name="feature_details_view_collection">Die Sammlung ansehen</string>
+    <plurals name="feature_details_information_countries">
+        <item quantity="one">Land</item>
+        <item quantity="other">Länder</item>
+    </plurals>
+    <plurals name="feature_details_information_companies">
+        <item quantity="one">Firma</item>
+        <item quantity="other">Firmen</item>
+    </plurals>
+    <string name="available_on">Verfügbar auf</string>
+    <string name="by_justWatch">von JustWatch</string>
+    <string name="no_available_stream_providers">Keine Streaming-Anbieter verfügbar.</string>
+    <string name="stream">Stream</string>
+    <string name="buy">Kaufen</string>
+    <string name="rent">Ausleihen</string>
+</resources>

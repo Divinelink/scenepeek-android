@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search">Suchen</string>
+    <string name="home">Start</string>
+    <string name="profile">Profil</string>
+    <string name="top_level_navigation_content_description_selected">Element %1$s von der unteren Navigationsliste ausgewählt</string>
+    <string name="top_level_navigation_content_description_unselected">Element %1$s von der unteren Navigationsliste abgewählt</string>
+</resources>

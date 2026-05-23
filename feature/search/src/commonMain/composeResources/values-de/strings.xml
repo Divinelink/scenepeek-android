@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_search__initial_title">Suchen</string>
+    <string name="feature_search__initial_description">Finde Filme, Serien und Leute.</string>
+    <string name="search__empty_result_title">Uups. Das konnten wir nicht finden.</string>
+    <string name="search__empty_result_description">Versuche nach etwas anderem zu suchen.</string>
+    <string name="feature_search_settings_button_content_description">Zu den Einstellungen Button</string>
+</resources>

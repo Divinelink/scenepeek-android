@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_add_to_account_list_login_description">Sie müssen angemeldet sein ihrer Liste Elemente hinzuzufügen.</string>
+    <string name="feature_add_to_account_empty_lists">Du hast keine Listen erstellt</string>
+    <string name="feature_add_to_account_list_title">Zur Liste hinzufügen</string>
+    <string name="feature_add_to_account_list_create">Erstelle eine neue Liste</string>
+    <string name="feature_add_to_account_action_remove_from_list">Aus dieser Liste entfernen</string>
+    <string name="feature_add_to_account_item_added_to_list_success"><![CDATA[Element erfolgreich zu <b>%1$s</b> hinzugefügt]]></string>
+    <string name="feature_add_to_account_item_added_to_list_failure"><![CDATA[Element existiert bereits in <b>%1$s</b>]]></string>
+    <string name="feature_add_to_account_item_add_to_list_unexpected_failure"><![CDATA[Hinzufügen des Elements in <b>%1$s</b> fehlgeschlagen]]></string>
+    <plurals name="feature_add_to_account_remove_items_confirmation">
+        <item quantity="one"><![CDATA[<b>%1$s</b> von <b>%2$s</b> entfernen?]]></item>
+        <item quantity="other"><![CDATA[Folgende Elemente <b>%1$s</b> aus <b>%2$s</b> entfernen?]]></item>
+    </plurals>
+    <string name="feature_add_to_account_remove_from_list_offline_error">Du kannst nichts von der Liste entfernen während du offline bist</string>
+    <string name="feature_add_to_account_remove_single_item_success">%1$s wurde von %2$s entfernt</string>
+    <string name="feature_add_to_account_remove_batch_items_success">%1$s Elemente von %2$s entfernt</string>
+    <string name="add_rating_description"><![CDATA[Was hältst du von <b>%1$s</b>\?]]></string>
+    <string name="clear_my_rating">Lösche meine Bewertung</string>
+    <string name="submit_rating_button">Bewertung abgeben</string>
+    <string name="must_be_logged_in_to_rate">Bitte melde dich an um deine Bewertung abzugeben.</string>
+    <string name="rating_submitted_successfully">Bewertung für %1$s abgegeben</string>
+    <string name="rating_deleted_successfully">Bewertung für %1$s entfernt</string>
+</resources>
