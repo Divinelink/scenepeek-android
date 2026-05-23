@@ -14,9 +14,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
@@ -45,13 +47,17 @@ fun DetailsScreen(
   var showAllRatingBottomSheet by rememberSaveable { mutableStateOf(false) }
   var openRateBottomSheet by rememberSaveable { mutableStateOf(false) }
 
-  BackHandler {
-    if (videoUrl.isNullOrEmpty()) {
-      onNavigate(Navigation.Back)
-    } else {
-      videoUrl = null
-    }
-  }
+  NavigationBackHandler(
+    state = rememberNavigationEventState(NavigationEventInfo.None),
+    isBackEnabled = true,
+    onBackCompleted = {
+      if (videoUrl.isNullOrEmpty()) {
+        onNavigate(Navigation.Back)
+      } else {
+        videoUrl = null
+      }
+    },
+  )
 
   LaunchedEffect(viewState.navigateToLogin) {
     viewState.navigateToLogin?.let {

@@ -41,7 +41,6 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
 
           api(libs.compose.multiplatform.navigation3)
           api(libs.lifecycle.multiplatform.viewmodel.navigation3)
-          implementation(libs.compose.multiplatform.backhandler)
         }
 
         androidMain.dependencies {

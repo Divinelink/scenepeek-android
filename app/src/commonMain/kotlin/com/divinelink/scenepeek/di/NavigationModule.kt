@@ -2,10 +2,12 @@ package com.divinelink.scenepeek.di
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.testTag
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import com.divinelink.core.model.media.decodeToMediaItem
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
@@ -162,9 +164,11 @@ val navigationModule = module {
 
   navigation<Navigation.Onboarding.FullScreenRoute> {
     val navigator = get<Navigator>()
-    BackHandler(enabled = true) {
-      // Disable back button
-    }
+    NavigationBackHandler(
+      state = rememberNavigationEventState(NavigationEventInfo.None),
+      isBackEnabled = false,
+      onBackCompleted = {},
+    )
 
     IntroModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Onboarding.FULLSCREEN),
@@ -174,9 +178,11 @@ val navigationModule = module {
 
   navigation<Navigation.Onboarding.ModalRoute>(metadata = DialogSceneStrategy.dialog()) {
     val navigator = get<Navigator>()
-    BackHandler(enabled = true) {
-      // Disable back button
-    }
+    NavigationBackHandler(
+      state = rememberNavigationEventState(NavigationEventInfo.None),
+      isBackEnabled = false,
+      onBackCompleted = {},
+    )
 
     IntroModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Onboarding.MODAL),

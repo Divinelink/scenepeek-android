@@ -67,7 +67,6 @@ kotest = "6.1.11"
 
 # UI
 robolectric = "4.16.1"
-androidx-compose-ui-test = "1.10.6"
 ui-automator = "2.3.0"
 
 # Mockers
@@ -108,7 +107,6 @@ compose-multiplatform-ui-tooling-preview = { module = "org.jetbrains.compose.ui:
 compose-multiplatform-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-multiplatform" }
 compose-multiplatform-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "compose-multiplatform" }
 compose-multiplatform-navigation3 = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
-compose-multiplatform-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose-multiplatform" }
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
 compose-colorpicker = { group = "com.github.skydoves", name = "colorpicker-compose", version.ref = "compose-colorpicker" }
 material-kolor = { group = "com.materialkolor", name = "material-kolor", version.ref = "materialkolor" }
@@ -173,7 +171,6 @@ compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-mani
 
 # UI
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-compose-ui-test" }
 ui-automator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "ui-automator" }
 
 # Mockers
