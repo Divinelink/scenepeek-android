@@ -5,6 +5,7 @@ import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.fixtures.shared.TestLocaleManager
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.testing.MainDispatcherRule
@@ -38,6 +39,7 @@ class MainViewModelRobot {
       preferencesRepository = TestPreferencesRepository(),
       appInfoRepository = TestAppInfoRepository(),
       navigator = Navigator(),
+      localeManager = TestLocaleManager(),
     )
   }
 

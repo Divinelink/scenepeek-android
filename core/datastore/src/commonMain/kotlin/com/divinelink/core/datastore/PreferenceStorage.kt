@@ -23,8 +23,8 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
-import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import kotlinx.coroutines.flow.Flow
@@ -216,7 +216,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   override val metadataLanguage: Flow<Language> = dataStore.data.map {
     it[PREF_METADATA_LANGUAGE]?.let { code -> Language.fromCode(code) } ?: Language.ENGLISH
   }.distinctUntilChanged()
-
 
   override val appLanguage: Flow<AppLanguage> = dataStore.data.map {
     it[PREF_APP_LANGUAGE]?.let { locale -> AppLanguage.from(locale) } ?: AppLanguage.DEFAULT

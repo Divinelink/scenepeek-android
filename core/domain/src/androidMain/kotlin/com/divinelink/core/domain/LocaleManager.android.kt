@@ -1,12 +1,11 @@
-package com.divinelink.scenepeek.shared
+package com.divinelink.core.domain
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 
 class AndroidLocaleManager : LocaleManager {
-  override fun currentLanguageTag(): String? {
-    return AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag()
-  }
+  override fun currentLanguageTag(): String? =
+    AppCompatDelegate.getApplicationLocales()[0]?.toLanguageTag()
 
   override fun apply(tag: String?) {
     AppCompatDelegate.setApplicationLocales(
@@ -15,4 +14,4 @@ class AndroidLocaleManager : LocaleManager {
   }
 }
 
-actual fun getLocalManager(): LocaleManager = AndroidLocaleManager()
+actual fun getLocaleManager(): LocaleManager = AndroidLocaleManager()

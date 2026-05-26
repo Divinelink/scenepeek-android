@@ -7,6 +7,7 @@ import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FindByIdUseCase
+import com.divinelink.core.domain.LocaleManager
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.domain.session.CreateSessionUseCase
@@ -21,7 +22,6 @@ import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
-import com.divinelink.scenepeek.shared.LocaleManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged

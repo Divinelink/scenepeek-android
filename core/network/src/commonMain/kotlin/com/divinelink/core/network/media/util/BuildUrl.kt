@@ -172,9 +172,7 @@ fun buildCollectionsUrl(
   }
 }.toString()
 
-fun buildSearchKeywordUrl(
-  request: SearchRequestApi,
-): String = buildUrl {
+fun buildSearchKeywordUrl(request: SearchRequestApi): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/search/keyword"

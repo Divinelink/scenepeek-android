@@ -1,8 +1,8 @@
-package com.divinelink.scenepeek.shared
+package com.divinelink.core.domain
 
 interface LocaleManager {
   fun currentLanguageTag(): String?
   fun apply(tag: String?)
 }
 
-expect fun getLocalManager(): LocaleManager
+expect fun getLocaleManager(): LocaleManager

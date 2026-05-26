@@ -16,6 +16,7 @@ class ThemePreferencesTest {
       colorSystem = ColorSystem.Dynamic,
       themeColor = seedLong,
       isPureBlack = false,
+      appLanguage = null,
     )
   }
 }

@@ -8,7 +8,7 @@ import io.ktor.http.encodedPath
 internal fun buildFetchListsUrl(
   accountId: String,
   page: Int,
-  language: String
+  language: String,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST

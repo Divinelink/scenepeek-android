@@ -2,8 +2,8 @@ package com.divinelink.scenepeek.di
 
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.commons.provider.getBuildConfigProvider
-import com.divinelink.scenepeek.shared.LocaleManager
-import com.divinelink.scenepeek.shared.getLocalManager
+import com.divinelink.core.domain.LocaleManager
+import com.divinelink.core.domain.getLocaleManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.dsl.module
@@ -14,5 +14,5 @@ val appModule = module {
 
   single<BuildConfigProvider> { getBuildConfigProvider() }
 
-  single<LocaleManager> { getLocalManager() }
+  single<LocaleManager> { getLocaleManager() }
 }
