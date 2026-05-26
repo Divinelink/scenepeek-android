@@ -28,7 +28,11 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.model.ColorSystem
+import com.divinelink.core.model.AppLanguage
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.getString
+import com.divinelink.core.ui.resources.core_ui_language
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsRadioButtonSingleSelection
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
@@ -70,6 +74,17 @@ fun AppearanceSettingsScreen(
     ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.LAZY_COLUMN),
     ) {
+      item {
+        SettingsRadioPrefItem(
+          title = stringResource(UiString.core_ui_language),
+          displayText = { it.text.getString() },
+          listItems = uiState.availableLanguages,
+          onSelected = viewModel::setAppLanguage,
+          icon = null,
+          selectedOption = AppLanguage.from(uiState.themePreferences.appLanguage),
+        )
+      }
+
       item {
         SettingsRadioPrefItem(
           title = stringResource(Res.string.preferences__theme),

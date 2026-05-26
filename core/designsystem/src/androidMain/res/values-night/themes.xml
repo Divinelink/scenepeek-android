@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
 
-  <style name="Theme.ScenePeek" parent="android:Theme.Material.NoActionBar">
+  <style name="Theme.ScenePeek" parent="Theme.AppCompat.DayNight.NoActionBar">
     <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     <item name="android:navigationBarColor">@color/transparent</item>
     <item name="android:statusBarColor">@color/transparent</item>

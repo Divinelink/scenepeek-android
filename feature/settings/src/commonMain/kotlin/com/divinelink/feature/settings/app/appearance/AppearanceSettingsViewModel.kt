@@ -10,6 +10,7 @@ import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
+import com.divinelink.core.model.AppLanguage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +42,7 @@ class AppearanceSettingsViewModel(
       themePreferences = preferencesRepository.themePreferences.first(),
       availableThemes = getAvailableThemesUseCase(Unit).data,
       availableColorSystems = getAvailableColorPreferences(Unit).data,
+      availableLanguages = AppLanguage.entries,
     )
   }.stateIn(
     scope = viewModelScope,
@@ -49,6 +51,7 @@ class AppearanceSettingsViewModel(
       themePreferences = ThemePreferences.initial,
       availableThemes = listOf(),
       availableColorSystems = listOf(),
+      availableLanguages = AppLanguage.entries,
     ),
   )
   val uiState: StateFlow<UpdateSettingsState> = _uiState
@@ -80,10 +83,18 @@ class AppearanceSettingsViewModel(
       refreshData()
     }
   }
+
+  fun setAppLanguage(language: AppLanguage) {
+    viewModelScope.launch {
+      preferencesRepository.setAppLanguage(language)
+      refreshData()
+    }
+  }
 }
 
 data class UpdateSettingsState(
   val themePreferences: ThemePreferences,
   val availableThemes: List<Theme>,
   val availableColorSystems: List<ColorSystem>,
+  val availableLanguages: List<AppLanguage>,
 )

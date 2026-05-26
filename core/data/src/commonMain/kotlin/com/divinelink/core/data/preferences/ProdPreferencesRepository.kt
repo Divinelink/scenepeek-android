@@ -5,6 +5,7 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
@@ -25,12 +26,14 @@ class ProdPreferencesRepository(
       preferenceStorage.customColor,
       preferenceStorage.colorSystem,
       preferenceStorage.isBlackBackgroundsEnabled,
-    ) { currentTheme, color, colorSystem, isPureBlack ->
+      preferenceStorage.appLanguage,
+    ) { currentTheme, color, colorSystem, isPureBlack, language ->
       ThemePreferences(
         theme = Theme.from(currentTheme) ?: Theme.SYSTEM,
         colorSystem = colorSystem,
         themeColor = color,
         isPureBlack = isPureBlack,
+        appLanguage = language.localeName,
       )
     }
 
@@ -85,5 +88,9 @@ class ProdPreferencesRepository(
 
   override suspend fun setStreamingServicesVisible(visible: Boolean) {
     preferenceStorage.setStreamingServicesVisible(visible)
+  }
+
+  override suspend fun setAppLanguage(language: AppLanguage) {
+    preferenceStorage.setAppLanguage(language)
   }
 }

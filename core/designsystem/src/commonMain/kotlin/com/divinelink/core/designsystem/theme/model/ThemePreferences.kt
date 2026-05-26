@@ -7,6 +7,7 @@ data class ThemePreferences(
   val colorSystem: ColorSystem,
   val themeColor: Long,
   val isPureBlack: Boolean,
+  val appLanguage: String?,
 ) {
   companion object {
     val initial = ThemePreferences(
@@ -14,6 +15,7 @@ data class ThemePreferences(
       colorSystem = ColorSystem.Dynamic,
       themeColor = seedLong,
       isPureBlack = false,
+      appLanguage = null,
     )
   }
 }

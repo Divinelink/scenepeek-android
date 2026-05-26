@@ -21,11 +21,14 @@ import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
+import com.divinelink.scenepeek.shared.LocaleManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -38,6 +41,7 @@ class MainViewModel(
   val preferencesRepository: PreferencesRepository,
   val navigator: Navigator,
   val appInfoRepository: AppInfoRepository,
+  val localeManager: LocaleManager,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
@@ -61,6 +65,14 @@ class MainViewModel(
     viewModelScope.launch {
       appInfoRepository.fetchRemoteConfig()
     }
+
+    preferencesRepository
+      .themePreferences
+      .map { it.appLanguage }
+      .distinctUntilChanged()
+      .filter { it != localeManager.currentLanguageTag() }
+      .onEach { localeManager.apply(it) }
+      .launchIn(viewModelScope)
   }
 
   private fun updateUiEvent(event: MainUiEvent) {
