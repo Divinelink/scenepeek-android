@@ -10,7 +10,8 @@ import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
-import com.divinelink.core.model.AppLanguage
+import com.divinelink.core.model.locale.AppLanguage
+import com.divinelink.core.model.locale.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,7 +43,9 @@ class AppearanceSettingsViewModel(
       themePreferences = preferencesRepository.themePreferences.first(),
       availableThemes = getAvailableThemesUseCase(Unit).data,
       availableColorSystems = getAvailableColorPreferences(Unit).data,
+      metadataLanguage = preferencesRepository.metadataLanguage.first(),
       availableLanguages = AppLanguage.entries,
+      availableMetadataLanguages = Language.entries,
     )
   }.stateIn(
     scope = viewModelScope,
@@ -51,7 +54,9 @@ class AppearanceSettingsViewModel(
       themePreferences = ThemePreferences.initial,
       availableThemes = listOf(),
       availableColorSystems = listOf(),
+      metadataLanguage = Language.ENGLISH,
       availableLanguages = AppLanguage.entries,
+      availableMetadataLanguages = Language.entries,
     ),
   )
   val uiState: StateFlow<UpdateSettingsState> = _uiState
@@ -90,11 +95,20 @@ class AppearanceSettingsViewModel(
       refreshData()
     }
   }
+
+  fun setMetadataLanguage(language: Language) {
+    viewModelScope.launch {
+      preferencesRepository.setMetadataLanguage(language)
+      refreshData()
+    }
+  }
 }
 
 data class UpdateSettingsState(
   val themePreferences: ThemePreferences,
+  val metadataLanguage: Language,
   val availableThemes: List<Theme>,
   val availableColorSystems: List<ColorSystem>,
   val availableLanguages: List<AppLanguage>,
+  val availableMetadataLanguages: List<Language>,
 )

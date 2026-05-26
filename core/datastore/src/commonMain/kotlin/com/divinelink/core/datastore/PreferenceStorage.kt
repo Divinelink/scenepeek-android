@@ -23,7 +23,7 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
-import com.divinelink.core.model.AppLanguage
+import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language

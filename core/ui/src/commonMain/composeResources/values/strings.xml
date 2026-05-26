@@ -149,6 +149,7 @@
   <string name="core_ui_from">From</string>
   <string name="core_ui_to">To</string>
 
+  <string name="core_ui_metadata_language">Metadata Language</string>
   <string name="core_ui_genres">Genres</string>
   <string name="core_ui_language">Language</string>
   <string name="core_ui_country">Country</string>

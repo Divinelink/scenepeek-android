@@ -1,5 +1,6 @@
-package com.divinelink.core.model
+package com.divinelink.core.model.locale
 
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.system_default
 
@@ -29,8 +30,7 @@ enum class AppLanguage(
   ;
 
   companion object {
-    fun from(locale: String?): AppLanguage = AppLanguage
-      .entries
+    fun from(locale: String?): AppLanguage = entries
       .find { it.localeName == locale }
       ?: DEFAULT
   }
