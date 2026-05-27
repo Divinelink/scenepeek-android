@@ -15,9 +15,9 @@ import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestMediaRatingPreferenceUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.settings.resources.Res
-import com.divinelink.feature.settings.resources.feature_settings_movie_rating_preference
-import com.divinelink.feature.settings.resources.feature_settings_tv_rating_preference
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.movies
+import com.divinelink.core.ui.resources.tv_shows
 import org.jetbrains.compose.resources.getString
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -53,12 +53,11 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
     onNodeWithText(RatingSource.IMDB.value).assertIsDisplayed()
 
     onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
-      hasText(getString(Res.string.feature_settings_tv_rating_preference)),
+      hasText(getString(UiString.tv_shows)),
     )
 
-    onNodeWithText(
-      getString(Res.string.feature_settings_movie_rating_preference),
-    ).assertIsDisplayed()
+    onNodeWithText(getString(UiString.movies))
+      .assertIsDisplayed()
       .performClick()
 
     onNodeWithTag(
@@ -91,7 +90,7 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
 
     onNodeWithText(RatingSource.IMDB.value).assertIsDisplayed()
 
-    onNodeWithText(getString(Res.string.feature_settings_tv_rating_preference)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.tv_shows)).assertIsDisplayed()
       .performClick()
 
     onNodeWithTag(

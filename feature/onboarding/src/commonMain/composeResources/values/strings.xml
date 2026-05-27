@@ -5,15 +5,16 @@
   <string name="feature_onboarding_skip">Skip</string>
 
   <string name="feature_onboarding_welcome_page_title">Welcome to ScenePeek</string>
-  <string name="feature_onboarding_welcome_page_description">A free and open-source client for TMDB &amp; Jellyseerr</string>
+  <string name="feature_onboarding_welcome_page_description">A free and open-source client for TMDB &amp; Seerr</string>
 
+  <!-- %1$s is the app name, %2$s is the new version -->
   <string name="feature_onboarding_whats_new_title">What's new in %1$s for %2$s</string>
 
-  <string name="feature_onboarding_tmdb_page_title">TMDB</string>
+  <string name="feature_onboarding_tmdb_page_title" translatable="false">TMDB</string>
   <string name="feature_onboarding_tmdb_page_description">Connect your TMDB account to access your watchlist, ratings, lists and more.</string>
 
-  <string name="feature_onboarding_jellyseerr_page_title">Jellyseerr</string>
-  <string name="feature_onboarding_jellyseerr_page_description">Connect to your Jellyseerr instance to request movies and TV shows instantly.</string>
+  <string name="feature_onboarding_jellyseerr_page_title" translatable="false">Seerr</string>
+  <string name="feature_onboarding_jellyseerr_page_description">Connect to your Seerr instance to request movies and TV shows instantly.</string>
 
   <string name="feature_onboarding_link_handling_page_title">IMDb &amp; TMDB Link Handling</string>
   <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> & <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and people directly in the app.]]></string>

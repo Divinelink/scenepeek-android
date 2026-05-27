@@ -167,7 +167,7 @@ class AboutSettingsScreenTest : ComposeTest() {
     val url = getString(R.string.feature_settings_about__repository_url)
     navigationRoute shouldBe Navigation.WebViewRoute(
       url = url,
-      title = "Github",
+      title = "GitHub",
     )
   }
 
@@ -203,7 +203,7 @@ class AboutSettingsScreenTest : ComposeTest() {
 
     navigationRoute shouldBe Navigation.WebViewRoute(
       url = url,
-      title = "Github",
+      title = "GitHub",
     )
   }
 }

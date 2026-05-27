@@ -11,19 +11,20 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.model.details.rating.MediaRatingSource
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.movies
+import com.divinelink.core.ui.resources.tv_shows
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsSwitchItem
 import com.divinelink.feature.settings.components.SettingsTextItem
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.feature_settings_details_preferences
-import com.divinelink.feature.settings.resources.feature_settings_movie_rating_preference
 import com.divinelink.feature.settings.resources.feature_settings_ratings
 import com.divinelink.feature.settings.resources.feature_settings_ratings_summary
 import com.divinelink.feature.settings.resources.feature_settings_region
 import com.divinelink.feature.settings.resources.feature_settings_streaming_services
 import com.divinelink.feature.settings.resources.feature_settings_streaming_services_subtitle
-import com.divinelink.feature.settings.resources.feature_settings_tv_rating_preference
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -76,7 +77,7 @@ fun DetailPreferencesSettingsScreen(
 
       item {
         SettingsRadioPrefItem(
-          title = stringResource(Res.string.feature_settings_movie_rating_preference),
+          title = stringResource(UiString.movies),
           selectedOption = uiState.movieSource,
           displayText = { it.value },
           listItems = MediaRatingSource.Movie.options,
@@ -88,7 +89,7 @@ fun DetailPreferencesSettingsScreen(
 
       item {
         SettingsRadioPrefItem(
-          title = stringResource(Res.string.feature_settings_tv_rating_preference),
+          title = stringResource(UiString.tv_shows),
           selectedOption = uiState.tvSource,
           displayText = { it.value },
           listItems = MediaRatingSource.TVShow.options,

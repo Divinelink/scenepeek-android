@@ -42,7 +42,7 @@ class IntroModalBottomSheetTest : ComposeTest() {
     }
 
     onNodeWithText("TMDB").assertIsDisplayed()
-    onNodeWithText("Jellyseerr").assertIsDisplayed()
+    onNodeWithText("Seerr").assertIsDisplayed()
   }
 
   @Test
@@ -97,7 +97,7 @@ class IntroModalBottomSheetTest : ComposeTest() {
         viewModel = viewModel,
       )
     }
-    onNodeWithText("Jellyseerr").performClick()
+    onNodeWithText("Seerr").performClick()
 
     jellyseerrRoute shouldBe Navigation.JellyseerrSettingsRoute(withNavigationBar = false)
   }

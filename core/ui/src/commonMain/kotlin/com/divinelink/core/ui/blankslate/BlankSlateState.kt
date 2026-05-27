@@ -9,8 +9,8 @@ import com.divinelink.core.ui.resources.core_ui_error_contact_description
 import com.divinelink.core.ui.resources.core_ui_error_generic_description
 import com.divinelink.core.ui.resources.core_ui_error_generic_title
 import com.divinelink.core.ui.resources.core_ui_login_title
+import com.divinelink.core.ui.resources.core_ui_not_connected
 import com.divinelink.core.ui.resources.core_ui_offline_description
-import com.divinelink.core.ui.resources.core_ui_offline_title
 import com.divinelink.core.ui.resources.core_ui_retry
 import com.divinelink.core.ui.resources.no_connection
 import org.jetbrains.compose.resources.DrawableResource
@@ -23,7 +23,7 @@ sealed class BlankSlateState(
 ) {
   data object Offline : BlankSlateState(
     icon = UiDrawable.no_connection,
-    title = UIText.ResourceText(UiString.core_ui_offline_title),
+    title = UIText.ResourceText(UiString.core_ui_not_connected),
     description = UIText.ResourceText(UiString.core_ui_offline_description),
     retryText = UIText.ResourceText(UiString.core_ui_retry),
   )

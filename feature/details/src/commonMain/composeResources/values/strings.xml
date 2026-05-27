@@ -30,7 +30,7 @@
   <string name="feature_details_person_credits_known_for_section">Known For</string>
 
   <string name="feature_details_person_credits_department">Department</string>
-  <string name="feature_details_person_credits_department_size">%1$s (%2$s)</string>
+  <string name="feature_details_person_credits_department_size" translatable="false">%1$s (%2$s)</string>
 
   <string name="feature_details_filter_sort_release_date">Release date</string>
 
@@ -77,7 +77,6 @@
   <string name="feature_details_information_runtime">Runtime</string>
   <string name="feature_details_information_original_language">Original language</string>
   <string name="feature_details_information_budget">Budget</string>
-  <string name="feature_details_information_last_air_date">Last air date</string>
   <string name="feature_details_information_next_episode_air_date">Next episode air date</string>
   <string name="feature_details_information_seasons">Seasons</string>
 
