@@ -8,7 +8,7 @@
     <string name="details__must_be_logged_in_to_watchlist">Παρακαλώ συνδεθείτε για να προσθέσετε στη λίστα παρακολούθησής σας.</string>
     <string name="feature_details_information">Πληοροφορίες</string>
     <string name="feature_details_jellyseerr_success_request_delete">Το αίτημα διαγράφηκε επιτυχώς</string>
-    <string name="feature_details_jellyseerr_failure_media_delete">Η αφαίρεση της <b>%1$s</b> απέτυχε</string>
+    <string name="feature_details_jellyseerr_failure_media_delete">Αποτυχία αφαίρεσης του <b>%1$s</b></string>
     <string name="feature_details_jellyseerr_failed_request_delete">Απέτυχε η διαγραφή του αιτήματος</string>
     <string name="feature_details_request">Αίτημα</string>
     <string name="feature_details_season">Κύκλος %1$s</string>
@@ -35,4 +35,46 @@
     </plurals>
     <string name="feature_details_person_birthday">%1$s (%2$s ετών)</string>
     <string name="feature_details_person_blank_biography">Δεν έχουμε βιογραφία για τον/την %1$s.</string>
+    <string name="feature_details_jellyseerr_success_media_delete">Το <b>%1$s</b> αφαιρέθηκε με επιτυχία</string>
+    <string name="feature_details_manage_movie">Διαχείριση ταινίας</string>
+    <string name="feature_details_manage_tv">Διαχείριση σειράς</string>
+    <string name="feature_details_personal_info_section">Προσωπικά στοιχεία</string>
+    <string name="feature_details_person_credits_department">Τμήμα</string>
+    <string name="feature_details_no_movies_available">Δεν υπάρχουν διαθέσιμες ταινίες</string>
+    <string name="feature_details_no_movies_available_desc">Ο/Η %1$s δεν έχει εμφανιστεί σε καμία ταινία ακόμη.</string>
+    <string name="feature_details_no_tv_shows_available">Δεν υπάρχουν διαθέσιμες σειρές</string>
+    <string name="feature_details_no_tv_shows_available_desc">Ο/Η %1$s δεν έχει εμφανιστεί σε καμία σειρά ακόμη.</string>
+    <string name="feature_details_no_cast_available">Δεν υπάρχει διαθέσιμο καστ</string>
+    <string name="feature_details_no_cast_available_desc">Δεν έχουμε πληροφορίες καστ για το %1$s.</string>
+    <string name="feature_details_no_recommendation_available">Δεν υπάρχουν διαθέσιμες προτάσεις</string>
+    <string name="feature_details_no_recommendations_available_desc">Δεν έχουμε προτάσεις για το %1$s.</string>
+    <string name="feature_details_no_reviews_available">Δεν υπάρχουν διαθέσιμες κριτικές</string>
+    <string name="feature_details_no_reviews_available_desc">Δεν έχουμε κριτικές για το %1$s.</string>
+    <string name="feature_details_no_seasons_available">Δεν υπάρχουν διαθέσιμοι κύκλοι</string>
+    <string name="feature_details_no_seasons_available_desc">Δεν έχουμε κύκλους για το %1$s.</string>
+    <string name="feature_details_information_release_dates">Ημερομηνίες κυκλοφορίας</string>
+    <string name="feature_details_information_original_title">Πρωτότυπος τίτλος</string>
+    <string name="feature_details_information_status">Κατάσταση</string>
+    <string name="feature_details_information_runtime">Διάρκεια</string>
+    <string name="feature_details_information_original_language">Πρωτότυπη γλώσσα</string>
+    <string name="feature_details_information_budget">Προϋπολογισμός</string>
+    <string name="feature_details_information_last_air_date">Τελευταία ημερομηνία προβολής</string>
+    <string name="feature_details_information_next_episode_air_date">Ημ/νία προβολής επόμενου επεισοδίου</string>
+    <string name="feature_details_information_seasons">Κύκλοι</string>
+    <string name="feature_details_part_of_collection">Μέρος του %1$s</string>
+    <string name="feature_details_view_collection">Προβολή συλλογής</string>
+    <plurals name="feature_details_information_countries">
+        <item quantity="one">Χώρα</item>
+        <item quantity="other">Χώρες</item>
+    </plurals>
+    <plurals name="feature_details_information_companies">
+        <item quantity="one">Εταιρεία</item>
+        <item quantity="other">Εταιρείες</item>
+    </plurals>
+    <string name="available_on">Διαθέσιμο σε</string>
+    <string name="by_justWatch">από το JustWatch</string>
+    <string name="no_available_stream_providers">Δεν υπάρχουν διαθέσιμοι πάροχοι ροής.</string>
+    <string name="stream">Stream</string>
+    <string name="buy">Αγορά</string>
+    <string name="rent">Ενοικίαση</string>
 </resources>
