@@ -5,6 +5,7 @@ import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.AuthTMDbClient
 import com.divinelink.core.network.client.get
 import com.divinelink.core.testing.commons.provider.TestSecretProvider
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.storage.TestSavedStateStorage
 
 class TestAuthTMDbClient {
@@ -22,6 +23,7 @@ class TestAuthTMDbClient {
       encryptedStorage = encryptedStorage,
       secret = TestSecretProvider(),
       config = PreviewBuildConfigProvider(),
+      preferenceStorage = FakePreferenceStorage(),
     )
 
     return restClient.post(url = url, body = body)
@@ -40,6 +42,7 @@ class TestAuthTMDbClient {
       encryptedStorage = encryptedStorage,
       secret = TestSecretProvider(),
       config = PreviewBuildConfigProvider(),
+      preferenceStorage = FakePreferenceStorage(),
     )
 
     restClient.client.get<T>(url = url)

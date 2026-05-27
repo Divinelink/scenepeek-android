@@ -79,6 +79,8 @@
   <string name="physical">Physical</string>
   <string name="tv" translatable="false">TV</string>
 
+  <string name="system_default">System default</string>
+
   <string name="all">All</string>
   <string name="approved">Approved</string>
   <string name="available">Available</string>

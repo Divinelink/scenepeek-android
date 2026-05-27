@@ -5,7 +5,9 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.ViewableSection
@@ -25,12 +27,14 @@ class ProdPreferencesRepository(
       preferenceStorage.customColor,
       preferenceStorage.colorSystem,
       preferenceStorage.isBlackBackgroundsEnabled,
-    ) { currentTheme, color, colorSystem, isPureBlack ->
+      preferenceStorage.appLanguage,
+    ) { currentTheme, color, colorSystem, isPureBlack, language ->
       ThemePreferences(
         theme = Theme.from(currentTheme) ?: Theme.SYSTEM,
         colorSystem = colorSystem,
         themeColor = color,
         isPureBlack = isPureBlack,
+        appLanguage = language.localeName,
       )
     }
 
@@ -45,6 +49,9 @@ class ProdPreferencesRepository(
           streamingServicesVisible = providerVisibility,
         )
       }
+
+  override val metadataLanguage: Flow<Language>
+    get() = preferenceStorage.metadataLanguage
 
   override suspend fun switchViewMode(section: ViewableSection) {
     storage.updateViewMode(
@@ -85,5 +92,13 @@ class ProdPreferencesRepository(
 
   override suspend fun setStreamingServicesVisible(visible: Boolean) {
     preferenceStorage.setStreamingServicesVisible(visible)
+  }
+
+  override suspend fun setAppLanguage(language: AppLanguage) {
+    preferenceStorage.setAppLanguage(language)
+  }
+
+  override suspend fun setMetadataLanguage(language: Language) {
+    preferenceStorage.setMetadataLanguage(language)
   }
 }

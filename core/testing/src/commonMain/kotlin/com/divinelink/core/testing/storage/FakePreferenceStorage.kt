@@ -4,7 +4,9 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.locale.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -21,6 +23,8 @@ class FakePreferenceStorage(
   region: Country = Country.UNITED_STATES,
   streamingServicesVisible: Boolean = false,
   updaterOptIn: Boolean = true,
+  appLanguage: AppLanguage = AppLanguage.DEFAULT,
+  metadataLanguage: Language = Language.ENGLISH,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -58,6 +62,12 @@ class FakePreferenceStorage(
 
   private val _updaterOptIn = MutableStateFlow(updaterOptIn)
   override val updaterOptIn: Flow<Boolean> = _updaterOptIn
+
+  private val _appLanguage = MutableStateFlow(appLanguage)
+  override val appLanguage: Flow<AppLanguage> = _appLanguage
+
+  private val _metadataLanguage = MutableStateFlow(metadataLanguage)
+  override val metadataLanguage: Flow<Language> = _metadataLanguage
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -105,5 +115,13 @@ class FakePreferenceStorage(
 
   override suspend fun setUpdaterOptIn(checkForUpdates: Boolean) {
     _updaterOptIn.value = checkForUpdates
+  }
+
+  override suspend fun setAppLanguage(language: AppLanguage) {
+    _appLanguage.value = language
+  }
+
+  override suspend fun setMetadataLanguage(language: Language) {
+    _metadataLanguage.value = language
   }
 }

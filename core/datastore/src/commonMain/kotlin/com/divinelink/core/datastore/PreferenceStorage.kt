@@ -6,10 +6,12 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_APP_LANGUAGE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_COLOR_PREFERENCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_CUSTOM_COLOR_ID
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_METADATA_LANGUAGE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REGION_CODE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
@@ -22,7 +24,9 @@ import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.locale.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -64,6 +68,12 @@ interface PreferenceStorage {
 
   suspend fun setUpdaterOptIn(checkForUpdates: Boolean)
   val updaterOptIn: Flow<Boolean>
+
+  suspend fun setMetadataLanguage(language: Language)
+  val metadataLanguage: Flow<Language>
+
+  suspend fun setAppLanguage(language: AppLanguage)
+  val appLanguage: Flow<AppLanguage>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -83,6 +93,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
       "settings.series.episode.obfuscation",
     )
 
+    val PREF_APP_LANGUAGE = stringPreferencesKey("app.language")
+    val PREF_METADATA_LANGUAGE = stringPreferencesKey("metadata.language")
     val PREF_MOVIE_RATING_SOURCE = stringPreferencesKey("movie.rating.source")
     val PREF_TV_RATING_SOURCE = stringPreferencesKey("tv.rating.source")
     val PREF_EPISODES_RATING_SOURCE = stringPreferencesKey("episodes.rating.source")
@@ -195,5 +207,26 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override suspend fun setUpdaterOptIn(checkForUpdates: Boolean) {
     dataStore.edit { it[PREF_UPDATER_OPT_IN] = checkForUpdates }
+  }
+
+  override suspend fun setMetadataLanguage(language: Language) {
+    dataStore.edit { it[PREF_METADATA_LANGUAGE] = language.code }
+  }
+
+  override val metadataLanguage: Flow<Language> = dataStore.data.map {
+    it[PREF_METADATA_LANGUAGE]?.let { code -> Language.fromCode(code) } ?: Language.ENGLISH
+  }.distinctUntilChanged()
+
+  override val appLanguage: Flow<AppLanguage> = dataStore.data.map {
+    it[PREF_APP_LANGUAGE]?.let { locale -> AppLanguage.from(locale) } ?: AppLanguage.DEFAULT
+  }.distinctUntilChanged()
+
+  override suspend fun setAppLanguage(language: AppLanguage) {
+    val locale = language.localeName
+    if (locale == null) {
+      dataStore.removeKey(PREF_APP_LANGUAGE)
+    } else {
+      dataStore.edit { it[PREF_APP_LANGUAGE] = locale }
+    }
   }
 }

@@ -2,6 +2,7 @@ package com.divinelink.core.network.client
 
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.commons.provider.SecretProvider
+import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.accessToken
 import io.ktor.client.HttpClient
@@ -10,13 +11,16 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.bearerAuth
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import kotlinx.coroutines.flow.first
 
 class AuthTMDbClient(
   engine: HttpClientEngine,
   encryptedStorage: SavedStateStorage,
   secret: SecretProvider,
   config: BuildConfigProvider,
+  private val preferenceStorage: PreferenceStorage,
 ) {
+  suspend fun language() = preferenceStorage.metadataLanguage.first().code
   val tmdbUrl = secret.tmdbUrl
 
   val client: HttpClient = ktorClient(engine, config).config {

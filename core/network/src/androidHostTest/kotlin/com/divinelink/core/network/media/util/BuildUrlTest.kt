@@ -13,6 +13,7 @@ class BuildUrlTest {
       id = 1234,
       media = MediaType.TV,
       appendToResponse = true,
+      language = "en-US",
     )
 
     url shouldBe "https://api.themoviedb.org/3/tv/1234" +
@@ -26,9 +27,10 @@ class BuildUrlTest {
       id = 1234,
       media = MediaType.TV,
       appendToResponse = false,
+      language = "el-GR",
     )
 
-    url shouldBe "https://api.themoviedb.org/3/tv/1234?language=en-US"
+    url shouldBe "https://api.themoviedb.org/3/tv/1234?language=el-GR"
   }
 
   @Test
@@ -37,6 +39,7 @@ class BuildUrlTest {
       id = 1234,
       media = MediaType.MOVIE,
       appendToResponse = true,
+      language = "en-US",
     )
 
     url shouldBe "https://api.themoviedb.org/3/movie/1234" +
@@ -50,6 +53,7 @@ class BuildUrlTest {
       id = 1234,
       media = MediaType.MOVIE,
       appendToResponse = false,
+      language = "en-US",
     )
 
     url shouldBe "https://api.themoviedb.org/3/movie/1234?language=en-US"
@@ -67,15 +71,17 @@ class BuildUrlTest {
   @Test
   fun `test buildMovieGenreUrl`() {
     buildGenreUrl(
-      MediaType.MOVIE,
-    ) shouldBe "https://api.themoviedb.org/3/genre/movie/list?language=en"
+      media = MediaType.MOVIE,
+      language = "en-US",
+    ) shouldBe "https://api.themoviedb.org/3/genre/movie/list?language=en-US"
   }
 
   @Test
   fun `test buildTvGenreUrl`() {
     buildGenreUrl(
-      MediaType.TV,
-    ) shouldBe "https://api.themoviedb.org/3/genre/tv/list?language=en"
+      media = MediaType.TV,
+      language = "en-US",
+    ) shouldBe "https://api.themoviedb.org/3/genre/tv/list?language=en-US"
   }
 
   @Test
@@ -83,6 +89,7 @@ class BuildUrlTest {
     buildFetchMediaListUrl(
       request = MediaListRequest.TrendingAll,
       page = 1,
+      language = "en-US",
     ) shouldBe "https://api.themoviedb.org/3/trending/all/day?language=en-US&page=1"
   }
 
@@ -91,6 +98,7 @@ class BuildUrlTest {
     buildFetchMediaListUrl(
       request = MediaListRequest.Popular(MediaType.MOVIE),
       page = 1,
+      language = "en-US",
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
       "/movie" +
@@ -105,6 +113,7 @@ class BuildUrlTest {
     buildFetchMediaListUrl(
       request = MediaListRequest.Popular(MediaType.TV),
       page = 1,
+      language = "en-US",
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
       "/tv" +
@@ -121,6 +130,7 @@ class BuildUrlTest {
         minDate = "2021-12-01",
       ),
       page = 1,
+      language = "en-US",
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
       "/movie" +
@@ -137,6 +147,7 @@ class BuildUrlTest {
         minDate = "2021-12-01",
       ),
       page = 1,
+      language = "en-US",
     ) shouldBe "https://api.themoviedb.org/3" +
       "/discover" +
       "/tv?language=en-US" +

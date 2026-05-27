@@ -7,6 +7,7 @@ import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FindByIdUseCase
+import com.divinelink.core.domain.LocaleManager
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.domain.session.CreateSessionUseCase
@@ -24,8 +25,10 @@ import com.divinelink.core.ui.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -38,6 +41,7 @@ class MainViewModel(
   val preferencesRepository: PreferencesRepository,
   val navigator: Navigator,
   val appInfoRepository: AppInfoRepository,
+  val localeManager: LocaleManager,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
@@ -61,6 +65,14 @@ class MainViewModel(
     viewModelScope.launch {
       appInfoRepository.fetchRemoteConfig()
     }
+
+    preferencesRepository
+      .themePreferences
+      .map { it.appLanguage }
+      .distinctUntilChanged()
+      .filter { it != localeManager.currentLanguageTag() }
+      .onEach { localeManager.apply(it) }
+      .launchIn(viewModelScope)
   }
 
   private fun updateUiEvent(event: MainUiEvent) {

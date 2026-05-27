@@ -54,7 +54,11 @@ class ProdMediaService(
     request: MediaListRequest,
     page: Int,
   ): Result<MultiSearchResponseApi> = runCatching {
-    val url = buildFetchMediaListUrl(request = request, page = page)
+    val url = buildFetchMediaListUrl(
+      request = request,
+      page = page,
+      language = restClient.language(),
+    )
 
     restClient.get<MultiSearchResponseApi>(url = url)
   }
@@ -69,6 +73,7 @@ class ProdMediaService(
       page = page,
       sortOption = sortOption,
       filters = filters,
+      language = restClient.language(),
     )
 
     val response = restClient.get<MoviesResponseApi>(url = url)
@@ -86,6 +91,7 @@ class ProdMediaService(
       page = page,
       sortOption = sortOption,
       filters = filters,
+      language = restClient.language(),
     )
 
     val response = restClient.get<TvResponseApi>(url = url)
@@ -96,7 +102,7 @@ class ProdMediaService(
   override fun fetchMultiInfo(request: MultiSearchRequestApi): Flow<MultiSearchResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/search/multi?"
     val url = baseUrl +
-      "&language=en-US" +
+      "&language=${restClient.language()}" +
       "&query=${request.query}" +
       "&page=${request.page}" +
       "&include_adult=false"
@@ -112,7 +118,7 @@ class ProdMediaService(
   ): Result<MultiSearchResponseApi> = runCatching {
     val baseUrl = "${restClient.tmdbUrl}/search/${mediaType.value}?"
     val url = baseUrl +
-      "&language=en-US" +
+      "&language=${restClient.language()}" +
       "&query=${request.query}" +
       "&page=${request.page}" +
       "&include_adult=false"
@@ -128,6 +134,7 @@ class ProdMediaService(
       media = request.mediaType,
       id = request.id,
       appendToResponse = appendToResponse,
+      language = restClient.language(),
     )
 
     val response = restClient.get<DetailsResponseApi>(url = url)
@@ -140,7 +147,7 @@ class ProdMediaService(
     val url = baseUrl +
       "${request.id}" +
       "/reviews?" +
-      "&language=en-US" +
+      "&language=${restClient.language()}" +
       "&include_adult=false"
 
     val response = restClient.get<ReviewsResponseApi>(url = url)
@@ -154,7 +161,7 @@ class ProdMediaService(
       val url = baseUrl +
         "${request.id}" +
         "/recommendations?" +
-        "&language=en-US" +
+        "&language=${restClient.language()}" +
         "&include_adult=false"
 
       val response = restClient.get<MoviesResponseApi>(url = url)
@@ -167,7 +174,7 @@ class ProdMediaService(
     val url = baseUrl +
       "${request.id}" +
       "/recommendations?" +
-      "&language=en-US" +
+      "&language=${restClient.language()}" +
       "&include_adult=false"
 
     val response = restClient.get<TvResponseApi>(url = url)
@@ -180,7 +187,7 @@ class ProdMediaService(
     val url = baseUrl +
       "${request.id}" +
       "/videos?" +
-      "&language=en-US"
+      "&language=${restClient.language()}"
 
     val response = restClient.get<VideosResponseApi>(url = url)
 
@@ -188,7 +195,8 @@ class ProdMediaService(
   }
 
   override fun fetchAggregatedCredits(id: Long): Flow<AggregateCreditsApi> = flow {
-    val url = "${restClient.tmdbUrl}/tv/$id/aggregate_credits"
+    val url = "${restClient.tmdbUrl}/tv/$id/aggregate_credits" +
+      "?language=${restClient.language()}"
 
     val response = restClient.get<AggregateCreditsApi>(url = url)
 
@@ -263,7 +271,12 @@ class ProdMediaService(
   }
 
   override suspend fun fetchGenres(mediaType: MediaType): Result<GenresListResponse> = runCatching {
-    restClient.get<GenresListResponse>(url = buildGenreUrl(mediaType))
+    restClient.get<GenresListResponse>(
+      url = buildGenreUrl(
+        media = mediaType,
+        language = restClient.language(),
+      ),
+    )
   }
 
   override suspend fun fetchSeason(
@@ -275,13 +288,19 @@ class ProdMediaService(
         showId = showId,
         seasonNumber = season,
         sessionId = storage.tmdbSessionId,
+        language = restClient.language(),
       ),
     )
   }
 
   override suspend fun fetchCollectionDetails(id: Int): Result<CollectionDetailsResponse> =
     runCatching {
-      restClient.get<CollectionDetailsResponse>(url = buildCollectionsUrl(id = id))
+      restClient.get<CollectionDetailsResponse>(
+        url = buildCollectionsUrl(
+          id = id,
+          language = restClient.language(),
+        ),
+      )
     }
 
   override suspend fun searchKeywords(request: SearchRequestApi): Result<SearchKeywordResponse> =

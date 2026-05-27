@@ -4,6 +4,7 @@ import JvmUnitTestDemoAssetManager
 import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.testing.commons.provider.TestSecretProvider
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 
 class TestRestClient {
 
@@ -26,6 +27,7 @@ class TestRestClient {
       engine = mockEngine(json),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
+      storage = FakePreferenceStorage(),
     )
 
     restClient.get<T>(url = url)
@@ -39,6 +41,7 @@ class TestRestClient {
       engine = mockEngine(json),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
+      storage = FakePreferenceStorage(),
     )
 
     restClient.get<T>(url = url)
@@ -52,6 +55,7 @@ class TestRestClient {
       engine = mockEngine(response),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
+      storage = FakePreferenceStorage(),
     )
 
     restClient.delete<T>(url = url)
@@ -66,6 +70,7 @@ class TestRestClient {
       engine = mockEngine(response),
       config = PreviewBuildConfigProvider(),
       secret = TestSecretProvider(),
+      storage = FakePreferenceStorage(),
     )
 
     return restClient.post(url = url, body = body)

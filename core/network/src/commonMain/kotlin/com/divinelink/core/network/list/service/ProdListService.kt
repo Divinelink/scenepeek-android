@@ -24,7 +24,9 @@ import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdListService(private val client: AuthTMDbClient) : ListService {
+class ProdListService(
+  private val client: AuthTMDbClient,
+) : ListService {
 
   override suspend fun addItemToList(
     listId: Int,
@@ -54,6 +56,7 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
       url = buildFetchListDetailsUrl(
         listId = listId,
         page = page,
+        language = client.language(),
       ),
     )
   }
@@ -61,15 +64,14 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
   override fun fetchUserLists(
     accountId: String,
     page: Int,
-  ): Flow<ListsResponse> {
+  ): Flow<ListsResponse> = flow {
     val url = buildFetchListsUrl(
       accountId = accountId,
       page = page,
+      language = client.language(),
     )
 
-    return flow {
-      emit(client.get<ListsResponse>(url = url))
-    }
+    emit(client.get<ListsResponse>(url = url))
   }
 
   override suspend fun createList(request: CreateListRequest): Result<CreateListResponse> =

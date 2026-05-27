@@ -4,7 +4,9 @@ import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.other
@@ -18,6 +20,7 @@ class TestPreferencesRepository(
   uiPreferences: UiPreferences = UiPreferences.Initial,
   themePreferences: ThemePreferences = ThemePreferences.initial,
   detailPreferences: DetailPreferences = DetailPreferences.initial,
+  metadataLanguage: Language = Language.ENGLISH,
 ) : PreferencesRepository {
 
   private val _uiPreferences = MutableStateFlow(uiPreferences)
@@ -28,6 +31,9 @@ class TestPreferencesRepository(
 
   private val _detailPreferences = MutableStateFlow(detailPreferences)
   override val detailPreferences: Flow<DetailPreferences> = _detailPreferences
+
+  private val _metadataLanguage = MutableStateFlow(metadataLanguage)
+  override val metadataLanguage: Flow<Language> = _metadataLanguage
 
   override suspend fun switchViewMode(section: ViewableSection) {
     val currentViewMode = _uiPreferences.value.viewModes[section]
@@ -100,5 +106,15 @@ class TestPreferencesRepository(
     _detailPreferences.value = _detailPreferences.value.copy(
       streamingServicesVisible = visible,
     )
+  }
+
+  override suspend fun setAppLanguage(language: AppLanguage) {
+    _themePreferences.value = _themePreferences.value.copy(
+      appLanguage = language.localeName,
+    )
+  }
+
+  override suspend fun setMetadataLanguage(language: Language) {
+    _metadataLanguage.value = language
   }
 }

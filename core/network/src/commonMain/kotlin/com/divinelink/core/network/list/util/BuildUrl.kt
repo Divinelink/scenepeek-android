@@ -15,13 +15,14 @@ internal fun buildListItemsUrl(listId: Int): String = buildUrl {
 internal fun buildFetchListDetailsUrl(
   listId: Int,
   page: Int,
+  language: String,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V4 + "/list/$listId"
 
   parameters.apply {
-    append("language", "en-US")
+    append("language", language)
     append("page", page.toString())
   }
 }.toString()
