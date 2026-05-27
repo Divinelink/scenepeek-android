@@ -19,8 +19,8 @@ import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
+import com.divinelink.core.ui.resources.core_ui_not_connected
 import com.divinelink.core.ui.resources.core_ui_offline_description
-import com.divinelink.core.ui.resources.core_ui_offline_title
 import com.divinelink.feature.search.resources.Res
 import com.divinelink.feature.search.resources.feature_search__initial_description
 import com.divinelink.feature.search.resources.search__empty_result_description
@@ -195,7 +195,7 @@ class SearchContentTest : ComposeTest() {
 
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
     onNodeWithText(
-      getString(UiString.core_ui_offline_title),
+      getString(UiString.core_ui_not_connected),
     ).assertIsDisplayed()
     onNodeWithText(
       getString(UiString.core_ui_offline_description),

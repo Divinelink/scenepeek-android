@@ -81,7 +81,6 @@
     <string name="core_ui_clear_data_series_description">Das wird alle Daten dieser Serie, inklusive sämtlicher Anfragen, unwiderruflich löschen. Wenn dieses Element in deiner Jellyfn Bibliothek existiert, werden die Medieninformationen während des nächsten Scans wieder erstellt.</string>
     <string name="core_ui_loading">Lädt…</string>
     <string name="core_ui_load_more">Mehr laden…</string>
-    <string name="popular_movie__rating">Bewertung</string>
     <string name="core_ui_toolbar_search_placeholder">Suche nach einer Serie, einem Film, etc.</string>
     <string name="core_ui_percentage">%1$s%</string>
     <string name="core_ui_metascore">Metascore</string>
@@ -105,7 +104,6 @@
     <string name="core_ui_cancel_request">Anfrage stornieren</string>
     <string name="core_ui_delete_request">Anfrage löschen</string>
     <string name="core_ui_delete_request_confirmation_text">Bist du sicher, dass du diese Anfrage löschen willst?</string>
-    <string name="core_ui_clear_media_title">Daten löschen</string>
     <string name="core_ui_read_more">Mehr lesen</string>
     <string name="core_ui_show_more">Mehr anzeigen</string>
     <string name="core_ui_show_less">Weniger anzeigen</string>

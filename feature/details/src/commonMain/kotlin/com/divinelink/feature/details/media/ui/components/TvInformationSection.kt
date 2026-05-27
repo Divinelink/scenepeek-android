@@ -17,9 +17,9 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.extension.localizeFull
 import com.divinelink.core.ui.resources.core_ui_aired_episodes
 import com.divinelink.core.ui.resources.core_ui_first_air_date
+import com.divinelink.core.ui.resources.core_ui_last_air_date
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details_information
-import com.divinelink.feature.details.resources.feature_details_information_last_air_date
 import com.divinelink.feature.details.resources.feature_details_information_next_episode_air_date
 import com.divinelink.feature.details.resources.feature_details_information_original_language
 import com.divinelink.feature.details.resources.feature_details_information_original_title
@@ -63,7 +63,7 @@ fun TvInformationSection(
 
     information.lastAirDate.toLocalDate().localizeFull()?.let { airDate ->
       SimpleInformationRow(
-        title = stringResource(Res.string.feature_details_information_last_air_date),
+        title = stringResource(UiString.core_ui_last_air_date),
         data = airDate,
       )
     }

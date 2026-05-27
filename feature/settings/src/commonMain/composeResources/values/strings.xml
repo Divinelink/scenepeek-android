@@ -87,9 +87,9 @@
   <string name="feature_settings_about__privacy_policy">Privacy Policy</string>
   <string name="feature_settings_about__privacy_policy_url" translatable="false">https://www.scenepeek.app/privacy</string>
 
-  <string name="feature_settings_about__github" translatable="false">Github</string>
+  <string name="feature_settings_about__github" translatable="false">GitHub</string>
   <string name="feature_settings_about__version">Version %1$s</string>
-  <string name="feature_settings_about__developer_github_url">https://github.com/%1$s</string>
+  <string name="feature_settings_about__developer_github_url" translatable="false">https://github.com/%1$s</string>
   <string name="feature_settings_about__repository_url" translatable="false">https://github.com/Divinelink/scenepeek-android</string>
   <string name="feature_settings_about__tmdb_endorsement">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
 
@@ -106,20 +106,15 @@
   <string name="feature_settings_streaming_services_subtitle">Display streaming services information.</string>
   <string name="feature_settings_ratings">Ratings</string>
   <string name="feature_settings_ratings_summary">Choose the rating system you want to use.\nIt will be displayed in the details screen of movies and TV shows.</string>
-  <string name="feature_settings_movie_rating_preference">Movies</string>
-  <string name="feature_settings_tv_rating_preference">TV Shows</string>
-  <string name="feature_settings_episodes_rating_preference">Episodes</string>
-  <string name="feature_settings_seasons_rating_preference">Seasons</string>
 
-  <string name="support_email">support@scenepeek.app</string>
-  <string name="seerr_support_email_subject">Trouble connecting to Seerr</string>
-  <string name="seerr_support_email_body">"Please specify your login method, server versions and attach the error logs to help identify the issue."\n\nSeerr version: (enter your Seerr server version)\nJellyfin version: (enter your Jellyfin version if applicable)\n%1$s</string>
+  <string name="support_email" translatable="false">support@scenepeek.app</string>
+  <string name="seerr_support_email_subject" translatable="false">Trouble connecting to Seerr</string>
+  <string name="seerr_support_email_body" translatable="false">"Please specify your login method, server versions and attach the error logs to help identify the issue."\n\nSeerr version: (enter your Seerr server version)\nJellyfin version: (enter your Jellyfin version if applicable)\n%1$s</string>
 
   <string name="seerr_login_info_placeholder_pt1">This is an experimental feature.\nIf you have trouble connecting, please get in contact at </string>
   <string name="seerr_login_info_placeholder_pt2"> to troubleshoot the issue.</string>
 
   <!-- preferences.xml -->
-  <string name="preferences__none">None</string>
   <string name="preferences__account">Account</string>
   <string name="preferences__appearance">Appearance</string>
   <string name="feature_settings_details_preferences">Details preferences</string>

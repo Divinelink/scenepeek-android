@@ -33,8 +33,8 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_error_generic_description
 import com.divinelink.core.ui.resources.core_ui_error_generic_title
 import com.divinelink.core.ui.resources.core_ui_login
+import com.divinelink.core.ui.resources.core_ui_not_connected
 import com.divinelink.core.ui.resources.core_ui_offline_description
-import com.divinelink.core.ui.resources.core_ui_offline_title
 import com.divinelink.feature.user.data.resources.Res
 import com.divinelink.feature.user.data.resources.feature_user_data_empty_watchlist
 import com.divinelink.feature.user.data.resources.feature_user_data_login_watchlist_description
@@ -108,7 +108,7 @@ class UserDataScreenTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
     onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-    onNodeWithText(getString(UiString.core_ui_offline_title))
+    onNodeWithText(getString(UiString.core_ui_not_connected))
       .assertIsDisplayed()
     onNodeWithText(getString(UiString.core_ui_offline_description))
       .assertIsDisplayed()
