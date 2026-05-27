@@ -9,4 +9,17 @@
     <string name="feature_lists_edit_list">Επεξεργασία λίστας</string>
     <string name="feature_lists_description">Περιγραφή</string>
     <string name="feature_lists_public_description">Οι δημόσιες λίστες μπορούν να προβληθούν από άλλους χρήστες.</string>
+    <string name="feature_lists_add_list">Δημιουργία λίστας</string>
+    <string name="feature_lists_name">Όνομα</string>
+    <string name="feature_lists_delete_list_alert_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν τη λίστα; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</string>
+    <string name="feature_lists_update_successfully">Η λίστα %1$s ενημερώθηκε με επιτυχία</string>
+    <string name="feature_lists_update_failure">Αποτυχία ενημέρωσης της λίστας %1$s</string>
+    <string name="feature_lists_delete_successfully">Η λίστα %1$s διαγράφηκε με επιτυχία</string>
+    <string name="feature_lists_delete_failure">Αποτυχία διαγραφής της λίστας %1$s</string>
+    <string name="feature_lists_create_successfully">Η λίστα %1$s δημιουργήθηκε με επιτυχία</string>
+    <string name="feature_lists_create_failure">Αποτυχία δημιουργίας της λίστας %1$s</string>
+    <string name="feature_lists_backdrops_empty">Δεν υπάρχουν εικόνες για αυτή τη λίστα. Προσθέστε στοιχεία για να μπορέσετε να αλλάξετε την εικόνα.</string>
+    <string name="feature_lists_change_image">Αλλαγή εικόνας</string>
+    <string name="feature_lists_selected">Επιλέχθηκαν %1$s/%2$s</string>
+    <string name="feature_lists_selected_media_content_desc">Επιλεγμένο μέσο: %1$s</string>
 </resources>

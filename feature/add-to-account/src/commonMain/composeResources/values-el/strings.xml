@@ -11,4 +11,14 @@
     <string name="clear_my_rating">Εκκαθάριση της βαθμολογίας μου</string>
     <string name="submit_rating_button">Υποβολή βαθμολογίας</string>
     <string name="must_be_logged_in_to_rate">Παρακαλούμε συνδεθείτε για να υποβάλετε τη βαθμολογία σας.</string>
+    <string name="feature_add_to_account_item_added_to_list_success"><![CDATA[Το στοιχείο προστέθηκε με επιτυχία στη λίστα <b>%1$s</b>]]></string>
+    <plurals name="feature_add_to_account_remove_items_confirmation">
+        <item quantity="one"><![CDATA[Να αφαιρεθεί το <b>%1$s</b> από τη λίστα <b>%2$s</b>;]]></item>
+        <item quantity="other"><![CDATA[Να αφαιρεθούν <b>%1$s</b> στοιχεία από τη λίστα <b>%2$s</b>;]]></item>
+    </plurals>
+    <string name="feature_add_to_account_remove_from_list_offline_error">Δεν μπορείτε να αφαιρέσετε στοιχεία από τη λίστα ενώ είστε εκτός σύνδεσης</string>
+    <string name="feature_add_to_account_remove_single_item_success">Το %1$s αφαιρέθηκε από τη λίστα %2$s</string>
+    <string name="add_rating_description"><![CDATA[Τι γνώμη έχετε για το <b>%1$s</b>;]]></string>
+    <string name="rating_submitted_successfully">Η βαθμολογία για το %1$s υποβλήθηκε</string>
+    <string name="rating_deleted_successfully">Η βαθμολογία για το %1$s διαγράφηκε</string>
 </resources>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="core_ui_okay">Okay</string>
   <string name="core_ui_cancel">Cancel</string>
@@ -5,23 +6,17 @@
   <string name="core_ui_delete">Delete</string>
   <string name="core_ui_discover">Discover</string>
   <string name="core_ui_share_error_details">Share error details</string>
-
   <string name="core_ui_information">Information</string>
   <string name="core_ui_keywords">Keywords</string>
-
   <string name="core_ui_approve">Approve</string>
   <string name="core_ui_decline">Decline</string>
-
   <string name="core_ui_update">Update</string>
   <string name="core_ui_save">Save</string>
   <string name="core_ui_play_trailer">Watch Trailer</string>
-
   <string name="core_ui_add_rating">Rate this</string>
   <string name="core_ui_your_rating">Your rating</string>
-
   <string name="core_ui_connected">You're back online</string>
   <string name="core_ui_not_connected">You're offline</string>
-
   <string name="core_ui_select">Select</string>
   <string name="core_ui_share">Share</string>
   <string name="core_ui_show_total_episodes_item">Show spoilers</string>
@@ -35,18 +30,14 @@
   <string name="core_ui_error_retry">Something when wrong. Please try again.</string>
   <string name="core_ui_password">Password</string>
   <string name="core_ui_view_all">View all</string>
-
   <string name="core_ui_create_list">Create list</string>
   <string name="core_ui_create">Create</string>
   <string name="core_ui_edit">Save</string>
-
   <plurals name="core_ui_character_episode_episodes">
     <item quantity="one">(%1$s Episode)</item>
     <item quantity="other">(%1$s Episodes)</item>
   </plurals>
-
   <string name="core_ui_general_error_title">An error has occurred</string>
-
   <string name="core_ui_director">Director</string>
   <string name="core_ui_screenplay">Screenplay</string>
   <string name="core_ui_novel">Novel</string>
@@ -73,7 +64,6 @@
   <string name="core_ui_movies">movies</string>
   <string name="core_ui_tv_shows">tv shows</string>
   <string name="core_ui_people">people</string>
-
   <string name="movies">Movies</string>
   <string name="tv_shows">TV Shows</string>
   <string name="seasons">Seasons</string>
@@ -84,8 +74,7 @@
   <string name="core_ui_remove_from_radarr_description">This will irreversibly remove this movie from Radarr, including all files.</string>
 
   <string name="core_ui_remove_from_sonarr">Remove from Sonarr</string>
-  <string name="core_ui_remove_from_sonarr_description">This will irreversibly remove this movie from Sonarr, including all files.</string>
-
+  <string name="core_ui_remove_from_sonarr_description">This will irreversibly remove this series from Sonarr, including all files.</string>
   <string name="core_ui_advanced">Advanced</string>
   <string name="core_ui_clear_data">Clear data</string>
   <string name="core_ui_clear_data_movie_description">This will irreversibly remove all data for this movie, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
@@ -94,10 +83,8 @@
   <string name="core_ui_loading">Loading…</string>
 
   <string name="core_ui_toolbar_search_placeholder">Search for a show, movie, etc.</string>
-
   <string name="core_ui_percentage" translatable="false">%1$s%</string>
   <string name="core_ui_metascore" translatable="false">Metascore</string>
-
   <string name="core_ui_episodes">Episodes</string>
   <string name="core_ui_status">Status</string>
 
@@ -123,21 +110,22 @@
   <string name="core_ui_delete_request">Delete request</string>
   <string name="core_ui_delete_request_confirmation_text">Are you sure you want to delete this request?</string>
 
+  <string name="core_ui_clear_media_title">Clear data</string>
+
+
   <string name="core_ui_read_more">Read more</string>
   <string name="core_ui_show_more">Show more</string>
   <string name="core_ui_show_less">Show less</string>
 
+  <string name="core_ui_view">View</string>
   <string name="core_ui_filter">Filter</string>
 
   <string name="core_ui_offline_title">You are offline</string>
   <string name="core_ui_offline_description">Please connect to the internet and try again.</string>
-
   <string name="core_ui_error_generic_title">Something went wrong</string>
   <string name="core_ui_error_generic_description">Please try again.</string>
   <string name="core_ui_error_contact_description">Please try again. If the problem persists, please contact the developer.</string>
-
-  <string name="core_ui_jellyseerr_session_expired">Your Seerr session has expired. Please log in again.</string>
-
+  <string name="core_ui_jellyseerr_session_expired">Your Seerr session has expired. Please login again.</string>
   <string name="core_ui_tmdb_user_score">User\nScore</string>
 
   <string name="core_ui_back_to_top">Back to top</string>

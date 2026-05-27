@@ -5,4 +5,5 @@
     <string name="dark">Σκοτεινό</string>
     <string name="default_theme">Προεπιλεγμένο</string>
     <string name="dynamic_theme">Δυναμικό</string>
+    <string name="custom_theme">Προσαρμοσμένο</string>
 </resources>

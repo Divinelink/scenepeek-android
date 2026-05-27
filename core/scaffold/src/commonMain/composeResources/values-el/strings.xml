@@ -3,4 +3,6 @@
     <string name="home">Αρχική</string>
     <string name="search">Αναζήτηση</string>
     <string name="profile">Προφίλ</string>
+    <string name="top_level_navigation_content_description_selected">Επιλεγμένο στοιχείο πλοήγησης στο κάτω μέρος %1$s</string>
+    <string name="top_level_navigation_content_description_unselected">Μη επιλεγμένο στοιχείο πλοήγησης στο κάτω μέρος %1$s</string>
 </resources>
