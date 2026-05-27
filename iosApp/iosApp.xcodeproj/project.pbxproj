@@ -105,8 +105,8 @@
 			);
 			dependencies = (
 			);
-			name = iosApp;
-			productName = iosApp;
+			name = ScenePeek;
+			productName = ScenePeek;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
