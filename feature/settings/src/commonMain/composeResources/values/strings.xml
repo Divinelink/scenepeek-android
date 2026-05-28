@@ -120,9 +120,6 @@
   <string name="feature_settings_details_preferences">Details preferences</string>
   <string name="feature_settings_link_handling">Link handling</string>
   <string name="preferences__theme">Theme</string>
-  <string name="preferences__light_theme">Light</string>
-  <string name="preferences__dark_theme">Dark</string>
-  <string name="preferences__system_default">System default</string>
 
   <string name="auto_update_app_title">Auto-update ScenePeek</string>
   <string name="auto_update_app_summary">Periodically check for new releases and ask to install them</string>

@@ -3,7 +3,7 @@
   <string name="empty_string" translatable="false" />
 
   <string name="fatal_error_fetching_details">Couldn't load details. Going back to previous screen.</string>
-  <string name="general_error_message">Something when wrong.</string>
+  <string name="general_error_message">Something went wrong.</string>
 
   <string name="any">Any</string>
   <string name="decade">Decade</string>
