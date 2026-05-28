@@ -76,4 +76,7 @@
   <string name="v48_fix_discover_sorting_options">- Fix an issue where sorting options where not applied on discover screen</string>
 
   <string name="v49_add_custom_remote_config">- Implement a mechanism to easily inform the users about any potential TMDB server incidents</string>
+
+  <string name="v50_app_language">- Add app language setting with Greek and German translations (thanks to shadow2209!)</string>
+  <string name="v50_metadata_language">- Add metadata language setting with many options: Spanish, French, German, Portuguese, Italian etc. Head over to Settings > Appearance to set your preference.</string>
 </resources>

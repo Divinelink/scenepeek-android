@@ -60,6 +60,8 @@ import com.divinelink.feature.onboarding.resources.v47_movie_release_dates
 import com.divinelink.feature.onboarding.resources.v48_fix_discover_sorting_options
 import com.divinelink.feature.onboarding.resources.v48_fix_tmdb_auth_issue
 import com.divinelink.feature.onboarding.resources.v49_add_custom_remote_config
+import com.divinelink.feature.onboarding.resources.v50_app_language
+import com.divinelink.feature.onboarding.resources.v50_metadata_language
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -263,6 +265,14 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v49_add_custom_remote_config)),
   )
 
+  val v50 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.32.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v50_app_language)),
+    IntroSection.Text(UIText.ResourceText(R.string.v50_metadata_language)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -283,5 +293,6 @@ object IntroSections {
     47 to v47,
     48 to v48,
     49 to v49,
+    50 to v50,
   )
 }
