@@ -52,11 +52,11 @@ android {
       dimension = "version"
       versionNameSuffix = " F-Droid"
 
-      manifestPlaceholders["sentryInitializer"] = ""
+      manifestPlaceholders["bugsinkInitializer"] = ""
     }
     create("full") {
       dimension = "version"
-      manifestPlaceholders["sentryInitializer"] = "androidx.startup"
+      manifestPlaceholders["bugsinkInitializer"] = "androidx.startup"
     }
   }
 

@@ -7,13 +7,13 @@ import io.sentry.SentryOptions
 import io.sentry.android.core.SentryAndroid
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class SentryInitializer : Initializer<Unit> {
+class BugsinkInitializer : Initializer<Unit> {
 
   override fun create(context: Context) {
     val isCrashReportsEnabled = MutableStateFlow(true)
 
     SentryAndroid.init(context.applicationContext) { options: SentryOptions ->
-      options.dsn = BuildConfig.SENTRY_DSN
+      options.dsn = BuildConfig.BUGSINK_DSN
       options.setBeforeSend { event, _ ->
         if (isCrashReportsEnabled.value) event else null
       }

@@ -114,8 +114,8 @@
           android:name="com.divinelink.scenepeek.initializer.NapierInitializer"
           android:value="androidx.startup" />
       <meta-data
-          android:name="com.divinelink.scenepeek.initializer.SentryInitializer"
-          android:value="${sentryInitializer}" />
+          android:name="com.divinelink.scenepeek.initializer.BugsinkInitializer"
+          android:value="${bugsinkInitializer}" />
     </provider>
   </application>
 
