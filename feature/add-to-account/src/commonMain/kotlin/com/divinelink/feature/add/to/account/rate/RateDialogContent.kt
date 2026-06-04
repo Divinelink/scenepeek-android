@@ -60,7 +60,7 @@ fun RateDialogContent(
     SpannableRating(
       modifier = Modifier
         .fillMaxWidth()
-        .padding(bottom = MaterialTheme.dimensions.keyline_8),
+        .padding(bottom = MaterialTheme.dimensions.keyline_24),
       text = stringResource(UiString.core_ui_your_rating),
       rating = rating.roundToInt(),
     )

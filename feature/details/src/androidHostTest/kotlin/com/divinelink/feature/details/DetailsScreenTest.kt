@@ -614,7 +614,7 @@ class DetailsScreenTest : ComposeTest() {
     onNodeWithText(submitRatingText).performClick()
 
     onNodeWithTag(
-      TestTags.Details.YOUR_RATING,
+      TestTags.Details.YOUR_RATING.format("9"),
       useUnmergedTree = true,
     ).assertIsDisplayed()
   }
