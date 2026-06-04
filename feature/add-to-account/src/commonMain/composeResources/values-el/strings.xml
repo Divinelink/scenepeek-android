@@ -21,4 +21,14 @@
     <string name="add_rating_description"><![CDATA[Τι γνώμη έχετε για το <b>%1$s</b>;]]></string>
     <string name="rating_submitted_successfully">Η βαθμολογία για το %1$s υποβλήθηκε</string>
     <string name="rating_deleted_successfully">Η βαθμολογία για το %1$s διαγράφηκε</string>
+    <string name="rating_label_1">Φρικτό</string>
+    <string name="rating_label_2">Σκουπίδι</string>
+    <string name="rating_label_3">Πραγματικά κακό</string>
+    <string name="rating_label_4">Μέτριο</string>
+    <string name="rating_label_5">Ανεκτό</string>
+    <string name="rating_label_6">Εντάξει</string>
+    <string name="rating_label_7">Αρκετά καλό</string>
+    <string name="rating_label_8">Πολύ καλό</string>
+    <string name="rating_label_9">Εξαιρετικό</string>
+    <string name="rating_label_10">Άριστο</string>
 </resources>
