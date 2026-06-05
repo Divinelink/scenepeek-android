@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/Divinelink/scenepeek-android/graph/badge.svg?token=FPANRF2HZ5)](https://codecov.io/gh/Divinelink/scenepeek-android)
+![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Divinelink/e1019c0e79b88046505566d98d96c710/raw/coverage.json)
 <img src="https://github.com/Divinelink/scenepeek-android/actions/workflows/coverage_static_analysis.yml/badge.svg" alt="CI">
 [![Join the community](https://img.shields.io/badge/matrix.org-join_community-teal?style=flat-square&logo=matrix)](https://matrix.to/#/#scenepeek:matrix.org)
 
@@ -11,6 +11,9 @@
 __The iOS version is under review from apple since 20/12/2025, until they decide to approve it and release it on the AppStore, you can get the iOS app on testflight.__
 
 [<img alt='Get it on GitHub' align="center" target='_blank' src='https://askyourself.app/assets/testflight.png' height='80'/>](https://testflight.apple.com/join/9bdUBYwY)
+
+### Help translate the project!
+[![Translation status](https://hosted.weblate.org/widget/scenepeek/287x66-grey.png)](https://hosted.weblate.org/engage/scenepeek/)
 
 </div>
 
@@ -108,6 +111,3 @@ properties file that is not committed to the repository.
 1. Create a `local.properties` file in the root project directory
 2. Add your API keys to this file in the format: `PROPERTY_NAME=value`
 3. In your app's `build.gradle`, reference these properties using `secrets.propertyName`
-
-
-

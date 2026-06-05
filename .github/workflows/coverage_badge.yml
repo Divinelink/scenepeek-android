@@ -1,0 +1,56 @@
+name: Coverage Badge
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v2
+        with:
+          java-version: 21
+          distribution: 'adopt'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Compute coverage
+        id: cov
+        run: |
+          set +e  # don't exit immediately on failure
+          OUTPUT=$(./gradlew koverLog 2>&1)
+          GRADLE_EXIT=$?
+          echo "$OUTPUT"
+          
+          if [ $GRADLE_EXIT -ne 0 ]; then
+            echo "koverLog failed with exit code $GRADLE_EXIT"
+            echo "percentage=0" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          
+          PCT=$(echo "$OUTPUT" | grep -oiP 'coverage:\s*\K[0-9.]+' | tail -1)
+          
+          if [ -z "$PCT" ]; then
+            echo "Could not parse percentage from output"
+            echo "percentage=0" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          
+          echo "Extracted coverage: $PCT%"
+          echo "percentage=$PCT" >> "$GITHUB_OUTPUT"
+
+      - name: Update badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: e1019c0e79b88046505566d98d96c710
+          filename: coverage.json
+          label: coverage
+          message: ${{ steps.cov.outputs.percentage }}%
+          valColorRange: ${{ steps.cov.outputs.percentage }}
+          maxColorRange: 100
+          minColorRange: 0
