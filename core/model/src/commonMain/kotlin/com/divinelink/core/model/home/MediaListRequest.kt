@@ -10,7 +10,7 @@ sealed interface MediaListRequest {
 }
 
 fun MediaListSection.toRequest(mediaType: MediaType): MediaListRequest? = when (this) {
-  MediaListSection.Favorites -> null
+  MediaListSection.Collection -> null
   MediaListSection.TopRated -> MediaListRequest.TopRated(mediaType)
   MediaListSection.TrendingAll -> MediaListRequest.TrendingAll
   is MediaListSection.Popular -> MediaListRequest.Popular(this.mediaType)

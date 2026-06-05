@@ -33,6 +33,7 @@ class FetchUserDataUseCase(
     when (parameters.section) {
       UserDataSection.Watchlist -> fetchWatchlist(parameters, accountId, sessionId)
       UserDataSection.Ratings -> fetchRatings(parameters, accountId, sessionId)
+      UserDataSection.Favorites -> fetchFavorites(parameters, accountId, sessionId)
     }
   }
 
@@ -131,6 +132,55 @@ class FetchUserDataUseCase(
       }
     }
   }
+
+  private suspend fun FlowCollector<Result<UserDataResponse>>.fetchFavorites(
+    parameters: UserDataParameters,
+    accountId: String,
+    sessionId: String,
+  ) {
+    if (parameters.mediaType == MediaType.TV) {
+      accountRepository.fetchFavoriteTvShows(
+        page = parameters.page,
+        sortOption = parameters.sortOption,
+        accountId = accountId,
+        sessionId = sessionId,
+      ).collect { result ->
+        result.fold(
+          onSuccess = {
+            handleSuccessResponse(
+              type = MediaType.TV,
+              parameters = parameters,
+              response = it,
+            )
+          },
+          onFailure = {
+            emit(Result.failure(it))
+          },
+        )
+      }
+    } else {
+      accountRepository.fetchFavoriteMovies(
+        page = parameters.page,
+        sortOption = parameters.sortOption,
+        accountId = accountId,
+        sessionId = sessionId,
+      ).collect { result ->
+        result.fold(
+          onSuccess = {
+            handleSuccessResponse(
+              type = MediaType.MOVIE,
+              parameters = parameters,
+              response = it,
+            )
+          },
+          onFailure = {
+            emit(Result.failure(it))
+          },
+        )
+      }
+    }
+  }
+
 
   private suspend fun FlowCollector<Result<UserDataResponse>>.handleSuccessResponse(
     type: MediaType,

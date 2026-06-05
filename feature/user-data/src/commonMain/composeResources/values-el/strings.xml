@@ -8,4 +8,7 @@
     <string name="feature_user_data_empty_shows_rating_description">Ξεκινήστε την εξερεύνηση, αξιολογήστε σειρές για να τις δείτε εδώ!</string>
     <string name="feature_user_data_login_rated_description">Πρέπει να συνδεθείτε για να δείτε τις αξιολογήσεις σας.</string>
     <string name="feature_user_data_login_watchlist_description">Πρέπει να συνδεθείτε για να δείτε τη λίστα παρακολούθησής σας.</string>
+    <string name="feature_user_data_login_favorites_description">Πρέπει να συνδεθείτε για να δείτε τα αγαπημένα σας.</string>
+    <string name="empty_favorite_list_title">Δεν υπάρχει κάτι στα αγαπημένα</string>
+    <string name="empty_favorite_list_description">Ξεκινήστε την εξερεύνηση και προσθέστε τα αγαπημένα σας για να τα δείτε εδώ!</string>
 </resources>

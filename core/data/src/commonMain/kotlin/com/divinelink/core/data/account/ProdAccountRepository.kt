@@ -121,6 +121,58 @@ class ProdAccountRepository(
     Result.success(data.copy(list = updatedTvShows))
   }
 
+  override suspend fun fetchFavoriteMovies(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
+    remote.fetchFavoriteMovies(
+      page = page,
+      sortOption = sortOption,
+      accountId = accountId,
+      sessionId = sessionId,
+    ),
+    dao.getFavoriteMediaIds(MediaType.MOVIE),
+  ) { response, favoriteIds ->
+    val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
+    val updatedMovies = data.list.map { media ->
+      (media as MediaItem.Media.Movie).copy(
+        isFavorite = media.id in favoriteSet,
+      )
+    }
+
+    Result.success(data.copy(list = updatedMovies))
+  }
+
+  override suspend fun fetchFavoriteTvShows(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
+    remote.fetchFavoriteTvShows(
+      page = page,
+      sortOption = sortOption,
+      accountId = accountId,
+      sessionId = sessionId,
+    ),
+    dao.getFavoriteMediaIds(MediaType.TV),
+  ) { response, favoriteIds ->
+    val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
+    val updatedTvShows = data.list.map { media ->
+      (media as MediaItem.Media.TV).copy(
+        isFavorite = media.id in favoriteSet,
+      )
+    }
+
+    Result.success(data.copy(list = updatedTvShows))
+  }
+
   override suspend fun deleteEpisodeRating(
     showId: Int,
     season: Int,

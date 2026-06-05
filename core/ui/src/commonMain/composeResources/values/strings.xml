@@ -111,6 +111,7 @@
   <string name="core_ui_back_to_top">Back to top</string>
   <string name="core_ui_section_watchlist">Watchlist</string>
   <string name="core_ui_section_ratings">Ratings</string>
+  <string name="core_ui_section_favorites">Favorites</string>
   <string name="core_ui_section_lists">Lists</string>
   <string name="core_ui_section_requests">Requests</string>
   <string name="core_ui_login_title">Login to your account</string>
@@ -157,7 +158,7 @@
   <string name="core_ui_backdrop_image_placeholder">Backdrop image</string>
   <string name="core_ui_select_media_backdrop_image">Select media backdrop image</string>
   <string name="core_ui_avatar_image_placeholder">Avatar image</string>
-  <string name="core_ui_mark_as_favorite_button_content_description">Mark As Favorite Button</string>
+  <string name="core_ui_add_to_collection_button_content_description">Add to collection button</string>
   <string name="clear_search_button_content_description">Clear Search Button</string>
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
   <string name="core_ui_add_to_watchlist_content_desc">Add to watchlist</string>

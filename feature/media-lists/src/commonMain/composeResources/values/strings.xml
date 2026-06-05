@@ -2,7 +2,6 @@
 <resources>
   <string name="empty_media_list_title">No media found</string>
   <string name="empty_media_list_description">You can try to change the filters or search for something else.</string>
-
-  <string name="empty_favorite_list_title">You don't have any favorites yet</string>
-  <string name="empty_favorite_list_description">Start exploring and add your favorites to see them here!</string>
+  <string name="empty_collection_list_title">Your collection is empty</string>
+  <string name="empty_collection_list_description">Start exploring and add to your collection to see it here!</string>
 </resources>

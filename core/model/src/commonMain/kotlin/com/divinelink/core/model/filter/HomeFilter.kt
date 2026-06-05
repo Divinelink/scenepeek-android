@@ -2,7 +2,7 @@ package com.divinelink.core.model.filter
 
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.resources.Res
-import com.divinelink.core.model.resources.favorites
+import com.divinelink.core.model.resources.collection
 import com.divinelink.core.model.resources.top_rated
 
 sealed class HomeFilter(
@@ -15,11 +15,11 @@ sealed class HomeFilter(
   isSelected = isSelected,
 ) {
 
-  data class Favorites(
+  data class Collection(
     override val isSelected: Boolean,
   ) : HomeFilter(
-    value = "favorites",
-    name = UIText.ResourceText(Res.string.favorites),
+    value = "collection",
+    name = UIText.ResourceText(Res.string.collection),
     isSelected = isSelected,
   )
 
@@ -34,7 +34,7 @@ sealed class HomeFilter(
   companion object {
     val entries
       get() = listOf(
-        Favorites(isSelected = false),
+        Collection(isSelected = false),
         TopRated(isSelected = false),
       )
   }

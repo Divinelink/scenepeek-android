@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 enum class UserDataSection(val value: String) {
   Watchlist("watchlist"),
   Ratings("ratings"),
+  Favorites("favorites"),
   ;
 
   companion object {

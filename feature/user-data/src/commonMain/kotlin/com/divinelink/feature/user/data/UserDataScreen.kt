@@ -35,6 +35,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.NavigateUpButton
 import com.divinelink.core.ui.resources.core_ui_login
+import com.divinelink.core.ui.resources.core_ui_section_favorites
 import com.divinelink.core.ui.resources.core_ui_section_ratings
 import com.divinelink.core.ui.resources.core_ui_section_watchlist
 import com.divinelink.feature.user.data.ui.provider.UserDataUiStateParameterProvider
@@ -62,6 +63,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
       when (uiState.section) {
         UserDataSection.Watchlist -> UiString.core_ui_section_watchlist
         UserDataSection.Ratings -> UiString.core_ui_section_ratings
+        UserDataSection.Favorites -> UiString.core_ui_section_favorites
       },
     )
   }

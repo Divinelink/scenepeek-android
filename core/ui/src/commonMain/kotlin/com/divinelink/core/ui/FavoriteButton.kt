@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Bookmarks
+import androidx.compose.material.icons.rounded.Bookmarks
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,8 +20,7 @@ import androidx.compose.ui.graphics.Color
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
-import com.divinelink.core.ui.resources.Res
-import com.divinelink.core.ui.resources.core_ui_mark_as_favorite_button_content_description
+import com.divinelink.core.ui.resources.core_ui_add_to_collection_button_content_description
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -52,15 +51,15 @@ fun FavoriteButton(
       label = "Like button",
     ) { favorite ->
       val image = when (favorite) {
-        true -> Icons.Default.Favorite
-        false -> Icons.Default.FavoriteBorder
+        true -> Icons.Rounded.Bookmarks
+        false -> Icons.Outlined.Bookmarks
       }
       Icon(
         modifier = Modifier.size(MaterialTheme.dimensions.keyline_26),
         imageVector = image,
         tint = color,
         contentDescription = stringResource(
-          Res.string.core_ui_mark_as_favorite_button_content_description,
+          UiString.core_ui_add_to_collection_button_content_description,
         ),
       )
     }
