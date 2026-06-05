@@ -1,8 +1,9 @@
 package com.divinelink.scenepeek.details.domain.usecase
 
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.domain.details.media.AddToWatchlistParameters
 import com.divinelink.core.domain.details.media.AddToAccountUseCase
+import com.divinelink.core.domain.details.media.AddToWatchlistParameters
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
@@ -43,7 +44,8 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        watchlist = true,
+        section = AccountDataSection.Watchlist,
+        shouldAdd = true,
       ),
     )
 
@@ -65,7 +67,8 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        watchlist = true,
+        section = AccountDataSection.Watchlist,
+        shouldAdd = true,
       ),
     )
 
@@ -91,7 +94,8 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        watchlist = true,
+        section = AccountDataSection.Watchlist,
+        shouldAdd = true,
       ),
     )
 
@@ -116,7 +120,34 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.TV,
-        watchlist = true,
+        section = AccountDataSection.Watchlist,
+        shouldAdd = true,
+      ),
+    )
+
+    assertThat(result.isSuccess).isTrue()
+  }
+
+  @Test
+  fun `test user with account and session id can mark as favorite for tv show`() = runTest {
+    sessionStorage = SessionStorageFactory.full()
+
+    val useCase = AddToAccountUseCase(
+      sessionStorage = sessionStorage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    repository.mockAddToWatchlist(
+      response = Result.success(Unit),
+    )
+
+    val result = useCase.invoke(
+      AddToWatchlistParameters(
+        id = 0,
+        mediaType = MediaType.TV,
+        section = AccountDataSection.Favorite,
+        shouldAdd = true,
       ),
     )
 
@@ -137,7 +168,8 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.UNKNOWN,
-        watchlist = false,
+        section = AccountDataSection.Watchlist,
+        shouldAdd = false,
       ),
     )
 

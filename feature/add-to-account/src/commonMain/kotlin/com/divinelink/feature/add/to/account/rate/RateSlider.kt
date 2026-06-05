@@ -102,8 +102,10 @@ fun RateSliderWithTooltip(
   val thumbRadiusPx = with(LocalDensity.current) { thumbRadius.toPx() }
   var sliderSize by remember { mutableStateOf(IntSize.Zero) }
 
-  val fraction = ((rating.floatValue - valueRange.start) /
-    (valueRange.endInclusive - valueRange.start)).coerceIn(0f, 1f)
+  val fraction = (
+    (rating.floatValue - valueRange.start) /
+      (valueRange.endInclusive - valueRange.start)
+    ).coerceIn(0f, 1f)
   val trackWidthPx = (sliderSize.width - 2 * thumbRadiusPx).coerceAtLeast(0f)
   val thumbCenterX = thumbRadiusPx + fraction * trackWidthPx
   val thumbTopY = (sliderSize.height / 2f - thumbRadiusPx).coerceAtLeast(0f)

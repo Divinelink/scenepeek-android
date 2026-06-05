@@ -5,6 +5,7 @@ import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.RatingDetails
@@ -120,8 +121,8 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     viewModel.onClearRating()
   }
 
-  fun onAddToWatchlist() = apply {
-    viewModel.onAddToAccount()
+  fun onAddToWatchlist(section: AccountDataSection = AccountDataSection.Watchlist) = apply {
+    viewModel.onAddToAccount(section)
   }
 
   fun onNavigateToLogin(snackbarResult: SnackbarResult) = apply {

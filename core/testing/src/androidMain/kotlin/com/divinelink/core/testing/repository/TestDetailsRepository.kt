@@ -116,7 +116,7 @@ class TestDetailsRepository {
 
   suspend fun mockAddToWatchlist(response: Result<Unit>) {
     whenever(
-      mock.addToAccount(any()),
+      mock.addToAccount(any(), any()),
     ).thenReturn(
       response,
     )

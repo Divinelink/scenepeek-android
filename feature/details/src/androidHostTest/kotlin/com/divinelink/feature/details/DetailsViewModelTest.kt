@@ -733,6 +733,7 @@ class DetailsViewModelTest {
             accountDataState = mapOf(
               AccountDataSection.Watchlist to false,
               AccountDataSection.Rating to true,
+              AccountDataSection.Favorite to false,
             ),
           ),
           createUiState(
@@ -797,6 +798,7 @@ class DetailsViewModelTest {
             accountDataState = mapOf(
               AccountDataSection.Watchlist to false,
               AccountDataSection.Rating to false,
+              AccountDataSection.Favorite to false,
             ),
           ),
           createUiState(
@@ -814,6 +816,7 @@ class DetailsViewModelTest {
             accountDataState = mapOf(
               AccountDataSection.Watchlist to false,
               AccountDataSection.Rating to true,
+              AccountDataSection.Favorite to false,
             ),
           ),
           createUiState(
@@ -1103,6 +1106,7 @@ class DetailsViewModelTest {
             accountDataState = mapOf(
               AccountDataSection.Watchlist to true,
               AccountDataSection.Rating to false,
+              AccountDataSection.Favorite to false,
             ),
           ),
           createUiState(
@@ -1220,6 +1224,7 @@ class DetailsViewModelTest {
             accountDataState = mapOf(
               AccountDataSection.Watchlist to true,
               AccountDataSection.Rating to false,
+              AccountDataSection.Favorite to false,
             ),
           ),
           createUiState(
@@ -1353,6 +1358,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
@@ -1399,6 +1405,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
@@ -1475,6 +1482,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageTvShow,
               DetailActionItem.Request,
@@ -1517,6 +1525,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
@@ -1571,6 +1580,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
@@ -1597,6 +1607,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -1982,6 +1993,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -2013,6 +2025,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.Request,
           ),
@@ -2062,6 +2075,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
@@ -2094,6 +2108,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
@@ -2114,6 +2129,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
@@ -2134,6 +2150,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.Request,
             ),
@@ -2186,6 +2203,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -2217,6 +2235,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -2268,6 +2287,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -2297,6 +2317,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.Request,
           ),
@@ -2349,6 +2370,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -2378,6 +2400,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.Request,
           ),
@@ -2430,6 +2453,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -2460,6 +2484,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageTvShow,
             ),
@@ -2483,6 +2508,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageTvShow,
             ),
@@ -2506,6 +2532,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageTvShow,
             ),
@@ -2557,6 +2584,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
@@ -2583,6 +2611,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
@@ -2603,6 +2632,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
@@ -2623,6 +2653,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
               DetailActionItem.Request,
             ),
@@ -2681,6 +2712,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.Favorite,
               DetailActionItem.List,
             ),
           ),
@@ -2728,6 +2760,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
@@ -2765,6 +2798,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.Favorite,
             DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),

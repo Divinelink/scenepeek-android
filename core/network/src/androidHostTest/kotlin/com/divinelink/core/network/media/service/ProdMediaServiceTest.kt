@@ -1,6 +1,7 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
@@ -191,7 +192,9 @@ class ProdMediaServiceTest {
         sessionId = "9b256",
         accountId = "12345",
         watchlist = true,
+        favorite = null,
       ),
+      section = AccountDataSection.Watchlist,
     )
 
     assertThat(result).isEqualTo(

@@ -487,9 +487,7 @@ class DetailsViewModel(
     }
   }
 
-  fun onAddToAccount(
-    section: AccountDataSection,
-  ) {
+  fun onAddToAccount(section: AccountDataSection) {
     setSectionState(section, true)
 
     viewModelScope.launch {
@@ -596,7 +594,6 @@ class DetailsViewModel(
       }
     }
   }
-
 
   fun onUpdateMediaInfo(mediaInfo: JellyseerrMediaInfo) {
     viewModelScope.launch {

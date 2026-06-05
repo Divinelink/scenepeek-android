@@ -250,24 +250,23 @@ class ProdMediaService(
   override suspend fun addToAccount(
     request: AddToAccountRequest,
     section: AccountDataSection,
-  ): Result<TMDBResponse> =
-    runCatchingWithNetworkRetry(
-      maxDelay = 1000L,
-      times = 10,
-    ) {
-      val url = "${restClient.tmdbUrl}/account/${request.accountId}/${section.value}" +
-        "?session_id=${request.sessionId}"
+  ): Result<TMDBResponse> = runCatchingWithNetworkRetry(
+    maxDelay = 1000L,
+    times = 10,
+  ) {
+    val url = "${restClient.tmdbUrl}/account/${request.accountId}/${section.value}" +
+      "?session_id=${request.sessionId}"
 
-      restClient.post<AddToAccountRequestBody, TMDBResponse>(
-        url = url,
-        body = AddToAccountRequestBody(
-          mediaType = request.mediaType,
-          mediaId = request.mediaId,
-          favorite = request.favorite,
-          watchlist = request.watchlist,
-        ),
-      )
-    }
+    restClient.post<AddToAccountRequestBody, TMDBResponse>(
+      url = url,
+      body = AddToAccountRequestBody(
+        mediaType = request.mediaType,
+        mediaId = request.mediaId,
+        favorite = request.favorite,
+        watchlist = request.watchlist,
+      ),
+    )
+  }
 
   override fun findById(externalId: String): Flow<FindByIdResponseApi> = flow {
     val url = buildFindByIdUrl(externalId = externalId)

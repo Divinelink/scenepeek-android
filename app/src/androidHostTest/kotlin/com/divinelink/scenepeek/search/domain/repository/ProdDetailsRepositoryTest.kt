@@ -18,6 +18,7 @@ import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.ExternalRatingsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.MoviesList
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
@@ -562,6 +563,7 @@ class ProdDetailsRepositoryTest {
       movieId = 555,
       accountId = "123456789",
       watchlist = true,
+      favorite = null,
       sessionId = "session_id",
     )
 
@@ -578,10 +580,12 @@ class ProdDetailsRepositoryTest {
     mediaRemote.mockAddToWatchlist(
       request = request,
       response = response,
+      section = AccountDataSection.Watchlist,
     )
 
     val actualResult = repository.addToAccount(
       request = request,
+      section = AccountDataSection.Watchlist,
     )
 
     assertThat(expectedResult).isEqualTo(actualResult.data)

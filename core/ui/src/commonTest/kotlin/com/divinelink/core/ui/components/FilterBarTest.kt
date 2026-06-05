@@ -59,7 +59,7 @@ class FilterBarTest : ComposeTest() {
       )
     }
 
-    onNodeWithText("Favorites").assertIsDisplayed().performClick()
+    onNodeWithText("Collection").assertIsDisplayed().performClick()
 
     clickedFilter shouldBe HomeFilter.Collection(isSelected = false)
   }

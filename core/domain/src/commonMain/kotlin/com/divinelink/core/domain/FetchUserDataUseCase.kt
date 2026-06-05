@@ -181,7 +181,6 @@ class FetchUserDataUseCase(
     }
   }
 
-
   private suspend fun FlowCollector<Result<UserDataResponse>>.handleSuccessResponse(
     type: MediaType,
     parameters: UserDataParameters,
