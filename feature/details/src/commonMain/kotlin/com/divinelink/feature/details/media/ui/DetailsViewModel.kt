@@ -14,8 +14,8 @@ import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.domain.details.media.AddToAccountUseCase
 import com.divinelink.core.domain.details.media.AddToWatchlistParameters
-import com.divinelink.core.domain.details.media.AddToWatchlistUseCase
 import com.divinelink.core.domain.details.media.DeleteRatingParameters
 import com.divinelink.core.domain.details.media.DeleteRatingUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
@@ -61,6 +61,7 @@ import com.divinelink.feature.add.to.account.resources.must_be_logged_in_to_rate
 import com.divinelink.feature.add.to.account.resources.rating_deleted_successfully
 import com.divinelink.feature.add.to.account.resources.rating_submitted_successfully
 import com.divinelink.feature.details.resources.Res
+import com.divinelink.feature.details.resources.added_to_favorites_message
 import com.divinelink.feature.details.resources.details__added_to_watchlist
 import com.divinelink.feature.details.resources.details__must_be_logged_in_to_watchlist
 import com.divinelink.feature.details.resources.details__removed_from_watchlist
@@ -69,6 +70,8 @@ import com.divinelink.feature.details.resources.feature_details_jellyseerr_failu
 import com.divinelink.feature.details.resources.feature_details_jellyseerr_success_media_delete
 import com.divinelink.feature.details.resources.feature_details_jellyseerr_success_request_delete
 import com.divinelink.feature.details.resources.login
+import com.divinelink.feature.details.resources.must_be_logged_in_to_mark_as_favorite
+import com.divinelink.feature.details.resources.removed_from_favorites_message
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -77,7 +80,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -92,7 +94,7 @@ class DetailsViewModel(
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
-  private val addToWatchlistUseCase: AddToWatchlistUseCase,
+  private val addToAccountUseCase: AddToAccountUseCase,
   private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
@@ -485,48 +487,44 @@ class DetailsViewModel(
     }
   }
 
-  fun onAddToWatchlist() {
-    setSectionState(AccountDataSection.Watchlist, true)
+  fun onAddToAccount(
+    section: AccountDataSection,
+  ) {
+    setSectionState(section, true)
+
     viewModelScope.launch {
-      addToWatchlistUseCase.invoke(
+      addToAccountUseCase.invoke(
         AddToWatchlistParameters(
           id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
-          addToWatchlist = !viewState.value.userDetails.watchlist,
+          section = section,
+          shouldAdd = when (section) {
+            AccountDataSection.Watchlist -> !viewState.value.userDetails.watchlist
+            AccountDataSection.Favorite -> !viewState.value.userDetails.favorite
+            else -> false
+          },
         ),
       ).fold(
         onSuccess = {
-          _viewState.update { viewState ->
-            if (viewState.userDetails.watchlist) {
-              viewState.copy(
-                userDetails = viewState.userDetails.copy(watchlist = false),
-                snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(
-                    Res.string.details__removed_from_watchlist,
-                    viewState.mediaDetails?.title!!,
-                  ),
-                ),
-              )
-            } else {
-              viewState.copy(
-                userDetails = viewState.userDetails.copy(watchlist = true),
-                snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(
-                    Res.string.details__added_to_watchlist,
-                    viewState.mediaDetails?.title!!,
-                  ),
-                ),
-              )
-            }
+          when (section) {
+            AccountDataSection.Watchlist -> handleWatchlistSuccess()
+            AccountDataSection.Favorite -> handleFavoriteSuccess()
+            AccountDataSection.Rating -> Unit
           }
-          setSectionState(AccountDataSection.Watchlist, false)
+          setSectionState(section, false)
         },
         onFailure = {
           if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
+              val resource = when (section) {
+                AccountDataSection.Watchlist -> Res.string.details__must_be_logged_in_to_watchlist
+                AccountDataSection.Favorite -> Res.string.must_be_logged_in_to_mark_as_favorite
+                AccountDataSection.Rating -> return@launch
+              }
+
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(Res.string.details__must_be_logged_in_to_watchlist),
+                  text = UIText.ResourceText(resource),
                   actionLabelText = UIText.ResourceText(Res.string.login),
                   onSnackbarResult = ::navigateToLogin,
                 ),
@@ -541,11 +539,64 @@ class DetailsViewModel(
               )
             }
           }
-          setSectionState(AccountDataSection.Watchlist, false)
+          setSectionState(section, false)
         },
       )
     }
   }
+
+  private fun handleWatchlistSuccess() {
+    _viewState.update { uiState ->
+      if (uiState.userDetails.watchlist) {
+        uiState.copy(
+          userDetails = uiState.userDetails.copy(watchlist = false),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              Res.string.details__removed_from_watchlist,
+              uiState.mediaDetails?.title!!,
+            ),
+          ),
+        )
+      } else {
+        uiState.copy(
+          userDetails = uiState.userDetails.copy(watchlist = true),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              Res.string.details__added_to_watchlist,
+              uiState.mediaDetails?.title!!,
+            ),
+          ),
+        )
+      }
+    }
+  }
+
+  private fun handleFavoriteSuccess() {
+    _viewState.update { uiState ->
+      if (uiState.userDetails.favorite) {
+        uiState.copy(
+          userDetails = uiState.userDetails.copy(favorite = false),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              Res.string.removed_from_favorites_message,
+              uiState.mediaDetails?.title!!,
+            ),
+          ),
+        )
+      } else {
+        uiState.copy(
+          userDetails = uiState.userDetails.copy(favorite = true),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              Res.string.added_to_favorites_message,
+              uiState.mediaDetails?.title!!,
+            ),
+          ),
+        )
+      }
+    }
+  }
+
 
   fun onUpdateMediaInfo(mediaInfo: JellyseerrMediaInfo) {
     viewModelScope.launch {

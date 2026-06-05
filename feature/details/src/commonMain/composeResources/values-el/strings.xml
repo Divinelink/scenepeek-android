@@ -3,9 +3,13 @@
     <string name="feature_details__watchlist">Λίστα παρακολούθησης</string>
     <string name="login">Σύνδεση</string>
     <string name="feature_details__add_to_list">Προσθήκη σε λίστα</string>
+    <string name="feature_details__favorite">Αγαπημένο</string>
     <string name="details__added_to_watchlist">%1$s προστέθηκε στη λίστα παρακολούθησης</string>
     <string name="details__removed_from_watchlist">%1$s αφαιρέθηκε από τη λίστα παρακολούθησης</string>
     <string name="details__must_be_logged_in_to_watchlist">Παρακαλώ συνδεθείτε για να προσθέσετε στη λίστα παρακολούθησής σας.</string>
+    <string name="added_to_favorites_message">%1$s προστέθηκε στα αγαπημένα</string>
+    <string name="removed_from_favorites_message">%1$s αφαιρέθηκε από τα αγαπημένα</string>
+    <string name="must_be_logged_in_to_mark_as_favorite">Παρακαλώ συνδεθείτε για να προσθέσετε στα αγαπημένα σας.</string>
     <string name="feature_details_information">Πληοροφορίες</string>
     <string name="feature_details_jellyseerr_success_request_delete">Το αίτημα διαγράφηκε επιτυχώς</string>
     <string name="feature_details_jellyseerr_failure_media_delete">Αποτυχία αφαίρεσης του <b>%1$s</b></string>

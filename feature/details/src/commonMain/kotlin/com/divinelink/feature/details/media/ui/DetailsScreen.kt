@@ -131,7 +131,7 @@ fun DetailsScreen(
       onPersonClick = { person -> onNavigate(person.toPersonRoute()) },
       onConsumeSnackbar = viewModel::consumeSnackbarMessage,
       onAddRateClick = { openRateBottomSheet = true },
-      onAddToWatchlistClick = viewModel::onAddToWatchlist,
+      onAddToAccount = viewModel::onAddToAccount,
       onViewAllCreditsClick = {
         viewState.mediaDetails?.id?.let { id ->
           onNavigate(

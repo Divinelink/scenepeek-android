@@ -668,7 +668,7 @@ class ScenePeekAppTest : ComposeTest() {
         onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
         submitRatingUseCase = submitRatingUseCase.mock,
         deleteRatingUseCase = deleteRatingUseCase.mock,
-        addToWatchlistUseCase = addToWatchlistUseCase.mock,
+        addToAccountUseCase = addToWatchlistUseCase.mock,
         spoilersObfuscationUseCase = spoilersObfuscationUseCase,
         fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
         deleteRequestUseCase = deleteRequestUseCase.mock,

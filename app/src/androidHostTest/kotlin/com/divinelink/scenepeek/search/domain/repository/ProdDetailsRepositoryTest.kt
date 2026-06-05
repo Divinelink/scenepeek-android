@@ -33,7 +33,7 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseAp
 import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
 import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -558,10 +558,10 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun `test add to watchlist for movie`() = runTest {
-    val request = AddToWatchlistRequestApi.Movie(
+    val request = AddToAccountRequest.Movie(
       movieId = 555,
       accountId = "123456789",
-      addToWatchlist = true,
+      watchlist = true,
       sessionId = "session_id",
     )
 
@@ -580,7 +580,7 @@ class ProdDetailsRepositoryTest {
       response = response,
     )
 
-    val actualResult = repository.addToWatchlist(
+    val actualResult = repository.addToAccount(
       request = request,
     )
 

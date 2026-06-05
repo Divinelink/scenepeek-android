@@ -4,17 +4,19 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
 
 data class AddToWatchlistParameters(
   val id: Int,
   val mediaType: MediaType,
-  val addToWatchlist: Boolean,
+  val section: AccountDataSection,
+  val shouldAdd: Boolean,
 )
 
-open class AddToWatchlistUseCase(
+open class AddToAccountUseCase(
   private val sessionStorage: SessionStorage,
   private val repository: DetailsRepository,
   val dispatcher: DispatcherProvider,
@@ -27,24 +29,37 @@ open class AddToWatchlistUseCase(
     if (accountId == null || sessionId == null) {
       throw SessionException.Unauthenticated()
     } else {
+      val watchlist = if (parameters.section == AccountDataSection.Watchlist) {
+        parameters.shouldAdd
+      } else {
+        null
+      }
+      val favorite = if (parameters.section == AccountDataSection.Favorite) {
+        parameters.shouldAdd
+      } else {
+        null
+      }
+
       val request = when (parameters.mediaType) {
-        MediaType.MOVIE -> AddToWatchlistRequestApi.Movie(
+        MediaType.MOVIE -> AddToAccountRequest.Movie(
           movieId = parameters.id,
           accountId = accountId,
-          addToWatchlist = parameters.addToWatchlist,
+          watchlist = watchlist,
+          favorite = favorite,
           sessionId = sessionId,
         )
-        MediaType.TV -> AddToWatchlistRequestApi.TV(
+        MediaType.TV -> AddToAccountRequest.TV(
           seriesId = parameters.id,
           accountId = accountId,
-          addToWatchlist = parameters.addToWatchlist,
+          watchlist = watchlist,
+          favorite = favorite,
           sessionId = sessionId,
         )
 
         else -> throw IllegalArgumentException("Unsupported media type: ${parameters.mediaType}")
       }
 
-      Result.success(repository.addToWatchlist(request).getOrThrow())
+      Result.success(repository.addToAccount(request, parameters.section).getOrThrow())
     }
   }
 }

@@ -75,7 +75,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       getMediaDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
-      addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
+      addToAccountUseCase = fakeAddToWatchListUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       deleteRequestUseCase = testDeleteRequestUseCase.mock,
@@ -121,7 +121,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   }
 
   fun onAddToWatchlist() = apply {
-    viewModel.onAddToWatchlist()
+    viewModel.onAddToAccount()
   }
 
   fun onNavigateToLogin(snackbarResult: SnackbarResult) = apply {

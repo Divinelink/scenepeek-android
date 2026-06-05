@@ -39,6 +39,7 @@ import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
@@ -95,7 +96,7 @@ fun DetailsContent(
   onPersonClick: (Person) -> Unit,
   onConsumeSnackbar: () -> Unit,
   onAddRateClick: () -> Unit,
-  onAddToWatchlistClick: () -> Unit,
+  onAddToAccount: (AccountDataSection) -> Unit,
   onViewAllCreditsClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
   onTabSelected: (Int) -> Unit,
@@ -227,8 +228,10 @@ fun DetailsContent(
     floatingActionButton = {
       DetailsExpandableFloatingActionButton(
         actionButtons = viewState.actionButtons,
+        isFavorite = viewState.userDetails.favorite,
+        onWatchlist = viewState.userDetails.watchlist,
         onAddRateClicked = onAddRateClick,
-        onAddToWatchlistClicked = onAddToWatchlistClick,
+        onAddToAccount = onAddToAccount,
         onAddToListClicked = {
           viewState.mediaItem?.let {
             onNavigate(
@@ -263,7 +266,7 @@ fun DetailsContent(
             trailer = viewState.trailer,
             onMediaItemClick = onMediaItemClick,
             onAddRateClick = onAddRateClick,
-            onAddToWatchlistClick = onAddToWatchlistClick,
+            onAddToAccount = onAddToAccount,
             viewAllCreditsClick = onViewAllCreditsClick,
             onPersonClick = onPersonClick,
             obfuscateEpisodes = viewState.spoilersObfuscated,
@@ -308,7 +311,7 @@ private fun SharedTransitionScope.MediaDetailsContent(
   onPersonClick: (Person) -> Unit,
   onMediaItemClick: (MediaItem) -> Unit,
   onAddRateClick: () -> Unit,
-  onAddToWatchlistClick: () -> Unit,
+  onAddToAccount: (AccountDataSection) -> Unit,
   viewAllCreditsClick: () -> Unit,
   viewAllRatingsClick: () -> Unit,
   onWatchTrailer: (String) -> Unit,
@@ -363,7 +366,7 @@ private fun SharedTransitionScope.MediaDetailsContent(
       DetailActions(
         onAddRateClick = onAddRateClick,
         uiState = uiState,
-        onAddToWatchlistClick = onAddToWatchlistClick,
+        onAddToAccount = onAddToAccount,
         onNavigate = onNavigate,
       )
     }
@@ -424,7 +427,7 @@ fun DetailsContentPreview(
               onMediaItemClick = {},
               onConsumeSnackbar = {},
               onAddRateClick = {},
-              onAddToWatchlistClick = {},
+              onAddToAccount = {},
               onPersonClick = {},
               onViewAllCreditsClick = {},
               onShowAllRatingsClick = {},

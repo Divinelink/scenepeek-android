@@ -2,7 +2,7 @@ package com.divinelink.scenepeek.details.domain.usecase
 
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.details.media.AddToWatchlistParameters
-import com.divinelink.core.domain.details.media.AddToWatchlistUseCase
+import com.divinelink.core.domain.details.media.AddToAccountUseCase
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
@@ -33,7 +33,7 @@ class AddToWatchlistUseCaseTest {
   fun `test user with no account id cannot add to watchlist`() = runTest {
     sessionStorage = SessionStorageFactory.empty()
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = AddToAccountUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -43,7 +43,7 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        addToWatchlist = true,
+        watchlist = true,
       ),
     )
 
@@ -55,7 +55,7 @@ class AddToWatchlistUseCaseTest {
   fun `test user with no session id cannot add to watchlist`() = runTest {
     sessionStorage = SessionStorageFactory.empty()
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = AddToAccountUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -65,7 +65,7 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        addToWatchlist = true,
+        watchlist = true,
       ),
     )
 
@@ -81,7 +81,7 @@ class AddToWatchlistUseCaseTest {
       response = Result.success(Unit),
     )
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = AddToAccountUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -91,7 +91,7 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        addToWatchlist = true,
+        watchlist = true,
       ),
     )
 
@@ -102,7 +102,7 @@ class AddToWatchlistUseCaseTest {
   fun `test user with account and session id can add to watchlist for tv show`() = runTest {
     sessionStorage = SessionStorageFactory.full()
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = AddToAccountUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -116,7 +116,7 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.TV,
-        addToWatchlist = true,
+        watchlist = true,
       ),
     )
 
@@ -127,7 +127,7 @@ class AddToWatchlistUseCaseTest {
   fun `test invalid media type throws exception`() = runTest {
     sessionStorage = SessionStorageFactory.full()
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = AddToAccountUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -137,7 +137,7 @@ class AddToWatchlistUseCaseTest {
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.UNKNOWN,
-        addToWatchlist = false,
+        watchlist = false,
       ),
     )
 

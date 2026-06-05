@@ -18,6 +18,7 @@ import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.CollectionDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.TV
@@ -37,7 +38,7 @@ import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.toDomainVideosList
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -204,8 +205,11 @@ class ProdDetailsRepository(
     .deleteRating(request)
     .map { it.success }
 
-  override suspend fun addToWatchlist(request: AddToWatchlistRequestApi): Result<Unit> = mediaRemote
-    .addToWatchlist(request)
+  override suspend fun addToAccount(
+    request: AddToAccountRequest,
+    section: AccountDataSection,
+  ): Result<Unit> = mediaRemote
+    .addToAccount(request, section)
     .map { it.success }
 
   override fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = flow {
