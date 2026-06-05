@@ -1,11 +1,6 @@
 name: Static Analysis & Coverage
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - development
   pull_request:
 
 jobs:
