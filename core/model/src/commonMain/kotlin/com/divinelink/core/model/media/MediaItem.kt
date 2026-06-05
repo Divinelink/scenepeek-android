@@ -22,7 +22,9 @@ sealed class MediaItem {
     abstract val voteAverage: Double
     abstract val voteCount: Int
     abstract val overview: String
-    abstract val isFavorite: Boolean?
+
+    // Not to be misunderstood with TMDB favorite
+    abstract val isFavorite: Boolean? // TODO Rename to isOnCollection
     abstract val popularity: Double
     abstract val accountRating: Int?
 

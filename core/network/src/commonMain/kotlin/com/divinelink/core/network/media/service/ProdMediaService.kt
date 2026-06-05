@@ -2,6 +2,7 @@ package com.divinelink.core.network.media.service
 
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.tmdbSessionId
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaReference
@@ -17,8 +18,8 @@ import com.divinelink.core.network.media.model.details.providers.WatchProvidersR
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.season.SeasonDetailsResponse
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
+import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequestBody
 import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.find.FindByIdResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
@@ -246,23 +247,26 @@ class ProdMediaService(
       restClient.delete<TMDBResponse>(url = url)
     }
 
-  override suspend fun addToWatchlist(request: AddToWatchlistRequestApi): Result<TMDBResponse> =
-    runCatchingWithNetworkRetry(
-      maxDelay = 1000L,
-      times = 10,
-    ) {
-      val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
-        "?session_id=${request.sessionId}"
+  override suspend fun addToAccount(
+    request: AddToAccountRequest,
+    section: AccountDataSection,
+  ): Result<TMDBResponse> = runCatchingWithNetworkRetry(
+    maxDelay = 1000L,
+    times = 10,
+  ) {
+    val url = "${restClient.tmdbUrl}/account/${request.accountId}/${section.value}" +
+      "?session_id=${request.sessionId}"
 
-      restClient.post<AddToWatchlistRequestBodyApi, TMDBResponse>(
-        url = url,
-        body = AddToWatchlistRequestBodyApi(
-          mediaType = request.mediaType,
-          mediaId = request.mediaId,
-          watchlist = request.addToWatchlist,
-        ),
-      )
-    }
+    restClient.post<AddToAccountRequestBody, TMDBResponse>(
+      url = url,
+      body = AddToAccountRequestBody(
+        mediaType = request.mediaType,
+        mediaId = request.mediaId,
+        favorite = request.favorite,
+        watchlist = request.watchlist,
+      ),
+    )
+  }
 
   override fun findById(externalId: String): Flow<FindByIdResponseApi> = flow {
     val url = buildFindByIdUrl(externalId = externalId)

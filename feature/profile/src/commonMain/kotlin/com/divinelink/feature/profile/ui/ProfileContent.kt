@@ -73,6 +73,15 @@ fun ProfileContent(
 
     item {
       ProfileSectionItem(
+        section = ProfileSection.Favorites,
+        onClick = {
+          userInteraction(ProfileAction.NavigateToUserData(UserDataSection.Favorites))
+        },
+      )
+    }
+
+    item {
+      ProfileSectionItem(
         section = ProfileSection.Lists,
         onClick = { userInteraction(ProfileAction.NavigateToLists) },
       )

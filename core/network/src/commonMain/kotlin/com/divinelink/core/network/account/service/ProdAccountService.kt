@@ -86,6 +86,40 @@ class ProdAccountService(
     emit(response)
   }
 
+  override fun fetchFavoriteMovies(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<MoviesResponseApi> = flow {
+    val url = "${restClient.tmdbUrl}/account/$accountId/favorite/movies" +
+      "?page=$page" +
+      "&language=${restClient.language()}" +
+      "&session_id=$sessionId" +
+      "&sort_by=${sortOption.sortValue}"
+
+    val response = restClient.get<MoviesResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun fetchFavoriteTvShows(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<TvResponseApi> = flow {
+    val url = "${restClient.tmdbUrl}/account/$accountId/favorite/tv" +
+      "?page=$page" +
+      "&language=${restClient.language()}" +
+      "&session_id=$sessionId" +
+      "&sort_by=${sortOption.sortValue}"
+
+    val response = restClient.get<TvResponseApi>(url = url)
+
+    emit(response)
+  }
+
   override suspend fun submitEpisodeRating(
     showId: Int,
     season: Int,

@@ -35,6 +35,20 @@ interface AccountRepository {
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>>
 
+  suspend fun fetchFavoriteMovies(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
+
+  suspend fun fetchFavoriteTvShows(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
+
   suspend fun submitEpisodeRating(
     showId: Int,
     season: Int,

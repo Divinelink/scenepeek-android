@@ -31,8 +31,8 @@ import com.divinelink.core.ui.tab.ScenePeekSecondaryTabs
 import com.divinelink.feature.media.lists.MediaListsAction
 import com.divinelink.feature.media.lists.MediaListsUiState
 import com.divinelink.feature.media.lists.resources.Res
-import com.divinelink.feature.media.lists.resources.empty_favorite_list_description
-import com.divinelink.feature.media.lists.resources.empty_favorite_list_title
+import com.divinelink.feature.media.lists.resources.empty_collection_list_description
+import com.divinelink.feature.media.lists.resources.empty_collection_list_title
 import com.divinelink.feature.media.lists.resources.empty_media_list_description
 import com.divinelink.feature.media.lists.resources.empty_media_list_title
 import com.divinelink.feature.media.lists.ui.provider.MediaListsUiStateParameterProvider
@@ -87,11 +87,11 @@ fun MediaListsContent(
           MediaListsForm.Initial -> LoadingContent()
 
           is MediaListsForm.Data -> if (form.media.isEmpty()) {
-            val state = if (uiState.section is MediaListSection.Favorites) {
+            val state = if (uiState.section is MediaListSection.Collection) {
               BlankSlateState.Custom(
                 icon = UiDrawable.no_results,
-                title = UIText.ResourceText(Res.string.empty_favorite_list_title),
-                description = UIText.ResourceText(Res.string.empty_favorite_list_description),
+                title = UIText.ResourceText(Res.string.empty_collection_list_title),
+                description = UIText.ResourceText(Res.string.empty_collection_list_description),
               )
             } else {
               BlankSlateState.Custom(

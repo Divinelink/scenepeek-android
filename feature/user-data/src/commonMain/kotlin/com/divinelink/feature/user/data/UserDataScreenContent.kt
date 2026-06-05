@@ -26,6 +26,7 @@ import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.model.user.data.UserDataSection.Ratings
 import com.divinelink.core.model.user.data.UserDataSection.Watchlist
 import com.divinelink.core.navigation.route.Navigation
@@ -39,6 +40,8 @@ import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.list.ScrollableMediaContent
 import com.divinelink.core.ui.resources.no_results
 import com.divinelink.feature.user.data.resources.Res
+import com.divinelink.feature.user.data.resources.empty_favorite_list_description
+import com.divinelink.feature.user.data.resources.empty_favorite_list_title
 import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_rating_description
 import com.divinelink.feature.user.data.resources.feature_user_data_empty_movies_ratings
 import com.divinelink.feature.user.data.resources.feature_user_data_empty_shows_rating_description
@@ -103,6 +106,12 @@ fun UserDataScreenContent(
               MediaType.TV to Watchlist ->
                 Res.string.feature_user_data_empty_watchlist to
                   Res.string.feature_user_data_empty_watchlist_description
+              MediaType.MOVIE to UserDataSection.Favorites ->
+                Res.string.empty_favorite_list_title to
+                  Res.string.empty_favorite_list_description
+              MediaType.TV to UserDataSection.Favorites ->
+                Res.string.empty_favorite_list_title to
+                  Res.string.empty_favorite_list_description
               else -> return@let
             }
 

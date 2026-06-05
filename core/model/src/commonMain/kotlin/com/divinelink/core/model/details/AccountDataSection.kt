@@ -1,6 +1,7 @@
 package com.divinelink.core.model.details
 
-enum class AccountDataSection {
-  Watchlist,
-  Rating,
+enum class AccountDataSection(val value: String) {
+  Watchlist("watchlist"),
+  Rating("rating"),
+  Favorite("favorite"),
 }

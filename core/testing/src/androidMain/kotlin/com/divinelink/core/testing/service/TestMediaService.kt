@@ -1,5 +1,6 @@
 package com.divinelink.core.testing.service
 
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
@@ -7,7 +8,7 @@ import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
 import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -139,11 +140,12 @@ class TestMediaService {
   }
 
   suspend fun mockAddToWatchlist(
-    request: AddToWatchlistRequestApi,
+    request: AddToAccountRequest,
+    section: AccountDataSection,
     response: Result<TMDBResponse>,
   ) {
     whenever(
-      mock.addToWatchlist(request),
+      mock.addToAccount(request = request, section = section),
     ).thenReturn(
       response,
     )

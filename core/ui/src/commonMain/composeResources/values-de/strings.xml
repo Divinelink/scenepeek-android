@@ -47,6 +47,7 @@
     <string name="core_ui_back_to_top">Zurück zum Anfang</string>
     <string name="core_ui_section_watchlist">Beobachtungsliste</string>
     <string name="core_ui_section_ratings">Bewertungen</string>
+    <string name="core_ui_section_favorites">Favoriten</string>
     <string name="details__cast_title">Besetzung</string>
     <string name="core_ui_series_cast_title">Serien Besetzung</string>
     <string name="core_ui_director">Regisseur</string>

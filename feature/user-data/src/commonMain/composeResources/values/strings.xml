@@ -8,4 +8,7 @@
     <string name="feature_user_data_empty_shows_rating_description">Start exploring, rate shows to see them here!</string>
     <string name="feature_user_data_login_rated_description">You need to be logged in to view your ratings.</string>
     <string name="feature_user_data_login_watchlist_description">You need to be logged in to view your watchlist.</string>
+    <string name="feature_user_data_login_favorites_description">You need to be logged in to view your favorites.</string>
+    <string name="empty_favorite_list_title">You don't have any favorites yet</string>
+    <string name="empty_favorite_list_description">Start exploring and add your favorites to see them here!</string>
 </resources>

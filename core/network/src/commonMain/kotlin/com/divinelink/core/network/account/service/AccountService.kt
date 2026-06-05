@@ -36,6 +36,20 @@ interface AccountService {
     sessionId: String,
   ): Flow<TvResponseApi>
 
+  fun fetchFavoriteMovies(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<MoviesResponseApi>
+
+  fun fetchFavoriteTvShows(
+    page: Int,
+    sortOption: SortOption,
+    accountId: String,
+    sessionId: String,
+  ): Flow<TvResponseApi>
+
   suspend fun submitEpisodeRating(
     showId: Int,
     season: Int,

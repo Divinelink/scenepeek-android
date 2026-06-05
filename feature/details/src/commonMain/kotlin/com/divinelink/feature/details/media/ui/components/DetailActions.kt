@@ -20,7 +20,7 @@ import com.divinelink.feature.details.media.ui.DetailsViewState
 fun DetailActions(
   onAddRateClick: () -> Unit,
   uiState: DetailsViewState,
-  onAddToWatchlistClick: () -> Unit,
+  onAddToAccount: (AccountDataSection) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
   Row(
@@ -38,7 +38,7 @@ fun DetailActions(
     WatchlistButton(
       modifier = Modifier.weight(1f),
       onWatchlist = uiState.userDetails.watchlist,
-      onClick = onAddToWatchlistClick,
+      onClick = { onAddToAccount(AccountDataSection.Watchlist) },
       isLoading = uiState.accountDataState[AccountDataSection.Watchlist] == true,
     )
 

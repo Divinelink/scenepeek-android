@@ -2,6 +2,7 @@
 
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaReference
@@ -16,7 +17,7 @@ import com.divinelink.core.network.media.model.details.providers.WatchProvidersR
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.season.SeasonDetailsResponse
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
 import com.divinelink.core.network.media.model.details.watchlist.TMDBResponse
 import com.divinelink.core.network.media.model.find.FindByIdResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
@@ -79,7 +80,10 @@ interface MediaService {
 
   suspend fun deleteRating(request: DeleteRatingRequestApi): Result<TMDBResponse>
 
-  suspend fun addToWatchlist(request: AddToWatchlistRequestApi): Result<TMDBResponse>
+  suspend fun addToAccount(
+    request: AddToAccountRequest,
+    section: AccountDataSection,
+  ): Result<TMDBResponse>
 
   fun findById(externalId: String): Flow<FindByIdResponseApi>
 

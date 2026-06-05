@@ -8,10 +8,10 @@ class MediaListRequestTest {
 
   @Test
   fun `test toRequest for favorites section`() {
-    MediaListSection.Favorites.toRequest(MediaType.TV) shouldBe null
-    MediaListSection.Favorites.toRequest(MediaType.MOVIE) shouldBe null
-    MediaListSection.Favorites.toRequest(MediaType.PERSON) shouldBe null
-    MediaListSection.Favorites.toRequest(MediaType.UNKNOWN) shouldBe null
+    MediaListSection.Collection.toRequest(MediaType.TV) shouldBe null
+    MediaListSection.Collection.toRequest(MediaType.MOVIE) shouldBe null
+    MediaListSection.Collection.toRequest(MediaType.PERSON) shouldBe null
+    MediaListSection.Collection.toRequest(MediaType.UNKNOWN) shouldBe null
   }
 
   @Test

@@ -70,9 +70,9 @@ import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.menu.DropdownMenuViewModel
 import com.divinelink.core.ui.resources.core_ui_add_rating
+import com.divinelink.core.ui.resources.core_ui_add_to_collection_button_content_description
 import com.divinelink.core.ui.resources.core_ui_add_to_watchlist_content_desc
 import com.divinelink.core.ui.resources.core_ui_hide_total_episodes_item
-import com.divinelink.core.ui.resources.core_ui_mark_as_favorite_button_content_description
 import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.resources.core_ui_remove_from_watchlist_content_desc
 import com.divinelink.core.ui.resources.core_ui_share
@@ -131,7 +131,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun clickMarkAsFavoriteTest() = uiTest {
-    var hasClickedMarkAsFavorite = false
+    var hasClickedAddToCollection = false
 
     setVisibilityScopeContent {
       DetailsContent(
@@ -140,12 +140,12 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.MOVIE,
         ),
         onMarkAsFavoriteClicked = {
-          hasClickedMarkAsFavorite = true
+          hasClickedAddToCollection = true
         },
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -160,13 +160,13 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
-    val markAsFavoriteContentDescription =
-      getString(UiString.core_ui_mark_as_favorite_button_content_description)
+    val addToCollectionContentDesc = getString(
+      UiString.core_ui_add_to_collection_button_content_description,
+    )
 
-    onNodeWithContentDescription(markAsFavoriteContentDescription)
-      .performClick()
+    onNodeWithContentDescription(addToCollectionContentDesc).performClick()
 
-    assertThat(hasClickedMarkAsFavorite).isTrue()
+    assertThat(hasClickedAddToCollection).isTrue()
   }
 
   @Test
@@ -182,7 +182,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -216,7 +216,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -257,7 +257,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -300,7 +300,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -344,7 +344,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -381,7 +381,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -429,7 +429,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -468,7 +468,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -508,7 +508,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -551,7 +551,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {
+        onAddToAccount = {
           hasClickedAddToWatchlist = true
           viewState.value = viewState.value.copy(
             userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
@@ -610,7 +610,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -646,7 +646,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -680,7 +680,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -746,7 +746,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -814,7 +814,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -870,7 +870,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -919,7 +919,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -960,7 +960,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1002,7 +1002,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1046,7 +1046,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1089,7 +1089,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1134,7 +1134,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1181,7 +1181,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1222,7 +1222,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1256,7 +1256,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1297,7 +1297,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1338,7 +1338,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1385,7 +1385,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1430,7 +1430,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1471,7 +1471,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1516,7 +1516,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1560,7 +1560,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1601,7 +1601,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1646,7 +1646,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1687,7 +1687,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
@@ -1729,7 +1729,7 @@ class DetailsContentTest : ComposeTest() {
         onMediaItemClick = {},
         onConsumeSnackbar = {},
         onAddRateClick = {},
-        onAddToWatchlistClick = {},
+        onAddToAccount = {},
         onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},

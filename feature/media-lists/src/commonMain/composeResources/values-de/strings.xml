@@ -2,6 +2,4 @@
 <resources>
     <string name="empty_media_list_title">Keine Medien gefunden</string>
     <string name="empty_media_list_description">Du kannst versuchen die Filter zu ändern oder nach etwas anderem suchen.</string>
-    <string name="empty_favorite_list_title">Du hast bislang keine Favoriten</string>
-    <string name="empty_favorite_list_description">Fang an zu stöbern und füge deine Favoriten hinzu, um sie hier zu sehen!</string>
 </resources>

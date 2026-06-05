@@ -2,13 +2,17 @@ package com.divinelink.feature.details.media.ui.fab
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.PlaylistAdd
-import androidx.compose.material.icons.rounded.BookmarkAdd
+import androidx.compose.material.icons.filled.BookmarkAdded
+import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.SettingsSuggest
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.ui.IconWrapper
@@ -17,6 +21,7 @@ import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details__add_to_list
+import com.divinelink.feature.details.resources.feature_details__favorite
 import com.divinelink.feature.details.resources.feature_details__watchlist
 import com.divinelink.feature.details.resources.feature_details_manage_movie
 import com.divinelink.feature.details.resources.feature_details_manage_tv
@@ -26,8 +31,10 @@ import com.divinelink.feature.details.resources.feature_details_request
 internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
   modifier: Modifier = Modifier,
   actionButtons: List<DetailActionItem>,
+  isFavorite: Boolean,
+  onWatchlist: Boolean,
   onAddRateClicked: () -> Unit,
-  onAddToWatchlistClicked: () -> Unit,
+  onAddToAccount: (AccountDataSection) -> Unit,
   onAddToListClicked: () -> Unit,
   onRequestClicked: () -> Unit,
   onManageMovie: () -> Unit,
@@ -44,10 +51,24 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
           onClick = onAddRateClicked,
         )
         DetailActionItem.Watchlist -> FloatingActionButtonItem(
-          icon = IconWrapper.Vector(Icons.Rounded.BookmarkAdd),
+          icon = if (onWatchlist) {
+            IconWrapper.Vector(Icons.Filled.BookmarkAdded)
+          } else {
+            IconWrapper.Vector(Icons.Outlined.BookmarkAdd)
+          },
           label = UIText.ResourceText(Res.string.feature_details__watchlist),
           contentDescription = UIText.ResourceText(Res.string.feature_details__watchlist),
-          onClick = onAddToWatchlistClicked,
+          onClick = { onAddToAccount(AccountDataSection.Watchlist) },
+        )
+        DetailActionItem.Favorite -> FloatingActionButtonItem(
+          icon = if (isFavorite) {
+            IconWrapper.Vector(Icons.Rounded.Favorite)
+          } else {
+            IconWrapper.Vector(Icons.Rounded.FavoriteBorder)
+          },
+          label = UIText.ResourceText(Res.string.feature_details__favorite),
+          contentDescription = UIText.ResourceText(Res.string.feature_details__favorite),
+          onClick = { onAddToAccount(AccountDataSection.Favorite) },
         )
         DetailActionItem.List -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.AutoMirrored.Rounded.PlaylistAdd),

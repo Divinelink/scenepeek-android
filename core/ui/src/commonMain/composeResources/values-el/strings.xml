@@ -105,6 +105,7 @@
     <string name="core_ui_back_to_top">Επιστροφή στην αρχή</string>
     <string name="core_ui_section_watchlist">Λίστα παρακολούθησης</string>
     <string name="core_ui_section_ratings">Αξιολογήσεις</string>
+    <string name="core_ui_section_favorites">Αγαπημένα</string>
     <string name="core_ui_section_lists">Λίστες</string>
     <string name="core_ui_section_requests">Αιτήματα</string>
     <string name="core_ui_login_title">Συνδεθείτε στον λογαριασμό σας</string>

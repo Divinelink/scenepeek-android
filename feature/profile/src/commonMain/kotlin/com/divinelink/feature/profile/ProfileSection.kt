@@ -4,11 +4,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Bookmarks
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_requests
+import com.divinelink.core.ui.resources.core_ui_section_favorites
 import com.divinelink.core.ui.resources.core_ui_section_lists
 import com.divinelink.core.ui.resources.core_ui_section_ratings
 import com.divinelink.core.ui.resources.core_ui_section_watchlist
@@ -30,6 +32,11 @@ sealed class ProfileSection(
   data object Ratings : ProfileSection(
     title = UIText.ResourceText(UiString.core_ui_section_ratings),
     icon = Icons.Rounded.StarRate,
+  )
+
+  data object Favorites : ProfileSection(
+    title = UIText.ResourceText(UiString.core_ui_section_favorites),
+    icon = Icons.Rounded.Favorite,
   )
 
   data object Requests : ProfileSection(

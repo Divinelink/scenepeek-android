@@ -2,10 +2,14 @@
 <resources>
   <string name="feature_details__watchlist">Watchlist</string>
   <string name="feature_details__add_to_list">Add to list</string>
+  <string name="feature_details__favorite">Favorite</string>
 
   <string name="details__added_to_watchlist">Added %1$s to watchlist</string>
   <string name="details__removed_from_watchlist">Removed %1$s from watchlist</string>
   <string name="details__must_be_logged_in_to_watchlist">Please login to add to your watchlist.</string>
+  <string name="added_to_favorites_message">Added %1$s to favorites</string>
+  <string name="removed_from_favorites_message">Removed %1$s from favorites</string>
+  <string name="must_be_logged_in_to_mark_as_favorite">Please login to add to your favorites.</string>
 
   <string name="feature_details_genres">Genres</string>
   <string name="feature_details_information">Information</string>

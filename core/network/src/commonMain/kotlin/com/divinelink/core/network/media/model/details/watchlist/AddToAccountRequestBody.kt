@@ -4,8 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AddToWatchlistRequestBodyApi(
+data class AddToAccountRequestBody(
   @SerialName("media_type") val mediaType: String,
   @SerialName("media_id") val mediaId: Int,
-  val watchlist: Boolean,
+  val watchlist: Boolean?,
+  val favorite: Boolean?,
 )

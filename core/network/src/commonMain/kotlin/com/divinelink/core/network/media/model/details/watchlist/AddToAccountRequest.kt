@@ -4,21 +4,23 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class AddToWatchlistRequestApi(
+sealed class AddToAccountRequest(
   open val mediaId: Int,
   open val mediaType: String,
 ) {
   abstract val accountId: String
   abstract val sessionId: String
-  abstract val addToWatchlist: Boolean
+  abstract val watchlist: Boolean?
+  abstract val favorite: Boolean?
 
   @Serializable
   data class Movie(
     @SerialName("movie_id") val movieId: Int,
     override val accountId: String,
     override val sessionId: String,
-    override val addToWatchlist: Boolean,
-  ) : AddToWatchlistRequestApi(
+    override val watchlist: Boolean?,
+    override val favorite: Boolean?,
+  ) : AddToAccountRequest(
     mediaId = movieId,
     mediaType = "movie",
   )
@@ -28,8 +30,9 @@ sealed class AddToWatchlistRequestApi(
     @SerialName("series_id") val seriesId: Int,
     override val accountId: String,
     override val sessionId: String,
-    override val addToWatchlist: Boolean,
-  ) : AddToWatchlistRequestApi(
+    override val watchlist: Boolean?,
+    override val favorite: Boolean?,
+  ) : AddToAccountRequest(
     mediaId = seriesId,
     mediaType = "tv",
   )

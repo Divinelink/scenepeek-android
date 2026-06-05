@@ -24,6 +24,7 @@ class GetDetailsActionItemsUseCaseTest {
         listOf(
           DetailActionItem.Rate,
           DetailActionItem.Watchlist,
+          DetailActionItem.Favorite,
           DetailActionItem.List,
         ),
       )

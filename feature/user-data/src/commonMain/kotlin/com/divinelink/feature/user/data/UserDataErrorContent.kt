@@ -20,6 +20,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.user.data.resources.Res
+import com.divinelink.feature.user.data.resources.feature_user_data_login_favorites_description
 import com.divinelink.feature.user.data.resources.feature_user_data_login_rated_description
 import com.divinelink.feature.user.data.resources.feature_user_data_login_watchlist_description
 
@@ -47,6 +48,9 @@ fun UserDataErrorContent(
             )
             UserDataSection.Ratings -> UIText.ResourceText(
               Res.string.feature_user_data_login_rated_description,
+            )
+            UserDataSection.Favorites -> UIText.ResourceText(
+              Res.string.feature_user_data_login_favorites_description,
             )
           },
         ),
