@@ -63,7 +63,7 @@ interface DetailsRepository {
 
   fun findById(id: String): Flow<Result<MediaItem>>
 
-  suspend fun fetchCollectionDetails(id: Int): Result<CollectionDetails>
+  suspend fun fetchCollectionDetails(id: Int): Flow<Result<CollectionDetails>>
 
   suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProviders>
 }

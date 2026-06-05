@@ -6,8 +6,12 @@ import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -42,32 +46,36 @@ class CollectionsViewModel(
     viewModelScope.launch {
       repository
         .fetchCollectionDetails(id = uiState.value.id)
-        .fold(
-          onSuccess = { details ->
-            _uiState.update { uiState ->
-              uiState.copy(
-                loading = false,
-                error = null,
-                overview = details.overview,
-                collectionName = details.collection.name,
-                backdropPath = details.collection.backdropPath,
-                posterPath = details.collection.posterPath,
-                movies = details.movies.sortedWith(
-                  compareBy<MediaItem.Media.Movie> { it.releaseDate.isBlank() }
-                    .thenBy { it.releaseDate.ifBlank { it.name } },
-                ),
-              )
-            }
-          },
-          onFailure = {
-            _uiState.update { uiState ->
-              uiState.copy(
-                loading = false,
-                error = BlankSlateState.Contact,
-              )
-            }
-          },
-        )
+        .catch { Napier.d { it.message.toString() } }
+        .onEach { result ->
+          result.fold(
+            onSuccess = { details ->
+              _uiState.update { uiState ->
+                uiState.copy(
+                  loading = false,
+                  error = null,
+                  overview = details.overview,
+                  collectionName = details.collection.name,
+                  backdropPath = details.collection.backdropPath,
+                  posterPath = details.collection.posterPath,
+                  movies = details.movies.sortedWith(
+                    compareBy<MediaItem.Media.Movie> { it.releaseDate.isBlank() }
+                      .thenBy { it.releaseDate.ifBlank { it.name } },
+                  ),
+                )
+              }
+            },
+            onFailure = {
+              _uiState.update { uiState ->
+                uiState.copy(
+                  loading = false,
+                  error = BlankSlateState.Contact,
+                )
+              }
+            },
+          )
+        }
+        .launchIn(viewModelScope)
     }
   }
 }

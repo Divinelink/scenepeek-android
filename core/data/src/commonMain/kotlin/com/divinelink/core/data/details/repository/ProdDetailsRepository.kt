@@ -1,5 +1,6 @@
 package com.divinelink.core.data.details.repository
 
+import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.data.details.mapper.api.map
 import com.divinelink.core.data.details.mapper.api.reviews.map
@@ -263,9 +264,19 @@ class ProdDetailsRepository(
       Result.success(it.map())
     }
 
-  override suspend fun fetchCollectionDetails(id: Int): Result<CollectionDetails> = mediaRemote
-    .fetchCollectionDetails(id)
-    .map { it.map() }
+  override suspend fun fetchCollectionDetails(id: Int): Flow<Result<CollectionDetails>> = combine(
+    flowOf(mediaRemote.fetchCollectionDetails(id)),
+    mediaDao.getFavoriteMediaIds(MediaType.MOVIE),
+  ) { response, favoriteIds ->
+    val mapped = response.map { it.map() }.data
+    val favoriteSet = favoriteIds.toSet()
+
+    val updatedList = mapped.movies.map { movie ->
+      movie.copy(isFavorite = movie.id in favoriteSet)
+    }
+
+    Result.success(mapped.copy(movies = updatedList))
+  }
 
   override suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProviders> =
     mediaRemote
