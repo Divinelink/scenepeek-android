@@ -5,4 +5,5 @@
     <string name="feature_requests_requested">Ζητήθηκε</string>
     <string name="feature_requests_modifier">Τροποποιήθηκε</string>
     <string name="feature_requests_no_requests_available">Δεν υπάρχουν διαθέσιμα αιτήματα.</string>
+    <string name="feature_requests_request_by">%1$s από %2$s</string>
 </resources>

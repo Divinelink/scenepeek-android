@@ -10,7 +10,7 @@
     <string name="added_to_favorites_message">%1$s προστέθηκε στα αγαπημένα</string>
     <string name="removed_from_favorites_message">%1$s αφαιρέθηκε από τα αγαπημένα</string>
     <string name="must_be_logged_in_to_mark_as_favorite">Παρακαλώ συνδεθείτε για να προσθέσετε στα αγαπημένα σας.</string>
-    <string name="feature_details_information">Πληοροφορίες</string>
+    <string name="feature_details_information">Πληροφορίες</string>
     <string name="feature_details_jellyseerr_success_request_delete">Το αίτημα διαγράφηκε επιτυχώς</string>
     <string name="feature_details_jellyseerr_failure_media_delete">Αποτυχία αφαίρεσης του <b>%1$s</b></string>
     <string name="feature_details_jellyseerr_failed_request_delete">Απέτυχε η διαγραφή του αιτήματος</string>
@@ -23,7 +23,7 @@
     <string name="feature_details_biography_section">Βιογραφία</string>
     <string name="feature_details_place_of_birth_section">Τόπος γέννησης</string>
     <string name="feature_details_person_credits_known_for_section">Γνωστός/η για</string>
-    <string name="feature_details_person_credits_department_size">%1$s (%2$s)</string>
+    <string name="feature_details_person_credits_department_size" translatable="false">%1$s (%2$s)</string>
     <string name="feature_details_filter_sort_release_date">Ημερομηνία κυκλοφορίας</string>
     <plurals name="feature_details_number_of_seasons">
         <item quantity="one">%1$s κύκλος</item>
@@ -62,7 +62,6 @@
     <string name="feature_details_information_runtime">Διάρκεια</string>
     <string name="feature_details_information_original_language">Πρωτότυπη γλώσσα</string>
     <string name="feature_details_information_budget">Προϋπολογισμός</string>
-    <string name="feature_details_information_last_air_date">Τελευταία ημερομηνία προβολής</string>
     <string name="feature_details_information_next_episode_air_date">Ημ/νία προβολής επόμενου επεισοδίου</string>
     <string name="feature_details_information_seasons">Κύκλοι</string>
     <string name="feature_details_part_of_collection">Μέρος του %1$s</string>
@@ -81,4 +80,5 @@
     <string name="stream">Stream</string>
     <string name="buy">Αγορά</string>
     <string name="rent">Ενοικίαση</string>
+    <string name="feature_details_genres">Είδη</string>
 </resources>

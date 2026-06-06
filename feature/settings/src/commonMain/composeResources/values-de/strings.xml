@@ -16,7 +16,7 @@
     <string name="feature_settings_choose_a_color">Wähle eine Farbe</string>
     <string name="feature_settings_account">Konto</string>
     <string name="feature_settings_logout">Abmelden</string>
-    <string name="feature_settings_logged_in">Eingelogged </string>
+    <string name="feature_settings_logged_in">Eingelogged</string>
     <string name="feature_settings_tmdb_account">TMDB Account</string>
     <string name="feature_settings_not_logged_in">Nicht angemeldet</string>
     <string name="feature_settings_sign_in_to_access_features">Anmelden, um Zugang zu TMDB Features zu bekommen</string>
@@ -44,9 +44,6 @@
     <string name="feature_settings_details_preferences">Detail Einstellungen</string>
     <string name="feature_settings_link_handling">Link Handhabung</string>
     <string name="preferences__theme">Theme</string>
-    <string name="preferences__light_theme">Hell</string>
-    <string name="preferences__dark_theme">Dunkel</string>
-    <string name="preferences__system_default">System Standard</string>
     <string name="auto_update_app_title">ScenePeek automatisch aktualisieren</string>
     <string name="feature_settings_enable_link_handling_step_4">Möglicherweise findest du diese Einstellung direkt oder unter Erweiterte Einstellungen. Dies ist abhängig von deinem Gerät.\n\n</string>
     <string name="feature_settings_enable_link_handling_step_5">3. Wähle: Öffne unterstützte Links für %1$s\n\n</string>
@@ -71,7 +68,7 @@
     <string name="feature_settings_about">Über</string>
     <string name="feature_settings_about__privacy_policy">Datenschutzrichtlinie</string>
     <string name="feature_settings_about__version">Version %1$s</string>
-    <string name="feature_settings_about__developer_github_url">https://github.com/%1$s</string>
+    <string name="feature_settings_about__developer_github_url" translatable="false">https://github.com/%1$s</string>
     <string name="feature_settings_about__tmdb_endorsement">Dieses Produkt benutzt die TMDB API aber ist von TMDB weder befürwortet noch zertifiziert.</string>
     <string name="feature_settings_about__ad_free">Werbefrei</string>
     <string name="feature_settings_about__open_source">Open Source</string>
@@ -84,16 +81,11 @@
     <string name="feature_settings_streaming_services_subtitle">Zeige Informationen von Streaming-Diensten an.</string>
     <string name="feature_settings_ratings">Bewertungen</string>
     <string name="feature_settings_ratings_summary">Wähle das Bewertungssystem, welches du benutzen willst.\nEs wird auf der Detailseite von Filmen und Serien angezeigt werden.</string>
-    <string name="feature_settings_movie_rating_preference">Filme</string>
-    <string name="feature_settings_tv_rating_preference">Serien</string>
-    <string name="feature_settings_episodes_rating_preference">Episoden</string>
-    <string name="feature_settings_seasons_rating_preference">Staffeln</string>
-    <string name="support_email">support@scenepeek.app</string>
-    <string name="seerr_support_email_subject">Probleme beim Verbinden mit Seerr</string>
-    <string name="seerr_support_email_body">Bitte gebe deine Anmeldemethode und Server Versionen an und füge die Fehler Logs an, um beim Identifizieren des Problems zu helfen.\n\nSeerr Version: (gib deine Seerr Server Version an)\nJellyfin Version: (falls zutreffend gib deine Jellyfin Version an)\n%1$s</string>
+    <string name="support_email" translatable="false">support@scenepeek.app</string>
+    <string name="seerr_support_email_subject" translatable="false">Probleme beim Verbinden mit Seerr</string>
+    <string name="seerr_support_email_body" translatable="false">Bitte gebe deine Anmeldemethode und Server Versionen an und füge die Fehler Logs an, um beim Identifizieren des Problems zu helfen.\n\nSeerr Version: (gib deine Seerr Server Version an)\nJellyfin Version: (falls zutreffend gib deine Jellyfin Version an)\n%1$s</string>
     <string name="seerr_login_info_placeholder_pt1">Dies ist ein experimentelles Feature.\nSolltest du Probleme mit der Verbindung haben, kontaktiere uns bitte unter</string>
     <string name="seerr_login_info_placeholder_pt2">um das Problem zu beheben.</string>
-    <string name="preferences__none">Keine</string>
     <string name="preferences__account">Konto</string>
     <string name="auto_update_app_summary">Überprüfe regelmäßig auf neue Veröffentlichungen und installiere diese</string>
     <string name="version">Version</string>

@@ -37,8 +37,6 @@
     <string name="core_ui_error_retry">Κάτι πήγε στραβά. Παρακαλώ προσπαθήστε ξανά.</string>
     <string name="core_ui_password">Κωδικός</string>
     <string name="core_ui_general_error_title">Παρουσιάστηκε σφάλμα</string>
-    <string name="details__director_title">Σκηνοθέτης</string>
-    <string name="details__cast_title">Ηθοποιοί</string>
     <string name="core_ui_director">Σκηνοθέτης</string>
     <string name="core_ui_screenplay">Σενάριο</string>
     <string name="core_ui_novel">Μυθιστόρημα</string>
@@ -59,7 +57,7 @@
     <string name="core_ui_toolbar_search">Αναζήτηση</string>
     <string name="core_ui_movies">ταινιών</string>
     <string name="core_ui_tv_shows">σειρών</string>
-    <string name="core_ui_people">προσώπων</string>
+    <string name="core_ui_people">ατόμων</string>
     <string name="core_ui_media">Περιεχόμενο</string>
     <string name="core_ui_remove_from_radarr">Αφαίρεση από Radarr</string>
     <string name="core_ui_remove_from_radarr_description">Αυτό θα καταργήσει οριστικά αυτήν την ταινία από το Radarr, συμπεριλαμβανομένων όλων των αρχείων.</string>
@@ -148,7 +146,6 @@
     <string name="core_ui_backdrop_image_placeholder">Εικόνα φόντου</string>
     <string name="core_ui_select_media_backdrop_image">Επιλογή εικόνας φόντου μέσου</string>
     <string name="core_ui_avatar_image_placeholder">Εικόνα avatar</string>
-    <string name="core_ui_mark_as_favorite_button_content_description">Κουμπί σήμανσης ως αγαπημένο</string>
     <string name="core_ui_visible_spoilers_button">Τα spoilers είναι ορατά</string>
     <string name="core_ui_change_layout_button">Αλλαγή στυλ διάταξης</string>
     <string name="core_ui_change_sort_direction">Αλλαγή κατεύθυνσης ταξινόμησης</string>
@@ -168,4 +165,10 @@
     <string name="core_ui_scroll_to_top_button">Μετακύλιση στην κορυφή</string>
     <string name="core_ui_toggle_password_visibility_button">Εναλλαγή ορατότητας κωδικού πρόσβασης</string>
     <string name="core_ui_hidden_spoilers_button">Τα spoilers είναι κρυφά</string>
+    <string name="core_ui_metadata_language">Γλώσσα μεταδεδομένων</string>
+    <string name="movies">Ταινίες</string>
+    <string name="seasons">Κύκλοι</string>
+    <string name="tv_shows">Σειρές</string>
+    <string name="episodes">Επεισόδια</string>
+    <string name="core_ui_add_to_collection_button_content_description">Κουμπί προσθήκης στη συλλογή</string>
 </resources>

@@ -12,7 +12,7 @@
     <string name="primary_release_date">Ημερομηνία κυκλοφορίας</string>
     <string name="title">Τίτλος</string>
     <string name="vote_average">Βαθμολογία</string>
-    <string name="gender_not_set">-</string>
+    <string name="gender_not_set" translatable="false">-</string>
     <string name="gender_male">Άνδρας</string>
     <string name="gender_non_binary">Μη δυαδικό</string>
     <string name="core_model_tab_episode">E%1$s</string>
@@ -326,4 +326,5 @@
     <string name="month_october_short">Οκτ</string>
     <string name="month_november_short">Νοέ</string>
     <string name="month_december_short">Δεκ</string>
+    <string name="system_default">Προεπιλογή συστήματος</string>
 </resources>

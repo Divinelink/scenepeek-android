@@ -8,4 +8,7 @@
     <string name="feature_request_media_cancel_request_failure">Η ακύρωση του αιτήματος απέτυχε</string>
     <string name="feature_request_media_update_request_failure">Απέτυχε η ενημέρωση του αιτήματος</string>
     <string name="feature_request_media_request_exists">Το αίτημα για αυτό το πολυμέσο υπάρχει ήδη.</string>
+    <string name="feature_request_media_success_request">Το %1$s ζητήθηκε με επιτυχία</string>
+    <string name="feature_request_media_failed_request">Αποτυχία αιτήματος για %1$s</string>
+    <string name="feature_request_media_update_request_success">Το αίτημα ενημερώθηκε με επιτυχία</string>
 </resources>
