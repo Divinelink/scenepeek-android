@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dynamic_theme">Dynamisk</string>
+    <string name="default_theme">Systemstandard</string>
+    <string name="custom_theme">Tilpasset</string>
+    <string name="light">Lys</string>
+    <string name="dark">Mørk</string>
+    <string name="system">System</string>
+</resources>

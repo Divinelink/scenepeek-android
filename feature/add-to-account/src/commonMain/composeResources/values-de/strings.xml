@@ -15,7 +15,7 @@
     <string name="feature_add_to_account_remove_from_list_offline_error">Du kannst nichts von der Liste entfernen während du offline bist</string>
     <string name="feature_add_to_account_remove_single_item_success">%1$s wurde von %2$s entfernt</string>
     <string name="feature_add_to_account_remove_batch_items_success">%1$s Elemente von %2$s entfernt</string>
-    <string name="add_rating_description"><![CDATA[Was hältst du von <b>%1$s</b>\?]]></string>
+    <string name="add_rating_description"><![CDATA[Was hältst du von <b>%1$s</b>\\?]]></string>
     <string name="clear_my_rating">Lösche meine Bewertung</string>
     <string name="submit_rating_button">Bewertung abgeben</string>
     <string name="must_be_logged_in_to_rate">Bitte melde dich an um deine Bewertung abzugeben.</string>

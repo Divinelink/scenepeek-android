@@ -4,12 +4,12 @@
     <string name="feature_onboarding_get_started">Loslegen</string>
     <string name="feature_onboarding_skip">Überspringen</string>
     <string name="feature_onboarding_welcome_page_title">Willkommen bei ScenePeek</string>
-    <string name="feature_onboarding_welcome_page_description">Ein kostenloser Open-Source-Client für TMDB und Jellyseerr</string>
+    <string name="feature_onboarding_welcome_page_description">Ein kostenloser Open-Source-Client für TMDB und Seerr</string>
     <string name="feature_onboarding_whats_new_title">Was ist neu in %1$s für %2$s</string>
-    <string name="feature_onboarding_tmdb_page_title">TMDB</string>
+    <string name="feature_onboarding_tmdb_page_title" translatable="false">TMDB</string>
     <string name="feature_onboarding_tmdb_page_description">Verbinde deinen TMDB Account, um auf deine Beobachtungsliste, Bewertungen, Listen und mehr zuzugreifen.</string>
-    <string name="feature_onboarding_jellyseerr_page_title">Jellyseerr</string>
-    <string name="feature_onboarding_jellyseerr_page_description">Verbinde dich mit deiner Jellyseerr Instanz, um Filme und Serien sofort anzufragen.</string>
+    <string name="feature_onboarding_jellyseerr_page_title" translatable="false">Jellyseerr</string>
+    <string name="feature_onboarding_jellyseerr_page_description">Verbinde dich mit deiner Seerr Instanz, um Filme und Serien sofort anzufragen.</string>
     <string name="feature_onboarding_link_handling_page_title">IMDB &amp; TMDB Link-Behandlung</string>
     <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek kann <strong>URLs</strong> von <strong>IMDb</strong> &amp; <strong>TMDB</strong> in der App öffnen. Dies kann nützlich sein, um Links zu Filmen, Serien und Leuten direkt in der App zu öffnen.]]></string>
     <string name="feature_onboarding_v29_grid_view">- Dem Benutzer ermöglichen, auf Medienlisten zwischen Gitter- und Listenansicht umzuschalten</string>
@@ -37,7 +37,7 @@
     <string name="v37_movies_collection">- Einführung der Sammlungen-Ansicht! Zeigt an, ob ein Film zu einer Sammlung gehört und listet alle Filme auf, welche zu der Sammlung gehören</string>
     <string name="v37_discover_by_keyword">- Entdecken beinhaltet nun auch den Schlüsselwort-Filter</string>
     <string name="v37_detail_keywords">- Zeigt Schlüsselwörter in der Information eines Films oder einer Serie an, welche die Handlung oder Stimmung beschreiben</string>
-    <string name="v37_clickable_genres_and_keywords">- Genres und Schlüsselwörter sind nun anklickbar. Diese bringen dich zu "Entdecken" mit dem angewendeten ausgewählten Filter</string>
+    <string name="v37_clickable_genres_and_keywords">- Genres und Schlüsselwörter sind nun anklickbar. Diese bringen dich zu Entdecken mit dem angewendeten ausgewählten Filter</string>
     <string name="v38_streaming_providers">- Einführung von Streaming-Anbietern! Sehe wo ein Film oder eine Serie gerade zum Streaming, Ausleihen oder Kauf verfügbar ist</string>
     <string name="v38_discover_sorting">- Sortierung nach Erstellungsdatum für Bewertungen und Watchlist hinzugefügt</string>
     <string name="v38_localize_dates">- Finden von Datumsanzeigen an verschiedenen Stellen in der App um Datums Informationen besser sichtbar zu machen</string>
@@ -52,6 +52,6 @@
     <string name="v47_contribution_setting_sections">- Einstellungsbereiche hinzugefügt, um der Matrix-Community beizutreten, bei der Übersetzung des Projekts zu helfen und mehr</string>
     <string name="v47_discover_fetch_only_with_different_filters">- Rufe neue Discover-Inhalte nur ab, wenn sich die Filtereinstellungen von der vorherigen Suche unterscheiden</string>
     <string name="v48_fix_tmdb_auth_issue">- Einen Fehler behoben, bei dem Benutzer sich beim ersten Mal nicht bei TMDB anmelden konnten</string>
-    <string name="v48_fix_discover_sorting_options">- Ein Fehler wurde behoben, bei dem die Sortier-Optionen nicht auf der "Entdecken" Seite angewendet wurden</string>
+    <string name="v48_fix_discover_sorting_options">- Ein Fehler wurde behoben, bei dem die Sortier-Optionen nicht auf der Entdecken Seite angewendet wurden</string>
     <string name="v49_add_custom_remote_config">- Ein Mechanismus wurde implementiert, um Benutzer einfach über potenzielle TMDB-Serverstörungen zu informieren</string>
 </resources>

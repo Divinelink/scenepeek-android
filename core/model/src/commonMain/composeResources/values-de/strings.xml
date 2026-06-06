@@ -325,4 +325,5 @@
     <string name="country_cabo_verde">Kap Verde</string>
     <string name="country_cambodia">Kambodscha</string>
     <string name="country_cameroon">Kamerun</string>
+    <string name="system_default">System Standard</string>
 </resources>

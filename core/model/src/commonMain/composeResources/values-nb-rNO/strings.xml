@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general_error_message">Noe gikk galt.</string>
+    <string name="deleted">Slettet</string>
+    <string name="language_english">Engelsk</string>
+    <string name="core_model_tab_about">Om</string>
+    <string name="popular_movies">Populære filmer</string>
+    <string name="unavailable">Ikke tilgjengelig</string>
+    <string name="all">Alle</string>
+    <string name="popular_series">Populær serie</string>
+    <string name="upcoming_movies">Kommende filmer</string>
+    <string name="completed">Fullført</string>
+    <string name="upcoming_series">Kommende serie</string>
+    <string name="available">Tilgjengelig</string>
+    <string name="pending">Avventer</string>
+    <string name="system_default">Systemstandard</string>
+    <string name="approved">Godkjent</string>
+    <string name="failed">Feilet</string>
+</resources>

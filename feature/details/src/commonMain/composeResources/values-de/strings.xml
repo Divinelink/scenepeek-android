@@ -25,7 +25,7 @@
     <string name="feature_details_place_of_birth_section">Geburtsort</string>
     <string name="feature_details_person_credits_known_for_section">Bekannt für</string>
     <string name="feature_details_person_credits_department">Abteilung</string>
-    <string name="feature_details_person_credits_department_size">%1$s (%2$s)</string>
+    <string name="feature_details_person_credits_department_size" translatable="false">%1$s (%2$s)</string>
     <string name="feature_details_filter_sort_release_date">Veröffentlichungsdatum</string>
     <plurals name="feature_details_number_of_seasons">
         <item quantity="one">%1$s Staffel</item>
@@ -59,7 +59,6 @@
     <string name="feature_details_information_runtime">Laufzeit</string>
     <string name="feature_details_information_original_language">Originalsprache</string>
     <string name="feature_details_information_budget">Budget</string>
-    <string name="feature_details_information_last_air_date">Letzter Ausstrahlungstermin</string>
     <string name="feature_details_information_next_episode_air_date">Ausstrahlungstermin der nächsten Folge</string>
     <string name="feature_details_information_seasons">Staffeln</string>
     <string name="feature_details_part_of_collection">Teil von der %1$s</string>

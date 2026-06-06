@@ -13,7 +13,7 @@
     <string name="feature_settings_color">Χρώμα</string>
     <string name="feature_settings_account">Λογαριασμός</string>
     <string name="feature_settings_logout">Αποσύνδεση</string>
-    <string name="feature_settings_logged_in">Συνδεδεμένος • </string>
+    <string name="feature_settings_logged_in">Συνδεδεμένος •</string>
     <string name="feature_settings_tmdb_account">Λογαριασμός TMDB</string>
     <string name="feature_settings_not_logged_in">Δεν είστε συνδεδεμένος</string>
     <string name="feature_settings_jellyseerr_address_placeholder">π.χ. http(s)://your-seerr-url.com</string>
@@ -22,7 +22,7 @@
     <string name="feature_settings_username">Όνομα χρήστη</string>
     <string name="feature_settings_email">Διεύθυνση email</string>
     <string name="feature_settings_password">Κωδικός</string>
-    <string name="AppearanceSettingsScreen__black_backgrounds">Απόλυτο μαύρο</string>
+    <string name="AppearanceSettingsScreen__black_backgrounds">Απόλυτο Μαύρο</string>
     <string name="AppearanceSettingsScreen__material_you_summary">Προσαρμόστε αυτόματα τα χρώματα της εφαρμογής ώστε να ταιριάζουν με την ταπετσαρία σας</string>
     <string name="feature_settings_choose_a_color">Επιλέξτε χρώμα</string>
     <string name="feature_settings_sign_in_to_access_features">Συνδεθείτε για πρόσβαση στις λειτουργίες του TMDB</string>
@@ -52,17 +52,12 @@
     <string name="feature_settings_streaming_services_subtitle">Εμφάνιση πληροφοριών υπηρεσιών streaming.</string>
     <string name="feature_settings_ratings">Βαθμολογίες</string>
     <string name="feature_settings_ratings_summary">Επιλέξτε το σύστημα βαθμολόγησης που θέλετε να χρησιμοποιήσετε.\nΘα εμφανίζεται στην οθόνη λεπτομερειών των ταινιών και των σειρών.</string>
-    <string name="feature_settings_movie_rating_preference">Ταινίες</string>
-    <string name="feature_settings_tv_rating_preference">Σειρές</string>
     <string name="seerr_login_info_placeholder_pt1">Αυτή είναι μια πειραματική λειτουργία.\nΑν δυσκολεύεστε να συνδεθείτε, παρακαλώ επικοινωνήστε στο</string>
     <string name="seerr_login_info_placeholder_pt2">για την επίλυση του προβλήματος.</string>
     <string name="preferences__appearance">Εμφάνιση</string>
     <string name="feature_settings_details_preferences">Προτιμήσεις λεπτομερειών</string>
     <string name="feature_settings_link_handling">Χειρισμός συνδέσμων</string>
     <string name="preferences__theme">Θέμα</string>
-    <string name="preferences__light_theme">Φωτεινό</string>
-    <string name="preferences__dark_theme">Σκοτεινό</string>
-    <string name="preferences__system_default">Προεπιλογή συστήματος</string>
     <string name="auto_update_app_title">Αυτόματη ενημέρωση ScenePeek</string>
     <string name="auto_update_app_summary">Έλεγχος περιοδικά για νέες εκδόσεις και ερώτηση για εγκατάστασή τους</string>
     <string name="version">Έκδοση</string>
@@ -79,9 +74,9 @@
     <string name="feature_settings_link_handling_dialog_summary">Το %1$s μπορεί να ανοίγει συγκεκριμένα URLs μέσα στην εφαρμογή. Αυτό μπορεί να είναι χρήσιμο για το άνοιγμα συνδέσμων ταινιών και σειρών απευθείας στην εφαρμογή.</string>
     <string name="feature_settings_enable_link_handling_step_1">Για να το ενεργοποιήσετε, ακολουθήστε τα παρακάτω βήματα\n\n</string>
     <string name="feature_settings_enable_link_handling_step_2">1. Ανοίξτε τις ρυθμίσεις πατώντας το κουμπί παρακάτω.\n\n</string>
-    <string name="feature_settings_enable_link_handling_step_3">2. Ενότητα "Άνοιγμα από προεπιλογή" ή "Ορισμός ως προεπιλογή".\n\n</string>
-    <string name="feature_settings_enable_link_handling_step_4">Ίσως βρείτε αυτή την επιλογή απευθείας ή κάτω από τις ρυθμίσεις "Για προχωρημένους", ανάλογα με τη συσκευή σας.\n\n</string>
-    <string name="feature_settings_enable_link_handling_step_5">3. Επιλέξτε "Άνοιγμα υποστηριζόμενων συνδέσμων" για το %1$s\n\n</string>
+    <string name="feature_settings_enable_link_handling_step_3">2. Ενότητα Άνοιγμα από προεπιλογή ή Ορισμός ως προεπιλογή.\n\n</string>
+    <string name="feature_settings_enable_link_handling_step_4">Ίσως βρείτε αυτή την επιλογή απευθείας ή κάτω από τις ρυθμίσεις Για προχωρημένους, ανάλογα με τη συσκευή σας.\n\n</string>
+    <string name="feature_settings_enable_link_handling_step_5">3. Επιλέξτε Άνοιγμα υποστηριζόμενων συνδέσμων για το %1$s\n\n</string>
     <string name="feature_settings_enable_link_handling_step_6">(ορισμένες συσκευές το έχουν καταχωρίσει στην ενότητα Προεπιλεγμένες εφαρμογές στις κύριες ρυθμίσεις και στη συνέχεια επιλέγοντας %1$s για σχετικές κατηγορίες)\n\n</string>
     <string name="feature_settings_jellyseerr_integration">Ενσωμάτωση Seerr</string>
     <string name="feature_settings_jellyseerr_account">Λογαριασμός Seerr</string>
@@ -94,4 +89,6 @@
     <string name="feature_settings_send_feedback_title">Αποστολή σχολίων</string>
     <string name="feature_settings_send_feedback_summary">Αναφορά σφάλματος ή μίας νέας ιδέας</string>
     <string name="preferences__account">Λογαριασμός</string>
+    <string name="feature_settings_jellyseerr_description">Προσθέστε τη διεύθυνση IP του Seerr και επιλέξτε μια μέθοδο σύνδεσης για να ενεργοποιήσετε το Seerr.\nΒεβαιωθείτε ότι συμπεριλαμβάνετε το πλήρες URL με https:// ή http:// και τον αριθμό θύρας εάν απαιτείται.</string>
+    <string name="feature_settings_could_not_connect">Δεν ήταν δυνατή η σύνδεση με τον διακομιστή. Βεβαιωθείτε ότι η διεύθυνση IP είναι σωστή και ότι ο διακομιστής λειτουργεί.</string>
 </resources>
