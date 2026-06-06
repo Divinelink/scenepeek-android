@@ -1,0 +1,6 @@
+🎉 Update v0.33.0
+
+- Add a descriptive label popup when selecting a rating that summarizes the rating
+- Rename local favorites to collections and add TMDB favorites tab on profile
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

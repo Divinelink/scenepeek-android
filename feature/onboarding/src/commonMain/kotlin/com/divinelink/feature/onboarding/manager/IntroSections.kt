@@ -62,6 +62,8 @@ import com.divinelink.feature.onboarding.resources.v48_fix_tmdb_auth_issue
 import com.divinelink.feature.onboarding.resources.v49_add_custom_remote_config
 import com.divinelink.feature.onboarding.resources.v50_app_language
 import com.divinelink.feature.onboarding.resources.v50_metadata_language
+import com.divinelink.feature.onboarding.resources.v51_add_rating_label_popup
+import com.divinelink.feature.onboarding.resources.v51_add_tmdb_favorites_tab
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -273,6 +275,14 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v50_metadata_language)),
   )
 
+  val v51 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.33.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v51_add_rating_label_popup)),
+    IntroSection.Text(UIText.ResourceText(R.string.v51_add_tmdb_favorites_tab)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -294,5 +304,6 @@ object IntroSections {
     48 to v48,
     49 to v49,
     50 to v50,
+    51 to v51,
   )
 }

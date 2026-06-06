@@ -79,4 +79,7 @@
 
   <string name="v50_app_language">- Add app language setting with Greek and German translations (thanks to shadow2209!)</string>
   <string name="v50_metadata_language">- Add metadata language setting with many options: Spanish, French, German, Portuguese, Italian etc. Head over to Settings > Appearance to set your preference.</string>
+
+  <string name="v51_add_rating_label_popup">- Add a descriptive label popup when selecting a rating that summarizes the rating</string>
+  <string name="v51_add_tmdb_favorites_tab">- Rename local favorites to collections and add TMDB favorites tab on profile</string>
 </resources>
