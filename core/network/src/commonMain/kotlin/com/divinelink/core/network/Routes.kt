@@ -16,4 +16,9 @@ object Routes {
   object Trakt {
     const val HOST = "api.trakt.tv"
   }
+
+  object Awards {
+    const val BRANCH = "divinelink-patch-1" // TODO Update once merged
+    const val HOST = "codeberg.org/tmdb-awards/raw/$BRANCH"
+  }
 }
