@@ -7,6 +7,8 @@ import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.app.ProdAppInfoRepository
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.auth.ProdAuthRepository
+import com.divinelink.core.data.awards.AwardsRepository
+import com.divinelink.core.data.awards.ProdAwardsRepository
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
@@ -39,5 +41,6 @@ val dataModule = module {
   singleOf(::ProdPreferencesRepository) { bind<PreferencesRepository>() }
   singleOf(::ProdAuthRepository) { bind<AuthRepository>() }
   singleOf(::ProdAppInfoRepository) { bind<AppInfoRepository>() }
+  singleOf(::ProdAwardsRepository) { bind<AwardsRepository>() }
   singleOf(::FilterRepository)
 }

@@ -1,8 +1,8 @@
 package com.divinelink.core.network.awards
 
 import com.divinelink.core.network.awards.model.awards.AwardsResponse
-import com.divinelink.core.network.awards.model.ceremony.CeremoniesResponse
 import com.divinelink.core.network.awards.model.category.CeremonyCategoriesResponse
+import com.divinelink.core.network.awards.model.ceremony.CeremoniesResponse
 import com.divinelink.core.network.awards.util.buildAwardCeremoniesUrl
 import com.divinelink.core.network.awards.util.buildCeremonyCategoriesUrl
 import com.divinelink.core.network.awards.util.buildGetAwardsCategoryUrl
