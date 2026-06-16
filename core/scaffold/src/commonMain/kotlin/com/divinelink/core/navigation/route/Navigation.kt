@@ -177,4 +177,7 @@ sealed interface Navigation : NavKey {
 
   @Serializable
   data object UpdaterRoute : Navigation
+
+  @Serializable
+  data object AwardsRoute : Navigation
 }

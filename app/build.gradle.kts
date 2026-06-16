@@ -20,6 +20,7 @@ kotlin {
       api(projects.core.scaffold)
 
       implementation(projects.feature.addToAccount)
+      implementation(projects.feature.awards)
       implementation(projects.feature.collections)
       implementation(projects.feature.credits)
       implementation(projects.feature.details)
