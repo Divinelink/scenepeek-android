@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +19,7 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.AppTopAppBar
+import com.divinelink.feature.awards.popular.AwardsAction
 import com.divinelink.feature.awards.popular.AwardsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import com.divinelink.core.model.resources.Res as ModelRes
@@ -32,9 +32,6 @@ fun AnimatedVisibilityScope.AwardsScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-  val topAppBarColor = TopAppBarDefaults.topAppBarColors(
-    scrolledContainerColor = MaterialTheme.colorScheme.surface,
-  )
 
   rememberScaffoldState(
     animatedVisibilityScope = this,
@@ -57,8 +54,6 @@ fun AnimatedVisibilityScope.AwardsScreen(
         ),
       )
     },
-    floatingActionButton = {
-    },
     content = {
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
@@ -66,6 +61,10 @@ fun AnimatedVisibilityScope.AwardsScreen(
         AwardsContent(
           uiState = uiState,
           action = { action ->
+            when (action) {
+              AwardsAction.OnRetry -> viewModel.onAction(action)
+              is AwardsAction.OnCeremonyClick -> Unit
+            }
           },
         )
       }

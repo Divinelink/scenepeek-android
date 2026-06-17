@@ -19,21 +19,22 @@ class ProdAwardsService(
     )
   }
 
-  override suspend fun fetchCeremonyCategories(
-    id: String,
-  ): Result<CeremonyCategoriesResponse> = runCatching {
-    restClient.client.get<CeremonyCategoriesResponse>(
-      url = buildCeremonyCategoriesUrl(id = id),
-    )
-  }
-
-  override suspend fun fetchAwards(ceremonyId: String, categoryId: String): Result<AwardsResponse> =
+  override suspend fun fetchCeremonyCategories(id: String): Result<CeremonyCategoriesResponse> =
     runCatching {
-      restClient.client.get<AwardsResponse>(
-        url = buildGetAwardsCategoryUrl(
-          ceremonyId = ceremonyId,
-          categoryId = categoryId,
-        ),
+      restClient.client.get<CeremonyCategoriesResponse>(
+        url = buildCeremonyCategoriesUrl(id = id),
       )
     }
+
+  override suspend fun fetchAwards(
+    ceremonyId: String,
+    categoryId: String,
+  ): Result<AwardsResponse> = runCatching {
+    restClient.client.get<AwardsResponse>(
+      url = buildGetAwardsCategoryUrl(
+        ceremonyId = ceremonyId,
+        categoryId = categoryId,
+      ),
+    )
+  }
 }

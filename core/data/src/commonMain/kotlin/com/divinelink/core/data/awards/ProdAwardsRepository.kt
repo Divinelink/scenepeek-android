@@ -26,10 +26,9 @@ class ProdAwardsRepository(
     response.map()
   }
 
-  override suspend fun fetchCeremonyCategories(id: String): Result<List<CeremonyCategory>> =
-    service
-      .fetchCeremonyCategories(id = id)
-      .map { response ->
-        response.map()
-      }
+  override suspend fun fetchCeremonyCategories(id: String): Result<List<CeremonyCategory>> = service
+    .fetchCeremonyCategories(id = id)
+    .map { response ->
+      response.map()
+    }
 }

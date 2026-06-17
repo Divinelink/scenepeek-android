@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.factories.model.awards
+package com.divinelink.core.fixtures.model.awards
 
 import com.divinelink.core.model.awards.AwardNominee
 import com.divinelink.core.model.awards.YearAwards

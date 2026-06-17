@@ -7,6 +7,6 @@ fun CeremoniesResponse.map() = ceremonies.map {
   Ceremony(
     id = it.id,
     title = it.title,
-    url = it.url,
+    imagePath = it.imageUrl,
   )
 }

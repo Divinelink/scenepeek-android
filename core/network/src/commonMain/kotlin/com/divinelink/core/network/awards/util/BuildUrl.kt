@@ -11,9 +11,7 @@ fun buildAwardCeremoniesUrl(): String = buildUrl {
   encodedPath = "ceremonies.json"
 }.toString()
 
-fun buildCeremonyCategoriesUrl(
-  id: String,
-): String = buildUrl {
+fun buildCeremonyCategoriesUrl(id: String): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.Awards.HOST
   encodedPath = "$id/categories.json"

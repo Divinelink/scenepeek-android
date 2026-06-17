@@ -8,7 +8,7 @@ object CeremonyResponseFactory {
   fun single() = CeremonyResponse(
     id = "oscars",
     title = "Academy Awards",
-    url = "https://example.com/oscars",
+    imageUrl = "https://example.com/oscars",
   )
 
   fun all() = CeremoniesResponse(
@@ -17,7 +17,7 @@ object CeremonyResponseFactory {
       CeremonyResponse(
         id = "golden-globes",
         title = "Golden Globe Awards",
-        url = "https://example.com/golden-globes",
+        imageUrl = "https://example.com/golden-globes",
       ),
     ),
   )

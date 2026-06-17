@@ -1,7 +1,7 @@
 package com.divinelink.core.network.awards.mapper
 
 import com.divinelink.core.testing.factories.api.awards.AwardsResponseFactory
-import com.divinelink.core.testing.factories.model.awards.YearAwardsFactory
+import com.divinelink.core.fixtures.model.awards.YearAwardsFactory
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
