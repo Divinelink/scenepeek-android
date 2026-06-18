@@ -1,11 +1,11 @@
 package com.divinelink.core.data.awards
 
-import com.divinelink.core.testing.factories.api.awards.AwardsResponseFactory
-import com.divinelink.core.testing.factories.api.awards.CeremonyCategoriesResponseFactory
-import com.divinelink.core.testing.factories.api.awards.CeremonyResponseFactory
 import com.divinelink.core.fixtures.model.awards.CeremonyCategoryFactory
 import com.divinelink.core.fixtures.model.awards.CeremonyFactory
 import com.divinelink.core.fixtures.model.awards.YearAwardsFactory
+import com.divinelink.core.testing.factories.api.awards.AwardsResponseFactory
+import com.divinelink.core.testing.factories.api.awards.CeremonyCategoriesResponseFactory
+import com.divinelink.core.testing.factories.api.awards.CeremonyResponseFactory
 import com.divinelink.core.testing.service.TestAwardsService
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest

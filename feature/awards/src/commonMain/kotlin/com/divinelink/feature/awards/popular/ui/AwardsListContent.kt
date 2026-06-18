@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.ImageQuality
@@ -46,7 +47,7 @@ fun AwardsListContent(
       start = MaterialTheme.dimensions.keyline_8,
       end = MaterialTheme.dimensions.keyline_8,
       top = MaterialTheme.dimensions.keyline_8,
-      bottom = MaterialTheme.dimensions.keyline_16,
+      bottom = LocalBottomNavigationPadding.current,
     ),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -57,7 +58,7 @@ fun AwardsListContent(
     ) { ceremony ->
       CeremonyItem(
         ceremony = ceremony,
-        onClick = { action(AwardsAction.OnCeremonyClick(ceremony.id)) },
+        onClick = { action(AwardsAction.OnCeremonyClick(ceremony)) },
       )
     }
   }

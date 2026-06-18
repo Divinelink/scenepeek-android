@@ -30,11 +30,14 @@ class AwardsViewModel(
   }
 
   private fun fetchCeremonies() {
-    _uiState.update { state ->
-      state.copy(loading = true)
-    }
-
     viewModelScope.launch {
+      _uiState.update { state ->
+        state.copy(
+          loading = true,
+          error = null,
+        )
+      }
+
       awardsRepository
         .fetchAwardCeremonies()
         .fold(
@@ -42,6 +45,7 @@ class AwardsViewModel(
             _uiState.update { state ->
               state.copy(
                 loading = false,
+                error = null,
                 ceremonies = result,
               )
             }

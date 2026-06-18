@@ -1,8 +1,8 @@
 package com.divinelink.core.network.awards.mapper
 
+import com.divinelink.core.fixtures.model.awards.CeremonyFactory
 import com.divinelink.core.network.awards.model.ceremony.CeremoniesResponse
 import com.divinelink.core.testing.factories.api.awards.CeremonyResponseFactory
-import com.divinelink.core.fixtures.model.awards.CeremonyFactory
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

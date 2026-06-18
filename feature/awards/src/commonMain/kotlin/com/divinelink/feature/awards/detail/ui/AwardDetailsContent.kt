@@ -1,4 +1,4 @@
-package com.divinelink.feature.awards.popular.ui
+package com.divinelink.feature.awards.detail.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -6,22 +6,22 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.composition.PreviewLocalProvider
-import com.divinelink.feature.awards.popular.AwardsAction
-import com.divinelink.feature.awards.popular.AwardsUiState
-import com.divinelink.feature.awards.popular.ui.provider.AwardsUiStateParameterProvider
+import com.divinelink.feature.awards.detail.AwardDetailsAction
+import com.divinelink.feature.awards.detail.AwardDetailsUiState
+import com.divinelink.feature.awards.detail.ui.provider.AwardDetailsUiStateParameterProvider
 
 @Composable
-fun AwardsContent(
-  uiState: AwardsUiState,
-  action: (AwardsAction) -> Unit,
+fun AwardDetailsContent(
+  uiState: AwardDetailsUiState,
+  action: (AwardDetailsAction) -> Unit,
 ) {
   when {
     uiState.loading -> LoadingContent()
     uiState.error != null -> BlankSlate(
       uiState = uiState.error,
-      onRetry = { action(AwardsAction.OnRetry) },
+      onRetry = { action(AwardDetailsAction.OnRetry) },
     )
-    else -> AwardsListContent(
+    else -> AwardDetailsListContent(
       uiState = uiState,
       action = action,
     )
@@ -30,11 +30,11 @@ fun AwardsContent(
 
 @Composable
 @Previews
-fun AwardsContentPreview(
-  @PreviewParameter(AwardsUiStateParameterProvider::class) state: AwardsUiState,
+fun AwardDetailsContentPreview(
+  @PreviewParameter(AwardDetailsUiStateParameterProvider::class) state: AwardDetailsUiState,
 ) {
   PreviewLocalProvider {
-    AwardsContent(
+    AwardDetailsContent(
       uiState = state,
       action = { },
     )
