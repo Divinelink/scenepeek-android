@@ -2,6 +2,7 @@
 
 package com.divinelink.core.designsystem.theme
 
+import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -180,6 +182,7 @@ data class ExtendedColors(
   val brightOrange: Color = PrimitiveColors.brightOrange,
   val limeYellow: Color = PrimitiveColors.limeYellow,
   val emeraldGreen: Color = PrimitiveColors.emeraldGreen,
+  val gray: Color = PrimitiveColors.gray,
   val jellyseerrGradientBrush: Brush = PrimitiveColors.jellyseerrGradientBrush,
 )
 
@@ -189,7 +192,8 @@ private data object PrimitiveColors {
   val vibrantPurple = Color(99, 102, 241)
   val brightOrange = Color(0xFFFF5722)
   val limeYellow = Color(234, 179, 8, 255)
-  val emeraldGreen = Color(34, 197, 94, 255)
+  val emeraldGreen = Color(1, 210, 119, 255)
+  val gray = Color(105, 114, 132, 255)
   val jellyseerrGradientBrush = Brush.linearGradient(
     colors = listOf(
       Color(0xFF818cf8),

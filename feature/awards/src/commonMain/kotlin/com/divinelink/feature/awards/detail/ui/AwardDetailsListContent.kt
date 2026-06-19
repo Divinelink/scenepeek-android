@@ -57,7 +57,14 @@ fun AwardDetailsListContent(
         ) {
           uiState.categories.forEach { category ->
             Card(
-              onClick = { action(AwardDetailsAction.OnCategoryClick(category)) },
+              onClick = {
+                action(
+                  AwardDetailsAction.OnCategoryClick(
+                    category = category,
+                    ceremonyId = uiState.ceremony.id,
+                  ),
+                )
+              },
             ) {
               Text(
                 modifier = Modifier.padding(

@@ -1,9 +1,8 @@
 package com.divinelink.core.model.awards
 
-import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.MediaReference
 
 data class AwardNominee(
-  val id: Int,
+  val media: MediaReference,
   val winner: Boolean,
-  val mediaType: MediaType,
 )

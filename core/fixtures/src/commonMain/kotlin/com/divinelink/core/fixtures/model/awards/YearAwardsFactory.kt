@@ -2,6 +2,7 @@ package com.divinelink.core.fixtures.model.awards
 
 import com.divinelink.core.model.awards.AwardNominee
 import com.divinelink.core.model.awards.YearAwards
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 
 object YearAwardsFactory {
@@ -9,24 +10,60 @@ object YearAwardsFactory {
   fun withMovies() = YearAwards(
     year = "2000",
     nominees = listOf(
-      AwardNominee(id = 550, winner = true, mediaType = MediaType.MOVIE),
-      AwardNominee(id = 551, winner = false, mediaType = MediaType.MOVIE),
+      AwardNominee(
+        media = MediaReference(
+          mediaId = 550,
+          mediaType = MediaType.MOVIE,
+        ),
+        winner = true,
+      ),
+      AwardNominee(
+        media = MediaReference(
+          mediaId = 551,
+          mediaType = MediaType.MOVIE,
+        ),
+        winner = false,
+      ),
     ),
   )
 
   fun withShows() = YearAwards(
     year = "2000",
     nominees = listOf(
-      AwardNominee(id = 1396, winner = true, mediaType = MediaType.TV),
-      AwardNominee(id = 1397, winner = false, mediaType = MediaType.TV),
+      AwardNominee(
+        media = MediaReference(
+          mediaId = 1396,
+          mediaType = MediaType.TV,
+        ),
+        winner = true,
+      ),
+      AwardNominee(
+        media = MediaReference(
+          mediaId = 1397,
+          mediaType = MediaType.TV,
+        ),
+        winner = false,
+      ),
     ),
   )
 
   fun withPersons() = YearAwards(
     year = "2000",
     nominees = listOf(
-      AwardNominee(id = 287, winner = false, mediaType = MediaType.PERSON),
-      AwardNominee(id = 288, winner = true, mediaType = MediaType.PERSON),
+      AwardNominee(
+        media = MediaReference(
+          mediaId = 287,
+          mediaType = MediaType.PERSON,
+        ),
+        winner = false,
+      ),
+      AwardNominee(
+        media = MediaReference(
+          mediaId = 288,
+          mediaType = MediaType.PERSON,
+        ),
+        winner = true,
+      ),
     ),
   )
 

@@ -1,4 +1,4 @@
-package com.divinelink.feature.awards.detail.ui
+package com.divinelink.feature.awards.category.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
@@ -18,20 +18,19 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.components.AppTopAppBar
-import com.divinelink.feature.awards.detail.AwardDetailsAction
-import com.divinelink.feature.awards.detail.AwardDetailsViewModel
+import com.divinelink.feature.awards.category.AwardCategoryViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimatedVisibilityScope.AwardDetailsScreen(
-  route: Navigation.AwardDetailsRoute,
+fun AnimatedVisibilityScope.AwardCategoryScreen(
+  route: Navigation.AwardCategoryRoute,
   onNavigate: (Navigation) -> Unit,
-  viewModel: AwardDetailsViewModel = koinViewModel { parametersOf(route) },
+  viewModel: AwardCategoryViewModel = koinViewModel { parametersOf(route) },
 ) {
-  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
   rememberScaffoldState(
     animatedVisibilityScope = this,
@@ -46,7 +45,7 @@ fun AnimatedVisibilityScope.AwardDetailsScreen(
     topBar = {
       AppTopAppBar(
         scrollBehavior = scrollBehavior,
-        text = UIText.StringText(uiState.ceremony.title),
+        text = UIText.StringText(state.category.title),
         onNavigateUp = { onNavigate(Navigation.Back) },
         topAppBarColors = TopAppBarDefaults.topAppBarColors(
           containerColor = Color.Transparent,
@@ -58,19 +57,10 @@ fun AnimatedVisibilityScope.AwardDetailsScreen(
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
-        AwardDetailsContent(
-          uiState = uiState,
-          action = { action ->
-            when (action) {
-              is AwardDetailsAction.OnCategoryClick -> onNavigate(
-                Navigation.AwardCategoryRoute(
-                  category = action.category,
-                  ceremonyId = action.ceremonyId,
-                ),
-              )
-              AwardDetailsAction.OnRetry -> viewModel.onAction(action)
-            }
-          },
+        AwardCategoryContent(
+          uiState = state,
+          action = viewModel::onAction,
+          onNavigate = onNavigate,
         )
       }
     },

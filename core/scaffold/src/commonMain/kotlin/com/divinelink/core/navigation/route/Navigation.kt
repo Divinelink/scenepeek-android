@@ -2,6 +2,7 @@ package com.divinelink.core.navigation.route
 
 import androidx.navigation3.runtime.NavKey
 import com.divinelink.core.model.awards.Ceremony
+import com.divinelink.core.model.awards.CeremonyCategory
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.user.data.UserDataSection
@@ -185,5 +186,11 @@ sealed interface Navigation : NavKey {
   @Serializable
   data class AwardDetailsRoute(
     val ceremony: Ceremony,
+  ) : Navigation
+
+  @Serializable
+  data class AwardCategoryRoute(
+    val category: CeremonyCategory,
+    val ceremonyId: String,
   ) : Navigation
 }

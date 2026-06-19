@@ -2,6 +2,7 @@ package com.divinelink.core.network.awards.mapper
 
 import com.divinelink.core.model.awards.AwardNominee
 import com.divinelink.core.model.awards.YearAwards
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.awards.model.awards.AwardsResponse
 
@@ -12,8 +13,10 @@ fun AwardsResponse.map() = awards.map { award ->
       award.movies != null -> {
         award.movies.map { movie ->
           AwardNominee(
-            mediaType = MediaType.MOVIE,
-            id = movie.id,
+            media = MediaReference(
+              mediaType = MediaType.MOVIE,
+              mediaId = movie.id,
+            ),
             winner = movie.winner,
           )
         }
@@ -21,8 +24,10 @@ fun AwardsResponse.map() = awards.map { award ->
       award.shows != null -> {
         award.shows.map { show ->
           AwardNominee(
-            mediaType = MediaType.TV,
-            id = show.id,
+            media = MediaReference(
+              mediaType = MediaType.TV,
+              mediaId = show.id,
+            ),
             winner = show.winner,
           )
         }
@@ -30,8 +35,10 @@ fun AwardsResponse.map() = awards.map { award ->
       award.persons != null -> {
         award.persons.map { person ->
           AwardNominee(
-            mediaType = MediaType.PERSON,
-            id = person.id,
+            media = MediaReference(
+              mediaType = MediaType.PERSON,
+              mediaId = person.id,
+            ),
             winner = person.winner,
           )
         }
