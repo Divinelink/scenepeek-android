@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.route.toPersonRoute
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -68,7 +68,7 @@ fun AnimatedVisibilityScope.CreditsScreen(
       CreditsContent(
         state = uiState,
         onTabSelected = viewModel::onTabSelected,
-        onPersonSelected = { onNavigate(it.toPersonRoute()) },
+        onPersonSelected = { person -> person.toRoute()?.let { route -> onNavigate(route) } },
       )
     }
   }

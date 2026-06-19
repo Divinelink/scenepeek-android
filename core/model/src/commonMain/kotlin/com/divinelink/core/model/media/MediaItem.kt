@@ -1,5 +1,6 @@
 package com.divinelink.core.model.media
 
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.person.Gender
 import kotlinx.serialization.Serializable
 
@@ -66,12 +67,14 @@ sealed class MediaItem {
       get() = "${mediaType.value}-$id"
   }
 
+  @Serializable
   data class Person(
     override val id: Int,
     override val name: String,
     val profilePath: String?,
     val gender: Gender,
     val knownForDepartment: String?,
+    val role: List<PersonRole> = emptyList(),
   ) : MediaItem() {
     override val posterPath: String? = profilePath
     override val backdropPath: String? = null

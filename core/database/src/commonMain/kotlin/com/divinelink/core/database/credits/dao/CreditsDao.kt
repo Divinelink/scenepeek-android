@@ -6,7 +6,7 @@ import com.divinelink.core.database.credits.ShowCastRoleEntity
 import com.divinelink.core.database.credits.crew.SeriesCrew
 import com.divinelink.core.database.credits.crew.SeriesCrewJob
 import com.divinelink.core.database.credits.model.AggregateCreditsEntity
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface CreditsDao {
@@ -19,10 +19,10 @@ interface CreditsDao {
   fun insertPersons(persons: List<PersonEntity>)
   fun insertRoles(roles: List<Pair<PersonRoleEntity, ShowCastRoleEntity>>)
 
-  fun fetchAllCastWithRoles(id: Long): Flow<List<Person>>
+  fun fetchAllCastWithRoles(id: Long): Flow<List<MediaItem.Person>>
 
   fun insertCrew(crew: List<SeriesCrew>)
   fun insertCrewJobs(jobs: List<SeriesCrewJob>)
 
-  fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<Person>>
+  fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<MediaItem.Person>>
 }

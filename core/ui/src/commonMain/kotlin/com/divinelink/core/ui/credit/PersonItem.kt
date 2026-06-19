@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.UiDrawable
@@ -35,8 +35,8 @@ import org.jetbrains.compose.resources.pluralStringResource
 @Composable
 fun PersonItem(
   modifier: Modifier = Modifier,
-  person: Person,
-  onClick: (Person) -> Unit,
+  person: MediaItem.Person,
+  onClick: (MediaItem.Person) -> Unit,
   isObfuscated: Boolean,
 ) {
   Card(

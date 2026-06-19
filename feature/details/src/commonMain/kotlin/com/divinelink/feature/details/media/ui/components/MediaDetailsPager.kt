@@ -16,7 +16,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.media.MediaItem
@@ -41,7 +40,6 @@ fun MediaDetailsPager(
   uiState: DetailsViewState,
   onNavigate: (Navigation) -> Unit,
   mediaDetails: MediaDetails,
-  onPersonClick: (Person) -> Unit,
   obfuscateEpisodes: Boolean,
   viewAllCreditsClick: () -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
@@ -82,7 +80,7 @@ fun MediaDetailsPager(
             modifier = Modifier.fillMaxSize().nestedScroll(scroll),
             cast = form.data as DetailsData.Cast,
             title = mediaDetails.title,
-            onPersonClick = onPersonClick,
+            onMediaClick = onMediaItemClick,
             obfuscateSpoilers = obfuscateEpisodes,
             onViewAllClick = viewAllCreditsClick,
           )

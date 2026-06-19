@@ -1,7 +1,7 @@
 package com.divinelink.core.network.media.mapper.details
 
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.model.details.credits.CrewApi
 import com.divinelink.core.network.media.model.details.credits.CrewJob
@@ -15,8 +15,8 @@ fun List<CrewApi>.map() = this
       .mapNotNull { it.job.jobToPersonRole() }
       .distinct()
 
-    Person(
-      id = firstEntry.id,
+    MediaItem.Person(
+      id = firstEntry.id.toInt(),
       name = firstEntry.name,
       profilePath = firstEntry.profilePath,
       knownForDepartment = firstEntry.knownForDepartment,

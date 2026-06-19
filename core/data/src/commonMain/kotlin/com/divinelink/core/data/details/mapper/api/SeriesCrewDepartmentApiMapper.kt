@@ -2,7 +2,7 @@ package com.divinelink.core.data.details.mapper.api
 
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.model.credits.JobsApi
 import com.divinelink.core.network.media.model.credits.SeriesCrewApi
@@ -26,8 +26,8 @@ fun List<SeriesCrewApi>.map(): List<SeriesCrewDepartment> {
   return crewList
 }
 
-fun SeriesCrewApi.map() = Person(
-  id = id,
+fun SeriesCrewApi.map() = MediaItem.Person(
+  id = id.toInt(),
   name = name,
   profilePath = profilePath,
   gender = Gender.from(gender),

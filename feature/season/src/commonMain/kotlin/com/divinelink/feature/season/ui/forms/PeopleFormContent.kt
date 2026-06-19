@@ -13,9 +13,9 @@ import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.route.toPersonRoute
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -24,7 +24,7 @@ import com.divinelink.core.ui.credit.PersonItem
 @Composable
 fun PeopleFormContent(
   modifier: Modifier = Modifier,
-  cast: List<Person>,
+  cast: List<MediaItem.Person>,
   onNavigate: (Navigation) -> Unit,
   blankSlateState: BlankSlateState,
 ) {
@@ -53,7 +53,7 @@ fun PeopleFormContent(
       ) { person ->
         PersonItem(
           person = person,
-          onClick = { onNavigate(it.toPersonRoute()) },
+          onClick = { media -> media.toRoute()?.let { onNavigate(it) } },
           isObfuscated = false,
         )
       }

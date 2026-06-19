@@ -3,7 +3,8 @@ package com.divinelink.core.fixtures.details.credits
 import com.divinelink.core.fixtures.details.person.PersonFactory
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.person.Gender
 
 object SeriesCrewListFactory {
 
@@ -56,11 +57,12 @@ object SeriesCrewListFactory {
   fun costumeAndMakeUp() = SeriesCrewDepartment(
     department = "Costume & Make-Up",
     crewList = listOf(
-      Person(
+      MediaItem.Person(
         id = 1325655,
         name = "Elinor Bardach",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
+        gender = Gender.NOT_SET,
         role = listOf(
           PersonRole.Crew(
             job = "Costume Supervisor",
@@ -70,11 +72,12 @@ object SeriesCrewListFactory {
           ),
         ),
       ),
-      Person(
+      MediaItem.Person(
         id = 2166015,
         name = "Carey Bennett",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
+        gender = Gender.NOT_SET,
         role = listOf(
           PersonRole.Crew(
             job = "Costume Designer",
@@ -84,11 +87,12 @@ object SeriesCrewListFactory {
           ),
         ),
       ),
-      Person(
+      MediaItem.Person(
         id = 1664353,
         name = "Cyndra Dunn",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
+        gender = Gender.NOT_SET,
         role = listOf(
           PersonRole.Crew(
             job = "Key Hair Stylist",
@@ -98,11 +102,12 @@ object SeriesCrewListFactory {
           ),
         ),
       ),
-      Person(
+      MediaItem.Person(
         id = 1543004,
         name = "Maria Valdivia",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
+        gender = Gender.NOT_SET,
         role = listOf(
           PersonRole.Crew(
             job = "Key Hair Stylist",

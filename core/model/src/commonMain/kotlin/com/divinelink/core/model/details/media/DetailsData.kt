@@ -3,7 +3,6 @@ package com.divinelink.core.model.details.media
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Collection
 import com.divinelink.core.model.details.Keyword
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.media.MediaItem
@@ -15,7 +14,7 @@ sealed interface DetailsData {
     val overview: String?,
     val tagline: String?,
     val genres: List<Genre>?,
-    val creators: List<Person>?,
+    val creators: List<MediaItem.Person>?,
     val information: MediaDetailsInformation?,
     val collection: Collection?,
     val keywords: List<Keyword>?,
@@ -23,7 +22,7 @@ sealed interface DetailsData {
 
   data class Cast(
     val isTv: Boolean,
-    val items: List<Person>,
+    val items: List<MediaItem.Person>,
   ) : DetailsData
 
   data class Recommendations(val items: List<MediaItem.Media>) : DetailsData

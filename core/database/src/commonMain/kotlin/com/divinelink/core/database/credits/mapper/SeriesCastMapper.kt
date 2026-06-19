@@ -2,11 +2,11 @@ package com.divinelink.core.database.credits.mapper
 
 import com.divinelink.core.database.cast.FetchShowCast
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
-fun FetchShowCast.toPerson(roles: List<PersonRole>): Person = Person(
-  id = id,
+fun FetchShowCast.toPerson(roles: List<PersonRole>): MediaItem.Person = MediaItem.Person(
+  id = id.toInt(),
   name = name,
   profilePath = profilePath,
   knownForDepartment = knownForDepartment,

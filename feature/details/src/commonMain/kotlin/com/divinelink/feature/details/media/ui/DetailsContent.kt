@@ -41,7 +41,6 @@ import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.Movie
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
@@ -93,7 +92,6 @@ fun DetailsContent(
   animatedVisibilityScope: AnimatedVisibilityScope,
   onMarkAsFavoriteClicked: () -> Unit,
   onMediaItemClick: (MediaItem) -> Unit,
-  onPersonClick: (Person) -> Unit,
   onConsumeSnackbar: () -> Unit,
   onAddRateClick: () -> Unit,
   onAddToAccount: (AccountDataSection) -> Unit,
@@ -268,7 +266,6 @@ fun DetailsContent(
             onAddRateClick = onAddRateClick,
             onAddToAccount = onAddToAccount,
             viewAllCreditsClick = onViewAllCreditsClick,
-            onPersonClick = onPersonClick,
             obfuscateEpisodes = viewState.spoilersObfuscated,
             viewAllRatingsClick = onShowAllRatingsClick,
             onTabSelected = onTabSelected,
@@ -308,7 +305,6 @@ private fun SharedTransitionScope.MediaDetailsContent(
   onNavigate: (Navigation) -> Unit,
   trailer: Video?,
   obfuscateEpisodes: Boolean,
-  onPersonClick: (Person) -> Unit,
   onMediaItemClick: (MediaItem) -> Unit,
   onAddRateClick: () -> Unit,
   onAddToAccount: (AccountDataSection) -> Unit,
@@ -388,7 +384,6 @@ private fun SharedTransitionScope.MediaDetailsContent(
         uiState = uiState,
         onNavigate = onNavigate,
         mediaDetails = uiState.mediaDetails,
-        onPersonClick = onPersonClick,
         obfuscateEpisodes = obfuscateEpisodes,
         viewAllCreditsClick = viewAllCreditsClick,
         onSwitchPreferences = onSwitchPreferences,
@@ -428,7 +423,6 @@ fun DetailsContentPreview(
               onConsumeSnackbar = {},
               onAddRateClick = {},
               onAddToAccount = {},
-              onPersonClick = {},
               onViewAllCreditsClick = {},
               onShowAllRatingsClick = {},
               onTabSelected = {},

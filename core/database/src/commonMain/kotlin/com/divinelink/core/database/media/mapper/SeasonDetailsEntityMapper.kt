@@ -2,12 +2,12 @@ package com.divinelink.core.database.media.mapper
 
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.details.Episode
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.SeasonDetails
+import com.divinelink.core.model.media.MediaItem
 
 fun SeasonDetailsEntity.map(
   episodes: List<Episode>,
-  guestStars: List<Person>,
+  guestStars: List<MediaItem.Person>,
 ) = SeasonDetails(
   id = id.toInt(),
   name = name,

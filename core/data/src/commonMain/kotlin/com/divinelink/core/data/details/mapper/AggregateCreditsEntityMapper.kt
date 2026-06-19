@@ -4,7 +4,7 @@ import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 
 fun AggregateCreditsEntity.map() = AggregateCredits(
   cast = cast,
@@ -15,7 +15,7 @@ fun AggregateCreditsEntity.map() = AggregateCredits(
 /**
  * Maps every crew department to its persons.
  */
-fun List<Person>.map(): List<SeriesCrewDepartment> = this
+fun List<MediaItem.Person>.map(): List<SeriesCrewDepartment> = this
   .flatMap { person ->
     person.role
       .filterIsInstance<PersonRole.Crew>()

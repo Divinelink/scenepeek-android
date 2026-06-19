@@ -3,6 +3,7 @@ package com.divinelink.core.model.details
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.media.MediaItem
 
 /**
  * Represents details of a movie.
@@ -18,8 +19,8 @@ data class Movie(
   override val ratingCount: RatingCount,
   override val tagline: String?,
   val runtime: String?,
-  val cast: List<Person>,
-  val creators: List<Person>?,
+  val cast: List<MediaItem.Person>,
+  val creators: List<MediaItem.Person>?,
   val collection: Collection?,
   override val imdbId: String?,
   override val information: MediaDetailsInformation.Movie,

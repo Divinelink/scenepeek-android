@@ -1,10 +1,10 @@
 package com.divinelink.core.model.details.person
 
 import com.divinelink.core.commons.extensions.calculateAge
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 
 data class PersonDetails(
-  val person: Person,
+  val person: MediaItem.Person,
   val biography: String?,
   val birthday: String?,
   val deathday: String?,
@@ -22,7 +22,7 @@ data class PersonDetails(
   val isAlive = deathday == null && currentAge != null
 
   companion object {
-    fun initial(person: Person) = PersonDetails(
+    fun initial(person: MediaItem.Person) = PersonDetails(
       person = person,
       biography = null,
       birthday = null,

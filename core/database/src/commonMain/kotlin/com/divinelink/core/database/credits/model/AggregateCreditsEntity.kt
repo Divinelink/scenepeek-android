@@ -1,9 +1,9 @@
 package com.divinelink.core.database.credits.model
 
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 
 data class AggregateCreditsEntity(
   val id: Long,
-  val crew: List<Person>,
-  val cast: List<Person>,
+  val crew: List<MediaItem.Person>,
+  val cast: List<MediaItem.Person>,
 )

@@ -16,7 +16,7 @@ import com.divinelink.core.database.credits.mapper.toPerson
 import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -81,7 +81,7 @@ class ProdCreditsDao(
     }
   }
 
-  override fun fetchAllCastWithRoles(id: Long): Flow<List<Person>> = database
+  override fun fetchAllCastWithRoles(id: Long): Flow<List<MediaItem.Person>> = database
     .transactionWithResult {
       val rolesByCastId = database
         .showCastRoleEntityQueries
@@ -125,7 +125,7 @@ class ProdCreditsDao(
     }
   }
 
-  override fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<Person>> =
+  override fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<MediaItem.Person>> =
     database.transactionWithResult {
       val crewJobs = database.seriesCrewJobQueries
         .fetchCrewJobs(aggregateCreditId)

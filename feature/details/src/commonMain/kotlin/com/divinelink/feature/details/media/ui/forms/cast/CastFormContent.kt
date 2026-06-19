@@ -19,8 +19,8 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.media.DetailsData
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
@@ -41,7 +41,7 @@ fun CastFormContent(
   cast: DetailsData.Cast,
   title: String,
   obfuscateSpoilers: Boolean,
-  onPersonClick: (Person) -> Unit,
+  onMediaClick: (MediaItem) -> Unit,
   onViewAllClick: () -> Unit,
 ) {
   ScenePeekLazyColumn(
@@ -89,7 +89,7 @@ fun CastFormContent(
       ) { person ->
         PersonItem(
           person = person,
-          onClick = onPersonClick,
+          onClick = onMediaClick,
           isObfuscated = obfuscateSpoilers,
         )
       }

@@ -1,19 +1,11 @@
 package com.divinelink.core.navigation.route
 
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
-fun Person.toPersonRoute() = Navigation.PersonRoute(
-  id = id,
-  knownForDepartment = knownForDepartment,
-  name = name,
-  profilePath = profilePath,
-  gender = gender.value,
-)
-
-fun Navigation.PersonRoute.map() = Person(
-  id = id,
+fun Navigation.PersonRoute.map() = MediaItem.Person(
+  id = id.toInt(),
   knownForDepartment = knownForDepartment,
   name = name ?: "",
   profilePath = profilePath,
