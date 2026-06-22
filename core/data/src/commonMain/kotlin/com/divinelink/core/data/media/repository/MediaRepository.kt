@@ -73,10 +73,10 @@ interface MediaRepository {
    */
   fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>>
 
-  fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>>
+  fun fetchTvSeasons(id: Long): Flow<Result<List<Season>>>
 
   fun fetchSeason(
-    showId: Int,
+    showId: Long,
     seasonNumber: Int,
   ): Flow<Result<Season>>
 
@@ -89,35 +89,35 @@ interface MediaRepository {
    * Remove favorite movie using its [id] from local storage.
    */
   suspend fun removeFavoriteMedia(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
   )
 
   suspend fun checkIfMediaIsFavorite(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
   ): Result<Boolean>
 
   suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>>
 
   fun fetchSeasonDetails(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Flow<Resource<SeasonDetails?>>
 
   fun fetchEpisode(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
   ): Flow<Result<Episode>>
 
   fun getSeasonEpisodesNumber(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Result<List<Int>>
 
   fun insertEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
     rating: Int,

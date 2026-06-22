@@ -150,7 +150,7 @@ class MainViewModel(
         posterPath = "",
       )
       is DeeplinkPath.Episode -> Navigation.EpisodeRoute(
-        showId = deeplink.showId.toInt(),
+        showId = deeplink.showId,
         showTitle = "",
         seasonTitle = "",
         seasonNumber = deeplink.seasonNumber,
@@ -171,18 +171,18 @@ class MainViewModel(
         gender = deeplink.gender ?: Gender.NOT_SET.value,
       )
       is DeeplinkPath.Season -> Navigation.SeasonRoute(
-        showId = deeplink.showId.toInt(),
+        showId = deeplink.showId,
         seasonNumber = deeplink.seasonNumber,
         backdropPath = null,
         title = "",
       )
       is DeeplinkPath.Movie -> DetailsRoute(
-        id = deeplink.id.toInt(),
+        id = deeplink.id,
         mediaType = MediaType.MOVIE.value,
         isFavorite = false,
       )
       is DeeplinkPath.TV -> DetailsRoute(
-        id = deeplink.id.toInt(),
+        id = deeplink.id,
         mediaType = MediaType.TV.value,
         isFavorite = false,
       )

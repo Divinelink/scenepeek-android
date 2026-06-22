@@ -14,7 +14,7 @@ fun MediaInfoRequestResponse.map() = JellyseerrRequest(
   id = id,
   jellyseerrMediaId = media.id,
   media = MediaReference(
-    mediaId = media.tmdbId,
+    mediaId = media.tmdbId.toLong(),
     mediaType = MediaType.from(media.mediaType),
   ),
   mediaStatus = JellyseerrStatus.Media.from(media.status),

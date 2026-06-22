@@ -1333,8 +1333,8 @@ class SearchViewModelTest {
   )
 
   private fun loadData(
-    starting: Int,
-    ending: Int,
+    starting: Long,
+    ending: Long,
   ): List<MediaItem.Media.Movie> = (starting..ending).map {
     MediaItemFactory.FightClub().toWizard {
       withId(it)

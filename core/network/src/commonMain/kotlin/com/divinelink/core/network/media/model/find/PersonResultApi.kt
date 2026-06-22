@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PersonResultApi(
-  val id: Int,
+  val id: Long,
   @SerialName("media_type") val mediaType: String,
   val name: String,
   @SerialName("profile_path") val profilePath: String?,

@@ -121,7 +121,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           DropdownMenuButton(
             color = textColor,
             screenType = ScreenType.List(
-              id = uiState.id,
+              id = uiState.id.toLong(),
               name = uiState.details.name,
             ),
           )

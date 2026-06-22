@@ -1,7 +1,7 @@
 package com.divinelink.core.fixtures.details.credits
 
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
 object SeriesCastFactory {
@@ -17,7 +17,7 @@ object SeriesCastFactory {
     rainnWilson(),
   )
 
-  fun brianBaumgartner() = Person(
+  fun brianBaumgartner() = MediaItem.Person(
     id = 94622,
     name = "Brian Baumgartner",
     role = listOf(
@@ -32,7 +32,7 @@ object SeriesCastFactory {
     profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
   )
 
-  fun angelaKinsey() = Person(
+  fun angelaKinsey() = MediaItem.Person(
     id = 113867,
     name = "Angela Kinsey",
     role = listOf(
@@ -47,7 +47,7 @@ object SeriesCastFactory {
     profilePath = "/qHFidnMcFqUWdMFyjmXufBlYckd.jpg",
   )
 
-  fun oscarNunez() = Person(
+  fun oscarNunez() = MediaItem.Person(
     id = 76094,
     name = "Óscar Núñez",
     role = listOf(
@@ -62,7 +62,7 @@ object SeriesCastFactory {
     profilePath = "/UBILHiRphJdlshvsyH920QSAhk.jpg",
   )
 
-  fun kateFlannery() = Person(
+  fun kateFlannery() = MediaItem.Person(
     id = 304282,
     name = "Kate Flannery",
     role = listOf(
@@ -77,7 +77,7 @@ object SeriesCastFactory {
     profilePath = "/wFXWKB2IUyB6Cu08PyovyBAm9WT.jpg",
   )
 
-  fun creedBratton() = Person(
+  fun creedBratton() = MediaItem.Person(
     id = 85177,
     name = "Creed Bratton",
     role = listOf(
@@ -92,7 +92,7 @@ object SeriesCastFactory {
     profilePath = "/72hNnta4igAn2cE6fDyKElHcZ09.jpg",
   )
 
-  fun leslieDavidBaker() = Person(
+  fun leslieDavidBaker() = MediaItem.Person(
     id = 1230842,
     name = "Leslie David Baker",
     role = listOf(
@@ -107,7 +107,7 @@ object SeriesCastFactory {
     profilePath = "/9h3xlV5IYqKinlQCW1ouU7sjwWF.jpg",
   )
 
-  fun phyllisSmith() = Person(
+  fun phyllisSmith() = MediaItem.Person(
     id = 169200,
     name = "Phyllis Smith",
     role = listOf(
@@ -122,7 +122,7 @@ object SeriesCastFactory {
     profilePath = "/h9w9pQbiderRWAC2mi7spjzuIGz.jpg",
   )
 
-  fun rainnWilson() = Person(
+  fun rainnWilson() = MediaItem.Person(
     id = 11678,
     name = "Rainn Wilson",
     role = listOf(

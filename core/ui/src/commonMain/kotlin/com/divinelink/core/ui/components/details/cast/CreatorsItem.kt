@@ -12,8 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.details.person.PersonFactory
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_creator
@@ -25,8 +26,8 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun CreatorsItem(
   modifier: Modifier = Modifier,
-  creators: List<Person>,
-  onClick: (Person) -> Unit,
+  creators: List<MediaItem.Person>,
+  onClick: (MediaItem.Person) -> Unit,
 ) {
   FlowRow(
     modifier = modifier.offset(x = -MaterialTheme.dimensions.keyline_12),
@@ -42,8 +43,8 @@ fun CreatorsItem(
 
 @Composable
 private fun CreatorItem(
-  person: Person,
-  onClick: (Person) -> Unit,
+  person: MediaItem.Person,
+  onClick: (MediaItem.Person) -> Unit,
 ) {
   val director = stringResource(UiString.core_ui_director)
   val screenplay = stringResource(UiString.core_ui_screenplay)
@@ -89,36 +90,9 @@ private fun TvCreatorsItemPreview() {
   AppTheme {
     Surface {
       CreatorsItem(
-        creators = listOf(
-          Person(
-            id = 1216630,
-            name = "Greg Daniels",
-            profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-          Person(
-            id = 17835,
-            name = "Ricky Gervais",
-            profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-          Person(
-            id = 123,
-            name = "Stephen Merchant",
-            profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-          Person(
-            id = 345,
-            name = "Ricky Gervais",
-            profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-        ),
+        creators = PersonFactory.cameraDepartment().map {
+          it.copy(role = listOf(PersonRole.Creator))
+        },
         onClick = {},
       )
     }

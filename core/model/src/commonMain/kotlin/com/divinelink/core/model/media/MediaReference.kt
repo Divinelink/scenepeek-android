@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MediaReference(
-  val mediaId: Int,
+  val mediaId: Long,
   val mediaType: MediaType,
 )

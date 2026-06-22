@@ -11,7 +11,7 @@ data class RemoveItemsResponse(
   @Serializable
   data class RemoveItemResponse(
     @SerialName("media_type") val mediaType: String,
-    @SerialName("media_id") val mediaId: Int,
+    @SerialName("media_id") val mediaId: Long,
     val success: Boolean,
   )
 }

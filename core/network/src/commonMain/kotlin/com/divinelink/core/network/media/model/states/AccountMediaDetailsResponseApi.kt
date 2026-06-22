@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AccountMediaDetailsResponseApi(
-  val id: Int,
+  val id: Long,
   val favorite: Boolean,
   val rated: RateResponseApi,
   val watchlist: Boolean,

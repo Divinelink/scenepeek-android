@@ -27,7 +27,7 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -41,7 +41,7 @@ fun CreditsContent(
   modifier: Modifier = Modifier,
   state: CreditsUiState,
   onTabSelected: (Int) -> Unit,
-  onPersonSelected: (Person) -> Unit,
+  onPersonSelected: (MediaItem.Person) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(state.selectedTabIndex) }
   val scope = rememberCoroutineScope()

@@ -4,13 +4,13 @@ import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Movie
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
 object MediaDetailsFactory {
@@ -28,11 +28,12 @@ object MediaDetailsFactory {
       " Their concept catches on, with underground \"fight clubs\" forming in every town, " +
       "until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
     creators = listOf(
-      Person(
+      MediaItem.Person(
         id = 123443321,
         name = "Forest Gump",
         profilePath = "BoxOfChocolates.jpg",
         knownForDepartment = "Directing",
+        gender = Gender.NOT_SET,
         role = listOf(PersonRole.Director),
       ),
     ),
@@ -83,7 +84,7 @@ object MediaDetailsFactory {
     genres = listOf(GenreFactory.Tv.comedy),
     seasons = SeasonFactory.all(),
     creators = listOf(
-      Person(
+      MediaItem.Person(
         id = 17835,
         name = "Ricky Gervais",
         profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
@@ -91,7 +92,7 @@ object MediaDetailsFactory {
         gender = Gender.MALE,
         role = listOf(PersonRole.Creator),
       ),
-      Person(
+      MediaItem.Person(
         id = 39189,
         name = "Stephen Merchant",
         profilePath = "/6WM2rK6390Nwk398syJbGcPvRct.jpg",
@@ -99,7 +100,7 @@ object MediaDetailsFactory {
         gender = Gender.MALE,
         role = listOf(PersonRole.Creator),
       ),
-      Person(
+      MediaItem.Person(
         id = 1216630,
         name = "Greg Daniels",
         profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",

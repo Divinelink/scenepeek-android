@@ -2,8 +2,8 @@ package com.divinelink.core.fixtures.details.person
 
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.person.PersonDetails
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
 object PersonDetailsFactory {
@@ -41,7 +41,7 @@ object PersonDetailsFactory {
     " Netflix sitcom Space Force (2020–present)."
 
   fun steveCarell() = PersonDetails(
-    person = Person(
+    person = MediaItem.Person(
       id = 4495,
       name = "Steve Carell",
       profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",

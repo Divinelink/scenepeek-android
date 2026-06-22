@@ -37,15 +37,15 @@ interface JellyseerrService {
 
   suspend fun deleteRequest(mediaId: Int): Result<Unit>
 
-  suspend fun deleteMedia(mediaId: Int): Result<Unit>
+  suspend fun deleteMedia(mediaId: Long): Result<Unit>
 
-  suspend fun deleteFile(mediaId: Int): Result<Unit>
+  suspend fun deleteFile(mediaId: Long): Result<Unit>
 
   suspend fun getRequestDetails(requestId: Int): Flow<Result<MediaInfoRequestResponse>>
 
-  suspend fun getMovieDetails(mediaId: Int): Flow<Result<JellyseerrMovieDetailsResponse>>
+  suspend fun getMovieDetails(mediaId: Long): Flow<Result<JellyseerrMovieDetailsResponse>>
 
-  suspend fun getTvDetails(mediaId: Int): Flow<Result<JellyseerrTvDetailsResponse>>
+  suspend fun getTvDetails(mediaId: Long): Flow<Result<JellyseerrTvDetailsResponse>>
 
   suspend fun getRadarrInstances(): Result<List<RadarrInstanceResponse>>
 

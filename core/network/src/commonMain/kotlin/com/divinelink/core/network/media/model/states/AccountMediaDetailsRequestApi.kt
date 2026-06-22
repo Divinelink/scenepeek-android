@@ -5,14 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class AccountMediaDetailsRequestApi(
-  open val id: Int,
+  open val id: Long,
   open val endpoint: String,
 ) {
   abstract val sessionId: String
 
   @Serializable
   data class Movie(
-    @SerialName("movie_id") val movieId: Int,
+    @SerialName("movie_id") val movieId: Long,
     override val sessionId: String,
   ) : AccountMediaDetailsRequestApi(
     id = movieId,
@@ -21,7 +21,7 @@ sealed class AccountMediaDetailsRequestApi(
 
   @Serializable
   data class TV(
-    @SerialName("series_id") val seriesId: Int,
+    @SerialName("series_id") val seriesId: Long,
     override val sessionId: String,
   ) : AccountMediaDetailsRequestApi(
     id = seriesId,

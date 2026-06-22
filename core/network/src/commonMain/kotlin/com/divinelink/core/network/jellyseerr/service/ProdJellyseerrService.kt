@@ -129,7 +129,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   /**
    * Removes a media item. The `MANAGE_REQUESTS` permission is required to perform this action.
    */
-  override suspend fun deleteMedia(mediaId: Int): Result<Unit> {
+  override suspend fun deleteMedia(mediaId: Long): Result<Unit> {
     val hostAddress = restClient.hostAddress
       ?: return Result.failure(MissingJellyseerrHostAddressException())
 
@@ -142,7 +142,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   /**
    * Removes a media file from radarr/sonarr.
    */
-  override suspend fun deleteFile(mediaId: Int): Result<Unit> {
+  override suspend fun deleteFile(mediaId: Long): Result<Unit> {
     val hostAddress = restClient.hostAddress
       ?: return Result.failure(MissingJellyseerrHostAddressException())
 
@@ -153,7 +153,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   }
 
   override suspend fun getMovieDetails(
-    mediaId: Int,
+    mediaId: Long,
   ): Flow<Result<JellyseerrMovieDetailsResponse>> = flow {
     val hostAddress = restClient.hostAddress
     if (hostAddress == null) {
@@ -168,7 +168,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     emit(result)
   }
 
-  override suspend fun getTvDetails(mediaId: Int): Flow<Result<JellyseerrTvDetailsResponse>> =
+  override suspend fun getTvDetails(mediaId: Long): Flow<Result<JellyseerrTvDetailsResponse>> =
     flow {
       val hostAddress = restClient.hostAddress
       if (hostAddress == null) {

@@ -23,7 +23,7 @@ data class JellyseerrRequestMediaResponse(
    */
   @Serializable
   data class MediaResponse(
-    val id: Int,
+    val id: Long,
     val mediaType: String,
     val status: Int,
     val tmdbId: Int,

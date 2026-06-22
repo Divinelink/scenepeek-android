@@ -10,7 +10,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 
 data class SubmitRatingParameters(
-  val id: Int,
+  val id: Long,
   val mediaType: MediaType,
   val rating: Int,
 )

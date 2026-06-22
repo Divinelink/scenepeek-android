@@ -10,7 +10,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 
 data class DeleteRatingParameters(
-  val id: Int,
+  val id: Long,
   val mediaType: MediaType,
 )
 

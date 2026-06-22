@@ -74,7 +74,7 @@ class ListDetailsScreenTest : ComposeTest() {
     declare {
       DropdownMenuViewModel(
         entryPoint = ScreenType.List(
-          id = ListDetailsFactory.mustWatch().id,
+          id = ListDetailsFactory.mustWatch().id.toLong(),
           name = ListDetailsFactory.mustWatch().name,
         ),
         spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase(),

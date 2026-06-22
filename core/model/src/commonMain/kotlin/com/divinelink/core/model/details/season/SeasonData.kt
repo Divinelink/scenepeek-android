@@ -1,7 +1,7 @@
 package com.divinelink.core.model.details.season
 
 import com.divinelink.core.model.details.Episode
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 
 data class SeasonInformation(
   val totalEpisodes: Int,
@@ -22,10 +22,10 @@ sealed interface SeasonData {
   ) : SeasonData
 
   data class Cast(
-    val cast: List<Person>,
+    val cast: List<MediaItem.Person>,
   ) : SeasonData
 
   data class GuestStars(
-    val cast: List<Person>,
+    val cast: List<MediaItem.Person>,
   ) : SeasonData
 }

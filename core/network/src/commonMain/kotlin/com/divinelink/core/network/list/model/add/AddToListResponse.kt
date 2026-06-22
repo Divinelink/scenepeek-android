@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class AddToListResponse(val results: List<MediaItemResponse>) {
   @Serializable
   data class MediaItemResponse(
-    @SerialName("media_id") val mediaId: Int,
+    @SerialName("media_id") val mediaId: Long,
     @SerialName("media_type") val mediaType: String,
     val success: Boolean,
     val error: List<String>? = null,

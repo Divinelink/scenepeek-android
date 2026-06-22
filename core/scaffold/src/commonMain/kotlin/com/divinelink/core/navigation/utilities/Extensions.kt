@@ -10,7 +10,7 @@ fun MediaItem.toRoute(): Navigation? = when (this) {
     isFavorite = isFavorite,
   )
   is MediaItem.Person -> Navigation.PersonRoute(
-    id = id.toLong(),
+    id = id,
     knownForDepartment = knownForDepartment,
     name = name,
     profilePath = profilePath,

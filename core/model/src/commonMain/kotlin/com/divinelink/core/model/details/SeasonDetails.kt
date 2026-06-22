@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.media.MediaItem
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,5 +14,5 @@ data class SeasonDetails(
   val voteAverage: Double,
   val episodes: List<Episode>,
   val totalRuntime: String?,
-  val guestStars: List<Person>,
+  val guestStars: List<MediaItem.Person>,
 )

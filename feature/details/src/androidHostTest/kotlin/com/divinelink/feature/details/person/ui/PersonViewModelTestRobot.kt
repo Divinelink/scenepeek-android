@@ -2,6 +2,7 @@ package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.model.tab.Tab
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
@@ -29,8 +30,10 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
     )
   }
 
-  fun withNavArgs(navArgs: PersonRoute) = apply {
-    this.navArgs = navArgs
+  fun withNavArgs(navArgs: Navigation?) = apply {
+    if (navArgs is PersonRoute) {
+      this.navArgs = navArgs
+    }
   }
 
   fun mockFetchPersonDetailsUseCaseSuccess(result: PersonDetailsResult) = apply {

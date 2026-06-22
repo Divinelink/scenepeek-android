@@ -32,7 +32,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.resources.core_model_tab_guest_stars
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.route.toPersonRoute
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.UiString
@@ -179,7 +179,7 @@ fun SharedTransitionScope.EpisodeContent(
                   ) { person ->
                     SmallPersonItem(
                       person = person,
-                      onClick = { onNavigate(it.toPersonRoute()) },
+                      onClick = { media -> media.toRoute()?.let { onNavigate(it) } },
                     )
                   }
                 }

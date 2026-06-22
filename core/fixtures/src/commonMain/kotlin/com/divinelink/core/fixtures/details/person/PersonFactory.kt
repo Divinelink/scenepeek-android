@@ -5,13 +5,13 @@ import com.divinelink.core.fixtures.details.person.PersonFactory.Camera.peterSmo
 import com.divinelink.core.fixtures.details.person.PersonFactory.Camera.randallEinhorn
 import com.divinelink.core.fixtures.details.person.PersonFactory.Camera.ronNichols
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
 object PersonFactory {
 
   object SeriesActor {
-    val brianBaumgartner = Person(
+    val brianBaumgartner = MediaItem.Person(
       id = 94622,
       name = "Brian Baumgartner",
       profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
@@ -26,7 +26,7 @@ object PersonFactory {
       ),
     )
 
-    val angelaKinsey = Person(
+    val angelaKinsey = MediaItem.Person(
       id = 113867,
       name = "Angela Kinsey",
       profilePath = "/qHFidnMcFqUWdMFyjmXufBlYckd.jpg",
@@ -43,7 +43,7 @@ object PersonFactory {
   }
 
   object Camera {
-    fun randallEinhorn() = Person(
+    fun randallEinhorn() = MediaItem.Person(
       id = 1215572,
       name = "Randall Einhorn",
       profilePath = null,
@@ -59,7 +59,7 @@ object PersonFactory {
       ),
     )
 
-    fun daleAlexander() = Person(
+    fun daleAlexander() = MediaItem.Person(
       id = 1879373,
       name = "Dale Alexander",
       profilePath = null,
@@ -75,7 +75,7 @@ object PersonFactory {
       ),
     )
 
-    fun ronNichols() = Person(
+    fun ronNichols() = MediaItem.Person(
       id = 2166021,
       name = "Ron Nichols",
       profilePath = null,
@@ -91,7 +91,7 @@ object PersonFactory {
       ),
     )
 
-    fun peterSmokler() = Person(
+    fun peterSmokler() = MediaItem.Person(
       id = 67864,
       name = "Peter Smokler",
       profilePath = null,
@@ -110,7 +110,7 @@ object PersonFactory {
 
   object Art {
 
-    fun steveRostine() = Person(
+    fun steveRostine() = MediaItem.Person(
       id = 2166017,
       name = "Steve Rostine",
       profilePath = null,
@@ -126,7 +126,7 @@ object PersonFactory {
       ),
     )
 
-    fun philipDShea() = Person(
+    fun philipDShea() = MediaItem.Person(
       id = 1844757,
       name = "Philip D. Shea",
       profilePath = null,
@@ -142,11 +142,12 @@ object PersonFactory {
       ),
     )
 
-    fun donaldLeeHarris() = Person(
+    fun donaldLeeHarris() = MediaItem.Person(
       id = 33562,
       name = "Donald Lee Harris",
       profilePath = null,
       knownForDepartment = "Art",
+      gender = Gender.NOT_SET,
       role = listOf(
         PersonRole.Crew(
           job = "Production Design",
@@ -157,11 +158,12 @@ object PersonFactory {
       ),
     )
 
-    fun melodyMelton() = Person(
+    fun melodyMelton() = MediaItem.Person(
       id = 2166018,
       name = "Melody Melton",
       profilePath = null,
       knownForDepartment = "Art",
+      gender = Gender.NOT_SET,
       role = listOf(
         PersonRole.Crew(
           job = "Property Master",

@@ -25,7 +25,7 @@ import com.divinelink.core.ui.snackbar.SnackbarMessage
 data class DetailsViewState(
   val isLoading: Boolean,
   val mediaType: MediaType,
-  val mediaId: Int,
+  val mediaId: Long,
   val mediaDetails: MediaDetails?,
   val userDetails: AccountMediaDetails,
   val accountDataState: Map<AccountDataSection, Boolean>,
@@ -46,7 +46,7 @@ data class DetailsViewState(
   companion object {
     fun initial(
       isLoading: Boolean,
-      mediaId: Int,
+      mediaId: Long,
       mediaType: MediaType,
       tabs: List<Tab>,
       forms: DetailsForms,

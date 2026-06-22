@@ -25,7 +25,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
@@ -44,8 +44,8 @@ import org.jetbrains.compose.resources.pluralStringResource
 @Composable
 fun CreditsItemCard(
   modifier: Modifier = Modifier,
-  person: Person,
-  onPersonClick: (Person) -> Unit,
+  person: MediaItem.Person,
+  onPersonClick: (MediaItem.Person) -> Unit,
   obfuscateEpisodes: Boolean = false,
 ) {
   Card(
@@ -128,7 +128,9 @@ fun CreditsItemCard(
 
 @Previews
 @Composable
-fun CreditsItemCardPreview(@PreviewParameter(PersonParameterProvider::class) person: Person) {
+fun CreditsItemCardPreview(
+  @PreviewParameter(PersonParameterProvider::class) person: MediaItem.Person,
+) {
   AppTheme {
     Surface {
       Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {

@@ -20,8 +20,6 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
-import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DevicePreviews
 import com.divinelink.core.ui.LoadMoreContent
@@ -73,14 +71,7 @@ fun FlatMediaList(
           onLongClick = onLongClick,
         )
         is MediaItem.Person -> CreditsItemCard(
-          person = Person(
-            id = search.id.toLong(),
-            name = search.name,
-            profilePath = search.posterPath,
-            gender = search.gender,
-            knownForDepartment = search.knownForDepartment,
-            role = listOf(PersonRole.Unknown),
-          ),
+          person = search,
           onPersonClick = {
             onItemClick(search)
           },

@@ -174,7 +174,7 @@ class ProdAccountRepository(
   }
 
   override suspend fun deleteEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
   ): Result<Unit> = remote.clearEpisodeRating(
@@ -195,7 +195,7 @@ class ProdAccountRepository(
   }
 
   override suspend fun submitEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
     rating: Int,

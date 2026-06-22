@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Season(
-  val id: Int,
+  val id: Long,
   val name: String,
   val overview: String,
   val posterPath: String?,

@@ -6,7 +6,7 @@ import com.divinelink.core.model.media.MediaType
 
 fun MediaItemEntity.map() = when (MediaType.from(mediaType)) {
   MediaType.TV -> MediaItem.Media.TV(
-    id = id.toInt(),
+    id = id,
     name = name,
     posterPath = posterPath,
     backdropPath = backdropPath,
@@ -19,7 +19,7 @@ fun MediaItemEntity.map() = when (MediaType.from(mediaType)) {
     accountRating = null,
   )
   MediaType.MOVIE -> MediaItem.Media.Movie(
-    id = id.toInt(),
+    id = id,
     name = name,
     posterPath = posterPath,
     backdropPath = backdropPath,

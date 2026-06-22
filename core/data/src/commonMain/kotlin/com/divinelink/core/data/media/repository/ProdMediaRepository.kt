@@ -256,7 +256,7 @@ class ProdMediaRepository(
   }
 
   override suspend fun removeFavoriteMedia(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
   ) {
     dao.removeFromFavorites(
@@ -266,7 +266,7 @@ class ProdMediaRepository(
   }
 
   override suspend fun checkIfMediaIsFavorite(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
   ): Result<Boolean> {
     dao.isMediaFavorite(
@@ -277,11 +277,11 @@ class ProdMediaRepository(
     }
   }
 
-  override fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>> = dao.fetchSeasons(id)
+  override fun fetchTvSeasons(id: Long): Flow<Result<List<Season>>> = dao.fetchSeasons(id)
     .map { runCatching { it } }
 
   override fun fetchSeason(
-    showId: Int,
+    showId: Long,
     seasonNumber: Int,
   ): Flow<Result<Season>> = dao
     .fetchSeason(
@@ -300,7 +300,7 @@ class ProdMediaRepository(
     )
 
   override fun fetchSeasonDetails(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Flow<Resource<SeasonDetails?>> = networkBoundResource(
     query = {
@@ -347,7 +347,7 @@ class ProdMediaRepository(
   )
 
   override fun getSeasonEpisodesNumber(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Result<List<Int>> = runCatching {
     dao.fetchSeasonEpisodesCount(
@@ -357,7 +357,7 @@ class ProdMediaRepository(
   }
 
   override fun fetchEpisode(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
   ): Flow<Result<Episode>> = combine(
@@ -380,7 +380,7 @@ class ProdMediaRepository(
   }
 
   override fun insertEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
     rating: Int,

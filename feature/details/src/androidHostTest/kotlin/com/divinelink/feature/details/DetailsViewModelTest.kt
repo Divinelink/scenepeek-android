@@ -76,7 +76,7 @@ class DetailsViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val mediaId = 1234
+  private val mediaId = 1234L
   private val similarMovies = MediaItemFactory.MoviesList()
   private val movieDetails = MediaDetailsFactory.FightClub()
   private val tvDetails = MediaDetailsFactory.TheOffice()
@@ -2885,7 +2885,7 @@ class DetailsViewModelTest {
   }
 
   private fun createUiState(
-    mediaId: Int,
+    mediaId: Long,
     mediaType: MediaType,
     isLoading: Boolean = false,
     mediaDetails: MediaDetails? = null,

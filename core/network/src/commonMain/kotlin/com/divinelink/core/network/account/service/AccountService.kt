@@ -51,14 +51,14 @@ interface AccountService {
   ): Flow<TvResponseApi>
 
   suspend fun submitEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
     rating: Int,
   ): Result<TMDBResponse>
 
   suspend fun clearEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
   ): Result<TMDBResponse>

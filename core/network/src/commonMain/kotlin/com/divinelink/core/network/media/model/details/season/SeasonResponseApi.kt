@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SeasonResponseApi(
-  val id: Int,
+  val id: Long,
   val name: String,
   val overview: String,
   @SerialName("air_date") val airDate: String?,

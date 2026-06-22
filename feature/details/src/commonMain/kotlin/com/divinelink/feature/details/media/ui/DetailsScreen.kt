@@ -20,9 +20,8 @@ import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.route.toPersonRoute
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
@@ -120,15 +119,7 @@ fun DetailsScreen(
       onNavigate = onNavigate,
       animatedVisibilityScope = animatedVisibilityScope,
       onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
-      onMediaItemClick = { media ->
-        val route = Navigation.DetailsRoute(
-          id = media.id,
-          mediaType = media.mediaType.value,
-          isFavorite = (media as? MediaItem.Media)?.isFavorite,
-        )
-        onNavigate(route)
-      },
-      onPersonClick = { person -> onNavigate(person.toPersonRoute()) },
+      onMediaItemClick = { media -> media.toRoute()?.let { onNavigate(it) } },
       onConsumeSnackbar = viewModel::consumeSnackbarMessage,
       onAddRateClick = { openRateBottomSheet = true },
       onAddToAccount = viewModel::onAddToAccount,

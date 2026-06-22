@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class JellyseerrRequestMediaBodyApi(
   val mediaType: String,
-  val mediaId: Int,
+  val mediaId: Long,
   val is4k: Boolean,
   val seasons: List<Int>,
   val serverId: Int? = null,

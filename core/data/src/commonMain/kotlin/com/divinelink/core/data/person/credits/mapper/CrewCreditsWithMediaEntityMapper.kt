@@ -12,7 +12,7 @@ fun CrewCreditsWithMedia.map(
 ) = when (MediaType.from(mediaType)) {
   MediaType.TV -> PersonCredit(
     media = MediaItem.Media.TV(
-      id = id.toInt(),
+      id = id,
       name = name,
       posterPath = posterPath,
       backdropPath = backdropPath,
@@ -33,7 +33,7 @@ fun CrewCreditsWithMedia.map(
   )
   else -> PersonCredit(
     media = MediaItem.Media.Movie(
-      id = id.toInt(),
+      id = id,
       name = name,
       posterPath = posterPath,
       backdropPath = backdropPath,

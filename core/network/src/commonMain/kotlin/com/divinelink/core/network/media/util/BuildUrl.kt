@@ -12,7 +12,7 @@ import io.ktor.http.buildUrl
 import io.ktor.http.encodedPath
 
 fun buildFetchDetailsUrl(
-  id: Int,
+  id: Long,
   media: MediaType,
   appendToResponse: Boolean,
   language: String,
@@ -141,7 +141,7 @@ fun buildFetchMediaListUrl(
 }.toString()
 
 fun buildSeasonDetailsUrl(
-  showId: Int,
+  showId: Long,
   seasonNumber: Int,
   sessionId: String?,
   language: String,

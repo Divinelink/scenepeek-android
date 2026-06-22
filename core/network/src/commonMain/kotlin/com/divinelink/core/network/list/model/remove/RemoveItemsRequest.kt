@@ -10,7 +10,7 @@ data class RemoveItemsRequest(val items: List<RemoveMediaRequest>) {
   @Serializable
   data class RemoveMediaRequest(
     @SerialName("media_type") val mediaType: String,
-    @SerialName("media_id") val mediaId: Int,
+    @SerialName("media_id") val mediaId: Long,
   )
 
   companion object {

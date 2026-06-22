@@ -63,7 +63,7 @@ class TestMediaRepository {
   }
 
   suspend fun mockCheckFavorite(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
     response: Result<Boolean>,
   ) {
@@ -83,7 +83,7 @@ class TestMediaRepository {
   }
 
   suspend fun mockRemoveFavorite(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
     response: Unit,
   ) {

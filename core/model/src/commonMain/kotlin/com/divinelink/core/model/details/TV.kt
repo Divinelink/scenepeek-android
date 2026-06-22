@@ -3,12 +3,13 @@ package com.divinelink.core.model.details
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.media.MediaItem
 
 /**
  * Represents details of a TV show.
  */
 data class TV(
-  override val id: Int,
+  override val id: Long,
   override val title: String,
   override val posterPath: String,
   override val backdropPath: String,
@@ -22,7 +23,7 @@ data class TV(
   override val popularity: Double,
   override val information: MediaDetailsInformation.TV,
   override val keywords: List<Keyword>?,
-  val creators: List<Person>?,
+  val creators: List<MediaItem.Person>?,
   val seasons: List<Season>,
   val numberOfSeasons: Int,
 ) : MediaDetails()

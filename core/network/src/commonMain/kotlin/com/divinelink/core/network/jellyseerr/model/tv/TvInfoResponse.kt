@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TvInfoResponse(
-  val id: Int,
+  val id: Long,
   val status: Int,
   val seasons: List<TvSeasonResponse>,
   val requests: List<MediaInfoRequestResponse>,

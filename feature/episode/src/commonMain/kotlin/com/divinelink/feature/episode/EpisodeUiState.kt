@@ -6,7 +6,7 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class EpisodeUiState(
-  val showId: Int,
+  val showId: Long,
   val showTitle: String,
   val seasonTitle: String,
   val seasonNumber: Int,

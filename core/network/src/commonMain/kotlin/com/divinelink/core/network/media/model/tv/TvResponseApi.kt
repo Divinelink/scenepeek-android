@@ -16,7 +16,7 @@ data class TvResponseApi(
 
 @Serializable
 data class TvItemApi(
-  @SerialName("id") val id: Int,
+  @SerialName("id") val id: Long,
   @SerialName("adult") val adult: Boolean,
   @SerialName("backdrop_path") val backdropPath: String? = null,
   @SerialName("genre_ids") val genreIds: List<Int>,

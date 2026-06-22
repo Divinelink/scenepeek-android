@@ -158,7 +158,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   }
 
   fun withNavArguments(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
     isFavorite: Boolean = false,
   ) = apply {

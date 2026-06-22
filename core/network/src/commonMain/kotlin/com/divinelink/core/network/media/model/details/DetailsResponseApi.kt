@@ -5,13 +5,13 @@ import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.mapper.credits.map
 import com.divinelink.core.network.media.mapper.details.map
@@ -28,7 +28,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable(with = DetailsResponseApiSerializer::class)
 sealed class DetailsResponseApi {
-  abstract val id: Int
+  abstract val id: Long
   abstract val adult: Boolean
   abstract val genres: List<GenreResponse>
 
@@ -58,7 +58,7 @@ sealed class DetailsResponseApi {
 
   @Serializable
   data class Movie(
-    override val id: Int,
+    override val id: Long,
     override val adult: Boolean,
     @SerialName("backdrop_path") override val backdropPath: String?,
     val budget: Int,
@@ -90,7 +90,7 @@ sealed class DetailsResponseApi {
 
   @Serializable
   data class TV(
-    override val id: Int,
+    override val id: Long,
     override val adult: Boolean,
     @SerialName("backdrop_path") override val backdropPath: String?,
     override val genres: List<GenreResponse>,
@@ -204,9 +204,9 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   keywords = keywords.map(),
 )
 
-private fun List<CastApi>.toActors(): List<Person> = this.map(CastApi::toPerson)
+private fun List<CastApi>.toActors(): List<MediaItem.Person> = this.map(CastApi::toPerson)
 
-fun CastApi.toPerson(): Person = Person(
+fun CastApi.toPerson() = MediaItem.Person(
   id = this.id,
   name = this.name,
   profilePath = this.profilePath,

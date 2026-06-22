@@ -11,7 +11,7 @@ import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
-import com.divinelink.core.navigation.route.toPersonRoute
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
@@ -53,7 +53,7 @@ class PersonViewModelTest {
   @Test
   fun `test initialise viewModel with success person details`() = runTest {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
@@ -68,7 +68,7 @@ class PersonViewModelTest {
   @Test
   fun `test initialise viewModel with error on details`() = runTest {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(PersonDetailsResult.DetailsFailure)
       .buildViewModel()
       .assertUiState(
@@ -86,7 +86,7 @@ class PersonViewModelTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .setupChannelForUseCase(channel)
       .buildViewModel()
       .expectUiStates(
@@ -134,7 +134,7 @@ class PersonViewModelTest {
   @Test
   fun `test updateCredits when uiState is not yet success`() = runTest {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
@@ -165,7 +165,7 @@ class PersonViewModelTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .setupChannelForUseCase(channel)
       .buildViewModel()
       .expectUiStates(
@@ -211,7 +211,7 @@ class PersonViewModelTest {
   @Test
   fun `test onTabSelected updates current tab`() = runTest {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
@@ -256,7 +256,7 @@ class PersonViewModelTest {
   @Test
   fun `test onApplyFilter with Directing Department shows only data with Directing`() {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
@@ -307,7 +307,7 @@ class PersonViewModelTest {
   @Test
   fun `test onApplyFilter clears filter when toggling the same filter`() {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
@@ -364,7 +364,7 @@ class PersonViewModelTest {
   @Test
   fun `test onApplyFilter for movies`() {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
@@ -422,7 +422,7 @@ class PersonViewModelTest {
   @Test
   fun `test onApplyFilter without correct tab`() {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.toPersonRoute())
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.toRoute())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),

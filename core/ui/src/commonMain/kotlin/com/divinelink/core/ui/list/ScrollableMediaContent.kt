@@ -23,8 +23,6 @@ import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
-import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewMode
@@ -127,28 +125,14 @@ fun ScrollableMediaContent(
                 modifier = Modifier
                   .animateItem()
                   .animateContentSize(),
-                person = Person(
-                  id = media.id.toLong(),
-                  name = media.name,
-                  profilePath = media.posterPath,
-                  gender = media.gender,
-                  knownForDepartment = media.knownForDepartment,
-                  role = listOf(PersonRole.Unknown),
-                ),
+                person = media,
                 onPersonClick = { onClick(media) },
               )
               ViewMode.LIST -> PersonItem(
                 modifier = Modifier
                   .animateItem()
                   .animateContentSize(),
-                person = Person(
-                  id = media.id.toLong(),
-                  name = media.name,
-                  profilePath = media.posterPath,
-                  gender = media.gender,
-                  knownForDepartment = media.knownForDepartment,
-                  role = listOf(PersonRole.Unknown),
-                ),
+                person = media,
                 onClick = { onClick(media) },
                 isObfuscated = false,
               )

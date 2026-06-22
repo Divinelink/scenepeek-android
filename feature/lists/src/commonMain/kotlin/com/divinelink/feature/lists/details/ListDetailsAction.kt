@@ -8,7 +8,7 @@ sealed interface ListDetailsAction {
   data object Refresh : ListDetailsAction
 
   data class OnItemClick(
-    val mediaId: Int,
+    val mediaId: Long,
     val mediaType: MediaType,
   ) : ListDetailsAction
 

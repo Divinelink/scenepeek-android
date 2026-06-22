@@ -10,7 +10,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.watchlist.AddToAccountRequest
 
 data class AddToWatchlistParameters(
-  val id: Int,
+  val id: Long,
   val mediaType: MediaType,
   val section: AccountDataSection,
   val shouldAdd: Boolean,

@@ -14,7 +14,7 @@ import com.divinelink.core.database.person.credits.PersonCastCreditEntity
 import com.divinelink.core.database.person.credits.PersonCreditsEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -146,10 +146,10 @@ class ProdPersonDao(
     .mapToList(context = dispatcher.io)
 
   override fun insertGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
     episode: Int,
-    guestStars: List<Person>,
+    guestStars: List<MediaItem.Person>,
   ) {
     database.transaction {
       val insertedPersonIds = mutableSetOf<Long>()
@@ -188,7 +188,6 @@ class ProdPersonDao(
                 season = season.toLong(),
                 creditId = role.creditId,
                 episode = episode.toLong(),
-//                episodeCount = role.totalEpisodes?.toLong(),
                 displayOrder = role.order?.toLong() ?: -1,
               )
               insertedCreditIds += role.creditId
@@ -199,15 +198,15 @@ class ProdPersonDao(
   }
 
   override fun fetchGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
-  ): Flow<List<Person>> = database
+  ): Flow<List<MediaItem.Person>> = database
     .transactionWithResult {
       database
         .episodeGuestStarEntityQueries
         .fetchSeasonGuestStars(
           season = season.toLong(),
-          showId = showId.toLong(),
+          showId = showId,
         )
         .asFlow()
         .mapToList(dispatcher.io)
@@ -216,7 +215,7 @@ class ProdPersonDao(
             .groupBy { it.id }
             .map { (personId, roles) ->
               val firstRole = roles.first()
-              Person(
+              MediaItem.Person(
                 id = personId,
                 name = firstRole.name,
                 profilePath = firstRole.profilePath,
@@ -236,10 +235,10 @@ class ProdPersonDao(
     }
 
   override fun fetchEpisodeGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
     episode: Int,
-  ): Flow<List<Person>> = database
+  ): Flow<List<MediaItem.Person>> = database
     .transactionWithResult {
       database
         .episodeGuestStarEntityQueries
@@ -255,7 +254,7 @@ class ProdPersonDao(
             .groupBy { it.id }
             .map { (personId, roles) ->
               val firstRole = roles.first()
-              Person(
+              MediaItem.Person(
                 id = personId,
                 name = firstRole.name,
                 profilePath = firstRole.profilePath,

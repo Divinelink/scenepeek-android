@@ -21,7 +21,7 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.route.toPersonRoute
+import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.cast.CreatorsItem
 import com.divinelink.feature.details.media.ui.components.GenresSection
@@ -103,7 +103,7 @@ fun AboutFormContent(
         CreatorsItem(
           modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
           creators = creators,
-          onClick = { onNavigate(it.toPersonRoute()) },
+          onClick = { media -> media.toRoute()?.let { onNavigate(it) } },
         )
       }
     }
