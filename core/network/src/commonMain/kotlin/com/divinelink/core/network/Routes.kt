@@ -18,7 +18,7 @@ object Routes {
   }
 
   object Awards {
-    const val BRANCH = "initial-ceremonies" // TODO Update once merged
-    const val HOST = "codeberg.org/Divinelink/tmdb-awards/raw/$BRANCH"
+    const val BRANCH = "main"
+    const val HOST = "raw.githubusercontent.com/ScenePeek/tmdb-awards/refs/heads/$BRANCH"
   }
 }
