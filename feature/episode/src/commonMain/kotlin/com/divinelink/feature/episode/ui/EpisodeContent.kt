@@ -168,14 +168,14 @@ fun SharedTransitionScope.EpisodeContent(
 
                 LazyRow(
                   contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_4),
-                  verticalAlignment = Alignment.CenterVertically,
+                  verticalAlignment = Alignment.Top,
                   horizontalArrangement = Arrangement.spacedBy(
                     MaterialTheme.dimensions.keyline_8,
                   ),
                 ) {
                   items(
                     items = episode.guestStars,
-                    key = { it.id },
+                    key = { it.uniqueIdentifier },
                   ) { person ->
                     SmallPersonItem(
                       person = person,

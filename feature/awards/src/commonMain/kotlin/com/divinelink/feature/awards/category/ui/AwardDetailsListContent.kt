@@ -32,10 +32,14 @@ import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.components.MediaItem
-import com.divinelink.core.ui.credit.PersonItem
+import com.divinelink.core.ui.credit.SmallPersonItem
 import com.divinelink.core.ui.skeleton.MediaItemSkeleton
+import com.divinelink.feature.awards.Res
+import com.divinelink.feature.awards.award_nominee
+import com.divinelink.feature.awards.award_winner
 import com.divinelink.feature.awards.category.AwardCategoryAction
 import com.divinelink.feature.awards.category.AwardCategoryUiState
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AwardCategoriesListContent(
@@ -96,7 +100,7 @@ fun AwardCategoriesListContent(
 fun LazyGridItemScope.NomineeMediaItem(
   modifier: Modifier = Modifier,
   item: LoadingUiItem<AwardNominee>,
-  onClick: (MediaItem.Media) -> Unit,
+  onClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
 ) {
   when (val state = item.mediaState) {
@@ -105,42 +109,32 @@ fun LazyGridItemScope.NomineeMediaItem(
         modifier = Modifier
           .animateItem(),
         media = state.item as MediaItem.Media,
-        onClick = { onClick(state.item as MediaItem.Media) },
+        onClick = { onClick(state.item) },
         onLongClick = { onLongClick(state.item as MediaItem.Media) },
         contentAboveTitle = {
-          Box(modifier = Modifier.fillMaxWidth()) {
-            Text(
-              modifier = Modifier
-                .align(Alignment.Center)
-                .padding(
-                  top = MaterialTheme.dimensions.keyline_4,
-                  bottom = MaterialTheme.dimensions.keyline_12,
-                )
-                .clip(MaterialTheme.shapes.large)
-                .background(
-                  if (item.item.winner) {
-                    MaterialTheme.colors.emeraldGreen
-                  } else {
-                    MaterialTheme.colors.gray
-                  },
-                )
-                .padding(
-                  vertical = MaterialTheme.dimensions.keyline_4,
-                  horizontal = MaterialTheme.dimensions.keyline_12,
-                ),
-              style = MaterialTheme.typography.bodySmall,
-              textAlign = TextAlign.Center,
-              text = if (item.item.winner) {
-                "Winner"
-              } else {
-                "Nominee"
-              },
-              color = Color.White,
-            )
-          }
+          NomineePill(
+            modifier = Modifier.padding(
+              top = MaterialTheme.dimensions.keyline_4,
+              bottom = MaterialTheme.dimensions.keyline_12,
+            ),
+            winner = item.item.winner,
+          )
         },
       )
-      is MediaItem.Person -> Unit
+      is MediaItem.Person -> SmallPersonItem(
+        person = state.item as MediaItem.Person,
+        isSmall = false,
+        contentAboveTitle = {
+          NomineePill(
+            modifier = Modifier.padding(
+              top = MaterialTheme.dimensions.keyline_4,
+              bottom = MaterialTheme.dimensions.keyline_12,
+            ),
+            winner = item.item.winner,
+          )
+        },
+        onClick = { onClick(state.item) },
+      )
       MediaItem.Unknown -> Unit
     }
 
@@ -149,6 +143,39 @@ fun LazyGridItemScope.NomineeMediaItem(
     )
 
     null -> Unit
+  }
+}
+
+@Composable
+private fun NomineePill(
+  modifier: Modifier = Modifier,
+  winner: Boolean,
+) {
+  Box(modifier = modifier.fillMaxWidth()) {
+    Text(
+      modifier = Modifier
+        .align(Alignment.Center)
+        .clip(MaterialTheme.shapes.large)
+        .background(
+          if (winner) {
+            MaterialTheme.colors.emeraldGreen
+          } else {
+            MaterialTheme.colors.gray
+          },
+        )
+        .padding(
+          vertical = MaterialTheme.dimensions.keyline_4,
+          horizontal = MaterialTheme.dimensions.keyline_12,
+        ),
+      style = MaterialTheme.typography.bodySmall,
+      textAlign = TextAlign.Center,
+      text = if (winner) {
+        stringResource(Res.string.award_winner)
+      } else {
+        stringResource(Res.string.award_nominee)
+      },
+      color = Color.White,
+    )
   }
 }
 

@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AwardNomineeResponse(
-  val id: Int,
+  val id: Long,
   val winner: Boolean,
 )
