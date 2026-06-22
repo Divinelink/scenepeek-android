@@ -284,7 +284,7 @@ class ProdMediaService(
   }
 
   override suspend fun fetchSeason(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Result<SeasonDetailsResponse> = runCatching {
     restClient.get<SeasonDetailsResponse>(

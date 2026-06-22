@@ -67,14 +67,14 @@ sealed interface Navigation : NavKey {
 
   @Serializable
   data class DetailsRoute(
-    val id: Int,
+    val id: Long,
     val mediaType: String,
     val isFavorite: Boolean?,
   ) : Navigation
 
   @Serializable
   data class SeasonRoute(
-    val showId: Int,
+    val showId: Long,
     val seasonNumber: Int,
     val backdropPath: String?,
     val title: String,
@@ -82,7 +82,7 @@ sealed interface Navigation : NavKey {
 
   @Serializable
   data class EpisodeRoute(
-    val showId: Int,
+    val showId: Long,
     val showTitle: String,
     val seasonTitle: String,
     val seasonNumber: Int,
@@ -107,7 +107,7 @@ sealed interface Navigation : NavKey {
 
   @Serializable
   data class AddToListRoute(
-    val id: Int,
+    val id: Long,
     val mediaType: String,
   ) : Navigation
 

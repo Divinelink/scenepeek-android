@@ -11,7 +11,7 @@ import com.divinelink.core.model.media.MediaType
  * Represents details or a movie or TV show.
  */
 sealed class MediaDetails {
-  abstract val id: Int
+  abstract val id: Long
   abstract val title: String
   abstract val posterPath: String
   abstract val backdropPath: String
@@ -27,7 +27,7 @@ sealed class MediaDetails {
   abstract val keywords: List<Keyword>?
 
   fun copy(
-    id: Int = this.id,
+    id: Long = this.id,
     title: String = this.title,
     posterPath: String = this.posterPath,
     backdropPath: String = this.backdropPath,

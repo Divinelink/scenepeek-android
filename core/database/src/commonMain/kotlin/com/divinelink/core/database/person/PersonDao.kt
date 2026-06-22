@@ -39,19 +39,19 @@ interface PersonDao {
   fun insertPersonCrewCredits(crew: List<PersonCrewCreditEntity>)
 
   fun insertGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
     episode: Int,
     guestStars: List<MediaItem.Person>,
   )
 
   fun fetchGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Flow<List<MediaItem.Person>>
 
   fun fetchEpisodeGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
     episode: Int,
   ): Flow<List<MediaItem.Person>>

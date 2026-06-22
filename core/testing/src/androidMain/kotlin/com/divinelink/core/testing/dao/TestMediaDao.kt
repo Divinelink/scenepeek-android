@@ -41,7 +41,7 @@ class TestMediaDao {
     )
   }
 
-  fun mockFetchFavoriteMovieIds(result: Flow<List<Int>>) {
+  fun mockFetchFavoriteMovieIds(result: Flow<List<Long>>) {
     whenever(
       mock.getFavoriteMediaIds(MediaType.MOVIE),
     ).thenReturn(
@@ -49,7 +49,7 @@ class TestMediaDao {
     )
   }
 
-  fun mockFetchFavoriteTvIds(result: Flow<List<Int>>) {
+  fun mockFetchFavoriteTvIds(result: Flow<List<Long>>) {
     whenever(
       mock.getFavoriteMediaIds(MediaType.TV),
     ).thenReturn(
@@ -75,21 +75,21 @@ class TestMediaDao {
     whenever(mock.fetchMedia(any())).thenAnswer { storedItem }
   }
 
-  fun verifyInsertFavoriteMovie(id: Int) {
+  fun verifyInsertFavoriteMovie(id: Long) {
     verify(mock).addToFavorites(
       mediaId = id,
       mediaType = MediaType.MOVIE,
     )
   }
 
-  fun verifyInsertFavoriteTV(id: Int) {
+  fun verifyInsertFavoriteTV(id: Long) {
     verify(mock).addToFavorites(
       mediaId = id,
       mediaType = MediaType.TV,
     )
   }
 
-  fun verifyRemoveMovie(id: Int) {
+  fun verifyRemoveMovie(id: Long) {
     verify(mock).removeFromFavorites(
       mediaId = id,
       mediaType = MediaType.MOVIE,
@@ -101,7 +101,7 @@ class TestMediaDao {
   }
 
   fun mockCheckIfFavorite(
-    id: Int,
+    id: Long,
     mediaType: MediaType,
     result: Boolean,
   ) {

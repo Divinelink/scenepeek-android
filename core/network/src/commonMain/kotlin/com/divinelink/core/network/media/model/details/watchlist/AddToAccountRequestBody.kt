@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AddToAccountRequestBody(
   @SerialName("media_type") val mediaType: String,
-  @SerialName("media_id") val mediaId: Int,
+  @SerialName("media_id") val mediaId: Long,
   val watchlist: Boolean?,
   val favorite: Boolean?,
 )

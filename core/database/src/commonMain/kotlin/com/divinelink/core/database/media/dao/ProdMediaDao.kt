@@ -59,7 +59,7 @@ class ProdMediaDao(
 
   override fun fetchMedia(media: MediaReference): MediaItem.Media? = database
     .mediaItemEntityQueries
-    .selectMediaItemByIdAndType(id = media.mediaId.toLong(), mediaType = media.mediaType.value)
+    .selectMediaItemByIdAndType(id = media.mediaId, mediaType = media.mediaType.value)
     .executeAsOneOrNull()
     ?.map()
 
@@ -73,7 +73,7 @@ class ProdMediaDao(
       favorites.mapNotNull { favorite ->
         if (MediaType.from(favorite.mediaType) == MediaType.MOVIE) {
           MediaItem.Media.Movie(
-            id = favorite.id.toInt(),
+            id = favorite.id,
             name = favorite.name,
             posterPath = favorite.posterPath,
             backdropPath = favorite.backdropPath,
@@ -86,7 +86,7 @@ class ProdMediaDao(
           )
         } else if (MediaType.from(favorite.mediaType) == MediaType.TV) {
           MediaItem.Media.TV(
-            id = favorite.id.toInt(),
+            id = favorite.id,
             name = favorite.name,
             posterPath = favorite.posterPath,
             backdropPath = favorite.backdropPath,
@@ -113,7 +113,7 @@ class ProdMediaDao(
       favorites.mapNotNull { favorite ->
         if (MediaType.from(favorite.mediaType) == MediaType.MOVIE) {
           MediaItem.Media.Movie(
-            id = favorite.id.toInt(),
+            id = favorite.id,
             name = favorite.name,
             posterPath = favorite.posterPath,
             backdropPath = favorite.backdropPath,
@@ -126,7 +126,7 @@ class ProdMediaDao(
           )
         } else if (MediaType.from(favorite.mediaType) == MediaType.TV) {
           MediaItem.Media.TV(
-            id = favorite.id.toInt(),
+            id = favorite.id,
             name = favorite.name,
             posterPath = favorite.posterPath,
             backdropPath = favorite.backdropPath,
@@ -143,56 +143,56 @@ class ProdMediaDao(
       }
     }
 
-  override fun getFavoriteMediaIds(mediaType: MediaType): Flow<List<Int>> = database
+  override fun getFavoriteMediaIds(mediaType: MediaType): Flow<List<Long>> = database
     .favoriteMediaEntityQueries
     .getFavoriteMediaIds(mediaType.value)
     .asFlow()
     .mapToList(dispatcher.io)
     .map { result ->
-      result.map { it.mediaId.toInt() }
+      result.map { it.mediaId }
     }
 
   override fun addToFavorites(
-    mediaId: Int,
+    mediaId: Long,
     mediaType: MediaType,
   ) = database.transaction {
     database.favoriteMediaEntityQueries.addToFavorites(
-      mediaId = mediaId.toLong(),
+      mediaId = mediaId,
       mediaType = mediaType.value,
       favoritedAt = clock.currentEpochSeconds(),
     )
   }
 
   override fun removeFromFavorites(
-    mediaId: Int,
+    mediaId: Long,
     mediaType: MediaType,
   ) = database.transaction {
     database.favoriteMediaEntityQueries.removeFromFavorites(
-      mediaId.toLong(),
+      mediaId,
       mediaType.value,
     )
   }
 
   override fun isMediaFavorite(
-    mediaId: Int,
+    mediaId: Long,
     mediaType: MediaType,
   ) = database.transactionWithResult {
     database.favoriteMediaEntityQueries.isMediaFavorite(
-      mediaId = mediaId.toLong(),
+      mediaId = mediaId,
       mediaType = mediaType.value,
     ).executeAsOneOrNull() == true
   }
 
-  override fun fetchSeasons(id: Int): Flow<List<Season>> = database.transactionWithResult {
+  override fun fetchSeasons(id: Long): Flow<List<Season>> = database.transactionWithResult {
     database
       .seasonEntityQueries
-      .fetchSeasons(id.toLong())
+      .fetchSeasons(id)
       .asFlow()
       .mapToList(dispatcher.io)
       .map {
         it.map { entity ->
           Season(
-            id = entity.id.toInt(),
+            id = entity.id,
             name = entity.name,
             overview = entity.overview,
             posterPath = entity.posterPath,
@@ -207,18 +207,18 @@ class ProdMediaDao(
   }
 
   override fun fetchSeason(
-    showId: Int,
+    showId: Long,
     seasonNumber: Int,
   ): Flow<Season> = database
     .transactionWithResult {
       database
         .seasonEntityQueries
-        .fetchSeason(mediaId = showId.toLong(), seasonNumber = seasonNumber.toLong())
+        .fetchSeason(mediaId = showId, seasonNumber = seasonNumber.toLong())
         .asFlow()
         .mapToOne(context = dispatcher.io)
         .map { entity ->
           Season(
-            id = entity.id.toInt(),
+            id = entity.id,
             name = entity.name,
             overview = entity.overview,
             posterPath = entity.posterPath,
@@ -232,14 +232,14 @@ class ProdMediaDao(
     }
 
   override fun insertSeasons(
-    id: Int,
+    id: Long,
     seasons: List<Season>,
   ) = database.transaction {
     seasons.forEach { season ->
       database.seasonEntityQueries.insertSeason(
         SeasonEntity = SeasonEntity(
-          mediaId = id.toLong(),
-          id = season.id.toLong(),
+          mediaId = id,
+          id = season.id,
           overview = season.overview,
           name = season.name,
           posterPath = season.posterPath,
@@ -254,17 +254,17 @@ class ProdMediaDao(
   }
 
   override fun updateSeasonStatus(
-    mediaId: Int,
+    mediaId: Long,
     seasons: List<SeasonRequest>,
     override: Boolean,
   ) = database.transaction {
     if (override) {
-      database.seasonEntityQueries.clearAllSeasonStatuses(mediaId.toLong())
+      database.seasonEntityQueries.clearAllSeasonStatuses(mediaId)
     }
 
     seasons.forEach { season ->
       database.seasonEntityQueries.updateSeasonStatus(
-        mediaId = mediaId.toLong(),
+        mediaId = mediaId,
         status = season.status.value,
         seasonNumber = season.seasonNumber.toLong(),
       )
@@ -331,7 +331,7 @@ class ProdMediaDao(
   }
 
   override fun fetchEpisode(
-    showId: Int,
+    showId: Long,
     episodeNumber: Int,
     seasonNumber: Int,
   ): Flow<Episode> = database
@@ -364,12 +364,12 @@ class ProdMediaDao(
     }
 
   override fun fetchEpisodes(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Flow<List<Episode>> = database
     .transactionWithResult {
       val ratingsFlow = database.episodeRatingEntityQueries.fetchEpisodesRatings(
-        showId = showId.toLong(),
+        showId = showId,
         season = season.toLong(),
       )
         .asFlow()
@@ -378,7 +378,7 @@ class ProdMediaDao(
       val episodesFlow = database
         .episodeEntityQueries
         .fetchEpisodes(
-          showId = showId.toLong(),
+          showId = showId,
           seasonNumber = season.toLong(),
         )
         .asFlow()
@@ -400,7 +400,7 @@ class ProdMediaDao(
 
   override fun insertSeasonDetails(
     seasonDetails: SeasonDetails,
-    showId: Int,
+    showId: Long,
     seasonNumber: Int,
   ) = database
     .transaction {
@@ -421,14 +421,14 @@ class ProdMediaDao(
     }
 
   override fun fetchSeasonDetails(
+    showId: Long,
     season: Int,
-    showId: Int,
   ): Flow<SeasonDetailsEntity?> = database
     .transactionWithResult {
       database
         .seasonDetailsEntityQueries
         .fetchSeasonDetails(
-          showId = showId.toLong(),
+          showId = showId,
           seasonNumber = season.toLong(),
         )
         .asFlow()
@@ -437,7 +437,7 @@ class ProdMediaDao(
 
   override fun fetchSeasonEpisodesCount(
     season: Int,
-    showId: Int,
+    showId: Long,
   ): List<Int> = database
     .transactionWithResult {
       database
@@ -451,7 +451,7 @@ class ProdMediaDao(
     }
 
   override fun insertEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
     rating: Int,
@@ -467,7 +467,7 @@ class ProdMediaDao(
   }
 
   override fun deleteEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
   ) = database.transaction {

@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class JellyseerrRequest(
   val id: Int,
-  val jellyseerrMediaId: Int,
+  val jellyseerrMediaId: Long,
   val media: MediaReference,
   val mediaStatus: JellyseerrStatus.Media,
   val requestStatus: JellyseerrStatus.Request,

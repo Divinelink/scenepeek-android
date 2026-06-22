@@ -90,7 +90,7 @@ interface MediaService {
   suspend fun fetchGenres(mediaType: MediaType): Result<GenresListResponse>
 
   suspend fun fetchSeason(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Result<SeasonDetailsResponse>
 

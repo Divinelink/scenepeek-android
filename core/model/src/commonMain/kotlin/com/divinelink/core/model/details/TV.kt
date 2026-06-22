@@ -9,7 +9,7 @@ import com.divinelink.core.model.media.MediaItem
  * Represents details of a TV show.
  */
 data class TV(
-  override val id: Int,
+  override val id: Long,
   override val title: String,
   override val posterPath: String,
   override val backdropPath: String,

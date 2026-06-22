@@ -76,7 +76,7 @@ fun PersonScreen(
             DropdownMenuButton(
               color = MaterialTheme.colorScheme.onSurface,
               screenType = ScreenType.Person(
-                id = (personDetails as PersonDetailsUiState.Data).personDetails.person.id.toInt(),
+                id = (personDetails as PersonDetailsUiState.Data).personDetails.person.id,
                 name = (personDetails as PersonDetailsUiState.Data).personDetails.person.name,
               ),
             )

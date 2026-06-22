@@ -8,7 +8,7 @@ import com.divinelink.core.model.person.Gender
 
 fun PersonDetailsEntity.map() = PersonDetails(
   person = MediaItem.Person(
-    id = id.toInt(),
+    id = id,
     name = name,
     profilePath = profilePath,
     gender = Gender.from(gender.toInt()),

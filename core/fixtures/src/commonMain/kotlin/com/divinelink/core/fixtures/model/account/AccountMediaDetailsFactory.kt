@@ -27,7 +27,7 @@ object AccountMediaDetailsFactory {
 
   class AccountMediaDetailsFactoryWizard(private var accountMediaDetails: AccountMediaDetails) {
 
-    fun withId(id: Int) = apply {
+    fun withId(id: Long) = apply {
       accountMediaDetails = accountMediaDetails.copy(id = id)
     }
 

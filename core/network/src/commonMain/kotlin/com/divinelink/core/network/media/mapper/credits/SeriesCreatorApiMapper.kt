@@ -8,7 +8,7 @@ import com.divinelink.core.network.media.model.details.credits.SeriesCreatorApi
 fun List<SeriesCreatorApi>.map(): List<MediaItem.Person> = map { it.map() }
 
 fun SeriesCreatorApi.map() = MediaItem.Person(
-  id = id.toInt(),
+  id = id,
   name = name,
   profilePath = profilePath,
   gender = Gender.from(gender),

@@ -16,7 +16,7 @@ fun List<CrewApi>.map() = this
       .distinct()
 
     MediaItem.Person(
-      id = firstEntry.id.toInt(),
+      id = firstEntry.id,
       name = firstEntry.name,
       profilePath = firstEntry.profilePath,
       knownForDepartment = firstEntry.knownForDepartment,

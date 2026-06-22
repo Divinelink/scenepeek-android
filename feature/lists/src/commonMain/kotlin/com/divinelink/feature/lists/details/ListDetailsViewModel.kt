@@ -27,7 +27,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -68,7 +67,7 @@ class ListDetailsViewModel(
 
       fetchListDetailsUseCase.invoke(
         FetchListParameters(
-          listId = uiState.value.id,
+          listId = uiState.value.id.toInt(),
           page = if (isRefreshing) 1 else uiState.value.page,
         ),
       )
@@ -200,7 +199,7 @@ class ListDetailsViewModel(
   private fun onRemoveItems(items: List<MediaItem.Media>) {
     viewModelScope.launch {
       repository.removeItems(
-        listId = _uiState.value.id,
+        listId = _uiState.value.id.toInt(),
         items = items.map { it.toStub() },
       ).fold(
         onSuccess = { result ->

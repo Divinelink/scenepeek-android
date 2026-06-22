@@ -15,7 +15,7 @@ data class EpisodeResponse(
   val runtime: Int?,
   @SerialName("episode_number") val episodeNumber: Int,
   @SerialName("season_number") val seasonNumber: Int,
-  @SerialName("show_id") val showId: Int,
+  @SerialName("show_id") val showId: Long,
   @SerialName("still_path") val stillPath: String?,
   @SerialName("vote_average") val voteAverage: String?,
   @SerialName("vote_count") val voteCount: Int?,

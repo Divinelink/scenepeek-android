@@ -87,10 +87,10 @@ class ProdJellyseerrRepository(
   override suspend fun deleteRequest(requestId: Int): Result<Unit> = service
     .deleteRequest(requestId)
 
-  override suspend fun deleteMedia(mediaId: Int): Result<Unit> = service
+  override suspend fun deleteMedia(mediaId: Long): Result<Unit> = service
     .deleteMedia(mediaId)
 
-  override suspend fun deleteFile(mediaId: Int): Result<Unit> = service.deleteFile(mediaId)
+  override suspend fun deleteFile(mediaId: Long): Result<Unit> = service.deleteFile(mediaId)
 
   override suspend fun getRequestDetails(requestId: Int): Flow<Result<JellyseerrRequest>> = service
     .getRequestDetails(requestId)
@@ -104,11 +104,11 @@ class ProdJellyseerrRepository(
       }
     }
 
-  override suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo?> = service
+  override suspend fun getMovieDetails(mediaId: Long): Flow<JellyseerrMediaInfo?> = service
     .getMovieDetails(mediaId)
     .map { it.getOrNull()?.mediaInfo?.map() }
 
-  override suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo?> = service
+  override suspend fun getTvDetails(mediaId: Long): Flow<JellyseerrMediaInfo?> = service
     .getTvDetails(mediaId)
     .map {
       val mediaInfo = it.getOrNull()?.mediaInfo?.map()

@@ -42,32 +42,32 @@ private fun EpisodeAccountStatesResponse?.map(episodeId: Int): Int? {
 
 private fun aggregateGuestStars(allEpisodes: List<EpisodeResponse>): List<MediaItem.Person> =
   allEpisodes
-  .flatMap { it.guestStars }
-  .groupBy { it.id }
-  .map { (id, cast) ->
-    val firstCast = cast.first()
+    .flatMap { it.guestStars }
+    .groupBy { it.id }
+    .map { (id, cast) ->
+      val firstCast = cast.first()
 
-    val roles = cast
-      .groupingBy { it }
-      .eachCount()
+      val roles = cast
+        .groupingBy { it }
+        .eachCount()
 
-    MediaItem.Person(
-      id = id.toInt(),
-      name = firstCast.name,
-      profilePath = firstCast.profilePath,
-      gender = Gender.from(firstCast.gender),
-      knownForDepartment = firstCast.knownForDepartment,
-      role = roles.map { (cast, count) ->
-        PersonRole.SeriesActor(
-          character = cast.character,
-          creditId = cast.creditId,
-          totalEpisodes = count,
-          order = cast.order,
-        )
-      },
-    )
-  }
-  .sortedByDescending {
-    it.role.sumOf { role -> (role as? PersonRole.SeriesActor)?.totalEpisodes ?: 0 }
-  }
-  .distinctBy { it.id }
+      MediaItem.Person(
+        id = id,
+        name = firstCast.name,
+        profilePath = firstCast.profilePath,
+        gender = Gender.from(firstCast.gender),
+        knownForDepartment = firstCast.knownForDepartment,
+        role = roles.map { (cast, count) ->
+          PersonRole.SeriesActor(
+            character = cast.character,
+            creditId = cast.creditId,
+            totalEpisodes = count,
+            order = cast.order,
+          )
+        },
+      )
+    }
+    .sortedByDescending {
+      it.role.sumOf { role -> (role as? PersonRole.SeriesActor)?.totalEpisodes ?: 0 }
+    }
+    .distinctBy { it.id }

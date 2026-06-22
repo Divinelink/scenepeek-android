@@ -16,7 +16,7 @@ sealed interface RequestsAction {
   data class DeclineRequest(val id: Int) : RequestsAction
   data class DeleteRequest(val id: Int) : RequestsAction
   data class RemoveFromServer(
-    val mediaId: Int,
+    val mediaId: Long,
     val requestId: Int,
   ) : RequestsAction
 

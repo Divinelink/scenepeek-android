@@ -31,38 +31,38 @@ interface MediaDao {
 
   fun fetchFavorites(mediaType: MediaType): Flow<List<MediaItem>>
 
-  fun getFavoriteMediaIds(mediaType: MediaType): Flow<List<Int>>
+  fun getFavoriteMediaIds(mediaType: MediaType): Flow<List<Long>>
 
   fun insertSeasons(
-    id: Int,
+    id: Long,
     seasons: List<Season>,
   )
 
   fun updateSeasonStatus(
-    mediaId: Int,
+    mediaId: Long,
     seasons: List<SeasonRequest>,
     override: Boolean,
   )
 
-  fun fetchSeasons(id: Int): Flow<List<Season>>
+  fun fetchSeasons(id: Long): Flow<List<Season>>
 
   fun fetchSeason(
-    showId: Int,
+    showId: Long,
     seasonNumber: Int,
   ): Flow<Season>
 
   fun addToFavorites(
-    mediaId: Int,
+    mediaId: Long,
     mediaType: MediaType,
   )
 
   fun removeFromFavorites(
-    mediaId: Int,
+    mediaId: Long,
     mediaType: MediaType,
   )
 
   fun isMediaFavorite(
-    mediaId: Int,
+    mediaId: Long,
     mediaType: MediaType,
   ): Boolean
 
@@ -76,41 +76,41 @@ interface MediaDao {
   fun insertEpisodes(episodes: List<Episode>)
 
   fun fetchEpisode(
-    showId: Int,
+    showId: Long,
     episodeNumber: Int,
     seasonNumber: Int,
   ): Flow<Episode>
 
   fun fetchEpisodes(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Flow<List<Episode>>
 
   fun insertSeasonDetails(
     seasonDetails: SeasonDetails,
-    showId: Int,
+    showId: Long,
     seasonNumber: Int,
   )
 
   fun fetchSeasonDetails(
+    showId: Long,
     season: Int,
-    showId: Int,
   ): Flow<SeasonDetailsEntity?>
 
   fun fetchSeasonEpisodesCount(
     season: Int,
-    showId: Int,
+    showId: Long,
   ): List<Int>
 
   fun insertEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
     rating: Int,
   )
 
   fun deleteEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
   )

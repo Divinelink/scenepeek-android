@@ -1,43 +1,43 @@
 package com.divinelink.core.model
 
 sealed class ScreenType(
-  open val id: Int,
+  open val id: Long,
   open val name: String,
 ) {
   data class Movie(
-    override val id: Int,
+    override val id: Long,
     override val name: String,
   ) : ScreenType(id = id, name = name)
 
   data class Show(
-    override val id: Int,
+    override val id: Long,
     override val name: String,
     val spoilersObfuscated: Boolean,
   ) : ScreenType(id = id, name = name)
 
   data class Collection(
-    override val id: Int,
+    override val id: Long,
     override val name: String,
   ) : ScreenType(id = id, name = name)
 
   data class Person(
-    override val id: Int,
+    override val id: Long,
     override val name: String,
   ) : ScreenType(id = id, name = name)
 
   data class List(
-    override val id: Int,
+    override val id: Long,
     override val name: String,
   ) : ScreenType(id = id, name = name)
 
   data class Season(
-    override val id: Int,
+    override val id: Long,
     override val name: String,
     val seasonNumber: Int,
   ) : ScreenType(id = id, name = name)
 
   data class Episode(
-    override val id: Int,
+    override val id: Long,
     override val name: String,
     val seasonNumber: Int,
     val episodeNumber: Int,

@@ -98,7 +98,7 @@ fun AnimatedVisibilityScope.CollectionsScreen(
           DropdownMenuButton(
             color = textColor,
             screenType = ScreenType.Collection(
-              id = uiState.id,
+              id = uiState.id.toLong(),
               name = uiState.collectionName,
             ),
           )

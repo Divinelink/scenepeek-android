@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class AddToAccountRequest(
-  open val mediaId: Int,
+  open val mediaId: Long,
   open val mediaType: String,
 ) {
   abstract val accountId: String
@@ -15,7 +15,7 @@ sealed class AddToAccountRequest(
 
   @Serializable
   data class Movie(
-    @SerialName("movie_id") val movieId: Int,
+    @SerialName("movie_id") val movieId: Long,
     override val accountId: String,
     override val sessionId: String,
     override val watchlist: Boolean?,
@@ -27,7 +27,7 @@ sealed class AddToAccountRequest(
 
   @Serializable
   data class TV(
-    @SerialName("series_id") val seriesId: Int,
+    @SerialName("series_id") val seriesId: Long,
     override val accountId: String,
     override val sessionId: String,
     override val watchlist: Boolean?,

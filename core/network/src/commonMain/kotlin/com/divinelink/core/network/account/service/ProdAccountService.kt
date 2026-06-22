@@ -121,7 +121,7 @@ class ProdAccountService(
   }
 
   override suspend fun submitEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
     rating: Int,
@@ -144,7 +144,7 @@ class ProdAccountService(
   }
 
   override suspend fun clearEpisodeRating(
-    showId: Int,
+    showId: Long,
     season: Int,
     number: Int,
   ): Result<TMDBResponse> = runCatching {

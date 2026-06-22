@@ -7,7 +7,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
 fun SeriesCrew.toPerson(roles: List<SeriesCrewJob>) = MediaItem.Person(
-  id = id.toInt(),
+  id = id,
   name = name,
   profilePath = profilePath,
   knownForDepartment = knownForDepartment,

@@ -6,14 +6,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class MediaRequestApi(
-  open val id: Int,
+  open val id: Long,
   open val mediaType: MediaType,
 ) {
 
   @Serializable
   data class Movie(
     @SerialName("movie_id")
-    val movieId: Int,
+    val movieId: Long,
   ) : MediaRequestApi(
     id = movieId,
     mediaType = MediaType.MOVIE,
@@ -22,7 +22,7 @@ sealed class MediaRequestApi(
   @Serializable
   data class TV(
     @SerialName("series_id")
-    val seriesId: Int,
+    val seriesId: Long,
   ) : MediaRequestApi(
     id = seriesId,
     mediaType = MediaType.TV,

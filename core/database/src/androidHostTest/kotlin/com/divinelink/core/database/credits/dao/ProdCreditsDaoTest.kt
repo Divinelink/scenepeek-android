@@ -7,6 +7,7 @@ import com.divinelink.core.database.credits.crew.SeriesCrewJob
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.person.PersonFactory
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
@@ -461,7 +462,7 @@ class ProdCreditsDaoTest {
             ),
           ),
         ),
-        Person(
+        MediaItem.Person(
           id = 1879373,
           name = "Dale Alexander",
           profilePath = null,

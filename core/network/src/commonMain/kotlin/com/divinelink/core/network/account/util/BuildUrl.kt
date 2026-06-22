@@ -21,7 +21,7 @@ internal fun buildFetchListsUrl(
 }.toString()
 
 internal fun buildEpisodeRatingUrl(
-  showId: Int,
+  showId: Long,
   season: Int,
   number: Int,
   sessionId: String,

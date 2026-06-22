@@ -30,17 +30,17 @@ interface JellyseerrRepository {
 
   suspend fun deleteRequest(requestId: Int): Result<Unit>
 
-  suspend fun deleteMedia(mediaId: Int): Result<Unit>
+  suspend fun deleteMedia(mediaId: Long): Result<Unit>
 
-  suspend fun deleteFile(mediaId: Int): Result<Unit>
+  suspend fun deleteFile(mediaId: Long): Result<Unit>
 
   suspend fun requestMedia(body: JellyseerrRequestMediaBodyApi): Flow<Result<MediaRequestResult>>
 
   suspend fun getRequestDetails(requestId: Int): Flow<Result<JellyseerrRequest>>
 
-  suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo?>
+  suspend fun getMovieDetails(mediaId: Long): Flow<JellyseerrMediaInfo?>
 
-  suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo?>
+  suspend fun getTvDetails(mediaId: Long): Flow<JellyseerrMediaInfo?>
 
   suspend fun getRadarrInstances(): Result<List<ServerInstance>>
 

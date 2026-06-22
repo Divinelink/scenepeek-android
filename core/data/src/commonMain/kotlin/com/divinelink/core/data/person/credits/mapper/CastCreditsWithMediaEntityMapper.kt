@@ -13,7 +13,7 @@ fun CastCreditsWithMedia.map(
   MediaType.TV -> PersonCredit(
     creditId = creditId,
     media = MediaItem.Media.TV(
-      id = id.toInt(),
+      id = id,
       name = name,
       posterPath = posterPath,
       backdropPath = backdropPath,
@@ -33,7 +33,7 @@ fun CastCreditsWithMedia.map(
   else -> PersonCredit(
     creditId = creditId,
     media = MediaItem.Media.Movie(
-      id = id.toInt(),
+      id = id,
       name = name,
       posterPath = posterPath,
       backdropPath = backdropPath,

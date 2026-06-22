@@ -87,7 +87,7 @@ class PersonScreenTest : ComposeTest() {
     declare {
       DropdownMenuViewModel(
         entryPoint = ScreenType.Person(
-          id = PersonDetailsFactory.steveCarell().person.id.toInt(),
+          id = PersonDetailsFactory.steveCarell().person.id,
           name = PersonDetailsFactory.steveCarell().person.name,
         ),
         spoilersObfuscationUseCase = SpoilersObfuscationUseCase(

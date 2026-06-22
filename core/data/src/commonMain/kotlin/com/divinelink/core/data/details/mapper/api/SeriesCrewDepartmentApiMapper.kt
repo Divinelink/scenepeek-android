@@ -27,7 +27,7 @@ fun List<SeriesCrewApi>.map(): List<SeriesCrewDepartment> {
 }
 
 fun SeriesCrewApi.map() = MediaItem.Person(
-  id = id.toInt(),
+  id = id,
   name = name,
   profilePath = profilePath,
   gender = Gender.from(gender),

@@ -28,7 +28,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable(with = DetailsResponseApiSerializer::class)
 sealed class DetailsResponseApi {
-  abstract val id: Int
+  abstract val id: Long
   abstract val adult: Boolean
   abstract val genres: List<GenreResponse>
 
@@ -58,7 +58,7 @@ sealed class DetailsResponseApi {
 
   @Serializable
   data class Movie(
-    override val id: Int,
+    override val id: Long,
     override val adult: Boolean,
     @SerialName("backdrop_path") override val backdropPath: String?,
     val budget: Int,
@@ -90,7 +90,7 @@ sealed class DetailsResponseApi {
 
   @Serializable
   data class TV(
-    override val id: Int,
+    override val id: Long,
     override val adult: Boolean,
     @SerialName("backdrop_path") override val backdropPath: String?,
     override val genres: List<GenreResponse>,
@@ -207,7 +207,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
 private fun List<CastApi>.toActors(): List<MediaItem.Person> = this.map(CastApi::toPerson)
 
 fun CastApi.toPerson() = MediaItem.Person(
-  id = this.id.toInt(),
+  id = this.id,
   name = this.name,
   profilePath = this.profilePath,
   knownForDepartment = this.knownForDepartment,

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieInfoResponse(
-  val id: Int,
+  val id: Long,
   val status: Int,
   val requests: List<MediaInfoRequestResponse>,
 )

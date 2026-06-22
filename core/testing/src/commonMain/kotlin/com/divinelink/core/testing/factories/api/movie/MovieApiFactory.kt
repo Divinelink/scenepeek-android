@@ -7,7 +7,7 @@ object MovieApiFactory {
 
   fun EmptyList(range: IntProgression = 1..10): List<MovieResponseApi> = (range).map {
     MovieResponseApi(
-      id = it,
+      id = it.toLong(),
       adult = false,
       backdropPath = "movie $it - backdropPath",
       genreIds = listOf(),

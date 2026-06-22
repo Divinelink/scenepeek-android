@@ -5,7 +5,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
 fun Navigation.PersonRoute.map() = MediaItem.Person(
-  id = id.toInt(),
+  id = id,
   knownForDepartment = knownForDepartment,
   name = name ?: "",
   profilePath = profilePath,

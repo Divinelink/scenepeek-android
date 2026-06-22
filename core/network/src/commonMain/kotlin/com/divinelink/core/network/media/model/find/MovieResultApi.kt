@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MovieResultApi(
   @SerialName("backdrop_path") val backdropPath: String?,
-  val id: Int,
+  val id: Long,
   val title: String,
   @SerialName("original_title") val originalTitle: String,
   val overview: String,

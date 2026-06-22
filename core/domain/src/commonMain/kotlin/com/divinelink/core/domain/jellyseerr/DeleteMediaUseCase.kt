@@ -5,7 +5,7 @@ import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 
 data class DeleteMediaParameters(
-  val mediaId: Int,
+  val mediaId: Long,
   val deleteFile: Boolean,
 )
 

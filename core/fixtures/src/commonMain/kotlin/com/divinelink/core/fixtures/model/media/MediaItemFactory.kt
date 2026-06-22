@@ -220,7 +220,7 @@ object MediaItemFactory {
 
   fun MoviesList(range: IntProgression = 1..10): List<MediaItem.Media.Movie> = range.map {
     MediaItem.Media.Movie(
-      id = it,
+      id = it.toLong(),
       backdropPath = "movie $it - backdropPath",
       posterPath = "movie $it - posterPath",
       releaseDate = "2002-08-22",
@@ -235,7 +235,7 @@ object MediaItemFactory {
 
   fun TVList(range: IntProgression = 1..10): List<MediaItem.Media.TV> = range.map {
     MediaItem.Media.TV(
-      id = it,
+      id = it.toLong(),
       backdropPath = "tv $it - backdropPath",
       posterPath = "tv $it - posterPath",
       releaseDate = "tv $it - releaseDate",
@@ -282,7 +282,7 @@ object MediaItemFactory {
 
   class MovieMediaItemFactoryWizard(private var mediaItem: MediaItem.Media.Movie) {
 
-    fun withId(id: Int) = apply {
+    fun withId(id: Long) = apply {
       mediaItem = mediaItem.copy(id = id)
     }
 
@@ -319,7 +319,7 @@ object MediaItemFactory {
 
   class TVMediaItemFactoryWizard(private var mediaItem: MediaItem.Media.TV) {
 
-    fun withId(id: Int) = apply {
+    fun withId(id: Long) = apply {
       mediaItem = mediaItem.copy(id = id)
     }
 

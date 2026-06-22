@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MultiSearchResultApi(
-  @SerialName("id") val id: Int,
+  @SerialName("id") val id: Long,
   @SerialName("adult") val adult: Boolean,
   @SerialName("backdrop_path") val backdropPath: String? = null,
   @SerialName("title") val title: String? = null,

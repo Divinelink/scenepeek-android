@@ -146,13 +146,13 @@ class ProdPersonDao(
     .mapToList(context = dispatcher.io)
 
   override fun insertGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
     episode: Int,
     guestStars: List<MediaItem.Person>,
   ) {
     database.transaction {
-      val insertedPersonIds = mutableSetOf<Int>()
+      val insertedPersonIds = mutableSetOf<Long>()
       val insertedCreditIds = mutableSetOf<String>()
 
       // TODO Fix guest star insertion, only adds guest star to the last episode of the season.
@@ -160,7 +160,7 @@ class ProdPersonDao(
         if (person.id !in insertedPersonIds) {
           database.personEntityQueries.insertPerson(
             PersonEntity(
-              id = person.id.toLong(),
+              id = person.id,
               name = person.name,
               originalName = person.name,
               profilePath = person.profilePath,
@@ -179,7 +179,7 @@ class ProdPersonDao(
                 PersonRoleEntity(
                   creditId = role.creditId,
                   character = role.character,
-                  castId = person.id.toLong(),
+                  castId = person.id,
                 ),
               )
 
@@ -198,7 +198,7 @@ class ProdPersonDao(
   }
 
   override fun fetchGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
   ): Flow<List<MediaItem.Person>> = database
     .transactionWithResult {
@@ -206,7 +206,7 @@ class ProdPersonDao(
         .episodeGuestStarEntityQueries
         .fetchSeasonGuestStars(
           season = season.toLong(),
-          showId = showId.toLong(),
+          showId = showId,
         )
         .asFlow()
         .mapToList(dispatcher.io)
@@ -216,7 +216,7 @@ class ProdPersonDao(
             .map { (personId, roles) ->
               val firstRole = roles.first()
               MediaItem.Person(
-                id = personId.toInt(),
+                id = personId,
                 name = firstRole.name,
                 profilePath = firstRole.profilePath,
                 gender = Gender.from(firstRole.gender.toInt()),
@@ -235,7 +235,7 @@ class ProdPersonDao(
     }
 
   override fun fetchEpisodeGuestStars(
-    showId: Int,
+    showId: Long,
     season: Int,
     episode: Int,
   ): Flow<List<MediaItem.Person>> = database
@@ -255,7 +255,7 @@ class ProdPersonDao(
             .map { (personId, roles) ->
               val firstRole = roles.first()
               MediaItem.Person(
-                id = personId.toInt(),
+                id = personId,
                 name = firstRole.name,
                 profilePath = firstRole.profilePath,
                 gender = Gender.from(firstRole.gender.toInt()),
