@@ -78,7 +78,7 @@ class AwardCategoryViewModel(
 
   private fun fetchPersonDetails(item: LoadingUiItem<AwardNominee>) {
     personRepository
-      .fetchPersonDetails(item.item.media.mediaId.toLong())
+      .fetchPersonDetails(item.item.media.mediaId)
       .distinctUntilChanged()
       .catch { Napier.e { it.message.toString() } }
       .onEach { result ->
@@ -183,38 +183,25 @@ class AwardCategoryViewModel(
     result: Result<PersonDetails>,
   ) {
     _uiState.update { uiState ->
-      val years = uiState.awards
-      val pageToUpdate = findYearWithMediaItem(
-        years = years,
-        mediaId = item.item.media.mediaId,
-      ) ?: return
-      val listToUpdate = years[pageToUpdate] ?: return
-
-      val updatedList = listToUpdate.map { uiItem ->
-        if (uiItem.item.media.mediaId == item.item.media.mediaId) {
-          result.fold(
-            onSuccess = { result ->
-              uiItem.copy(
-                mediaState = ItemState.Data(
-                  item = MediaItem.Person(
-                    id = result.person.id.toInt(),
-                    name = result.person.name,
-                    profilePath = result.person.profilePath,
-                    gender = result.person.gender,
-                    knownForDepartment = result.person.knownForDepartment,
+      val newAwards = uiState.awards.mapValues { (_, itemList) ->
+        itemList.map { uiItem ->
+          if (uiItem.item.media.mediaId == item.item.media.mediaId) {
+            result.fold(
+              onSuccess = { details ->
+                uiItem.copy(
+                  mediaState = ItemState.Data(
+                    item = details.person,
+                    loading = false,
                   ),
-                  loading = false,
-                ),
-              )
-            },
-            onFailure = { uiItem.copy(mediaState = null) },
-          )
-        } else {
-          uiItem
+                )
+              },
+              onFailure = { uiItem.copy(mediaState = null) },
+            )
+          } else {
+            uiItem
+          }
         }
       }
-
-      val newAwards = years + (pageToUpdate to updatedList)
       uiState.copy(awards = newAwards)
     }
   }
@@ -222,7 +209,7 @@ class AwardCategoryViewModel(
 
   private fun findYearWithMediaItem(
     years: Map<String, List<LoadingUiItem<AwardNominee>>>,
-    mediaId: Int,
+    mediaId: Long,
   ): String? = years.entries
     .firstOrNull { (_, itemList) -> itemList.any { it.item.media.mediaId == mediaId } }
     ?.key
