@@ -1,6 +1,9 @@
 package com.divinelink.core.navigation.utilities
 
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.route.Navigation
 
 fun MediaItem.toRoute(): Navigation? = when (this) {
@@ -17,6 +20,24 @@ fun MediaItem.toRoute(): Navigation? = when (this) {
     gender = gender.value,
   )
   else -> null
+}
+
+fun MediaReference.toRoute(): Navigation? = when (this.mediaType) {
+  MediaType.TV,
+  MediaType.MOVIE,
+    -> Navigation.DetailsRoute(
+    id = mediaId,
+    mediaType = mediaType.value,
+    isFavorite = false,
+  )
+  MediaType.PERSON -> Navigation.PersonRoute(
+    id = mediaId,
+    knownForDepartment = null,
+    name = null,
+    profilePath = null,
+    gender = Gender.NOT_SET.value,
+  )
+  MediaType.UNKNOWN -> null
 }
 
 fun Navigation.isSameTopLevelDestination(other: Navigation): Boolean =

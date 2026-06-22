@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -88,6 +89,7 @@ fun AwardCategoriesListContent(
             }
             .animateItem(),
           item = item,
+          onNavigate = onNavigate,
           onClick = { it.toRoute()?.let { route -> onNavigate(route) } },
           onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
         )
@@ -100,6 +102,7 @@ fun AwardCategoriesListContent(
 fun LazyGridItemScope.NomineeMediaItem(
   modifier: Modifier = Modifier,
   item: LoadingUiItem<AwardNominee>,
+  onNavigate: (Navigation) -> Unit,
   onClick: (MediaItem) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
 ) {
@@ -134,6 +137,20 @@ fun LazyGridItemScope.NomineeMediaItem(
           )
         },
         onClick = { onClick(state.item) },
+        contentBelowTitle = {
+          item.item.winningMedia?.let { media ->
+            TextButton(
+              onClick = {
+                media.toRoute()?.let { route -> onNavigate(route) }
+              },
+            ) {
+              Text(
+                text = media.title ?: "",
+                textAlign = TextAlign.Center,
+              )
+            }
+          }
+        },
       )
       MediaItem.Unknown -> Unit
     }

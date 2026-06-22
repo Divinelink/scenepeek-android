@@ -16,6 +16,7 @@ object YearAwardsFactory {
           mediaType = MediaType.MOVIE,
         ),
         winner = true,
+        winningMedia = null,
       ),
       AwardNominee(
         media = MediaReference(
@@ -23,6 +24,7 @@ object YearAwardsFactory {
           mediaType = MediaType.MOVIE,
         ),
         winner = false,
+        winningMedia = null,
       ),
     ),
   )
@@ -36,6 +38,7 @@ object YearAwardsFactory {
           mediaType = MediaType.TV,
         ),
         winner = true,
+        winningMedia = null,
       ),
       AwardNominee(
         media = MediaReference(
@@ -43,6 +46,7 @@ object YearAwardsFactory {
           mediaType = MediaType.TV,
         ),
         winner = false,
+        winningMedia = null,
       ),
     ),
   )
@@ -56,6 +60,7 @@ object YearAwardsFactory {
           mediaType = MediaType.PERSON,
         ),
         winner = false,
+        winningMedia = null,
       ),
       AwardNominee(
         media = MediaReference(
@@ -63,6 +68,11 @@ object YearAwardsFactory {
           mediaType = MediaType.PERSON,
         ),
         winner = true,
+        winningMedia = MediaReference(
+          mediaType = MediaType.MOVIE,
+          mediaId = 550,
+          title = "Fight Club",
+        ),
       ),
     ),
   )
