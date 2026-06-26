@@ -13,7 +13,13 @@ class ProdAwardsRepository(
   override suspend fun fetchAwardCeremonies(): Result<List<Ceremony>> = service
     .fetchAwardCeremonies()
     .map { response ->
-      response.map()
+      response.map().distinctBy { it.id }
+    }
+
+  override suspend fun fetchCeremonyCategories(id: String): Result<List<CeremonyCategory>> = service
+    .fetchCeremonyCategories(id = id)
+    .map { response ->
+      response.map().distinctBy { it.id }
     }
 
   override suspend fun fetchAwards(
@@ -25,10 +31,4 @@ class ProdAwardsRepository(
   ).map { response ->
     response.map()
   }
-
-  override suspend fun fetchCeremonyCategories(id: String): Result<List<CeremonyCategory>> = service
-    .fetchCeremonyCategories(id = id)
-    .map { response ->
-      response.map()
-    }
 }
