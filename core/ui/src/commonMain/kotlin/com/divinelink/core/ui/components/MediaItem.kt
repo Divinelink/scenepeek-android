@@ -39,7 +39,7 @@ fun MediaItem(
   subtitle: String? = null,
   showDate: Boolean = false,
   minLines: Int = 1,
-  contentAboveTitle: (@Composable () -> Unit)? = null,
+  isWinner: Boolean = false,
   contentBelowTitle: (@Composable () -> Unit)? = null,
   onClick: (MediaItem.Media) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
@@ -57,15 +57,14 @@ fun MediaItem(
       ),
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
-    MediaImage(media = media)
+    MediaImage(
+      media = media,
+      isWinner = isWinner,
+    )
 
     Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
 
     Column {
-      contentAboveTitle?.let { content ->
-        content()
-      }
-
       Text(
         modifier = Modifier
           .fillMaxWidth()
@@ -174,7 +173,7 @@ fun MediaItemFullPreview() {
     Surface {
       MediaItem(
         modifier = Modifier,
-        media = MediaItemFactory.theOffice(),
+        media = MediaItemFactory.theOffice().copy(isFavorite = true),
         subtitle = "Actor",
         showDate = true,
         onClick = {},

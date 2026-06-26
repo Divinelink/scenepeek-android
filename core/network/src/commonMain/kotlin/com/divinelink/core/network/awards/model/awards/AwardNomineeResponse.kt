@@ -10,4 +10,5 @@ data class AwardNomineeResponse(
   @SerialName("media_id") val mediaId: Long?,
   @SerialName("media_type") val type: String?,
   @SerialName("media_title") val title: String?,
+  val countries: List<String>?,
 )

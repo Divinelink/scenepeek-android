@@ -2,6 +2,7 @@ package com.divinelink.core.network.awards.mapper
 
 import com.divinelink.core.model.awards.AwardNominee
 import com.divinelink.core.model.awards.YearAwards
+import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.awards.model.awards.AwardsResponse
@@ -18,6 +19,9 @@ fun AwardsResponse.map() = awards.map { award ->
           ),
           winner = movie.winner,
           winningMedia = null,
+          countries = movie.countries?.mapNotNull {
+            Country.fromCode(it)
+          },
         )
       }
       award.shows != null -> award.shows.map { show ->
@@ -28,6 +32,9 @@ fun AwardsResponse.map() = awards.map { award ->
           ),
           winner = show.winner,
           winningMedia = null,
+          countries = show.countries?.mapNotNull {
+            Country.fromCode(it)
+          },
         )
       }
       award.persons != null -> award.persons.map { person ->
@@ -45,6 +52,9 @@ fun AwardsResponse.map() = awards.map { award ->
             )
           } else {
             null
+          },
+          countries = person.countries?.mapNotNull {
+            Country.fromCode(it)
           },
         )
       }

@@ -24,23 +24,17 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.model.person.Gender
-import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.provider.PersonParameterProvider
-import com.divinelink.core.ui.resources.core_ui_ic_female_person_placeholder
-import com.divinelink.core.ui.resources.core_ui_ic_person_placeholder
-import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SmallPersonItem(
   modifier: Modifier = Modifier,
   person: MediaItem.Person,
   isSmall: Boolean = true,
-  contentAboveTitle: (@Composable () -> Unit)? = null,
-  contentBelowTitle: (@Composable () -> Unit)? = null,
+  isWinner: Boolean = false,
+  footerContent: (@Composable () -> Unit)? = null,
   onClick: (MediaItem.Person) -> Unit,
 ) {
   Card(
@@ -56,27 +50,13 @@ fun SmallPersonItem(
         .fillMaxWidth(),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      MovieImage(
-        path = person.profilePath,
-        modifier = Modifier.height(
-          if (isSmall) {
-            MaterialTheme.dimensions.posterSizeSmall
-          } else {
-            MaterialTheme.dimensions.posterSize
-          },
-        ),
-        errorPlaceHolder = if (person.gender == Gender.FEMALE) {
-          painterResource(UiDrawable.core_ui_ic_female_person_placeholder)
-        } else {
-          painterResource(UiDrawable.core_ui_ic_person_placeholder)
-        },
+      PersonImage(
+        person = person,
+        isSmall = isSmall,
+        isWinner = isWinner,
       )
 
       Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
-
-      contentAboveTitle?.let {
-        contentAboveTitle()
-      }
 
       Text(
         modifier = Modifier
@@ -89,8 +69,8 @@ fun SmallPersonItem(
         textAlign = TextAlign.Center,
       )
 
-      contentBelowTitle?.let {
-        contentBelowTitle()
+      footerContent?.let {
+        footerContent()
       }
 
       when (person.role.first()) {
@@ -170,8 +150,7 @@ fun SmallPersonItemPreviews(
     SmallPersonItem(
       person = person,
       isSmall = true,
-      contentAboveTitle = {},
-      contentBelowTitle = {},
+      footerContent = {},
       onClick = {},
     )
   }

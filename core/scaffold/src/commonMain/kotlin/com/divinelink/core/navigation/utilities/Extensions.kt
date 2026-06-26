@@ -26,10 +26,10 @@ fun MediaReference.toRoute(): Navigation? = when (this.mediaType) {
   MediaType.TV,
   MediaType.MOVIE,
     -> Navigation.DetailsRoute(
-    id = mediaId,
-    mediaType = mediaType.value,
-    isFavorite = false,
-  )
+      id = mediaId,
+      mediaType = mediaType.value,
+      isFavorite = false,
+    )
   MediaType.PERSON -> Navigation.PersonRoute(
     id = mediaId,
     knownForDepartment = null,

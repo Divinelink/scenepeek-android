@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="categories">Categories</string>
-  <string name="award_winner">Winner</string>
-  <string name="award_nominee">Nominee</string>
 </resources>

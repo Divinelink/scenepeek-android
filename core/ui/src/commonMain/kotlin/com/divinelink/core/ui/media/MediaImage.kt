@@ -26,6 +26,7 @@ import com.divinelink.core.ui.rating.DiscreetRatingItem
 @Composable
 fun MediaImage(
   media: MediaItem.Media,
+  isWinner: Boolean = false,
   modifier: Modifier = Modifier,
 ) {
   Box(
@@ -66,7 +67,12 @@ fun MediaImage(
           top = MaterialTheme.dimensions.keyline_4,
         ),
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+      horizontalAlignment = Alignment.End,
     ) {
+      if (isWinner) {
+        WinnerPill()
+      }
+
       media.accountRating?.let {
         DiscreetRatingItem(
           rating = it.toDouble(),

@@ -47,7 +47,7 @@ fun AwardsListContent(
       start = MaterialTheme.dimensions.keyline_8,
       end = MaterialTheme.dimensions.keyline_8,
       top = MaterialTheme.dimensions.keyline_8,
-      bottom = LocalBottomNavigationPadding.current,
+      bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_16,
     ),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -80,7 +80,8 @@ fun CeremonyItem(
   ) {
     Image(
       modifier = Modifier
-        .aspectRatio(2f / 2f),
+        .aspectRatio(2f / 2f)
+        .clip(MaterialTheme.shape.medium),
       quality = ImageQuality.SQUARE,
       path = ceremony.imagePath,
     )

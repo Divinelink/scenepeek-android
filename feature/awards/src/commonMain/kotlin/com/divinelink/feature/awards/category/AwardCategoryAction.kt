@@ -7,4 +7,3 @@ sealed interface AwardCategoryAction {
   data object OnRetry : AwardCategoryAction
   data class FetchMediaItem(val nominee: LoadingUiItem<AwardNominee>) : AwardCategoryAction
 }
-

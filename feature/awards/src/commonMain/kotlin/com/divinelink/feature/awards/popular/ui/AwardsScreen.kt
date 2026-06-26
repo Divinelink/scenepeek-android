@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.resources.awards
@@ -37,7 +38,8 @@ fun AnimatedVisibilityScope.AwardsScreen(
   rememberScaffoldState(
     animatedVisibilityScope = this,
   ).PersistentScaffold(
-    modifier = Modifier,
+    modifier = Modifier
+      .nestedScroll(scrollBehavior.nestedScrollConnection),
     navigationRail = {
       PersistentNavigationRail()
     },

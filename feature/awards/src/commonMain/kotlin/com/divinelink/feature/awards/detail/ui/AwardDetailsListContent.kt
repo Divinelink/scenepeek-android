@@ -37,7 +37,7 @@ fun AwardDetailsListContent(
       start = MaterialTheme.dimensions.keyline_8,
       end = MaterialTheme.dimensions.keyline_8,
       top = MaterialTheme.dimensions.keyline_8,
-      bottom = LocalBottomNavigationPadding.current,
+      bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_16,
     ),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),

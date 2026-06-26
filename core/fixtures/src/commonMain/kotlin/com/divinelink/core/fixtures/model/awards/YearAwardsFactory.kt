@@ -2,6 +2,7 @@ package com.divinelink.core.fixtures.model.awards
 
 import com.divinelink.core.model.awards.AwardNominee
 import com.divinelink.core.model.awards.YearAwards
+import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 
@@ -17,6 +18,7 @@ object YearAwardsFactory {
         ),
         winner = true,
         winningMedia = null,
+        countries = listOf(Country.PALESTINE, Country.LIECHTENSTEIN),
       ),
       AwardNominee(
         media = MediaReference(
@@ -25,6 +27,7 @@ object YearAwardsFactory {
         ),
         winner = false,
         winningMedia = null,
+        countries = null,
       ),
     ),
   )
@@ -39,6 +42,7 @@ object YearAwardsFactory {
         ),
         winner = true,
         winningMedia = null,
+        countries = null,
       ),
       AwardNominee(
         media = MediaReference(
@@ -47,6 +51,7 @@ object YearAwardsFactory {
         ),
         winner = false,
         winningMedia = null,
+        countries = null,
       ),
     ),
   )
@@ -61,6 +66,7 @@ object YearAwardsFactory {
         ),
         winner = false,
         winningMedia = null,
+        countries = null,
       ),
       AwardNominee(
         media = MediaReference(
@@ -73,6 +79,7 @@ object YearAwardsFactory {
           mediaId = 550,
           title = "Fight Club",
         ),
+        countries = null,
       ),
     ),
   )
