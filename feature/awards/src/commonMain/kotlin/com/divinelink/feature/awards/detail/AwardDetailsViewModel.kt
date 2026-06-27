@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.awards.AwardsRepository
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.blankslate.toBlankSlateState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -52,11 +52,11 @@ class AwardDetailsViewModel(
               )
             }
           },
-          onFailure = {
+          onFailure = { error ->
             _uiState.update { state ->
               state.copy(
                 loading = false,
-                error = BlankSlateState.Generic,
+                error = error.toBlankSlateState(),
               )
             }
           },

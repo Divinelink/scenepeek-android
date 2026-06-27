@@ -13,7 +13,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.network.Resource
-import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.blankslate.toBlankSlateState
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -121,11 +121,11 @@ class AwardCategoryViewModel(
               )
             }
           },
-          onFailure = {
+          onFailure = { error ->
             _uiState.update { state ->
               state.copy(
                 loading = false,
-                error = BlankSlateState.Generic,
+                error = error.toBlankSlateState(),
               )
             }
           },
