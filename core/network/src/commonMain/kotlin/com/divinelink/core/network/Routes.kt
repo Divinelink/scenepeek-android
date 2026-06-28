@@ -16,4 +16,9 @@ object Routes {
   object Trakt {
     const val HOST = "api.trakt.tv"
   }
+
+  object Awards {
+    const val BRANCH = "main"
+    const val HOST = "raw.githubusercontent.com/ScenePeek/tmdb-awards/refs/heads/$BRANCH"
+  }
 }

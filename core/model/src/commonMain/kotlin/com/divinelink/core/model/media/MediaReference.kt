@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class MediaReference(
   val mediaId: Long,
   val mediaType: MediaType,
+  val title: String? = null,
 )

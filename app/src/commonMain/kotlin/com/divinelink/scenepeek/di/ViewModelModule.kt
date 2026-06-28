@@ -4,6 +4,9 @@ import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.ui.menu.DropdownMenuViewModel
 import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import com.divinelink.feature.add.to.account.modal.ActionMenuViewModel
+import com.divinelink.feature.awards.category.AwardCategoryViewModel
+import com.divinelink.feature.awards.detail.AwardDetailsViewModel
+import com.divinelink.feature.awards.popular.AwardsViewModel
 import com.divinelink.feature.collections.CollectionsViewModel
 import com.divinelink.feature.credits.ui.CreditsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
@@ -66,6 +69,9 @@ val appViewModelModule = module {
   viewModelOf(::EpisodeViewModel)
   viewModelOf(::UpdaterViewModel)
   viewModelOf(::AppUpdatesViewModel)
+  viewModelOf(::AwardsViewModel)
+  viewModelOf(::AwardDetailsViewModel)
+  viewModelOf(::AwardCategoryViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

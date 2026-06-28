@@ -96,7 +96,7 @@ fun ScrollableMediaContent(
 
         items(
           items = items,
-          key = { it.uniqueIdentifier },
+          key = { "${section.name}-${it.uniqueIdentifier}" },
         ) { media ->
           when (media) {
             is MediaItem.Media -> when (viewMode) {

@@ -1,6 +1,7 @@
 package com.divinelink.core.ui.components
 
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,6 +39,8 @@ fun MediaItem(
   subtitle: String? = null,
   showDate: Boolean = false,
   minLines: Int = 1,
+  isWinner: Boolean = false,
+  contentBelowTitle: (@Composable () -> Unit)? = null,
   onClick: (MediaItem.Media) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
 ) {
@@ -54,50 +57,59 @@ fun MediaItem(
       ),
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
-    MediaImage(media = media)
+    MediaImage(
+      media = media,
+      isWinner = isWinner,
+    )
 
     Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
 
-    Text(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(bottom = MaterialTheme.dimensions.keyline_4)
-        .padding(horizontal = MaterialTheme.dimensions.keyline_8),
-      text = media.name,
-      maxLines = 3,
-      minLines = minLines,
-      overflow = TextOverflow.Ellipsis,
-      style = MaterialTheme.typography.bodySmall,
-      fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
-      color = MaterialTheme.colorScheme.onSurface,
-      textAlign = TextAlign.Center,
-    )
-
-    if (!subtitle.isNullOrBlank()) {
+    Column {
       Text(
         modifier = Modifier
           .fillMaxWidth()
+          .padding(bottom = MaterialTheme.dimensions.keyline_4)
           .padding(horizontal = MaterialTheme.dimensions.keyline_8),
-        text = subtitle,
-        maxLines = 1,
-        style = MaterialTheme.typography.labelSmall,
+        text = media.name,
+        maxLines = 3,
+        minLines = minLines,
         overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
+        color = MaterialTheme.colorScheme.onSurface,
         textAlign = TextAlign.Center,
       )
-    }
 
-    if (showDate) {
-      Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(vertical = MaterialTheme.dimensions.keyline_4)
-          .padding(horizontal = MaterialTheme.dimensions.keyline_8),
-        text = media.releaseDate.take(4),
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Center,
-      )
+      if (!subtitle.isNullOrBlank()) {
+        Text(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.dimensions.keyline_8),
+          text = subtitle,
+          maxLines = 1,
+          style = MaterialTheme.typography.labelSmall,
+          overflow = TextOverflow.Ellipsis,
+          color = MaterialTheme.colorScheme.primary,
+          textAlign = TextAlign.Center,
+        )
+      }
+
+      if (showDate) {
+        Text(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = MaterialTheme.dimensions.keyline_4)
+            .padding(horizontal = MaterialTheme.dimensions.keyline_8),
+          text = media.releaseDate.take(4),
+          style = MaterialTheme.typography.labelSmall,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          textAlign = TextAlign.Center,
+        )
+      }
+
+      contentBelowTitle?.let { content ->
+        content()
+      }
     }
   }
 }
@@ -161,7 +173,7 @@ fun MediaItemFullPreview() {
     Surface {
       MediaItem(
         modifier = Modifier,
-        media = MediaItemFactory.theOffice(),
+        media = MediaItemFactory.theOffice().copy(isFavorite = true),
         subtitle = "Actor",
         showDate = true,
         onClick = {},

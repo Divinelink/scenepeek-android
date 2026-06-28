@@ -47,6 +47,7 @@ fun HomeContent(
         val route = when (it) {
           is HomeFilter.Collection -> Navigation.MediaListsRoute(MediaListSection.Collection)
           is HomeFilter.TopRated -> Navigation.MediaListsRoute(MediaListSection.TopRated)
+          HomeFilter.Awards -> Navigation.AwardsRoute
         }
 
         onNavigate(route)

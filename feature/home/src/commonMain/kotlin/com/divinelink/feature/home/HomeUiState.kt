@@ -1,8 +1,7 @@
 package com.divinelink.feature.home
 
 import androidx.compose.runtime.Immutable
-import com.divinelink.core.model.filter.HomeFilter.Collection
-import com.divinelink.core.model.filter.HomeFilter.TopRated
+import com.divinelink.core.model.filter.HomeFilter
 import com.divinelink.core.model.filter.SelectableFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSectionInfo
@@ -20,10 +19,7 @@ data class HomeUiState(
 ) {
   companion object {
     fun initial(sections: List<HomeSectionInfo>) = HomeUiState(
-      filters = listOf(
-        Collection(isSelected = false),
-        TopRated(isSelected = false),
-      ),
+      filters = HomeFilter.entries,
       pages = emptyMap(),
       sections = sections,
       forms = sections.buildForms(),

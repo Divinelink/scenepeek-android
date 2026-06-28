@@ -19,6 +19,9 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.add.to.account.list.ui.AddToListScreen
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuModal
+import com.divinelink.feature.awards.category.ui.AwardCategoryScreen
+import com.divinelink.feature.awards.detail.ui.AwardDetailsScreen
+import com.divinelink.feature.awards.popular.ui.AwardsScreen
 import com.divinelink.feature.collections.ui.CollectionsScreen
 import com.divinelink.feature.credits.ui.CreditsScreen
 import com.divinelink.feature.details.media.ui.DetailsScreen
@@ -337,6 +340,29 @@ val navigationModule = module {
     val navigator = get<Navigator>()
     AppUpdatesScreen(
       animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+      onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.AwardsRoute> {
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.AwardsScreen(
+      onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.AwardDetailsRoute> { route ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.AwardDetailsScreen(
+      route = route,
+      onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.AwardCategoryRoute> { route ->
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.AwardCategoryScreen(
+      route = route,
       onNavigate = navigator::navigate,
     )
   }

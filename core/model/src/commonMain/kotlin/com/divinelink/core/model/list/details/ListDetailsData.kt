@@ -30,7 +30,7 @@ sealed class ListDetailsData<out T>(
     description = data.description,
     public = data.public,
   ) {
-    val media = pages.values.flatten()
+    val media = pages.values.flatten().distinctBy { it.uniqueIdentifier }
     val isEmpty: Boolean = media.isEmpty()
     val canLoadMore: Boolean = data.canLoadMore()
   }

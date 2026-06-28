@@ -20,6 +20,7 @@ fun MediaItem.shareUrl(domain: String): String {
 fun MediaItem.toStub(): MediaReference = MediaReference(
   mediaId = id,
   mediaType = mediaType,
+  title = null,
 )
 
 fun MediaItem.encodeToString() = Json.encodeToString<MediaItem>(this)

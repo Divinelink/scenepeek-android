@@ -22,7 +22,8 @@ sealed class AppException(message: String? = null) : IOException(message) {
   class Database : AppException()
 
   // HTTP Errors
-  class Unauthorized(customMessage: String? = null) : AppException(message = customMessage) // 401
+  data class Unauthorized(val customMessage: String? = null) :
+    AppException(message = customMessage) // 401
   class Forbidden(message: String? = null) : AppException(message)
   class NotFound(message: String? = null) : AppException(message)
   class Conflict(message: String? = null) : AppException(message)

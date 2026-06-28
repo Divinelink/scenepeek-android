@@ -4,6 +4,8 @@ import com.divinelink.core.network.account.service.AccountService
 import com.divinelink.core.network.account.service.ProdAccountService
 import com.divinelink.core.network.app.AppInfoService
 import com.divinelink.core.network.app.ProdAppInfoService
+import com.divinelink.core.network.awards.AwardsService
+import com.divinelink.core.network.awards.ProdAwardsService
 import com.divinelink.core.network.client.AuthTMDbClient
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.OMDbClient
@@ -48,6 +50,7 @@ val remoteModule = module {
   singleOf(::ProdOMDbService) { bind<OMDbService>() }
   singleOf(::ProdTraktService) { bind<TraktService>() }
   singleOf(::ProdAppInfoService) { bind<AppInfoService>() }
+  singleOf(::ProdAwardsService) { bind<AwardsService>() }
 
   singleOf(::PersistentCookieStorage) { bind<PersistentCookieStorage>() }
 }

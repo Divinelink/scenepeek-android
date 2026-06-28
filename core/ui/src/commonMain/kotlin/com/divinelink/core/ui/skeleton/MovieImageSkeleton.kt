@@ -12,9 +12,9 @@ import com.valentinilk.shimmer.shimmer
 
 @Composable
 @Previews
-fun MovieImageSkeleton() {
+fun MovieImageSkeleton(modifier: Modifier = Modifier) {
   Box(
-    modifier = Modifier
+    modifier = modifier
       .aspectRatio((2f / 3f))
       .shimmer()
       .clip(MaterialTheme.shapes.medium)
