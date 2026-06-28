@@ -1,0 +1,6 @@
+🎉 Update v0.34.0
+
+- Awards added! Browse movies, shows, and people from major ceremonies including the Oscars, Golden Globes, European Film Awards, and more.
+- Add Italian language setting
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

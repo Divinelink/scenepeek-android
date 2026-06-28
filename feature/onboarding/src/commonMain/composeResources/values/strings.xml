@@ -82,4 +82,7 @@
 
   <string name="v51_add_rating_label_popup">- Add a descriptive label popup when selecting a rating that summarizes the rating</string>
   <string name="v51_add_tmdb_favorites_tab">- Rename local favorites to collections and add TMDB favorites tab on profile</string>
+
+  <string name="v52_awards_feature">- Awards added! Browse movies, shows, and people from major ceremonies including the Oscars, Golden Globes, European Film Awards, and more. (Awards content is updated frequently!)</string>
+  <string name="v52_italian_language">- Add Italian language setting</string>
 </resources>
