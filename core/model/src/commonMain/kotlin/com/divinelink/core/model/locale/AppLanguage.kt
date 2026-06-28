@@ -23,6 +23,10 @@ enum class AppLanguage(
     localeName = "de",
     text = UIText.StringText("Deutsch"),
   ),
+  ITALIAN(
+    localeName = "it",
+    text = UIText.StringText("Italiano"),
+  ),
   GREEK(
     localeName = "el",
     text = UIText.StringText("Ελληνικά"),
