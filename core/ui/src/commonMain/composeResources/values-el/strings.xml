@@ -171,4 +171,5 @@
     <string name="tv_shows">Σειρές</string>
     <string name="episodes">Επεισόδια</string>
     <string name="core_ui_add_to_collection_button_content_description">Κουμπί προσθήκης στη συλλογή</string>
+    <string name="core_ui_winner">Νίκησε</string>
 </resources>
