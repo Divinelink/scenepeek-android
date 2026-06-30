@@ -71,7 +71,7 @@ fun PersonItem(
           style = MaterialTheme.typography.titleMedium,
         )
         // Find the first role of the person, it'll the same for all the roles
-        when (person.role.first()) {
+        when (person.role.firstOrNull()) {
           is PersonRole.Crew -> Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
           ) {
@@ -100,6 +100,7 @@ fun PersonItem(
           PersonRole.Creator,
           PersonRole.Novel,
           PersonRole.Screenplay,
+          null,
             -> Unit
         }
       }
