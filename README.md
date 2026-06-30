@@ -3,14 +3,22 @@
 [![Join the community](https://img.shields.io/badge/matrix.org-join_community-teal?style=flat-square&logo=matrix)](https://matrix.to/#/#scenepeek:matrix.org)
 
 <div align="center">
+  <a href="https://f-droid.org/packages/com.divinelink.scenepeek/" target="_blank"><img src="https://f-droid.org/badge/get-it-on.png" height="75" alt="Get it on F-Droid"></a>
+  <a href="https://play.google.com/store/apps/details?id=com.divinelink.scenepeek" target="_blank"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75" alt="Get it on Google Play"></a>
+</div>
 
-[<img alt='Get it on Google Play'  align="center" target='_blank' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80'/>](https://play.google.com/store/apps/details?id=com.divinelink.scenepeek)
-[<img alt='Get it on Obtainium' align="center" target='_blank' src='https://github.com/ImranR98/Obtainium/blob/main/assets/graphics/badge_obtainium.png' height='55'/>](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Divinelink/scenepeek-android)
-[<img alt='Get it on GitHub' align="center" target='_blank' src='https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png' height='80'/>](https://github.com/Divinelink/scenepeek-android/releases/latest)
+<div align="center">
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Divinelink/scenepeek-android" target="_blank"><img alt='Get it on Obtainium' src='https://github.com/ImranR98/Obtainium/blob/main/assets/graphics/badge_obtainium.png' height='75'/></a>
+  <a href="https://github.com/Divinelink/scenepeek-android/releases/latest" target="_blank"><img alt='Get it on GitHub' src='https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png' height='75'/></a>
+</div>
 
-__The iOS version is under review from apple since 20/12/2025, until they decide to approve it and release it on the AppStore, you can get the iOS app on testflight.__
+<div align="center">
+  <p><strong>The iOS version is under review from Apple since 20/12/2025, until they decide to approve it and release it on the AppStore, you can get the iOS app on TestFlight.</strong></p>
 
-[<img alt='Get it on GitHub' align="center" target='_blank' src='https://askyourself.app/assets/testflight.png' height='80'/>](https://testflight.apple.com/join/9bdUBYwY)
+<a href="https://testflight.apple.com/join/9bdUBYwY" target="_blank"><img alt='Get it on TestFlight' src='https://askyourself.app/assets/testflight.png' height='80'/></a>
+</div>
+
+<div align="center">
 
 ### Help translate the project!
 [![Translation status](https://hosted.weblate.org/widget/scenepeek/287x66-grey.png)](https://hosted.weblate.org/engage/scenepeek/)
@@ -25,31 +33,32 @@ information about movies &amp; television shows and other forms of entertainment
 information such as cast and crew, plot summaries, user reviews, ratings, and more.
 
 ## Screenshots
-| Home | Details | Ratings | Lists |
-|:----:|:-------:|:-------:|:-----:|
-| <img width="270" height="585" alt="Home Screen" src="https://github.com/user-attachments/assets/c2f72284-b133-4259-aa13-316bd105f05f" /> | <img width="270" height="585" alt="Details Screen" src="https://github.com/user-attachments/assets/eea755e9-9d17-4dbb-9807-3e91395e3e28" /> | <img width="270" height="585" alt="Ratings Screen" src="https://github.com/user-attachments/assets/c4210496-2b5a-4c5e-bc2a-4e42caad8919" /> | <img width="270" height="585" alt="Lists Screen" src="https://github.com/user-attachments/assets/dfc789e5-04d3-4ad6-82ae-340431065347" /> |
-| Request Media | Edit Request | View Requests |
-| <img width="270" height="585" alt="Screenshot_20250927_182216" src="https://github.com/user-attachments/assets/ab884494-c983-40d0-bc28-aa54a44890ab" /> | <img width="270" height="585" alt="Edit Request Screen" src="https://github.com/user-attachments/assets/0e8b4293-253f-4633-bb71-c59d52614b6e" /> | <img width="270" height="585" alt="View Requests Screen" src="https://github.com/user-attachments/assets/27dd688a-a283-4e57-98ac-aa3fe2503873" /> |
+|                                                                          Home                                                                           |                                                                     Details                                                                      |                                                                      Ratings                                                                      |                                                                            Lists                                                                            |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|        <img width="270" height="585" alt="Home Screen" src="https://github.com/user-attachments/assets/c2f72284-b133-4259-aa13-316bd105f05f" />         |   <img width="270" height="585" alt="Details Screen" src="https://github.com/user-attachments/assets/eea755e9-9d17-4dbb-9807-3e91395e3e28" />    |    <img width="270" height="585" alt="Ratings Screen" src="https://github.com/user-attachments/assets/c4210496-2b5a-4c5e-bc2a-4e42caad8919" />    |          <img width="270" height="585" alt="Lists Screen" src="https://github.com/user-attachments/assets/dfc789e5-04d3-4ad6-82ae-340431065347" />          |
+|                                                                      Request Media                                                                      |                                                                   Edit Request                                                                   |                                                                   View Requests                                                                   |                                                                           Awards                                                                            |
+| <img width="270" height="585" alt="Screenshot_20250927_182216" src="https://github.com/user-attachments/assets/ab884494-c983-40d0-bc28-aa54a44890ab" /> | <img width="270" height="585" alt="Edit Request Screen" src="https://github.com/user-attachments/assets/0e8b4293-253f-4633-bb71-c59d52614b6e" /> | <img width="270" height="585" alt="View Requests Screen" src="https://github.com/user-attachments/assets/27dd688a-a283-4e57-98ac-aa3fe2503873" /> | <img width="270" height="585" alt="Explore major award ceremonies" src="https://github.com/user-attachments/assets/af5da700-4b08-4b0e-a5ff-9afa4c6dc69b" /> ||
 
 ## Core Features
 
-The following table outlines the main features of our app:
+The following table outlines the main features of ScenePeek:
 
-| Feature                   | Description                                   | Status              |
-|---------------------------|-----------------------------------------------|---------------------|
-| TMDB Authentication       | Log in with TMDB account                      | ✅ Implemented       |
-| Rate Movies & TV Shows    | Rate content directly through the app         | ✅ Implemented       |
-| TMDB Watchlist            | Manage your TMDB watchlist                    | ✅ Implemented       |
-| People Details            | View detailed information about cast and crew | ✅ Implemented       |
-| Movie Details             | Comprehensive information about movies        | ✅ Implemented       |
-| TV Show Details           | Detailed information about TV series          | ✅ Implemented       |
-| Cast & Crew Information   | Explore the team behind movies and TV shows   | ✅ Implemented       |
-| Jellyseerr Authentication | Log in to your Jellyseerr account             | ✅ Implemented       |
-| Jellyseerr Requests       | Request movies and TV shows via Jellyseerr    | ✅ Implemented       |
-| Additional Rating Sources | View IMDb & Trakt ratings for all content     | ✅ Implemented       |
-| Discover Feed             | Discover media through advanced filtering     | ✅ Implemented       |
-| TV Show Seasons           | Detailed information about individual seasons | ✅ Implemented       |
-| Request notifications     | Get notifications on media requests           | 🚧 Work in Progress  |
+| Feature                   | Description                                                                                  | Status        |
+|---------------------------|----------------------------------------------------------------------------------------------|---------------|
+| TMDB Authentication       | Log in with TMDB account                                                                     | ✅ Implemented |
+| Rate Movies & TV Shows    | Rate content directly through the app                                                        | ✅ Implemented |
+| TMDB Watchlist            | Manage your TMDB watchlist                                                                   | ✅ Implemented |
+| People Details            | View detailed information about cast and crew                                                | ✅ Implemented |
+| Movie Details             | Comprehensive information about movies                                                       | ✅ Implemented |
+| TV Show Details           | Detailed information about TV series                                                         | ✅ Implemented |
+| Cast & Crew Information   | Explore the team behind movies and TV shows                                                  | ✅ Implemented |
+| Seerr Authentication      | Log in to your Seerr account                                                                 | ✅ Implemented |
+| Seerr Requests            | Request movies and TV shows via Seerr                                                        | ✅ Implemented |
+| Additional Rating Sources | View IMDb & Trakt ratings for all content                                                    | ✅ Implemented |
+| Discover Feed             | Discover media through advanced filtering                                                    | ✅ Implemented |
+| TV Show Seasons           | Detailed information about individual seasons                                                | ✅ Implemented |
+| Awards                    | Explore major film awards: **Oscars**, **Golden Globes**, **European Film Awards**, and more | ✅ Implemented |
+| Request notifications     | Get notifications on media requests                                                          | 🚧 Planned    |
 
 We are continuously working on improving and expanding these features to enhance the user
 experience. Features marked as "Work in Progress" are actively being developed and will be available
