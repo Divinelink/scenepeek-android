@@ -5,4 +5,6 @@
         <item>light</item>
         <item>dark</item>
     </string-array>
+    <string name="settings">Impostazioni</string>
+    <string name="login">Accedi</string>
 </resources>
