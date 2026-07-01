@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="home">Home</string>
+    <string name="search">Cerca</string>
+    <string name="profile">Profilo</string>
+    <string name="top_level_navigation_content_description_selected">Elemento di navigazione inferiore selezionato %1$s</string>
+    <string name="top_level_navigation_content_description_unselected">Elemento di navigazione inferiore non selezionato %1$s</string>
+</resources>

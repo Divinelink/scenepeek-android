@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_discover_movies_title">Scopri film</string>
+    <string name="feature_discover_tv_title">Scopri Serie Tv</string>
+    <string name="feature_discover_description_first">Utilizza i filtri per trovare esattamente ciò che stai cercando</string>
+    <string name="feature_discover_description_second">Filtra per anno, paese, lingua, genere e altro ancora</string>
+    <string name="feature_discover_empty_result_title">Hmm, al momento nulla corrisponde ai tuoi filtri</string>
+    <string name="feature_discover_empty_result_description">Modifica i filtri per visualizzare più risultati</string>
+    <string name="feature_discover_show_filter">Mostra filtri</string>
+    <string name="feature_discover_user_score">Score utente: %1$s - %2$s</string>
+    <string name="feature_discover_minimum_user_votes">Numero minimo di voti degli utenti: %1$s</string>
+</resources>
