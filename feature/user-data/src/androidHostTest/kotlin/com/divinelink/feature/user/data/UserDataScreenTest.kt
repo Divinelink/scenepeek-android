@@ -394,7 +394,7 @@ class UserDataScreenTest : ComposeTest() {
       Navigation.DetailsRoute(
         mediaType = MediaType.TV.value,
         id = tvList.first().id,
-        isFavorite = tvList.first().isFavorite,
+        isFavorite = tvList.first().saved,
       ),
     )
   }

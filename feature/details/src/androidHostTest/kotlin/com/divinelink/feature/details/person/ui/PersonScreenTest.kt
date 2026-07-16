@@ -46,6 +46,7 @@ import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
@@ -68,6 +69,7 @@ class PersonScreenTest : ComposeTest() {
 
   private lateinit var fetchPersonDetailsUseCase: TestFetchPersonDetailsUseCase
   private lateinit var fetchChangesUseCase: TestFetchChangesUseCase
+  private lateinit var markAsFavoriteUseCase: TestMarkAsFavoriteUseCase
   private lateinit var navArgs: PersonRoute
 
   private val preferencesRepository = TestPreferencesRepository()
@@ -103,9 +105,11 @@ class PersonScreenTest : ComposeTest() {
       name = PersonDetailsFactory.steveCarell().person.name,
       profilePath = null,
       gender = Gender.NOT_SET.value,
+      saved = false,
     )
     fetchPersonDetailsUseCase = TestFetchPersonDetailsUseCase()
     fetchChangesUseCase = TestFetchChangesUseCase()
+    markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   }
 
   @AfterTest
@@ -124,12 +128,14 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = PersonRoute(
         id = navArgs.id,
         knownForDepartment = navArgs.knownForDepartment,
         name = null,
         profilePath = navArgs.profilePath,
         gender = navArgs.gender,
+        saved = false,
       ),
     )
 
@@ -150,12 +156,14 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = PersonRoute(
         id = navArgs.id,
         knownForDepartment = navArgs.knownForDepartment,
         name = null,
         profilePath = navArgs.profilePath,
         gender = navArgs.gender,
+        saved = false,
       ),
     )
 
@@ -180,6 +188,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -206,6 +215,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -234,6 +244,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -268,6 +279,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -313,6 +325,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -411,12 +424,14 @@ class PersonScreenTest : ComposeTest() {
       val viewModel = PersonViewModel(
         fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
         fetchChangesUseCase = fetchChangesUseCase.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
         route = PersonRoute(
           id = navArgs.id,
           knownForDepartment = null,
           name = null,
           profilePath = null,
           gender = Gender.NOT_SET.value,
+          saved = true,
         ),
       )
 
@@ -454,12 +469,14 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = PersonRoute(
         id = navArgs.id,
         knownForDepartment = null,
         name = null,
         profilePath = null,
         gender = Gender.NOT_SET.value,
+        saved = false,
       ),
     )
 
@@ -508,6 +525,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -574,6 +592,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -631,6 +650,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -669,6 +689,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -717,6 +738,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -747,6 +769,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -798,6 +821,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -862,6 +886,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -913,6 +938,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -966,6 +992,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -1023,6 +1050,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -1085,6 +1113,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 
@@ -1174,6 +1203,7 @@ class PersonScreenTest : ComposeTest() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
       route = navArgs,
     )
 

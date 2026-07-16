@@ -12,7 +12,7 @@ sealed interface MediaListSection {
   sealed interface Home : MediaListSection
 
   @Serializable
-  data object Collection : TopBar
+  data object Saved : TopBar
 
   @Serializable
   data object TopRated : TopBar

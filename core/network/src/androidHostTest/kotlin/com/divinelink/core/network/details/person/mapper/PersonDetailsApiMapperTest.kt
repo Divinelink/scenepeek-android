@@ -19,10 +19,14 @@ class PersonDetailsApiMapperTest {
     val serializer = PersonDetailsApi.serializer()
     val personDetailsApi = localJson.decodeFromString(serializer, personDetails)
     val mappedToEntity = personDetailsApi.mapToEntity("1628995200")
-    val domain = mappedToEntity.map()
+    val domain = mappedToEntity.map(false)
 
     assertThat(mappedToEntity).isEqualTo(PersonDetailsEntityFactory.steveCarell())
-    assertThat(domain).isEqualTo(PersonDetailsFactory.steveCarell().copy(alsoKnownAs = emptyList()))
+    assertThat(domain).isEqualTo(
+      PersonDetailsFactory.steveCarell().copy(
+        alsoKnownAs = emptyList(),
+      ),
+    )
   }
 
   @Test

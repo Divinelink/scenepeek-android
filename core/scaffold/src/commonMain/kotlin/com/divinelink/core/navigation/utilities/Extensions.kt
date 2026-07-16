@@ -10,7 +10,7 @@ fun MediaItem.toRoute(): Navigation? = when (this) {
   is MediaItem.Media -> Navigation.DetailsRoute(
     id = id,
     mediaType = mediaType.value,
-    isFavorite = isFavorite,
+    isFavorite = saved,
   )
   is MediaItem.Person -> Navigation.PersonRoute(
     id = id,
@@ -18,6 +18,7 @@ fun MediaItem.toRoute(): Navigation? = when (this) {
     name = name,
     profilePath = profilePath,
     gender = gender.value,
+    saved = saved,
   )
   else -> null
 }
@@ -36,6 +37,7 @@ fun MediaReference.toRoute(): Navigation? = when (this.mediaType) {
     name = null,
     profilePath = null,
     gender = Gender.NOT_SET.value,
+    saved = false,
   )
   MediaType.UNKNOWN -> null
 }

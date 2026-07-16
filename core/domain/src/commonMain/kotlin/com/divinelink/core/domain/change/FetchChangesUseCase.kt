@@ -7,6 +7,7 @@ import com.divinelink.core.commons.extensions.isDateToday
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.domain.change.person.PersonChangesActionFactory
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.first
@@ -19,7 +20,7 @@ class FetchChangesUseCase(
 ) : UseCase<Long, Unit>(dispatcher.io) {
 
   override suspend fun execute(parameters: Long) {
-    val person = repository.fetchPersonDetails(parameters).first().getOrNull()
+    val person = (repository.fetchPersonDetails(parameters).first() as? Resource.Success)?.data
 
     val dateRange = person?.insertedAt?.calculateFourteenDayRange(clock)
 

@@ -41,7 +41,7 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.theOffice().copy(isFavorite = true),
+          media = MediaItemFactory.theOffice().copy(saved = true),
           entryPoint = ActionMenuEntryPoint.Other,
         ),
       )
@@ -52,7 +52,7 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.theOffice().copy(isFavorite = false),
+          media = MediaItemFactory.theOffice().copy(saved = false),
           entryPoint = ActionMenuEntryPoint.Other,
         ),
       )
@@ -78,7 +78,7 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub().copy(isFavorite = true),
+          media = MediaItemFactory.FightClub().copy(saved = true),
           entryPoint = ActionMenuEntryPoint.Other,
         ),
       )
@@ -89,7 +89,7 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub().copy(isFavorite = false),
+          media = MediaItemFactory.FightClub().copy(saved = false),
           entryPoint = ActionMenuEntryPoint.Other,
         ),
       )

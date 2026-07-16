@@ -5,6 +5,7 @@ import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.model.change.StringValue
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.change.ChangeSample
 import com.divinelink.core.testing.factories.model.change.PersonChangesSample
@@ -30,7 +31,7 @@ class FetchChangesUseCaseTest {
   @Test
   fun `test fetch changes when date range only includes today's date`() = runTest {
     repository.mockFetchPersonDetails(
-      Result.success(PersonDetailsFactory.steveCarell()),
+      Resource.Success(PersonDetailsFactory.steveCarell()),
     )
 
     val useCase = FetchChangesUseCase(
@@ -47,7 +48,7 @@ class FetchChangesUseCaseTest {
   @Test
   fun `test fetch changes with multiple 14 day periods`() = runTest {
     repository.mockFetchPersonDetails(
-      Result.success(PersonDetailsFactory.steveCarell()),
+      Resource.Success(PersonDetailsFactory.steveCarell()),
     )
 
     repository.mockFetchChanges(
@@ -68,7 +69,7 @@ class FetchChangesUseCaseTest {
   @Test
   fun `test fetch changes with data correctly updates database`() = runTest {
     repository.mockFetchPersonDetails(
-      Result.success(PersonDetailsFactory.steveCarell()),
+      Resource.Success(PersonDetailsFactory.steveCarell()),
     )
 
     repository.mockFetchChanges(
@@ -102,7 +103,7 @@ class FetchChangesUseCaseTest {
 
   @Test
   fun `test fetchChanges without person details does not trigger calls`() = runTest {
-    repository.mockFetchPersonDetails(Result.failure(Exception()))
+    repository.mockFetchPersonDetails(Resource.Error(Exception()))
 
     val useCase = FetchChangesUseCase(
       repository = repository.mock,

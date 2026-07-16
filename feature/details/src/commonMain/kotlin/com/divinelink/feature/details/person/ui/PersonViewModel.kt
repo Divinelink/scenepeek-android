@@ -3,6 +3,7 @@ package com.divinelink.feature.details.person.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
+import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
@@ -22,6 +23,7 @@ class PersonViewModel(
   private val route: PersonRoute,
   fetchPersonDetailsUseCase: FetchPersonDetailsUseCase,
   fetchChangesUseCase: FetchChangesUseCase,
+  private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<PersonUiState> = MutableStateFlow(
@@ -65,9 +67,9 @@ class PersonViewModel(
                     forms = uiState.forms.mapValues { (key, value) ->
                       when (key) {
                         PersonTab.About.order -> PersonForm.About(
-                          personDetails = PersonDetailsUiState.Data.Visible(
-                            result.personDetails,
-                          ),
+                          personDetails = result.personDetails?.let { details ->
+                            PersonDetailsUiState.Data.Visible(details)
+                          } ?: PersonDetailsUiState.Data.Prefetch(route.map()),
                         )
                         else -> value
                       }
@@ -160,6 +162,14 @@ class PersonViewModel(
         filters = newFilters,
         filteredCredits = newFilteredCredits,
       )
+    }
+  }
+
+  fun onSave() {
+    viewModelScope.launch {
+      uiState.value.personDetails?.person?.let { mediaItem ->
+        markAsFavoriteUseCase(mediaItem)
+      }
     }
   }
 

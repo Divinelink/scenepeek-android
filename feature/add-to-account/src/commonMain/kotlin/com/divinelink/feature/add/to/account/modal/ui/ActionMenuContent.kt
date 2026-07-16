@@ -65,7 +65,7 @@ fun ActionMenuContent(
         }
         if (uiState.media is MediaItem.Media) {
           FavoriteButton(
-            isFavorite = uiState.media.isFavorite == true,
+            isFavorite = uiState.media.saved == true,
             onClick = onMarkAsFavorite,
           )
         }

@@ -271,9 +271,9 @@ class ProdDetailsRepositoryTest {
         Result.success(
           MediaItemFactory.moviesPagination().copy(
             list = buildList {
-              addAll(MoviesList(1..1).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(1..1).map { it.copy(saved = true) })
               addAll(MoviesList(2..4))
-              addAll(MoviesList(5..5).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(5..5).map { it.copy(saved = true) })
               addAll(MoviesList(6..10))
             },
           ),
@@ -284,11 +284,11 @@ class ProdDetailsRepositoryTest {
         Result.success(
           MediaItemFactory.moviesPagination().copy(
             list = buildList {
-              addAll(MoviesList(1..1).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(1..1).map { it.copy(saved = true) })
               addAll(MoviesList(2..4))
-              addAll(MoviesList(5..5).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(5..5).map { it.copy(saved = true) })
               addAll(MoviesList(6..9))
-              addAll(MoviesList(10..10).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(10..10).map { it.copy(saved = true) })
             },
           ),
         ),
@@ -323,7 +323,7 @@ class ProdDetailsRepositoryTest {
           MediaItemFactory.tvPagination().copy(
             list = listOf(
               MediaItemFactory.theWire(),
-              MediaItemFactory.theOffice().copy(isFavorite = true),
+              MediaItemFactory.theOffice().copy(saved = true),
             ),
           ),
         ),
@@ -333,8 +333,8 @@ class ProdDetailsRepositoryTest {
         Result.success(
           MediaItemFactory.tvPagination().copy(
             list = listOf(
-              MediaItemFactory.theWire().copy(isFavorite = true),
-              MediaItemFactory.theOffice().copy(isFavorite = true),
+              MediaItemFactory.theWire().copy(saved = true),
+              MediaItemFactory.theOffice().copy(saved = true),
             ),
           ),
         ),
@@ -781,8 +781,8 @@ class ProdDetailsRepositoryTest {
     mediaRemote.verifyNoInteractions()
 
     repository.fetchMediaItem(MediaItemFactory.FightClub().toStub()).test {
-      awaitItem() shouldBe Resource.Loading(MediaItemFactory.FightClub().copy(isFavorite = true))
-      awaitItem() shouldBe Resource.Success(MediaItemFactory.FightClub().copy(isFavorite = true))
+      awaitItem() shouldBe Resource.Loading(MediaItemFactory.FightClub().copy(saved = true))
+      awaitItem() shouldBe Resource.Success(MediaItemFactory.FightClub().copy(saved = true))
       awaitComplete()
     }
   }

@@ -56,10 +56,10 @@ class ProdMediaRepository(
     val updatedMedia = data.searchList.map { media ->
       when (media.mediaType) {
         MediaType.TV -> (media as MediaItem.Media.TV).copy(
-          isFavorite = media.id in tvShowIdsSet,
+          saved = media.id in tvShowIdsSet,
         )
         MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-          isFavorite = media.id in moviesIdsSet,
+          saved = media.id in moviesIdsSet,
         )
         else -> media
       }
@@ -103,10 +103,10 @@ class ProdMediaRepository(
         val updatedMedia = paginationData.list.map { media ->
           when (media.mediaType) {
             MediaType.TV -> (media as MediaItem.Media.TV).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             else -> media
           }
@@ -131,7 +131,7 @@ class ProdMediaRepository(
     val favoriteSet = favoriteIds.toSet()
 
     val updatedMovies = data.list.map { media ->
-      (media as MediaItem.Media.Movie).copy(isFavorite = media.id in favoriteSet)
+      (media as MediaItem.Media.Movie).copy(saved = media.id in favoriteSet)
     }
 
     Result.success(
@@ -157,7 +157,7 @@ class ProdMediaRepository(
     val favoriteSet = favoriteIds.toSet()
 
     val updatedTv = data.list.map { media ->
-      (media as MediaItem.Media.TV).copy(isFavorite = media.id in favoriteSet)
+      (media as MediaItem.Media.TV).copy(saved = media.id in favoriteSet)
     }
 
     Result.success(
@@ -171,23 +171,39 @@ class ProdMediaRepository(
     )
   }
 
-  override fun fetchFavorites(): Flow<MediaListResult> = dao
+  override fun fetchFavorites(): Flow<List<MediaItem>> = dao
     .fetchAllFavorites()
     .map { favorites ->
-      Result.success(favorites)
+      favorites
     }
 
-  override fun fetchFavorites(mediaType: MediaType): Flow<Result<PaginationData<MediaItem>>> = dao
-    .fetchFavorites(mediaType)
-    .map { favorites ->
-      Result.success(
-        PaginationData(
-          page = 1,
-          totalPages = 1,
-          totalResults = favorites.size,
-          list = favorites,
-        ),
-      )
+  override fun fetchFavorites(mediaType: MediaType): Flow<Result<PaginationData<MediaItem>>> =
+    if (mediaType == MediaType.PERSON) {
+      dao
+        .fetchFavoritePeople()
+        .map { favorites ->
+          Result.success(
+            PaginationData(
+              page = 1,
+              totalPages = 1,
+              totalResults = favorites.size,
+              list = favorites,
+            ),
+          )
+        }
+    } else {
+      dao
+        .fetchFavorites(mediaType)
+        .map { favorites ->
+          Result.success(
+            PaginationData(
+              page = 1,
+              totalPages = 1,
+              totalResults = favorites.size,
+              list = favorites,
+            ),
+          )
+        }
     }
 
   override fun fetchSearchMovies(
@@ -209,10 +225,10 @@ class ProdMediaRepository(
         val updatedMedia = baseResult.searchList.map { media ->
           when (media.mediaType) {
             MediaType.TV -> (media as MediaItem.Media.TV).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             else -> media
           }
@@ -238,10 +254,10 @@ class ProdMediaRepository(
       val updatedMedia = data.searchList.map { media ->
         when (media.mediaType) {
           MediaType.TV -> (media as MediaItem.Media.TV).copy(
-            isFavorite = media.id in tvShowIdsSet,
+            saved = media.id in tvShowIdsSet,
           )
           MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-            isFavorite = media.id in moviesIdsSet,
+            saved = media.id in moviesIdsSet,
           )
           else -> media
         }
@@ -250,8 +266,12 @@ class ProdMediaRepository(
       Result.success(data.copy(searchList = updatedMedia))
     }
 
-  override suspend fun insertFavoriteMedia(media: MediaItem.Media) {
-    dao.insertMedia(media, null)
+  override suspend fun insertFavoriteMedia(media: MediaItem) {
+    when (media) {
+      is MediaItem.Media -> dao.insertMedia(media, null)
+      is MediaItem.Person -> Unit
+      is MediaItem.Unknown -> Unit
+    }
     dao.addToFavorites(mediaId = media.id, mediaType = media.mediaType)
   }
 

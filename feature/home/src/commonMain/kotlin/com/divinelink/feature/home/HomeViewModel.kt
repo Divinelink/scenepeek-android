@@ -52,7 +52,7 @@ class HomeViewModel(
       is MediaListSection.Upcoming,
         -> fetchMediaLists(section)
       is MediaListSection.TopRated -> Unit
-      MediaListSection.Collection -> Unit
+      MediaListSection.Saved -> Unit
     }
   }
 

@@ -41,7 +41,7 @@ class PersonCreditsEntityMapperTest {
     assertThat(mapped).isEqualTo(
       PersonCredit(
         creditId = "52fe4236c3a36847f800c65f",
-        media = MediaItemFactory.bruceAlmighty().copy(isFavorite = true),
+        media = MediaItemFactory.bruceAlmighty().copy(saved = true),
         role = PersonRole.MovieActor(
           character = "Evan Baxter",
           order = 6,
@@ -84,7 +84,7 @@ class PersonCreditsEntityMapperTest {
     ).isEqualTo(
       PersonCredit(
         creditId = "525730a9760ee3776a344705",
-        media = MediaItemFactory.theOffice().copy(isFavorite = true),
+        media = MediaItemFactory.theOffice().copy(saved = true),
         role = PersonRole.SeriesActor(
           character = "Michael Scott",
           creditId = "525730a9760ee3776a344705",
@@ -128,7 +128,7 @@ class PersonCreditsEntityMapperTest {
     ).isEqualTo(
       PersonCredit(
         creditId = "52fe446ac3a36847f8094c49",
-        media = MediaItemFactory.the40YearOldVirgin().copy(isFavorite = true),
+        media = MediaItemFactory.the40YearOldVirgin().copy(saved = true),
         role = PersonRole.Crew(
           job = "Screenplay",
           creditId = "52fe446ac3a36847f8094c49",
@@ -173,7 +173,7 @@ class PersonCreditsEntityMapperTest {
     ).isEqualTo(
       PersonCredit(
         creditId = "53762236c3a3681ed4001579",
-        media = MediaItemFactory.riot().copy(isFavorite = true),
+        media = MediaItemFactory.riot().copy(saved = true),
         role = PersonRole.Crew(
           job = "Executive Producer",
           department = "Production",

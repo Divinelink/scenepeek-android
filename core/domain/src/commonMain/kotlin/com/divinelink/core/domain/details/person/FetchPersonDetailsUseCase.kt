@@ -36,32 +36,36 @@ class FetchPersonDetailsUseCase(
     channelFlow {
       if (parameters.knownForDepartment != null) {
         launch {
-          repository.fetchPersonDetails(parameters.id)
+          repository
+            .fetchPersonDetails(parameters.id)
             .collect { result ->
-              result.fold(
-                onFailure = {
-                  Napier.d("$it")
-                  send(Result.failure(PersonDetailsResult.DetailsFailure))
-                },
-                onSuccess = {
-                  send(Result.success(PersonDetailsResult.DetailsSuccess(result.data)))
-                },
-              )
+              when (result) {
+                is Resource.Error -> send(Result.failure(PersonDetailsResult.DetailsFailure))
+                is Resource.Loading -> send(
+                  Result.success(PersonDetailsResult.DetailsSuccess(result.data)),
+                )
+                is Resource.Success -> send(
+                  Result.success(PersonDetailsResult.DetailsSuccess(result.data)),
+                )
+              }
             }
         }
       }
 
       val asyncDetails = if (parameters.knownForDepartment == null) {
         async {
-          repository.fetchPersonDetails(parameters.id)
+          repository
+            .fetchPersonDetails(parameters.id)
             .map { result ->
-              result.fold(
-                onFailure = {
-                  Napier.d("$it")
-                  Result.failure(PersonDetailsResult.DetailsFailure)
-                },
-                onSuccess = { Result.success(PersonDetailsResult.DetailsSuccess(it)) },
-              )
+              when (result) {
+                is Resource.Error -> Result.failure(PersonDetailsResult.DetailsFailure)
+                is Resource.Loading -> Result.success(
+                  PersonDetailsResult.DetailsSuccess(result.data),
+                )
+                is Resource.Success -> Result.success(
+                  PersonDetailsResult.DetailsSuccess(result.data),
+                )
+              }
             }
             .first()
         }

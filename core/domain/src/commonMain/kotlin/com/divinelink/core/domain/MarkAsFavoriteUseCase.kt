@@ -9,8 +9,8 @@ import com.divinelink.core.model.media.MediaItem
 open class MarkAsFavoriteUseCase(
   private val repository: MediaRepository,
   dispatcher: DispatcherProvider,
-) : UseCase<MediaItem.Media, Boolean>(dispatcher.default) {
-  override suspend fun execute(parameters: MediaItem.Media): Boolean {
+) : UseCase<MediaItem, Boolean>(dispatcher.default) {
+  override suspend fun execute(parameters: MediaItem): Boolean {
     val isFavorite = repository.checkIfMediaIsFavorite(
       id = parameters.id,
       mediaType = parameters.mediaType,

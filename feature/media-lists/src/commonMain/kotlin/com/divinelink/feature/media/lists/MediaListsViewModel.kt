@@ -44,7 +44,7 @@ class MediaListsViewModel(
       is MediaListSection.Popular -> fetchMediaLists(mediaType)
       is MediaListSection.TopRated -> fetchMediaLists(mediaType)
       is MediaListSection.Upcoming -> fetchMediaLists(mediaType)
-      MediaListSection.Collection -> fetchFavorites(mediaType)
+      MediaListSection.Saved -> fetchFavorites(mediaType)
     }
   }
 

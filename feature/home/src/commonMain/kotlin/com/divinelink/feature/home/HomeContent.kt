@@ -45,7 +45,7 @@ fun HomeContent(
       filters = uiState.filters,
       onFilterClick = {
         val route = when (it) {
-          is HomeFilter.Collection -> Navigation.MediaListsRoute(MediaListSection.Collection)
+          is HomeFilter.Saved -> Navigation.MediaListsRoute(MediaListSection.Saved)
           is HomeFilter.TopRated -> Navigation.MediaListsRoute(MediaListSection.TopRated)
           HomeFilter.Awards -> Navigation.AwardsRoute
         }

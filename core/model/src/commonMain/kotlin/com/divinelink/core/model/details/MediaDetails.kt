@@ -128,7 +128,7 @@ fun MediaDetails.toMediaItem() = when (this) {
     voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
     overview = this.overview ?: "",
     popularity = popularity,
-    isFavorite = false,
+    saved = false,
     accountRating = null,
   )
   is TV -> MediaItem.Media.TV(
@@ -141,7 +141,7 @@ fun MediaDetails.toMediaItem() = when (this) {
     voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
     overview = this.overview ?: "",
     popularity = popularity,
-    isFavorite = false,
+    saved = false,
     accountRating = null,
   )
 }

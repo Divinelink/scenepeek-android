@@ -39,6 +39,7 @@ class PersonViewModelTest {
           name = null,
           profilePath = null,
           gender = Gender.NOT_SET.value,
+          saved = true,
         ),
       )
       .buildViewModel()
@@ -269,7 +270,7 @@ class PersonViewModelTest {
       .assertUiState(
         createState(
           personDetails = PersonDetailsUiState.Data.Prefetch(
-            PersonDetailsFactory.steveCarell().person,
+            PersonDetailsFactory.steveCarell().person.copy(saved = false),
           ),
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),

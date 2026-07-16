@@ -24,7 +24,7 @@ class FilterBarTest : ComposeTest() {
     setContent {
       FilterBar(
         filters = listOf(
-          HomeFilter.Collection(isSelected = true),
+          HomeFilter.Saved(isSelected = true),
           HomeFilter.TopRated(isSelected = false),
         ),
         onFilterClick = {},
@@ -59,9 +59,9 @@ class FilterBarTest : ComposeTest() {
       )
     }
 
-    onNodeWithText("Collection").assertIsDisplayed().performClick()
+    onNodeWithText("Saved").assertIsDisplayed().performClick()
 
-    clickedFilter shouldBe HomeFilter.Collection(isSelected = false)
+    clickedFilter shouldBe HomeFilter.Saved(isSelected = false)
   }
 
   @Test

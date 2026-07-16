@@ -52,7 +52,6 @@ import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeDeleteRatingUseCase
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
-import com.divinelink.core.testing.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
@@ -114,7 +113,6 @@ class ScenePeekAppTest : ComposeTest() {
   // HOME use cases
   private lateinit var fetchMultiInfoSearchUseCase: FakeFetchMultiInfoSearchUseCase
   private lateinit var markAsFavoriteUseCase: TestMarkAsFavoriteUseCase
-  private lateinit var getFavoriteMoviesUseCase: FakeGetFavoriteMoviesUseCase
 
   private val searchStateManager = SearchStateManager()
 
@@ -147,7 +145,6 @@ class ScenePeekAppTest : ComposeTest() {
 
     fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
     markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
-    getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
     getAccountDetailsUseCaseTest = FakeGetAccountDetailsUseCase()
     authRepository = TestAuthRepository()

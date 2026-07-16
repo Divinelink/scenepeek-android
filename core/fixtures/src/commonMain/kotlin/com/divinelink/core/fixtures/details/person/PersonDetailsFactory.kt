@@ -48,6 +48,7 @@ object PersonDetailsFactory {
       gender = Gender.MALE,
       knownForDepartment = "Acting",
       role = listOf(PersonRole.Unknown),
+      saved = false,
     ),
     biography = BIOGRAPHY,
     birthday = "1962-08-16",

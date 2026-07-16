@@ -173,7 +173,7 @@ fun MediaItemFullPreview() {
     Surface {
       MediaItem(
         modifier = Modifier,
-        media = MediaItemFactory.theOffice().copy(isFavorite = true),
+        media = MediaItemFactory.theOffice().copy(saved = true),
         subtitle = "Actor",
         showDate = true,
         onClick = {},

@@ -12,6 +12,7 @@ sealed class MediaItem {
   abstract val posterPath: String?
   abstract val backdropPath: String?
   abstract val mediaType: MediaType
+  abstract val saved: Boolean?
 
   @Serializable
   sealed class Media(override val mediaType: MediaType) : MediaItem() {
@@ -23,9 +24,6 @@ sealed class MediaItem {
     abstract val voteAverage: Double
     abstract val voteCount: Int
     abstract val overview: String
-
-    // Not to be misunderstood with TMDB favorite
-    abstract val isFavorite: Boolean? // TODO Rename to isOnCollection
     abstract val popularity: Double
     abstract val accountRating: Int?
 
@@ -40,7 +38,7 @@ sealed class MediaItem {
       override val voteCount: Int,
       override val overview: String,
       override val popularity: Double,
-      override val isFavorite: Boolean?,
+      override val saved: Boolean?,
       override val accountRating: Int? = null,
     ) : Media(
       mediaType = MediaType.TV,
@@ -57,7 +55,7 @@ sealed class MediaItem {
       override val voteCount: Int,
       override val overview: String,
       override val popularity: Double,
-      override val isFavorite: Boolean?,
+      override val saved: Boolean?,
       override val accountRating: Int? = null,
     ) : Media(
       mediaType = MediaType.MOVIE,
@@ -71,6 +69,7 @@ sealed class MediaItem {
   data class Person(
     override val id: Long,
     override val name: String,
+    override val saved: Boolean? = null,
     val profilePath: String?,
     val gender: Gender,
     val knownForDepartment: String?,
@@ -89,5 +88,6 @@ sealed class MediaItem {
     override val backdropPath: String? = null
     override val mediaType: MediaType = MediaType.UNKNOWN
     override val uniqueIdentifier: String = "unknown-$id"
+    override val saved: Boolean? = null
   }
 }

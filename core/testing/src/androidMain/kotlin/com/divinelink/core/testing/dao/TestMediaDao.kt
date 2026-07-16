@@ -49,6 +49,14 @@ class TestMediaDao {
     )
   }
 
+  fun mockFetchFavoritePeopleIds(result: Flow<List<Long>>) {
+    whenever(
+      mock.getFavoriteMediaIds(MediaType.PERSON),
+    ).thenReturn(
+      result,
+    )
+  }
+
   fun mockFetchFavoriteTvIds(result: Flow<List<Long>>) {
     whenever(
       mock.getFavoriteMediaIds(MediaType.TV),

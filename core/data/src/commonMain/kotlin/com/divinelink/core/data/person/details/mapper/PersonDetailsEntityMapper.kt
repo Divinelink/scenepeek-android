@@ -6,7 +6,7 @@ import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
-fun PersonDetailsEntity.map() = PersonDetails(
+fun PersonDetailsEntity.map(saved: Boolean) = PersonDetails(
   person = MediaItem.Person(
     id = id,
     name = name,
@@ -14,13 +14,14 @@ fun PersonDetailsEntity.map() = PersonDetails(
     gender = Gender.from(gender.toInt()),
     knownForDepartment = knownForDepartment,
     role = listOf(PersonRole.Unknown),
+    saved = saved,
   ),
   biography = biography,
   birthday = birthday,
   deathday = deathday,
   placeOfBirth = placeOfBirth,
   homepage = homepage,
-  alsoKnownAs = emptyList(), // TODO Implement
+  alsoKnownAs = emptyList(),
   imdbId = imdbId,
   popularity = popularity,
   insertedAt = insertedAt,

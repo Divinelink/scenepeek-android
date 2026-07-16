@@ -173,23 +173,31 @@ class AwardCategoryViewModel(
 
   private fun updatePersonItem(
     item: LoadingUiItem<AwardNominee>,
-    result: Result<PersonDetails>,
+    result: Resource<PersonDetails?>,
   ) {
     _uiState.update { uiState ->
       val newAwards = uiState.awards.mapValues { (_, itemList) ->
         itemList.map { uiItem ->
           if (uiItem.item.media.mediaId == item.item.media.mediaId) {
-            result.fold(
-              onSuccess = { details ->
-                uiItem.copy(
-                  mediaState = ItemState.Data(
-                    item = details.person,
+            when (result) {
+              is Resource.Error -> uiItem.copy(mediaState = null)
+              is Resource.Loading -> uiItem.copy(
+                mediaState = result.data?.let { data ->
+                  ItemState.Data(
+                    item = data.person,
                     loading = false,
-                  ),
-                )
-              },
-              onFailure = { uiItem.copy(mediaState = null) },
-            )
+                  )
+                } ?: ItemState.Loading,
+              )
+              is Resource.Success -> uiItem.copy(
+                mediaState = result.data?.let { data ->
+                  ItemState.Data(
+                    item = data.person,
+                    loading = false,
+                  )
+                },
+              )
+            }
           } else {
             uiItem
           }

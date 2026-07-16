@@ -7,6 +7,7 @@ import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +16,7 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
 
   private val fetchPersonDetailsUseCase = TestFetchPersonDetailsUseCase()
   private val fetchChangesUseCase = TestFetchChangesUseCase()
+  private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
   private lateinit var viewModel: PersonViewModel
   private lateinit var navArgs: PersonRoute
@@ -27,6 +29,7 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
       route = navArgs,
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
       fetchChangesUseCase = fetchChangesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
     )
   }
 

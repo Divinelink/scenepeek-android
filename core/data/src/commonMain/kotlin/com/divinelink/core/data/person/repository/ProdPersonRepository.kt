@@ -21,9 +21,8 @@ import com.divinelink.core.network.details.person.service.PersonService
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
 
@@ -35,18 +34,23 @@ class ProdPersonRepository(
   val dispatcher: DispatcherProvider,
 ) : PersonRepository {
 
-  override fun fetchPersonDetails(id: Long): Flow<Result<PersonDetails>> = channelFlow {
-    dao.fetchPersonById(id).collect { personDetails ->
-      if (personDetails != null) {
-        send(Result.success(personDetails.map()))
-        return@collect
-      } else {
-        service.fetchPersonDetails(id).collectLatest { response ->
-          dao.insertPerson(response.mapToEntity(clock.currentEpochSeconds()))
-        }
+  override fun fetchPersonDetails(id: Long): Flow<Resource<PersonDetails?>> = networkBoundResource(
+    query = {
+      combine(
+        dao.fetchPersonById(id),
+        mediaDao.getFavoriteMediaIds(MediaType.PERSON),
+      ) { person, savedIds ->
+        person?.map(saved = savedIds.contains(person.id))
       }
-    }
-  }
+    },
+    fetch = { service.fetchPersonDetails(id) },
+    saveFetchResult = { response ->
+      dao.insertPerson(response.first().mapToEntity(clock.currentEpochSeconds()))
+    },
+    shouldFetch = { data ->
+      data == null
+    },
+  )
 
   override fun fetchPersonCredits(id: Long): Flow<Resource<PersonCombinedCredits?>> =
     networkBoundResource(
