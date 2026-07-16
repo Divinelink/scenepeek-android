@@ -69,7 +69,7 @@ sealed class MediaItem {
   data class Person(
     override val id: Long,
     override val name: String,
-    override val saved: Boolean?,
+    override val saved: Boolean? = null,
     val profilePath: String?,
     val gender: Gender,
     val knownForDepartment: String?,

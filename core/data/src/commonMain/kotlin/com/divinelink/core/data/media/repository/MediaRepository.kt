@@ -20,8 +20,6 @@ import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import kotlinx.coroutines.flow.Flow
 
-typealias MediaListResult = Result<List<MediaItem.Media>>
-
 /**
  * The data layer for any requests related to movies, tv and people.
  */
@@ -53,7 +51,7 @@ interface MediaRepository {
   /**
    * Fetch all popular movies that the user has marked as favorite.
    */
-  fun fetchFavorites(): Flow<MediaListResult>
+  fun fetchFavorites(): Flow<List<MediaItem>>
 
   fun fetchFavorites(mediaType: MediaType): Flow<Result<PaginationData<MediaItem>>>
 
@@ -83,7 +81,7 @@ interface MediaRepository {
   /**
    * Add favorite [media] to local storage.
    */
-  suspend fun insertFavoriteMedia(media: MediaItem.Media)
+  suspend fun insertFavoriteMedia(media: MediaItem)
 
   /**
    * Remove favorite movie using its [id] from local storage.

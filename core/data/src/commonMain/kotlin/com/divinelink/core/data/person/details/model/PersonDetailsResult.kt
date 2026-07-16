@@ -6,7 +6,7 @@ import com.divinelink.core.model.person.credits.PersonCredit
 
 sealed interface PersonDetailsResult {
 
-  data class DetailsSuccess(val personDetails: PersonDetails) : PersonDetailsResult
+  data class DetailsSuccess(val personDetails: PersonDetails?) : PersonDetailsResult
 
   data class CreditsSuccess(
     val knownForCredits: List<PersonCredit>,

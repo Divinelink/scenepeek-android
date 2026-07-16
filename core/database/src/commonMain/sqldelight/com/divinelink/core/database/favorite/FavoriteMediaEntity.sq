@@ -26,6 +26,14 @@ INNER JOIN MediaItemEntity mi ON (f.mediaId = mi.id AND f.mediaType = mi.mediaTy
 WHERE f.mediaType = ?
 ORDER BY f.favoritedAt DESC;
 
+getFavoritePeople:
+SELECT
+    f.favoritedAt,
+    p.*
+FROM FavoriteMediaEntity f
+INNER JOIN PersonDetailsEntity p ON (f.mediaId = p.id)
+ORDER BY f.favoritedAt DESC;
+
 getFavoriteMediaIds:
 SELECT mediaId, mediaType
 FROM FavoriteMediaEntity

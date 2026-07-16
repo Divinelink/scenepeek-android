@@ -1,7 +1,6 @@
 package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.data.media.repository.MediaListResult
-import com.divinelink.core.domain.GetFavoriteMoviesUseCase
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever

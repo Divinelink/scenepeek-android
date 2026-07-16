@@ -27,4 +27,5 @@ data class PersonUiState(
   val knownForCredits: List<PersonCredit>? = null,
 ) {
   val aboutForm = forms.getOrElse(PersonTab.About.order) { null } as? PersonForm.About
+  val personDetails = (aboutForm?.personDetails as? PersonDetailsUiState.Data)?.personDetails
 }

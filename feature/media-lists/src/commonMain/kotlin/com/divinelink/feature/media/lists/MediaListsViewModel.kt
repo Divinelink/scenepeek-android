@@ -154,13 +154,13 @@ class MediaListsViewModel(
           is MediaListsForm.Error,
           MediaListsForm.Initial,
             -> when (error) {
-              is AppException.Offline -> uiState.copy(
-                forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Offline),
-              )
-              else -> uiState.copy(
-                forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Generic),
-              )
-            }
+            is AppException.Offline -> uiState.copy(
+              forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Offline),
+            )
+            else -> uiState.copy(
+              forms = uiState.forms.plus(mediaType to MediaListsForm.Error.Generic),
+            )
+          }
           null -> uiState
         }
       }

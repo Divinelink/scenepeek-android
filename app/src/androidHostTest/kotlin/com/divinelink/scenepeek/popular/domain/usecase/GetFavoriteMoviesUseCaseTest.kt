@@ -1,6 +1,5 @@
 package com.divinelink.scenepeek.popular.domain.usecase
 
-import com.divinelink.core.domain.GetFavoriteMoviesUseCase
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.testing.MainDispatcherRule

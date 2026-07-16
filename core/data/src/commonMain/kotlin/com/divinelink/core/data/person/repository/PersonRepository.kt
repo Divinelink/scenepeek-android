@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PersonRepository {
 
-  fun fetchPersonDetails(id: Long): Flow<Result<PersonDetails>>
+  fun fetchPersonDetails(id: Long): Flow<Resource<PersonDetails?>>
 
   fun fetchPersonCredits(id: Long): Flow<Resource<PersonCombinedCredits?>>
 

@@ -59,6 +59,7 @@ import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.model.ImageQuality
+import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
@@ -160,7 +161,7 @@ fun SharedTransitionScope.PersonContent(
   var currentMovieDepartment by rememberSaveable { mutableStateOf("") }
   var currentTvDepartment by rememberSaveable { mutableStateOf("") }
 
-  val personDetails = remember(uiState.aboutForm) {
+  val personDetails = remember(uiState.personDetails) {
     uiState.aboutForm?.personDetails
   }
 
@@ -227,7 +228,7 @@ fun SharedTransitionScope.PersonContent(
               )
             }
             .fillMaxWidth(),
-          personDetails = personDetails as PersonDetailsUiState.Data,
+          personDetails = uiState.personDetails,
           onNavigate = onNavigate,
           visibilityScope = visibilityScope,
         )
@@ -389,10 +390,12 @@ fun SharedTransitionScope.PersonContent(
 @Composable
 private fun SharedTransitionScope.CollapsiblePersonContent(
   modifier: Modifier = Modifier,
-  personDetails: PersonDetailsUiState.Data,
+  personDetails: PersonDetails?,
   onNavigate: (Navigation) -> Unit,
   visibilityScope: AnimatedVisibilityScope,
 ) {
+  if (personDetails == null) return
+
   Column(
     modifier = modifier
       .verticalScroll(state = rememberScrollState())
@@ -405,7 +408,7 @@ private fun SharedTransitionScope.CollapsiblePersonContent(
         .testTag(TestTags.Person.PERSON_NAME)
         .padding(horizontal = MaterialTheme.dimensions.keyline_16),
       style = MaterialTheme.typography.displaySmall,
-      text = personDetails.personDetails.person.name,
+      text = personDetails.person.name,
       textAlign = TextAlign.Center,
     )
     Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
@@ -414,14 +417,14 @@ private fun SharedTransitionScope.CollapsiblePersonContent(
       modifier = Modifier
         .sharedElement(
           sharedContentState = rememberSharedContentState(
-            SharedElementKeys.MediaPoster(personDetails.personDetails.person.profilePath ?: ""),
+            SharedElementKeys.MediaPoster(personDetails.person.profilePath ?: ""),
           ),
           animatedVisibilityScope = visibilityScope,
         )
         .height(MaterialTheme.dimensions.posterSize)
         .aspectRatio(2f / 3f),
-      path = personDetails.personDetails.person.profilePath,
-      errorPlaceHolder = if (personDetails.personDetails.person.gender == Gender.FEMALE) {
+      path = personDetails.person.profilePath,
+      errorPlaceHolder = if (personDetails.person.gender == Gender.FEMALE) {
         painterResource(UiDrawable.core_ui_ic_female_person_placeholder)
       } else {
         painterResource(UiDrawable.core_ui_ic_person_placeholder)

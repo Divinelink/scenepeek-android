@@ -171,23 +171,39 @@ class ProdMediaRepository(
     )
   }
 
-  override fun fetchFavorites(): Flow<MediaListResult> = dao
+  override fun fetchFavorites(): Flow<List<MediaItem>> = dao
     .fetchAllFavorites()
     .map { favorites ->
-      Result.success(favorites)
+      favorites
     }
 
-  override fun fetchFavorites(mediaType: MediaType): Flow<Result<PaginationData<MediaItem>>> = dao
-    .fetchFavorites(mediaType)
-    .map { favorites ->
-      Result.success(
-        PaginationData(
-          page = 1,
-          totalPages = 1,
-          totalResults = favorites.size,
-          list = favorites,
-        ),
-      )
+  override fun fetchFavorites(mediaType: MediaType): Flow<Result<PaginationData<MediaItem>>> =
+    if (mediaType == MediaType.PERSON) {
+      dao
+        .fetchFavoritePeople()
+        .map { favorites ->
+          Result.success(
+            PaginationData(
+              page = 1,
+              totalPages = 1,
+              totalResults = favorites.size,
+              list = favorites,
+            ),
+          )
+        }
+    } else {
+      dao
+        .fetchFavorites(mediaType)
+        .map { favorites ->
+          Result.success(
+            PaginationData(
+              page = 1,
+              totalPages = 1,
+              totalResults = favorites.size,
+              list = favorites,
+            ),
+          )
+        }
     }
 
   override fun fetchSearchMovies(
@@ -250,8 +266,12 @@ class ProdMediaRepository(
       Result.success(data.copy(searchList = updatedMedia))
     }
 
-  override suspend fun insertFavoriteMedia(media: MediaItem.Media) {
-    dao.insertMedia(media, null)
+  override suspend fun insertFavoriteMedia(media: MediaItem) {
+    when (media) {
+      is MediaItem.Media -> dao.insertMedia(media, null)
+      is MediaItem.Person -> Unit
+      is MediaItem.Unknown -> Unit
+    }
     dao.addToFavorites(mediaId = media.id, mediaType = media.mediaType)
   }
 

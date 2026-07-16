@@ -19,8 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.UIText
@@ -30,6 +32,7 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.menu.DropdownMenuButton
@@ -73,6 +76,13 @@ fun PersonScreen(
             scrolledContainerColor = Color.Transparent,
           ),
           actions = {
+            FavoriteButton(
+              modifier = Modifier.clip(MaterialTheme.shape.rounded),
+              isFavorite = (personDetails as? PersonDetailsUiState.Data)
+                ?.personDetails?.person?.saved ?: false,
+              onClick = viewModel::onSave
+            )
+
             DropdownMenuButton(
               color = MaterialTheme.colorScheme.onSurface,
               screenType = ScreenType.Person(
