@@ -71,8 +71,8 @@ class ProdListRepository(
         details?.copy(
           media = details.media.map { item ->
             when (item) {
-              is MediaItem.Media.Movie -> item.copy(isFavorite = item.id in movieIds)
-              is MediaItem.Media.TV -> item.copy(isFavorite = item.id in tvIds)
+              is MediaItem.Media.Movie -> item.copy(saved = item.id in movieIds)
+              is MediaItem.Media.TV -> item.copy(saved = item.id in tvIds)
             }
           },
         )

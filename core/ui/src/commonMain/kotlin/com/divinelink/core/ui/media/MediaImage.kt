@@ -38,7 +38,7 @@ fun MediaImage(
       path = media.posterPath,
     )
 
-    if (media.isFavorite == true) {
+    if (media.saved == true) {
       Surface(
         modifier = Modifier
           .offset(

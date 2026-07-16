@@ -20,7 +20,7 @@ object MediaItemFactory {
       "primal male aggression into a shocking new form of therapy." +
       " Their concept catches on, with underground \"fight clubs\" forming in every town, " +
       "until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
-    isFavorite = false,
+    saved = false,
   )
 
   fun theOffice(): MediaItem.Media.TV = MediaItem.Media.TV(
@@ -34,7 +34,7 @@ object MediaItemFactory {
     popularity = 530.095,
     voteAverage = 8.6,
     voteCount = 4503,
-    isFavorite = false,
+    saved = false,
   )
 
   fun theWire() = MediaItem.Media.TV(
@@ -51,7 +51,7 @@ object MediaItemFactory {
     voteAverage = 8.6,
     voteCount = 2358,
     popularity = 72.3288,
-    isFavorite = false,
+    saved = false,
   )
 
   fun getSmart() = MediaItem.Media.Movie(
@@ -70,7 +70,7 @@ object MediaItemFactory {
     voteAverage = 6.191,
     voteCount = 3484,
     name = "Get Smart",
-    isFavorite = false,
+    saved = false,
   )
 
   fun tvAll() = listOf(
@@ -103,7 +103,7 @@ object MediaItemFactory {
     releaseDate = "2005-08-11",
     voteAverage = 6.402,
     voteCount = 6545,
-    isFavorite = false,
+    saved = false,
   )
 
   fun theIncredibleBurtWonderstone() = MediaItem.Media.Movie(
@@ -118,7 +118,7 @@ object MediaItemFactory {
     name = "The Incredible Burt Wonderstone",
     voteAverage = 5.675,
     voteCount = 1389,
-    isFavorite = false,
+    saved = false,
   )
 
   fun littleMissSunshine() = MediaItem.Media.Movie(
@@ -133,7 +133,7 @@ object MediaItemFactory {
     name = "Little Miss Sunshine",
     voteAverage = 7.689,
     voteCount = 6948,
-    isFavorite = false,
+    saved = false,
   )
 
   fun despicableMe() = MediaItem.Media.Movie(
@@ -149,7 +149,7 @@ object MediaItemFactory {
     name = "Despicable Me",
     voteAverage = 7.244,
     voteCount = 14804,
-    isFavorite = false,
+    saved = false,
   )
 
   fun riot() = MediaItem.Media.TV(
@@ -169,7 +169,7 @@ object MediaItemFactory {
     name = "Riot",
     voteAverage = 1.0,
     voteCount = 1,
-    isFavorite = false,
+    saved = false,
   )
 
   fun bruceAlmighty() = MediaItem.Media.Movie(
@@ -188,7 +188,7 @@ object MediaItemFactory {
     voteAverage = 6.713,
     voteCount = 10485,
     name = "Bruce Almighty",
-    isFavorite = false,
+    saved = false,
   )
 
   fun all() = listOf(
@@ -228,7 +228,7 @@ object MediaItemFactory {
       voteAverage = (it.toDouble() + 0.5) % 10,
       voteCount = 12_345 + it,
       overview = loremIpsum(15),
-      isFavorite = false,
+      saved = false,
       popularity = (it * 525.25),
     )
   }
@@ -243,7 +243,7 @@ object MediaItemFactory {
       voteAverage = it.toDouble(),
       voteCount = 12_345 + it,
       overview = "overview $it",
-      isFavorite = false,
+      saved = false,
       popularity = (it * 525.50),
     )
   }
@@ -311,7 +311,7 @@ object MediaItemFactory {
     }
 
     fun withFavorite(isFavorite: Boolean?) = apply {
-      mediaItem = mediaItem.copy(isFavorite = isFavorite)
+      mediaItem = mediaItem.copy(saved = isFavorite)
     }
 
     fun build(): MediaItem.Media.Movie = mediaItem
@@ -348,7 +348,7 @@ object MediaItemFactory {
     }
 
     fun withFavorite(isFavorite: Boolean) = apply {
-      mediaItem = mediaItem.copy(isFavorite = isFavorite)
+      mediaItem = mediaItem.copy(saved = isFavorite)
     }
 
     fun build(): MediaItem.Media.TV = mediaItem

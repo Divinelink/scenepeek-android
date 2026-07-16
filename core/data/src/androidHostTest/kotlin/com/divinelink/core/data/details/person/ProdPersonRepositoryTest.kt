@@ -145,7 +145,7 @@ class ProdPersonRepositoryTest {
             despicableMe(),
             littleMissSunshine(),
             theOffice().copy(
-              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+              media = MediaItemFactory.theOffice().copy(saved = true),
             ),
             bruceAlmighty(),
           ),
@@ -158,7 +158,7 @@ class ProdPersonRepositoryTest {
             despicableMe(),
             littleMissSunshine(),
             theOffice().copy(
-              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+              media = MediaItemFactory.theOffice().copy(saved = true),
             ),
             bruceAlmighty(),
           ),
@@ -174,11 +174,11 @@ class ProdPersonRepositoryTest {
         PersonCombinedCreditsFactory.sortedByDate().copy(
           cast = listOf(
             despicableMe().copy(
-              media = MediaItemFactory.despicableMe().copy(isFavorite = false),
+              media = MediaItemFactory.despicableMe().copy(saved = false),
             ),
             littleMissSunshine(),
             theOffice().copy(
-              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+              media = MediaItemFactory.theOffice().copy(saved = true),
             ),
             bruceAlmighty(),
           ),
@@ -189,11 +189,11 @@ class ProdPersonRepositoryTest {
         PersonCombinedCreditsFactory.sortedByDate().copy(
           cast = listOf(
             despicableMe().copy(
-              media = MediaItemFactory.despicableMe().copy(isFavorite = true),
+              media = MediaItemFactory.despicableMe().copy(saved = true),
             ),
             littleMissSunshine(),
             theOffice().copy(
-              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+              media = MediaItemFactory.theOffice().copy(saved = true),
             ),
             bruceAlmighty(),
           ),

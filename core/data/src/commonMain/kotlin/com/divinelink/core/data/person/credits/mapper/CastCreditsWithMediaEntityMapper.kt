@@ -22,7 +22,7 @@ fun CastCreditsWithMedia.map(
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = isTvFavorite,
+      saved = isTvFavorite,
     ),
     role = PersonRole.SeriesActor(
       character = character,
@@ -42,7 +42,7 @@ fun CastCreditsWithMedia.map(
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = isMovieFavorite,
+      saved = isMovieFavorite,
     ),
     role = PersonRole.MovieActor(
       character = character,

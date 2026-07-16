@@ -198,7 +198,7 @@ class ProdMediaDaoTest {
 
     dao.fetchFavorites(mediaType = MediaType.MOVIE).test {
       awaitItem() shouldBe MediaItemFactory.movies().map {
-        it.copy(isFavorite = true)
+        it.copy(saved = true)
       }
     }
   }
@@ -218,16 +218,16 @@ class ProdMediaDaoTest {
       }
 
       awaitItem() shouldBe listOf(
-        MediaItemFactory.theWire().copy(isFavorite = true),
+        MediaItemFactory.theWire().copy(saved = true),
       )
       awaitItem() shouldBe listOf(
-        MediaItemFactory.theWire().copy(isFavorite = true),
-        MediaItemFactory.theOffice().copy(isFavorite = true),
+        MediaItemFactory.theWire().copy(saved = true),
+        MediaItemFactory.theOffice().copy(saved = true),
       )
       awaitItem() shouldBe listOf(
-        MediaItemFactory.theWire().copy(isFavorite = true),
-        MediaItemFactory.theOffice().copy(isFavorite = true),
-        MediaItemFactory.riot().copy(isFavorite = true),
+        MediaItemFactory.theWire().copy(saved = true),
+        MediaItemFactory.theOffice().copy(saved = true),
+        MediaItemFactory.riot().copy(saved = true),
       )
     }
   }

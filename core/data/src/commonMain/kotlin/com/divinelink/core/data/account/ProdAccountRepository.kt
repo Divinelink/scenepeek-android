@@ -36,7 +36,7 @@ class ProdAccountRepository(
 
     val updatedMovies = data.list.map { media ->
       (media as MediaItem.Media.Movie).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 
@@ -62,7 +62,7 @@ class ProdAccountRepository(
 
     val updatedTvShows = data.list.map { media ->
       (media as MediaItem.Media.TV).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 
@@ -88,7 +88,7 @@ class ProdAccountRepository(
 
     val updatedMovies = data.list.map { media ->
       (media as MediaItem.Media.Movie).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 
@@ -114,7 +114,7 @@ class ProdAccountRepository(
 
     val updatedTvShows = data.list.map { media ->
       (media as MediaItem.Media.TV).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 
@@ -140,7 +140,7 @@ class ProdAccountRepository(
 
     val updatedMovies = data.list.map { media ->
       (media as MediaItem.Media.Movie).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 
@@ -166,7 +166,7 @@ class ProdAccountRepository(
 
     val updatedTvShows = data.list.map { media ->
       (media as MediaItem.Media.TV).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 

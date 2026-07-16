@@ -21,7 +21,7 @@ fun CrewCreditsWithMedia.map(
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = isTvFavorite,
+      saved = isTvFavorite,
     ),
     creditId = creditId,
     role = PersonRole.Crew(
@@ -42,7 +42,7 @@ fun CrewCreditsWithMedia.map(
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = isMovieFavorite,
+      saved = isMovieFavorite,
     ),
     creditId = creditId,
     role = PersonRole.Crew(

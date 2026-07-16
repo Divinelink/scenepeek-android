@@ -15,7 +15,7 @@ fun MediaItemEntity.map() = when (MediaType.from(mediaType)) {
     voteCount = voteCount.toInt(),
     overview = overview,
     popularity = popularity,
-    isFavorite = false,
+    saved = false,
     accountRating = null,
   )
   MediaType.MOVIE -> MediaItem.Media.Movie(
@@ -28,7 +28,7 @@ fun MediaItemEntity.map() = when (MediaType.from(mediaType)) {
     voteCount = voteCount.toInt(),
     overview = overview,
     popularity = popularity,
-    isFavorite = false,
+    saved = false,
     accountRating = null,
   )
   else -> null

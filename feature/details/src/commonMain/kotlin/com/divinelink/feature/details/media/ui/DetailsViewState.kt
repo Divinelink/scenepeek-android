@@ -84,7 +84,7 @@ data class DetailsViewState(
       voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount ?: 0,
       overview = mediaDetails.overview ?: "",
       popularity = mediaDetails.popularity,
-      isFavorite = mediaDetails.isFavorite,
+      saved = mediaDetails.isFavorite,
     )
     is TV -> MediaItem.Media.TV(
       id = mediaDetails.id,
@@ -96,7 +96,7 @@ data class DetailsViewState(
       voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount ?: 0,
       overview = mediaDetails.overview ?: "",
       popularity = mediaDetails.popularity,
-      isFavorite = mediaDetails.isFavorite,
+      saved = mediaDetails.isFavorite,
     )
     null -> null
   }

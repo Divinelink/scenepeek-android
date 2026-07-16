@@ -103,10 +103,10 @@ class ProdDetailsRepository(
         ) { mediaItem, favoriteIds ->
           when (mediaItem) {
             is MediaItem.Media.Movie -> mediaItem.copy(
-              isFavorite = favoriteIds.contains(mediaItem.id),
+              saved = favoriteIds.contains(mediaItem.id),
             )
             is MediaItem.Media.TV -> mediaItem.copy(
-              isFavorite = favoriteIds.contains(mediaItem.id),
+              saved = favoriteIds.contains(mediaItem.id),
             )
 
             null -> null
@@ -156,7 +156,7 @@ class ProdDetailsRepository(
 
     val updatedMovies = mapped.list.map { media ->
       (media as MediaItem.Media.Movie).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 
@@ -174,7 +174,7 @@ class ProdDetailsRepository(
 
     val updatedTv = mapped.list.map { media ->
       (media as MediaItem.Media.TV).copy(
-        isFavorite = media.id in favoriteSet,
+        saved = media.id in favoriteSet,
       )
     }
 
@@ -276,7 +276,7 @@ class ProdDetailsRepository(
     val favoriteSet = favoriteIds.toSet()
 
     val updatedList = mapped.movies.map { movie ->
-      movie.copy(isFavorite = movie.id in favoriteSet)
+      movie.copy(saved = movie.id in favoriteSet)
     }
 
     Result.success(mapped.copy(movies = updatedList))

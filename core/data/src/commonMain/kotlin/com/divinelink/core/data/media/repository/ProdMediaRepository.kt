@@ -56,10 +56,10 @@ class ProdMediaRepository(
     val updatedMedia = data.searchList.map { media ->
       when (media.mediaType) {
         MediaType.TV -> (media as MediaItem.Media.TV).copy(
-          isFavorite = media.id in tvShowIdsSet,
+          saved = media.id in tvShowIdsSet,
         )
         MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-          isFavorite = media.id in moviesIdsSet,
+          saved = media.id in moviesIdsSet,
         )
         else -> media
       }
@@ -103,10 +103,10 @@ class ProdMediaRepository(
         val updatedMedia = paginationData.list.map { media ->
           when (media.mediaType) {
             MediaType.TV -> (media as MediaItem.Media.TV).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             else -> media
           }
@@ -131,7 +131,7 @@ class ProdMediaRepository(
     val favoriteSet = favoriteIds.toSet()
 
     val updatedMovies = data.list.map { media ->
-      (media as MediaItem.Media.Movie).copy(isFavorite = media.id in favoriteSet)
+      (media as MediaItem.Media.Movie).copy(saved = media.id in favoriteSet)
     }
 
     Result.success(
@@ -157,7 +157,7 @@ class ProdMediaRepository(
     val favoriteSet = favoriteIds.toSet()
 
     val updatedTv = data.list.map { media ->
-      (media as MediaItem.Media.TV).copy(isFavorite = media.id in favoriteSet)
+      (media as MediaItem.Media.TV).copy(saved = media.id in favoriteSet)
     }
 
     Result.success(
@@ -209,10 +209,10 @@ class ProdMediaRepository(
         val updatedMedia = baseResult.searchList.map { media ->
           when (media.mediaType) {
             MediaType.TV -> (media as MediaItem.Media.TV).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-              isFavorite = media.id in favoriteIdsSet,
+              saved = media.id in favoriteIdsSet,
             )
             else -> media
           }
@@ -238,10 +238,10 @@ class ProdMediaRepository(
       val updatedMedia = data.searchList.map { media ->
         when (media.mediaType) {
           MediaType.TV -> (media as MediaItem.Media.TV).copy(
-            isFavorite = media.id in tvShowIdsSet,
+            saved = media.id in tvShowIdsSet,
           )
           MediaType.MOVIE -> (media as MediaItem.Media.Movie).copy(
-            isFavorite = media.id in moviesIdsSet,
+            saved = media.id in moviesIdsSet,
           )
           else -> media
         }

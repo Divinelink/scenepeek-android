@@ -154,7 +154,7 @@ fun RequestsScrollableContent(
                   Navigation.DetailsRoute(
                     mediaType = it.mediaType.value,
                     id = it.id,
-                    isFavorite = it.isFavorite,
+                    isFavorite = it.saved,
                   ),
                 )
               },

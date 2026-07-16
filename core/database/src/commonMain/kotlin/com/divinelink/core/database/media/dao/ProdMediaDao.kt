@@ -82,7 +82,7 @@ class ProdMediaDao(
             voteCount = favorite.voteCount.toInt(),
             overview = favorite.overview,
             popularity = favorite.popularity,
-            isFavorite = true,
+            saved = true,
           )
         } else if (MediaType.from(favorite.mediaType) == MediaType.TV) {
           MediaItem.Media.TV(
@@ -95,7 +95,7 @@ class ProdMediaDao(
             voteCount = favorite.voteCount.toInt(),
             overview = favorite.overview,
             popularity = favorite.popularity,
-            isFavorite = true,
+            saved = true,
           )
         } else {
           null
@@ -122,7 +122,7 @@ class ProdMediaDao(
             voteCount = favorite.voteCount.toInt(),
             overview = favorite.overview,
             popularity = favorite.popularity,
-            isFavorite = true,
+            saved = true,
           )
         } else if (MediaType.from(favorite.mediaType) == MediaType.TV) {
           MediaItem.Media.TV(
@@ -135,7 +135,7 @@ class ProdMediaDao(
             voteCount = favorite.voteCount.toInt(),
             overview = favorite.overview,
             popularity = favorite.popularity,
-            isFavorite = true,
+            saved = true,
           )
         } else {
           null

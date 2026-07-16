@@ -51,5 +51,5 @@ private fun TvItemApi.toTv() = MediaItem.Media.TV(
   overview = this.overview,
   popularity = popularity,
   accountRating = rating?.toInt(),
-  isFavorite = false,
+  saved = false,
 )

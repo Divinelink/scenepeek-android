@@ -69,8 +69,8 @@ class ActionMenuViewModel(
         .onSuccess { isFavorite ->
           _uiState.update { uiState ->
             when (val media = uiState.media) {
-              is MediaItem.Media.Movie -> uiState.copy(media = media.copy(isFavorite = isFavorite))
-              is MediaItem.Media.TV -> uiState.copy(media = media.copy(isFavorite = isFavorite))
+              is MediaItem.Media.Movie -> uiState.copy(media = media.copy(saved = isFavorite))
+              is MediaItem.Media.TV -> uiState.copy(media = media.copy(saved = isFavorite))
               else -> uiState
             }
           }

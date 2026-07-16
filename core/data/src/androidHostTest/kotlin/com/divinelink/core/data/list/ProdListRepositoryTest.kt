@@ -697,7 +697,7 @@ class ProdListRepositoryTest {
           ListDetailsFactory.mustWatch().copy(
             media = listOf(
               MediaItemFactory.theWire(),
-              MediaItemFactory.FightClub().copy(isFavorite = true),
+              MediaItemFactory.FightClub().copy(saved = true),
               MediaItemFactory.theOffice(),
             ),
           ),
@@ -712,8 +712,8 @@ class ProdListRepositoryTest {
           ListDetailsFactory.mustWatch().copy(
             media = listOf(
               MediaItemFactory.theWire(),
-              MediaItemFactory.FightClub().copy(isFavorite = true),
-              MediaItemFactory.theOffice().copy(isFavorite = true),
+              MediaItemFactory.FightClub().copy(saved = true),
+              MediaItemFactory.theOffice().copy(saved = true),
             ),
           ),
         ),
