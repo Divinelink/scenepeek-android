@@ -16,10 +16,10 @@ sealed class HomeFilter(
   isSelected = isSelected,
 ) {
 
-  data class Collection(
+  data class MySaves(
     override val isSelected: Boolean,
   ) : HomeFilter(
-    value = "collection",
+    value = "my_saves",
     name = UIText.ResourceText(Res.string.collection),
     isSelected = isSelected,
   )
@@ -41,7 +41,7 @@ sealed class HomeFilter(
   companion object {
     val entries
       get() = listOf(
-        Collection(isSelected = false),
+        MySaves(isSelected = false),
         Awards,
         TopRated(isSelected = false),
       )

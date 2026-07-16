@@ -4,6 +4,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.empty_string
 import com.divinelink.core.model.resources.movie_tab
+import com.divinelink.core.model.resources.people_tab
 import com.divinelink.core.model.resources.tv_show_tab
 import org.jetbrains.compose.resources.StringResource
 
@@ -27,6 +28,13 @@ sealed class MediaListTab(
     titleRes = Res.string.tv_show_tab,
   )
 
+  data object People : MediaListTab(
+    mediaType = MediaType.PERSON,
+    order = 2,
+    value = MediaType.PERSON.value,
+    titleRes = Res.string.people_tab,
+  )
+
   data object None : MediaListTab(
     mediaType = MediaType.UNKNOWN,
     order = 0,
@@ -39,6 +47,13 @@ sealed class MediaListTab(
       get() = listOf(
         Movie,
         TV,
+      )
+
+    val all
+      get() = listOf(
+        Movie,
+        TV,
+        People,
       )
 
     fun from(mediaType: MediaType?): List<MediaListTab> = when (mediaType) {

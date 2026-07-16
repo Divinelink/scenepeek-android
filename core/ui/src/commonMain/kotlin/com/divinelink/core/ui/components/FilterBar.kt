@@ -93,7 +93,7 @@ private fun FilterBarPreview() {
   AppTheme {
     FilterBar(
       filters = listOf(
-        HomeFilter.Collection(false),
+        HomeFilter.MySaves(false),
         HomeFilter.TopRated(true),
       ),
       onFilterClick = { },
@@ -107,7 +107,7 @@ private fun FilterBarPreview() {
 private fun FilterBarUnselectedPreview() {
   AppTheme {
     val filters = mutableListOf(
-      HomeFilter.Collection(false),
+      HomeFilter.MySaves(false),
       HomeFilter.TopRated(false),
     )
     FilterBar(

@@ -60,6 +60,7 @@ data class MediaListsUiState(
         MediaListSection.Collection -> mapOf(
           MediaType.MOVIE to MediaListsForm.Initial,
           MediaType.TV to MediaListsForm.Initial,
+          MediaType.PERSON to MediaListsForm.Initial,
         )
         is MediaListSection.Popular -> mapOf(
           section.mediaType to MediaListsForm.Initial,
@@ -76,7 +77,7 @@ data class MediaListsUiState(
         )
       },
       tabs = when (section) {
-        MediaListSection.Collection -> MediaListTab.entries
+        MediaListSection.Collection -> MediaListTab.all
         is MediaListSection.TopRated -> MediaListTab.entries
         is MediaListSection.Popular -> MediaListTab.from(section.mediaType)
         is MediaListSection.Upcoming -> MediaListTab.from(section.mediaType)
