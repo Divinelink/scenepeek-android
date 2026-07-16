@@ -5,9 +5,9 @@ import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.Res
-import com.divinelink.core.model.resources.collection
 import com.divinelink.core.model.resources.popular_movies
 import com.divinelink.core.model.resources.popular_series
+import com.divinelink.core.model.resources.saved
 import com.divinelink.core.model.resources.top_rated
 import com.divinelink.core.model.resources.trending
 import com.divinelink.core.model.resources.upcoming_movies
@@ -52,12 +52,12 @@ data class MediaListsUiState(
         } else {
           UIText.ResourceText(Res.string.upcoming_series)
         }
-        MediaListSection.Collection -> UIText.ResourceText(Res.string.collection)
+        MediaListSection.Saved -> UIText.ResourceText(Res.string.saved)
         is MediaListSection.TopRated -> UIText.ResourceText(Res.string.top_rated)
       },
       pages = emptyMap(),
       forms = when (section) {
-        MediaListSection.Collection -> mapOf(
+        MediaListSection.Saved -> mapOf(
           MediaType.MOVIE to MediaListsForm.Initial,
           MediaType.TV to MediaListsForm.Initial,
           MediaType.PERSON to MediaListsForm.Initial,
@@ -77,7 +77,7 @@ data class MediaListsUiState(
         )
       },
       tabs = when (section) {
-        MediaListSection.Collection -> MediaListTab.all
+        MediaListSection.Saved -> MediaListTab.all
         is MediaListSection.TopRated -> MediaListTab.entries
         is MediaListSection.Popular -> MediaListTab.from(section.mediaType)
         is MediaListSection.Upcoming -> MediaListTab.from(section.mediaType)

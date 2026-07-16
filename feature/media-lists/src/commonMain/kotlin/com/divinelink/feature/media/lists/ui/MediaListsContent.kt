@@ -87,7 +87,7 @@ fun MediaListsContent(
           MediaListsForm.Initial -> LoadingContent()
 
           is MediaListsForm.Data -> if (form.media.isEmpty()) {
-            val state = if (uiState.section is MediaListSection.Collection) {
+            val state = if (uiState.section is MediaListSection.Saved) {
               BlankSlateState.Custom(
                 icon = UiDrawable.no_results,
                 title = UIText.ResourceText(Res.string.empty_collection_list_title),
