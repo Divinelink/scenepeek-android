@@ -64,7 +64,7 @@ class ProdMediaRepositoryTest {
     mediaDao.mockFetchFavorites(favoriteMovies)
 
     repository.fetchFavorites().test {
-      awaitItem() shouldBe Result.success(MediaItemFactory.all())
+      awaitItem() shouldBe MediaItemFactory.all()
       awaitComplete()
     }
   }

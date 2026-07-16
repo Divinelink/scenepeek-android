@@ -11,4 +11,5 @@ fun Navigation.PersonRoute.map() = MediaItem.Person(
   profilePath = profilePath,
   gender = Gender.from(gender),
   role = listOf(PersonRole.Unknown),
+  saved = saved,
 )

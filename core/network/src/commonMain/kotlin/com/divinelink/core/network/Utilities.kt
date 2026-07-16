@@ -119,3 +119,10 @@ internal suspend inline fun <T : Any> runCatchingWithNetworkRetry(
     Exception("Request failed after $times attempts."),
   )
 }
+
+val <T> Resource<T>.getOrNull: T?
+  get() = when (this) {
+    is Resource.Error -> data
+    is Resource.Loading -> data
+    is Resource.Success -> data
+  }

@@ -6,9 +6,7 @@ import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
-fun PersonDetailsEntity.map(
-  saved: Boolean,
-) = PersonDetails(
+fun PersonDetailsEntity.map(saved: Boolean) = PersonDetails(
   person = MediaItem.Person(
     id = id,
     name = name,

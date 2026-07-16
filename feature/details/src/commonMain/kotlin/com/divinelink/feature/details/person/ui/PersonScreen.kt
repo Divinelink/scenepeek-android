@@ -80,7 +80,7 @@ fun PersonScreen(
               modifier = Modifier.clip(MaterialTheme.shape.rounded),
               isFavorite = (personDetails as? PersonDetailsUiState.Data)
                 ?.personDetails?.person?.saved ?: false,
-              onClick = viewModel::onSave
+              onClick = viewModel::onSave,
             )
 
             DropdownMenuButton(

@@ -169,6 +169,7 @@ class MainViewModel(
         name = deeplink.name,
         profilePath = deeplink.profilePath,
         gender = deeplink.gender ?: Gender.NOT_SET.value,
+        saved = false,
       )
       is DeeplinkPath.Season -> Navigation.SeasonRoute(
         showId = deeplink.showId,

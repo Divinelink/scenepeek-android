@@ -51,7 +51,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchPersonDetails with success person details response`() = runTest {
-    repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
+    repository.mockFetchPersonDetails(Resource.Success(PersonDetailsFactory.steveCarell()))
 
     useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
@@ -63,7 +63,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchPersonDetails with failure person details response`() = runTest {
-    repository.mockFetchPersonDetails(Result.failure(Exception("Something went wrong")))
+    repository.mockFetchPersonDetails(Resource.Error(Exception("Something went wrong")))
 
     useCase.invoke(params).test {
       val expectedFailure = awaitItem()
@@ -75,7 +75,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test async fetchPersonDetails with failure person details response`() = runTest {
-    repository.mockFetchPersonDetails(Result.failure(Exception("Something went wrong")))
+    repository.mockFetchPersonDetails(Resource.Error(Exception("Something went wrong")))
 
     useCase.invoke(params.copy(knownForDepartment = null)).test {
       val expectedFailure = awaitItem()
@@ -88,7 +88,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchPersonCredits for actors with success`() = runTest {
-    repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
+    repository.mockFetchPersonDetails(Resource.Success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
     useCase.invoke(params).test {
@@ -113,7 +113,7 @@ class FetchPersonDetailsUseCaseTest {
   @Test
   fun `test fetchPersonCredits for crew returns crew credits on known for dep`() = runTest {
     repository.mockFetchPersonDetails(
-      Result.success(
+      Resource.Success(
         PersonDetailsFactory.steveCarell()
           .copy(
             person = PersonDetailsFactory.steveCarell().person.copy(
@@ -156,7 +156,7 @@ class FetchPersonDetailsUseCaseTest {
   @Test
   fun `test fetchPersonCredits person without knownForDepartment data yields acting`() = runTest {
     repository.mockFetchPersonDetails(
-      Result.success(
+      Resource.Success(
         PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) },
       ),
     )
@@ -184,7 +184,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test knownFor section does not include tv shows without episode count`() = runTest {
-    repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
+    repository.mockFetchPersonDetails(Resource.Success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(
       Resource.Success(
         PersonCombinedCreditsFactory.all().copy(
@@ -226,7 +226,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchPersonCredits with failure`() = runTest {
-    repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
+    repository.mockFetchPersonDetails(Resource.Success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(Resource.Error(Exception("Something went wrong")))
 
     useCase.invoke(params).test {
@@ -240,7 +240,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchCredits awaits for person details iff knownForDepartment is null`() = runTest {
-    val detailsChannel = Channel<Result<PersonDetails>>()
+    val detailsChannel = Channel<Resource<PersonDetails?>>()
     repository.mockFetchPersonDetails(detailsChannel)
     repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
@@ -252,7 +252,7 @@ class FetchPersonDetailsUseCaseTest {
     useCase.invoke(params).test {
       expectNoEvents()
 
-      detailsChannel.send(Result.success(PersonDetailsFactory.steveCarell()))
+      detailsChannel.send(Resource.Success(PersonDetailsFactory.steveCarell()))
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
@@ -272,7 +272,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchCredits knownForDepartment defaults to Acting iff all are null`() = runTest {
-    val detailsChannel = Channel<Result<PersonDetails>>()
+    val detailsChannel = Channel<Resource<PersonDetails?>>()
     repository.mockFetchPersonDetails(detailsChannel)
     repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
@@ -285,7 +285,7 @@ class FetchPersonDetailsUseCaseTest {
       expectNoEvents()
 
       detailsChannel.send(
-        Result.success(PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) }),
+        Resource.Success(PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) }),
       )
 
       assertThat(awaitItem().getOrNull()).isEqualTo(
@@ -309,7 +309,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchCredits is concurrent iff knownForDepartment param is known`() = runTest {
-    val detailsChannel = Channel<Result<PersonDetails>>()
+    val detailsChannel = Channel<Resource<PersonDetails?>>()
     repository.mockFetchPersonDetails(detailsChannel)
     repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
@@ -329,7 +329,7 @@ class FetchPersonDetailsUseCaseTest {
       )
 
       delay(3000)
-      detailsChannel.send(Result.success(PersonDetailsFactory.steveCarell()))
+      detailsChannel.send(Resource.Success(PersonDetailsFactory.steveCarell()))
 
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
@@ -341,7 +341,7 @@ class FetchPersonDetailsUseCaseTest {
 
   @Test
   fun `test fetchPersonCredits filters out departments without entries`() = runTest {
-    repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
+    repository.mockFetchPersonDetails(Resource.Success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(
       Resource.Success(
         PersonCombinedCreditsFactory.all()

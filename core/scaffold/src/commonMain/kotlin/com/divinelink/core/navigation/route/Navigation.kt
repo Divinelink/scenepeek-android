@@ -59,6 +59,7 @@ sealed interface Navigation : NavKey {
     val name: String?,
     val profilePath: String?,
     val gender: Int,
+    val saved: Boolean?,
   ) : Navigation
 
   @Serializable

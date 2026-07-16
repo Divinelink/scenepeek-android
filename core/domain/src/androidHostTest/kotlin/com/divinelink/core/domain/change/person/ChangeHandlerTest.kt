@@ -1,7 +1,6 @@
 package com.divinelink.core.domain.change.person
 
 import app.cash.turbine.test
-import com.divinelink.core.commons.data
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.database.Database
@@ -9,6 +8,7 @@ import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.network.getOrNull
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
@@ -17,6 +17,7 @@ import com.divinelink.core.testing.factories.model.change.PersonChangeItemSample
 import com.divinelink.core.testing.factories.model.change.PersonChangeItemSample.toWizard
 import com.divinelink.core.testing.service.TestPersonService
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.BeforeTest
@@ -49,6 +50,7 @@ class ChangeHandlerTest {
       dispatcher = testDispatcher,
     )
     mediaDao = TestMediaDao()
+    mediaDao.mockFetchFavoritePeopleIds(flowOf(listOf()))
     dao.insertPerson(PersonDetailsEntityFactory.empty())
 
     repository = ProdPersonRepository(
@@ -64,6 +66,7 @@ class ChangeHandlerTest {
   fun `test UpdateBiography ChangeHandler`() = runTest {
     repository.fetchPersonDetails(person.id).test {
       awaitItem()
+      awaitItem()
       val updateBiography = UpdateBiography(repository)
 
       updateBiography.execute(
@@ -71,7 +74,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.biography(),
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
 
       assertThat(result.biography).isEqualTo(
         "Alexandros Karpas is a Greek YouTuber, filmmaker," +
@@ -90,6 +93,7 @@ class ChangeHandlerTest {
 
     repository.fetchPersonDetails(person.id).test {
       awaitItem()
+      awaitItem()
       val updateBiography = UpdateBiography(repository)
 
       updateBiography.execute(
@@ -97,7 +101,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.biography().toWizard { withDeleteAction() },
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
 
       assertThat(result.biography).isEqualTo(null)
     }
@@ -106,7 +110,8 @@ class ChangeHandlerTest {
   @Test
   fun `test UpdateGender ChangeHandler`() = runTest {
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.person.gender).isEqualTo(Gender.NOT_SET)
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.person.gender).isEqualTo(Gender.NOT_SET)
       val updateGender = UpdateGender(repository)
 
       updateGender.execute(
@@ -114,7 +119,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.gender(),
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
 
       assertThat(result.person.gender).isEqualTo(Gender.MALE)
     }
@@ -128,7 +133,8 @@ class ChangeHandlerTest {
     )
 
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.person.gender).isEqualTo(Gender.MALE)
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.person.gender).isEqualTo(Gender.MALE)
       val updateGender = UpdateGender(repository)
 
       updateGender.execute(
@@ -136,7 +142,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.gender().toWizard { withDeleteAction() },
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
 
       assertThat(result.person.gender).isEqualTo(Gender.NOT_SET)
     }
@@ -145,7 +151,8 @@ class ChangeHandlerTest {
   @Test
   fun `test UpdateBirthday ChangeHandler`() = runTest {
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.birthday).isEqualTo(null)
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.birthday).isEqualTo(null)
       val updateGender = UpdateBirthday(repository)
 
       updateGender.execute(
@@ -153,7 +160,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.birthday(),
       )
 
-      assertThat(awaitItem().data.birthday).isEqualTo("1986-12-04")
+      assertThat(awaitItem().getOrNull!!.birthday).isEqualTo("1986-12-04")
     }
   }
 
@@ -165,7 +172,8 @@ class ChangeHandlerTest {
     )
 
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.birthday).isEqualTo("1986-12-04")
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.birthday).isEqualTo("1986-12-04")
       val updateGender = UpdateBirthday(repository)
 
       updateGender.execute(
@@ -173,14 +181,15 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.birthday().toWizard { withDeleteAction() },
       )
 
-      assertThat(awaitItem().data.birthday).isEqualTo(null)
+      assertThat(awaitItem().getOrNull!!.birthday).isEqualTo(null)
     }
   }
 
   @Test
   fun `test UpdateDeathday ChangeHandler with update action`() = runTest {
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.deathday).isEqualTo(null)
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.deathday).isEqualTo(null)
       val updateGender = UpdateDayOfDeath(repository)
 
       updateGender.execute(
@@ -188,7 +197,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.deathday(),
       )
 
-      assertThat(awaitItem().data.deathday).isEqualTo("2024-09-10")
+      assertThat(awaitItem().getOrNull!!.deathday).isEqualTo("2024-09-10")
     }
   }
 
@@ -200,7 +209,8 @@ class ChangeHandlerTest {
     )
 
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.deathday).isEqualTo("2024-09-10")
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.deathday).isEqualTo("2024-09-10")
       val updateGender = UpdateDayOfDeath(repository)
 
       updateGender.execute(
@@ -208,14 +218,15 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.deathday().toWizard { withDeleteAction() },
       )
 
-      assertThat(awaitItem().data.deathday).isEqualTo(null)
+      assertThat(awaitItem().getOrNull!!.deathday).isEqualTo(null)
     }
   }
 
   @Test
   fun `test UpdateHomepage ChangeHandler with update action`() = runTest {
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.homepage).isEqualTo(null)
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.homepage).isEqualTo(null)
       val updateGender = UpdateHomepage(repository)
 
       updateGender.execute(
@@ -223,7 +234,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.homepage(),
       )
 
-      assertThat(awaitItem().data.homepage).isEqualTo("https://www.unboxholics.com")
+      assertThat(awaitItem().getOrNull!!.homepage).isEqualTo("https://www.unboxholics.com")
     }
   }
 
@@ -236,7 +247,8 @@ class ChangeHandlerTest {
     )
 
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.homepage).isEqualTo("https://www.unboxholics.com")
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.homepage).isEqualTo("https://www.unboxholics.com")
       val updateGender = UpdateHomepage(repository)
 
       updateGender.execute(
@@ -244,7 +256,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.homepage().toWizard { withDeleteAction() },
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
       assertThat(result.homepage).isEqualTo(null)
       assertThat(result.person.name).isEqualTo("Alexandros Karpas")
     }
@@ -253,7 +265,8 @@ class ChangeHandlerTest {
   @Test
   fun `test UpdateImdbID ChangeHandler`() = runTest {
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.imdbId).isEqualTo(null)
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.imdbId).isEqualTo(null)
       val updateGender = UpdateImdbID(repository)
 
       updateGender.execute(
@@ -261,7 +274,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.imdbId(),
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
       assertThat(result.imdbId).isEqualTo("nm001")
     }
   }
@@ -274,7 +287,8 @@ class ChangeHandlerTest {
     )
 
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.imdbId).isEqualTo("nm000")
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.imdbId).isEqualTo("nm000")
       val updateGender = UpdateImdbID(repository)
 
       updateGender.execute(
@@ -282,7 +296,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.imdbId().toWizard { withDeleteAction() },
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
       assertThat(result.imdbId).isEqualTo(null)
     }
   }
@@ -290,7 +304,8 @@ class ChangeHandlerTest {
   @Test
   fun `test UpdateName ChangeHandler`() = runTest {
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.person.name).isEqualTo("")
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.person.name).isEqualTo("")
       val updateGender = UpdateName(repository)
 
       updateGender.execute(
@@ -298,7 +313,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.name(),
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
       assertThat(result.person.name).isEqualTo("Alexandros Karpas")
     }
   }
@@ -311,7 +326,8 @@ class ChangeHandlerTest {
     )
 
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.person.name).isEqualTo("Alexandros Karpas")
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.person.name).isEqualTo("Alexandros Karpas")
       val updateGender = UpdateName(repository)
 
       updateGender.execute(
@@ -319,7 +335,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.imdbId().toWizard { withDeleteAction() },
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
       assertThat(result.person.name).isEqualTo("")
     }
   }
@@ -327,7 +343,8 @@ class ChangeHandlerTest {
   @Test
   fun `test UpdatePlaceOfBirth ChangeHandler`() = runTest {
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.placeOfBirth).isEqualTo(null)
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.placeOfBirth).isEqualTo(null)
       val updateGender = UpdatePlaceOfBirth(repository)
 
       updateGender.execute(
@@ -335,7 +352,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.placeOfBirth(),
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
       assertThat(result.placeOfBirth).isEqualTo("Aridaia, Greece")
     }
   }
@@ -348,7 +365,8 @@ class ChangeHandlerTest {
     )
 
     repository.fetchPersonDetails(person.id).test {
-      assertThat(awaitItem().data.placeOfBirth).isEqualTo("Aridaia, Greece")
+      awaitItem()
+      assertThat(awaitItem().getOrNull!!.placeOfBirth).isEqualTo("Aridaia, Greece")
       val updateGender = UpdatePlaceOfBirth(repository)
 
       updateGender.execute(
@@ -356,7 +374,7 @@ class ChangeHandlerTest {
         items = PersonChangeItemSample.placeOfBirth().toWizard { withDeleteAction() },
       )
 
-      val result = awaitItem().data
+      val result = awaitItem().getOrNull!!
       assertThat(result.placeOfBirth).isEqualTo(null)
     }
   }

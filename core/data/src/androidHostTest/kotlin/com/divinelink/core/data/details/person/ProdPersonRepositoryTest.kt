@@ -21,6 +21,7 @@ import com.divinelink.core.network.Resource
 import com.divinelink.core.network.changes.model.api.ChangesResponseApi
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
+import com.divinelink.core.network.getOrNull
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
@@ -30,8 +31,9 @@ import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCre
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory
 import com.divinelink.core.testing.factories.model.change.ChangeSample
 import com.divinelink.core.testing.service.TestPersonService
-import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.beInstanceOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.BeforeTest
@@ -81,8 +83,8 @@ class ProdPersonRepositoryTest {
     dao.insertPerson(PersonDetailsEntityFactory.steveCarell())
 
     repository.fetchPersonDetails(id = 4495).test {
-      assertThat(awaitItem().getOrNull()).isEqualTo(PersonDetailsEntityFactory.steveCarell().map())
-      expectNoEvents()
+      awaitItem().getOrNull shouldBe PersonDetailsEntityFactory.steveCarell().map(false)
+      awaitItem().getOrNull shouldBe PersonDetailsEntityFactory.steveCarell().map(false)
     }
   }
 
@@ -91,7 +93,8 @@ class ProdPersonRepositoryTest {
     service.mockFetchPersonDetails(response = PersonDetailsApiFactory.steveCarell())
 
     repository.fetchPersonDetails(id = 4495).test {
-      assertThat(awaitItem().getOrNull()).isEqualTo(PersonDetailsEntityFactory.steveCarell().map())
+      awaitItem().getOrNull shouldBe null
+      awaitItem().getOrNull shouldBe PersonDetailsEntityFactory.steveCarell().map(false)
       expectNoEvents()
     }
   }
@@ -213,11 +216,11 @@ class ProdPersonRepositoryTest {
       service.mockFetchPersonCombinedCredits(response = personCreditsApi)
 
       repository.fetchPersonCredits(id = 4495).test {
-        assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
+        awaitItem() shouldBe Resource.Loading(null)
         val secondEmission = awaitItem() as Resource.Success<PersonCombinedCredits?>
-        assertThat(secondEmission).isInstanceOf(Resource.Success::class.java)
-        assertThat(secondEmission.data?.cast?.size).isEqualTo(123)
-        assertThat(secondEmission.data?.crew?.size).isEqualTo(17)
+        secondEmission should beInstanceOf<Resource.Success<*>>()
+        secondEmission.data?.cast?.size shouldBe 123
+        secondEmission.data?.crew?.size shouldBe 17
         expectNoEvents()
       }
     }
@@ -241,7 +244,7 @@ class ProdPersonRepositoryTest {
           endDate = "2021-08-15",
         ),
       ).test {
-        assertThat(awaitItem().data).isEqualTo(ChangeSample.changes())
+        awaitItem().data shouldBe ChangeSample.changes()
         awaitComplete()
       }
     }

@@ -59,7 +59,7 @@ class FilterBarTest : ComposeTest() {
       )
     }
 
-    onNodeWithText("Collection").assertIsDisplayed().performClick()
+    onNodeWithText("My saves").assertIsDisplayed().performClick()
 
     clickedFilter shouldBe HomeFilter.MySaves(isSelected = false)
   }

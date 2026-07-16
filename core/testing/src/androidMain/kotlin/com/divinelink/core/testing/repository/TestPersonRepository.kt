@@ -19,11 +19,11 @@ class TestPersonRepository {
 
   val mock: PersonRepository = mock()
 
-  fun mockFetchPersonDetails(response: Result<PersonDetails>) {
+  fun mockFetchPersonDetails(response: Resource<PersonDetails?>) {
     whenever(mock.fetchPersonDetails(any())).thenReturn(flowOf(response))
   }
 
-  fun mockFetchPersonDetails(response: Channel<Result<PersonDetails>>) {
+  fun mockFetchPersonDetails(response: Channel<Resource<PersonDetails?>>) {
     whenever(mock.fetchPersonDetails(any())).thenReturn(response.consumeAsFlow())
   }
 

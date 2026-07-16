@@ -18,6 +18,7 @@ fun MediaItem.toRoute(): Navigation? = when (this) {
     name = name,
     profilePath = profilePath,
     gender = gender.value,
+    saved = saved,
   )
   else -> null
 }
@@ -36,6 +37,7 @@ fun MediaReference.toRoute(): Navigation? = when (this.mediaType) {
     name = null,
     profilePath = null,
     gender = Gender.NOT_SET.value,
+    saved = false,
   )
   MediaType.UNKNOWN -> null
 }

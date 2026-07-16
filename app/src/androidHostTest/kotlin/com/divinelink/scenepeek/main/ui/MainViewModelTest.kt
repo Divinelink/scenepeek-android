@@ -93,6 +93,7 @@ class MainViewModelTest {
             name = null,
             profilePath = null,
             gender = Gender.NOT_SET.value,
+            saved = false,
           ),
         ),
       )
@@ -188,6 +189,7 @@ class MainViewModelTest {
             profilePath = null,
             knownForDepartment = "Directing",
             gender = Gender.MALE.value,
+            saved = false,
           ),
         ),
       )

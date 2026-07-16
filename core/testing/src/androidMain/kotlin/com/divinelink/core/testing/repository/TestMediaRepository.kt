@@ -1,6 +1,5 @@
 package com.divinelink.core.testing.repository
 
-import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
@@ -17,7 +16,7 @@ class TestMediaRepository {
 
   val mock: MediaRepository = mock()
 
-  fun mockFetchFavorites(response: MediaListResult) {
+  fun mockFetchFavorites(response: List<MediaItem>) {
     whenever(
       mock.fetchFavorites(),
     ).thenReturn(
