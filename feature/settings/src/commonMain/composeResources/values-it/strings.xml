@@ -5,4 +5,21 @@
         <item>light</item>
         <item>dark</item>
     </string-array>
+    <string name="settings">Impostazioni</string>
+    <string name="login">Accedi</string>
+    <string name="AppearanceSettingsScreen__black_backgrounds">Nero puro</string>
+    <string name="AppearanceSettingsScreen__black_backgrounds_summary">Colori scuri ottimizzati per display OLED</string>
+    <string name="AppearanceSettingsScreen__material_you">Dinamico</string>
+    <string name="AppearanceSettingsScreen__material_you_summary">Adatta automaticamente i colori dell'app in base allo sfondo</string>
+    <string name="feature_settings_color_preference">Colori</string>
+    <string name="feature_settings_color">Colore</string>
+    <string name="feature_settings_choose_a_color">Scegli un colore</string>
+    <string name="feature_settings_account">Account</string>
+    <string name="feature_settings_logout">Esci</string>
+    <string name="feature_settings_logged_in">Connesso • </string>
+    <string name="feature_settings_tmdb_account">Account TMDB</string>
+    <string name="feature_settings_not_logged_in">Non connesso</string>
+    <string name="feature_settings_sign_in_to_access_features">Accedi per accedere alle funzionalità TMDB</string>
+    <string name="feature_settings_currently_login_dialog_summary">Sei attualmente connesso come %1$s. Vuoi uscire?</string>
+    <string name="feature_settings_invalid_credentials">Le credenziali inserite non sono valide.</string>
 </resources>

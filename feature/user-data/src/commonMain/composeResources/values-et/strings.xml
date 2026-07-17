@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_user_data_empty_watchlist">Sinu jälgimisloend on tühi</string>
+    <string name="feature_user_data_empty_watchlist_description">Uuri, mida huvitavat leiad ja nägemaks neid siin, lisa nad oma jälgimisloendisse!</string>
+    <string name="feature_user_data_empty_movies_ratings">Sa pole veel ühtegi filmi hinnanud</string>
+    <string name="feature_user_data_empty_tv_shows_ratings">Sa pole veel ühtegi telesaadet hinnanud</string>
+</resources>

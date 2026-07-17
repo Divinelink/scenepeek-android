@@ -1,3 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_lists_title">Liste</string>
+    <string name="feature_lists_login_description">Devi essere connesso per visualizzare le tue liste.</string>
+    <string name="feature_lists_empty">Non hai creato nessuna lista</string>
+    <string name="feature_lists_empty_description">Inizia a creare liste per tracciare film e serie e personalizzarli per adattarsi al tuo stile</string>
+    <string name="feature_lists_empty_list">Non ci sono elementi aggiunti a questa lista.</string>
+    <string name="feature_lists_delete_list">Elimina lista</string>
+    <string name="feature_lists_delete_list_alert_message">Sei sicuro di voler eliminare questa lista? Questa azione non può essere annullata.</string>
+    <string name="feature_lists_edit_list">Modifica lista</string>
+    <string name="feature_lists_add_list">Crea lista</string>
+    <string name="feature_lists_name">Nome</string>
+    <string name="feature_lists_description">Descrizione</string>
+    <string name="feature_lists_public_description">Le liste pubbliche possono essere visualizzate da altri utenti.</string>
+    <string name="feature_lists_update_successfully">%1$s aggiornata con successo</string>
+    <string name="feature_lists_update_failure">Impossibile aggiornare %1$s</string>
+    <string name="feature_lists_delete_successfully">%1$s eliminato con successo</string>
+    <string name="feature_lists_delete_failure">Impossibile eliminare %1$s</string>
+    <string name="feature_lists_create_successfully">%1$s creata con successo</string>
+    <string name="feature_lists_create_failure">Impossibile creare %1$s</string>
+    <string name="feature_lists_backdrops_empty">Non ci sono immagini per questa lista. Aggiungi elementi per poter cambiare l'immagine.</string>
+    <string name="feature_lists_change_image">Cambia immagine</string>
+    <string name="feature_lists_selected">%1$s/%2$s selezionato</string>
+    <string name="feature_lists_selected_media_content_desc">Media selezionati %1$s</string>
+</resources>

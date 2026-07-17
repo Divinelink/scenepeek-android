@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_available_title">Saadaval on uus versioon</string>
+    <string name="update_available_description">Laadi alla viimane versioon ning kasuta kõike, mida meie rakendus teha oskab.</string>
+    <string name="current_version">Praegune versioon: %1$s</string>
+    <string name="latest_version">Viimane versioon: %1$s</string>
+</resources>

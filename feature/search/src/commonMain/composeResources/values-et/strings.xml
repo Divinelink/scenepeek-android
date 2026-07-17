@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_search__initial_title">Otsing</string>
+    <string name="feature_search__initial_description">Otsi filme, telesaateid ja nende tegijaid.</string>
+    <string name="search__empty_result_title">Vaat kus lops. Seda me küll ei leidnud.</string>
+    <string name="search__empty_result_description">Proovi otsida midagi muud.</string>
+    <string name="feature_search_settings_button_content_description">Seadistuste nupp</string>
+</resources>

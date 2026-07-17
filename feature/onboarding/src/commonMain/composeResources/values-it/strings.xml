@@ -1,3 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_onboarding_changelog">Changelog</string>
+    <string name="feature_onboarding_get_started">Inizia</string>
+    <string name="feature_onboarding_skip">Salta</string>
+    <string name="feature_onboarding_welcome_page_title">Benvenuti in ScenePeek</string>
+    <string name="feature_onboarding_welcome_page_description">Un client gratuito e open source per TMDB &amp; Seerr</string>
+    <string name="feature_onboarding_whats_new_title">Cosa c'è di nuovo in %1$s per %2$s</string>
+    <string name="feature_onboarding_tmdb_page_description">Collega il tuo account TMDB per accedere alla tua watchlist, valutazioni, liste e altro ancora.</string>
+    <string name="feature_onboarding_jellyseerr_page_description">Connettiti alla tua istanza Seerr per richiedere film e programmi TV istantaneamente.</string>
+    <string name="feature_onboarding_link_handling_page_title">IMDb &amp; TMDB Link Handling</string>
+    <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek puo\' aprire <strong>URLs </strong> da <strong>IMDb </strong> &amp; <strong>TMDB </strong> nell\'app. Questo può essere utile per l\'apertura di link a film, programmi TV e persone direttamente nell\'app.]]></string>
+    <string name="feature_onboarding_v29_grid_view">- Consenti all'utente di passare tra la griglia e la visualizzazione della lista su elenchi di media</string>
+    <string name="feature_onboarding_v29_discover_rating_filter">- Aggiungi nuovi filtri. Ora puoi anche scoprire film e programmi televisivi filtrando con valutazioni e voti minimi.</string>
+    <string name="feature_onboarding_v29_favorite_status_lists">- Visualizza lo stato preferito dei media sui dettagli dell'elenco</string>
+    <string name="feature_onboarding_v29_discover_filters">- Risolto un problema con la scoperta di filtri tra film e spettacoli televisivi</string>
+    <string name="feature_onboarding_v30_convert_app_to_multiplatform">- Grandi aggiornamenti a ScenePeek codebase. Presto verrà rilasciata una versione iOS!</string>
+    <string name="feature_onboarding_v30_display_fullscreen_posters">- Visualizza poster a schermo intero per film, programmi TV e persone. Fare clic su qualsiasi poster su una schermata dettagli per espanderlo a schermo intero!</string>
+</resources>

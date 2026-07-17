@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="update_available_title">Aggiornamento disponibile</string>
+    <string name="update_available_description">Per ottenere il meglio dall'app, scaricare l'ultima versione.</string>
+    <string name="current_version">Versione attuale: %1$s</string>
+    <string name="latest_version">Ultima versione: %1$s</string>
+</resources>

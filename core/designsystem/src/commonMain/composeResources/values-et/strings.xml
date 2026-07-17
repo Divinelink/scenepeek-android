@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="system">Süsteemi kujundus</string>
+    <string name="light">Hele kujundus</string>
+    <string name="dark">Tume kujundus</string>
+    <string name="default_theme">Vaikimisi kujundus</string>
+    <string name="dynamic_theme">Dünaamiline kujundus</string>
+    <string name="custom_theme">Kohandatud kujundus</string>
+</resources>

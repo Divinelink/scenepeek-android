@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_media_list_title">Meediasisu ei leidunud</string>
+    <string name="empty_media_list_description">Sa võid muuta otsingufiltreid või otsida midagi muud.</string>
+    <string name="empty_collection_list_title">Sinu kogu on tühi</string>
+    <string name="empty_collection_list_description">Uuri mida kõike toredat leidub ning siin nägemiseks lisa oma kogusse!</string>
+</resources>

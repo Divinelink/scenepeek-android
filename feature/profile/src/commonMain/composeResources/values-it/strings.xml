@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_profile_my_profile">Mio Profilo</string>
+    <string name="feature_profile_login_description">Accedi a TMDB per accedere alla tua watchlist, liste e altro ancora.</string>
+</resources>

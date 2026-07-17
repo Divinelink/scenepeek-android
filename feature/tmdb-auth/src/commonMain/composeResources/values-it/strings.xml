@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_tmdb_auth_login">Accedi a TMDB</string>
+    <string name="feature_tmdb_auth_loading_text">Si prega di attendere mentre l'autenticazione è in corso…</string>
+</resources>

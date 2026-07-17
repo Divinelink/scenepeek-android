@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_requests_title">Päringud</string>
+    <string name="feature_requests_profile">Profiil</string>
+    <string name="feature_requests_requested">Päring on saadetud</string>
+    <string name="feature_requests_modifier">Muudetud</string>
+    <string name="feature_requests_no_requests_available">Päringuid pole saadaval.</string>
+    <string name="feature_requests_request_by">%1$s kasutajalt %2$s</string>
+</resources>

@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_credits_cast_and_crew_title">Cast &amp; Crew</string>
+    <string name="feature_credits_cast">Cast (%1$s)</string>
+    <string name="feature_credits_crew">Crew (%1$s)</string>
+    <string name="feature_credits_cast_missing">Nessuna informazione cast disponibile</string>
+    <string name="feature_credits_crew_missing">Nessuna informazione personale disponibile</string>
+</resources>

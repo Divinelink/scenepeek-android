@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_profile_my_profile">Minu profiil</string>
+    <string name="feature_profile_login_description">Logi sisse TMDB teenusesse ja saad kasutada oma jälgimis- ja kuid loendeid ning paljutki veel.</string>
+</resources>
