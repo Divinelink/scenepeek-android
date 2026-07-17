@@ -1,3 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_add_to_account_list_login_description">Devi essere connesso per aggiungere alle tue liste.</string>
+    <string name="feature_add_to_account_empty_lists">Non hai creato nessuna lista</string>
+    <string name="feature_add_to_account_list_title">Aggiungi alla lista</string>
+    <string name="feature_add_to_account_list_create">Creare una nuova lista</string>
+    <string name="feature_add_to_account_action_remove_from_list">Rimuovi da questa lista</string>
+    <string name="feature_add_to_account_item_added_to_list_success"><![CDATA[Elemento aggiunto con successo a <b>%1$s</b>]]></string>
+    <string name="feature_add_to_account_item_added_to_list_failure"><![CDATA[L\'elemento esiste già in <b>%1$s</b>]]></string>
+    <string name="feature_add_to_account_item_add_to_list_unexpected_failure"><![CDATA[Non è possibile aggiungere voce in <b>%1$s</b>]]></string>
+    <string name="feature_add_to_account_remove_from_list_offline_error">Non puoi rimuovere dall'elenco mentre sei offline</string>
+    <string name="feature_add_to_account_remove_single_item_success">%1$s rimosso da %2$s</string>
+    <string name="feature_add_to_account_remove_batch_items_success">%1$s elementi rimossi da %2$s</string>
+    <string name="add_rating_description"><![CDATA[Cosa ne pensi di <b>%1$s</b>\?]]></string>
+    <string name="clear_my_rating">Cancella la mia valutazione</string>
+    <string name="submit_rating_button">Invia valutazione</string>
+    <string name="must_be_logged_in_to_rate">Si prega di effettuare il login per inviare la vostra valutazione.</string>
+    <string name="rating_submitted_successfully">Valutazione inviata per %1$s</string>
+    <string name="rating_deleted_successfully">Valutazione cancellata per %1$s</string>
+    <string name="rating_label_1">Terribile</string>
+    <string name="rating_label_3">Davvero male</string>
+    <string name="rating_label_4">Meh</string>
+    <string name="rating_label_5">Accettabile</string>
+    <string name="rating_label_6">Tutto bene</string>
+    <string name="rating_label_7">Piuttosto decente</string>
+    <string name="rating_label_8">Davvero buono</string>
+    <string name="rating_label_9">Stupendo</string>
+    <string name="rating_label_10">Campione</string>
+</resources>

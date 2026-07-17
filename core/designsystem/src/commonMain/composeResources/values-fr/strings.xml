@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="system">Système</string>
+    <string name="light">Clair</string>
+    <string name="dark">Foncé</string>
+    <string name="default_theme">Défaut</string>
+    <string name="dynamic_theme">Dynamique</string>
+    <string name="custom_theme">Personnalisé</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ui_okay">Sobib</string>
+    <string name="core_ui_cancel">Katkesta</string>
+    <string name="core_ui_confirm">Kinnita</string>
+    <string name="core_ui_delete">Kustuta</string>
+    <string name="core_ui_discover">Otsi ja avasta</string>
+    <string name="core_ui_share_error_details">Jaga vea üksikasju</string>
+    <string name="core_ui_information">Teave</string>
+    <string name="core_ui_keywords">Märksõnad</string>
+    <string name="core_ui_approve">Nõustu</string>
+    <string name="core_ui_decline">Keeldu</string>
+    <string name="core_ui_update">Uuenda</string>
+    <string name="core_ui_save">Salvesta</string>
+    <string name="core_ui_play_trailer">Vaata treilerit</string>
+</resources>

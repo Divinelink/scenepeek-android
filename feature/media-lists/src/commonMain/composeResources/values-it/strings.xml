@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="empty_media_list_title">Nessun media trovato</string>
+    <string name="empty_media_list_description">Puoi cercare di cambiare i filtri o cercare qualcos'altro.</string>
+    <string name="empty_collection_list_title">La tua collezione è vuota</string>
+    <string name="empty_collection_list_description">Inizia a esplorare e aggiungere alla tua collezione per vederlo qui!</string>
+</resources>

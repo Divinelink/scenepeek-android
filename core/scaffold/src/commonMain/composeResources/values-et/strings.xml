@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Avaleht</string>
+    <string name="search">Otsing</string>
+    <string name="profile">Profiil</string>
+    <string name="top_level_navigation_content_description_selected">„%1$s“ menüüpunkt alaribast on valitud</string>
+    <string name="top_level_navigation_content_description_unselected">„%1$s“ menüüpunkt alaribast pole enam valitud</string>
+</resources>

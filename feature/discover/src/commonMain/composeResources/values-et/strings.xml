@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_discover_movies_title">Otsi filme</string>
+    <string name="feature_discover_tv_title">Otsi telesaateid</string>
+    <string name="feature_discover_description_first">Kasuta filtreid ja leiad täpselt seda, mida otsid</string>
+    <string name="feature_discover_description_second">Filtreeri aasta, riigi, keele, žanri ja palju muu alusel</string>
+    <string name="feature_discover_empty_result_title">On vast lugu, sinu filtrite alusel ei leidu mitte midagi</string>
+    <string name="feature_discover_empty_result_description">Täiendavate tulemuste nägemiseks kohenda filtreid</string>
+    <string name="feature_discover_show_filter">Näita filtreid</string>
+    <string name="feature_discover_user_score">Kasutaja punktiskoor: %1$s - %2$s</string>
+    <string name="feature_discover_minimum_user_votes">Kasutajate häälte miinimumarv:%1$s</string>
+</resources>
