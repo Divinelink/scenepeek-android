@@ -66,6 +66,9 @@ import com.divinelink.feature.onboarding.resources.v51_add_rating_label_popup
 import com.divinelink.feature.onboarding.resources.v51_add_tmdb_favorites_tab
 import com.divinelink.feature.onboarding.resources.v52_awards_feature
 import com.divinelink.feature.onboarding.resources.v52_italian_language
+import com.divinelink.feature.onboarding.resources.v54_add_support_to_save_people
+import com.divinelink.feature.onboarding.resources.v54_estonian_french_language
+import com.divinelink.feature.onboarding.resources.v54_rename_collections_to_saved
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -293,6 +296,15 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v52_italian_language)),
   )
 
+  val v54 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.35.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v54_rename_collections_to_saved)),
+    IntroSection.Text(UIText.ResourceText(R.string.v54_add_support_to_save_people)),
+    IntroSection.Text(UIText.ResourceText(R.string.v54_estonian_french_language)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -316,5 +328,6 @@ object IntroSections {
     50 to v50,
     51 to v51,
     53 to v53,
+    54 to v54,
   )
 }

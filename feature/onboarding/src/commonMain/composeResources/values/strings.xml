@@ -85,4 +85,8 @@
 
   <string name="v52_awards_feature">- Awards added! Browse movies, shows, and people from major ceremonies including the Oscars, Golden Globes, European Film Awards, and more. (Awards content is updated frequently!)</string>
   <string name="v52_italian_language">- Add Italian language setting</string>
+
+  <string name="v54_rename_collections_to_saved">- Renamed "Collection" to "Saved" for local favorites</string>
+  <string name="v54_add_support_to_save_people">- Added ability to save people to local favorites</string>
+  <string name="v54_estonian_french_language">- Add Estonian &amp; French language setting</string>
 </resources>

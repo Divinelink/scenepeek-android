@@ -1,0 +1,7 @@
+🎉 Update v0.35.0
+
+- Renamed "Collection" to "Saved" for local favorites
+- Added ability to save people to local favorites
+- Add Estonian & French language setting
+
+We're constantly working on improvements and new features. Stay tuned for more updates!
