@@ -13,4 +13,12 @@
     <string name="core_ui_update">Uuenda</string>
     <string name="core_ui_save">Salvesta</string>
     <string name="core_ui_play_trailer">Vaata treilerit</string>
+    <string name="core_ui_add_rating">Hinda seda teost</string>
+    <string name="core_ui_your_rating">Sinu hinnang</string>
+    <string name="core_ui_connected">Võrguühendus on taastunud</string>
+    <string name="core_ui_not_connected">Võrguühendus on katkenud</string>
+    <string name="core_ui_select">Vali</string>
+    <string name="core_ui_share">Jaga</string>
+    <string name="core_ui_show_total_episodes_item">Näita spoilereid</string>
+    <string name="core_ui_hide_total_episodes_item">Peida spoilerid</string>
 </resources>

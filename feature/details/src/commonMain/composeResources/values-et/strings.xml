@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_details__watchlist">Vaatamiste loend</string>
+    <string name="feature_details__add_to_list">Lisa loendisse</string>
+    <string name="feature_details__favorite">Lemmik</string>
+    <string name="details__added_to_watchlist">„%1$s“ on lisatud vaatamiste loendisse</string>
+    <string name="details__removed_from_watchlist">„%1$s“ on eemaldatud vaatamiste loendist</string>
+</resources>

@@ -1,3 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_add_to_account_list_login_description">Oma loenditesse sisu lisamiseks pead olema sisseloginud.</string>
+    <string name="feature_add_to_account_empty_lists">Sa pole veel ühtegi loendit koostanud</string>
+    <string name="feature_add_to_account_list_title">Lisa loendisse</string>
+    <string name="feature_add_to_account_list_create">Koosta uus loend</string>
+    <string name="feature_add_to_account_action_remove_from_list">Eemalda sellest loendist</string>
+    <string name="feature_add_to_account_item_added_to_list_success"><![CDATA[Kirje lisamine <b>„%1$s“</b> loendisse õnnestus]]></string>
+    <string name="feature_add_to_account_item_added_to_list_failure"><![CDATA[Kirje juba on <b>„%1$s“</b> loendis kenasti olemas]]></string>
+    <string name="feature_add_to_account_item_add_to_list_unexpected_failure"><![CDATA[Kirje lisamine <b>„%1$s“</b> loendisse ei õnnestunud]]></string>
+    <string name="rating_label_1">Jube</string>
+    <string name="rating_label_2">Rämps</string>
+    <string name="rating_label_3">Päris halb</string>
+    <string name="rating_label_4">No jah</string>
+    <string name="rating_label_5">Käib kah</string>
+    <string name="rating_label_7">Päris hea</string>
+    <string name="rating_label_8">Tõsiselt hea</string>
+    <string name="rating_label_9">Ülihea</string>
+    <string name="rating_label_10">Täielik suursaavutus</string>
+    <string name="rating_label_6">Juba enam-vähem</string>
+    <string name="rating_submitted_successfully">„%1$s“ kirje hinnang on edastatud</string>
+    <string name="rating_deleted_successfully">„%1$s“ kirje hinnang on eemaldatud</string>
+    <string name="must_be_logged_in_to_rate">Hindamiseks palun logi sisse.</string>
+    <plurals name="feature_add_to_account_remove_items_confirmation">
+        <item quantity="one"><![CDATA[Kas eemaldad <b>„%1$s“</b> kirje <b>„%2$s“</b> loendist?]]></item>
+        <item quantity="other"><![CDATA[Kas eemaldad <b>%1$s</b> kirjet <b>„%2$s“</b> loendist?]]></item>
+    </plurals>
+    <string name="feature_add_to_account_remove_from_list_offline_error">Kui sinu nutiseadmest puudub võrguühendus, siis sa loendist sisu eemaldada ei saa</string>
+    <string name="feature_add_to_account_remove_single_item_success">„%1$s“ on eemaldatud „%2$s“ loendist</string>
+    <string name="feature_add_to_account_remove_batch_items_success">%1$s kirjet on eemaldatud „%2$s“ loendist</string>
+    <string name="add_rating_description"><![CDATA[<b>„%1$s“</b> - mis on sinu hinnang sellele?]]></string>
+    <string name="clear_my_rating">Eemalda minu hinnang</string>
+    <string name="submit_rating_button">Edasta hinnang</string>
+</resources>

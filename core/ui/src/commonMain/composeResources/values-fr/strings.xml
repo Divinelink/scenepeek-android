@@ -1,3 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="core_ui_okay">Ok</string>
+    <string name="core_ui_cancel">Annuler</string>
+    <string name="core_ui_confirm">Valider</string>
+    <string name="core_ui_delete">Supprimer</string>
+    <string name="core_ui_discover">Découvrir</string>
+    <string name="core_ui_share_error_details">Partager les détails d'erreur</string>
+    <string name="core_ui_information">Information</string>
+    <string name="core_ui_keywords">Mots-clés</string>
+    <string name="core_ui_approve">Approuver</string>
+    <string name="core_ui_decline">Refuser</string>
+    <string name="core_ui_update">Mise à jour</string>
+    <string name="core_ui_save">Enregistrer</string>
+    <string name="core_ui_play_trailer">Voir la bande-annonce</string>
+    <string name="core_ui_add_rating">Noter</string>
+    <string name="core_ui_your_rating">Votre note</string>
+    <string name="core_ui_connected">Tu es de nouveau en ligne</string>
+    <string name="core_ui_not_connected">Tu es hors ligne</string>
+    <string name="core_ui_select">Sélectionner</string>
+    <string name="core_ui_share">Partager</string>
+    <string name="core_ui_show_total_episodes_item">Afficher les spoilers</string>
+    <string name="core_ui_hide_total_episodes_item">Cacher les gâteurs</string>
+    <string name="core_ui_retry">Réessayer</string>
+    <string name="core_ui_login">Se connecter</string>
+    <string name="core_ui_logout">Se déconnecter</string>
+    <string name="core_ui_error_retry">Quelque chose s'est mal passé. Veuillez réessayer.</string>
+    <string name="core_ui_password">Mot de passe</string>
+    <string name="core_ui_view_all">Voir tout</string>
+    <string name="core_ui_create_list">Créer une liste</string>
+    <string name="core_ui_create">Créer</string>
+    <string name="core_ui_edit">Enregistrer</string>
+    <plurals name="core_ui_character_episode_episodes">
+        <item quantity="one">(%1$s épisode)</item>
+        <item quantity="many">(%1$s épisodes)</item>
+        <item quantity="other">(%1$s épisodes)</item>
+    </plurals>
+    <string name="core_ui_general_error_title">Une erreur s'est produite</string>
+    <string name="core_ui_director">Réalisateur</string>
+    <string name="core_ui_screenplay">Scénario</string>
+    <string name="core_ui_novel">Roman</string>
+    <string name="core_ui_creator">Créateur</string>
+    <plurals name="core_ui_season">
+        <item quantity="one">Saison</item>
+        <item quantity="many">Saisons</item>
+        <item quantity="other">Saisons</item>
+    </plurals>
+    <string name="core_ui_requests">Demandes</string>
+    <plurals name="core_ui_cast_count">
+        <item quantity="one">%1$s personne</item>
+        <item quantity="many">%1$s personnes</item>
+        <item quantity="other">%1$s personnes</item>
+    </plurals>
+    <plurals name="core_ui_episode_count">
+        <item quantity="one">%1$s épisode</item>
+        <item quantity="many">%1$s épisodes</item>
+        <item quantity="other">%1$s épisodes</item>
+    </plurals>
+    <string name="core_ui_toolbar_search">Rechercher</string>
+    <string name="core_ui_movies">Films</string>
+    <string name="core_ui_tv_shows">Séries</string>
+    <string name="core_ui_people">personne</string>
+    <string name="movies">Films</string>
+    <string name="tv_shows">Séries</string>
+    <string name="seasons">Saisons</string>
+    <string name="episodes">Épisodes</string>
+    <string name="core_ui_media">Médias</string>
+    <string name="core_ui_remove_from_radarr">Supprimer de Radarr</string>
+    <string name="core_ui_remove_from_radarr_description">Cela supprimera irréversiblement ce film de Radarr, y compris tous les fichiers.</string>
+    <string name="core_ui_remove_from_sonarr">Supprimer de Sonarr</string>
+    <string name="core_ui_remove_from_sonarr_description">Cela supprimera irréversiblement cette série de Sonarr, y compris tous les fichiers.</string>
+    <string name="core_ui_advanced">Avancé</string>
+    <string name="core_ui_clear_data">Supprimer les données</string>
+</resources>

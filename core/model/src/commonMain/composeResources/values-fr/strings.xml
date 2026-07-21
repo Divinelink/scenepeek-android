@@ -311,4 +311,17 @@
     <string name="month_october_short">Oct</string>
     <string name="month_november_short">Nov</string>
     <string name="month_december_short">Déc</string>
+    <string name="saved">Enregistré</string>
+    <string name="premiere">Première</string>
+    <string name="digital">Numérique</string>
+    <string name="physical">Physique</string>
+    <string name="language_malay">Malay</string>
+    <string name="language_tagalog">Tagalog</string>
+    <string name="country_antigua_barbuda">Antigua-et-Barbuda</string>
+    <string name="country_eswatini">Eswatini</string>
+    <string name="country_guyana">Guyana</string>
+    <string name="country_nauru">Nauru</string>
+    <string name="country_palau">Palaos</string>
+    <string name="country_saint_kitts_nevis">Saint-Kitts-et-Nevis</string>
+    <string name="country_sao_tome_principe">Sao Tomé-et-Principe</string>
 </resources>
