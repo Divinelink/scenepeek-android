@@ -326,4 +326,5 @@
     <string name="month_october_short">okt</string>
     <string name="month_november_short">nov</string>
     <string name="month_december_short">dets</string>
+    <string name="saved">Salvestatud</string>
 </resources>

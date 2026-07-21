@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_search__initial_title">Cerca</string>
-    <string name="feature_search__initial_description">Trova film, programmi TV e persone.</string>
+    <string name="feature_search__initial_description">Trova film, Serie TV e persone.</string>
     <string name="search__empty_result_title">Ops. Non siamo riusciti a trovarlo.</string>
     <string name="search__empty_result_description">Prova a cercare qualcos'altro.</string>
     <string name="feature_search_settings_button_content_description">Vai al pulsante delle impostazioni</string>

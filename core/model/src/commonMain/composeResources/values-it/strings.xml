@@ -22,10 +22,10 @@
     <string name="language_portuguese">Portoghese</string>
     <string name="all">Tutti</string>
     <string name="gender_non_binary">Non binario</string>
-    <string name="tv_show_tab">Programmi TV</string>
+    <string name="tv_show_tab">Serie Tv</string>
     <string name="vote_count">Voti totali</string>
     <string name="core_model_tv_status_ended">Terminato</string>
-    <string name="core_model_tab_tv_shows">Programmi Tv</string>
+    <string name="core_model_tab_tv_shows">Serie TV</string>
     <string name="range">Range</string>
     <string name="name">Nome</string>
     <string name="core_model_request_status_approved">Approvato</string>
@@ -174,4 +174,5 @@
     <string name="country_burkina_faso">Burkina Faso</string>
     <string name="country_burundi">Burundi</string>
     <string name="country_cabo_verde">Cabo Verde</string>
+    <string name="saved">Salvati</string>
 </resources>
