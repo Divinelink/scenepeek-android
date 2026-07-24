@@ -60,10 +60,10 @@ interface DetailsRepository {
 
   fun fetchExternalRatings(imdbId: String): Flow<Result<ExternalRatings?>>
 
-  fun fetchTraktRating(
+  suspend fun fetchTraktRating(
     mediaType: MediaType,
     imdbId: String,
-  ): Flow<Result<RatingDetails>>
+  ): Result<RatingDetails>
 
   fun findById(id: String): Flow<Result<MediaItem>>
 

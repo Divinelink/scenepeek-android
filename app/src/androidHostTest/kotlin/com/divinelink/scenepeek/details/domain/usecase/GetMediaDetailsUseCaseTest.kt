@@ -172,6 +172,7 @@ class GetMediaDetailsUseCaseTest {
 
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
     repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
+    repository.mockFetchTraktRating(Result.failure(Exception()))
     val useCase = createGetMediaDetailsUseCase()
 
     useCase(movieRequest).test {

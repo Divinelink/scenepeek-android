@@ -9,6 +9,7 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 
@@ -31,42 +32,47 @@ class FetchAllRatingsUseCase(
 
       launch {
         if (parameters.ratingCount.ratings[RatingSource.IMDB] == RatingDetails.Initial) {
-          repository.fetchExternalRatings(imdbId).collect { result ->
-            result.fold(
-              onSuccess = { ratings ->
-                send(
-                  Result.success(RatingSource.IMDB to (ratings?.imdb ?: RatingDetails.Unavailable)),
-                )
-                send(
-                  Result.success(
-                    RatingSource.METACRITIC to (ratings?.metascore ?: RatingDetails.Unavailable),
-                  ),
-                )
-                send(
-                  Result.success(RatingSource.RT to (ratings?.rt ?: RatingDetails.Unavailable)),
-                )
-              },
-              onFailure = { error ->
-                send(Result.failure(error))
-              },
-            )
-          }
+          repository
+            .fetchExternalRatings(imdbId)
+            .catch { send(Result.success(RatingSource.TRAKT to RatingDetails.Unavailable)) }
+            .collect { result ->
+              result.fold(
+                onSuccess = { ratings ->
+                  send(
+                    Result.success(
+                      RatingSource.IMDB to (ratings?.imdb ?: RatingDetails.Unavailable),
+                    ),
+                  )
+                  send(
+                    Result.success(
+                      RatingSource.METACRITIC to (ratings?.metascore ?: RatingDetails.Unavailable),
+                    ),
+                  )
+                  send(
+                    Result.success(RatingSource.RT to (ratings?.rt ?: RatingDetails.Unavailable)),
+                  )
+                },
+                onFailure = {
+                  send(Result.success(RatingSource.TRAKT to RatingDetails.Unavailable))
+                },
+              )
+            }
         }
       }
 
       launch {
         if (parameters.ratingCount.ratings[RatingSource.TRAKT] == RatingDetails.Initial) {
           val mediaType = if (parameters is Movie) MediaType.MOVIE else MediaType.TV
-          repository.fetchTraktRating(mediaType, imdbId).collect { result ->
-            result.fold(
-              onSuccess = { traktDetails ->
-                send(Result.success(RatingSource.TRAKT to traktDetails))
+          repository
+            .fetchTraktRating(mediaType, imdbId)
+            .fold(
+              onSuccess = { result ->
+                send(Result.success(RatingSource.TRAKT to result))
               },
-              onFailure = { error ->
-                send(Result.failure(error))
+              onFailure = {
+                send(Result.success(RatingSource.TRAKT to RatingDetails.Unavailable))
               },
             )
-          }
         }
       }
     }

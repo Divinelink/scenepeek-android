@@ -78,6 +78,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -654,9 +655,13 @@ class DetailsViewModel(
   }
 
   fun onFetchAllRatings() {
-    viewModelScope.launch {
-      viewState.value.mediaDetails?.let {
-        fetchAllRatingsUseCase(it).collect { result ->
+    viewState.value.mediaDetails?.let {
+      fetchAllRatingsUseCase(it)
+        .distinctUntilChanged()
+        .catch { error ->
+          Napier.d { error.message.toString() }
+        }
+        .onEach { result ->
           result
             .onSuccess { rating ->
               _viewState.update { viewState ->
@@ -669,11 +674,9 @@ class DetailsViewModel(
                   ),
                 )
               }
-            }.onFailure { error ->
-              Napier.e("$error")
             }
         }
-      }
+        .launchIn(viewModelScope)
     }
   }
 

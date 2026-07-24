@@ -681,24 +681,24 @@ class ProdDetailsRepositoryTest {
   @Test
   fun `test fetch trakt ratings with success`() = runTest {
     traktService.mockFetchRating(
-      response = TraktRatingApi(
-        rating = 8.5,
-        votes = 1_000,
+      response = Result.success(
+        TraktRatingApi(
+          rating = 8.5,
+          votes = 1_000,
+        ),
       ),
     )
 
     val response = repository.fetchTraktRating(
       mediaType = MediaType.MOVIE,
       imdbId = "tt0401729",
-    ).first()
+    )
 
-    assertThat(response).isEqualTo(
-      Result.success(
+    response shouldBe Result.success(
         RatingDetails.Score(
           voteAverage = 8.5,
           voteCount = 1_000,
         ),
-      ),
     )
   }
 

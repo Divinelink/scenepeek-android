@@ -128,11 +128,11 @@ class TestDetailsRepository {
     ).thenReturn(flowOf(response))
   }
 
-  fun mockFetchTraktRating(response: Result<RatingDetails>) {
+  suspend fun mockFetchTraktRating(response: Result<RatingDetails>) {
     whenever(
       mock.fetchTraktRating(any(), any()),
     ).thenReturn(
-      flowOf(response),
+      response,
     )
   }
 

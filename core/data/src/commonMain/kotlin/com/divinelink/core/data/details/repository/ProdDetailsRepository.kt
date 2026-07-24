@@ -255,12 +255,12 @@ class ProdDetailsRepository(
     .fetchExternalRatings(imdbId = imdbId)
     .map { Result.success(it.map()) }
 
-  override fun fetchTraktRating(
+  override suspend fun fetchTraktRating(
     mediaType: MediaType,
     imdbId: String,
-  ): Flow<Result<RatingDetails>> = traktService
+  ): Result<RatingDetails> = traktService
     .fetchRating(mediaType = mediaType, imdbId = imdbId)
-    .map { Result.success(it.map()) }
+    .map { it.map() }
 
   override fun findById(id: String): Flow<Result<MediaItem>> = mediaRemote
     .findById(id)
