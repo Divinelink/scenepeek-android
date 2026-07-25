@@ -41,7 +41,7 @@ fun ReleaseDetailResponse.map(): ReleaseDetail? {
 
   return ReleaseDetail(
     note = note,
-    releaseDate = releaseDate,
+    releaseDate = releaseDate.date,
     type = type,
   )
 }

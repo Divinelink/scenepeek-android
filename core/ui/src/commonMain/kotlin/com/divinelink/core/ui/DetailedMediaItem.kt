@@ -23,11 +23,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.extensions.toLocalDate
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.extension.localizeFull
+// import com.divinelink.core.ui.extension.localizeFull
 import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.provider.MediaItemParameterProvider
 
@@ -74,14 +76,18 @@ fun DetailedMediaItem(
           )
         }
         if (mediaItem.releaseDate.isNotEmpty()) {
-          mediaItem.releaseDate.toLocalDate().localizeFull()?.let { releaseDate ->
-            Text(
-              modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-              text = releaseDate,
-              style = MaterialTheme.typography.labelMedium,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-          }
+          mediaItem
+            .releaseDate
+            .toLocalDate()
+            ?.formatLocalized(DateFormatStyle.FULL)
+            ?.let { releaseDate ->
+              Text(
+                modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
+                text = releaseDate,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            }
         }
 
         Text(

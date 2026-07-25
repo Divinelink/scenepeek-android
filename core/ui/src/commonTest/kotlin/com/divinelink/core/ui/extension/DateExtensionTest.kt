@@ -3,7 +3,7 @@ package com.divinelink.core.ui.extension
 import com.divinelink.core.commons.extensions.toLocalDate
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
-import com.divinelink.core.model.jellyseerr.createdAtLocalDateTime
+import com.divinelink.core.model.jellyseerr.createdAtLocalDate
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
@@ -15,7 +15,7 @@ class DateExtensionTest : ComposeTest() {
   @Test
   fun `test localise LocalDateTime with valid iso date`() = uiTest {
     val jellyseerrAccountDetails = JellyseerrProfileFactory.jellyfin()
-    val createdAt = jellyseerrAccountDetails.createdAtLocalDateTime
+    val createdAt = jellyseerrAccountDetails.createdAtLocalDate
 
     setContentWithTheme {
       createdAt.localizeIsoDate(useLong = true) shouldBe "August 19, 2023"

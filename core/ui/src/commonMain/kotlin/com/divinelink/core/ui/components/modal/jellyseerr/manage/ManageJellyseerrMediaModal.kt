@@ -42,6 +42,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.commons.DateFormatStyle
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
@@ -56,7 +58,6 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.extension.format
-import com.divinelink.core.ui.extension.localizeIsoDate
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.resources.core_ui_advanced
 import com.divinelink.core.ui.resources.core_ui_cancel
@@ -351,7 +352,7 @@ private fun LazyItemScope.RequestItem(
             contentDescription = null,
           )
 
-          request.requestDate.localizeIsoDate()?.let { date ->
+          request.requestDate?.formatLocalized(DateFormatStyle.LONG)?.let { date ->
             Text(
               text = date,
               style = MaterialTheme.typography.bodyMedium,

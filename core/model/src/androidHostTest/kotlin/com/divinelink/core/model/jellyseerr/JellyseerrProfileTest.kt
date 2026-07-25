@@ -13,13 +13,13 @@ class JellyseerrProfileTest {
       createdAt = "2021-01-01T00:00:00Z",
     )
 
-    jellyseerrAccountDetails.createdAtLocalDateTime.toString() shouldBe "2021-01-01T00:00"
+    jellyseerrAccountDetails.createdAtLocalDate.toString() shouldBe "2021-01-01T00:00"
   }
 
   @Test
   fun `test formattedCreatedAt with correct date`() {
     val jellyseerrAccountDetails = JellyseerrProfileFactory.jellyfin()
 
-    jellyseerrAccountDetails.createdAtLocalDateTime shouldBe LocalDateTime.parse("2023-08-19T00:00")
+    jellyseerrAccountDetails.createdAtLocalDate shouldBe LocalDateTime.parse("2023-08-19T00:00")
   }
 }

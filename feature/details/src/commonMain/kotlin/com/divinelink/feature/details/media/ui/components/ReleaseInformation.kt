@@ -12,9 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.release.CountryRelease
-import com.divinelink.core.ui.extension.localizeIsoDate
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details_information_release_dates
 import org.jetbrains.compose.resources.stringResource
@@ -53,7 +53,7 @@ fun ReleaseInformation(info: List<CountryRelease>) {
               )
             }
 
-            item.releaseDetail.releaseDate.localizeIsoDate(true)?.let { date ->
+            item.releaseDetail.releaseDate.formatLocalized().let { date ->
               Text(
                 text = date,
                 color = MaterialTheme.colorScheme.secondary,

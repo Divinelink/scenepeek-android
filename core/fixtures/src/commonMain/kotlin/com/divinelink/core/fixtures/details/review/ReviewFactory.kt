@@ -1,5 +1,6 @@
 package com.divinelink.core.fixtures.details.review
 
+import com.divinelink.core.commons.extensions.toLocalDateTime
 import com.divinelink.core.fixtures.loremIpsum
 import com.divinelink.core.model.details.review.Review
 
@@ -9,21 +10,21 @@ object ReviewFactory {
     author = AuthorFactory.eledriel(),
     rating = 10,
     content = loremIpsum(100),
-    date = "2017-02-13",
+    date = "2017-02-13T00:00:00Z".toLocalDateTime()?.date,
   )
 
   fun Review_2() = Review(
     author = AuthorFactory.andreas(),
     rating = 6,
     content = loremIpsum(80),
-    date = "2018-02-13",
+    date = "2018-02-13T00:00:00Z".toLocalDateTime()?.date,
   )
 
   fun Review_3() = Review(
     author = AuthorFactory.john(),
     rating = 9,
     content = loremIpsum(60),
-    date = "2019-02-13",
+    date = "2019-02-13T00:00:00Z".toLocalDateTime()?.date,
   )
 
   fun all() = listOf(
@@ -37,7 +38,7 @@ object ReviewFactory {
       author = AuthorFactory.empty().copy(name = "authorName $it"),
       rating = it,
       content = "content $it",
-      date = "date $it",
+      date = "2017-02-13T00:00:00Z".toLocalDateTime()?.date,
     )
   }
 
@@ -55,7 +56,7 @@ object ReviewFactory {
       "Praesent sodales scelerisque eros at rhoncus. Duis posuere sapien vel ipsum" +
       "ornare interdum at eu quam. Vestibulum vel massa erat. Aenean quis sagittis" +
       "purus. Phasellus arcu purus, rutrum id consectetur non, bibendum at nibh.",
-    date = "2022-10-22",
+    date = "20122-10-22T00:00:00Z".toLocalDateTime()?.date,
   )
 
   fun empty() = Review(
