@@ -180,7 +180,7 @@ open class GetMediaDetailsUseCase(
 
       if (parameters is MediaRequestApi.TV) {
         launch(dispatcher.default) {
-          repository.fetchAggregateCredits(parameters.id.toLong())
+          repository.fetchAggregateCredits(parameters.id)
             .catch { Napier.e("$it") }
             .collect { result ->
               result.onSuccess {
@@ -328,9 +328,10 @@ open class GetMediaDetailsUseCase(
     return details.imdbId?.let { id ->
       repository
         .fetchTraktRating(mediaType = mediaType, imdbId = id)
-        .catch { emit(Result.failure(it)) }
-        .firstOrNull()
-        ?.fold(
+        .fold(
+          onSuccess = { result ->
+            details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.TRAKT, result))
+          },
           onFailure = {
             details.copy(
               ratingCount = details.ratingCount.updateRating(
@@ -338,9 +339,6 @@ open class GetMediaDetailsUseCase(
                 RatingDetails.Unavailable,
               ),
             )
-          },
-          onSuccess = { result ->
-            details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.TRAKT, result))
           },
         )
     } ?: details

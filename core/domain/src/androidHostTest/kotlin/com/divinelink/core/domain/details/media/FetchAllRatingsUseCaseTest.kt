@@ -79,7 +79,7 @@ class FetchAllRatingsUseCaseTest {
       repository = repository.mock,
       dispatcher = testDispatcher,
     ).invoke(MediaDetailsFactory.FightClub()).test {
-      awaitItem().toString() shouldBe Result.failure<Exception>(Exception()).toString()
+      awaitItem() shouldBe Result.success(RatingSource.TRAKT to RatingDetails.Unavailable)
       awaitItem() shouldBe Result.success(RatingSource.TRAKT to RatingDetailsFactory.trakt())
       awaitComplete()
     }

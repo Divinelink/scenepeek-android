@@ -3,8 +3,7 @@ package com.divinelink.core.network.trakt.service
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.trakt.model.TraktRatingApi
 import com.divinelink.core.testing.network.TestTraktClient
-import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.single
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -48,9 +47,9 @@ class ProdTraktServiceTest {
     val response = service.fetchRating(
       mediaType = MediaType.MOVIE,
       imdbId = "tt0290978",
-    ).single()
+    )
 
-    assertThat(response).isEqualTo(
+    response shouldBe Result.success(
       TraktRatingApi(
         rating = 8.0,
         votes = 4271,
