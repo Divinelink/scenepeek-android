@@ -29,7 +29,6 @@ import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
-// import com.divinelink.core.ui.extension.localizeFull
 import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.provider.MediaItemParameterProvider
 

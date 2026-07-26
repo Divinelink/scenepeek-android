@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.extensions.markdownToHtml

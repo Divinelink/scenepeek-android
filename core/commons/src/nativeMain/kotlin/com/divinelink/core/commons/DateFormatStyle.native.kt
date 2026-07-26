@@ -1,7 +1,6 @@
 package com.divinelink.core.commons
 
 import androidx.compose.ui.text.intl.Locale
-import io.github.aakira.napier.Napier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.number
@@ -13,8 +12,6 @@ import platform.Foundation.NSDateFormatterLongStyle
 import platform.Foundation.NSDateFormatterMediumStyle
 import platform.Foundation.NSDateFormatterShortStyle
 import platform.Foundation.NSLocale
-import platform.Foundation.currentLocale
-import platform.Foundation.languageCode
 
 actual fun LocalDate.formatLocalized(style: DateFormatStyle): String {
   val components = NSDateComponents().apply {
