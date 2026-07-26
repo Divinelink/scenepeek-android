@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.release.CountryRelease
@@ -53,7 +54,9 @@ fun ReleaseInformation(info: List<CountryRelease>) {
               )
             }
 
-            item.releaseDetail.releaseDate.formatLocalized().let { date ->
+            item.releaseDetail.releaseDate.formatLocalized(
+              style = DateFormatStyle.LONG,
+            ).let { date ->
               Text(
                 text = date,
                 color = MaterialTheme.colorScheme.secondary,

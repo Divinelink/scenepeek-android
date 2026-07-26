@@ -7,6 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.divinelink.core.commons.DateFormat
 import com.divinelink.core.commons.extensions.toLocalDate
 import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -36,7 +37,9 @@ fun TitleDetails(
       Text(
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        text = mediaDetails.releaseDate.toLocalDate()?.formatLocalized()
+        text = mediaDetails.releaseDate
+          .toLocalDate()
+          ?.formatLocalized(DateFormat.MEDIUM_NO_DAY)
           ?: mediaDetails.releaseDate,
       )
 

@@ -27,6 +27,20 @@ actual fun LocalDate.formatLocalized(style: DateFormatStyle): String {
   return formatter.stringFromDate(date)
 }
 
+actual fun LocalDate.formatLocalized(format: DateFormat): String {
+  val components = NSDateComponents().apply {
+    year = this@formatLocalized.year.toLong()
+    month = this@formatLocalized.month.number.toLong()
+    day = this@formatLocalized.day.toLong()
+  }
+  val date = NSCalendar.currentCalendar.dateFromComponents(components)!!
+  val formatter = NSDateFormatter().apply {
+    this.dateFormat = format.format
+    this.locale = NSLocale(Locale.current.language)
+  }
+  return formatter.stringFromDate(date)
+}
+
 actual fun LocalDateTime.formatLocalized(
   dateStyle: DateFormatStyle,
   timeStyle: DateFormatStyle,

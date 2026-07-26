@@ -78,7 +78,7 @@ fun DetailedMediaItem(
           mediaItem
             .releaseDate
             .toLocalDate()
-            ?.formatLocalized(DateFormatStyle.FULL)
+            ?.formatLocalized(DateFormatStyle.LONG)
             ?.let { releaseDate ->
               Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),

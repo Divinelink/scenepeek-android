@@ -31,3 +31,8 @@ private fun DateFormatStyle.toJavaStyle() = when (this) {
   DateFormatStyle.LONG -> FormatStyle.LONG
   DateFormatStyle.FULL -> FormatStyle.FULL
 }
+
+actual fun LocalDate.formatLocalized(format: DateFormat): String {
+  val formatter = DateTimeFormatter.ofPattern(format.format, Locale.getDefault())
+  return toJavaLocalDate().format(formatter)
+}

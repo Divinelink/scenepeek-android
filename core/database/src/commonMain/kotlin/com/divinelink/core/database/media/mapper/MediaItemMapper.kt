@@ -4,7 +4,7 @@ import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.model.media.MediaItem
 
 fun MediaItem.Media.map() = MediaItemEntity(
-  id = id.toLong(),
+  id = id,
   adult = -1,
   backdropPath = backdropPath,
   posterPath = posterPath,
