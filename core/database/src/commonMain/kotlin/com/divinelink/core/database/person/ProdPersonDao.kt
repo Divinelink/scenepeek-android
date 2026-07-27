@@ -184,7 +184,7 @@ class ProdPersonDao(
               )
 
               database.episodeGuestStarEntityQueries.insertGuestStar(
-                showId = showId.toLong(),
+                showId = showId,
                 season = season.toLong(),
                 creditId = role.creditId,
                 episode = episode.toLong(),
@@ -244,7 +244,7 @@ class ProdPersonDao(
         .episodeGuestStarEntityQueries
         .fetchEpisodeGuestStars(
           season = season.toLong(),
-          showId = showId.toLong(),
+          showId = showId,
           episode = episode.toLong(),
         )
         .asFlow()

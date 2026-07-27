@@ -6,11 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.extensions.epochSecondsToLocalDateTime
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.model.app.InstallSource
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.ui.extension.localizeIsoDate
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsSwitchItem
@@ -72,7 +73,7 @@ fun AppUpdatesScreen(
           summary = lastChecked?.let {
             stringResource(
               Res.string.last_checked,
-              lastChecked.localizeIsoDate(useLong = false) + " ${lastChecked.time}",
+              lastChecked.formatLocalized(DateFormatStyle.LONG),
             )
           },
           onClick = viewModel::checkForUpdates,

@@ -2,7 +2,7 @@ package com.divinelink.core.model.jellyseerr
 
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import io.kotest.matchers.shouldBe
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDate
 import kotlin.test.Test
 
 class JellyseerrProfileTest {
@@ -13,13 +13,13 @@ class JellyseerrProfileTest {
       createdAt = "2021-01-01T00:00:00Z",
     )
 
-    jellyseerrAccountDetails.createdAtLocalDateTime.toString() shouldBe "2021-01-01T00:00"
+    jellyseerrAccountDetails.createdAtLocalDate.toString() shouldBe "2021-01-01"
   }
 
   @Test
   fun `test formattedCreatedAt with correct date`() {
     val jellyseerrAccountDetails = JellyseerrProfileFactory.jellyfin()
 
-    jellyseerrAccountDetails.createdAtLocalDateTime shouldBe LocalDateTime.parse("2023-08-19T00:00")
+    jellyseerrAccountDetails.createdAtLocalDate shouldBe LocalDate.parse("2023-08-19")
   }
 }

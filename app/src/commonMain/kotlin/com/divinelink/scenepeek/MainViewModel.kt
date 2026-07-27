@@ -106,11 +106,11 @@ class MainViewModel(
               .fold(
                 onSuccess = { mediaItem ->
                   when (mediaItem) {
-                    is MediaItem.Media.Movie -> navigate(DeeplinkPath.Movie(mediaItem.id.toLong()))
-                    is MediaItem.Media.TV -> navigate(DeeplinkPath.TV(mediaItem.id.toLong()))
+                    is MediaItem.Media.Movie -> navigate(DeeplinkPath.Movie(mediaItem.id))
+                    is MediaItem.Media.TV -> navigate(DeeplinkPath.TV(mediaItem.id))
                     is MediaItem.Person -> navigate(
                       DeeplinkPath.Person(
-                        id = mediaItem.id.toLong(),
+                        id = mediaItem.id,
                         knownForDepartment = mediaItem.knownForDepartment,
                         name = mediaItem.name,
                         profilePath = mediaItem.profilePath,

@@ -8,11 +8,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.extensions.toLocalDate
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.ui.extension.localizeFull
 
 @Composable
 fun SeasonTitleDetails(
@@ -39,7 +40,7 @@ fun SeasonTitleDetails(
     Text(
       style = MaterialTheme.typography.titleSmall,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
-      text = season.airDate.toLocalDate()?.localizeFull(useLong = true) ?: season.airDate,
+      text = season.airDate.toLocalDate()?.formatLocalized(DateFormatStyle.LONG) ?: season.airDate,
     )
   }
 }

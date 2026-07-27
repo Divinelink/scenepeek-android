@@ -34,7 +34,7 @@ class ProdListDao(
       details.media.forEachIndexed { index, mediaItem ->
         database.listMediaItemEntityQueries.insertListMediaItem(
           listId = details.id.toLong(),
-          mediaItemId = mediaItem.id.toLong(),
+          mediaItemId = mediaItem.id,
           mediaType = mediaItem.mediaType.value,
           itemOrder = (page - 1) * 20L + index.toLong(),
         )
@@ -68,7 +68,7 @@ class ProdListDao(
     val itemExists = database.listMediaItemEntityQueries
       .checkIfItemExistsInList(
         listId = listId.toLong(),
-        mediaItemId = media.mediaId.toLong(),
+        mediaItemId = media.mediaId,
         mediaType = media.mediaType.value,
       )
       .executeAsOneOrNull() != null
@@ -78,7 +78,7 @@ class ProdListDao(
         listId = listId.toLong(),
         listId_ = listId.toLong(),
         mediaType = media.mediaType.value,
-        mediaItemId = media.mediaId.toLong(),
+        mediaItemId = media.mediaId,
       )
 
       database.listItemEntityQueries.increaseListItemCount(
@@ -95,7 +95,7 @@ class ProdListDao(
     items.forEach { media ->
       database.listMediaItemEntityQueries.deleteMediaFromList(
         listId = listId.toLong(),
-        mediaItemId = media.mediaId.toLong(),
+        mediaItemId = media.mediaId,
         mediaType = media.mediaType.value,
       )
     }
@@ -288,9 +288,9 @@ class ProdListDao(
         .mapToList(dispatcher.io)
         .map { list ->
           list
-            .filter { !it.backdropPath.isNullOrEmpty() && !it.name.isNullOrEmpty() }
+            .filter { !it.backdropPath.isNullOrEmpty() && it.name.isNotEmpty() }
             .associate {
-              it.name!! to it.backdropPath!!
+              it.name to it.backdropPath!!
             }
         }
     }

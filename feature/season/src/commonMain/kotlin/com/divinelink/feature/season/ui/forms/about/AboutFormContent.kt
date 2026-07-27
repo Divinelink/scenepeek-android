@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.extensions.toLocalDate
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -23,7 +25,6 @@ import com.divinelink.core.model.details.season.SeasonInformation
 import com.divinelink.core.ui.SimpleInformationRow
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.extension.localizeFull
 import com.divinelink.core.ui.resources.core_ui_aired_episodes
 import com.divinelink.core.ui.resources.core_ui_episodes
 import com.divinelink.core.ui.resources.core_ui_first_air_date
@@ -94,14 +95,14 @@ fun SeasonAboutInformation(info: SeasonInformation) {
       )
     }
 
-    info.firstAirDate?.toLocalDate().localizeFull()?.let { airDate ->
+    info.firstAirDate?.toLocalDate()?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
       SimpleInformationRow(
         title = stringResource(UiString.core_ui_first_air_date),
         data = airDate,
       )
     }
 
-    info.lastAirDate?.toLocalDate().localizeFull()?.let { airDate ->
+    info.lastAirDate?.toLocalDate()?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
       SimpleInformationRow(
         title = stringResource(UiString.core_ui_last_air_date),
         data = airDate,

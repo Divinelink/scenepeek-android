@@ -21,6 +21,10 @@ kotlin {
       implementation(libs.kotlinx.coroutines.android)
       implementation(libs.androidx.browser)
     }
+
+    androidHostTest.dependencies {
+      implementation(libs.robolectric)
+    }
   }
 }
 

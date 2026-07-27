@@ -19,18 +19,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.commons.DateFormatStyle
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrState
-import com.divinelink.core.model.jellyseerr.createdAtLocalDateTime
+import com.divinelink.core.model.jellyseerr.createdAtLocalDate
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.AvatarImage
-import com.divinelink.core.ui.extension.localizeIsoDate
 import com.divinelink.core.ui.resources.core_ui_logout
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_joined_on
@@ -99,23 +100,25 @@ fun JellyseerrLoggedInContent(
               )
             }
 
-            jellyseerrState.accountDetails.createdAtLocalDateTime.localizeIsoDate()?.let { date ->
-              Text(
-                modifier = Modifier
-                  .padding(
-                    start = MaterialTheme.dimensions.keyline_16,
-                    top = MaterialTheme.dimensions.keyline_8,
+            jellyseerrState.accountDetails.createdAtLocalDate
+              ?.formatLocalized(DateFormatStyle.LONG)
+              ?.let { date ->
+                Text(
+                  modifier = Modifier
+                    .padding(
+                      start = MaterialTheme.dimensions.keyline_16,
+                      top = MaterialTheme.dimensions.keyline_8,
+                    ),
+                  text = stringResource(
+                    Res.string.feature_settings_jellyseerr_joined_on,
+                    date,
+                    jellyseerrState.accountDetails.id,
                   ),
-                text = stringResource(
-                  Res.string.feature_settings_jellyseerr_joined_on,
-                  date,
-                  jellyseerrState.accountDetails.id,
-                ),
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                style = MaterialTheme.typography.bodySmall,
-              )
-            }
+                  color = MaterialTheme.colorScheme.onSurface,
+                  fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                  style = MaterialTheme.typography.bodySmall,
+                )
+              }
           }
         }
       }

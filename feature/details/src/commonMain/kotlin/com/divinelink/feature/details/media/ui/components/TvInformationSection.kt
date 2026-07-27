@@ -8,13 +8,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.extensions.toLocalDate
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.ui.SimpleInformationRow
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.extension.localizeFull
 import com.divinelink.core.ui.resources.core_ui_aired_episodes
 import com.divinelink.core.ui.resources.core_ui_first_air_date
 import com.divinelink.core.ui.resources.core_ui_last_air_date
@@ -54,26 +55,29 @@ fun TvInformationSection(
       )
     }
 
-    information.firstAirDate.toLocalDate().localizeFull()?.let { airDate ->
+    information.firstAirDate.toLocalDate()?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
       SimpleInformationRow(
         title = stringResource(UiString.core_ui_first_air_date),
         data = airDate,
       )
     }
 
-    information.lastAirDate.toLocalDate().localizeFull()?.let { airDate ->
+    information.lastAirDate.toLocalDate()?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
       SimpleInformationRow(
         title = stringResource(UiString.core_ui_last_air_date),
         data = airDate,
       )
     }
 
-    information.nextEpisodeAirDate?.toLocalDate().localizeFull()?.let { airDate ->
-      SimpleInformationRow(
-        title = stringResource(Res.string.feature_details_information_next_episode_air_date),
-        data = airDate,
-      )
-    }
+    information.nextEpisodeAirDate
+      ?.toLocalDate()
+      ?.formatLocalized(DateFormatStyle.LONG)
+      ?.let { airDate ->
+        SimpleInformationRow(
+          title = stringResource(Res.string.feature_details_information_next_episode_air_date),
+          data = airDate,
+        )
+      }
 
     SimpleInformationRow(
       title = stringResource(Res.string.feature_details_information_seasons),
