@@ -1,0 +1,5 @@
+🎉 Update v0.36.0
+
+- Add the ability to share a user's movie or show review
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

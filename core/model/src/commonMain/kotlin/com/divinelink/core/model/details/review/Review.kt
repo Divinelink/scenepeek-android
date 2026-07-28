@@ -7,4 +7,5 @@ data class Review(
   val rating: Int?,
   val content: String,
   val date: LocalDate?,
+  val url: String,
 )

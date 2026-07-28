@@ -89,4 +89,6 @@
   <string name="v54_rename_collections_to_saved">- Renamed "Collection" to "Saved" for local favorites</string>
   <string name="v54_add_support_to_save_people">- Added ability to save people to local favorites</string>
   <string name="v54_estonian_french_language">- Add Estonian &amp; French language setting</string>
+
+  <string name="v55_share_review_option">- Add the ability to share a user's movie or show review</string>
 </resources>

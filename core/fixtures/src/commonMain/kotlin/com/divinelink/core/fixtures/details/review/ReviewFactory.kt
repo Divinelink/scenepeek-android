@@ -11,6 +11,7 @@ object ReviewFactory {
     rating = 10,
     content = loremIpsum(100),
     date = "2017-02-13T00:00:00Z".toLocalDateTime()?.date,
+    url = "",
   )
 
   fun Review_2() = Review(
@@ -18,6 +19,7 @@ object ReviewFactory {
     rating = 6,
     content = loremIpsum(80),
     date = "2018-02-13T00:00:00Z".toLocalDateTime()?.date,
+    url = "",
   )
 
   fun Review_3() = Review(
@@ -25,6 +27,7 @@ object ReviewFactory {
     rating = 9,
     content = loremIpsum(60),
     date = "2019-02-13T00:00:00Z".toLocalDateTime()?.date,
+    url = "",
   )
 
   fun all() = listOf(
@@ -39,6 +42,7 @@ object ReviewFactory {
       rating = it,
       content = "content $it",
       date = "2017-02-13T00:00:00Z".toLocalDateTime()?.date,
+      url = "",
     )
   }
 
@@ -57,6 +61,7 @@ object ReviewFactory {
       "ornare interdum at eu quam. Vestibulum vel massa erat. Aenean quis sagittis" +
       "purus. Phasellus arcu purus, rutrum id consectetur non, bibendum at nibh.",
     date = "20122-10-22T00:00:00Z".toLocalDateTime()?.date,
+    url = "",
   )
 
   fun empty() = Review(
@@ -64,5 +69,6 @@ object ReviewFactory {
     rating = null,
     content = "",
     date = null,
+    url = "",
   )
 }
