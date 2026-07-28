@@ -69,6 +69,7 @@ import com.divinelink.feature.onboarding.resources.v52_italian_language
 import com.divinelink.feature.onboarding.resources.v54_add_support_to_save_people
 import com.divinelink.feature.onboarding.resources.v54_estonian_french_language
 import com.divinelink.feature.onboarding.resources.v54_rename_collections_to_saved
+import com.divinelink.feature.onboarding.resources.v55_share_review_option
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -305,6 +306,13 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v54_estonian_french_language)),
   )
 
+  val v55 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.36.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v55_share_review_option)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -329,5 +337,6 @@ object IntroSections {
     51 to v51,
     53 to v53,
     54 to v54,
+    55 to v55,
   )
 }

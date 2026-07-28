@@ -19,6 +19,7 @@
   <string name="core_ui_not_connected">You're offline</string>
   <string name="core_ui_select">Select</string>
   <string name="core_ui_share">Share</string>
+  <string name="core_ui_open">Open</string>
   <string name="core_ui_show_total_episodes_item">Show spoilers</string>
   <string name="core_ui_hide_total_episodes_item">Hide spoilers</string>
   <string name="core_ui_show_spoilers_tooltip">Show credits' episode count</string>
@@ -179,4 +180,5 @@
   <string name="core_ui_collapse">Collapse</string>
   <string name="core_ui_expand">Expand</string>
   <string name="core_ui_added_on_list">Added on list %1$s</string>
+  <string name="core_ui_show_review_actions_content_desc">Show review actions</string>
 </resources>

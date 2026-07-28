@@ -8,8 +8,9 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseAp
 fun ReviewsResponseApi.map(): List<Review> = this.results.map(ReviewResultsApi::map)
 
 private fun ReviewResultsApi.map(): Review = Review(
-  author = this.authorDetails.map(),
-  rating = this.authorDetails.rating?.toInt(),
-  content = this.content,
-  date = this.createdAt.toLocalDateTime()?.date,
+  author = authorDetails.map(),
+  rating = authorDetails.rating?.toInt(),
+  content = content,
+  date = createdAt.toLocalDateTime()?.date,
+  url = url,
 )

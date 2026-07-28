@@ -9,15 +9,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -35,20 +41,36 @@ import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.extension.getColorRating
 import com.divinelink.core.ui.fromHtml
+import com.divinelink.core.ui.modal.GenericModal
+import com.divinelink.core.ui.modal.GenericModalAction
+import com.divinelink.core.ui.resources.Res
+import com.divinelink.core.ui.resources.core_ui_show_review_actions_content_desc
 import com.divinelink.core.ui.text.SimpleExpandingText
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ReviewItemCard(
   modifier: Modifier = Modifier,
   review: Review,
 ) {
+  var showModal by rememberSaveable { mutableStateOf(false) }
+
+  if (showModal) {
+    GenericModal(
+      actions = GenericModalAction.forReview(review.url),
+      onDismiss = { showModal = false },
+    )
+  }
+
   Card(
     modifier = modifier
       .testTag(TestTags.Details.Reviews.REVIEW_CARD.format(review.content))
       .fillMaxWidth(),
   ) {
     Row(
-      modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(MaterialTheme.dimensions.keyline_16),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
       verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -73,6 +95,15 @@ fun ReviewItemCard(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
         }
+      }
+
+      Spacer(modifier = Modifier.weight(1f))
+
+      IconButton(onClick = { showModal = true }) {
+        Icon(
+          imageVector = Icons.Default.MoreVert,
+          contentDescription = stringResource(Res.string.core_ui_show_review_actions_content_desc),
+        )
       }
     }
     SimpleExpandingText(
