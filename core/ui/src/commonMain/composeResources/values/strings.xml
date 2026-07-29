@@ -43,6 +43,10 @@
   <string name="core_ui_screenplay">Screenplay</string>
   <string name="core_ui_novel">Novel</string>
   <string name="core_ui_creator">Creator</string>
+  <string name="core_ui_author">Author</string>
+  <string name="core_ui_composer">Composer</string>
+  <string name="core_ui_writer">Writer</string>
+  <string name="core_ui_story">Story</string>
   <plurals name="core_ui_season">
     <item quantity="one">Season</item>
     <item quantity="other">Seasons</item>

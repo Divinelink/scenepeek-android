@@ -29,7 +29,11 @@ sealed class PersonRole(val title: String?) {
 
   data object Director : PersonRole(null)
   data object Screenplay : PersonRole(null)
+  data object Writer : PersonRole(null)
   data object Novel : PersonRole(null)
+  data object Author : PersonRole(null)
+  data object Composer : PersonRole(null)
+  data object Story : PersonRole(null)
 
   data object Creator : PersonRole(null)
 
