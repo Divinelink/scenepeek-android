@@ -1,0 +1,25 @@
+CREATE TABLE SearchHistoryEntity (
+  mediaType TEXT NOT NULL,
+  mediaId INTEGER NOT NULL,
+  timestamp INTEGER NOT NULL,
+  PRIMARY KEY (mediaType, mediaId)
+);
+
+insertSearchQuery:
+INSERT OR REPLACE INTO SearchHistoryEntity (
+  mediaId,
+  mediaType,
+  timestamp
+)
+VALUES ?;
+
+fetchSearchHistory:
+SELECT * FROM SearchHistoryEntity
+ORDER BY timestamp;
+
+clearSearchHistory:
+DELETE FROM SearchHistoryEntity;
+
+removeItemFromSearch:
+DELETE FROM SearchHistoryEntity
+WHERE mediaId = ? AND mediaType = ?;
