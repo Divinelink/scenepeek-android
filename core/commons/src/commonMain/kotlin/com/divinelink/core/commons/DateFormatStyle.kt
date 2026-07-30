@@ -15,7 +15,7 @@ enum class DateFormatStyle { SHORT, MEDIUM, LONG, FULL }
  * MEDIUM_NO_DAY: Δεκ 2019 - Dec 2019
  */
 enum class DateFormat(val format: String) {
-  MEDIUM_NO_DAY("MMM yyyy")
+  MEDIUM_NO_DAY("MMM yyyy"),
 }
 
 expect fun LocalDate.formatLocalized(style: DateFormatStyle = DateFormatStyle.MEDIUM): String

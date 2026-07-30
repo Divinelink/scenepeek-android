@@ -121,8 +121,8 @@ fun KeywordsFiltersContent(
         }
       }
 
-      if (keywords.visibleOptions.isEmpty()) {
-        item {
+      item {
+        if (keywords.visibleOptions().isEmpty()) {
           BlankSlate(
             uiState = BlankSlateState.Custom(
               title = UIText.StringText(""),
@@ -137,7 +137,7 @@ fun KeywordsFiltersContent(
           modifier = Modifier.matchParentSize(),
           horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
         ) {
-          keywords.visibleOptions.forEach { keyword ->
+          keywords.visibleOptions().forEach { keyword ->
             key(keyword.id) {
               InputChip(
                 modifier = Modifier.animateItem(),
@@ -161,7 +161,7 @@ fun KeywordsFiltersContent(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       ElevatedButton(
-        enabled = keywords.visibleOptions.isNotEmpty(),
+        enabled = keywords.visibleOptions().isNotEmpty(),
         modifier = Modifier.weight(1f),
         onClick = {
           action(SelectFilterAction.ClearKeywords)

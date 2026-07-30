@@ -51,7 +51,7 @@ fun SelectFilterModalBottomSheet(
       )
       is FilterType.Searchable.Languages -> SelectableFilterList(
         titleRes = UiString.core_ui_language,
-        items = filterType.visibleOptions,
+        items = filterType.visibleOptions(),
         key = { it.code },
         isSelected = { it in filterType.selectedOptions },
         onItemClick = {
@@ -65,7 +65,7 @@ fun SelectFilterModalBottomSheet(
       )
       is FilterType.Searchable.Countries -> SelectableFilterList(
         titleRes = UiString.core_ui_country,
-        items = filterType.visibleOptions,
+        items = filterType.visibleOptions(),
         key = { it.code },
         isSelected = { it in filterType.selectedOptions },
         onItemClick = {

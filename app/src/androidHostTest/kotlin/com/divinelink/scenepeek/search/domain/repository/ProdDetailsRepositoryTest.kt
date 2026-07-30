@@ -695,10 +695,10 @@ class ProdDetailsRepositoryTest {
     )
 
     response shouldBe Result.success(
-        RatingDetails.Score(
-          voteAverage = 8.5,
-          voteCount = 1_000,
-        ),
+      RatingDetails.Score(
+        voteAverage = 8.5,
+        voteCount = 1_000,
+      ),
     )
   }
 

@@ -55,7 +55,7 @@ fun SelectGenresContent(
           bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
         ),
         titleRes = UiString.core_ui_genres,
-        items = filterType.visibleOptions,
+        items = filterType.visibleOptions(),
         key = { it.id },
         isSelected = { it in uiState.filterType.selectedOptions },
         onItemClick = { action(SelectFilterAction.SelectGenre(it)) },
