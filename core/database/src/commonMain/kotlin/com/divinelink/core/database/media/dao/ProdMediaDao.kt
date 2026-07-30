@@ -3,10 +3,12 @@ package com.divinelink.core.database.media.dao
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import app.cash.sqldelight.coroutines.mapToOneOrDefault
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.MediaItemEntity
+import com.divinelink.core.database.SearchHistoryEntity
 import com.divinelink.core.database.SeasonEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.media.mapper.map
@@ -501,5 +503,43 @@ class ProdMediaDao(
 
   override fun clearAllEpisodeRatings() = database.transaction {
     database.episodeRatingEntityQueries.clearAllEpisodeRatings()
+  }
+
+  override fun addToSearchHistory(media: MediaReference) = with(database) {
+    transaction {
+      searchHistoryEntityQueries.insertSearchQuery(
+        mediaId = media.mediaId,
+        mediaType = media.mediaType.value,
+        timestamp = clock.currentEpochSeconds().toLong(),
+      )
+    }
+  }
+
+  override fun clearSearchHistory() = with(database) {
+    transaction { searchHistoryEntityQueries.clearSearchHistory() }
+  }
+
+  override fun removeFromSearchHistory(media: MediaReference) {
+    database.searchHistoryEntityQueries.removeItemFromSearch(
+      mediaId = media.mediaId,
+      mediaType = media.mediaType.value,
+    )
+  }
+
+  override fun fetchSearchHistory(): Flow<List<SearchHistoryEntity>> = with(database) {
+    transactionWithResult {
+      searchHistoryEntityQueries
+        .fetchSearchHistory()
+        .asFlow()
+        .mapToList(dispatcher.io)
+    }
+  }
+
+  override fun selectByIds(ids: List<Long>): Flow<List<MediaItem.Media>> = with(database) {
+    transactionWithResult {
+      mediaItemEntityQueries.selectByIds(ids).asFlow().mapToList(dispatcher.io).map { list ->
+        list.mapNotNull { entity -> entity.map() }
+      }
+    }
   }
 }

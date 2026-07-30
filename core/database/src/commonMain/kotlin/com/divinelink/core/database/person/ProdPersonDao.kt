@@ -13,6 +13,7 @@ import com.divinelink.core.database.person.credits.CrewCreditsWithMedia
 import com.divinelink.core.database.person.credits.PersonCastCreditEntity
 import com.divinelink.core.database.person.credits.PersonCreditsEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
+import com.divinelink.core.database.person.mapper.map
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
@@ -272,4 +273,14 @@ class ProdPersonDao(
             }
         }
     }
+
+  override fun selectByIds(ids: List<Long>): Flow<List<MediaItem.Person>> = with(database) {
+    transactionWithResult {
+      personDetailsEntityQueries
+        .selectByIds(ids)
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { list -> list.map { entity -> entity.map() } }
+    }
+  }
 }

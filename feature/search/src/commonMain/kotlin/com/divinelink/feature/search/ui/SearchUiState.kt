@@ -14,6 +14,7 @@ data class SearchUiState(
   val forms: Map<SearchTab, SearchForm<MediaItem.Media>>,
   val canFetchMore: Map<SearchTab, Boolean>,
   val lastQuery: Map<SearchTab, String?>,
+  val history: List<MediaItem>,
 ) {
   companion object {
     fun initial() = SearchUiState(
@@ -54,6 +55,7 @@ data class SearchUiState(
           SearchTab.TV -> null
         }
       },
+      history = emptyList(),
     )
   }
 

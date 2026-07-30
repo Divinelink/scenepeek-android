@@ -11,11 +11,11 @@ INSERT OR REPLACE INTO SearchHistoryEntity (
   mediaType,
   timestamp
 )
-VALUES ?;
+VALUES (?,?,?);
 
 fetchSearchHistory:
 SELECT * FROM SearchHistoryEntity
-ORDER BY timestamp;
+ORDER BY timestamp DESC;
 
 clearSearchHistory:
 DELETE FROM SearchHistoryEntity;

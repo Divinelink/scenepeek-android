@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +28,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -63,6 +65,7 @@ fun AnimatedVisibilityScope.SearchScreen(
   val searchMovieTabState = rememberLazyGridState()
   val searchPeopleTabState = rememberLazyGridState()
   val searchTVTabState = rememberLazyGridState()
+  val historyScrollState = rememberLazyListState()
 
   LaunchedEffect(uiState.query) {
     if (uiState.query != uiState.selectedQuery) {
@@ -75,12 +78,19 @@ fun AnimatedVisibilityScope.SearchScreen(
     }
   }
 
-  LaunchedEffect(searchAllTabState, searchMovieTabState, searchPeopleTabState, searchTVTabState) {
+  LaunchedEffect(
+    searchAllTabState,
+    searchMovieTabState,
+    searchPeopleTabState,
+    searchTVTabState,
+    historyScrollState,
+  ) {
     snapshotFlow {
       searchAllTabState.isScrollInProgress ||
         searchPeopleTabState.isScrollInProgress ||
         searchTVTabState.isScrollInProgress ||
-        searchMovieTabState.isScrollInProgress
+        searchMovieTabState.isScrollInProgress ||
+        historyScrollState.isScrollInProgress
     }
       .distinctUntilChanged()
       .collect { isScrolling ->
@@ -168,11 +178,15 @@ fun AnimatedVisibilityScope.SearchScreen(
     },
     floatingActionButton = {
       DiscoverFab(
-        expanded = when (uiState.selectedTab) {
-          SearchTab.All -> searchAllTabState.showExpandedFab()
-          SearchTab.Movie -> searchMovieTabState.showExpandedFab()
-          SearchTab.People -> searchPeopleTabState.showExpandedFab()
-          SearchTab.TV -> searchTVTabState.showExpandedFab()
+        expanded = if (uiState.selectedQuery != null) {
+          when (uiState.selectedTab) {
+            SearchTab.All -> searchAllTabState.showExpandedFab()
+            SearchTab.Movie -> searchMovieTabState.showExpandedFab()
+            SearchTab.People -> searchPeopleTabState.showExpandedFab()
+            SearchTab.TV -> searchTVTabState.showExpandedFab()
+          }
+        } else {
+          historyScrollState.showExpandedFab()
         },
         onNavigate = onNavigate,
       )
@@ -183,13 +197,28 @@ fun AnimatedVisibilityScope.SearchScreen(
 
         SearchContent(
           uiState = uiState,
-          onNavigate = onNavigate,
+          onNavigate = { route ->
+            when (route) {
+              is Navigation.DetailsRoute -> viewModel.onAddToHistory(
+                mediaId = route.id,
+                mediaType = route.mediaType,
+              )
+              is Navigation.PersonRoute -> viewModel.onAddToHistory(
+                mediaId = route.id,
+                mediaType = MediaType.PERSON.value,
+              )
+              else -> Unit
+            }
+
+            onNavigate(route)
+          },
           onLoadNextPage = viewModel::onLoadNextPage,
           onRetryClick = viewModel::onRetryClick,
           searchAllTabState = searchAllTabState,
           searchMovieTabState = searchMovieTabState,
           searchPeopleTabState = searchPeopleTabState,
           searchTVTabState = searchTVTabState,
+          historyState = historyScrollState,
           onSwitchPreferences = switchViewButtonViewModel::onAction,
         )
       }

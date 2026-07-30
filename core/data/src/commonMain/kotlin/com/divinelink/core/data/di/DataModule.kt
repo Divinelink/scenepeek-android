@@ -21,6 +21,8 @@ import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.data.preferences.ProdPreferencesRepository
+import com.divinelink.core.data.search.ProdSearchRepository
+import com.divinelink.core.data.search.SearchRepository
 import com.divinelink.core.data.session.repository.ProdSessionRepository
 import com.divinelink.core.data.session.repository.RequestTokenManager
 import com.divinelink.core.data.session.repository.SessionRepository
@@ -42,5 +44,6 @@ val dataModule = module {
   singleOf(::ProdAuthRepository) { bind<AuthRepository>() }
   singleOf(::ProdAppInfoRepository) { bind<AppInfoRepository>() }
   singleOf(::ProdAwardsRepository) { bind<AwardsRepository>() }
+  singleOf(::ProdSearchRepository) { bind<SearchRepository>() }
   singleOf(::FilterRepository)
 }
