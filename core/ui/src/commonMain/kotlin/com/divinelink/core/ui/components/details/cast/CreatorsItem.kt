@@ -17,10 +17,14 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_author
+import com.divinelink.core.ui.resources.core_ui_composer
 import com.divinelink.core.ui.resources.core_ui_creator
 import com.divinelink.core.ui.resources.core_ui_director
 import com.divinelink.core.ui.resources.core_ui_novel
 import com.divinelink.core.ui.resources.core_ui_screenplay
+import com.divinelink.core.ui.resources.core_ui_story
+import com.divinelink.core.ui.resources.core_ui_writer
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -50,6 +54,10 @@ private fun CreatorItem(
   val screenplay = stringResource(UiString.core_ui_screenplay)
   val novel = stringResource(UiString.core_ui_novel)
   val creator = stringResource(UiString.core_ui_creator)
+  val author = stringResource(UiString.core_ui_author)
+  val composer = stringResource(UiString.core_ui_composer)
+  val writer = stringResource(UiString.core_ui_writer)
+  val story = stringResource(UiString.core_ui_story)
 
   TextButton(
     onClick = { onClick(person) },
@@ -71,6 +79,10 @@ private fun CreatorItem(
             PersonRole.Screenplay -> screenplay
             PersonRole.Novel -> novel
             PersonRole.Creator -> creator
+            PersonRole.Author -> author
+            PersonRole.Composer -> composer
+            PersonRole.Writer -> writer
+            PersonRole.Story -> story
             else -> ""
           }
         }

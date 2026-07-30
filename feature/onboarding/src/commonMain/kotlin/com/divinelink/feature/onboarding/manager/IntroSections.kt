@@ -69,6 +69,7 @@ import com.divinelink.feature.onboarding.resources.v52_italian_language
 import com.divinelink.feature.onboarding.resources.v54_add_support_to_save_people
 import com.divinelink.feature.onboarding.resources.v54_estonian_french_language
 import com.divinelink.feature.onboarding.resources.v54_rename_collections_to_saved
+import com.divinelink.feature.onboarding.resources.v55_enhance_movie_crew_credits
 import com.divinelink.feature.onboarding.resources.v55_share_review_option
 import com.divinelink.feature.onboarding.resources.Res as R
 
@@ -311,6 +312,7 @@ object IntroSections {
     IntroSection.WhatsNew("v0.36.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v55_share_review_option)),
+    IntroSection.Text(UIText.ResourceText(R.string.v55_enhance_movie_crew_credits)),
   )
 
   /**

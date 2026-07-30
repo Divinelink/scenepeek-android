@@ -91,4 +91,5 @@
   <string name="v54_estonian_french_language">- Add Estonian &amp; French language setting</string>
 
   <string name="v55_share_review_option">- Add the ability to share a user's movie or show review</string>
+  <string name="v55_enhance_movie_crew_credits">- Expanded movie crew credits to include authors, composers, and story writers</string>
 </resources>

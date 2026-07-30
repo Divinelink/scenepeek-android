@@ -31,14 +31,22 @@ fun List<CrewApi>.map() = this
         is PersonRole.Director -> 1
         is PersonRole.Screenplay -> 2
         is PersonRole.Novel -> 3
-        else -> 4
+        is PersonRole.Author -> 4
+        is PersonRole.Writer -> 5
+        is PersonRole.Composer -> 6
+        is PersonRole.Story -> 7
+        else -> 8
       }
     },
   )
 
 fun String.jobToPersonRole(): PersonRole? = when (this) {
+  CrewJob.AUTHOR.value -> PersonRole.Author
   CrewJob.DIRECTOR.value -> PersonRole.Director
   CrewJob.SCREENPLAY.value -> PersonRole.Screenplay
   CrewJob.NOVEL.value -> PersonRole.Novel
+  CrewJob.COMPOSER.value -> PersonRole.Composer
+  CrewJob.WRITER.value -> PersonRole.Writer
+  CrewJob.STORY.value -> PersonRole.Story
   else -> null
 }

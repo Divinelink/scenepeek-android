@@ -100,6 +100,10 @@ fun PersonItem(
           PersonRole.Creator,
           PersonRole.Novel,
           PersonRole.Screenplay,
+          PersonRole.Author,
+          PersonRole.Composer,
+          PersonRole.Writer,
+          PersonRole.Story,
           null,
             -> Unit
         }

@@ -128,7 +128,11 @@ fun SmallPersonItem(
         PersonRole.Director,
         PersonRole.Creator,
         PersonRole.Novel,
+        PersonRole.Writer,
         PersonRole.Screenplay,
+        PersonRole.Author,
+        PersonRole.Composer,
+        PersonRole.Story,
           -> Unit
       }
     }
