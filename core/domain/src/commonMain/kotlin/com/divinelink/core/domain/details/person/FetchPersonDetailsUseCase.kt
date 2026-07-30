@@ -12,14 +12,13 @@ import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.network.Resource
+import com.divinelink.core.network.getOrNull
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 data class PersonDetailsParams(
@@ -34,62 +33,43 @@ class FetchPersonDetailsUseCase(
 
   override fun execute(parameters: PersonDetailsParams): Flow<Result<PersonDetailsResult>> =
     channelFlow {
-      if (parameters.knownForDepartment != null) {
-        launch {
-          repository
-            .fetchPersonDetails(parameters.id)
-            .collect { result ->
-              when (result) {
-                is Resource.Error -> send(Result.failure(PersonDetailsResult.DetailsFailure))
-                is Resource.Loading -> send(
-                  Result.success(PersonDetailsResult.DetailsSuccess(result.data)),
-                )
-                is Resource.Success -> send(
-                  Result.success(PersonDetailsResult.DetailsSuccess(result.data)),
-                )
-              }
-            }
-        }
-      }
-
-      val asyncDetails = if (parameters.knownForDepartment == null) {
-        async {
-          repository
-            .fetchPersonDetails(parameters.id)
-            .map { result ->
-              when (result) {
-                is Resource.Error -> Result.failure(PersonDetailsResult.DetailsFailure)
-                is Resource.Loading -> Result.success(
-                  PersonDetailsResult.DetailsSuccess(result.data),
-                )
-                is Resource.Success -> Result.success(
-                  PersonDetailsResult.DetailsSuccess(result.data),
-                )
-              }
-            }
-            .first()
-        }
-      } else {
-        null
-      }
-
-      asyncDetails?.await()?.let { send(it) }
+      var resolvedDepartment = parameters.knownForDepartment
 
       launch {
-        val knownForDepartment = parameters.knownForDepartment
-          ?: asyncDetails?.await()?.data?.personDetails?.person?.knownForDepartment
-          ?: KnownForDepartment.Acting.value
+        repository.fetchPersonDetails(parameters.id).collect { resource ->
+          if (resolvedDepartment == null) {
+            resolvedDepartment = resource.getOrNull?.person?.knownForDepartment
+          }
 
-        repository.fetchPersonCredits(parameters.id)
+          val result = when (resource) {
+            is Resource.Error -> Result.failure(PersonDetailsResult.DetailsFailure)
+            is Resource.Loading -> Result.success(PersonDetailsResult.DetailsSuccess(resource.data))
+            is Resource.Success -> Result.success(PersonDetailsResult.DetailsSuccess(resource.data))
+          }
+          send(result)
+        }
+      }
+
+      launch {
+        if (resolvedDepartment == null) {
+          repository.fetchPersonDetails(parameters.id)
+            .first { it is Resource.Success || it is Resource.Loading }
+            .let { resolvedDepartment = it.getOrNull?.person?.knownForDepartment }
+        }
+
+        val finalDept = resolvedDepartment ?: KnownForDepartment.Acting.value
+
+        repository
+          .fetchPersonCredits(parameters.id)
           .catch { Napier.d("$it") }
           .collect { result ->
             when (result) {
               is Resource.Error -> Napier.d(result.error.message.toString())
               is Resource.Loading<PersonCombinedCredits?> -> result.data?.let { data ->
-                calculateCredits(knownForDepartment, data)
+                calculateCredits(finalDept, data)
               }
               is Resource.Success<PersonCombinedCredits?> -> result.data?.let { data ->
-                calculateCredits(knownForDepartment, data)
+                calculateCredits(finalDept, data)
               }
             }
           }
