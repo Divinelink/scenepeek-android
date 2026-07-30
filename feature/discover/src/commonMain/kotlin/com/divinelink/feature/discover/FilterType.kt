@@ -1,10 +1,12 @@
 package com.divinelink.feature.discover
 
+import androidx.compose.runtime.Composable
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.YearType
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import org.jetbrains.compose.resources.stringResource
 
 sealed interface FilterType {
 
@@ -12,17 +14,19 @@ sealed interface FilterType {
     val options: List<Any>
     val selectedOptions: List<Any>?
     val query: String?
-    val visibleOptions: List<Any>
+
+    @Composable
+    fun visibleOptions(): List<Any>
 
     data class Genres(
       override val options: List<Genre>,
       override val selectedOptions: List<Genre>,
       override val query: String?,
     ) : Searchable {
-      override val visibleOptions: List<Genre>
-        get() = query?.let {
-          options.filter { it.name.contains(other = query, ignoreCase = true) }
-        } ?: options
+      @Composable
+      override fun visibleOptions(): List<Genre> = query?.let {
+        options.filter { it.name.contains(other = query, ignoreCase = true) }
+      } ?: options
     }
 
     data class Languages(
@@ -30,10 +34,13 @@ sealed interface FilterType {
       override val selectedOptions: List<Language>,
       override val query: String?,
     ) : Searchable {
-      override val visibleOptions: List<Language>
-        get() = query?.let {
-          options.filter { it.name.contains(other = query, ignoreCase = true) }
-        } ?: options
+      @Composable
+      override fun visibleOptions(): List<Language> = query?.let { query ->
+        options.filter { language ->
+          language.name.contains(query, ignoreCase = true) ||
+            stringResource(language.nameRes).contains(query, ignoreCase = true)
+        }
+      } ?: options
     }
 
     data class Countries(
@@ -41,10 +48,13 @@ sealed interface FilterType {
       override val selectedOptions: List<Country>,
       override val query: String?,
     ) : Searchable {
-      override val visibleOptions: List<Country>
-        get() = query?.let {
-          options.filter { it.name.contains(other = query, ignoreCase = true) }
-        } ?: options
+      @Composable
+      override fun visibleOptions(): List<Country> = query?.let { query ->
+        options.filter { language ->
+          language.name.contains(query, ignoreCase = true) ||
+            stringResource(language.nameRes).contains(query, ignoreCase = true)
+        }
+      } ?: options
     }
   }
 
@@ -54,10 +64,10 @@ sealed interface FilterType {
     override val query: String?,
     val loading: Boolean,
   ) : Searchable {
-    override val visibleOptions: List<Keyword>
-      get() = selectedOptions
-        .plus(options)
-        .distinctBy { it.id }
+    @Composable
+    override fun visibleOptions(): List<Keyword> = selectedOptions
+      .plus(options)
+      .distinctBy { it.id }
   }
 
   data class VoteAverage(
