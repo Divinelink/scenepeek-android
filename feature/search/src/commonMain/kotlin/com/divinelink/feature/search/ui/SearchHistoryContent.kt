@@ -49,7 +49,10 @@ fun SearchHistoryContent(
     item {
       Row(
         modifier = Modifier
-          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+          .padding(
+            start = MaterialTheme.dimensions.keyline_16,
+            end = MaterialTheme.dimensions.keyline_8,
+          )
           .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
         verticalAlignment = Alignment.CenterVertically,
@@ -76,7 +79,10 @@ fun SearchHistoryContent(
         modifier = Modifier
           .animateItem()
           .clickable { item.toRoute()?.let { route -> onNavigate(route) } }
-          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+          .padding(
+            start = MaterialTheme.dimensions.keyline_16,
+            end = MaterialTheme.dimensions.keyline_4,
+          )
           .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
         verticalAlignment = Alignment.CenterVertically,

@@ -2,6 +2,7 @@ package com.divinelink.core.fixtures.model.media
 
 import com.divinelink.core.fixtures.loremIpsum
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
@@ -84,6 +85,16 @@ object MediaItemFactory {
     profilePath = null,
     knownForDepartment = "Directing",
     gender = Gender.MALE,
+  )
+
+  val steveCarell = MediaItem.Person(
+    id = 4495,
+    name = "Steve Carell",
+    profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
+    gender = Gender.MALE,
+    knownForDepartment = "Acting",
+    role = listOf(PersonRole.Unknown),
+    saved = false,
   )
 
   fun the40YearOldVirgin() = MediaItem.Media.Movie(

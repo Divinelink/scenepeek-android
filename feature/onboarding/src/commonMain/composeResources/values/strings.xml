@@ -93,4 +93,5 @@
   <string name="v55_share_review_option">- Add the ability to share a user's movie or show review</string>
   <string name="v55_enhance_movie_crew_credits">- Expanded movie crew credits to include authors, composers, and story writers</string>
   <string name="v55_discover_filters_search_in_app_language">- Allow searching in discover filters in selected app language</string>
+  <string name="v55_search_history">- Add search history to display recent searches</string>
 </resources>
