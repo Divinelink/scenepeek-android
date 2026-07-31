@@ -63,16 +63,25 @@ class SearchViewModel(
     searchStateManager.updateEntryPoint(SearchEntryPoint.SEARCH_TAB)
   }
 
-  fun onAddToHistory(
-    mediaId: Long,
-    mediaType: String,
-  ) {
+  fun onAction(action: SearchAction) {
+    when (action) {
+      SearchAction.ClearHistory -> searchRepository.clearSearchHistory()
+      is SearchAction.AddToHistory -> handleAddToHistory(action)
+      is SearchAction.RemoveFromHistory -> handleRemoveFromHistory(action)
+    }
+  }
+
+  private fun handleAddToHistory(action: SearchAction.AddToHistory) {
     searchRepository.addToSearchHistory(
       media = MediaReference.from(
-        mediaId = mediaId,
-        mediaType = mediaType,
+        mediaId = action.id,
+        mediaType = action.type,
       ),
     )
+  }
+
+  private fun handleRemoveFromHistory(action: SearchAction.RemoveFromHistory) {
+    searchRepository.removeFromHistory(media = action.media)
   }
 
   fun onSearch(

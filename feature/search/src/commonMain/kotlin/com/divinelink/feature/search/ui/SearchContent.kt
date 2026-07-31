@@ -1,29 +1,11 @@
 package com.divinelink.feature.search.ui
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
@@ -44,7 +26,6 @@ import com.divinelink.feature.search.resources.feature_search__initial_title
 import com.divinelink.feature.search.resources.search__empty_result_description
 import com.divinelink.feature.search.resources.search__empty_result_title
 
-@Suppress("NestedBlockDepth")
 @Composable
 fun SearchContent(
   uiState: SearchUiState,
@@ -56,6 +37,7 @@ fun SearchContent(
   searchPeopleTabState: LazyGridState,
   searchTVTabState: LazyGridState,
   historyState: LazyListState,
+  action: (SearchAction) -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
   uiState.forms[uiState.selectedTab]?.let { form ->
@@ -70,49 +52,12 @@ fun SearchContent(
           ),
         )
       } else {
-        ScenePeekLazyColumn(
+        SearchHistoryContent(
           state = historyState,
-        ) {
-          item {
-            Text(
-              modifier = Modifier.padding(
-                horizontal = MaterialTheme.dimensions.keyline_16,
-                vertical = MaterialTheme.dimensions.keyline_6,
-              ),
-              text = "Recent searches",
-              style = MaterialTheme.typography.titleSmall,
-            )
-          }
-          items(uiState.history) { item ->
-            Row(
-              modifier = Modifier
-                .clickable { item.toRoute()?.let { route -> onNavigate(route) } }
-                .padding(MaterialTheme.dimensions.keyline_16)
-                .fillMaxWidth(),
-              horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-              verticalAlignment = Alignment.CenterVertically,
-            ) {
-              Icon(
-                modifier = Modifier.size(MaterialTheme.dimensions.keyline_20),
-                imageVector = Icons.Default.History,
-                contentDescription = null,
-              )
-              Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-              ) {
-                Text(
-                  text = item.name,
-                  style = MaterialTheme.typography.bodyMedium,
-                  fontWeight = FontWeight.Bold,
-                )
-              }
-            }
-          }
-
-          item {
-            Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
-          }
-        }
+          action = action,
+          onNavigate = onNavigate,
+          history = uiState.history,
+        )
       }
       is SearchForm.Loading -> LoadingContent()
       is SearchForm.Error -> BlankSlate(

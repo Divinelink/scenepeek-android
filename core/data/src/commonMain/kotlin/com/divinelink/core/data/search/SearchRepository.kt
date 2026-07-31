@@ -9,4 +9,8 @@ interface SearchRepository {
   fun fetchSearchHistory(): Flow<List<MediaItem>>
 
   fun addToSearchHistory(media: MediaReference)
+
+  fun removeFromHistory(media: MediaReference)
+
+  fun clearSearchHistory()
 }

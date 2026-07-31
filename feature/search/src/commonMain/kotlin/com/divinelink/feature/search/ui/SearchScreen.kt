@@ -199,13 +199,11 @@ fun AnimatedVisibilityScope.SearchScreen(
           uiState = uiState,
           onNavigate = { route ->
             when (route) {
-              is Navigation.DetailsRoute -> viewModel.onAddToHistory(
-                mediaId = route.id,
-                mediaType = route.mediaType,
+              is Navigation.DetailsRoute -> viewModel.onAction(
+                SearchAction.AddToHistory(route.id, route.mediaType),
               )
-              is Navigation.PersonRoute -> viewModel.onAddToHistory(
-                mediaId = route.id,
-                mediaType = MediaType.PERSON.value,
+              is Navigation.PersonRoute -> viewModel.onAction(
+                SearchAction.AddToHistory(route.id, MediaType.PERSON.value),
               )
               else -> Unit
             }
@@ -219,6 +217,7 @@ fun AnimatedVisibilityScope.SearchScreen(
           searchPeopleTabState = searchPeopleTabState,
           searchTVTabState = searchTVTabState,
           historyState = historyScrollState,
+          action = viewModel::onAction,
           onSwitchPreferences = switchViewButtonViewModel::onAction,
         )
       }

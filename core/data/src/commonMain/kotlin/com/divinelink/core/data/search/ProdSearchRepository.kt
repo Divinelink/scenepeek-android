@@ -44,4 +44,12 @@ class ProdSearchRepository(
   override fun addToSearchHistory(media: MediaReference) {
     mediaDao.addToSearchHistory(media)
   }
+
+  override fun removeFromHistory(media: MediaReference) {
+    mediaDao.removeFromSearchHistory(media)
+  }
+
+  override fun clearSearchHistory() {
+    mediaDao.clearSearchHistory()
+  }
 }
