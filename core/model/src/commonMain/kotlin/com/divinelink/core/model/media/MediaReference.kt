@@ -9,7 +9,10 @@ data class MediaReference(
   val title: String? = null,
 ) {
   companion object {
-    fun from(mediaId: Long, mediaType: String) = MediaReference(
+    fun from(
+      mediaId: Long,
+      mediaType: String,
+    ) = MediaReference(
       mediaId = mediaId,
       mediaType = MediaType.from(mediaType),
     )

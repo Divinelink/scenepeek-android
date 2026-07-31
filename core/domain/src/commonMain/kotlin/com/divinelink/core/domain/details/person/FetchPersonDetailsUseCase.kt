@@ -14,11 +14,11 @@ import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.getOrNull
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 data class PersonDetailsParams(
@@ -34,11 +34,19 @@ class FetchPersonDetailsUseCase(
   override fun execute(parameters: PersonDetailsParams): Flow<Result<PersonDetailsResult>> =
     channelFlow {
       var resolvedDepartment = parameters.knownForDepartment
+      val resolvedDepartmentDeferred = CompletableDeferred<String?>()
 
       launch {
         repository.fetchPersonDetails(parameters.id).collect { resource ->
           if (resolvedDepartment == null) {
             resolvedDepartment = resource.getOrNull?.person?.knownForDepartment
+          }
+
+          if (
+            !resolvedDepartmentDeferred.isCompleted &&
+            (resource is Resource.Success || resource is Resource.Loading)
+          ) {
+            resolvedDepartmentDeferred.complete(resolvedDepartment)
           }
 
           val result = when (resource) {
@@ -48,15 +56,14 @@ class FetchPersonDetailsUseCase(
           }
           send(result)
         }
+
+        if (!resolvedDepartmentDeferred.isCompleted) {
+          resolvedDepartmentDeferred.complete(resolvedDepartment)
+        }
       }
 
       launch {
-        if (resolvedDepartment == null) {
-          repository.fetchPersonDetails(parameters.id)
-            .first { it is Resource.Success || it is Resource.Loading }
-            .let { resolvedDepartment = it.getOrNull?.person?.knownForDepartment }
-        }
-
+        val resolvedDepartment = parameters.knownForDepartment ?: resolvedDepartmentDeferred.await()
         val finalDept = resolvedDepartment ?: KnownForDepartment.Acting.value
 
         repository

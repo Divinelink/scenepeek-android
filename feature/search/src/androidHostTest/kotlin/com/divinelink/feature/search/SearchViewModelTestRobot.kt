@@ -2,8 +2,10 @@ package com.divinelink.feature.search
 
 import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.domain.search.SearchStateManager
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestSearchRepository
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.feature.search.ui.SearchUiState
 import com.divinelink.feature.search.ui.SearchViewModel
@@ -18,11 +20,13 @@ class SearchViewModelTestRobot {
   val mainDispatcherRule = MainDispatcherRule()
 
   private val fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
+  private val searchRepository = TestSearchRepository()
 
   fun buildViewModel() = apply {
     viewModel = SearchViewModel(
       fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
       searchStateManager = SearchStateManager(),
+      searchRepository = searchRepository.mock,
     )
   }
 
@@ -60,6 +64,10 @@ class SearchViewModelTestRobot {
 
   fun onSelectTab(tab: SearchTab) = apply {
     viewModel.onSelectTab(tab)
+  }
+
+  fun onAddToHistory(media: MediaReference) = apply {
+    viewModel.onAddToHistory(media.mediaId, media.mediaType.value)
   }
 
   suspend fun delay(timeInMillis: Long) = apply {

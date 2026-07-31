@@ -46,6 +46,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
+import com.divinelink.core.testing.repository.TestSearchRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
@@ -132,6 +133,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var authRepository: TestAuthRepository
   private lateinit var detailsRepository: TestDetailsRepository
   private lateinit var appInfoRepository: TestAppInfoRepository
+  private lateinit var searchRepository: TestSearchRepository
 
   // Onboarding use cases
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
@@ -161,6 +163,7 @@ class ScenePeekAppTest : ComposeTest() {
     authRepository = TestAuthRepository()
     detailsRepository = TestDetailsRepository()
     appInfoRepository = TestAppInfoRepository()
+    searchRepository = TestSearchRepository()
 
     startKoin {
       modules(
@@ -316,6 +319,7 @@ class ScenePeekAppTest : ComposeTest() {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
         searchStateManager = searchStateManager,
+        searchRepository = searchRepository.mock,
       )
     }
 
@@ -395,6 +399,7 @@ class ScenePeekAppTest : ComposeTest() {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
         searchStateManager = searchStateManager,
+        searchRepository = searchRepository.mock,
       )
     }
 
@@ -487,6 +492,7 @@ class ScenePeekAppTest : ComposeTest() {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
         searchStateManager = searchStateManager,
+        searchRepository = searchRepository.mock,
       )
     }
 
@@ -555,6 +561,7 @@ class ScenePeekAppTest : ComposeTest() {
       SearchViewModel(
         fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
         searchStateManager = searchStateManager,
+        searchRepository = searchRepository.mock,
       )
     }
 

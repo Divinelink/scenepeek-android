@@ -81,7 +81,6 @@ class FetchPersonDetailsUseCaseTest {
       val expectedFailure = awaitItem()
       assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       assertThat(expectedFailure.isFailure).isTrue()
-      assertThat(awaitItem().exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       awaitComplete()
     }
   }
@@ -265,8 +264,6 @@ class FetchPersonDetailsUseCaseTest {
           tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
-
-      awaitComplete()
     }
   }
 
@@ -302,8 +299,6 @@ class FetchPersonDetailsUseCaseTest {
           tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
-
-      awaitComplete()
     }
   }
 

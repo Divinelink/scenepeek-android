@@ -63,7 +63,10 @@ class SearchViewModel(
     searchStateManager.updateEntryPoint(SearchEntryPoint.SEARCH_TAB)
   }
 
-  fun onAddToHistory(mediaId: Long, mediaType: String) {
+  fun onAddToHistory(
+    mediaId: Long,
+    mediaType: String,
+  ) {
     searchRepository.addToSearchHistory(
       media = MediaReference.from(
         mediaId = mediaId,
