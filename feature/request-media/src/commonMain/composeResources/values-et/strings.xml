@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_request_media_destination_server">Sihtserver</string>
+    <string name="feature_request_media_root_folder">Juurkaust</string>
+    <string name="feature_request_media_quality_profile">Kvaliteediprofiil</string>
+    <string name="feature_request_media_default">Vaikimisi</string>
+    <string name="feature_request_media_cancel_request_success">Päringu katkestamine õnnestus</string>
+    <string name="feature_request_media_cancel_request_failure">Päringu katkestamine ei õnnestunud</string>
+    <string name="feature_request_media_update_request_success">Päringu uuendamine õnnestus</string>
+    <string name="feature_request_media_update_request_failure">Päringu uuendamine ei õnnestunud</string>
+    <string name="feature_request_media_success_request">Päring on kenasti tehtud: %1$s</string>
+    <string name="feature_request_media_failed_request">Päring ei õnnestunud: %1$s</string>
+    <string name="feature_request_media_request_exists">Sellise meediumi kohta on päring juba olemas.</string>
+</resources>

@@ -14,4 +14,5 @@
     <string name="feature_onboarding_link_handling_page_description"><![CDATA[Το ScenePeek μπορεί να ανοίξει <strong>URLs</strong> από τo <strong>IMDb</strong> &amp; <strong>TMDB</strong> μέσα στην εφαρμογή. Αυτό μπορεί να είναι χρήσιμο για το άνοιγμα συνδέσμων προς ταινίες, σειρές και άτομα απευθείας μέσα στην εφαρμογή.]]></string>
     <string name="v50_app_language">- Προσθήκη ρύθμισης γλώσσας εφαρμογής με ελληνικές και γερμανικές μεταφράσεις (kudos στον shadow2209!)</string>
     <string name="v50_metadata_language">- Προσθήκη ρύθμισης γλώσσας περιεχομένου με πολλές επιλογές: Ισπανικά, Γαλλικά, Γερμανικά, Πορτογαλικά, Ιταλικά κ.λπ. Μεταβείτε στις Ρυθμίσεις &gt; Εμφάνιση για να ορίσετε την προτίμησή σας.</string>
+    <string name="v55_share_review_option">- Προσθήκη δυνατότητας κοινοποίησης της κριτικής ταινίας ή σειράς ενός χρήστη</string>
 </resources>

@@ -50,7 +50,7 @@
     <string name="feature_details_no_movies_available">Nessun film disponibile</string>
     <string name="feature_details_no_movies_available_desc">%1$s non è ancora apparso in alcun film.</string>
     <string name="feature_details_no_tv_shows_available">Nessun programma TV disponibile</string>
-    <string name="feature_details_no_tv_shows_available_desc">%1$s non è ancora apparso in alcun programma televisivo.</string>
+    <string name="feature_details_no_tv_shows_available_desc">%1$s non è ancora apparso in alcuna serie TV.</string>
     <string name="feature_details_no_cast_available">Nessun cast disponibile</string>
     <string name="feature_details_no_cast_available_desc">Non abbiamo informazioni sul cast per %1$s.</string>
     <string name="feature_details_no_recommendation_available">Nessun consigliato disponibile</string>

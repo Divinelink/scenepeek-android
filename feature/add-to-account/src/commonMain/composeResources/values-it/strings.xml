@@ -26,4 +26,10 @@
     <string name="rating_label_8">Davvero buono</string>
     <string name="rating_label_9">Stupendo</string>
     <string name="rating_label_10">Campione</string>
+    <plurals name="feature_add_to_account_remove_items_confirmation">
+        <item quantity="one"><![CDATA[Rimuovere <b>%1$s </b> elemento da <b>%2$s?</b>\?]]></item>
+        <item quantity="many"><![CDATA[Rimuovere <b>%1$s </b>elementi da <b>%2$s?</b>\?]]></item>
+        <item quantity="other"><![CDATA[Rimuovere <b>%1$s </b>elementi da <b>%2$s?</b>\?]]></item>
+    </plurals>
+    <string name="rating_label_2">Spazzatura</string>
 </resources>

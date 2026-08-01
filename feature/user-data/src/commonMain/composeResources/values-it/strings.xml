@@ -3,7 +3,7 @@
     <string name="feature_user_data_empty_watchlist">La tua watchlist è vuota</string>
     <string name="feature_user_data_empty_watchlist_description">Inizia a esplorare, aggiungi alla tua watchlist per vederli qui!</string>
     <string name="feature_user_data_empty_movies_ratings">Non hai valutato nessun film</string>
-    <string name="feature_user_data_empty_tv_shows_ratings">Non hai valutato nessun programma Tv</string>
+    <string name="feature_user_data_empty_tv_shows_ratings">Non hai valutato nessuna Serie</string>
     <string name="feature_user_data_empty_movies_rating_description">Inizia a esplorare, valuta i film per vederli qui!</string>
     <string name="feature_user_data_empty_shows_rating_description">Inizia a esplorare, valuta programmi per vederli qui!</string>
     <string name="feature_user_data_login_rated_description">Devi essere connesso per visualizzare le tue valutazioni.</string>

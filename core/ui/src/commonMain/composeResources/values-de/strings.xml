@@ -135,8 +135,6 @@
         <item quantity="one">1 Filter anwenden</item>
         <item quantity="other">%1$s Filter anwenden</item>
     </plurals>
-    <string name="core_ui_localized_date_full">%2$s. %1$s, %3$s</string>
-    <string name="core_ui_localized_month_year">%1$s %2$s</string>
     <string name="core_ui_no_cast_available">Keine Besetzung verfügbar</string>
     <string name="core_ui_no_cast_available_description">Wir haben keine Informationen über die Besetzung von %1$s</string>
     <string name="core_ui_no_guest_stars_available">Keine Gastauftritte</string>

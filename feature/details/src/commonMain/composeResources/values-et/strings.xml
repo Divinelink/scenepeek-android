@@ -1,3 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_details__watchlist">Vaatamiste loend</string>
+    <string name="feature_details__add_to_list">Lisa loendisse</string>
+    <string name="feature_details__favorite">Lemmik</string>
+    <string name="details__added_to_watchlist">„%1$s“ on lisatud vaatamiste loendisse</string>
+    <string name="details__removed_from_watchlist">„%1$s“ on eemaldatud vaatamiste loendist</string>
+    <string name="details__must_be_logged_in_to_watchlist">Oma vaatamiste loendi nägemiseks logi palun sisse.</string>
+    <string name="added_to_favorites_message">„%1$s“ on lisatud lemmikuks</string>
+    <string name="removed_from_favorites_message">„%1$s“ on eemaldatud lemmikute seast</string>
+    <string name="must_be_logged_in_to_mark_as_favorite">Oma lemmikute nägemiseks logi palun sisse.</string>
+    <string name="feature_details_genres">Žanrid</string>
+    <string name="feature_details_information">Teave</string>
+    <string name="feature_details_jellyseerr_success_request_delete">Päringu kustutamine õnnestus</string>
+    <string name="feature_details_jellyseerr_success_media_delete"><b>%1$s</b> meediumi eemaldamine õnnestus</string>
+    <string name="feature_details_jellyseerr_failure_media_delete"><b>%1$s</b> meediumi eemaldamine ei õnnestunud</string>
+    <string name="feature_details_jellyseerr_failed_request_delete">Päringu kustutamine ei õnnestunud</string>
+    <string name="feature_details_manage_movie">Halda filmi</string>
+    <string name="feature_details_manage_tv">Halda telesarja</string>
+    <string name="feature_details_season">%1$s. hooaeg</string>
+    <string name="feature_details_personal_info_section">Isiklik teave</string>
+    <string name="feature_details_known_for_section">Tuntud kui</string>
+    <string name="feature_details_gender_section">Sugu</string>
+    <string name="feature_details_birthday_section">Sünnipäev</string>
+    <string name="feature_details_day_of_death_section">Surma kuupäev</string>
+    <string name="feature_details_biography_section">Elulugu</string>
+    <string name="feature_details_place_of_birth_section">Sünnikoht</string>
+    <string name="feature_details_person_credits_known_for_section">Tuntud kui</string>
+</resources>

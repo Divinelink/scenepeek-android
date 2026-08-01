@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_request_media_destination_server">Server di destinazione</string>
+    <string name="feature_request_media_root_folder">Cartella radice</string>
+    <string name="feature_request_media_quality_profile">Profilo di qualità</string>
+    <string name="feature_request_media_default">Predefinito</string>
+    <string name="feature_request_media_cancel_request_success">Richiesta cancellata con successo</string>
+    <string name="feature_request_media_cancel_request_failure">Impossibile annullare la richiesta</string>
+    <string name="feature_request_media_update_request_success">Richiesta aggiornata con successo</string>
+    <string name="feature_request_media_update_request_failure">Non è possibile aggiornare la richiesta</string>
+    <string name="feature_request_media_success_request">%1$s richiesto con successo</string>
+    <string name="feature_request_media_failed_request">Impossibile richiedere %1$s</string>
+    <string name="feature_request_media_request_exists">La richiesta di questo elemento esiste già.</string>
+</resources>
