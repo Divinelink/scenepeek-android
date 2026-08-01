@@ -13,6 +13,8 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+import "./helpers/codeberg_helper.rb"
+
 default_platform(:android)
 
 # Read version info from libs.versions.toml
@@ -125,6 +127,71 @@ platform :android do
     )
   end
 
+  desc "Submit a new Codeberg release"
+  lane :codeberg do
+    flavors = ["fdroid", "full"]
+    uploaded_apks = []
+
+    release_dir = "../release"
+    FileUtils.mkdir_p(release_dir) unless File.directory?(release_dir)
+
+    flavors.each do |flavor_name|
+      gradle(
+        task: "assemble#{flavor_name}Release",
+        project_dir: "..",
+        properties: {
+          "flavor"                                  => flavor_name,
+          "android.injected.signing.store.file"     => keystore_path,
+          "android.injected.signing.store.password" => keystore_props["keystore.password"],
+          "android.injected.signing.key.alias"      => keystore_props["keyAlias"],
+          "android.injected.signing.key.password"   => keystore_props["keyPassword"],
+        }
+      )
+
+      apk_original = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+
+      UI.message("Gradle output path for #{flavor_name}: #{apk_original}")
+
+      apk_filename = "scenepeek-#{flavor_name}-#{version_name}.apk"
+      apk_renamed = File.join(release_dir, apk_filename)
+
+      if File.exist?(apk_original)
+        FileUtils.cp(apk_original, apk_renamed)
+        uploaded_apks << File.absolute_path(apk_renamed)
+        UI.success("Prepared: #{apk_renamed}")
+      else
+        UI.user_error!("Could not find APK for #{flavor_name} at: #{apk_original}")
+      end
+    end
+
+    tag_name = "v#{version_name}"
+    UI.message("Creating Git tag: #{tag_name}...")
+    existing_tag = sh("git tag -l #{tag_name}").strip rescue nil
+
+    if existing_tag.empty?
+      sh("git tag -a #{tag_name} -m 'Release #{tag_name}'")
+      UI.success("Tag #{tag_name} created locally")
+    else
+      UI.message("Tag #{tag_name} already exists locally")
+    end
+
+    UI.message("Pushing tag to Codeberg...")
+    begin
+      sh("git push origin #{tag_name} --no-verify")
+      UI.success("Tag pushed successfully")
+    rescue => e
+      UI.message("Tag might already exist on remote: #{e.message}")
+    end
+
+    uploaded_apks.each do |apk_path|
+      codeberg_release(
+        tag_name: tag_name,
+        release_name: "v#{version_name}",
+        file_path: apk_path,
+      )
+    end
+  end
+
   desc "Submit a new Beta Build"
   lane :beta do
     gradle(
@@ -152,4 +219,169 @@ platform :android do
         test
         lint
       end
+end
+
+lane :debug_tags do
+  UI.message("Fetching tags...")
+  sh("git fetch --tags")
+
+  UI.message("Listing tags:")
+  sh("git tag -l 'v*' --sort=-v:refname")
+
+  prev = CodebergHelper.get_previous_tag
+  UI.message("Detected Previous Tag: #{prev}")
+end
+
+lane :codeberg_release do |options|
+  repo_owner = options[:repo_owner] || keystore_props["CODEBERG_OWNER"]
+  repo_name = options[:repo_name] || keystore_props["CODEBERG_REPO"]
+  tag_name = options[:tag_name]
+  release_name = options[:release_name] || tag_name
+  file_path = options[:file_path]
+  api_token = options[:api_token] || keystore_props["CODEBERG_TOKEN"]
+
+  require 'net/http'
+  require 'json'
+  require 'uri'
+
+  unless api_token
+    UI.user_error!("Codeberg API token not provided")
+  end
+
+  unless tag_name
+    UI.user_error!("tag_name is required")
+  end
+
+  unless file_path && File.exist?(file_path)
+    UI.user_error!("file_path is required and must exist: #{file_path}")
+  end
+
+  if options[:body].nil?
+    UI.message("Fetching merged PRs from Codeberg...")
+
+    merged_prs = CodebergHelper.fetch_merged_prs(
+      repo_owner: repo_owner,
+      repo_name: repo_name,
+      api_token: api_token,
+      from_tag: CodebergHelper.get_previous_tag
+    )
+
+    release_body = CodebergHelper.generate_pr_release_notes(merged_prs: merged_prs)
+    UI.message("Generated release notes:\n#{release_body}")
+  else
+    release_body = options[:body]
+  end
+
+  url = URI("https://codeberg.org/api/v1/repos/#{repo_owner}/#{repo_name}/releases/tags/#{tag_name}")
+  http = Net::HTTP.new(url.host, url.port)
+  http.use_ssl = true
+
+  request = Net::HTTP::Get.new(url)
+  request['Authorization'] = "token #{api_token}"
+
+  response = http.request(request)
+
+  release_id = nil
+
+  if response.code == '200'
+    release_data = JSON.parse(response.body)
+    release_id = release_data['id']
+    UI.message("Release #{tag_name} already exists (ID: #{release_id})")
+
+    if !release_body.empty?
+      UI.message("Updating release notes...")
+
+      update_payload = {
+        name: release_name,
+        body: release_body,
+        prerelease: options[:prerelease] || false
+      }.to_json
+
+      update_url = URI("https://codeberg.org/api/v1/repos/#{repo_owner}/#{repo_name}/releases/#{release_id}")
+      update_request = Net::HTTP::Patch.new(update_url)
+      update_request['Authorization'] = "token #{api_token}"
+      update_request['Content-Type'] = 'application/json'
+      update_request.body = update_payload
+
+      update_response = http.request(update_request)
+
+      if update_response.code == '200'
+        UI.success("Release notes updated successfully")
+      else
+        UI.message("Warning: Failed to update release notes: #{update_response.code}")
+      end
+    end
+
+  elsif response.code == '404'
+    UI.message("Checking if Git tag exists...")
+
+    existing_tag = sh("git tag -l #{tag_name}").strip rescue nil
+
+    if existing_tag.empty?
+      UI.message("Creating Git tag: #{tag_name}")
+      sh("git tag -a #{tag_name} -m 'Release #{tag_name}'")
+
+      UI.message("Pushing tag to remote...")
+      begin
+        sh("git push origin #{tag_name}")
+        UI.success("Tag created and pushed")
+      rescue => e
+        UI.message("Tag might already exist on remote: #{e.message}")
+      end
+    else
+      UI.message("Tag #{tag_name} already exists locally")
+    end
+
+    UI.message("Creating new release #{tag_name}...")
+
+    release_payload = {
+      tag_name: tag_name,
+      name: release_name,
+      body: release_body,
+      prerelease: options[:prerelease] || false
+    }.to_json
+
+    create_url = URI("https://codeberg.org/api/v1/repos/#{repo_owner}/#{repo_name}/releases")
+    create_request = Net::HTTP::Post.new(create_url)
+    create_request['Authorization'] = "token #{api_token}"
+    create_request['Content-Type'] = 'application/json'
+    create_request.body = release_payload
+
+    create_response = http.request(create_request)
+
+    if create_response.code != '201'
+      UI.user_error!("Failed to create release: #{create_response.code} - #{create_response.body}")
+    end
+
+    release_data = JSON.parse(create_response.body)
+    release_id = release_data['id']
+    UI.success("Release created with ID: #{release_id}")
+  else
+    UI.user_error!("Failed to check release: #{response.code} - #{response.body}")
+  end
+
+  filename = File.basename(file_path)
+  UI.message("Uploading asset: #{filename}")
+
+  upload_url = "https://codeberg.org/api/v1/repos/#{repo_owner}/#{repo_name}/releases/#{release_id}/assets"
+
+  upload_response = sh(
+    "curl", "-s", "-X", "POST",
+    upload_url,
+    "-H", "Authorization: token #{api_token}",
+    "-F", "attachment=@#{file_path}"
+  )
+
+  begin
+    upload_data = JSON.parse(upload_response)
+
+    if upload_data['id']
+      UI.success("Asset uploaded successfully!")
+      UI.message("Download URL: #{upload_data['browser_download_url']}")
+    else
+      UI.user_error!("Failed to upload asset: #{upload_response}")
+    end
+  rescue JSON::ParserError => e
+    UI.user_error!("Failed to parse upload response: #{upload_response}\nError: #{e.message}")
+  end
 end

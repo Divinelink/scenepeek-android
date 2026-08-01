@@ -13,6 +13,25 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### debug_tags
+
+```sh
+[bundle exec] fastlane debug_tags
+```
+
+
+
+### codeberg_release
+
+```sh
+[bundle exec] fastlane codeberg_release
+```
+
+
+
+----
+
+
 ## Android
 
 ### android test
@@ -46,6 +65,14 @@ Deploy a new version to the Google Play
 ```
 
 Submit a new GitHub release
+
+### android codeberg
+
+```sh
+[bundle exec] fastlane android codeberg
+```
+
+Submit a new Codeberg release
 
 ### android beta
 
