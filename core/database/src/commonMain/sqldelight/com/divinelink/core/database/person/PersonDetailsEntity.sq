@@ -68,3 +68,6 @@ fetchPersonById:
 SELECT *
 FROM PersonDetailsEntity
 WHERE id = ?;
+
+selectByIds:
+SELECT * FROM PersonDetailsEntity WHERE id IN :ids;

@@ -1,6 +1,7 @@
 package com.divinelink.feature.search
 
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -48,6 +49,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
+        historyState = rememberLazyListState(),
         onSwitchPreferences = {},
       )
     }
@@ -81,6 +83,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
+        historyState = rememberLazyListState(),
         onSwitchPreferences = {},
       )
     }
@@ -116,6 +119,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
+        historyState = rememberLazyListState(),
         onSwitchPreferences = {},
       )
     }
@@ -155,6 +159,7 @@ class SearchContentTest : ComposeTest() {
           searchMovieTabState = rememberLazyGridState(),
           searchPeopleTabState = rememberLazyGridState(),
           searchTVTabState = rememberLazyGridState(),
+          historyState = rememberLazyListState(),
           onSwitchPreferences = {},
         )
       }
@@ -189,6 +194,7 @@ class SearchContentTest : ComposeTest() {
         searchMovieTabState = rememberLazyGridState(),
         searchPeopleTabState = rememberLazyGridState(),
         searchTVTabState = rememberLazyGridState(),
+        historyState = rememberLazyListState(),
         onSwitchPreferences = {},
       )
     }

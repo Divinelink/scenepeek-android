@@ -34,3 +34,6 @@ VALUES ?;
 selectMediaItemByIdAndType:
 SELECT * FROM MediaItemEntity
 WHERE id = ? AND mediaType = ?;
+
+selectByIds:
+SELECT * FROM MediaItemEntity WHERE id IN :ids;

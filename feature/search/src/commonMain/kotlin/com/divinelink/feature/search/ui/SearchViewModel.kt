@@ -2,11 +2,13 @@ package com.divinelink.feature.search.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.data.search.SearchRepository
 import com.divinelink.core.domain.search.FetchMultiInfoSearchUseCase
 import com.divinelink.core.domain.search.MultiSearchParameters
 import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.tab.SearchTab
 import kotlinx.coroutines.Job
@@ -15,6 +17,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,6 +26,7 @@ import kotlinx.coroutines.launch
 class SearchViewModel(
   private val fetchMultiInfoSearchUseCase: FetchMultiInfoSearchUseCase,
   private val searchStateManager: SearchStateManager,
+  private val searchRepository: SearchRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState.initial())
@@ -42,10 +47,41 @@ class SearchViewModel(
         }
       }
     }
+
+    searchRepository
+      .fetchSearchHistory()
+      .distinctUntilChanged()
+      .onEach { history ->
+        _uiState.update { state ->
+          state.copy(history = history)
+        }
+      }
+      .launchIn(viewModelScope)
   }
 
   fun updateEntryPoint() {
     searchStateManager.updateEntryPoint(SearchEntryPoint.SEARCH_TAB)
+  }
+
+  fun onAction(action: SearchAction) {
+    when (action) {
+      SearchAction.ClearHistory -> searchRepository.clearSearchHistory()
+      is SearchAction.AddToHistory -> handleAddToHistory(action)
+      is SearchAction.RemoveFromHistory -> handleRemoveFromHistory(action)
+    }
+  }
+
+  private fun handleAddToHistory(action: SearchAction.AddToHistory) {
+    searchRepository.addToSearchHistory(
+      media = MediaReference.from(
+        mediaId = action.id,
+        mediaType = action.type,
+      ),
+    )
+  }
+
+  private fun handleRemoveFromHistory(action: SearchAction.RemoveFromHistory) {
+    searchRepository.removeFromHistory(media = action.media)
   }
 
   fun onSearch(

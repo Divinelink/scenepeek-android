@@ -1,0 +1,6 @@
+CREATE TABLE SearchHistoryEntity (
+  mediaType TEXT NOT NULL,
+  mediaId INTEGER NOT NULL,
+  timestamp INTEGER NOT NULL,
+  PRIMARY KEY (mediaType, mediaId)
+);

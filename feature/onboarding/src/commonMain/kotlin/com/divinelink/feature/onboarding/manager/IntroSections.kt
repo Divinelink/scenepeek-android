@@ -71,6 +71,7 @@ import com.divinelink.feature.onboarding.resources.v54_estonian_french_language
 import com.divinelink.feature.onboarding.resources.v54_rename_collections_to_saved
 import com.divinelink.feature.onboarding.resources.v55_discover_filters_search_in_app_language
 import com.divinelink.feature.onboarding.resources.v55_enhance_movie_crew_credits
+import com.divinelink.feature.onboarding.resources.v55_search_history
 import com.divinelink.feature.onboarding.resources.v55_share_review_option
 import com.divinelink.feature.onboarding.resources.Res as R
 
@@ -315,6 +316,7 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v55_share_review_option)),
     IntroSection.Text(UIText.ResourceText(R.string.v55_enhance_movie_crew_credits)),
     IntroSection.Text(UIText.ResourceText(R.string.v55_discover_filters_search_in_app_language)),
+    IntroSection.Text(UIText.ResourceText(R.string.v55_search_history)),
   )
 
   /**

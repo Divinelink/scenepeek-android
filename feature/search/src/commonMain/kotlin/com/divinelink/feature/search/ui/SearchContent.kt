@@ -1,6 +1,7 @@
 package com.divinelink.feature.search.ui
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,7 +26,6 @@ import com.divinelink.feature.search.resources.feature_search__initial_title
 import com.divinelink.feature.search.resources.search__empty_result_description
 import com.divinelink.feature.search.resources.search__empty_result_title
 
-@Suppress("NestedBlockDepth")
 @Composable
 fun SearchContent(
   uiState: SearchUiState,
@@ -36,18 +36,29 @@ fun SearchContent(
   searchMovieTabState: LazyGridState,
   searchPeopleTabState: LazyGridState,
   searchTVTabState: LazyGridState,
+  historyState: LazyListState,
+  action: (SearchAction) -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
   uiState.forms[uiState.selectedTab]?.let { form ->
     when (form) {
-      is SearchForm.Initial -> BlankSlate(
-        modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
-        uiState = BlankSlateState.Custom(
-          icon = null,
-          title = UIText.ResourceText(Res.string.feature_search__initial_title),
-          description = UIText.ResourceText(Res.string.feature_search__initial_description),
-        ),
-      )
+      is SearchForm.Initial -> if (uiState.history.isEmpty()) {
+        BlankSlate(
+          modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+          uiState = BlankSlateState.Custom(
+            icon = null,
+            title = UIText.ResourceText(Res.string.feature_search__initial_title),
+            description = UIText.ResourceText(Res.string.feature_search__initial_description),
+          ),
+        )
+      } else {
+        SearchHistoryContent(
+          state = historyState,
+          action = action,
+          onNavigate = onNavigate,
+          history = uiState.history,
+        )
+      }
       is SearchForm.Loading -> LoadingContent()
       is SearchForm.Error -> BlankSlate(
         modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),

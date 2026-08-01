@@ -55,4 +55,6 @@ interface PersonDao {
     season: Int,
     episode: Int,
   ): Flow<List<MediaItem.Person>>
+
+  fun selectByIds(ids: List<Long>): Flow<List<MediaItem.Person>>
 }

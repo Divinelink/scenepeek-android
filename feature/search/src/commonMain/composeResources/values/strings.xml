@@ -2,9 +2,8 @@
 <resources>
   <string name="feature_search__initial_title">Search</string>
   <string name="feature_search__initial_description">Find movies, TV shows and people.</string>
-
   <string name="search__empty_result_title">Oops. We couldn't find that.</string>
   <string name="search__empty_result_description">Try searching for something else.</string>
-
+  <string name="recent_searches">Recent searches</string>
   <string name="feature_search_settings_button_content_description">Go to settings button</string>
 </resources>

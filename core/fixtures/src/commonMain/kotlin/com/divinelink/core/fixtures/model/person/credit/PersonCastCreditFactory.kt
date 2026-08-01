@@ -44,24 +44,24 @@ object PersonCastCreditFactory {
   )
 
   fun all() = listOf(
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice(),
+    bruceAlmighty(),
+    littleMissSunshine(),
+    despicableMe(),
+    theOffice(),
   )
 
   fun sortedByDate() = listOf(
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty(),
+    despicableMe(),
+    littleMissSunshine(),
+    theOffice(),
+    bruceAlmighty(),
   )
 
   fun knownFor() = listOf(
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe(),
-    com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty(),
+    theOffice(),
+    littleMissSunshine(),
+    despicableMe(),
+    bruceAlmighty(),
   )
 
   class PersonCastCreditFactoryWizard(private var personCredit: PersonCredit) {

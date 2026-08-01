@@ -3,5 +3,6 @@
 - Add the ability to share a user's movie or show review
 - Expanded movie crew credits to include authors, composers, and story writers
 - Allow searching in discover filters in selected app language
+- Add search history to display recent searches
 
 We're constantly working on improvements and new features. Stay tuned for more updates!

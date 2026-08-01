@@ -3,6 +3,7 @@
 package com.divinelink.core.database.media.dao
 
 import com.divinelink.core.database.MediaItemEntity
+import com.divinelink.core.database.SearchHistoryEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Episode
@@ -118,4 +119,14 @@ interface MediaDao {
   )
 
   fun clearAllEpisodeRatings()
+
+  fun addToSearchHistory(media: MediaReference)
+
+  fun removeFromSearchHistory(media: MediaReference)
+
+  fun clearSearchHistory()
+
+  fun fetchSearchHistory(): Flow<List<SearchHistoryEntity>>
+
+  fun selectByIds(ids: List<Long>): Flow<List<MediaItem>>
 }
