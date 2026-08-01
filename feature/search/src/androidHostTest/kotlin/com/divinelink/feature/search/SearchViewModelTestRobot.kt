@@ -2,7 +2,6 @@ package com.divinelink.feature.search
 
 import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.domain.search.SearchStateManager
-import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.tab.SearchTab
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestSearchRepository
@@ -64,10 +63,6 @@ class SearchViewModelTestRobot {
 
   fun onSelectTab(tab: SearchTab) = apply {
     viewModel.onSelectTab(tab)
-  }
-
-  fun onAddToHistory(media: MediaReference) = apply {
-    viewModel.onAddToHistory(media.mediaId, media.mediaType.value)
   }
 
   suspend fun delay(timeInMillis: Long) = apply {

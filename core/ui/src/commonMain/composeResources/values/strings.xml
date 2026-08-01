@@ -155,6 +155,8 @@
   <string name="core_ui_empty_plot">No plot available for %1$s at this time.</string>
   <string name="core_ui_search_keywords_description">Search keywords that describe the plot, general theme or mood.</string>
   <string name="core_ui_winner">Winner</string>
+  <string name="core_ui_added_to_your_saved">Added to your saved</string>
+  <string name="core_ui_removed_from_your_saved">Removed from your saved</string>
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

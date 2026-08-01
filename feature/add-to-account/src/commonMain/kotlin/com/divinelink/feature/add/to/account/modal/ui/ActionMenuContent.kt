@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.FavoriteButton
+import com.divinelink.core.ui.SaveButton
 import com.divinelink.feature.add.to.account.modal.ActionMenuIntent
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
 import org.jetbrains.compose.resources.stringResource
@@ -64,8 +64,8 @@ fun ActionMenuContent(
           }
         }
         if (uiState.media is MediaItem.Media) {
-          FavoriteButton(
-            isFavorite = uiState.media.saved == true,
+          SaveButton(
+            saved = uiState.media.saved == true,
             onClick = onMarkAsFavorite,
           )
         }

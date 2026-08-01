@@ -51,6 +51,7 @@ class SearchContentTest : ComposeTest() {
         searchTVTabState = rememberLazyGridState(),
         historyState = rememberLazyListState(),
         onSwitchPreferences = {},
+        action = {},
       )
     }
 
@@ -85,6 +86,7 @@ class SearchContentTest : ComposeTest() {
         searchTVTabState = rememberLazyGridState(),
         historyState = rememberLazyListState(),
         onSwitchPreferences = {},
+        action = {},
       )
     }
 
@@ -121,6 +123,7 @@ class SearchContentTest : ComposeTest() {
         searchTVTabState = rememberLazyGridState(),
         historyState = rememberLazyListState(),
         onSwitchPreferences = {},
+        action = {},
       )
     }
 
@@ -161,6 +164,7 @@ class SearchContentTest : ComposeTest() {
           searchTVTabState = rememberLazyGridState(),
           historyState = rememberLazyListState(),
           onSwitchPreferences = {},
+          action = {},
         )
       }
 
@@ -196,6 +200,7 @@ class SearchContentTest : ComposeTest() {
         searchTVTabState = rememberLazyGridState(),
         historyState = rememberLazyListState(),
         onSwitchPreferences = {},
+        action = {},
       )
     }
 
