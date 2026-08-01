@@ -133,8 +133,6 @@
         <item quantity="one">Εφαρμογή 1 φίλτρου</item>
         <item quantity="other">Εφαρμογή %1$s φίλτρων</item>
     </plurals>
-    <string name="core_ui_localized_date_full">%2$s %1$s, %3$s</string>
-    <string name="core_ui_localized_month_year">%1$s %2$s</string>
     <string name="core_ui_no_cast_available">Δεν υπάρχουν διαθέσιμοι ηθοποιοί</string>
     <string name="core_ui_no_cast_available_description">Δεν υπάρχουν πληροφορίες ηθοποιών για %1$s</string>
     <string name="core_ui_no_guest_stars_available">Χωρίς έκτακτες συμμετοχές</string>
@@ -172,4 +170,12 @@
     <string name="episodes">Επεισόδια</string>
     <string name="core_ui_add_to_collection_button_content_description">Κουμπί προσθήκης στη συλλογή</string>
     <string name="core_ui_winner">Νίκησε</string>
+    <string name="core_ui_open">Άνοιγμα</string>
+    <string name="core_ui_show_review_actions_content_desc">Εμφάνιση ενεργειών αξιολόγησης</string>
+    <string name="core_ui_author">Δημιουργός</string>
+    <string name="core_ui_composer">Συνθέτης</string>
+    <string name="core_ui_writer">Συγγραφέας</string>
+    <string name="core_ui_story">Ιστορία</string>
+    <string name="core_ui_clear_history">Διαγραφή ιστορικού</string>
+    <string name="core_ui_remove_item_from_history_content_desc">Κουμπί αφαίρεσης του %1$s από το ιστορικό</string>
 </resources>

@@ -5,4 +5,5 @@
     <string name="search__empty_result_title">Ωχ. Δεν μπορέσαμε να το βρούμε.</string>
     <string name="search__empty_result_description">Προσπαθήστε να ψάξετε για κάτι άλλο.</string>
     <string name="feature_search_settings_button_content_description">Μετάβαση στο κουμπί ρυθμίσεων</string>
+    <string name="recent_searches">Πρόσφατες αναζητήσεις</string>
 </resources>

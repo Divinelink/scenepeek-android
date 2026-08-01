@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_requests_title">Richieste</string>
+    <string name="feature_requests_profile">Profilo</string>
+    <string name="feature_requests_requested">Richiesto</string>
+    <string name="feature_requests_modifier">Modificato</string>
+    <string name="feature_requests_no_requests_available">Nessuna richiesta disponibile.</string>
+    <string name="feature_requests_request_by">%1$s di %2$s</string>
+</resources>

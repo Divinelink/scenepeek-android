@@ -1,3 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="feature_lists_title">Loendid</string>
+    <string name="feature_lists_login_description">Oma loendite vaatamiseks pead olema sisseloginud.</string>
+    <string name="feature_lists_empty">Sa pole veel ühtegi loendit koostanud</string>
+    <string name="feature_lists_empty_description">Hakka koostama filmide ja telesaadete loendeid ning sul on lihtsam nende osas järge pidada ja saad neid kohendada oma stiiliga</string>
+    <string name="feature_lists_empty_list">Selles loendis pole ühtegi kirjet.</string>
+    <string name="feature_lists_delete_list">Kustuta loend</string>
+    <string name="feature_lists_delete_list_alert_message">Kas sa oled kindel, et soovid selle loendi kustutada? Seda tegevust ei saa tagasi pöörata.</string>
+    <string name="feature_lists_edit_list">Muuda loendit</string>
+    <string name="feature_lists_add_list">Koosta loend</string>
+    <string name="feature_lists_name">Nimi</string>
+    <string name="feature_lists_description">Kirjeldus</string>
+    <string name="feature_lists_public_description">Avalikke loendeid saavad vaadata ka teised kasutajad.</string>
+    <string name="feature_lists_update_successfully">„%1$s“ loendi muutmine õnnestus</string>
+    <string name="feature_lists_update_failure">„%1$s“ loendi muutmine ei õnnestunud</string>
+    <string name="feature_lists_delete_successfully">„%1$s“ loendi kustutamine õnnestus</string>
+    <string name="feature_lists_delete_failure">„%1$s“ loendi kustutamine ei õnnestunud</string>
+    <string name="feature_lists_create_successfully">„%1$s“ loendi koostamine õnnestus</string>
+    <string name="feature_lists_create_failure">„%1$s“ loendi koostamine ei õnnestunud</string>
+    <string name="feature_lists_backdrops_empty">Selle loendi jaoks ei leidu ühtegi pilti. Esmalt lisa mõned kirjed ja siis saad muuta pilti.</string>
+    <string name="feature_lists_change_image">Muuda pilti</string>
+    <string name="feature_lists_selected">%1$s/%2$s on valitud</string>
+    <string name="feature_lists_selected_media_content_desc">Valitud meedium: %1$s</string>
+</resources>

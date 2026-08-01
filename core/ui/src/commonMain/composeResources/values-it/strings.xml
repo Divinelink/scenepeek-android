@@ -145,8 +145,6 @@
         <item quantity="many">Applica %1$s filtri</item>
         <item quantity="other">Applica %1$s filtri</item>
     </plurals>
-    <string name="core_ui_localized_date_full">%1$s %2$s, %3$s</string>
-    <string name="core_ui_localized_month_year">%1$s %2$s</string>
     <string name="core_ui_no_cast_available">Nessun cast disponibile</string>
     <string name="core_ui_no_cast_available_description">Non abbiamo informazioni sul cast per %1$s</string>
     <string name="core_ui_no_guest_stars_available">Nessuna presenza di ospiti</string>
@@ -179,4 +177,6 @@
     <string name="core_ui_collapse">Riavvolgi</string>
     <string name="core_ui_expand">Espandi</string>
     <string name="core_ui_added_on_list">Aggiunto alla lista %1$s</string>
+    <string name="core_ui_open">Apri</string>
+    <string name="core_ui_show_review_actions_content_desc">Mostra le azioni di revisione</string>
 </resources>
