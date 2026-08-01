@@ -178,4 +178,6 @@
     <string name="core_ui_story">Ιστορία</string>
     <string name="core_ui_clear_history">Διαγραφή ιστορικού</string>
     <string name="core_ui_remove_item_from_history_content_desc">Κουμπί αφαίρεσης του %1$s από το ιστορικό</string>
+    <string name="core_ui_added_to_your_saved">Προστέθηκε στα αποθηκευμένα σας</string>
+    <string name="core_ui_removed_from_your_saved">Αφαιρέθηκε από τα αποθηκευμένα σας</string>
 </resources>
