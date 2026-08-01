@@ -26,6 +26,7 @@ import com.divinelink.feature.search.resources.feature_search__initial_title
 import com.divinelink.feature.search.resources.search__empty_result_description
 import com.divinelink.feature.search.resources.search__empty_result_title
 
+@Suppress("NestedBlockDepth")
 @Composable
 fun SearchContent(
   uiState: SearchUiState,

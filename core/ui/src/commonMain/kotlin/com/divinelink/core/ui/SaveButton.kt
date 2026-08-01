@@ -34,14 +34,14 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun FavoriteButton(
+fun SaveButton(
   modifier: Modifier = Modifier,
-  isFavorite: Boolean,
+  saved: Boolean,
   inactiveColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
   onClick: () -> Unit,
 ) {
   val color by animateColorAsState(
-    targetValue = when (isFavorite) {
+    targetValue = when (saved) {
       true -> MaterialTheme.colors.redHighlight
       false -> inactiveColor
     },
@@ -53,7 +53,7 @@ fun FavoriteButton(
   fun onToggleSave() {
     scope.launch { onClick() }
 
-    val text = if (!isFavorite) {
+    val text = if (!saved) {
       UiString.core_ui_added_to_your_saved
     } else {
       UiString.core_ui_removed_from_your_saved
@@ -76,10 +76,10 @@ fun FavoriteButton(
   ) {
     Crossfade(
       modifier = Modifier.align(Alignment.Center),
-      targetState = isFavorite,
-      label = "Like button",
-    ) { favorite ->
-      val image = when (favorite) {
+      targetState = saved,
+      label = "Save button",
+    ) { saved ->
+      val image = when (saved) {
         true -> Icons.Rounded.Save
         false -> Icons.Outlined.Save
       }

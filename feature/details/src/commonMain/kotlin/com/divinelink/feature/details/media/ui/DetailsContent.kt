@@ -57,8 +57,8 @@ import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
-import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.SaveButton
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
@@ -194,9 +194,9 @@ fun DetailsContent(
         text = UIText.StringText(viewState.mediaDetails?.title ?: ""),
         progress = toolbarProgress,
         actions = {
-          FavoriteButton(
+          SaveButton(
             modifier = Modifier.clip(MaterialTheme.shape.rounded),
-            isFavorite = viewState.mediaDetails?.isFavorite ?: false,
+            saved = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
             inactiveColor = textColor,
           )

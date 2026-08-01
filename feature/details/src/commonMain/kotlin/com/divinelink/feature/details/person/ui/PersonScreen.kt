@@ -32,7 +32,7 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
-import com.divinelink.core.ui.FavoriteButton
+import com.divinelink.core.ui.SaveButton
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.menu.DropdownMenuButton
@@ -76,9 +76,9 @@ fun PersonScreen(
             scrolledContainerColor = Color.Transparent,
           ),
           actions = {
-            FavoriteButton(
+            SaveButton(
               modifier = Modifier.clip(MaterialTheme.shape.rounded),
-              isFavorite = (personDetails as? PersonDetailsUiState.Data)
+              saved = (personDetails as? PersonDetailsUiState.Data)
                 ?.personDetails?.person?.saved ?: false,
               onClick = viewModel::onSave,
             )
