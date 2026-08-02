@@ -1,3 +1,6 @@
+> [!NOTE]  
+> We are currently migrating our codebase to Codeberg. You can now find the project at: https://codeberg.org/Divinelink/scenepeek
+
 ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Divinelink/e1019c0e79b88046505566d98d96c710/raw/coverage.json)
 <img src="https://github.com/Divinelink/scenepeek-android/actions/workflows/coverage_static_analysis.yml/badge.svg" alt="CI">
 [![Join the community](https://img.shields.io/badge/matrix.org-join_community-teal?style=flat-square&logo=matrix)](https://matrix.to/#/#scenepeek:matrix.org)
