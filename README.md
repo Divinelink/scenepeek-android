@@ -5,11 +5,11 @@
 <div align="center">
   <a href="https://f-droid.org/packages/com.divinelink.scenepeek/" target="_blank"><img src="https://f-droid.org/badge/get-it-on.png" height="75" alt="Get it on F-Droid"></a>
   <a href="https://play.google.com/store/apps/details?id=com.divinelink.scenepeek" target="_blank"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75" alt="Get it on Google Play"></a>
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/Divinelink/scenepeek" target="_blank"><img alt='Get it on Obtainium' src='https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png' height='75'/></a>
 </div>
 
 <div align="center">
-  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Divinelink/scenepeek-android" target="_blank"><img alt='Get it on Obtainium' src='https://github.com/ImranR98/Obtainium/blob/main/assets/graphics/badge_obtainium.png' height='75'/></a>
-  <a href="https://github.com/Divinelink/scenepeek-android/releases/latest" target="_blank"><img alt='Get it on GitHub' src='https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png' height='75'/></a>
+  <a href="https://codeberg.org/Divinelink/scenepeek/releases/latest" target="_blank"><img alt='Get it on Codeberg' src='https://get-it-on.codeberg.org/get-it-on-white-on-black.png' height='55'/></a>
 </div>
 
 <div align="center">
