@@ -194,3 +194,5 @@ iosApp/Config/Secret.xcconfig
 
 android/sentry.properties
 /android/src/main/config.properties
+
+gradle-daemon-jvm.properties
