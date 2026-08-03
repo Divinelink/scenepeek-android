@@ -17,7 +17,7 @@ sealed interface UserDataForm<out T : MediaItem.Media> {
     val paginationData: Map<Int, List<MediaItem.Media>>,
     val totalResults: Int,
   ) : UserDataForm<T> {
-    val media = paginationData.values.flatten()
+    val media = paginationData.values.flatten().distinctBy { it.uniqueIdentifier }
     val isEmpty: Boolean = media.isEmpty()
   }
 }
