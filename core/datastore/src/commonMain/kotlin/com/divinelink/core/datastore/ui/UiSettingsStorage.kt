@@ -1,9 +1,14 @@
 package com.divinelink.core.datastore.ui
 
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.availableListsKey
+import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortBy
+import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortDirection
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.sortByKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.sortDirectionKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.viewModeKey
@@ -17,10 +22,15 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 interface UiSettingsStorage {
   val uiPreferences: Flow<UiPreferences>
+
+  fun listSortOption(id: Int): Flow<SortOption?>
+
+  suspend fun clearListSortOption(listId: Int)
 
   suspend fun updateViewMode(section: ViewableSection)
 
@@ -28,10 +38,17 @@ interface UiSettingsStorage {
     section: ViewableSection,
     sortBy: SortBy,
   )
+
   suspend fun updateSortDirection(section: ViewableSection)
+
+  suspend fun updateListSortBy(listId: Int, sortBy: SortBy)
+
+  suspend fun updateListSortDirection(listId: Int)
 }
 
-class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSettingsStorage {
+class DatastoreUiStorage(
+  private val dataStore: DataStore<Preferences>,
+) : UiSettingsStorage {
 
   companion object {
     const val PREFS_NAME = "ui_preferences"
@@ -43,6 +60,10 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
     fun sortDirectionKey(section: ViewableSection) = stringPreferencesKey(
       "${section.key}_sort_direction",
     )
+
+    fun listSortBy(listId: Int) = stringPreferencesKey("${listId}_sort_by")
+    fun listSortDirection(listId: Int) = stringPreferencesKey("${listId}_sort_direction")
+    val availableListsKey = stringSetPreferencesKey("available_lists")
   }
 
   override val uiPreferences: Flow<UiPreferences> = dataStore.data.map {
@@ -64,8 +85,18 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
           direction = SortDirection.from(it[sortDirectionKey(ViewableSection.USER_DATA)]),
         ),
       ),
+      listSortOptions = (it[availableListsKey]?.map { key -> key.toInt() } ?: emptyList())
+        .associateWith { listId -> listSortOption(listId).firstOrNull() },
     )
   }.distinctUntilChanged()
+
+  override fun listSortOption(id: Int): Flow<SortOption?> = dataStore.data
+    .map { prefs ->
+      val sortBy = SortBy.findListSortOption(prefs[listSortBy(id)]) ?: return@map null
+      val direction = SortDirection.from(prefs[listSortDirection(id)])
+      SortOption(sortBy = sortBy, direction = direction)
+    }
+    .distinctUntilChanged()
 
   override suspend fun updateViewMode(section: ViewableSection) {
     dataStore.edit { preferences ->
@@ -93,5 +124,40 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
 
       preferences[sortDirectionKey(section)] = currentDirection.other().value
     }
+  }
+
+  override suspend fun updateListSortBy(listId: Int, sortBy: SortBy) {
+    dataStore.edit { preferences ->
+      preferences.addToAvailableLists(listId)
+      preferences[listSortBy(listId)] = sortBy.value
+    }
+  }
+
+  override suspend fun updateListSortDirection(listId: Int) {
+    dataStore.edit { preferences ->
+      preferences.addToAvailableLists(listId)
+
+      val currentDirection = SortDirection.from(preferences[listSortDirection(listId)])
+      preferences[listSortDirection(listId)] = currentDirection.other().value
+    }
+  }
+
+  override suspend fun clearListSortOption(listId: Int) {
+    dataStore.edit { preferences ->
+      preferences.removeFromAvailableLists(listId)
+      preferences.remove(listSortBy(listId))
+      preferences.remove(listSortBy(listId))
+    }
+  }
+
+  private fun MutablePreferences.addToAvailableLists(listId: Int) {
+    val currentLists = this[availableListsKey].orEmpty()
+    this[availableListsKey] = currentLists + listId.toString()
+  }
+
+  private fun MutablePreferences.removeFromAvailableLists(listId: Int) {
+    val currentLists = this[availableListsKey].orEmpty()
+
+    this[availableListsKey] = currentLists - listId.toString()
   }
 }

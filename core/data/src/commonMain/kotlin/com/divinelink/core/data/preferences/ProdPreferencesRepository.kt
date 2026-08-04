@@ -10,6 +10,7 @@ import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -70,6 +71,10 @@ class ProdPreferencesRepository(
     storage.updateSortBy(section, sortBy)
   }
 
+  override suspend fun clearListSortOption(listId: Int) {
+    storage.clearListSortOption(listId)
+  }
+
   override suspend fun updateCurrentTheme(theme: Theme) {
     preferenceStorage.selectTheme(theme.storageKey)
   }
@@ -101,4 +106,14 @@ class ProdPreferencesRepository(
   override suspend fun setMetadataLanguage(language: Language) {
     preferenceStorage.setMetadataLanguage(language)
   }
+
+  override suspend fun switchListSortBy(listId: Int, sortBy: SortBy) {
+    storage.updateListSortBy(listId, sortBy)
+  }
+
+  override suspend fun switchListSortDirection(listId: Int) {
+    storage.updateListSortDirection(listId)
+  }
+
+  override fun listSortOption(listId: Int): Flow<SortOption?> = storage.listSortOption(listId)
 }

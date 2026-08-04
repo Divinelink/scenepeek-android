@@ -15,6 +15,9 @@ class SwitchViewButtonViewModel(private val repository: PreferencesRepository) :
       is SwitchPreferencesAction.SwitchSortBy -> switchSortBy(action.section, action.sortBy)
       is SwitchPreferencesAction.SwitchSortDirection -> switchSortDirection(action.section)
       is SwitchPreferencesAction.SwitchViewMode -> switchViewMode(action.section)
+      is SwitchPreferencesAction.SwitchListSortBy -> switchListSortBy(action)
+      is SwitchPreferencesAction.SwitchListSortDirection -> switchListSortDirection(action.listId)
+      is SwitchPreferencesAction.ClearSortOption -> clearListSortOption(action.listId)
     }
   }
 
@@ -36,6 +39,24 @@ class SwitchViewButtonViewModel(private val repository: PreferencesRepository) :
   ) {
     viewModelScope.launch {
       repository.switchSortBy(section, sortBy)
+    }
+  }
+
+  private fun switchListSortBy(action: SwitchPreferencesAction.SwitchListSortBy) {
+    viewModelScope.launch {
+      repository.switchListSortBy(action.listId, action.sortBy)
+    }
+  }
+
+  private fun switchListSortDirection(listId: Int) {
+    viewModelScope.launch {
+      repository.switchListSortDirection(listId)
+    }
+  }
+
+  private fun clearListSortOption(listId: Int) {
+    viewModelScope.launch {
+      repository.clearListSortOption(listId)
     }
   }
 }

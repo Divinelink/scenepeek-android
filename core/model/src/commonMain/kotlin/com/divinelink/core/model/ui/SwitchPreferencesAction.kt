@@ -9,4 +9,13 @@ sealed interface SwitchPreferencesAction {
     val section: ViewableSection,
     val sortBy: SortBy,
   ) : SwitchPreferencesAction
+
+  data class SwitchListSortBy(
+    val listId: Int,
+    val sortBy: SortBy,
+  ) : SwitchPreferencesAction
+
+  data class SwitchListSortDirection(val listId: Int) : SwitchPreferencesAction
+
+  data class ClearSortOption(val listId: Int) : SwitchPreferencesAction
 }

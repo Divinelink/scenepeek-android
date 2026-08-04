@@ -32,3 +32,10 @@ fun rememberSortBy(section: ViewableSection): SortOption {
     direction = SortDirection.DESC,
   )
 }
+
+@Composable
+fun rememberListSortOption(listId: Int): SortOption? {
+  val uiPreferences = rememberUiPreferences()
+
+  return uiPreferences.listSortOptions[listId]
+}
