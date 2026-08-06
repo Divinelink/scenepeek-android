@@ -14,6 +14,8 @@ import com.divinelink.core.ui.button.switchview.SwitchViewButton
 @Composable
 fun ScreenSettingsRow(
   section: ViewableSection,
+  listId: Int? = null,
+  enabled: Boolean = true,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
   Row(
@@ -25,14 +27,34 @@ fun ScreenSettingsRow(
       ViewableSection.DISCOVER_MOVIES,
       ViewableSection.USER_DATA,
         -> SortingButton(
+        enabled = enabled,
+        section = section,
+        onSwitchSortDirection = {
+          onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
+        },
+        onSwitchSortBy = { section, option ->
+          onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
+        },
+        onClearListSortOption = {
+          // Do nothing
+        },
+      )
+      ViewableSection.LIST_DETAILS -> listId?.let { id ->
+        SortingButton(
+          enabled = enabled,
           section = section,
+          listId = listId,
           onSwitchSortDirection = {
-            onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
+            onSwitchPreferences(SwitchPreferencesAction.SwitchListSortDirection(id))
           },
-          onSwitchSortBy = { section, option ->
-            onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
+          onSwitchSortBy = { _, option ->
+            onSwitchPreferences(SwitchPreferencesAction.SwitchListSortBy(id, option))
+          },
+          onClearListSortOption = {
+            onSwitchPreferences(SwitchPreferencesAction.ClearSortOption(it))
           },
         )
+      }
       else -> Unit
     }
 

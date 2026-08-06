@@ -15,9 +15,5 @@ data class SortOption(
       sortBy = SortBy.CREATED_AT,
       direction = SortDirection.DESC,
     )
-    val defaultListSortOption = SortOption(
-      sortBy = SortBy.ORIGINAL_ORDER,
-      direction = SortDirection.DESC,
-    )
   }
 }
