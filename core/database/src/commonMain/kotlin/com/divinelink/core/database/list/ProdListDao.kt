@@ -21,9 +21,6 @@ class ProdListDao(
   private val dispatcher: DispatcherProvider,
 ) : ListDao {
 
-  /**
-   * List Details
-   */
   override fun insertListDetails(
     page: Int,
     details: ListDetails,
@@ -249,10 +246,10 @@ class ProdListDao(
     }
   }
 
-  override fun deleteList(listId: Int) = database.transaction {
-    database.listItemEntityQueries.deleteList(listId.toLong())
-    database.listDetailsEntityQueries.deleteListDetails(listId.toLong())
-    database.listMediaItemEntityQueries.deleteListMediaItem(listId.toLong())
+  override fun deleteList(listId: Long) = database.transaction {
+    database.listItemEntityQueries.deleteList(listId)
+    database.listDetailsEntityQueries.deleteListDetails(listId)
+    database.listMediaItemEntityQueries.deleteListMediaItem(listId)
   }
 
   override fun updateList(
@@ -294,4 +291,8 @@ class ProdListDao(
             }
         }
     }
+
+  override fun clearItemsFromList(listId: Long) {
+    database.listMediaItemEntityQueries.deleteListMediaItem(listId)
+  }
 }

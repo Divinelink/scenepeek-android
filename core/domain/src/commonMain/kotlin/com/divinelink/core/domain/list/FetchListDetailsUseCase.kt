@@ -4,6 +4,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.model.list.ListDetails
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 data class FetchListParameters(
   val listId: Int,
   val page: Int,
+  val sortBy: SortOption,
 )
 
 class FetchListDetailsUseCase(
@@ -23,6 +25,7 @@ class FetchListDetailsUseCase(
     repository.fetchListDetails(
       parameters.listId,
       parameters.page,
+      parameters.sortBy,
     )
       .distinctUntilChanged()
       .collect { result ->

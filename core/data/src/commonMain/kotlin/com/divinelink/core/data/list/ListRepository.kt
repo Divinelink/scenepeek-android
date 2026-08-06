@@ -6,6 +6,7 @@ import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.list.model.create.CreateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListRequest
@@ -22,6 +23,7 @@ interface ListRepository {
   suspend fun fetchListDetails(
     listId: Int,
     page: Int,
+    sortOption: SortOption?,
   ): Flow<Resource<ListDetails?>>
 
   suspend fun createList(request: CreateListRequest): Result<CreateListResult>
@@ -49,4 +51,6 @@ interface ListRepository {
     listId: Int,
     item: MediaReference,
   ): Result<Boolean>
+
+  fun clearList(listId: Long)
 }

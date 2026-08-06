@@ -1,6 +1,7 @@
 package com.divinelink.core.network.list.service
 
 import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.account.model.ListsResponse
 import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.list.model.create.CreateListRequest
@@ -22,6 +23,7 @@ interface ListService {
   suspend fun fetchListDetails(
     listId: Int,
     page: Int,
+    sortOption: SortOption?,
   ): Result<ListDetailsResponse>
 
   fun fetchUserLists(

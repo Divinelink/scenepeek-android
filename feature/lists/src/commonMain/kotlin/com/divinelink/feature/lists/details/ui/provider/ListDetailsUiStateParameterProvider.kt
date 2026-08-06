@@ -29,6 +29,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -46,6 +48,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -61,6 +65,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -76,6 +82,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -93,6 +101,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -110,6 +120,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -125,6 +137,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -140,6 +154,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -158,6 +174,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -173,6 +191,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       selectedMedia = emptyList(),
       multipleSelectMode = false,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -189,6 +209,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
         .take(2),
       multipleSelectMode = true,
       canEdit = true,
+      sortOption = null,
+      updatingSort = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -205,6 +227,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
         .take(2),
       multipleSelectMode = true,
       canEdit = true,
+      sortOption = null,
+      updatingSort = false,
     ),
   )
 }

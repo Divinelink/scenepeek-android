@@ -1,6 +1,7 @@
 package com.divinelink.core.network.list.util
 
 import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Routes
 import io.ktor.http.URLProtocol
 import io.ktor.http.buildUrl
@@ -16,6 +17,7 @@ internal fun buildFetchListDetailsUrl(
   listId: Int,
   page: Int,
   language: String,
+  sortOption: SortOption?,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
@@ -24,6 +26,9 @@ internal fun buildFetchListDetailsUrl(
   parameters.apply {
     append("language", language)
     append("page", page.toString())
+    if (sortOption != null) {
+      append("sort_by", sortOption.sortValue)
+    }
   }
 }.toString()
 

@@ -14,6 +14,7 @@ import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
 import com.divinelink.core.network.list.mapper.add.map
@@ -58,13 +59,11 @@ class ProdListRepository(
   override suspend fun fetchListDetails(
     listId: Int,
     page: Int,
+    sortOption: SortOption?,
   ): Flow<Resource<ListDetails?>> = networkBoundResource(
     query = {
       combine(
-        listDao.fetchListDetails(
-          listId = listId,
-          page = page,
-        ),
+        listDao.fetchListDetails(listId = listId, page = page),
         mediaDao.getFavoriteMediaIds(MediaType.TV),
         mediaDao.getFavoriteMediaIds(MediaType.MOVIE),
       ) { details, tvIds, movieIds ->
@@ -79,7 +78,7 @@ class ProdListRepository(
       }.distinctUntilChanged()
     },
     fetch = {
-      service.fetchListDetails(listId, page)
+      service.fetchListDetails(listId, page, sortOption)
     },
     saveFetchResult = { remoteData ->
       val details = remoteData.data.map()
@@ -161,7 +160,7 @@ class ProdListRepository(
   override suspend fun deleteList(listId: Int): Result<Unit> = service
     .deleteList(listId)
     .onSuccess {
-      listDao.deleteList(listId)
+      listDao.deleteList(listId.toLong())
     }
 
   override suspend fun updateList(
@@ -213,4 +212,8 @@ class ProdListRepository(
       listId = listId,
       item = item,
     ).map { it.success }
+
+  override fun clearList(listId: Long) {
+    listDao.clearItemsFromList(listId)
+  }
 }
