@@ -66,8 +66,10 @@ class ListDetailsViewModel(
       .listSortOption(uiState.value.id)
       .distinctUntilChanged()
       .onEach { sortOption ->
-        val previousSort = _uiState.value.sortOption
-        val isSortChange = sortOption != previousSort
+        val previousSort = _uiState.value.sortOption ?: SortOption.from(
+          (_uiState.value.details as? ListDetailsData.Data)?.data?.sortBy,
+        )
+        val isSortChange = sortOption != previousSort && previousSort != null
 
         if (isSortChange) {
           fetchJob?.cancel()
