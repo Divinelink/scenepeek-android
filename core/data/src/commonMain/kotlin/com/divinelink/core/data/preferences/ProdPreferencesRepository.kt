@@ -107,7 +107,10 @@ class ProdPreferencesRepository(
     preferenceStorage.setMetadataLanguage(language)
   }
 
-  override suspend fun switchListSortBy(listId: Int, sortBy: SortBy) {
+  override suspend fun switchListSortBy(
+    listId: Int,
+    sortBy: SortBy,
+  ) {
     storage.updateListSortBy(listId, sortBy)
   }
 

@@ -10,6 +10,7 @@ import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.network.list.service.ListService
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -23,7 +24,7 @@ class TestListService {
   }
 
   suspend fun mockFetchListDetails(response: Result<ListDetailsResponse>) {
-    whenever(mock.fetchListDetails(any(), any())).thenReturn(response)
+    whenever(mock.fetchListDetails(any(), any(), anyOrNull())).thenReturn(response)
   }
 
   fun mockFetchUserLists(response: ListsResponse) {

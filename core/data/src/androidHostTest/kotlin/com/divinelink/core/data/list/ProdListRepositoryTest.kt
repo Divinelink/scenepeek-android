@@ -14,6 +14,7 @@ import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
 import com.divinelink.core.network.account.model.ListsResponse
@@ -222,6 +223,7 @@ class ProdListRepositoryTest {
     repository.fetchListDetails(
       listId = listId,
       page = 1,
+      sortOption = null,
     ).test {
       awaitItem() shouldBeEqual Resource.Loading(null)
 
@@ -396,7 +398,7 @@ class ProdListRepositoryTest {
 
     repository.deleteList(listId)
 
-    listDao.verifyListDeleted(listId)
+    listDao.verifyListDeleted(listId.toLong())
   }
 
   @Test
@@ -683,6 +685,7 @@ class ProdListRepositoryTest {
     repository.fetchListDetails(
       listId = listId,
       page = 1,
+      sortOption = SortOption.defaultDiscoverSortOption,
     ).test {
       awaitItem() shouldBeEqual Resource.Loading(null)
 

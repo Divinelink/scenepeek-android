@@ -56,7 +56,7 @@ class ProdListRepository(
       }
     }
 
-  override suspend fun fetchListDetails(
+  override fun fetchListDetails(
     listId: Int,
     page: Int,
     sortOption: SortOption?,

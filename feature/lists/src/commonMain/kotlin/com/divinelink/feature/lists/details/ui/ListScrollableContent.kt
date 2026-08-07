@@ -266,7 +266,6 @@ fun ListScrollableContent(
             )
           }
         } else {
-
           items(
             items = state.details.media,
             key = { it.uniqueIdentifier },

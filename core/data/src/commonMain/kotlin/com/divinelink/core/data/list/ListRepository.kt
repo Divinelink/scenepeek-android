@@ -20,7 +20,7 @@ interface ListRepository {
     media: MediaReference,
   ): Result<AddToListResult>
 
-  suspend fun fetchListDetails(
+  fun fetchListDetails(
     listId: Int,
     page: Int,
     sortOption: SortOption?,

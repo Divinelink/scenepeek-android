@@ -34,7 +34,10 @@ interface PreferencesRepository {
 
   suspend fun clearListSortOption(listId: Int)
   suspend fun switchListSortDirection(listId: Int)
-  suspend fun switchListSortBy(listId: Int, sortBy: SortBy)
+  suspend fun switchListSortBy(
+    listId: Int,
+    sortBy: SortBy,
+  )
 
   suspend fun updateCurrentTheme(theme: Theme)
   suspend fun updateColorSystem(system: ColorSystem)

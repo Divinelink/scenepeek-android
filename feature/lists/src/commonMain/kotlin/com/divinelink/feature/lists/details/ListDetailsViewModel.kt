@@ -28,7 +28,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
@@ -101,7 +100,11 @@ class ListDetailsViewModel(
   }
 
   @OptIn(ExperimentalUuidApi::class)
-  private fun fetchListDetails(page: Int, sortBy: SortOption?, cancelExisting: Boolean) {
+  private fun fetchListDetails(
+    page: Int,
+    sortBy: SortOption?,
+    cancelExisting: Boolean,
+  ) {
     val state = _uiState.value
 
     /**
@@ -155,7 +158,7 @@ class ListDetailsViewModel(
             }
           }
         }
-        .collect()
+        .launchIn(viewModelScope)
     }
   }
 

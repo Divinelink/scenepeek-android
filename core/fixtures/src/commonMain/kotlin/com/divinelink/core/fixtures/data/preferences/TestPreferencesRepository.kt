@@ -121,7 +121,10 @@ class TestPreferencesRepository(
   override fun listSortOption(listId: Int): Flow<SortOption?> = uiPreferences
     .map { it.listSortOptions[listId] }
 
-  override suspend fun switchListSortBy(listId: Int, sortBy: SortBy) {
+  override suspend fun switchListSortBy(
+    listId: Int,
+    sortBy: SortBy,
+  ) {
     val listSortOptions = _uiPreferences.value.listSortOptions[listId]
 
     listSortOptions?.let { option ->

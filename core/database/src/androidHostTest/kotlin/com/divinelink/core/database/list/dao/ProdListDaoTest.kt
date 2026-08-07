@@ -417,7 +417,7 @@ class ProdListDaoTest {
       awaitItem() shouldBe ListItemFactory.page1Many().list
 
       val listId = ListDetailsFactory.mustWatch().id
-      dao.deleteList(listId)
+      dao.deleteList(listId.toLong())
 
       awaitItem() shouldBe ListItemFactory.page1Many().list.filterNot { it.id == listId }
     }

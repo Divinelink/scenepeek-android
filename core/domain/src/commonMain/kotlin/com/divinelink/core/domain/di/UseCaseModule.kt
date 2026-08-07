@@ -22,7 +22,6 @@ import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.domain.list.AddItemToListUseCase
 import com.divinelink.core.domain.list.CreateListUseCase
-import com.divinelink.core.domain.list.FetchListDetailsUseCase
 import com.divinelink.core.domain.list.FetchUserListsUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
@@ -93,7 +92,6 @@ val useCaseModule = module {
 
   // Lists
   factoryOf(::AddItemToListUseCase)
-  factoryOf(::FetchListDetailsUseCase)
   factoryOf(::CreateListUseCase)
 
   singleOf(::SearchStateManager)

@@ -41,7 +41,10 @@ interface UiSettingsStorage {
 
   suspend fun updateSortDirection(section: ViewableSection)
 
-  suspend fun updateListSortBy(listId: Int, sortBy: SortBy)
+  suspend fun updateListSortBy(
+    listId: Int,
+    sortBy: SortBy,
+  )
 
   suspend fun updateListSortDirection(listId: Int)
 }
@@ -126,7 +129,10 @@ class DatastoreUiStorage(
     }
   }
 
-  override suspend fun updateListSortBy(listId: Int, sortBy: SortBy) {
+  override suspend fun updateListSortBy(
+    listId: Int,
+    sortBy: SortBy,
+  ) {
     dataStore.edit { preferences ->
       preferences.addToAvailableLists(listId)
       preferences[listSortBy(listId)] = sortBy.value

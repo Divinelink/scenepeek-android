@@ -88,7 +88,6 @@ fun SortingButton(
             onSwitchSortBy(section, option)
           },
         )
-
       }
 
       if (listId != null) {

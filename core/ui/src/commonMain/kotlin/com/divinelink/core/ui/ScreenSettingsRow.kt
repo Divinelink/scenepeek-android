@@ -27,18 +27,18 @@ fun ScreenSettingsRow(
       ViewableSection.DISCOVER_MOVIES,
       ViewableSection.USER_DATA,
         -> SortingButton(
-        enabled = enabled,
-        section = section,
-        onSwitchSortDirection = {
-          onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
-        },
-        onSwitchSortBy = { section, option ->
-          onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
-        },
-        onClearListSortOption = {
-          // Do nothing
-        },
-      )
+          enabled = enabled,
+          section = section,
+          onSwitchSortDirection = {
+            onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
+          },
+          onSwitchSortBy = { section, option ->
+            onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
+          },
+          onClearListSortOption = {
+            // Do nothing
+          },
+        )
       ViewableSection.LIST_DETAILS -> listId?.let { id ->
         SortingButton(
           enabled = enabled,

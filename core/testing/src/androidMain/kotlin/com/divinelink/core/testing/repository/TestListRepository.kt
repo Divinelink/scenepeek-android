@@ -4,12 +4,18 @@ import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
+import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.list.model.update.UpdateListResponse
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -22,6 +28,20 @@ class TestListRepository {
     whenever(
       mock.fetchUserLists(accountId = any(), page = any()),
     ).thenReturn(response)
+  }
+
+  fun mockFetchListDetails(response: Resource<ListDetails?>) {
+    whenever(
+      mock.fetchListDetails(any(), any(), anyOrNull()),
+    ).doReturn(flowOf(response))
+  }
+
+  fun mockFetchListDetails(response: Channel<Resource<ListDetails?>>) {
+    whenever(
+      mock.fetchListDetails(any(), any(), anyOrNull()),
+    ).thenReturn(
+      response.consumeAsFlow(),
+    )
   }
 
   suspend fun mockAddItemToList(result: Result<AddToListResult>) {

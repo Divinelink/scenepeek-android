@@ -5,7 +5,11 @@ import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
+import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortDirection
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -16,8 +20,11 @@ import com.divinelink.feature.add.to.account.resources.feature_add_to_account_re
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_single_item_success
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
+@RunWith(RobolectricTestRunner::class)
 class ListDetailsViewModelTest {
 
   @get:Rule
@@ -39,7 +46,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -57,6 +64,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
@@ -67,7 +76,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.page1()),
+        Resource.Success(ListDetailsFactory.page1()),
       )
       .buildViewModel()
       .assertUiState(
@@ -85,11 +94,13 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.page2()),
+        Resource.Success(ListDetailsFactory.page2()),
       )
       .onLoadMore()
       .assertUiState(
@@ -110,11 +121,13 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .expectUiStates(
         action = {
@@ -138,6 +151,8 @@ class ListDetailsViewModelTest {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
+            sortOption = null,
+            updatingSort = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -156,6 +171,8 @@ class ListDetailsViewModelTest {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
+            sortOption = null,
+            updatingSort = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -163,6 +180,7 @@ class ListDetailsViewModelTest {
               data = ListDetailsFactory.mustWatch(),
               pages = mapOf(
                 1 to ListDetailsFactory.mustWatch().media,
+                2 to ListDetailsFactory.page2().media,
               ),
             ),
             page = 2,
@@ -173,6 +191,8 @@ class ListDetailsViewModelTest {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
+            sortOption = null,
+            updatingSort = false,
           ),
         ),
       )
@@ -184,7 +204,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -202,6 +222,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onLoadMore()
@@ -220,6 +242,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
@@ -230,7 +254,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.page1()),
+        Resource.Success(ListDetailsFactory.page1()),
       )
       .buildViewModel()
       .assertUiState(
@@ -248,11 +272,13 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.page2()),
+        Resource.Success(ListDetailsFactory.page2()),
       )
       .expectUiStates(
         action = {
@@ -273,6 +299,8 @@ class ListDetailsViewModelTest {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
+            sortOption = null,
+            updatingSort = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -288,6 +316,8 @@ class ListDetailsViewModelTest {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
+            sortOption = null,
+            updatingSort = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -306,19 +336,19 @@ class ListDetailsViewModelTest {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
+            sortOption = null,
+            updatingSort = false,
           ),
         ),
       )
   }
 
   @Test
-  fun `test load more with error when data not initial does not set error`() {
+  fun `test load more with error when data not initial does not set error`() = runTest {
     robot
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
-      .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
-      )
+      .mockListDetails(Resource.Success(ListDetailsFactory.mustWatch()))
       .buildViewModel()
       .assertUiState(
         ListDetailsUiState(
@@ -335,11 +365,13 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.failure(Exception("Foo")),
+        Resource.Error(Exception("Foo")),
       )
       .onLoadMore()
       .assertUiState(
@@ -357,17 +389,19 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
 
   @Test
-  fun `test initial with error`() {
+  fun `test initial with error`() = runTest {
     robot
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.failure(Exception("Foo")),
+        Resource.Error(Exception("Foo")),
       )
       .buildViewModel()
       .assertUiState(
@@ -387,17 +421,19 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = false,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
 
   @Test
-  fun `test initial with connection error sets offline blank slate`() {
+  fun `test initial with connection error sets offline blank slate`() = runTest {
     robot
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.failure(AppException.Offline()),
+        Resource.Error(AppException.Offline()),
       )
       .buildViewModel()
       .assertUiState(
@@ -417,17 +453,19 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = false,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
 
   @Test
-  fun `test on select all items`() {
+  fun `test on select all items`() = runTest {
     robot
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -445,6 +483,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectMedia(
@@ -465,6 +505,8 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectAll()
@@ -483,17 +525,19 @@ class ListDetailsViewModelTest {
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
 
   @Test
-  fun `test on deselect all items`() {
+  fun `test on deselect all items`() = runTest {
     robot
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -511,6 +555,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectAll()
@@ -529,6 +575,8 @@ class ListDetailsViewModelTest {
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onDeselectAll()
@@ -547,6 +595,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
@@ -559,7 +609,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -577,6 +627,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectMedia(
@@ -597,6 +649,8 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockRemoveItems(Result.success(1))
@@ -622,6 +676,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
@@ -632,7 +688,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -650,6 +706,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectMedia(ListDetailsFactory.mustWatch().media[0])
@@ -670,6 +728,8 @@ class ListDetailsViewModelTest {
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockRemoveItems(Result.success(3))
@@ -695,6 +755,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
@@ -705,7 +767,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -723,6 +785,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectMedia(
@@ -743,6 +807,8 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockRemoveItems(Result.success(0))
@@ -762,6 +828,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
@@ -772,7 +840,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -790,6 +858,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectMedia(
@@ -810,6 +880,8 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockRemoveItems(Result.failure(Exception("Failed to remove items")))
@@ -829,6 +901,8 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onConsumeSnackbarMessage()
@@ -847,6 +921,8 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }
@@ -857,7 +933,7 @@ class ListDetailsViewModelTest {
       .withArgs(listDetailsRoute)
       .mockTMDBAccount(AccountDetailsFactory.elsa)
       .mockListDetails(
-        Result.success(ListDetailsFactory.mustWatch()),
+        Resource.Success(ListDetailsFactory.mustWatch()),
       )
       .buildViewModel()
       .assertUiState(
@@ -875,6 +951,8 @@ class ListDetailsViewModelTest {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .onSelectMedia(
@@ -895,6 +973,8 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
       .mockRemoveItems(Result.failure(AppException.Offline()))
@@ -918,6 +998,145 @@ class ListDetailsViewModelTest {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
+          sortOption = null,
+          updatingSort = false,
+        ),
+      )
+  }
+
+  @Test
+  fun `test update sorting option clears all data`() = runTest {
+    robot
+      .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
+      .mockListDetails(Resource.Success(ListDetailsFactory.mustWatch()))
+      .buildViewModel()
+      .assertUiState(
+        ListDetailsUiState(
+          id = 1,
+          details = ListDetailsData.Data(
+            data = ListDetailsFactory.mustWatch(),
+            pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
+          ),
+          page = 2,
+          error = null,
+          refreshing = false,
+          loadingMore = false,
+          snackbarMessage = null,
+          selectedMedia = emptyList(),
+          multipleSelectMode = false,
+          canEdit = true,
+          sortOption = null,
+          updatingSort = false,
+        ),
+      )
+      .mockListDetails(Resource.Success(ListDetailsFactory.page1()))
+      .updateSortBy(1, SortBy.TITLE)
+      .assertUiState(
+        ListDetailsUiState(
+          id = 1,
+          details = ListDetailsData.Initial(
+            name = "Must watch",
+            backdropPath = "/layPSOJGckJv3PXZDIVluMq69mn.jpg",
+            description = "A list of must watch movies and shows",
+            public = false,
+          ),
+          page = 2,
+          error = null,
+          refreshing = false,
+          loadingMore = false,
+          snackbarMessage = null,
+          selectedMedia = emptyList(),
+          multipleSelectMode = false,
+          canEdit = true,
+          sortOption = SortOption(
+            sortBy = SortBy.TITLE,
+            direction = SortDirection.DESC,
+          ),
+          updatingSort = false,
+        ),
+      )
+      .updateSortDirection(1)
+      .assertUiState(
+        ListDetailsUiState(
+          id = 1,
+          details = ListDetailsData.Initial(
+            name = "Must watch",
+            backdropPath = "/layPSOJGckJv3PXZDIVluMq69mn.jpg",
+            description = "A list of must watch movies and shows",
+            public = false,
+          ),
+          page = 2,
+          error = null,
+          refreshing = false,
+          loadingMore = false,
+          snackbarMessage = null,
+          selectedMedia = emptyList(),
+          multipleSelectMode = false,
+          canEdit = true,
+          sortOption = SortOption(
+            sortBy = SortBy.TITLE,
+            direction = SortDirection.ASC,
+          ),
+          updatingSort = false,
+        ),
+      )
+  }
+
+  @Test
+  fun `test clear sorting option`() = runTest {
+    robot
+      .withArgs(listDetailsRoute)
+      .mockTMDBAccount(AccountDetailsFactory.elsa)
+      .mockListDetails(Resource.Success(ListDetailsFactory.mustWatch()))
+      .buildViewModel()
+      .mockListDetails(Resource.Success(ListDetailsFactory.page1()))
+      .updateSortBy(1, SortBy.TITLE)
+      .updateSortDirection(1)
+      .assertUiState(
+        ListDetailsUiState(
+          id = 1,
+          details = ListDetailsData.Initial(
+            name = "Must watch",
+            backdropPath = "/layPSOJGckJv3PXZDIVluMq69mn.jpg",
+            description = "A list of must watch movies and shows",
+            public = false,
+          ),
+          page = 2,
+          error = null,
+          refreshing = false,
+          loadingMore = false,
+          snackbarMessage = null,
+          selectedMedia = emptyList(),
+          multipleSelectMode = false,
+          canEdit = true,
+          sortOption = SortOption(
+            sortBy = SortBy.TITLE,
+            direction = SortDirection.ASC,
+          ),
+          updatingSort = false,
+        ),
+      )
+      .clearSortOption(listId = 1)
+      .assertUiState(
+        ListDetailsUiState(
+          id = 1,
+          details = ListDetailsData.Initial(
+            name = "Must watch",
+            backdropPath = "/layPSOJGckJv3PXZDIVluMq69mn.jpg",
+            description = "A list of must watch movies and shows",
+            public = false,
+          ),
+          page = 2,
+          error = null,
+          refreshing = false,
+          loadingMore = false,
+          snackbarMessage = null,
+          selectedMedia = emptyList(),
+          multipleSelectMode = false,
+          canEdit = true,
+          sortOption = null,
+          updatingSort = false,
         ),
       )
   }

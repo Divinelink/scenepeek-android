@@ -14,6 +14,10 @@ kotlin {
       implementation(projects.core.domain)
       implementation(projects.core.fixtures)
     }
+
+    androidHostTest.dependencies {
+      implementation(libs.robolectric)
+    }
   }
 }
 
