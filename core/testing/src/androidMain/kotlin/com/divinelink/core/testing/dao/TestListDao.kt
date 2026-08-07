@@ -59,7 +59,7 @@ class TestListDao {
     verify(mock).insertMediaToList(listId, media)
   }
 
-  fun verifyListDeleted(listId: Int) {
+  fun verifyListDeleted(listId: Long) {
     verify(mock).deleteList(listId)
   }
 

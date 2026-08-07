@@ -236,6 +236,15 @@ fun ListScrollableContent(
         }
       }
 
+      item(span = { GridItemSpan(maxLineSpan) }) {
+        ScreenSettingsRow(
+          enabled = (state.details as? ListDetailsData.Data)?.isEmpty == false,
+          section = ViewableSection.LIST_DETAILS,
+          listId = state.id,
+          onSwitchPreferences = onSwitchPreferences,
+        )
+      }
+
       when (state.details) {
         is ListDetailsData.Initial -> items(
           count = 5,
@@ -257,13 +266,6 @@ fun ListScrollableContent(
             )
           }
         } else {
-          item(span = { GridItemSpan(maxLineSpan) }) {
-            ScreenSettingsRow(
-              section = ViewableSection.LIST_DETAILS,
-              onSwitchPreferences = onSwitchPreferences,
-            )
-          }
-
           items(
             items = state.details.media,
             key = { it.uniqueIdentifier },

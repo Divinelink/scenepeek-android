@@ -54,6 +54,7 @@ class ProdPreferencesRepositoryTest {
             SortDirection.DESC,
           ),
         ),
+        listSortOptions = mapOf(),
       )
     }
   }
@@ -88,6 +89,7 @@ class ProdPreferencesRepositoryTest {
             SortDirection.DESC,
           ),
         ),
+        listSortOptions = mapOf(),
       )
 
       repository.switchViewMode(
@@ -121,6 +123,7 @@ class ProdPreferencesRepositoryTest {
             SortDirection.DESC,
           ),
         ),
+        listSortOptions = mapOf(),
       )
 
       repository.switchViewMode(
@@ -154,6 +157,7 @@ class ProdPreferencesRepositoryTest {
             SortDirection.DESC,
           ),
         ),
+        listSortOptions = mapOf(),
       )
     }
   }

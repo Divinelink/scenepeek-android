@@ -8,6 +8,7 @@ import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
@@ -22,10 +23,19 @@ interface PreferencesRepository {
 
   val metadataLanguage: Flow<Language>
 
+  fun listSortOption(listId: Int): Flow<SortOption?>
+
   suspend fun switchViewMode(section: ViewableSection)
   suspend fun switchSortDirection(section: ViewableSection)
   suspend fun switchSortBy(
     section: ViewableSection,
+    sortBy: SortBy,
+  )
+
+  suspend fun clearListSortOption(listId: Int)
+  suspend fun switchListSortDirection(listId: Int)
+  suspend fun switchListSortBy(
+    listId: Int,
     sortBy: SortBy,
   )
 

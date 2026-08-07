@@ -7,6 +7,7 @@ import com.divinelink.core.model.sort.SortOption
 data class UiPreferences(
   val viewModes: Map<ViewableSection, ViewMode>,
   val sortOption: Map<ViewableSection, SortOption>,
+  val listSortOptions: Map<Int, SortOption?>,
 ) {
   companion object {
     val Initial = UiPreferences(
@@ -36,6 +37,7 @@ data class UiPreferences(
           SortDirection.DESC,
         ),
       ),
+      listSortOptions = emptyMap(),
     )
   }
 }

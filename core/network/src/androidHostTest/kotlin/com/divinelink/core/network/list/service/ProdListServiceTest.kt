@@ -167,6 +167,7 @@ class ProdListServiceTest {
     val result = service.fetchListDetails(
       listId = 12345,
       page = 1,
+      sortOption = null,
     )
 
     assertThat(result.isSuccess).isTrue()

@@ -25,6 +25,7 @@
   <string name="vote_average">Rating</string>
   <string name="vote_count">Total votes</string>
   <string name="created_at">Date added</string>
+  <string name="original_order_sorting_filter">Order added</string>
 
   <string name="gender_not_set" translatable="false">-</string>
   <string name="gender_male">Male</string>

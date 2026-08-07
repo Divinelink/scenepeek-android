@@ -1,6 +1,7 @@
 package com.divinelink.core.network.list.service
 
 import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.account.model.ListsResponse
 import com.divinelink.core.network.account.util.buildFetchListsUrl
 import com.divinelink.core.network.client.AuthTMDbClient
@@ -51,12 +52,14 @@ class ProdListService(
   override suspend fun fetchListDetails(
     listId: Int,
     page: Int,
+    sortOption: SortOption?,
   ): Result<ListDetailsResponse> = runCatching {
     client.get<ListDetailsResponse>(
       url = buildFetchListDetailsUrl(
         listId = listId,
         page = page,
         language = client.language(),
+        sortOption = sortOption,
       ),
     )
   }

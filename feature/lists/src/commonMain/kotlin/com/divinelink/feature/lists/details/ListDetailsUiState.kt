@@ -3,6 +3,7 @@ package com.divinelink.feature.lists.details
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
@@ -17,6 +18,8 @@ data class ListDetailsUiState(
   val multipleSelectMode: Boolean,
   val snackbarMessage: SnackbarMessage?,
   val canEdit: Boolean,
+  val sortOption: SortOption?,
+  val updatingSort: Boolean,
 ) {
   companion object {
     fun initial(
@@ -41,6 +44,8 @@ data class ListDetailsUiState(
       multipleSelectMode = false,
       snackbarMessage = null,
       canEdit = false,
+      sortOption = null,
+      updatingSort = false,
     )
   }
 

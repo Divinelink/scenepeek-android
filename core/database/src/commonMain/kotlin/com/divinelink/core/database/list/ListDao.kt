@@ -53,7 +53,9 @@ interface ListDao {
 
   fun clearUserLists(accountId: String)
 
-  fun deleteList(listId: Int)
+  fun deleteList(listId: Long)
+
+  fun clearItemsFromList(listId: Long)
 
   fun updateList(
     listId: Int,

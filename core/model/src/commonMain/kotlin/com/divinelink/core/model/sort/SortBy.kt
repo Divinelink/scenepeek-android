@@ -4,6 +4,7 @@ import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.created_at
 import com.divinelink.core.model.resources.first_air_date
 import com.divinelink.core.model.resources.name
+import com.divinelink.core.model.resources.original_order_sorting_filter
 import com.divinelink.core.model.resources.popularity
 import com.divinelink.core.model.resources.primary_release_date
 import com.divinelink.core.model.resources.revenue
@@ -22,6 +23,7 @@ enum class SortBy(val value: String, val label: StringResource) {
   VOTE_AVERAGE("vote_average", Res.string.vote_average),
   VOTE_COUNT("vote_count", Res.string.vote_count),
   CREATED_AT("created_at", Res.string.created_at),
+  ORIGINAL_ORDER("original_order", Res.string.original_order_sorting_filter),
   ;
 
   companion object {
@@ -46,6 +48,13 @@ enum class SortBy(val value: String, val label: StringResource) {
       CREATED_AT,
     )
 
+    val listEntries = listOf(
+      ORIGINAL_ORDER,
+      RELEASE_DATE,
+      VOTE_AVERAGE,
+      TITLE,
+    )
+
     fun findDiscoverMovieOption(value: String?): SortBy = discoverMovieEntries.find {
       it.value == value
     } ?: POPULARITY
@@ -57,6 +66,10 @@ enum class SortBy(val value: String, val label: StringResource) {
     fun findUserDataOption(value: String?): SortBy = userDataEntries.find {
       it.value == value
     } ?: CREATED_AT
+
+    fun findListSortOption(value: String?): SortBy? = listEntries.find {
+      it.value == value
+    }
 
     fun from(value: String): SortBy? = entries.find { it.value == value }
   }

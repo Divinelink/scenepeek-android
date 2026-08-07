@@ -60,6 +60,7 @@
     <item quantity="one">%1$s episode</item>
     <item quantity="other">%1$s episodes</item>
   </plurals>
+  <string name="core_ui_default">Default</string>
   <string name="core_ui_toolbar_search">Search</string>
   <string name="core_ui_movies">movies</string>
   <string name="core_ui_tv_shows">tv shows</string>

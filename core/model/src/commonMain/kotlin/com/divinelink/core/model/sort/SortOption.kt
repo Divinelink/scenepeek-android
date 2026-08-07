@@ -15,5 +15,17 @@ data class SortOption(
       sortBy = SortBy.CREATED_AT,
       direction = SortDirection.DESC,
     )
+
+    fun from(value: String?): SortOption? {
+      if (value == null) return null
+
+      val parts = value.split(".")
+      if (parts.size != 2) return null
+
+      val sortBy = SortBy.from(parts[0]) ?: return null
+      val direction = SortDirection.from(parts[1])
+
+      return SortOption(sortBy, direction)
+    }
   }
 }
