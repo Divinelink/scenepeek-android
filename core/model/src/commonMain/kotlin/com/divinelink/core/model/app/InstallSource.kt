@@ -28,10 +28,10 @@ enum class InstallSource(
     updateUrl = "https://f-droid.org/en/packages/com.divinelink.scenepeek/",
     versionRegex = "CurrentVersion:\\s*(\\d+\\.\\d+\\.\\d+)",
   ),
-  Github(
+  Codeberg(
     source = emptyList(),
-    versionCheckUrl = "https://github.com/Divinelink/scenepeek-android/releases/latest",
-    updateUrl = "https://github.com/Divinelink/scenepeek-android/releases/latest",
+    versionCheckUrl = "https://codeberg.org/Divinelink/scenepeek/releases/latest",
+    updateUrl = "https://codeberg.org/Divinelink/scenepeek/releases/latest",
     versionRegex = """(v\d+\.\d+[\d.]*)""",
   ),
   AppStore(
@@ -43,6 +43,6 @@ enum class InstallSource(
   ;
 
   companion object {
-    fun from(source: String?) = entries.find { source in it.source } ?: Github
+    fun from(source: String?) = entries.find { source in it.source } ?: Codeberg
   }
 }
