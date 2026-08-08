@@ -3,7 +3,7 @@
 package com.divinelink.factories.api
 
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
-import com.divinelink.core.network.media.model.details.ProductionCompany
+import com.divinelink.core.network.media.model.details.ProductionCompanyResponse
 import com.divinelink.core.network.media.model.details.ProductionCountryResponse
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.factories.api.media.KeywordsResponseFactory
@@ -34,31 +34,31 @@ object DetailsResponseApiFactory {
     popularity = 21.6213,
     posterPath = "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
     companies = listOf(
-      ProductionCompany(
+      ProductionCompanyResponse(
         id = 711,
         logoPath = "/tEiIH5QesdheJmDAqQwvtN60727.png",
         name = "Fox 2000 Pictures",
         originalCountry = "US",
       ),
-      ProductionCompany(
+      ProductionCompanyResponse(
         id = 508,
         logoPath = "/4sGWXoboEkWPphI6es6rTmqkCBh.png",
         name = "Regency Enterprises",
         originalCountry = "US",
       ),
-      ProductionCompany(
+      ProductionCompanyResponse(
         id = 4700,
         logoPath = "/A32wmjrs9Psf4zw0uaixF0GXfxq.png",
         name = "Linson Entertainment",
         originalCountry = "US",
       ),
-      ProductionCompany(
+      ProductionCompanyResponse(
         id = 25,
         logoPath = "/qZCc1lty5FzX30aOCVRBLzaVmcp.png",
         name = "20th Century Fox",
         originalCountry = "US",
       ),
-      ProductionCompany(
+      ProductionCompanyResponse(
         id = 20555,
         logoPath = "/hD8yEGUBlHOcfHYbujp71vD8gZp.png",
         name = "Taurus Film",

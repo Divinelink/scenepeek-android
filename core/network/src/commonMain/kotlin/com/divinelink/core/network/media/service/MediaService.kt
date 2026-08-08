@@ -23,6 +23,7 @@ import com.divinelink.core.network.media.model.find.FindByIdResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
+import com.divinelink.core.network.media.model.search.SearchCompanyResponse
 import com.divinelink.core.network.media.model.search.SearchKeywordResponse
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
@@ -98,5 +99,7 @@ interface MediaService {
 
   suspend fun searchKeywords(request: SearchRequestApi): Result<SearchKeywordResponse>
 
-  suspend fun fetchWatchProviders(mediaReference: MediaReference): Result<WatchProvidersResponse>
+  suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProvidersResponse>
+
+  suspend fun searchCompanies(request: SearchRequestApi): Result<SearchCompanyResponse>
 }

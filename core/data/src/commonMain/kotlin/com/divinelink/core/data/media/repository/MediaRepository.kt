@@ -4,6 +4,7 @@ package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
@@ -122,4 +123,6 @@ interface MediaRepository {
   ): Result<Unit>
 
   fun clearAllEpisodeRatings(): Result<Unit>
+
+  suspend fun searchCompany(request: SearchRequestApi): Result<PaginationData<Company>>
 }

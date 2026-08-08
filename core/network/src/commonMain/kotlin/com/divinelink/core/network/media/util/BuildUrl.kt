@@ -188,3 +188,14 @@ fun buildWatchProvidersUrl(media: MediaReference): String = buildUrl {
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/${media.mediaType.value}/${media.mediaId}/watch/providers"
 }.toString()
+
+fun buildSearchCompanyUrl(request: SearchRequestApi): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/search/company"
+
+  parameters.apply {
+    append("query", request.query)
+    append("page", request.page.toString())
+  }
+}.toString()
