@@ -20,7 +20,7 @@ actual class InstallSourceDetector(val context: Context) {
 
       return InstallSource.from(installedPackageName)
     } catch (_: PackageManager.NameNotFoundException) {
-      return InstallSource.Github
+      return InstallSource.Codeberg
     }
   }
 }

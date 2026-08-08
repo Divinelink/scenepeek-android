@@ -28,21 +28,21 @@ enum class InstallSource(
     updateUrl = "https://f-droid.org/en/packages/com.divinelink.scenepeek/",
     versionRegex = "CurrentVersion:\\s*(\\d+\\.\\d+\\.\\d+)",
   ),
-  Github(
+  Codeberg(
     source = emptyList(),
-    versionCheckUrl = "https://github.com/Divinelink/scenepeek-android/releases/latest",
-    updateUrl = "https://github.com/Divinelink/scenepeek-android/releases/latest",
+    versionCheckUrl = "https://codeberg.org/Divinelink/scenepeek/releases/latest",
+    updateUrl = "https://codeberg.org/Divinelink/scenepeek/releases/latest",
     versionRegex = """(v\d+\.\d+[\d.]*)""",
   ),
   AppStore(
     source = emptyList(),
-    versionCheckUrl = null,
-    updateUrl = null,
-    versionRegex = "",
+    versionCheckUrl = "https://apps.apple.com/us/app/scenepeek-tmdb-seerr/id6756810408",
+    updateUrl = "https://apps.apple.com/us/app/scenepeek-tmdb-seerr/id6756810408",
+    versionRegex = """\[\["(\d+\.\d+[\d.]*)"]]""",
   ),
   ;
 
   companion object {
-    fun from(source: String?) = entries.find { source in it.source } ?: Github
+    fun from(source: String?) = entries.find { source in it.source } ?: Codeberg
   }
 }

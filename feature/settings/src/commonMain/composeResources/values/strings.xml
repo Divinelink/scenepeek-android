@@ -46,7 +46,6 @@
     <string name="feature_settings_jellyseerr_account">Seerr account</string>
     <string name="feature_settings_jellyseerr_total_requests">Total requests</string>
     <string name="feature_settings_jellyseerr_joined_on">Joined on %1$s | User ID: %2$s</string>
-    <!-- Contribution -->
   <string name="feature_settings_join_the_community_title">Join the community</string>
     <string name="feature_settings_join_the_community_summary">Be up to date with the ScenePeek project</string>
     <string name="feature_settings_rate_the_application_title">Rate the application</string>
@@ -64,7 +63,6 @@
     <string name="weblate_url" translatable="false">https://hosted.weblate.org/engage/scenepeek/</string>
     <string name="google_play_url" translatable="false">https://play.google.com/store/apps/details?id=com.divinelink.scenepeek</string>
     <string name="raise_github_issue_url" translatable="false">https://github.com/Divinelink/scenepeek-android/issues/new</string>
-    <!-- AboutSettingsScreen -->
   <string name="feature_settings_about">About</string>
     <string name="feature_settings_about__privacy_policy">Privacy Policy</string>
     <string name="feature_settings_about__privacy_policy_url" translatable="false">https://www.scenepeek.app/privacy</string>
@@ -89,7 +87,6 @@
     <string name="seerr_support_email_body" translatable="false">"Please specify your login method, server versions and attach the error logs to help identify the issue."\n\nSeerr version: (enter your Seerr server version)\nJellyfin version: (enter your Jellyfin version if applicable)\n%1$s</string>
     <string name="seerr_login_info_placeholder_pt1">This is an experimental feature.\nIf you have trouble connecting, please get in contact at </string>
     <string name="seerr_login_info_placeholder_pt2"> to troubleshoot the issue.</string>
-    <!-- preferences.xml -->
   <string name="preferences__account">Account</string>
     <string name="preferences__appearance">Appearance</string>
     <string name="feature_settings_details_preferences">Details preferences</string>
@@ -99,7 +96,7 @@
     <string name="auto_update_app_summary">Periodically check for new releases and ask to install them</string>
     <string name="version">Version</string>
     <string name="app_updates">App updates</string>
-    <string name="check_for_updates_on_github">Check for updates on GitHub</string>
+    <string name="check_for_updates_on_default_source">Check for updates on Codeberg</string>
     <string name="check_for_updates">Check for updates</string>
     <string name="last_checked">Last checked: %1$s</string>
     <string-array name="pref_theme_values" translatable="false">
@@ -108,6 +105,6 @@
         <item>dark</item>
     </string-array>
     <!-- Accessibility -->
-  <string name="feature_settings_show_password">Show password</string>
+    <string name="feature_settings_show_password">Show password</string>
     <string name="feature_settings_hide_password">Hide password</string>
 </resources>

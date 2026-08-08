@@ -21,7 +21,7 @@ import com.divinelink.feature.settings.resources.app_updates
 import com.divinelink.feature.settings.resources.auto_update_app_summary
 import com.divinelink.feature.settings.resources.auto_update_app_title
 import com.divinelink.feature.settings.resources.check_for_updates
-import com.divinelink.feature.settings.resources.check_for_updates_on_github
+import com.divinelink.feature.settings.resources.check_for_updates_on_default_source
 import com.divinelink.feature.settings.resources.last_checked
 import com.divinelink.feature.settings.resources.version
 import org.jetbrains.compose.resources.stringResource
@@ -63,8 +63,8 @@ fun AppUpdatesScreen(
       }
 
       item {
-        val text = if (uiState.appVersion?.installSource == InstallSource.Github) {
-          stringResource(Res.string.check_for_updates_on_github)
+        val text = if (uiState.appVersion?.installSource == InstallSource.Codeberg) {
+          stringResource(Res.string.check_for_updates_on_default_source)
         } else {
           stringResource(Res.string.check_for_updates)
         }
