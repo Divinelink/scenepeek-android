@@ -8,10 +8,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.resources.core_ui_country
 import com.divinelink.core.ui.resources.core_ui_language
 import com.divinelink.core.ui.resources.core_ui_rating
@@ -19,7 +21,6 @@ import com.divinelink.core.ui.resources.core_ui_rating_selected
 import com.divinelink.core.ui.resources.core_ui_year
 import com.divinelink.core.ui.resources.core_ui_year_range
 import com.divinelink.core.ui.resources.core_ui_year_single
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 object DiscoverFilterChip {
@@ -28,7 +29,7 @@ object DiscoverFilterChip {
   fun <T : Any> MultiSelect(
     modifier: Modifier,
     filters: List<T>,
-    title: StringResource,
+    title: UIText,
     name: String?,
     onClick: () -> Unit,
   ) {
@@ -36,7 +37,7 @@ object DiscoverFilterChip {
       modifier = modifier,
       selected = filters.isNotEmpty(),
       label = when {
-        filters.isEmpty() -> stringResource(title)
+        filters.isEmpty() -> title.getString()
         filters.size == 1 -> name ?: ""
         else -> buildString {
           append(name)

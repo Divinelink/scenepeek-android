@@ -16,6 +16,7 @@ import com.divinelink.core.ui.resources.core_ui_country
 import com.divinelink.core.ui.resources.core_ui_language
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.FilterType
+import com.divinelink.feature.discover.filters.company.CompanyFiltersContent
 import com.divinelink.feature.discover.filters.keyword.KeywordsFiltersContent
 import com.divinelink.feature.discover.filters.year.YearFilterContent
 import org.jetbrains.compose.resources.stringResource
@@ -92,6 +93,11 @@ fun SelectFilterModalBottomSheet(
       )
       is FilterType.Keywords -> KeywordsFiltersContent(
         keywords = filterType,
+        action = viewModel::onAction,
+        onDismissRequest = onDismissRequest,
+      )
+      is FilterType.Companies -> CompanyFiltersContent(
+        companies = filterType,
         action = viewModel::onAction,
         onDismissRequest = onDismissRequest,
       )

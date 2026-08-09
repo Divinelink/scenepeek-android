@@ -29,6 +29,9 @@ class DiscoverMediaUseCase(
         if (keywords.isNotEmpty()) {
           add(DiscoverFilter.Keywords(keywords.map { it.id }))
         }
+        if (companies.isNotEmpty()) {
+          add(DiscoverFilter.Companies(companies.map { it.id }))
+        }
       }
     }.mapNotNull { it }
 

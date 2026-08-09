@@ -7,4 +7,5 @@ sealed interface FilterModal {
   data object Country : FilterModal
   data object VoteAverage : FilterModal
   data object Keywords : FilterModal
+  data object Companies : FilterModal
 }

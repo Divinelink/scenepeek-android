@@ -160,6 +160,7 @@ sealed interface Navigation : NavKey {
     val entryPointUuid: String,
     val encodedGenre: String? = null,
     val encodedKeyword: String? = null,
+    val encodedCompany: String? = null,
   ) : Navigation
 
   @Serializable

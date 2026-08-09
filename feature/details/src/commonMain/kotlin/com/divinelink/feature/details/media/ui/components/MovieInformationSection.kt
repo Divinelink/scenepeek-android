@@ -14,11 +14,12 @@ import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.resources.revenue
 import com.divinelink.core.ui.SimpleInformationRow
+import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_information
+import com.divinelink.core.ui.resources.core_ui_information_companies
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details_information_budget
-import com.divinelink.feature.details.resources.feature_details_information_companies
 import com.divinelink.feature.details.resources.feature_details_information_countries
 import com.divinelink.feature.details.resources.feature_details_information_original_language
 import com.divinelink.feature.details.resources.feature_details_information_original_title
@@ -139,7 +140,7 @@ fun CompaniesRow(
     Text(
       modifier = Modifier.weight(0.35f),
       text = pluralStringResource(
-        Res.plurals.feature_details_information_companies,
+        UiPlurals.core_ui_information_companies,
         companies.size,
       ),
       style = MaterialTheme.typography.bodyMedium,

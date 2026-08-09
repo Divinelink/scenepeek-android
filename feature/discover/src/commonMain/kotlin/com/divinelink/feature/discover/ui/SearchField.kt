@@ -20,6 +20,7 @@ import org.jetbrains.compose.resources.stringResource
 fun SearchField(
   modifier: Modifier = Modifier,
   value: String?,
+  placeholder: String = stringResource(UiString.core_ui_toolbar_search),
   onValueChange: (String) -> Unit,
 ) {
   Surface {
@@ -40,7 +41,7 @@ fun SearchField(
         if (value.isNullOrEmpty()) {
           Text(
             textAlign = TextAlign.Start,
-            text = stringResource(UiString.core_ui_toolbar_search),
+            text = placeholder,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
           )

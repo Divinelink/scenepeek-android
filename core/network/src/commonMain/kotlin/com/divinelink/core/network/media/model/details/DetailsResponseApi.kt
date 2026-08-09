@@ -49,7 +49,7 @@ sealed class DetailsResponseApi {
   abstract val releaseDate: String
 
   @SerialName("production_companies")
-  abstract val companies: List<ProductionCompany>
+  abstract val companies: List<ProductionCompanyResponse>
 
   @SerialName("production_countries")
   abstract val countries: List<ProductionCountryResponse>
@@ -70,7 +70,7 @@ sealed class DetailsResponseApi {
     override val overview: String?,
     override val popularity: Double,
     @SerialName("poster_path") override val posterPath: String?,
-    @SerialName("production_companies") override val companies: List<ProductionCompany>,
+    @SerialName("production_companies") override val companies: List<ProductionCompanyResponse>,
     @SerialName("production_countries") override val countries: List<ProductionCountryResponse>,
     @SerialName("release_date") override val releaseDate: String,
     val revenue: Long,
@@ -113,7 +113,7 @@ sealed class DetailsResponseApi {
     @SerialName("external_ids") val externalIds: ExternalIdsApi? = null,
     @SerialName("last_air_date") val lastAirDate: String? = null,
     @SerialName("next_episode_to_air") val nextEpisodeToAir: NextEpisodeToAirResponse? = null,
-    @SerialName("production_companies") override val companies: List<ProductionCompany>,
+    @SerialName("production_companies") override val companies: List<ProductionCompanyResponse>,
     @SerialName("production_countries") override val countries: List<ProductionCountryResponse>,
     override val keywords: KeywordsResponse?,
   ) : DetailsResponseApi()
@@ -252,8 +252,8 @@ data class CreditsApi(
 )
 
 @Serializable
-data class ProductionCompany(
-  val id: Int,
+data class ProductionCompanyResponse(
+  val id: Long,
   @SerialName("logo_path") val logoPath: String? = null,
   val name: String,
   @SerialName("origin_country") val originalCountry: String? = null,

@@ -7,6 +7,7 @@ import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
@@ -22,6 +23,7 @@ import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.details.map
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
+import com.divinelink.core.network.media.model.details.ProductionCompanyResponse
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
@@ -429,4 +431,16 @@ class ProdMediaRepository(
         list = response.results.map { it.map() },
       )
     }
+
+  override suspend fun searchCompany(request: SearchRequestApi): Result<PaginationData<Company>> =
+    remote
+      .searchCompanies(request)
+      .map { response ->
+        PaginationData(
+          page = response.page,
+          totalPages = response.totalPages,
+          totalResults = response.totalResults,
+          list = response.results.mapNotNull(ProductionCompanyResponse::map),
+        )
+      }
 }

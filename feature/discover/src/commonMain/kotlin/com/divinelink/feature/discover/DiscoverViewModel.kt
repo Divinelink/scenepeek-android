@@ -7,6 +7,7 @@ import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.DiscoverMediaUseCase
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverParameters
 import com.divinelink.core.model.discover.MediaTypeFilters
@@ -43,6 +44,7 @@ class DiscoverViewModel(
       val mediaType = MediaType.from(route.mediaType)
       val genre = route.encodedGenre?.decodeFromString<Genre>()
       val keyword = route.encodedKeyword?.decodeFromString<Keyword>()
+      val company = route.encodedCompany?.decodeFromString<Company>()
 
       genre?.let { genre ->
         filterRepository.updateSelectedGenres(
@@ -57,6 +59,14 @@ class DiscoverViewModel(
           mediaType = mediaType,
           uuid = route.entryPointUuid,
           keyword = keyword,
+        )
+      }
+
+      company?.let { company ->
+        filterRepository.updateCompany(
+          mediaType = mediaType,
+          uuid = route.entryPointUuid,
+          company = company,
         )
       }
     }
@@ -160,6 +170,21 @@ class DiscoverViewModel(
             filters = uiState.filters.updateFilters(
               mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(keywords = keywords) },
+            ),
+          )
+        }
+      }
+      .launchIn(viewModelScope)
+
+    filterRepository
+      .companies(route.entryPointUuid)
+      .map { it[uiState.value.selectedMedia] ?: emptyList() }
+      .onEach { companies ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(companies = companies) },
             ),
           )
         }

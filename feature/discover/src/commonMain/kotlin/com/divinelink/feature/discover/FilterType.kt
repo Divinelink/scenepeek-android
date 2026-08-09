@@ -2,6 +2,7 @@ package com.divinelink.feature.discover
 
 import androidx.compose.runtime.Composable
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.YearType
 import com.divinelink.core.model.locale.Country
@@ -66,6 +67,18 @@ sealed interface FilterType {
   ) : Searchable {
     @Composable
     override fun visibleOptions(): List<Keyword> = selectedOptions
+      .plus(options)
+      .distinctBy { it.id }
+  }
+
+  data class Companies(
+    override val options: List<Company>,
+    override val selectedOptions: List<Company>,
+    override val query: String?,
+    val loading: Boolean,
+  ) : Searchable {
+    @Composable
+    override fun visibleOptions(): List<Company> = selectedOptions
       .plus(options)
       .distinctBy { it.id }
   }

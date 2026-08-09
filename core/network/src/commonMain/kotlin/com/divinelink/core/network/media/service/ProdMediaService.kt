@@ -26,6 +26,7 @@ import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestBodyApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
+import com.divinelink.core.network.media.model.search.SearchCompanyResponse
 import com.divinelink.core.network.media.model.search.SearchKeywordResponse
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
@@ -39,6 +40,7 @@ import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import com.divinelink.core.network.media.util.buildFetchMediaListUrl
 import com.divinelink.core.network.media.util.buildFindByIdUrl
 import com.divinelink.core.network.media.util.buildGenreUrl
+import com.divinelink.core.network.media.util.buildSearchCompanyUrl
 import com.divinelink.core.network.media.util.buildSearchKeywordUrl
 import com.divinelink.core.network.media.util.buildSeasonDetailsUrl
 import com.divinelink.core.network.media.util.buildWatchProvidersUrl
@@ -315,5 +317,10 @@ class ProdMediaService(
   override suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProvidersResponse> =
     runCatching {
       restClient.get<WatchProvidersResponse>(url = buildWatchProvidersUrl(media = media))
+    }
+
+  override suspend fun searchCompanies(request: SearchRequestApi): Result<SearchCompanyResponse> =
+    runCatching {
+      restClient.get<SearchCompanyResponse>(url = buildSearchCompanyUrl(request = request))
     }
 }

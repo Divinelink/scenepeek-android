@@ -4,6 +4,7 @@ package com.divinelink.core.ui
 
 import androidx.compose.runtime.Composable
 import com.divinelink.core.model.UIText
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -13,4 +14,5 @@ import org.jetbrains.compose.resources.stringResource
 fun UIText.getString(): String = when (this) {
   is UIText.StringText -> this.value
   is UIText.ResourceText -> stringResource(this.value, *this.formatArgs)
+  is UIText.PluralResource -> pluralStringResource(this.value, this.size, *this.formatArgs)
 }

@@ -102,6 +102,9 @@ fun buildDiscoverUrl(
         is DiscoverFilter.Keywords -> if (filter.ids.isNotEmpty()) {
           append("with_keywords", filter.ids.joinToString("|"))
         }
+        is DiscoverFilter.Companies -> if (filter.ids.isNotEmpty()) {
+          append("with_companies", filter.ids.joinToString("|"))
+        }
       }
     }
   }
@@ -187,4 +190,15 @@ fun buildWatchProvidersUrl(media: MediaReference): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/${media.mediaType.value}/${media.mediaId}/watch/providers"
+}.toString()
+
+fun buildSearchCompanyUrl(request: SearchRequestApi): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/search/company"
+
+  parameters.apply {
+    append("query", request.query)
+    append("page", request.page.toString())
+  }
 }.toString()

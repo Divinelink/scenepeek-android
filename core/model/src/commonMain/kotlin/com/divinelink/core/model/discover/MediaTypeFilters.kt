@@ -1,6 +1,7 @@
 package com.divinelink.core.model.discover
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -13,11 +14,13 @@ data class MediaTypeFilters(
   val voteAverage: DiscoverFilter.VoteAverage?,
   val votes: Int?,
   val keywords: List<Keyword>,
+  val companies: List<Company>,
 ) {
   companion object {
     val initial = MediaTypeFilters(
       genres = emptyList(),
       keywords = emptyList(),
+      companies = emptyList(),
       year = null,
       language = null,
       country = null,
@@ -29,6 +32,7 @@ data class MediaTypeFilters(
   val hasSelectedFilters
     get() = genres.isNotEmpty() ||
       keywords.isNotEmpty() ||
+      companies.isNotEmpty() ||
       language != null ||
       country != null ||
       voteAverage != null ||
@@ -43,6 +47,7 @@ data class MediaTypeFilters(
     voteAverage != null -> 4
     votes != null -> 5
     keywords.isNotEmpty() -> 6
+    companies.isNotEmpty() -> 7
     else -> 0
   }
 }
