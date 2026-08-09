@@ -51,6 +51,12 @@ data class SelectFilterUiState(
           query = null,
           loading = false,
         )
+        FilterModal.Companies -> FilterType.Companies(
+          options = emptyList(),
+          selectedOptions = emptyList(),
+          query = null,
+          loading = false,
+        )
       },
     )
   }

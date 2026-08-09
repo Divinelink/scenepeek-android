@@ -2,6 +2,7 @@ package com.divinelink.feature.discover.filters
 
 import com.divinelink.core.model.Decade
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.discover.YearType
@@ -12,6 +13,7 @@ sealed interface SelectFilterAction {
   data object ClearGenres : SelectFilterAction
   data object ResetRatingFilters : SelectFilterAction
   data object ClearKeywords : SelectFilterAction
+  data object ClearCompanies : SelectFilterAction
   data object Retry : SelectFilterAction
   data class SelectGenre(val genre: Genre) : SelectFilterAction
   data class SelectLanguage(val language: Language) : SelectFilterAction
@@ -26,4 +28,6 @@ sealed interface SelectFilterAction {
   data class OnSelectDecade(val decade: Decade) : SelectFilterAction
   data class SelectKeyword(val keyword: Keyword) : SelectFilterAction
   data class SearchKeywords(val query: String) : SelectFilterAction
+  data class SelectCompany(val company: Company) : SelectFilterAction
+  data class SearchCompanies(val query: String) : SelectFilterAction
 }

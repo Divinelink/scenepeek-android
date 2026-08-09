@@ -9,4 +9,5 @@
   <string name="feature_discover_show_filter">Show filters</string>
   <string name="feature_discover_user_score">User score: %1$s - %2$s</string>
   <string name="feature_discover_minimum_user_votes">Minimum user votes: %1$s</string>
+  <string name="feature_discover_empty_company_search_result">Couldn't find any companies with that name.</string>
 </resources>

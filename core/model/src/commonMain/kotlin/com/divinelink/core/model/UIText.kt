@@ -3,7 +3,7 @@ package com.divinelink.core.model
 import org.jetbrains.compose.resources.PluralStringResource
 import org.jetbrains.compose.resources.StringResource
 /**
- * This is a sealed class that contains all of the different ways text can be presented to the UI.
+ * This is a sealed class that contains all the different ways text can be presented to the UI.
  */
 sealed class UIText {
   data class StringText(val value: String) : UIText()
@@ -54,5 +54,4 @@ sealed class UIText {
       return result
     }
   }
-
 }

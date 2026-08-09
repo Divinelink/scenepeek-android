@@ -1,6 +1,9 @@
+@file:Suppress("TooManyFunctions")
+
 package com.divinelink.core.data
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.locale.Country
@@ -57,6 +60,12 @@ class FilterRepository {
         MediaType.TV to emptyList(),
       ),
     ),
+    val companies: MutableStateFlow<Map<MediaType, List<Company>>> = MutableStateFlow(
+      mapOf(
+        MediaType.MOVIE to emptyList(),
+        MediaType.TV to emptyList(),
+      ),
+    ),
   )
 
   private fun getFilterState(uuid: String): FilterState = filterStates.getOrPut(uuid) {
@@ -83,6 +92,9 @@ class FilterRepository {
 
   fun keywords(uuid: String): StateFlow<Map<MediaType, List<Keyword>>> =
     getFilterState(uuid).keywords.asStateFlow()
+
+  fun companies(uuid: String): StateFlow<Map<MediaType, List<Company>>> =
+    getFilterState(uuid).companies.asStateFlow()
 
   fun updateSelectedGenres(
     uuid: String,
@@ -149,11 +161,35 @@ class FilterRepository {
     filterState.keywords.value += mediaType to keywords
   }
 
+  fun updateCompany(
+    uuid: String,
+    mediaType: MediaType,
+    company: Company,
+  ) {
+    val filterState = getFilterState(uuid)
+    val currentCompanies = filterState.companies.value[mediaType] ?: emptyList()
+
+    val companies = if (company in currentCompanies) {
+      currentCompanies - company
+    } else {
+      currentCompanies + company
+    }
+
+    filterState.companies.value += mediaType to companies
+  }
+
   fun clearKeywords(
     uuid: String,
     mediaType: MediaType,
   ) {
     getFilterState(uuid).keywords.value += mediaType to emptyList()
+  }
+
+  fun clearCompanies(
+    uuid: String,
+    mediaType: MediaType,
+  ) {
+    getFilterState(uuid).companies.value += mediaType to emptyList()
   }
 
   fun clearRatings(
@@ -171,6 +207,7 @@ class FilterRepository {
     with(getFilterState(uuid)) {
       selectedGenres.value += mediaType to emptyList()
       keywords.value += mediaType to emptyList()
+      companies.value += mediaType to emptyList()
       selectedLanguage.value += mediaType to null
       selectedCountry.value += mediaType to null
       voteAverage.value += mediaType to null

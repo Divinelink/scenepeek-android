@@ -102,6 +102,9 @@ fun buildDiscoverUrl(
         is DiscoverFilter.Keywords -> if (filter.ids.isNotEmpty()) {
           append("with_keywords", filter.ids.joinToString("|"))
         }
+        is DiscoverFilter.Companies -> if (filter.ids.isNotEmpty()) {
+          append("with_companies", filter.ids.joinToString("|"))
+        }
       }
     }
   }

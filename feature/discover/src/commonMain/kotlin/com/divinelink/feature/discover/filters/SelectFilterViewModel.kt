@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.divinelink.feature.discover.filters
 
 import androidx.lifecycle.ViewModel
@@ -169,6 +171,22 @@ class SelectFilterViewModel(
             }
           }
           .launchIn(viewModelScope)
+
+      FilterModal.Companies ->
+        filterRepository
+          .companies(uuid = entryPointUuid)
+          .map { it[_uiState.value.mediaType] ?: emptyList() }
+          .distinctUntilChanged()
+          .onEach { companies ->
+            _uiState.update {
+              it.copy(
+                filterType = (it.filterType as FilterType.Companies).copy(
+                  selectedOptions = companies,
+                ),
+              )
+            }
+          }
+          .launchIn(viewModelScope)
     }
   }
 
@@ -233,6 +251,7 @@ class SelectFilterViewModel(
     when (action) {
       SelectFilterAction.ClearGenres -> handleClearGenres()
       SelectFilterAction.ClearKeywords -> handleClearKeywords()
+      SelectFilterAction.ClearCompanies -> handleClearCompanies()
       SelectFilterAction.ResetRatingFilters -> handleResetRatings()
       SelectFilterAction.Retry -> handleRetry()
       is SelectFilterAction.SelectGenre -> handleSelectGenre(action)
@@ -248,7 +267,17 @@ class SelectFilterViewModel(
       is SelectFilterAction.OnSelectDecade -> handleSelectDecade(action.decade)
       is SelectFilterAction.SearchKeywords -> handleSearchKeywords(action)
       is SelectFilterAction.SelectKeyword -> handleSelectKeyword(action)
+      is SelectFilterAction.SearchCompanies -> handleSearchCompany(action)
+      is SelectFilterAction.SelectCompany -> handleSelectCompany(action)
     }
+  }
+
+  private fun handleSelectCompany(action: SelectFilterAction.SelectCompany) {
+    filterRepository.updateCompany(
+      mediaType = _uiState.value.mediaType,
+      uuid = entryPointUuid,
+      company = action.company,
+    )
   }
 
   private fun handleSelectKeyword(action: SelectFilterAction.SelectKeyword) {
@@ -292,6 +321,39 @@ class SelectFilterViewModel(
     }
   }
 
+  private fun handleSearchCompany(action: SelectFilterAction.SearchCompanies) {
+    searchJob?.cancel()
+
+    _uiState.update { state ->
+      state.copy(
+        filterType = (state.filterType as FilterType.Companies).copy(
+          loading = true,
+          query = action.query,
+        ),
+      )
+    }
+
+    searchJob = viewModelScope.launch {
+      delay(300)
+
+      repository.searchCompany(
+        request = SearchRequestApi(
+          query = action.query,
+          page = 1,
+        ),
+      ).map { result ->
+        _uiState.update { state ->
+          state.copy(
+            filterType = (state.filterType as FilterType.Companies).copy(
+              options = result.list,
+              loading = false,
+            ),
+          )
+        }
+      }
+    }
+  }
+
   private fun handleSearchFilters(action: SelectFilterAction.SearchFilters) {
     _uiState.update { uiState ->
       uiState.copy(
@@ -302,6 +364,7 @@ class SelectFilterViewModel(
           is FilterType.VoteAverage -> uiState.filterType
           is FilterType.Year -> uiState.filterType
           is FilterType.Keywords -> uiState.filterType.copy(query = action.query)
+          is FilterType.Companies -> uiState.filterType.copy(query = action.query)
         },
       )
     }
@@ -322,6 +385,13 @@ class SelectFilterViewModel(
     )
   }
 
+  private fun handleClearCompanies() {
+    filterRepository.clearCompanies(
+      uuid = entryPointUuid,
+      mediaType = _uiState.value.mediaType,
+    )
+  }
+
   private fun handleResetRatings() {
     filterRepository.clearRatings(uuid = entryPointUuid, mediaType = _uiState.value.mediaType)
   }
@@ -334,6 +404,7 @@ class SelectFilterViewModel(
       FilterModal.VoteAverage -> Unit
       FilterModal.Year -> Unit
       FilterModal.Keywords -> Unit
+      FilterModal.Companies -> Unit
     }
   }
 

@@ -319,9 +319,8 @@ class ProdMediaService(
       restClient.get<WatchProvidersResponse>(url = buildWatchProvidersUrl(media = media))
     }
 
-  override suspend fun searchCompanies(
-    request: SearchRequestApi,
-  ): Result<SearchCompanyResponse> = runCatching {
-    restClient.get<SearchCompanyResponse>(url = buildSearchCompanyUrl(request = request))
-  }
+  override suspend fun searchCompanies(request: SearchRequestApi): Result<SearchCompanyResponse> =
+    runCatching {
+      restClient.get<SearchCompanyResponse>(url = buildSearchCompanyUrl(request = request))
+    }
 }

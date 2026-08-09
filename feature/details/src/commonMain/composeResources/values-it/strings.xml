@@ -74,11 +74,7 @@
         <item quantity="many">Paesi</item>
         <item quantity="other">Paesi</item>
     </plurals>
-    <plurals name="feature_details_information_companies">
-        <item quantity="one">Società</item>
-        <item quantity="many">Società</item>
-        <item quantity="other">Società</item>
-    </plurals>
+
     <string name="available_on">Disponibile su</string>
     <string name="by_justWatch">tramite JustWatch</string>
     <string name="no_available_stream_providers">Nessun provider di streaming disponibile.</string>

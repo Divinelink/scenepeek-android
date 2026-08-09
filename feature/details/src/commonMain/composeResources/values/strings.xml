@@ -92,11 +92,6 @@
     <item quantity="other">Countries</item>
   </plurals>
 
-  <plurals name="feature_details_information_companies">
-    <item quantity="one">Company</item>
-    <item quantity="other">Companies</item>
-  </plurals>
-
   <string name="login">Login</string>
 
   <string name="available_on">Available on</string>
