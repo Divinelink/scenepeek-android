@@ -55,13 +55,7 @@ object MediaDetailsFactory {
       originalLanguage = Language.ENGLISH,
       budget = "$63,000,000",
       revenue = "$100,853,753",
-      companies = listOf(
-        "Fox 2000 Pictures",
-        "Regency Enterprises",
-        "Linson Entertainment",
-        "20th Century Fox",
-        "Taurus Film",
-      ),
+      companies = CompanyFactory.fightClub,
       countries = listOf(
         Country.GERMANY,
         Country.UNITED_STATES,
@@ -121,13 +115,7 @@ object MediaDetailsFactory {
       seasons = 9,
       episodes = 186,
       originalLanguage = Language.ENGLISH,
-      companies = listOf(
-        "Universal Television",
-        "Deedle-Dee Productions",
-        "Reveille Productions",
-        "Shine America",
-        "Universal Media Studios",
-      ),
+      companies = CompanyFactory.theOffice,
       countries = listOf(
         Country.UNITED_STATES,
       ),

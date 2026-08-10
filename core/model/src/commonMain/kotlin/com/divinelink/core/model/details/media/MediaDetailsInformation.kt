@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details.media
 
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.release.CountryRelease
 import com.divinelink.core.model.locale.Country
@@ -14,7 +15,7 @@ sealed interface MediaDetailsInformation {
     val originalLanguage: Language?,
     val budget: String,
     val revenue: String,
-    val companies: List<String>,
+    val companies: List<Company>,
     val countries: List<Country>,
     val releaseDates: List<CountryRelease>?,
   ) : MediaDetailsInformation
@@ -28,7 +29,7 @@ sealed interface MediaDetailsInformation {
     val seasons: Int,
     val episodes: Int,
     val originalLanguage: Language?,
-    val companies: List<String>,
+    val companies: List<Company>,
     val countries: List<Country>,
   ) : MediaDetailsInformation
 }
