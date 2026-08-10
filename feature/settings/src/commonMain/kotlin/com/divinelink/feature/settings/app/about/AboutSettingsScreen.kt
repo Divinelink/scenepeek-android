@@ -41,7 +41,7 @@ fun AboutSettingsScreen(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
           name = stringResource(commonRes.string.core_commons_app_name),
           version = buildConfigProvider.versionName.lowercase(),
-          github = "Divinelink",
+          account = "Divinelink",
           onNavigate = onNavigate,
         )
       }

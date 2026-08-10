@@ -155,6 +155,7 @@ fun SettingsScreen(
           summary = stringResource(Res.string.feature_settings_rate_the_application_summary),
           onClick = {
             modalOptions = listOf(
+              SettingsModalOption.CodebergStar,
               SettingsModalOption.GitHubStar,
               SettingsModalOption.RateGooglePlay,
             )

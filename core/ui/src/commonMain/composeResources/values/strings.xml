@@ -191,4 +191,6 @@
   <string name="core_ui_added_on_list">Added on list %1$s</string>
   <string name="core_ui_show_review_actions_content_desc">Show review actions</string>
   <string name="core_ui_remove_item_from_history_content_desc">Remove %1$s from history button</string>
+  <string name="github" translatable="false">GitHub</string>
+  <string name="codeberg" translatable="false">Codeberg</string>
 </resources>

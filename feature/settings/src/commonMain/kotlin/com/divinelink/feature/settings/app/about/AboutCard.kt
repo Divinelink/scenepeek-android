@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Code
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -34,22 +32,28 @@ import com.divinelink.core.model.resources.core_model_ic_tmdb
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.manager.url.UrlHandler
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
+import com.divinelink.core.ui.resources.codeberg
+import com.divinelink.core.ui.resources.github
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.feature_settings_about__ad_free
+import com.divinelink.feature.settings.resources.feature_settings_about__codeberg_url
 import com.divinelink.feature.settings.resources.feature_settings_about__developed_by
 import com.divinelink.feature.settings.resources.feature_settings_about__developer_github_url
-import com.divinelink.feature.settings.resources.feature_settings_about__github
+import com.divinelink.feature.settings.resources.feature_settings_about__github_url
 import com.divinelink.feature.settings.resources.feature_settings_about__no_tracker
 import com.divinelink.feature.settings.resources.feature_settings_about__open_source
-import com.divinelink.feature.settings.resources.feature_settings_about__repository_url
-import com.divinelink.feature.settings.resources.feature_settings_about__source_code
 import com.divinelink.feature.settings.resources.feature_settings_about__tmdb_endorsement
 import com.divinelink.feature.settings.resources.feature_settings_about__version
 import com.divinelink.feature.settings.resources.ic_ad_free
+import com.divinelink.feature.settings.resources.ic_codeberg
 import com.divinelink.feature.settings.resources.ic_github
 import com.divinelink.feature.settings.resources.ic_open_source
 import com.divinelink.feature.settings.resources.ic_tracker_free
+import com.divinelink.feature.settings.resources.view_on
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import com.divinelink.core.model.resources.Res as R
@@ -59,16 +63,18 @@ fun AboutCard(
   modifier: Modifier = Modifier,
   name: String,
   version: String,
-  github: String,
+  account: String,
   onNavigate: (Navigation) -> Unit,
 ) {
   val urlHandler = rememberUrlHandler()
-  val repositoryUrl = stringResource(Res.string.feature_settings_about__repository_url)
+  val githubUrl = stringResource(Res.string.feature_settings_about__github_url)
+  val codebergUrl = stringResource(Res.string.feature_settings_about__codeberg_url)
   val githubAccountUrl = stringResource(
     Res.string.feature_settings_about__developer_github_url,
-    github,
+    account,
   )
-  val aboutGithubTitle = stringResource(Res.string.feature_settings_about__github)
+  val github = stringResource(UiString.github)
+  val codeberg = stringResource(UiString.codeberg)
 
   Card(
     modifier = modifier
@@ -84,7 +90,6 @@ fun AboutCard(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     ) {
-      // App Logo
       Surface(
         modifier = Modifier
           .size(MaterialTheme.dimensions.keyline_96)
@@ -142,70 +147,79 @@ fun AboutCard(
           modifier = Modifier.fillMaxWidth(),
         ) {
           Text(
-            text = stringResource(Res.string.feature_settings_about__developed_by, github),
+            text = stringResource(Res.string.feature_settings_about__developed_by),
             style = MaterialTheme.typography.bodyMedium,
           )
 
-          TextButton(
-            onClick = {
-              urlHandler.openUrl(
-                url = githubAccountUrl,
-                onError = {
-                  onNavigate(
-                    Navigation.WebViewRoute(
-                      url = githubAccountUrl,
-                      title = aboutGithubTitle,
-                    ),
-                  )
-                },
-              )
-            },
-          ) {
-            Row(
-              verticalAlignment = Alignment.CenterVertically,
-              horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-            ) {
-              Icon(
-                painter = painterResource(Res.drawable.ic_github),
-                contentDescription = "GitHub Account",
-                modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
-              )
-              Text(github)
-            }
-          }
+          UrlTextButton(
+            urlHandler = urlHandler,
+            url = githubAccountUrl,
+            title = github,
+            text = account,
+            icon = Res.drawable.ic_github,
+            onNavigate = onNavigate,
+          )
         }
 
-        TextButton(
-          onClick = {
-            urlHandler.openUrl(
-              url = repositoryUrl,
-              onError = {
-                onNavigate(
-                  Navigation.WebViewRoute(
-                    url = repositoryUrl,
-                    title = aboutGithubTitle,
-                  ),
-                )
-              },
-            )
-          },
-        ) {
-          Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-          ) {
-            Icon(
-              imageVector = Icons.Default.Code,
-              contentDescription = "Source Code",
-              modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
-            )
-            Text(
-              text = stringResource(Res.string.feature_settings_about__source_code),
-              textAlign = TextAlign.Center,
-            )
-          }
-        }
+        UrlTextButton(
+          urlHandler = urlHandler,
+          url = codebergUrl,
+          title = codeberg,
+          text = stringResource(Res.string.view_on, stringResource(UiString.codeberg)),
+          icon = Res.drawable.ic_codeberg,
+          onNavigate = onNavigate,
+        )
+
+        UrlTextButton(
+          urlHandler = urlHandler,
+          url = githubUrl,
+          title = github,
+          text = stringResource(Res.string.view_on, stringResource(UiString.github)),
+          icon = Res.drawable.ic_github,
+          onNavigate = onNavigate,
+        )
       }
+    }
+  }
+}
+
+@Composable
+private fun UrlTextButton(
+  urlHandler: UrlHandler,
+  url: String,
+  title: String,
+  text: String,
+  icon: DrawableResource,
+  onNavigate: (Navigation) -> Unit,
+) {
+  TextButton(
+    onClick = {
+      urlHandler.openUrl(
+        url = url,
+        onError = {
+          onNavigate(
+            Navigation.WebViewRoute(
+              url = url,
+              title = title,
+            ),
+          )
+        },
+      )
+    },
+  ) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    ) {
+      Icon(
+        painter = painterResource(icon),
+        contentDescription = null,
+        modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
+      )
+      Text(
+        text = text,
+        textAlign = TextAlign.Center,
+      )
     }
   }
 }
@@ -274,7 +288,7 @@ fun AboutCardPreview() {
         modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
         name = "ScenePeek",
         version = "1.0.0",
-        github = "Divinelink",
+        account = "Divinelink",
         onNavigate = {},
       )
     }

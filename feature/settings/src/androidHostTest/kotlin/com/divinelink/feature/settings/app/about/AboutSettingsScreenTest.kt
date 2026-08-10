@@ -18,11 +18,12 @@ import com.divinelink.core.testing.uiTest
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.app.SettingsScreen
 import com.divinelink.feature.settings.resources.feature_settings_about
+import com.divinelink.feature.settings.resources.feature_settings_about__codeberg_url
 import com.divinelink.feature.settings.resources.feature_settings_about__developer_github_url
+import com.divinelink.feature.settings.resources.feature_settings_about__github_url
 import com.divinelink.feature.settings.resources.feature_settings_about__privacy_policy
-import com.divinelink.feature.settings.resources.feature_settings_about__repository_url
-import com.divinelink.feature.settings.resources.feature_settings_about__source_code
 import com.divinelink.feature.settings.resources.feature_settings_about__version
+import com.divinelink.feature.settings.resources.view_on
 import io.kotest.matchers.shouldBe
 import org.jetbrains.compose.resources.getString
 import kotlin.test.Test
@@ -146,7 +147,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test click on view source code`() = uiTest {
+  fun `test click on view codeberg`() = uiTest {
     var navigationRoute: Navigation? = null
     setVisibilityScopeContent {
       AboutSettingsScreen(
@@ -162,9 +163,35 @@ class AboutSettingsScreenTest : ComposeTest() {
       hasText(getString(R.string.feature_settings_about__privacy_policy)),
     )
 
-    onNodeWithText(getString(R.string.feature_settings_about__source_code)).performClick()
+    onNodeWithText(getString(R.string.view_on, "Codeberg")).performClick()
 
-    val url = getString(R.string.feature_settings_about__repository_url)
+    val url = getString(R.string.feature_settings_about__codeberg_url)
+    navigationRoute shouldBe Navigation.WebViewRoute(
+      url = url,
+      title = "Codeberg",
+    )
+  }
+
+  @Test
+  fun `test click on view github`() = uiTest {
+    var navigationRoute: Navigation? = null
+    setVisibilityScopeContent {
+      AboutSettingsScreen(
+        onNavigate = { route ->
+          navigationRoute = route
+        },
+        animatedVisibilityScope = this,
+        buildConfigProvider = releaseBuildConfigProvider,
+      )
+    }
+
+    onNodeWithTag(TestTags.Settings.About.SCROLLABLE_CONTENT).performScrollToNode(
+      hasText(getString(R.string.feature_settings_about__privacy_policy)),
+    )
+
+    onNodeWithText(getString(R.string.view_on, "GitHub")).performClick()
+
+    val url = getString(R.string.feature_settings_about__github_url)
     navigationRoute shouldBe Navigation.WebViewRoute(
       url = url,
       title = "GitHub",

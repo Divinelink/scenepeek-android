@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.composition.LocalIntentManager
+import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.manager.url.UrlHandler
 import org.jetbrains.compose.resources.stringResource
 
@@ -39,6 +40,7 @@ fun SettingsModalContent(
           .clickable {
             when (option) {
               SettingsModalOption.GitHubStar -> urlHandler.openUrl(url)
+              SettingsModalOption.CodebergStar -> urlHandler.openUrl(url)
               SettingsModalOption.OpenGithubIssue -> urlHandler.openUrl(url)
               SettingsModalOption.RateGooglePlay -> urlHandler.openUrl(url)
               SettingsModalOption.SendEmail -> intentManager.launchEmail(
@@ -58,7 +60,7 @@ fun SettingsModalContent(
         )
 
         Text(
-          text = stringResource(option.text),
+          text = option.text.getString(),
           style = MaterialTheme.typography.bodyLarge,
         )
       }
