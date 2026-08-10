@@ -14,6 +14,8 @@ import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.media.MediaDetailsInformation
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.SimpleInformationRow
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_aired_episodes
@@ -32,6 +34,7 @@ import org.jetbrains.compose.resources.stringResource
 fun TvInformationSection(
   modifier: Modifier = Modifier,
   information: MediaDetailsInformation.TV,
+  onNavigate: (Navigation) -> Unit,
 ) {
   Column(
     modifier = modifier.fillMaxWidth(),
@@ -98,6 +101,10 @@ fun TvInformationSection(
 
     CountriesRow(countries = information.countries)
 
-    CompaniesRow(companies = information.companies)
+    CompaniesRow(
+      mediaType = MediaType.TV,
+      onNavigate = onNavigate,
+      companies = information.companies,
+    )
   }
 }

@@ -120,10 +120,12 @@ fun AboutFormContent(
           is MediaDetailsInformation.Movie -> MovieInformationSection(
             modifier = Modifier,
             information = information,
+            onNavigate = onNavigate,
           )
           is MediaDetailsInformation.TV -> TvInformationSection(
             modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
             information = information,
+            onNavigate = onNavigate,
           )
         }
       }

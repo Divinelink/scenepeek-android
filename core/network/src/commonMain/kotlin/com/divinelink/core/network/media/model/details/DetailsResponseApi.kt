@@ -152,7 +152,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(selectedRegion: Country?): Me
     countries = this.countries.mapNotNull {
       Country.fromCode(it.iso31611)
     },
-    companies = this.companies.map { it.name },
+    companies = this.companies.mapNotNull(ProductionCompanyResponse::map),
     budget = if (budget == 0) {
       "-"
     } else {
@@ -196,7 +196,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
     seasons = numberOfSeasons,
     episodes = numberOfEpisodes,
     originalLanguage = Language.fromCode(originalLanguage),
-    companies = this.companies.map { it.name },
+    companies = this.companies.mapNotNull(ProductionCompanyResponse::map),
     countries = this.countries.mapNotNull {
       Country.fromCode(it.iso31611)
     },

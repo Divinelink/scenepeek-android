@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,11 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.revenue
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.SimpleInformationRow
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
@@ -33,6 +41,7 @@ import com.divinelink.core.model.resources.Res as ModelRes
 fun MovieInformationSection(
   modifier: Modifier = Modifier,
   information: MediaDetailsInformation.Movie,
+  onNavigate: (Navigation) -> Unit,
 ) {
   Column(
     modifier = modifier.fillMaxWidth(),
@@ -84,6 +93,8 @@ fun MovieInformationSection(
     CompaniesRow(
       modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
       companies = information.companies,
+      onNavigate = onNavigate,
+      mediaType = MediaType.MOVIE,
     )
 
     SimpleInformationRow(
@@ -131,8 +142,21 @@ fun CountriesRow(
 @Composable
 fun CompaniesRow(
   modifier: Modifier = Modifier,
-  companies: List<String>,
+  mediaType: MediaType,
+  companies: List<Company>,
+  onNavigate: (Navigation) -> Unit,
 ) {
+  var showCompaniesModal by rememberSaveable { mutableStateOf(false) }
+
+  if (showCompaniesModal) {
+    CompaniesModal(
+      mediaType = mediaType,
+      companies = companies,
+      onNavigate = onNavigate,
+      onDismiss = { showCompaniesModal = false },
+    )
+  }
+
   Row(
     modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -147,9 +171,12 @@ fun CompaniesRow(
     )
 
     Text(
-      modifier = Modifier.weight(0.65f),
-      text = companies.joinToString(separator = "\n"),
+      modifier = Modifier
+        .clickable { showCompaniesModal = true }
+        .weight(0.65f),
+      text = companies.joinToString(separator = "\n") { it.name },
       style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.primary,
     )
   }
 }
