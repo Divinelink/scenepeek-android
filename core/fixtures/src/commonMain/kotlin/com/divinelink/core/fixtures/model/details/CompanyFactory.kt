@@ -28,7 +28,7 @@ object CompanyFactory {
 
   val twentiethCenturyFox = Company(
     id = 25,
-    logoPath = "/nM2MfoMqzJQRiSynsDabOtFKetD.png",
+    logoPath = "/qZCc1lty5FzX30aOCVRBLzaVmcp.png",
     name = "20th Century Fox",
     country = Country.UNITED_STATES,
   )

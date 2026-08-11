@@ -108,13 +108,15 @@ fun AboutFormContent(
       }
     }
 
-    aboutData.information?.let { information ->
+    if (aboutData.creators != null || aboutData.genres != null) {
       item {
         HorizontalDivider(
           modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
         )
       }
+    }
 
+    aboutData.information?.let { information ->
       item {
         when (information) {
           is MediaDetailsInformation.Movie -> MovieInformationSection(
