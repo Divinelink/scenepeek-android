@@ -1,0 +1,91 @@
+name: Mirror release to GitHub
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch: {}
+
+jobs:
+  mirror:
+    runs-on: codeberg-small
+    steps:
+      - name: Checkout
+        uses: https://code.forgejo.org/actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install tools
+        run: apt-get update && apt-get install -y --no-install-recommends jq curl git ca-certificates
+
+      - name: Fetch latest release from Codeberg
+        run: |
+          curl -fsSL "${{ github.server_url }}/api/v1/repos/${{ github.repository }}/releases/latest" \
+            -o /tmp/release.json
+
+      - name: Read release metadata
+        id: release
+        run: |
+          TAG_NAME=$(jq -r '.tag_name' /tmp/release.json)
+          NAME=$(jq -r '.name // .tag_name' /tmp/release.json)
+          PRERELEASE=$(jq -r '.prerelease' /tmp/release.json)
+          DRAFT=$(jq -r '.draft' /tmp/release.json)
+          jq -r '.body // ""' /tmp/release.json > /tmp/release_body.md
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+          echo "draft=$DRAFT" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout release tag
+        run: git checkout "${{ steps.release.outputs.tag_name }}"
+
+      - name: Download assets from Codeberg
+        run: |
+          mkdir -p /tmp/assets
+          jq -c '.assets[]' /tmp/release.json | while read -r asset; do
+            url=$(echo "$asset" | jq -r '.browser_download_url')
+            name=$(echo "$asset" | jq -r '.name')
+            echo "Downloading $name"
+            curl -fsSL "$url" -o "/tmp/assets/$name"
+          done
+
+      - name: Push tag to GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_REPOSITORY: ${{ vars.GH_REPOSITORY }}
+        run: |
+          git remote add github "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPOSITORY}.git"
+          git push github "refs/tags/${{ steps.release.outputs.tag_name }}"
+
+      - name: Create GitHub release
+        id: gh_release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_REPOSITORY: ${{ vars.GH_REPOSITORY }}
+        run: |
+          BODY=$(jq -Rs '.' /tmp/release_body.md)
+          RESPONSE=$(curl -sS -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GH_REPOSITORY}/releases" \
+            -d "{\"tag_name\":\"${{ steps.release.outputs.tag_name }}\",\"name\":\"${{ steps.release.outputs.name }}\",\"body\":${BODY},\"draft\":${{ steps.release.outputs.draft }},\"prerelease\":${{ steps.release.outputs.prerelease }}}")
+          RELEASE_ID=$(echo "$RESPONSE" | jq -r '.id')
+          if [ "$RELEASE_ID" = "null" ] || [ -z "$RELEASE_ID" ]; then
+            echo "Failed to create GitHub release: $RESPONSE" >&2
+            exit 1
+          fi
+          echo "release_id=$RELEASE_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Upload assets to GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_REPOSITORY: ${{ vars.GH_REPOSITORY }}
+        run: |
+          for f in /tmp/assets/*; do
+            name=$(basename "$f")
+            echo "Uploading $name"
+            curl -sS -X POST \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Content-Type: application/octet-stream" \
+              --data-binary "@${f}" \
+              "https://uploads.github.com/repos/${GH_REPOSITORY}/releases/${{ steps.gh_release.outputs.release_id }}/assets?name=${name}"
+          done
