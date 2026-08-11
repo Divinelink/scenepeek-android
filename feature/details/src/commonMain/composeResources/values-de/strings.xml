@@ -67,10 +67,6 @@
         <item quantity="one">Land</item>
         <item quantity="other">Länder</item>
     </plurals>
-    <plurals name="feature_details_information_companies">
-        <item quantity="one">Firma</item>
-        <item quantity="other">Firmen</item>
-    </plurals>
     <string name="available_on">Verfügbar auf</string>
     <string name="by_justWatch">von JustWatch</string>
     <string name="no_available_stream_providers">Keine Streaming-Anbieter verfügbar.</string>

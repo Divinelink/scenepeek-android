@@ -26,4 +26,26 @@
     <string name="feature_details_biography_section">Elulugu</string>
     <string name="feature_details_place_of_birth_section">Sünnikoht</string>
     <string name="feature_details_person_credits_known_for_section">Tuntud kui</string>
+    <plurals name="feature_details_number_of_seasons">
+        <item quantity="one">%1$s hooaeg</item>
+        <item quantity="other">%1$s hooaega</item>
+    </plurals>
+    <plurals name="feature_details_movies">
+        <item quantity="one">%1$s film</item>
+        <item quantity="other">%1$s filmi</item>
+    </plurals>
+    <string name="feature_details_information_next_episode_air_date">Järgmise osa eetrikuupäev</string>
+    <string name="feature_details_information_status">Olek</string>
+    <string name="feature_details_filter_sort_release_date">Väljaandmise kuupäev</string>
+    <string name="feature_details_information_budget">Eelarve</string>
+    <string name="feature_details_information_original_language">Algne keel</string>
+    <plurals name="feature_details_tv_shows">
+        <item quantity="one">%1$s telesaade</item>
+        <item quantity="other">%1$s telesaadet</item>
+    </plurals>
+    <string name="feature_details_information_runtime">Kestus eetris</string>
+    <string name="feature_details_information_original_title">Algne pealkiri</string>
+    <string name="feature_details_information_release_dates">Väljaandmise kuupäevad</string>
+    <string name="feature_details_person_birthday">%1$s (%2$s aastat vana)</string>
+    <string name="feature_details_information_seasons">Hooajad</string>
 </resources>

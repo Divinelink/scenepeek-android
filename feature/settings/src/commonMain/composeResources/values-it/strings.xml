@@ -16,7 +16,7 @@
     <string name="feature_settings_choose_a_color">Scegli un colore</string>
     <string name="feature_settings_account">Account</string>
     <string name="feature_settings_logout">Esci</string>
-    <string name="feature_settings_logged_in">Connesso • </string>
+    <string name="feature_settings_logged_in">Connesso</string>
     <string name="feature_settings_tmdb_account">Account TMDB</string>
     <string name="feature_settings_not_logged_in">Non connesso</string>
     <string name="feature_settings_sign_in_to_access_features">Accedi per accedere alle funzionalità TMDB</string>
@@ -24,9 +24,9 @@
     <string name="feature_settings_invalid_credentials">Le credenziali inserite non sono valide.</string>
     <string name="feature_settings_csrf_enabled">Il server attualmente dispone di protezione CSRF abilitata.\n\nPer consentire applicazioni di terze parti come ScenePeek per effettuare chiamate API esterne al server, è necessario disattivare CSRF.\n\nSe non sei l'amministratore del server, contatta il tuo amministratore per assistenza.</string>
     <string name="feature_settings_could_not_connect">Impossibile connettersi al server. Assicurarsi che l'indirizzo IP sia corretto e che il server sia in esecuzione.</string>
-    <string name="feature_settings_jellyseerr_description">Aggiungi il tuo indirizzo IP Jellyseerr e seleziona un metodo di accesso per abilitare Jellyseerr.\nAssicurarsi di includere l'URL completo con https:// o http:// e numero di porta, se necessario.</string>
+    <string name="feature_settings_jellyseerr_description">Aggiungi il tuo indirizzo IP Seerr e seleziona un metodo di accesso per abilitare Seerr.\nAssicurarsi di includere l'URL completo con https:// o http:// e numero di porta, se necessario.</string>
     <string name="feature_settings_jellyseerr_server_url">URL del server</string>
-    <string name="feature_settings_jellyseerr_address_placeholder">ex. http(s)://your-jellyseerr-url.com</string>
+    <string name="feature_settings_jellyseerr_address_placeholder">ex. http(s)://your-seerr-url.com</string>
     <string name="feature_settings_sign_in_with">Accedi con %1$s</string>
     <string name="feature_settings_signing_in">Accesso…</string>
     <string name="feature_settings_username">Nome Utente</string>
@@ -43,8 +43,8 @@
     <string name="feature_settings_enable_link_handling_step_4">Si potrebbe trovare questa opzione direttamente o in Impostazioni avanzate, a seconda del dispositivo.\n\n</string>
     <string name="feature_settings_enable_link_handling_step_5">3. Scegli Apri link supportati per %1$s\n\n</string>
     <string name="feature_settings_enable_link_handling_step_6">(alcuni dispositivi hanno questa funzionalità sotto App predefinite nelle impostazioni principali seguite selezionando %1$s per le categorie pertinenti)\n\n</string>
-    <string name="feature_settings_jellyseerr_integration">Integrazione Jellyseer</string>
-    <string name="feature_settings_jellyseerr_account">Account Jellyseer</string>
+    <string name="feature_settings_jellyseerr_integration">Integrazione Seerr</string>
+    <string name="feature_settings_jellyseerr_account">Account Seerr</string>
     <string name="feature_settings_jellyseerr_total_requests">Totale richieste</string>
     <string name="feature_settings_jellyseerr_joined_on">Entrato su %1$s | User ID: %2$s</string>
     <string name="feature_settings_join_the_community_title">Unisciti alla comunità</string>
@@ -57,7 +57,6 @@
     <string name="feature_settings_help_with_translation_summary">Possiamo usare le tue competenze linguistiche per portare l'app in più lingue</string>
     <string name="rate_on_google_play">Vota su Google Play</string>
     <string name="rate_on_app_store">Vota su App Store</string>
-    <string name="star_on_github">Stella su GitHub</string>
     <string name="raise_an_issue_on_github">Rilascia un problema su GitHub</string>
     <string name="send_an_email">Invia un'email</string>
     <string name="feature_settings_about">Info</string>
@@ -67,7 +66,6 @@
     <string name="feature_settings_about__ad_free">Senza annunci</string>
     <string name="feature_settings_about__open_source">Open Source</string>
     <string name="feature_settings_about__no_tracker">Nessun tracker</string>
-    <string name="feature_settings_about__source_code">Visualizza codice sorgente</string>
     <string name="feature_settings_about__developed_by">Sviluppato da</string>
     <string name="feature_settings_region_title">Seleziona il tuo paese per vedere i servizi di streaming disponibili nella tua zona.</string>
     <string name="feature_settings_region">Paese</string>
@@ -86,9 +84,10 @@
     <string name="auto_update_app_summary">Verifica periodicamente la presenza di nuove versioni e richiedi di installarle</string>
     <string name="version">Versione</string>
     <string name="app_updates">Aggiornamenti dell'app</string>
-    <string name="check_for_updates_on_github">Verifica la presenza di aggiornamenti su GitHub</string>
     <string name="check_for_updates">Controlla gli aggiornamenti</string>
     <string name="last_checked">Ultimo controllo: %1$s</string>
     <string name="feature_settings_show_password">Mostra password</string>
     <string name="feature_settings_hide_password">Nascondi password</string>
+    <string name="check_for_updates_on_default_source">Verifica la presenza di aggiornamenti su Codeberg</string>
+    <string name="star_on">Stella su %1$s</string>
 </resources>

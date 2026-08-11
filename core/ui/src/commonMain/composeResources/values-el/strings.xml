@@ -181,7 +181,9 @@
     <string name="core_ui_added_to_your_saved">Προστέθηκε στα αποθηκευμένα σας</string>
     <string name="core_ui_removed_from_your_saved">Αφαιρέθηκε από τα αποθηκευμένα σας</string>
     <plurals name="core_ui_information_companies">
-      <item quantity="one">Εταιρεία</item>
-      <item quantity="other">Εταιρείες</item>
+        <item quantity="one">Εταιρεία</item>
+        <item quantity="other">Εταιρείες</item>
     </plurals>
+    <string name="core_ui_default">Προεπιλογή</string>
+    <string name="core_ui_search_companies_placeholder">Αναζήτηση στούντιο ή εταιρειών παραγωγής</string>
 </resources>

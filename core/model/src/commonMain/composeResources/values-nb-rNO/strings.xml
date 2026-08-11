@@ -16,4 +16,8 @@
     <string name="system_default">Systemstandard</string>
     <string name="approved">Godkjent</string>
     <string name="failed">Feilet</string>
+    <string name="any">Noen</string>
+    <string name="fatal_error_fetching_details">Kunne ikke laste inn detaljene. Går tilbake til forrige skjerm.</string>
+    <string name="decade">Tiår</string>
+    <string name="all_tab">Alle</string>
 </resources>

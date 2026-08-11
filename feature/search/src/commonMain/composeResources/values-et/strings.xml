@@ -5,4 +5,5 @@
     <string name="search__empty_result_title">Vaat kus lops. Seda me küll ei leidnud.</string>
     <string name="search__empty_result_description">Proovi otsida midagi muud.</string>
     <string name="feature_search_settings_button_content_description">Seadistuste nupp</string>
+    <string name="recent_searches">Hiljutised otsingud</string>
 </resources>

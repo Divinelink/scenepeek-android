@@ -70,10 +70,6 @@
         <item quantity="one">Χώρα</item>
         <item quantity="other">Χώρες</item>
     </plurals>
-    <plurals name="feature_details_information_companies">
-        <item quantity="one">Εταιρεία</item>
-        <item quantity="other">Εταιρείες</item>
-    </plurals>
     <string name="available_on">Διαθέσιμο σε</string>
     <string name="by_justWatch">από το JustWatch</string>
     <string name="no_available_stream_providers">Δεν υπάρχουν διαθέσιμοι πάροχοι ροής.</string>
