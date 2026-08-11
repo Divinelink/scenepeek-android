@@ -73,6 +73,9 @@ import com.divinelink.feature.onboarding.resources.v55_discover_filters_search_i
 import com.divinelink.feature.onboarding.resources.v55_enhance_movie_crew_credits
 import com.divinelink.feature.onboarding.resources.v55_search_history
 import com.divinelink.feature.onboarding.resources.v55_share_review_option
+import com.divinelink.feature.onboarding.resources.v56_add_company_discover_filter
+import com.divinelink.feature.onboarding.resources.v56_add_sorting_options_on_lists
+import com.divinelink.feature.onboarding.resources.v56_make_companies_clickable
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -319,6 +322,16 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v55_search_history)),
   )
 
+  val v56 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.37.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v56_add_sorting_options_on_lists)),
+    IntroSection.Text(UIText.ResourceText(R.string.v56_add_company_discover_filter)),
+    IntroSection.SecondaryHeader.Features,
+    IntroSection.Text(UIText.ResourceText(R.string.v56_make_companies_clickable)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -344,5 +357,6 @@ object IntroSections {
     53 to v53,
     54 to v54,
     55 to v55,
+    56 to v56,
   )
 }

@@ -1,0 +1,7 @@
+🎉 Update v0.37.0
+
+- Add sorting options on lists
+- Add company filter on discover
+- You can now click on any company name in the details section to browse content filtered by that studio
+
+We're constantly working on improvements and new features. Stay tuned for more updates!
