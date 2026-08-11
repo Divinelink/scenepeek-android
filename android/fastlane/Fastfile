@@ -208,10 +208,10 @@ platform :android do
     upload_to_play_store(track: 'beta')
   end
 
-  desc "Submit a new GitHub release & Google Play"
+  desc "Submit a new Codeberg release & Google Play"
     lane :release do
       playstore
-      github
+      codeberg
     end
 
     desc "Run tests and static analysis"
@@ -219,17 +219,6 @@ platform :android do
         test
         lint
       end
-end
-
-lane :debug_tags do
-  UI.message("Fetching tags...")
-  sh("git fetch --tags")
-
-  UI.message("Listing tags:")
-  sh("git tag -l 'v*' --sort=-v:refname")
-
-  prev = CodebergHelper.get_previous_tag
-  UI.message("Detected Previous Tag: #{prev}")
 end
 
 lane :codeberg_release do |options|
