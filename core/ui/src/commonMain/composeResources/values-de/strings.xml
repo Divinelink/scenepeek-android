@@ -170,7 +170,7 @@
     <string name="tv_shows">Serien</string>
     <string name="episodes">Episoden</string>
     <plurals name="core_ui_information_companies">
-      <item quantity="one">Firma</item>
-      <item quantity="other">Firmen</item>
+        <item quantity="one">Firma</item>
+        <item quantity="other">Firmen</item>
     </plurals>
 </resources>

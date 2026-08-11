@@ -180,8 +180,8 @@
     <string name="core_ui_open">Apri</string>
     <string name="core_ui_show_review_actions_content_desc">Mostra le azioni di revisione</string>
     <plurals name="core_ui_information_companies">
-      <item quantity="one">Società</item>
-      <item quantity="many">Società</item>
-      <item quantity="other">Società</item>
+        <item quantity="one">Società</item>
+        <item quantity="many">Società</item>
+        <item quantity="other">Società</item>
     </plurals>
 </resources>

@@ -304,4 +304,5 @@
     <string name="system_default">Προεπιλογή συστήματος</string>
     <string name="awards">Βραβεία</string>
     <string name="saved">Αποθηκευμένα</string>
+    <string name="original_order_sorting_filter">Σειρά προσθήκης</string>
 </resources>

@@ -13,7 +13,7 @@
     <string name="feature_settings_color">Χρώμα</string>
     <string name="feature_settings_account">Λογαριασμός</string>
     <string name="feature_settings_logout">Αποσύνδεση</string>
-    <string name="feature_settings_logged_in">Συνδεδεμένος •</string>
+    <string name="feature_settings_logged_in">Συνδεδεμένος/η</string>
     <string name="feature_settings_tmdb_account">Λογαριασμός TMDB</string>
     <string name="feature_settings_not_logged_in">Δεν είστε συνδεδεμένος</string>
     <string name="feature_settings_jellyseerr_address_placeholder">π.χ. http(s)://your-seerr-url.com</string>
@@ -34,7 +34,6 @@
     <string name="feature_settings_help_with_translation_summary">Μπορούμε να χρησιμοποιήσουμε τις γλωσσικές σας δεξιότητες για να φέρουμε την εφαρμογή σε περισσότερες γλώσσες</string>
     <string name="rate_on_google_play">Αξιολόγηση στο Google Play</string>
     <string name="rate_on_app_store">Αξιολόγηση στο App Store</string>
-    <string name="star_on_github">Star στο GitHub</string>
     <string name="raise_an_issue_on_github">Αναφορά προβλήματος στο GitHub</string>
     <string name="send_an_email">Αποστολή email</string>
     <string name="feature_settings_about">Σχετικά</string>
@@ -44,7 +43,6 @@
     <string name="feature_settings_about__ad_free">Χωρίς διαφημίσεις</string>
     <string name="feature_settings_about__open_source">Ανοιχτού κώδικα</string>
     <string name="feature_settings_about__no_tracker">Χωρίς trackers</string>
-    <string name="feature_settings_about__source_code">Προβολή κώδικα</string>
     <string name="feature_settings_about__developed_by">Αναπτύχθηκε από</string>
     <string name="feature_settings_region_title">Επιλέξτε την περιοχή σας για να δείτε τις υπηρεσίες streaming που είναι διαθέσιμες στην περιοχή σας.</string>
     <string name="feature_settings_region">Περιοχή</string>
@@ -62,7 +60,6 @@
     <string name="auto_update_app_summary">Έλεγχος περιοδικά για νέες εκδόσεις και ερώτηση για εγκατάστασή τους</string>
     <string name="version">Έκδοση</string>
     <string name="app_updates">Ενημερώσεις εφαρμογής</string>
-    <string name="check_for_updates_on_github">Έλεγχος για ενημερώσεις στο GitHub</string>
     <string name="check_for_updates">Έλεγχος για ενημερώσεις</string>
     <string name="last_checked">Τελευταίος έλεγχος: %1$s</string>
     <string name="feature_settings_show_password">Εμφάνιση κωδικού</string>
@@ -85,10 +82,13 @@
     <string name="feature_settings_join_the_community_title">Γίνετε μέρος της κοινότητας</string>
     <string name="feature_settings_join_the_community_summary">Μείνετε ενημερωμένοι για την εφαρμογή ScenePeek</string>
     <string name="feature_settings_rate_the_application_title">Αξιολογήστε την εφαρμογή</string>
-    <string name="feature_settings_rate_the_application_summary">Σας αρέσει το ScenePeek; Μπορείτε να την αξιολογήσετε ή να βάλετε αστέρι (star) στο GitHub!</string>
+    <string name="feature_settings_rate_the_application_summary">Σας αρέσει το ScenePeek; Μπορείτε να το αξιολογήσετε ή να βάλετε αστέρι στο GitHub ή το Codeberg!</string>
     <string name="feature_settings_send_feedback_title">Αποστολή σχολίων</string>
     <string name="feature_settings_send_feedback_summary">Αναφορά σφάλματος ή μίας νέας ιδέας</string>
     <string name="preferences__account">Λογαριασμός</string>
     <string name="feature_settings_jellyseerr_description">Προσθέστε τη διεύθυνση IP του Seerr και επιλέξτε μια μέθοδο σύνδεσης για να ενεργοποιήσετε το Seerr.\nΒεβαιωθείτε ότι συμπεριλαμβάνετε το πλήρες URL με https:// ή http:// και τον αριθμό θύρας εάν απαιτείται.</string>
     <string name="feature_settings_could_not_connect">Δεν ήταν δυνατή η σύνδεση με τον διακομιστή. Βεβαιωθείτε ότι η διεύθυνση IP είναι σωστή και ότι ο διακομιστής λειτουργεί.</string>
+    <string name="check_for_updates_on_default_source">Ελέγξτε για ενημερώσεις στο Codeberg</string>
+    <string name="view_on">Προβολή στο %1$s</string>
+    <string name="star_on">Αστέρι στο %1$s</string>
 </resources>

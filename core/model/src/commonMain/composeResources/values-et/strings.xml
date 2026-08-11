@@ -303,4 +303,5 @@
     <string name="country_bolivia">Boliivia</string>
     <string name="country_new_zealand">Uus-Meremaa</string>
     <string name="saved">Salvestatud</string>
+    <string name="original_order_sorting_filter">Lisamise järjekord</string>
 </resources>

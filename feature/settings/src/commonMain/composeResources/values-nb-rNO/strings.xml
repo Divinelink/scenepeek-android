@@ -7,4 +7,5 @@
     </string-array>
     <string name="feature_settings_about__version">Versjon %1$s</string>
     <string name="feature_settings_about">Om</string>
+    <string name="feature_settings_logged_in">Logget inn</string>
 </resources>
