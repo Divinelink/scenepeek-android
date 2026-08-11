@@ -30,7 +30,7 @@ enum class InstallSource(
   ),
   Codeberg(
     source = emptyList(),
-    versionCheckUrl = "https://codeberg.org/Divinelink/scenepeek/releases/latest",
+    versionCheckUrl = "https://codeberg.org/api/v1/repos/divinelink/scenepeek-tmdb/releases/latest",
     updateUrl = "https://codeberg.org/Divinelink/scenepeek/releases/latest",
     versionRegex = """(v\d+\.\d+[\d.]*)""",
   ),
