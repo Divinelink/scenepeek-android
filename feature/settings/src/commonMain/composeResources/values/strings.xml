@@ -13,7 +13,7 @@
     <!-- AccountSettingsScreen -->
   <string name="feature_settings_account">Account</string>
     <string name="feature_settings_logout">Logout</string>
-    <string name="feature_settings_logged_in">Logged in •\u00A0</string>
+    <string name="feature_settings_logged_in">Logged in</string>
     <string name="feature_settings_tmdb_account">TMDB account</string>
     <string name="feature_settings_not_logged_in">Not logged in</string>
     <string name="feature_settings_sign_in_to_access_features">Sign in to access TMDB features</string>

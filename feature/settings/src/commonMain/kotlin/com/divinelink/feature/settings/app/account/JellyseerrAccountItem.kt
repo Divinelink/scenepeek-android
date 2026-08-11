@@ -99,7 +99,7 @@ fun JellyseerrAccountItem(
                 }
 
                 Text(
-                  text = stringResource(Res.string.feature_settings_logged_in),
+                  text = "${stringResource(Res.string.feature_settings_logged_in)} • ",
                   style = MaterialTheme.typography.bodyMedium,
                   color = MaterialTheme.colorScheme.secondary,
                 )
