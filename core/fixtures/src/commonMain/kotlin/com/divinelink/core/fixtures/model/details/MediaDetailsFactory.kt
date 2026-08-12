@@ -3,6 +3,7 @@ package com.divinelink.core.fixtures.model.details
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.ExternalIds
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.TvStatus
@@ -44,7 +45,9 @@ object MediaDetailsFactory {
       GenreFactory.Movie.comedy,
     ),
     runtime = "2h 10m",
-    imdbId = "tt0137523",
+    externalIds = ExternalIds(
+      imdbId = "tt0137523",
+    ),
     tagline = "You don't talk about Fight Club.",
     popularity = 21.6213,
     collection = null,
@@ -104,7 +107,9 @@ object MediaDetailsFactory {
       ),
     ),
     numberOfSeasons = 9,
-    imdbId = "tt0386676",
+    externalIds = ExternalIds(
+      imdbId = "tt0386676",
+    ),
     tagline = "A comedy for anyone whose boss is an idiot.",
     popularity = 530.095,
     information = MediaDetailsInformation.TV(

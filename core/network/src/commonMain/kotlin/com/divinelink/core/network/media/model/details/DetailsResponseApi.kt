@@ -3,6 +3,7 @@ package com.divinelink.core.network.media.model.details
 import com.divinelink.core.commons.extensions.formatWithCommas
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.ExternalIds
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
@@ -86,6 +87,7 @@ sealed class DetailsResponseApi {
     @SerialName("belongs_to_collection") val collection: BelongsToCollectionResponse?,
     override val keywords: KeywordsResponse?,
     @SerialName("release_dates") val releaseDates: ReleaseDatesResponse?,
+    @SerialName("external_ids") val externalIds: ExternalIdsApi? = null,
   ) : DetailsResponseApi()
 
   @Serializable
@@ -141,7 +143,10 @@ private fun DetailsResponseApi.Movie.toDomainMovie(selectedRegion: Country?): Me
   cast = this.credits?.cast?.toActors() ?: emptyList(),
   runtime = this.runtime.toHourMinuteFormat(),
   isFavorite = false,
-  imdbId = this.imdbId,
+  externalIds = ExternalIds(
+    imdbId = this.imdbId,
+    wikidataId = this.externalIds?.wikidataId,
+  ),
   popularity = popularity,
   collection = collection?.map(),
   information = MediaDetailsInformation.Movie(
@@ -185,7 +190,10 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   numberOfSeasons = this.numberOfSeasons,
   creators = this.createdBy.takeIf { it.isNotEmpty() }?.map { it.map() },
   seasons = this.seasons.map(),
-  imdbId = this.externalIds?.imdbId,
+  externalIds = ExternalIds(
+    imdbId = this.externalIds?.imdbId,
+    wikidataId = this.externalIds?.wikidataId,
+  ),
   popularity = popularity,
   information = MediaDetailsInformation.TV(
     originalTitle = this.originalName,

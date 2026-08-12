@@ -21,10 +21,10 @@ sealed class MediaDetails {
   abstract val ratingCount: RatingCount
   abstract val genres: List<Genre>?
   abstract val isFavorite: Boolean
-  abstract val imdbId: String?
   abstract val popularity: Double
   abstract val information: MediaDetailsInformation
   abstract val keywords: List<Keyword>?
+  abstract val externalIds: ExternalIds
 
   fun copy(
     id: Long = this.id,
@@ -37,7 +37,7 @@ sealed class MediaDetails {
     genres: List<Genre>? = this.genres,
     isFavorite: Boolean = this.isFavorite,
     ratingCount: RatingCount = this.ratingCount,
-    imdbId: String? = this.imdbId,
+//    imdbId: String? = this.imdbId,
   ): MediaDetails = when (this) {
     is Movie -> Movie(
       id = id,
@@ -53,7 +53,7 @@ sealed class MediaDetails {
       genres = genres,
       cast = cast,
       runtime = runtime,
-      imdbId = imdbId,
+      externalIds = externalIds,
       popularity = popularity,
       collection = collection,
       information = information,
@@ -73,7 +73,7 @@ sealed class MediaDetails {
       seasons = seasons,
       creators = creators,
       numberOfSeasons = numberOfSeasons,
-      imdbId = imdbId,
+      externalIds = externalIds,
       popularity = popularity,
       information = information,
       keywords = keywords,
@@ -94,12 +94,12 @@ fun MediaDetails.externalUrl(source: RatingSource = RatingSource.TMDB): String? 
       "${source.url}/${mediaType.value}/$id-$urlTitle"
     }
     RatingSource.IMDB -> {
-      val imdbId = imdbId ?: return null
+      val imdbId = externalIds.imdbId ?: return null
 
       "${source.url}/title/$imdbId"
     }
     RatingSource.TRAKT -> {
-      val imdbId = imdbId ?: return null
+      val imdbId = externalIds.imdbId ?: return null
 
       source.url + "/${mediaType.traktPath}/" + imdbId
     }

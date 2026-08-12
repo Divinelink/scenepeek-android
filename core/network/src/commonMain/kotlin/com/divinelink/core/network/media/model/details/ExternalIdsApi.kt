@@ -9,4 +9,5 @@ data class ExternalIdsApi(
   @SerialName("facebook_id") val facebookId: String? = null,
   @SerialName("instagram_id") val instagramId: String? = null,
   @SerialName("twitter_id") val twitterId: String? = null,
+  @SerialName("wikidata_id") val wikidataId: String? = null
 )
