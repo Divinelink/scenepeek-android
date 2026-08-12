@@ -134,7 +134,10 @@ platform :android do
 
     release_dir = "../release"
     FileUtils.mkdir_p(release_dir) unless File.directory?(release_dir)
-
+    gradle(
+      task: "clean",
+      project_dir: "..",
+    )
     flavors.each do |flavor_name|
       gradle(
         task: "assemble#{flavor_name}Release",
