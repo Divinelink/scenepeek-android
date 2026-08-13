@@ -48,6 +48,7 @@ import com.divinelink.core.network.media.service.MediaService
 import com.divinelink.core.network.networkBoundResource
 import com.divinelink.core.network.omdb.mapper.map
 import com.divinelink.core.network.omdb.service.OMDbService
+import com.divinelink.core.network.opendata.OpenDataService
 import com.divinelink.core.network.trakt.mapper.map
 import com.divinelink.core.network.trakt.service.TraktService
 import io.github.aakira.napier.Napier
@@ -68,6 +69,7 @@ class ProdDetailsRepository(
   private val creditsDao: CreditsDao,
   private val omdbService: OMDbService,
   private val traktService: TraktService,
+  private val openService: OpenDataService,
   private val mediaDao: MediaDao,
   val dispatcher: DispatcherProvider,
   val preferencesRepository: PreferencesRepository,
@@ -286,4 +288,10 @@ class ProdDetailsRepository(
     mediaRemote
       .fetchWatchProviders(media)
       .map { it.map() }
+
+  override suspend fun getWikipediaTitle(wikidataId: String): Result<String?> = openService
+    .getWikipediaTitle(wikidataId)
+    .map { response ->
+      response.entities[wikidataId]?.sitelinks["enwiki"]?.title
+    }
 }

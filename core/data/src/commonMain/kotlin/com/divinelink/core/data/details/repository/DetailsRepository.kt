@@ -70,4 +70,6 @@ interface DetailsRepository {
   suspend fun fetchCollectionDetails(id: Int): Flow<Result<CollectionDetails>>
 
   suspend fun fetchWatchProviders(media: MediaReference): Result<WatchProviders>
+
+  suspend fun getWikipediaTitle(wikidataId: String): Result<String?>
 }
