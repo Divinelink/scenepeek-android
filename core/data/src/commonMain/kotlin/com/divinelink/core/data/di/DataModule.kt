@@ -17,6 +17,8 @@ import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.data.list.ProdListRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
+import com.divinelink.core.data.opendata.OpenDataRepository
+import com.divinelink.core.data.opendata.ProdOpenDataRepository
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
@@ -45,5 +47,6 @@ val dataModule = module {
   singleOf(::ProdAppInfoRepository) { bind<AppInfoRepository>() }
   singleOf(::ProdAwardsRepository) { bind<AwardsRepository>() }
   singleOf(::ProdSearchRepository) { bind<SearchRepository>() }
+  singleOf(::ProdOpenDataRepository) { bind<OpenDataRepository>() }
   singleOf(::FilterRepository)
 }

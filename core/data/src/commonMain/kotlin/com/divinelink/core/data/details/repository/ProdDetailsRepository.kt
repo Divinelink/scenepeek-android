@@ -288,10 +288,4 @@ class ProdDetailsRepository(
     mediaRemote
       .fetchWatchProviders(media)
       .map { it.map() }
-
-  override suspend fun getWikipediaTitle(wikidataId: String): Result<String?> = openService
-    .getWikipediaTitle(wikidataId)
-    .map { response ->
-      response.entities[wikidataId]?.sitelinks["enwiki"]?.title
-    }
 }

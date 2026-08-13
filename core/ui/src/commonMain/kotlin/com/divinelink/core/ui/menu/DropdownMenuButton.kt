@@ -20,6 +20,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.ScreenType
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.LocalIntentManager
+import com.divinelink.core.ui.manager.url.rememberUrlHandler
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -28,11 +30,13 @@ import org.koin.core.parameter.parametersOf
 fun DropdownMenuButton(
   color: Color,
   screenType: ScreenType,
+  onOpenWebview: (String) -> Unit = {},
   viewModel: DropdownMenuViewModel = koinViewModel { parametersOf(screenType) },
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   var showDropdownMenu by remember { mutableStateOf(false) }
   val intentManager = LocalIntentManager.current
+  val urlHandler = rememberUrlHandler()
 
   LaunchedEffect(Unit) {
     viewModel.shareUrl.collectLatest { url ->
@@ -41,9 +45,25 @@ fun DropdownMenuButton(
     }
   }
 
+  LaunchedEffect(Unit) {
+    viewModel.openUrl.collectLatest { url ->
+      urlHandler.openUrl(
+        url = url,
+        onError = { onOpenWebview(url) },
+      )
+      showDropdownMenu = false
+    }
+  }
+
   LaunchedEffect(screenType) {
     viewModel.updateEntryPoint(screenType)
   }
+
+  SnackbarMessageHandler(
+    snackbarMessage = uiState.snackbarMessage,
+    onDismissSnackbar = viewModel::consumeSnackbarMessage,
+    onShowMessage = {},
+  )
 
   IconButton(
     modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),

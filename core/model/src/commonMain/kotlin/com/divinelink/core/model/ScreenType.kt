@@ -7,12 +7,14 @@ sealed class ScreenType(
   data class Movie(
     override val id: Long,
     override val name: String,
+    val wikidataId: String?,
   ) : ScreenType(id = id, name = name)
 
   data class Show(
     override val id: Long,
     override val name: String,
     val spoilersObfuscated: Boolean,
+    val wikidataId: String?,
   ) : ScreenType(id = id, name = name)
 
   data class Collection(
