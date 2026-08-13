@@ -69,7 +69,6 @@ class ProdDetailsRepository(
   private val creditsDao: CreditsDao,
   private val omdbService: OMDbService,
   private val traktService: TraktService,
-  private val openService: OpenDataService,
   private val mediaDao: MediaDao,
   val dispatcher: DispatcherProvider,
   val preferencesRepository: PreferencesRepository,

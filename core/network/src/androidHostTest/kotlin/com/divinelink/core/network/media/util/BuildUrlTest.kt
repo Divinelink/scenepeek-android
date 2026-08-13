@@ -44,7 +44,7 @@ class BuildUrlTest {
 
     url shouldBe "https://api.themoviedb.org/3/movie/1234" +
       "?language=en-US" +
-      "&append_to_response=credits%2Ckeywords%2Crelease_dates"
+      "&append_to_response=credits%2Ckeywords%2Crelease_dates%2Cexternal_ids"
   }
 
   @Test

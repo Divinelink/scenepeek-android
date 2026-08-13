@@ -4,5 +4,5 @@ import com.divinelink.core.model.locale.LocaleCode
 
 interface OpenDataRepository {
 
-  suspend fun getWikipediaTitle(wikidataId: String): Result<Map<LocaleCode, String>>
+  suspend fun getWikiTitles(wikidataId: String): Result<Map<LocaleCode, String>>
 }

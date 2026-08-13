@@ -17,6 +17,7 @@ import androidx.compose.ui.test.swipeDown
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.data.opendata.TestOpenDataRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -96,6 +97,8 @@ class PersonScreenTest : ComposeTest() {
           preferenceStorage = FakePreferenceStorage(spoilersObfuscation = true),
           dispatcherProvider = mainDispatcherRule.testDispatcher,
         ),
+        preferencesRepository = TestPreferencesRepository(),
+        openDataRepository = TestOpenDataRepository(),
       )
     }
 

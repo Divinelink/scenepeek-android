@@ -8,7 +8,7 @@ class ProdOpenDataRepository(
   val openService: OpenDataService,
 ) : OpenDataRepository {
 
-  override suspend fun getWikipediaTitle(wikidataId: String): Result<Map<LocaleCode, String>> =
+  override suspend fun getWikiTitles(wikidataId: String): Result<Map<LocaleCode, String>> =
     openService
       .getWikipediaTitle(wikidataId)
       .map { response -> response.map(wikidataId) }

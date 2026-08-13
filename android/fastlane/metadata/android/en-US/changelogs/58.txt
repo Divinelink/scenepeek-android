@@ -1,0 +1,5 @@
+🎉 Update v0.38.0
+
+- Add the ability to open wikipedia article by pressing the 3 dots menu on the movie or TV show screen
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

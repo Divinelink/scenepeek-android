@@ -59,7 +59,7 @@ class DropdownMenuViewModel(
       }
       is DropdownMenuIntent.OpenInWikipedia -> viewModelScope.launch {
         openDataRepository
-          .getWikipediaTitle(intent.title)
+          .getWikiTitles(intent.title)
           .fold(
             onSuccess = { wikis ->
               val preferredLocale = preferencesRepository.metadataLanguage.first().code

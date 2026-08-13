@@ -35,7 +35,9 @@ class MediaDetailsTest {
   @Test
   fun `test externalUrl for IMDb with valid imdbId`() {
     val mediaDetails = MediaDetailsFactory.FightClub().copy(
-      imdbId = "tt0137523",
+      externalIds = ExternalIds(
+        imdbId = "tt0137523",
+      ),
     )
 
     val externalUrl = mediaDetails.externalUrl(source = RatingSource.IMDB)
@@ -46,7 +48,9 @@ class MediaDetailsTest {
   @Test
   fun `test externalUrl for IMDb with invalid imdbId`() {
     val mediaDetails = MediaDetailsFactory.FightClub().copy(
-      imdbId = null,
+      externalIds = ExternalIds(
+        imdbId = null,
+      ),
     )
 
     val externalUrl = mediaDetails.externalUrl(source = RatingSource.IMDB)
@@ -57,7 +61,9 @@ class MediaDetailsTest {
   @Test
   fun `test externalUrl for Trakt for movie with valid imdbId`() {
     val mediaDetails = MediaDetailsFactory.FightClub().copy(
-      imdbId = "tt0137523",
+      externalIds = ExternalIds(
+        imdbId = "tt0137523",
+      ),
     )
 
     val externalUrl = mediaDetails.externalUrl(source = RatingSource.TRAKT)
@@ -68,7 +74,9 @@ class MediaDetailsTest {
   @Test
   fun `test externalUrl for Trakt for movie with invalid imdbId`() {
     val mediaDetails = MediaDetailsFactory.FightClub().copy(
-      imdbId = null,
+      externalIds = ExternalIds(
+        imdbId = null,
+      ),
     )
 
     val externalUrl = mediaDetails.externalUrl(source = RatingSource.TRAKT)
@@ -79,7 +87,9 @@ class MediaDetailsTest {
   @Test
   fun `test externalUrl for Trakt for tv show with valid imdbId`() {
     val mediaDetails = MediaDetailsFactory.TheOffice().copy(
-      imdbId = "tt0386676",
+      externalIds = ExternalIds(
+        imdbId = "tt0386676",
+      ),
     )
 
     val externalUrl = mediaDetails.externalUrl(source = RatingSource.TRAKT)
