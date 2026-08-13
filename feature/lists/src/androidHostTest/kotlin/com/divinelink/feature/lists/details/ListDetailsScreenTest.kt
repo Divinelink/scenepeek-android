@@ -15,6 +15,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.fixtures.data.opendata.TestOpenDataRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
@@ -78,6 +79,8 @@ class ListDetailsScreenTest : ComposeTest() {
           name = ListDetailsFactory.mustWatch().name,
         ),
         spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase(),
+        preferencesRepository = TestPreferencesRepository(),
+        openDataRepository = TestOpenDataRepository(),
       )
     }
 

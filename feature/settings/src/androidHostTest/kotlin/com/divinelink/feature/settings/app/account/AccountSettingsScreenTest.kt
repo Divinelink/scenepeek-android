@@ -224,7 +224,7 @@ class AccountSettingsScreenTest : ComposeTest() {
       ),
     )
 
-    onNodeWithText(getString(Res.string.feature_settings_logged_in)).assertIsDisplayed()
+    onNodeWithText(getString(Res.string.feature_settings_logged_in) + " • ").assertIsDisplayed()
     onNodeWithText(account.displayName).assertIsDisplayed()
 
     jellyseerrChannel.send(

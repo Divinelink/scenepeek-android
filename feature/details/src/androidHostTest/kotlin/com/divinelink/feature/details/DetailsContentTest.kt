@@ -18,6 +18,8 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.data.opendata.TestOpenDataRepository
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.media.DetailsDataFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory
@@ -118,8 +120,11 @@ class DetailsContentTest : ComposeTest() {
         entryPoint = ScreenType.Movie(
           id = 0,
           name = "",
+          wikidataId = null,
         ),
         spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+        preferencesRepository = TestPreferencesRepository(),
+        openDataRepository = TestOpenDataRepository(),
       )
     }
   }
@@ -833,11 +838,14 @@ class DetailsContentTest : ComposeTest() {
           id = MediaDetailsFactory.TheOffice().id,
           name = MediaDetailsFactory.TheOffice().title,
           spoilersObfuscated = true,
+          wikidataId = null,
         ),
         spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
           preferenceStorage = FakePreferenceStorage(spoilersObfuscation = true),
           dispatcherProvider = mainDispatcherRule.testDispatcher,
         ),
+        preferencesRepository = TestPreferencesRepository(),
+        openDataRepository = TestOpenDataRepository(),
       )
     }
 
@@ -883,8 +891,11 @@ class DetailsContentTest : ComposeTest() {
           id = MediaDetailsFactory.TheOffice().id,
           name = MediaDetailsFactory.TheOffice().title,
           spoilersObfuscated = true,
+          wikidataId = "Q12345",
         ),
         spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+        preferencesRepository = TestPreferencesRepository(),
+        openDataRepository = TestOpenDataRepository(),
       )
     }
 
@@ -918,6 +929,7 @@ class DetailsContentTest : ComposeTest() {
 
     onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
     onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
+    onNodeWithText("Open in Wikipedia").assertIsDisplayed()
     onNodeWithTag(
       TestTags.Menu.item(getString(UiString.core_ui_show_total_episodes_item)),
     )

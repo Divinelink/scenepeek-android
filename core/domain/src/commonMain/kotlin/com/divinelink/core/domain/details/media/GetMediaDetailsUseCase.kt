@@ -282,7 +282,7 @@ open class GetMediaDetailsUseCase(
     source: RatingSource,
     details: MediaDetails,
   ): MediaDetails {
-    if (details.imdbId == null) {
+    if (details.externalIds.imdbId == null) {
       return details.copy(
         ratingCount = details.ratingCount.updateRating(
           source = source,
@@ -291,7 +291,7 @@ open class GetMediaDetailsUseCase(
       )
     }
 
-    return details.imdbId?.let { id ->
+    return details.externalIds.imdbId?.let { id ->
       repository
         .fetchExternalRatings(id)
         .catch { emit(Result.failure(it)) }
@@ -316,7 +316,7 @@ open class GetMediaDetailsUseCase(
 
   private suspend fun fetchTraktDetails(details: MediaDetails): MediaDetails {
     val mediaType = if (details is Movie) MediaType.MOVIE else MediaType.TV
-    if (details.imdbId == null) {
+    if (details.externalIds.imdbId == null) {
       return details.copy(
         ratingCount = details.ratingCount.updateRating(
           source = RatingSource.TRAKT,
@@ -325,7 +325,7 @@ open class GetMediaDetailsUseCase(
       )
     }
 
-    return details.imdbId?.let { id ->
+    return details.externalIds.imdbId?.let { id ->
       repository
         .fetchTraktRating(mediaType = mediaType, imdbId = id)
         .fold(

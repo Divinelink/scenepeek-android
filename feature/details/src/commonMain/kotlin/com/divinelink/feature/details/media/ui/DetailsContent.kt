@@ -203,15 +203,25 @@ fun DetailsContent(
 
           DropdownMenuButton(
             color = textColor,
+            onOpenWebview = { url ->
+              onNavigate(
+                Navigation.WebViewRoute(
+                  url = url,
+                  title = viewState.mediaDetails?.title ?: "",
+                ),
+              )
+            },
             screenType = when (viewState.mediaDetails) {
               is Movie -> ScreenType.Movie(
                 id = viewState.mediaDetails.id,
                 name = viewState.mediaDetails.title,
+                wikidataId = viewState.mediaDetails.externalIds.wikidataId,
               )
               is TV -> ScreenType.Show(
                 id = viewState.mediaDetails.id,
                 name = viewState.mediaDetails.title,
                 spoilersObfuscated = viewState.spoilersObfuscated,
+                wikidataId = viewState.mediaDetails.externalIds.wikidataId,
               )
               null -> ScreenType.Unknown
             },

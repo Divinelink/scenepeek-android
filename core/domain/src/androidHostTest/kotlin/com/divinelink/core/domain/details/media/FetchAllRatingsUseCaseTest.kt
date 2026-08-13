@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.ExternalRatingsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
+import com.divinelink.core.model.details.ExternalIds
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.MainDispatcherRule
@@ -34,7 +35,9 @@ class FetchAllRatingsUseCaseTest {
       dispatcher = testDispatcher,
     ).invoke(
       MediaDetailsFactory.FightClub().copy(
-        imdbId = null,
+        externalIds = ExternalIds(
+          imdbId = null,
+        ),
       ),
     ).test {
       awaitItem() shouldBe Result.success(RatingSource.IMDB to RatingDetails.Unavailable)

@@ -9,6 +9,11 @@ object Routes {
     const val V4 = "4"
   }
 
+  object Wikidata {
+    const val HOST = "www.wikidata.org"
+    const val API = "w/api.php"
+  }
+
   object OMDb {
     const val HOST = "omdbapi.com/"
   }

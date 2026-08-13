@@ -22,6 +22,8 @@ import com.divinelink.core.network.list.service.ListService
 import com.divinelink.core.network.list.service.ProdListService
 import com.divinelink.core.network.omdb.service.OMDbService
 import com.divinelink.core.network.omdb.service.ProdOMDbService
+import com.divinelink.core.network.opendata.OpenDataService
+import com.divinelink.core.network.opendata.ProdOpenDataService
 import com.divinelink.core.network.trakt.service.ProdTraktService
 import com.divinelink.core.network.trakt.service.TraktService
 import io.ktor.client.HttpClient
@@ -51,6 +53,7 @@ val remoteModule = module {
   singleOf(::ProdTraktService) { bind<TraktService>() }
   singleOf(::ProdAppInfoService) { bind<AppInfoService>() }
   singleOf(::ProdAwardsService) { bind<AwardsService>() }
+  singleOf(::ProdOpenDataService) { bind<OpenDataService>() }
 
   singleOf(::PersistentCookieStorage) { bind<PersistentCookieStorage>() }
 }

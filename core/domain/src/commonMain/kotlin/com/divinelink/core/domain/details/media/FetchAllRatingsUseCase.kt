@@ -20,7 +20,7 @@ class FetchAllRatingsUseCase(
 
   override fun execute(parameters: MediaDetails): Flow<Result<Pair<RatingSource, RatingDetails>>> =
     channelFlow {
-      val imdbId = parameters.imdbId
+      val imdbId = parameters.externalIds.imdbId
 
       if (imdbId == null) {
         send(Result.success(RatingSource.IMDB to RatingDetails.Unavailable))

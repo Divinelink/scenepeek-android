@@ -48,6 +48,7 @@ import com.divinelink.core.network.media.service.MediaService
 import com.divinelink.core.network.networkBoundResource
 import com.divinelink.core.network.omdb.mapper.map
 import com.divinelink.core.network.omdb.service.OMDbService
+import com.divinelink.core.network.opendata.OpenDataService
 import com.divinelink.core.network.trakt.mapper.map
 import com.divinelink.core.network.trakt.service.TraktService
 import io.github.aakira.napier.Napier

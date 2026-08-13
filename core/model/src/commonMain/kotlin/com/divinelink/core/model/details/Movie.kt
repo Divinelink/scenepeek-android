@@ -22,7 +22,7 @@ data class Movie(
   val cast: List<MediaItem.Person>,
   val creators: List<MediaItem.Person>?,
   val collection: Collection?,
-  override val imdbId: String?,
+  override val externalIds: ExternalIds,
   override val information: MediaDetailsInformation.Movie,
   override val popularity: Double,
   override val isFavorite: Boolean,

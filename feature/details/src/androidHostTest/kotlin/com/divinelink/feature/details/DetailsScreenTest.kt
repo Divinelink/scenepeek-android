@@ -18,6 +18,7 @@ import androidx.compose.ui.test.swipeUp
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.data.opendata.TestOpenDataRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
@@ -136,11 +137,14 @@ class DetailsScreenTest : ComposeTest() {
         entryPoint = ScreenType.Movie(
           id = MediaDetailsFactory.FightClub().id,
           name = MediaDetailsFactory.FightClub().title,
+          wikidataId = null,
         ),
         spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
           preferenceStorage = FakePreferenceStorage(spoilersObfuscation = true),
           dispatcherProvider = mainDispatcherRule.testDispatcher,
         ),
+        preferencesRepository = TestPreferencesRepository(),
+        openDataRepository = TestOpenDataRepository(),
       )
     }
   }

@@ -4,6 +4,7 @@ import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.media.MediaItem
+import kotlinx.serialization.Serializable
 
 /**
  * Represents details of a TV show.
@@ -18,7 +19,7 @@ data class TV(
   override val releaseDate: String,
   override val ratingCount: RatingCount,
   override val isFavorite: Boolean,
-  override val imdbId: String?,
+  override val externalIds: ExternalIds,
   override val tagline: String?,
   override val popularity: Double,
   override val information: MediaDetailsInformation.TV,
@@ -27,3 +28,4 @@ data class TV(
   val seasons: List<Season>,
   val numberOfSeasons: Int,
 ) : MediaDetails()
+

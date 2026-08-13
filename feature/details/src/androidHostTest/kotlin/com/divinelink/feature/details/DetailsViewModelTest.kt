@@ -24,6 +24,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.model.details.ExternalIds
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.media.MediaDetailsResult
@@ -1836,7 +1837,7 @@ class DetailsViewModelTest {
       .mockFetchMediaDetails(
         response = defaultDetails(
           MediaDetailsResult.DetailsSuccess(
-            mediaDetails = movieDetails.copy(imdbId = null),
+            mediaDetails = movieDetails.copy(externalIds = ExternalIds(imdbId = null)),
             ratingSource = RatingSource.TMDB,
           ),
         ),
@@ -1855,7 +1856,7 @@ class DetailsViewModelTest {
           mediaId = movieDetails.id,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          mediaDetails = movieDetails.copy(imdbId = null),
+          mediaDetails = movieDetails.copy(externalIds = ExternalIds(imdbId = null)),
           spoilersObfuscated = false,
         ),
       )

@@ -10,6 +10,7 @@ kotlin {
       api(projects.core.model)
 
       implementation(projects.core.commons)
+      implementation(projects.core.data)
       implementation(projects.core.domain)
       implementation(libs.compose.multiplatform.resources)
 

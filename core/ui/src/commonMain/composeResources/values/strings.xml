@@ -20,6 +20,8 @@
   <string name="core_ui_select">Select</string>
   <string name="core_ui_share">Share</string>
   <string name="core_ui_open">Open</string>
+  <string name="core_ui_open_in">Open in %1$s</string>
+  <string name="core_ui_open_in_error_message">Failed to open external link</string>
   <string name="core_ui_show_total_episodes_item">Show spoilers</string>
   <string name="core_ui_hide_total_episodes_item">Hide spoilers</string>
   <string name="core_ui_show_spoilers_tooltip">Show credits' episode count</string>

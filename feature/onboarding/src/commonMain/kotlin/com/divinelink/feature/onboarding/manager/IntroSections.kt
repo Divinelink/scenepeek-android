@@ -76,6 +76,7 @@ import com.divinelink.feature.onboarding.resources.v55_share_review_option
 import com.divinelink.feature.onboarding.resources.v56_add_company_discover_filter
 import com.divinelink.feature.onboarding.resources.v56_add_sorting_options_on_lists
 import com.divinelink.feature.onboarding.resources.v56_make_companies_clickable
+import com.divinelink.feature.onboarding.resources.v58_open_in_wikipedia
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -332,6 +333,13 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v56_make_companies_clickable)),
   )
 
+  val v58 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.38.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v58_open_in_wikipedia)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -358,5 +366,6 @@ object IntroSections {
     54 to v54,
     55 to v55,
     56 to v56,
+    58 to v58,
   )
 }

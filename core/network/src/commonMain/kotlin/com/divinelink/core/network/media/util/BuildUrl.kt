@@ -25,7 +25,10 @@ fun buildFetchDetailsUrl(
     append("language", language)
     if (appendToResponse) {
       when (media) {
-        MediaType.MOVIE -> append("append_to_response", "credits,keywords,release_dates")
+        MediaType.MOVIE -> append(
+          name = "append_to_response",
+          value = "credits,keywords,release_dates,external_ids",
+        )
         MediaType.TV -> append("append_to_response", "external_ids,keywords")
         else -> Unit
       }
