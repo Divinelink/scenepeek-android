@@ -65,7 +65,6 @@ internal fun Project.configureKotlinMultiplatform(extension: KotlinMultiplatform
       }
     }
     iosArm64()
-    iosX64()
     iosSimulatorArm64()
 
     applyDefaultHierarchyTemplate()
