@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onFirstVisible
+import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -145,8 +145,10 @@ fun RequestsScrollableContent(
             RequestMediaItem(
               modifier = Modifier
                 .padding(horizontal = MaterialTheme.dimensions.keyline_12)
-                .onFirstVisible(minFractionVisible = 0.1f) {
-                  action.invoke(RequestsAction.FetchMediaItem(request))
+                .onVisibilityChanged(minFractionVisible = 0.1f) { visible ->
+                  if (visible) {
+                    action.invoke(RequestsAction.FetchMediaItem(request))
+                  }
                 },
               item = request,
               onClick = {
