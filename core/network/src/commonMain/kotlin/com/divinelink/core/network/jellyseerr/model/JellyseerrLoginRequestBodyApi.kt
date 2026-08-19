@@ -1,6 +1,6 @@
 package com.divinelink.core.network.jellyseerr.model
 
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import kotlinx.serialization.Serializable
 
 sealed interface JellyseerrLoginRequestBodyApi {
@@ -18,18 +18,18 @@ sealed interface JellyseerrLoginRequestBodyApi {
   ) : JellyseerrLoginRequestBodyApi
 }
 
-fun JellyseerrAuthMethod.toRequestBodyApi(
+fun SeerrAuthMethod.toRequestBodyApi(
   username: String,
   password: String,
 ): JellyseerrLoginRequestBodyApi = when (this) {
-  JellyseerrAuthMethod.JELLYFIN,
-  JellyseerrAuthMethod.EMBY,
+  SeerrAuthMethod.JELLYFIN,
+  SeerrAuthMethod.EMBY,
     -> JellyseerrLoginRequestBodyApi.Jellyfin(
       username = username,
       password = password,
       serverType = serverType,
     )
-  JellyseerrAuthMethod.JELLYSEERR -> JellyseerrLoginRequestBodyApi.Jellyseerr(
+  SeerrAuthMethod.SEERR -> JellyseerrLoginRequestBodyApi.Jellyseerr(
     email = username,
     password = password,
   )

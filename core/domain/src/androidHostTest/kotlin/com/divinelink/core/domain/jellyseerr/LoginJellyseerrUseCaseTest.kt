@@ -5,7 +5,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
@@ -48,7 +48,7 @@ class LoginJellyseerrUseCaseTest {
         username = Username.from("jellyfinUsername"),
         password = Password("password"),
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYFIN,
+        authMethod = SeerrAuthMethod.JELLYFIN,
       ),
     ).collect {
       assertThat(it.isSuccess).isTrue()
@@ -58,7 +58,7 @@ class LoginJellyseerrUseCaseTest {
           account = "jellyfinUsername",
           password = "password",
           address = "http://localhost:8096",
-          authMethod = JellyseerrAuthMethod.JELLYFIN,
+          authMethod = SeerrAuthMethod.JELLYFIN,
         ),
       )
     }
@@ -85,7 +85,7 @@ class LoginJellyseerrUseCaseTest {
         username = Username.from("jellyseerrUsername"),
         password = Password("password"),
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYSEERR,
+        authMethod = SeerrAuthMethod.SEERR,
       ),
     ).collect {
       assertThat(it.isSuccess).isTrue()
@@ -95,7 +95,7 @@ class LoginJellyseerrUseCaseTest {
           account = "jellyseerrUsername",
           password = "password",
           address = "http://localhost:8096",
-          authMethod = JellyseerrAuthMethod.JELLYSEERR,
+          authMethod = SeerrAuthMethod.SEERR,
         ),
       )
     }
@@ -117,7 +117,7 @@ class LoginJellyseerrUseCaseTest {
         username = Username.from("jellyseerrUsername"),
         password = Password("password"),
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYSEERR,
+        authMethod = SeerrAuthMethod.SEERR,
       ),
     ).first()
 
@@ -140,7 +140,7 @@ class LoginJellyseerrUseCaseTest {
         username = Username.from("jellyseerrUsername"),
         password = Password("password"),
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYFIN,
+        authMethod = SeerrAuthMethod.JELLYFIN,
       ),
     ).first()
 
@@ -162,7 +162,7 @@ class LoginJellyseerrUseCaseTest {
         username = Username.from("jellyseerrUsername"),
         password = Password("password"),
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYSEERR,
+        authMethod = SeerrAuthMethod.SEERR,
       ),
     ).collect {
       assertThat(it.isFailure).isTrue()
@@ -184,7 +184,7 @@ class LoginJellyseerrUseCaseTest {
         username = Username.from("jellyfinUsername"),
         password = Password("password"),
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYFIN,
+        authMethod = SeerrAuthMethod.JELLYFIN,
       ),
     ).collect {
       assertThat(it.isFailure).isTrue()

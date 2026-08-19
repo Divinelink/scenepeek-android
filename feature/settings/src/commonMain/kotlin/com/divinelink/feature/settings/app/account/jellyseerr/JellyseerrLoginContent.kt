@@ -47,7 +47,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
@@ -142,8 +142,8 @@ fun JellyseerrLoginContent(
 
 @Composable
 private fun AuthMethodSelector(
-  selectedMethod: JellyseerrAuthMethod?,
-  onMethodSelected: (JellyseerrAuthMethod) -> Unit,
+  selectedMethod: SeerrAuthMethod?,
+  onMethodSelected: (SeerrAuthMethod) -> Unit,
 ) {
   Card(
     modifier = Modifier.fillMaxWidth(),
@@ -153,7 +153,7 @@ private fun AuthMethodSelector(
     FlowRow(
       modifier = Modifier.fillMaxWidth(),
     ) {
-      JellyseerrAuthMethod.entries.forEach { method ->
+      SeerrAuthMethod.entries.forEach { method ->
         AuthMethodButton(
           method = method,
           isSelected = method == selectedMethod,
@@ -167,7 +167,7 @@ private fun AuthMethodSelector(
 
 @Composable
 private fun AuthMethodButton(
-  method: JellyseerrAuthMethod,
+  method: SeerrAuthMethod,
   isSelected: Boolean,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
@@ -225,7 +225,7 @@ private fun LoginForm(
   interaction: (JellyseerrInteraction) -> Unit,
 ) {
   val label = remember(state.loginData.authMethod) {
-    if (state.loginData.authMethod == JellyseerrAuthMethod.JELLYSEERR) {
+    if (state.loginData.authMethod == SeerrAuthMethod.SEERR) {
       Res.string.feature_settings_email
     } else {
       Res.string.feature_settings_username
@@ -276,7 +276,7 @@ private fun LoginForm(
 
 @Composable
 private fun LoginButton(
-  selectedMethod: JellyseerrAuthMethod,
+  selectedMethod: SeerrAuthMethod,
   isLoading: Boolean,
   enabled: Boolean,
   onClick: () -> Unit,

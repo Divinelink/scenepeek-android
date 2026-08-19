@@ -2,7 +2,7 @@ package com.divinelink.core.datastore.auth
 
 import com.divinelink.core.datastore.auth.SavedState.JellyseerrCredentials
 import com.divinelink.core.model.account.AccountDetails
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.session.TmdbSession
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -23,7 +23,7 @@ interface SavedState {
   data class JellyseerrCredentials(
     val address: String,
     val account: String,
-    val authMethod: JellyseerrAuthMethod,
+    val authMethod: SeerrAuthMethod,
     val password: String,
   )
 }

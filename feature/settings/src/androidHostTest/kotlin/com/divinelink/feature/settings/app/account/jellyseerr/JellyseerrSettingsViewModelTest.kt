@@ -11,7 +11,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.ExceptionConstants
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.MainDispatcherRule
@@ -43,7 +43,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -57,7 +57,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -74,7 +74,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -88,7 +88,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -103,7 +103,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -117,7 +117,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -132,7 +132,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -146,7 +146,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -161,7 +161,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -175,7 +175,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -276,7 +276,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -286,7 +286,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
           dialogState = DialogState(
@@ -304,7 +304,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -319,7 +319,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .onLoginJellyseerr(
         Result.failure(Exception("Failed to get account details")),
       )
@@ -331,7 +331,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
           snackbarMessage = SnackbarMessage.from(
@@ -348,7 +348,7 @@ class JellyseerrSettingsViewModelTest {
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              authMethod = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -386,7 +386,7 @@ class JellyseerrSettingsViewModelTest {
         ),
       )
       .mockLoginJellyseerrResponse(Result.success(Unit))
-      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(SeerrAuthMethod.SEERR)
       .expectUiStates(
         action = {
           launch {
@@ -398,7 +398,7 @@ class JellyseerrSettingsViewModelTest {
             jellyseerrState = JellyseerrState.Login(
               isLoading = false,
               loginData = JellyseerrLoginData.empty().copy(
-                authMethod = JellyseerrAuthMethod.JELLYSEERR,
+                authMethod = SeerrAuthMethod.SEERR,
               ),
             ),
           ),

@@ -1,16 +1,16 @@
 package com.divinelink.core.model.jellyseerr
 
-enum class JellyseerrAuthMethod(
+enum class SeerrAuthMethod(
   val endpoint: String,
   val displayName: String,
   val serverType: Int,
 ) {
-  JELLYSEERR("local", "Jellyseerr", 2),
+  SEERR("local", "Seerr", 2),
   JELLYFIN("jellyfin", "Jellyfin", 3),
   EMBY("jellyfin", "Emby", 4),
   ;
 
   companion object {
-    fun from(name: String): JellyseerrAuthMethod? = entries.find { it.name == name }
+    fun from(name: String): SeerrAuthMethod? = entries.find { it.name == name }
   }
 }

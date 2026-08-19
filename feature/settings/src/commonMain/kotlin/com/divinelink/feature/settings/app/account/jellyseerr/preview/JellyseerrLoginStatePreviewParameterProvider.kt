@@ -5,7 +5,7 @@ import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 
@@ -23,7 +23,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.JELLYSEERR,
+        authMethod = SeerrAuthMethod.SEERR,
       ),
     ),
     JellyseerrState.Login(
@@ -32,7 +32,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.JELLYFIN,
+        authMethod = SeerrAuthMethod.JELLYFIN,
       ),
     ),
     JellyseerrState.Login(
@@ -41,7 +41,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.EMBY,
+        authMethod = SeerrAuthMethod.EMBY,
       ),
     ),
     JellyseerrState.Login(
@@ -50,7 +50,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password.empty(),
-        authMethod = JellyseerrAuthMethod.EMBY,
+        authMethod = SeerrAuthMethod.EMBY,
       ),
     ),
     JellyseerrState.Login(
@@ -59,7 +59,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.EMBY,
+        authMethod = SeerrAuthMethod.EMBY,
       ),
     ),
   )
