@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.jellyseerr.GetServerInstanceDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetServerInstancesUseCase
@@ -55,7 +55,7 @@ class RequestMediaViewModel(
   private val getServerInstancesUseCase: GetServerInstancesUseCase,
   private val getServerInstanceDetailsUseCase: GetServerInstanceDetailsUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
-  private val jellyseerrRepository: JellyseerrRepository,
+  private val seerrRepository: SeerrRepository,
   mediaRepository: MediaRepository,
   authRepository: AuthRepository,
 ) : ViewModel() {
@@ -103,7 +103,7 @@ class RequestMediaViewModel(
         .launchIn(viewModelScope)
 
       viewModelScope.launch {
-        jellyseerrRepository
+        seerrRepository
           .getTvDetails(data.media.id)
           .launchIn(viewModelScope)
       }
@@ -311,7 +311,7 @@ class RequestMediaViewModel(
     viewModelScope.launch {
       _uiState.update { it.copy(isLoading = true) }
 
-      jellyseerrRepository.editRequest(
+      seerrRepository.editRequest(
         JellyseerrEditRequestMediaBodyApi(
           requestId = uiState.value.request?.id,
           mediaId = uiState.value.media.id,
@@ -373,7 +373,7 @@ class RequestMediaViewModel(
     viewModelScope.launch {
       _uiState.update { it.copy(isLoading = true) }
 
-      jellyseerrRepository.deleteRequest(
+      seerrRepository.deleteRequest(
         requestId = requestId,
       ).fold(
         onSuccess = {

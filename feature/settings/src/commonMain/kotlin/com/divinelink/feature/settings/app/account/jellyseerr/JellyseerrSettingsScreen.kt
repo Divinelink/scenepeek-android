@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.SeerrState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.dialog.BasicDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
@@ -48,26 +48,26 @@ fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
     withNavigationBar = withNavigationBar,
   ) {
     AnimatedContent(
-      targetState = uiState.jellyseerrState,
+      targetState = uiState.seerrState,
       label = "Jellyseerr State Animated Content",
       contentKey = { state ->
         when (state) {
-          is JellyseerrState.Login -> "Login"
-          is JellyseerrState.LoggedIn -> "LoggedIn"
+          is SeerrState.Login -> "Login"
+          is SeerrState.LoggedIn -> "LoggedIn"
         }
       },
     ) { state ->
       when (state) {
-        is JellyseerrState.Login -> JellyseerrLoginContent(
+        is SeerrState.Login -> JellyseerrLoginContent(
           modifier = Modifier
             .testTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT),
           state = state,
           interaction = viewModel::onJellyseerrInteraction,
         )
-        is JellyseerrState.LoggedIn -> JellyseerrLoggedInContent(
+        is SeerrState.LoggedIn -> JellyseerrLoggedInContent(
           modifier = Modifier
             .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT),
-          jellyseerrState = state,
+          seerrState = state,
           animatedVisibilityScope = this@JellyseerrSettingsScreen,
           transitionScope = sharedTransitionScope,
           onLogoutClock = viewModel::onJellyseerrInteraction,

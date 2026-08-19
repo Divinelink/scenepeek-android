@@ -12,8 +12,8 @@ import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.ExceptionConstants
 import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
-import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.SeerrState
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginForm
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
@@ -51,13 +51,13 @@ class JellyseerrSettingsViewModelTest {
             message = UIText.ResourceText(Res.string.feature_settings_invalid_credentials),
             error = AppException.Unauthorized("401"),
           ),
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -82,13 +82,13 @@ class JellyseerrSettingsViewModelTest {
             message = UIText.ResourceText(Res.string.feature_settings_csrf_enabled),
             error = AppException.Forbidden(ExceptionConstants.INVALID_CSRF_TOKEN),
           ),
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -111,13 +111,13 @@ class JellyseerrSettingsViewModelTest {
             message = UIText.ResourceText(Res.string.feature_settings_could_not_connect),
             error = AppException.Offline(),
           ),
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -140,13 +140,13 @@ class JellyseerrSettingsViewModelTest {
             message = UIText.ResourceText(Res.string.feature_settings_could_not_connect),
             error = AppException.SocketTimeout(),
           ),
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -169,13 +169,13 @@ class JellyseerrSettingsViewModelTest {
             message = UIText.StringText(InvalidStatusException(500).message!!),
             error = InvalidStatusException(500),
           ),
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -195,7 +195,7 @@ class JellyseerrSettingsViewModelTest {
         ),
       ).assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.LoggedIn(
+          seerrState = SeerrState.LoggedIn(
             accountDetails = JellyseerrProfileFactory.jellyseerr(),
             isLoading = false,
             address = "http://localhost:5055",
@@ -218,7 +218,7 @@ class JellyseerrSettingsViewModelTest {
       )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.LoggedIn(
+          seerrState = SeerrState.LoggedIn(
             accountDetails = JellyseerrProfileFactory.jellyseerr(),
             isLoading = false,
             address = "http://localhost:5055",
@@ -228,9 +228,11 @@ class JellyseerrSettingsViewModelTest {
       .onLogoutJellyseerr(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData.prefilled("http://localhost:5055"),
+            loginForm = SeerrLoginForm(
+              address = Address.from("http://localhost:5055"),
+            ),
           ),
         ),
       )
@@ -248,7 +250,7 @@ class JellyseerrSettingsViewModelTest {
       )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.LoggedIn(
+          seerrState = SeerrState.LoggedIn(
             accountDetails = JellyseerrProfileFactory.jellyseerr(),
             isLoading = false,
             address = "http://localhost:5055",
@@ -260,9 +262,11 @@ class JellyseerrSettingsViewModelTest {
       )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData.prefilled("http://localhost:5055"),
+            loginForm = SeerrLoginForm(
+              address = Address.from("http://localhost:5055"),
+            ),
           ),
         ),
       )
@@ -280,13 +284,13 @@ class JellyseerrSettingsViewModelTest {
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
           dialogState = DialogState(
@@ -298,13 +302,13 @@ class JellyseerrSettingsViewModelTest {
       .onDismissDialog()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -325,13 +329,13 @@ class JellyseerrSettingsViewModelTest {
       )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
           snackbarMessage = SnackbarMessage.from(
@@ -342,13 +346,13 @@ class JellyseerrSettingsViewModelTest {
       .onDismissSnackbar()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData(
+            loginForm = SeerrLoginForm(
               address = Address.from("http://localhost:8096"),
               username = Username.from("username"),
               password = Password("password"),
-              authMethod = SeerrAuthMethod.SEERR,
+              method = SeerrAuthMethod.SEERR,
             ),
           ),
         ),
@@ -364,7 +368,7 @@ class JellyseerrSettingsViewModelTest {
       )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
           ),
         ),
@@ -380,7 +384,7 @@ class JellyseerrSettingsViewModelTest {
       )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
           ),
         ),
@@ -395,15 +399,15 @@ class JellyseerrSettingsViewModelTest {
         },
         uiStates = listOf(
           createUiState(
-            jellyseerrState = JellyseerrState.Login(
+            seerrState = SeerrState.Login(
               isLoading = false,
-              loginData = JellyseerrLoginData.empty().copy(
-                authMethod = SeerrAuthMethod.SEERR,
+              loginForm = SeerrLoginForm(
+                method = SeerrAuthMethod.SEERR,
               ),
             ),
           ),
           createUiState(
-            jellyseerrState = JellyseerrState.LoggedIn(
+            seerrState = SeerrState.LoggedIn(
               isLoading = false,
               accountDetails = JellyseerrProfileFactory.jellyseerr(),
               address = "http://localhost:5055",
@@ -415,9 +419,11 @@ class JellyseerrSettingsViewModelTest {
       .onLogoutJellyseerr(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Login(
+          seerrState = SeerrState.Login(
             isLoading = false,
-            loginData = JellyseerrLoginData.prefilled("http://localhost:5055"),
+            loginForm = SeerrLoginForm(
+              address = Address.from("http://localhost:5055"),
+            ),
           ),
         ),
       )
@@ -426,12 +432,12 @@ class JellyseerrSettingsViewModelTest {
   private fun createUiState(
     snackbarMessage: SnackbarMessage? = null,
     dialogState: DialogState? = null,
-    jellyseerrState: JellyseerrState = JellyseerrState.Login(
+    seerrState: SeerrState = SeerrState.Login(
       isLoading = false,
     ),
   ) = JellyseerrSettingsUiState(
     snackbarMessage = snackbarMessage,
     dialogState = dialogState,
-    jellyseerrState = jellyseerrState,
+    seerrState = seerrState,
   )
 }

@@ -21,8 +21,8 @@ data class SeerrLoginForm(
       SeerrAuthMethod.EMBY -> SeerrCredentials.StandardAuth.Emby(username, password)
     }
 
-  val loginData: JellyseerrLoginData?
-    get() = JellyseerrLoginData(address, credentials)
+  val loginData: SeerrLoginData?
+    get() = SeerrLoginData(address, credentials)
       .takeIf { !address.isBlank && credentials.isComplete }
 
   val isLoginEnabled: Boolean get() = loginData != null

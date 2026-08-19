@@ -17,7 +17,7 @@ import com.divinelink.core.commons.data
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
-import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.SeerrState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
@@ -66,8 +66,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       )
     }
 
-    assertThat(viewModel.uiState.value.jellyseerrState).isEqualTo(
-      JellyseerrState.LoggedIn(
+    assertThat(viewModel.uiState.value.seerrState).isEqualTo(
+      SeerrState.LoggedIn(
         accountDetails = loggedInJellyseerr.data.profile!!,
         address = loggedInJellyseerr.data.address,
         isLoading = false,
@@ -96,8 +96,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       )
     }
 
-    assertThat(viewModel.uiState.value.jellyseerrState).isEqualTo(
-      JellyseerrState.Login(isLoading = false),
+    assertThat(viewModel.uiState.value.seerrState).isEqualTo(
+      SeerrState.Login(isLoading = false),
     )
   }
 
@@ -176,7 +176,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD,
     ).assert(hasText("••••••••"))
 
-    // Need to scroll to login button to make it visible on the screen because
+    // Need to scroll to log in button to make it visible on the screen because
     // there's not enough space to display it.
     onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
       hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
@@ -234,10 +234,10 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     ).assertIsNotEnabled()
 
     onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
-      hasText("Jellyseerr"),
+      hasText("Seerr"),
     )
 
-    onNodeWithText("Jellyseerr").assertIsDisplayed().performClick()
+    onNodeWithText("Seerr").assertIsDisplayed().performClick()
 
     onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
       hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
@@ -272,7 +272,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD,
     ).assert(hasText("••••••••"))
 
-    // Need to scroll to login button to make it visible on the screen because
+    // Need to scroll to log in button to make it visible on the screen because
     // there's not enough space to display it.
     onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
       hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),

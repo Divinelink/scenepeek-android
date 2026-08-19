@@ -2,12 +2,12 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.model.media.MediaType
 
 class GetServerInstanceDetailsUseCase(
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   val dispatcher: DispatcherProvider,
 ) : UseCase<GetServerInstanceDetailsUseCase.Parameters, ServerInstanceDetails>(dispatcher.default) {
 

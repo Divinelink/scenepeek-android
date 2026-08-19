@@ -68,10 +68,10 @@ class JellyseerrRestClient(
       SeerrAuthMethod.JELLYFIN,
       SeerrAuthMethod.EMBY,
         -> JellyseerrLoginRequestBodyApi.Jellyfin(
-        username = account.account,
-        password = account.password,
-        serverType = account.authMethod.serverType,
-      )
+          username = account.account,
+          password = account.password,
+          serverType = account.authMethod.serverType,
+        )
       SeerrAuthMethod.PLEX -> JellyseerrLoginRequestBodyApi.Plex(
         authToken = account.password,
       )

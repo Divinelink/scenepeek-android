@@ -32,7 +32,7 @@ import kotlin.test.Test
 
 class ProdJellyseerrServiceTest {
 
-  private lateinit var service: ProdJellyseerrService
+  private lateinit var service: ProdSeerrService
   private lateinit var restClient: TestJellyseerrClient
 
   @BeforeTest
@@ -47,7 +47,7 @@ class ProdJellyseerrServiceTest {
       json = RadarrInstanceResponseJson.success,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -67,7 +67,7 @@ class ProdJellyseerrServiceTest {
       json = RadarrInstanceResponseJson.success,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -81,7 +81,7 @@ class ProdJellyseerrServiceTest {
       json = SonarrInstanceResponseJson.success,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -101,7 +101,7 @@ class ProdJellyseerrServiceTest {
       json = SonarrInstanceResponseJson.success,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -117,7 +117,7 @@ class ProdJellyseerrServiceTest {
       json = SonarrInstanceDetailsResponseJson.default,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -132,7 +132,7 @@ class ProdJellyseerrServiceTest {
       json = SonarrInstanceDetailsResponseJson.default,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -152,7 +152,7 @@ class ProdJellyseerrServiceTest {
       json = RadarrInstanceDetailsResponseJson.default,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -167,7 +167,7 @@ class ProdJellyseerrServiceTest {
       json = RadarrInstanceDetailsResponseJson.default,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -187,7 +187,7 @@ class ProdJellyseerrServiceTest {
       json = MediaInfoRequestResponseJson.together,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -201,7 +201,7 @@ class ProdJellyseerrServiceTest {
       json = MediaInfoRequestResponseJson.together,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -221,7 +221,7 @@ class ProdJellyseerrServiceTest {
       json = MediaInfoRequestResponseJson.together,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -238,7 +238,7 @@ class ProdJellyseerrServiceTest {
       json = MediaInfoRequestResponseJson.together,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -261,7 +261,7 @@ class ProdJellyseerrServiceTest {
       json = MediaRequestsResponseJsonFactory.All.page1,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 
@@ -281,7 +281,7 @@ class ProdJellyseerrServiceTest {
       json = MediaRequestsResponseJsonFactory.All.page1,
     )
 
-    service = ProdJellyseerrService(
+    service = ProdSeerrService(
       restClient = restClient.client,
     )
 

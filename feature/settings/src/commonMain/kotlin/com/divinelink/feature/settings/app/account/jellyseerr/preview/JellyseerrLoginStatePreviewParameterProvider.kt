@@ -5,19 +5,19 @@ import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrState
 import com.divinelink.core.model.jellyseerr.login.SeerrLoginForm
 
 @ExcludeFromKoverReport
 class JellyseerrLoginStatePreviewParameterProvider :
-  PreviewParameterProvider<JellyseerrState.Login> {
-  override val values: Sequence<JellyseerrState.Login> = sequenceOf(
-    JellyseerrState.Login(
+  PreviewParameterProvider<SeerrState.Login> {
+  override val values: Sequence<SeerrState.Login> = sequenceOf(
+    SeerrState.Login(
       isLoading = false,
       loginForm = SeerrLoginForm(),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
       loginForm = SeerrLoginForm(
         method = SeerrAuthMethod.SEERR,
@@ -26,7 +26,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         password = Password("password"),
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
       loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),
@@ -35,7 +35,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         method = SeerrAuthMethod.JELLYFIN,
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
       loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),
@@ -44,7 +44,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         method = SeerrAuthMethod.EMBY,
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
       loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),
@@ -53,7 +53,7 @@ class JellyseerrLoginStatePreviewParameterProvider :
         method = SeerrAuthMethod.EMBY,
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = true,
       loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),

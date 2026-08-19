@@ -3,7 +3,7 @@ package com.divinelink.core.domain.jellyseerr
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.auth.AuthRepository
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ data class JellyseerrProfileResult(
 
 class GetJellyseerrProfileUseCase(
   private val authRepository: AuthRepository,
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Boolean, JellyseerrProfileResult>(dispatcher.default) {
 

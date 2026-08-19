@@ -6,7 +6,8 @@ import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.login.SeerrCredentials
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginData
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
@@ -29,7 +30,7 @@ class LoginJellyseerrUseCaseTest {
 
   @Test
   fun `test loginJellyseerr with Jellyfin login method`() = runTest {
-    repository.mockSignInWithJellyfin(Result.success(Unit))
+    repository.mockSignIn(Result.success(Unit))
     repository.mockGetJellyseerrProfile(
       flowOf(
         Resource.Loading(null),
@@ -44,11 +45,12 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginData(
-        username = Username.from("jellyfinUsername"),
-        password = Password("password"),
+      SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = SeerrAuthMethod.JELLYFIN,
+        credentials = SeerrCredentials.StandardAuth.Jellyfin(
+          username = Username.from("jellyfinUsername"),
+          password = Password("password"),
+        ),
       ),
     ).collect {
       assertThat(it.isSuccess).isTrue()
@@ -66,7 +68,7 @@ class LoginJellyseerrUseCaseTest {
 
   @Test
   fun `test loginJellyseerr with Jellyseerr login method`() = runTest {
-    repository.mockSignInWithJellyseerr(Result.success(Unit))
+    repository.mockSignIn(Result.success(Unit))
     repository.mockGetJellyseerrProfile(
       flowOf(
         Resource.Loading(null),
@@ -81,11 +83,12 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginData(
-        username = Username.from("jellyseerrUsername"),
-        password = Password("password"),
+      SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = SeerrAuthMethod.SEERR,
+        credentials = SeerrCredentials.Seerr(
+          username = Username.from("jellyseerrUsername"),
+          password = Password("password"),
+        ),
       ),
     ).collect {
       assertThat(it.isSuccess).isTrue()
@@ -103,7 +106,7 @@ class LoginJellyseerrUseCaseTest {
 
   @Test
   fun `test loginJellyseerr with jellyseerr auth method but failed remote details`() = runTest {
-    repository.mockSignInWithJellyseerr(Result.success(Unit))
+    repository.mockSignIn(Result.success(Unit))
     repository.mockGetJellyseerrProfile(flowOf(Resource.Error(Exception())))
 
     val useCase = LoginJellyseerrUseCase(
@@ -113,11 +116,12 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginData(
-        username = Username.from("jellyseerrUsername"),
-        password = Password("password"),
+      SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = SeerrAuthMethod.SEERR,
+        credentials = SeerrCredentials.Seerr(
+          username = Username.from("jellyseerrUsername"),
+          password = Password("password"),
+        ),
       ),
     ).first()
 
@@ -126,7 +130,7 @@ class LoginJellyseerrUseCaseTest {
 
   @Test
   fun `test loginJellyseerr with jellyfin auth method but failed remote details`() = runTest {
-    repository.mockSignInWithJellyfin(Result.success(Unit))
+    repository.mockSignIn(Result.success(Unit))
     repository.mockGetJellyseerrProfile(flowOf(Resource.Error(Exception())))
 
     val useCase = LoginJellyseerrUseCase(
@@ -136,11 +140,12 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginData(
-        username = Username.from("jellyseerrUsername"),
-        password = Password("password"),
+      SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = SeerrAuthMethod.JELLYFIN,
+        credentials = SeerrCredentials.StandardAuth.Jellyfin(
+          username = Username.from("jellyseerrUsername"),
+          password = Password("password"),
+        ),
       ),
     ).first()
 
@@ -149,7 +154,7 @@ class LoginJellyseerrUseCaseTest {
 
   @Test
   fun `test loginJellyseerr with Jellyseerr login method and error`() = runTest {
-    repository.mockSignInWithJellyseerr(Result.failure(Exception("error")))
+    repository.mockSignIn(Result.failure(Exception("error")))
 
     val useCase = LoginJellyseerrUseCase(
       repository = repository.mock,
@@ -158,11 +163,12 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginData(
-        username = Username.from("jellyseerrUsername"),
-        password = Password("password"),
+      SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = SeerrAuthMethod.SEERR,
+        credentials = SeerrCredentials.Seerr(
+          username = Username.from("jellyseerrUsername"),
+          password = Password("password"),
+        ),
       ),
     ).collect {
       assertThat(it.isFailure).isTrue()
@@ -171,7 +177,7 @@ class LoginJellyseerrUseCaseTest {
 
   @Test
   fun `test loginJellyseerr with Jellyfin login method and error`() = runTest {
-    repository.mockSignInWithJellyfin(Result.failure(Exception("error")))
+    repository.mockSignIn(Result.failure(Exception("error")))
 
     val useCase = LoginJellyseerrUseCase(
       repository = repository.mock,
@@ -180,11 +186,12 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginData(
-        username = Username.from("jellyfinUsername"),
-        password = Password("password"),
+      SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = SeerrAuthMethod.JELLYFIN,
+        credentials = SeerrCredentials.StandardAuth.Jellyfin(
+          username = Username.from("jellyfinUsername"),
+          password = Password("password"),
+        ),
       ),
     ).collect {
       assertThat(it.isFailure).isTrue()

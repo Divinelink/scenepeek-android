@@ -3,24 +3,24 @@ package com.divinelink.core.domain.jellyseerr
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.auth.AuthRepository
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
-import com.divinelink.core.model.jellyseerr.login.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.Plex
 import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.Seerr
 import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.StandardAuth.Emby
 import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.StandardAuth.Jellyfin
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class LoginJellyseerrUseCase(
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   private val authRepository: AuthRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<JellyseerrLoginData, Unit>(dispatcher.default) {
+) : FlowUseCase<SeerrLoginData, Unit>(dispatcher.default) {
 
-  override fun execute(parameters: JellyseerrLoginData): Flow<Result<Unit>> = flow {
+  override fun execute(parameters: SeerrLoginData): Flow<Result<Unit>> = flow {
     val result = repository.signIn(parameters)
 
     val account = when (parameters.credentials) {

@@ -16,8 +16,8 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.ExceptionConstants
-import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrState
 import com.divinelink.core.model.jellyseerr.login.SeerrLoginForm
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.DialogState
@@ -56,7 +56,7 @@ class JellyseerrSettingsViewModel(
             if (accountDetailsResult.profile == null) {
               _uiState.update {
                 it.copy(
-                  jellyseerrState = JellyseerrState.Login(
+                  seerrState = SeerrState.Login(
                     isLoading = false,
                     loginForm = SeerrLoginForm(
                       address = Address.from(accountDetailsResult.address),
@@ -67,7 +67,7 @@ class JellyseerrSettingsViewModel(
             } else {
               _uiState.update {
                 it.copy(
-                  jellyseerrState = JellyseerrState.LoggedIn(
+                  seerrState = SeerrState.LoggedIn(
                     accountDetails = accountDetailsResult.profile!!,
                     isLoading = false,
                     address = accountDetailsResult.address,
@@ -97,8 +97,8 @@ class JellyseerrSettingsViewModel(
   fun onJellyseerrInteraction(interaction: JellyseerrInteraction) {
     when (interaction) {
       JellyseerrInteraction.OnLoginClick -> {
-        if (uiState.value.jellyseerrState !is JellyseerrState.Login) return
-        val loginData = uiState.value.jellyseerrState.loginForm.loginData ?: return
+        if (uiState.value.seerrState !is SeerrState.Login) return
+        val loginData = uiState.value.seerrState.loginForm.loginData ?: return
 
         loginJellyseerrUseCase.invoke(loginData)
           .onStart {
@@ -139,9 +139,9 @@ class JellyseerrSettingsViewModel(
       JellyseerrInteraction.OnLogoutClick -> onLogout()
       is JellyseerrInteraction.OnAddressChange -> _uiState.update {
         it.copy(
-          jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Login -> state.copy(
-              loginForm = uiState.value.jellyseerrState.loginForm.copy(
+          seerrState = when (val state = it.seerrState) {
+            is SeerrState.Login -> state.copy(
+              loginForm = uiState.value.seerrState.loginForm.copy(
                 address = Address.from(interaction.address),
               ),
             )
@@ -152,10 +152,10 @@ class JellyseerrSettingsViewModel(
 
       is JellyseerrInteraction.OnSelectLoginMethod -> _uiState.update {
         it.copy(
-          jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Login -> {
+          seerrState = when (val state = it.seerrState) {
+            is SeerrState.Login -> {
               state.copy(
-                loginForm = uiState.value.jellyseerrState.loginForm.copy(
+                loginForm = uiState.value.seerrState.loginForm.copy(
                   method = interaction.signInMethod,
                 ),
               )
@@ -167,15 +167,15 @@ class JellyseerrSettingsViewModel(
 
       is JellyseerrInteraction.OnPasswordChange -> _uiState.update {
         it.copy(
-          jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Login -> {
+          seerrState = when (val state = it.seerrState) {
+            is SeerrState.Login -> {
               when (state.loginForm.method) {
                 SeerrAuthMethod.SEERR,
                 SeerrAuthMethod.JELLYFIN,
                 SeerrAuthMethod.EMBY,
                   -> state.copy(
-                  loginForm = state.loginForm.copy(password = Password(interaction.password)),
-                )
+                    loginForm = state.loginForm.copy(password = Password(interaction.password)),
+                  )
                 SeerrAuthMethod.PLEX -> state.copy(
                   loginForm = state.loginForm.copy(authToken = AuthToken(interaction.password)),
                 )
@@ -188,8 +188,8 @@ class JellyseerrSettingsViewModel(
 
       is JellyseerrInteraction.OnUsernameChange -> _uiState.update {
         it.copy(
-          jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Login -> {
+          seerrState = when (val state = it.seerrState) {
+            is SeerrState.Login -> {
               state.copy(
                 loginForm = state.loginForm.copy(
                   username = Username.from(interaction.username),
@@ -223,14 +223,14 @@ class JellyseerrSettingsViewModel(
 
 private fun MutableStateFlow<JellyseerrSettingsUiState>.setJellyseerrLoading(loading: Boolean) {
   update { uiState ->
-    when (uiState.jellyseerrState) {
-      is JellyseerrState.LoggedIn -> uiState.copy(
-        jellyseerrState = uiState.jellyseerrState.copy(
+    when (uiState.seerrState) {
+      is SeerrState.LoggedIn -> uiState.copy(
+        seerrState = uiState.seerrState.copy(
           isLoading = loading,
         ),
       )
-      is JellyseerrState.Login -> uiState.copy(
-        jellyseerrState = uiState.jellyseerrState.copy(
+      is SeerrState.Login -> uiState.copy(
+        seerrState = uiState.seerrState.copy(
           isLoading = loading,
         ),
       )

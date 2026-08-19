@@ -3,13 +3,13 @@ package com.divinelink.core.model.jellyseerr
 import com.divinelink.core.model.Address
 import com.divinelink.core.model.jellyseerr.login.SeerrLoginForm
 
-sealed class JellyseerrState(
+sealed class SeerrState(
   open var loginForm: SeerrLoginForm = SeerrLoginForm(),
 ) {
   data class Login(
     val isLoading: Boolean,
     override var loginForm: SeerrLoginForm = SeerrLoginForm(),
-  ) : JellyseerrState(
+  ) : SeerrState(
     loginForm = loginForm,
   ) {
     val isLoginEnabled = loginForm.isLoginEnabled
@@ -19,7 +19,7 @@ sealed class JellyseerrState(
     val isLoading: Boolean,
     val accountDetails: JellyseerrProfile,
     val address: String,
-  ) : JellyseerrState(
+  ) : SeerrState(
     loginForm = SeerrLoginForm(
       address = Address.from(address),
     ),

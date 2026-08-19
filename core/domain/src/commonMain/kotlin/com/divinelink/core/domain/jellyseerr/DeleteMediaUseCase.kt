@@ -2,7 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 
 data class DeleteMediaParameters(
   val mediaId: Long,
@@ -10,7 +10,7 @@ data class DeleteMediaParameters(
 )
 
 class DeleteMediaUseCase(
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   val dispatcher: DispatcherProvider,
 ) : UseCase<DeleteMediaParameters, Unit>(dispatcher.default) {
 

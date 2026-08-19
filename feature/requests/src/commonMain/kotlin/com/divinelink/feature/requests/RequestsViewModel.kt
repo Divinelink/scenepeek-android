@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.repository.DetailsRepository
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RequestsViewModel(
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   private val detailsRepository: DetailsRepository,
   private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,

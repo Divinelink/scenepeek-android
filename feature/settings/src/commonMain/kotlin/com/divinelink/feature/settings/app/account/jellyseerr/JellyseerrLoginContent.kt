@@ -46,8 +46,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrState
 import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.Plex
 import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.Seerr
 import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.StandardAuth
@@ -73,7 +73,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun JellyseerrLoginContent(
   modifier: Modifier = Modifier,
-  state: JellyseerrState.Login,
+  state: SeerrState.Login,
   interaction: (JellyseerrInteraction) -> Unit,
 ) {
   ScenePeekLazyColumn(
@@ -227,10 +227,9 @@ private fun AuthMethodButton(
 
 @Composable
 private fun LoginForm(
-  state: JellyseerrState.Login,
+  state: SeerrState.Login,
   interaction: (JellyseerrInteraction) -> Unit,
 ) {
-
   Column(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
@@ -249,7 +248,6 @@ private fun LoginForm(
     }
 
     PasswordOutlinedTextField(
-      // TODO Add authToken placeholder for Plex
       modifier = Modifier
         .semantics { contentType = ContentType.Password }
         .testTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
@@ -353,8 +351,7 @@ private fun LoginButton(
 @Previews
 @Composable
 fun JellyseerrLoginContentPreview(
-  @PreviewParameter(JellyseerrLoginStatePreviewParameterProvider::class) state:
-  JellyseerrState.Login,
+  @PreviewParameter(JellyseerrLoginStatePreviewParameterProvider::class) state: SeerrState.Login,
 ) {
   AppTheme {
     Surface {

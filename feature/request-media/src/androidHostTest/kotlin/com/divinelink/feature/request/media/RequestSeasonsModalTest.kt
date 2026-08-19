@@ -91,7 +91,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -148,7 +148,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -198,7 +198,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -238,7 +238,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -283,7 +283,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -339,7 +339,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -403,7 +403,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -452,7 +452,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -503,7 +503,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -555,7 +555,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -613,7 +613,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -669,7 +669,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -721,7 +721,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -768,7 +768,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -814,7 +814,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -867,7 +867,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -924,7 +924,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -978,7 +978,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -1046,7 +1046,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -1117,7 +1117,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
     setContentWithTheme {
@@ -1169,7 +1169,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
     setContentWithTheme {
@@ -1231,7 +1231,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
     setContentWithTheme {
@@ -1310,7 +1310,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
     setContentWithTheme {
@@ -1391,7 +1391,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
     setContentWithTheme {

@@ -1055,7 +1055,7 @@ class GetMediaDetailsUseCaseTest {
   private fun createGetMediaDetailsUseCase() = GetMediaDetailsUseCase(
     repository = repository.mock,
     mediaRepository = moviesRepository.mock,
-    jellyseerrRepository = jellyseerrRepository.mock,
+    seerrRepository = jellyseerrRepository.mock,
     dispatcher = testDispatcher,
     fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
     getDetailsActionItemsUseCase = fakeGetDetailsActionItemsUseCase.mock,

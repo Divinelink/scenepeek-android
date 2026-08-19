@@ -714,7 +714,7 @@ class DetailsContentTest : ComposeTest() {
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         authRepository = TestAuthRepository().mock,
-        jellyseerrRepository = jellyseerrRepository.mock,
+        seerrRepository = jellyseerrRepository.mock,
         mediaRepository = mediaRepository.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )
@@ -781,7 +781,7 @@ class DetailsContentTest : ComposeTest() {
         authRepository = TestAuthRepository().mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
-        jellyseerrRepository = TestJellyseerrRepository().mock,
+        seerrRepository = TestJellyseerrRepository().mock,
         mediaRepository = TestMediaRepository().mock,
       )
     }

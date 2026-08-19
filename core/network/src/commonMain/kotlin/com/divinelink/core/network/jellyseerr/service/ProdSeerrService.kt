@@ -2,7 +2,7 @@ package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.login.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginData
 import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
@@ -23,17 +23,16 @@ import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsRespon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : JellyseerrService {
+class ProdSeerrService(private val restClient: JellyseerrRestClient) : SeerrService {
 
-  override suspend fun signIn(login: JellyseerrLoginData): Result<Unit> =
-    runCatching {
-      val url = "${login.address.normalized}${AUTH_ENDPOINT}/${login.credentials.endpoint}"
+  override suspend fun signIn(login: SeerrLoginData): Result<Unit> = runCatching {
+    val url = "${login.address.normalized}${AUTH_ENDPOINT}/${login.credentials.endpoint}"
 
-      restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
-        url = url,
-        body = login.credentials.toRequestBody(),
-      )
-    }
+    restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
+      url = url,
+      body = login.credentials.toRequestBody(),
+    )
+  }
 
   override suspend fun fetchProfile(address: String): Flow<JellyseerrProfileResponse> = flow {
     val url = "$address$AUTH_ENDPOINT/me"

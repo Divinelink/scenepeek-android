@@ -4,7 +4,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
 
 class RequestMediaUseCase(
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   private val authRepository: AuthRepository,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<JellyseerrRequestParams, MediaRequestResult>(dispatcher.default) {

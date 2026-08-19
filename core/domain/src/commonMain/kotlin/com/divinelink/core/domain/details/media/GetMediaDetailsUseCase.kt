@@ -9,7 +9,7 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.repository.DetailsRepository
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 @Suppress("LongMethod")
 open class GetMediaDetailsUseCase(
   private val repository: DetailsRepository,
-  private val jellyseerrRepository: JellyseerrRepository,
+  private val seerrRepository: SeerrRepository,
   private val mediaRepository: MediaRepository,
   private val preferenceStorage: PreferenceStorage,
   private val authRepository: AuthRepository,
@@ -205,7 +205,7 @@ open class GetMediaDetailsUseCase(
 
       launch(dispatcher.default) {
         when (parameters) {
-          is MediaRequestApi.Movie -> jellyseerrRepository.getMovieDetails(parameters.movieId)
+          is MediaRequestApi.Movie -> seerrRepository.getMovieDetails(parameters.movieId)
             .catch { Napier.e("$it") }
             .collect { result ->
               detailsCompleted.await()
@@ -215,7 +215,7 @@ open class GetMediaDetailsUseCase(
                 filterRequestsBasedOnPermission(result)
               }
             }
-          is MediaRequestApi.TV -> jellyseerrRepository.getTvDetails(parameters.seriesId)
+          is MediaRequestApi.TV -> seerrRepository.getTvDetails(parameters.seriesId)
             .catch { Napier.e("$it") }
             .collect { result ->
               detailsCompleted.await()

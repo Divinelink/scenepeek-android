@@ -4,12 +4,12 @@ import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 
-data class JellyseerrLoginData(
+data class SeerrLoginData(
   val address: Address,
   val credentials: SeerrCredentials,
 ) {
   companion object {
-    val initial = JellyseerrLoginData(
+    val initial = SeerrLoginData(
       address = Address.empty,
       credentials = SeerrCredentials.StandardAuth.Jellyfin(
         username = Username.empty,

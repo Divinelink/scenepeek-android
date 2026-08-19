@@ -2,7 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.network.media.model.MediaRequestApi
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ data class DeleteRequestParameters(
 )
 
 class DeleteRequestUseCase(
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<DeleteRequestParameters, JellyseerrMediaInfo>(dispatcher.default) {
 
