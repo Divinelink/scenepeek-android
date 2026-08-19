@@ -31,6 +31,7 @@
   <string name="core_ui_logout">Logout</string>
   <string name="core_ui_error_retry">Something went wrong. Please try again.</string>
   <string name="core_ui_password">Password</string>
+  <string name="core_ui_auth_token">Auth token</string>
   <string name="core_ui_view_all">View all</string>
   <string name="core_ui_create_list">Create list</string>
   <string name="core_ui_create">Create</string>

@@ -54,6 +54,9 @@ import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.StandardAuth
 import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_auth_token
+import com.divinelink.core.ui.resources.core_ui_password
 import com.divinelink.feature.settings.app.account.jellyseerr.preview.JellyseerrLoginStatePreviewParameterProvider
 import com.divinelink.feature.settings.app.account.jellyseerr.ui.EmailSupportField
 import com.divinelink.feature.settings.resources.Res
@@ -63,6 +66,7 @@ import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_des
 import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_server_url
 import com.divinelink.feature.settings.resources.feature_settings_sign_in_with
 import com.divinelink.feature.settings.resources.feature_settings_signing_in
+import com.divinelink.feature.settings.resources.feature_settings_username
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -234,7 +238,7 @@ private fun LoginForm(
       is StandardAuth -> AccountInputField(
         value = ((state.loginForm.credentials as StandardAuth).username.value),
         interaction = interaction,
-        label = Res.string.feature_settings_email,
+        label = Res.string.feature_settings_username,
       )
       is Seerr -> AccountInputField(
         value = ((state.loginForm.credentials as Seerr).username.value),
@@ -255,6 +259,11 @@ private fun LoginForm(
         focusedLabelColor = Color(0xFF6366F1),
         cursorColor = Color(0xFF6366F1),
       ),
+      labelResource = if (state.loginForm.credentials is Plex) {
+        UiString.core_ui_auth_token
+      } else {
+        UiString.core_ui_password
+      },
       value = when (state.loginForm.credentials) {
         is Seerr -> (state.loginForm.credentials as Seerr).password.value
         is StandardAuth -> (state.loginForm.credentials as StandardAuth).password.value
