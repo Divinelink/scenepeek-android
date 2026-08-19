@@ -67,6 +67,7 @@ fun EmailSupportField() {
       textAlign = TextAlign.Center,
       text = buildAnnotatedString {
         append(stringResource(Res.string.seerr_login_info_placeholder_pt1))
+        append(" ")
         withStyle(
           style = SpanStyle(
             color = MaterialTheme.colorScheme.primary,
@@ -75,6 +76,7 @@ fun EmailSupportField() {
         ) {
           append(email)
         }
+        append(" ")
         append(stringResource(Res.string.seerr_login_info_placeholder_pt2))
       },
     )
