@@ -19,6 +19,7 @@ fun PendingActionButtons(
   enabled: Boolean,
   canManageRequests: Boolean,
   canRequestAdvanced: Boolean,
+  compact: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
   if (canManageRequests) {
@@ -42,9 +43,11 @@ fun PendingActionButtons(
           onClick = { onAction(RequestsAction.DeclineRequest(request.id)) },
         )
       }
-      ActionButton.EditRequest(
-        enabled = enabled,
-      ) { onAction(RequestsAction.EditRequest(request)) }
+      if (!compact) {
+        ActionButton.EditRequest(
+          enabled = enabled,
+        ) { onAction(RequestsAction.EditRequest(request)) }
+      }
     }
   } else {
     Column(

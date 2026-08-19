@@ -2,7 +2,6 @@ package com.divinelink.feature.home.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,7 +25,7 @@ import com.divinelink.core.ui.rememberIsLandscape
 import com.divinelink.core.ui.skeleton.RequestItemSkeleton
 import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.RequestsViewModel
-import com.divinelink.feature.requests.ui.RequestMediaItem
+import com.divinelink.feature.requests.ui.CompactRequestMediaItem
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -73,7 +72,7 @@ fun SeerrItems(
               items = (state.data as DataState.Data).data,
               key = { it.request.id },
             ) { request ->
-              RequestMediaItem(
+              CompactRequestMediaItem(
                 modifier = Modifier
                   .conditional(
                     condition = rememberIsLandscape(),
