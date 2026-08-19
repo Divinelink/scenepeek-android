@@ -24,7 +24,7 @@ import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
-import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.SeerrState
 import com.divinelink.core.model.jellyseerr.createdAtLocalDate
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
@@ -43,7 +43,7 @@ fun JellyseerrLoggedInContent(
   modifier: Modifier = Modifier,
   transitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  jellyseerrState: JellyseerrState.LoggedIn,
+  seerrState: SeerrState.LoggedIn,
   onLogoutClock: (JellyseerrInteraction.OnLogoutClick) -> Unit,
 ) {
   ScenePeekLazyColumn(
@@ -64,8 +64,8 @@ fun JellyseerrLoggedInContent(
                 ),
                 animatedVisibilityScope = animatedVisibilityScope,
               ),
-            avatarUrl = jellyseerrState.accountDetails.avatar,
-            username = jellyseerrState.accountDetails.displayName,
+            avatarUrl = seerrState.accountDetails.avatar,
+            username = seerrState.accountDetails.displayName,
           )
 
           Column {
@@ -81,12 +81,12 @@ fun JellyseerrLoggedInContent(
                   start = MaterialTheme.dimensions.keyline_16,
                   top = MaterialTheme.dimensions.keyline_24,
                 ),
-              text = jellyseerrState.accountDetails.displayName,
+              text = seerrState.accountDetails.displayName,
               color = MaterialTheme.colorScheme.primary,
               style = MaterialTheme.typography.titleMedium,
             )
 
-            jellyseerrState.accountDetails.email?.let { email ->
+            seerrState.accountDetails.email?.let { email ->
               Text(
                 modifier = Modifier
                   .padding(
@@ -100,7 +100,7 @@ fun JellyseerrLoggedInContent(
               )
             }
 
-            jellyseerrState.accountDetails.createdAtLocalDate
+            seerrState.accountDetails.createdAtLocalDate
               ?.formatLocalized(DateFormatStyle.LONG)
               ?.let { date ->
                 Text(
@@ -112,7 +112,7 @@ fun JellyseerrLoggedInContent(
                   text = stringResource(
                     Res.string.feature_settings_jellyseerr_joined_on,
                     date,
-                    jellyseerrState.accountDetails.id,
+                    seerrState.accountDetails.id,
                   ),
                   color = MaterialTheme.colorScheme.onSurface,
                   fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
@@ -142,7 +142,7 @@ fun JellyseerrLoggedInContent(
             start = MaterialTheme.dimensions.keyline_16,
             bottom = MaterialTheme.dimensions.keyline_16,
           ),
-          text = jellyseerrState.accountDetails.requestCount.toString(),
+          text = seerrState.accountDetails.requestCount.toString(),
           style = MaterialTheme.typography.headlineSmall,
         )
       }
@@ -150,7 +150,7 @@ fun JellyseerrLoggedInContent(
 
     item {
       AnimatedContent(
-        targetState = jellyseerrState.isLoading,
+        targetState = seerrState.isLoading,
         label = "Logout Button Animated Content",
       ) { loading ->
         when (loading) {
@@ -183,7 +183,7 @@ private fun JellyseerrLoggedInContentPreview() {
     JellyseerrLoggedInContent(
       transitionScope = it,
       animatedVisibilityScope = this,
-      jellyseerrState = JellyseerrState.LoggedIn(
+      seerrState = SeerrState.LoggedIn(
         isLoading = false,
         accountDetails = JellyseerrProfileFactory.jellyseerr(),
         address = "http://localhost:5055",
@@ -200,7 +200,7 @@ private fun JellyseerrLoggedInContentLoadingPreview() {
     JellyseerrLoggedInContent(
       transitionScope = it,
       animatedVisibilityScope = this,
-      jellyseerrState = JellyseerrState.LoggedIn(
+      seerrState = SeerrState.LoggedIn(
         isLoading = true,
         accountDetails = JellyseerrProfileFactory.jellyfin(),
         address = "http://localhost:5055",

@@ -2,7 +2,7 @@ package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginData
 import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
@@ -18,41 +18,21 @@ import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstance
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.toRequestBody
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : JellyseerrService {
+class ProdSeerrService(private val restClient: JellyseerrRestClient) : SeerrService {
 
-  override suspend fun signInWithJellyfin(jellyfinLogin: JellyseerrLoginData): Flow<Unit> = flow {
-    val url = "${jellyfinLogin.address.normalized}${AUTH_ENDPOINT}/jellyfin"
+  override suspend fun signIn(login: SeerrLoginData): Result<Unit> = runCatching {
+    val url = "${login.address.normalized}${AUTH_ENDPOINT}/${login.credentials.endpoint}"
 
-    val response = restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
+    restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
       url = url,
-      body = JellyseerrLoginRequestBodyApi.Jellyfin(
-        username = jellyfinLogin.username.normalized,
-        password = jellyfinLogin.password.value,
-        serverType = jellyfinLogin.authMethod.serverType,
-      ),
+      body = login.credentials.toRequestBody(),
     )
-
-    emit(response)
   }
-
-  override suspend fun signInWithJellyseerr(jellyseerrLogin: JellyseerrLoginData): Flow<Unit> =
-    flow {
-      val url = "${jellyseerrLogin.address.normalized}${AUTH_ENDPOINT}/local"
-
-      val response = restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
-        url = url,
-        body = JellyseerrLoginRequestBodyApi.Jellyseerr(
-          email = jellyseerrLogin.username.normalized,
-          password = jellyseerrLogin.password.value,
-        ),
-      )
-
-      emit(response)
-    }
 
   override suspend fun fetchProfile(address: String): Flow<JellyseerrProfileResponse> = flow {
     val url = "$address$AUTH_ENDPOINT/me"

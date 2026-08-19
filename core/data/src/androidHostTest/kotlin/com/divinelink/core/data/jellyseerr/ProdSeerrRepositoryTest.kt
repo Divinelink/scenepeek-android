@@ -2,8 +2,8 @@ package com.divinelink.core.data.jellyseerr
 
 import app.cash.turbine.test
 import com.divinelink.core.commons.data
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
-import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.ProdSeerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.database.Database
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.JellyseerrRequestMediaResponseFactory
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.MediaInfoRequestResponseFactory
@@ -24,8 +24,8 @@ import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.login.SeerrCredentials
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
@@ -57,9 +57,9 @@ import org.junit.Rule
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class ProdJellyseerrRepositoryTest {
+class ProdSeerrRepositoryTest {
 
-  private lateinit var repository: JellyseerrRepository
+  private lateinit var repository: SeerrRepository
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -75,7 +75,7 @@ class ProdJellyseerrRepositoryTest {
   fun setUp() {
     database = TestDatabaseFactory.createInMemoryDatabase()
 
-    repository = ProdJellyseerrRepository(
+    repository = ProdSeerrRepository(
       service = remote.mock,
       authRepository = authRepository.mock,
       mediaDao = mediaDao.mock,
@@ -85,34 +85,36 @@ class ProdJellyseerrRepositoryTest {
 
   @Test
   fun `test sign in with jellyfin successfully`() = runTest {
-    remote.mockSignInWithJellyfin(response = Unit)
+    remote.mockSignIn(response = Result.success(Unit))
 
-    val result = repository.signInWithJellyfin(
-      loginData = JellyseerrLoginData(
-        username = Username.from("jellyfinUsername"),
-        password = Password("password"),
+    val result = repository.signIn(
+      login = SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYFIN,
+        credentials = SeerrCredentials.StandardAuth.Jellyfin(
+          username = Username.from("jellyfinUsername"),
+          password = Password("password"),
+        ),
       ),
     )
 
-    assertThat(result.first()).isEqualTo(Result.success(Unit))
+    assertThat(result).isEqualTo(Result.success(Unit))
   }
 
   @Test
   fun `test sign in with jellyseerr successfully`() = runTest {
-    remote.mockSignInWithJellyseerr(response = Unit)
+    remote.mockSignIn(response = Result.success(Unit))
 
-    val result = repository.signInWithJellyseerr(
-      loginData = JellyseerrLoginData(
-        username = Username.from("jellyseerrUsername"),
-        password = Password("password"),
+    val result = repository.signIn(
+      login = SeerrLoginData(
         address = Address.from("http://localhost:8096"),
-        authMethod = JellyseerrAuthMethod.JELLYSEERR,
+        credentials = SeerrCredentials.Seerr(
+          username = Username.from("jellyseerrUsername"),
+          password = Password("password"),
+        ),
       ),
     )
 
-    assertThat(result.first()).isEqualTo(Result.success(Unit))
+    assertThat(result).isEqualTo(Result.success(Unit))
   }
 
   @Test

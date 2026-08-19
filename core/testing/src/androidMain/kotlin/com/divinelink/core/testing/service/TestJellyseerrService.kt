@@ -11,7 +11,7 @@ import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstance
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
-import com.divinelink.core.network.jellyseerr.service.JellyseerrService
+import com.divinelink.core.network.jellyseerr.service.SeerrService
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -19,22 +19,10 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 class TestJellyseerrService {
-  val mock: JellyseerrService = mock()
+  val mock: SeerrService = mock()
 
-  suspend fun mockSignInWithJellyfin(response: Unit) {
-    whenever(
-      mock.signInWithJellyfin(jellyfinLogin = any()),
-    ).thenReturn(
-      flowOf(response),
-    )
-  }
-
-  suspend fun mockSignInWithJellyseerr(response: Unit) {
-    whenever(
-      mock.signInWithJellyseerr(jellyseerrLogin = any()),
-    ).thenReturn(
-      flowOf(response),
-    )
+  suspend fun mockSignIn(response: Result<Unit>) {
+    whenever(mock.signIn(login = any())).thenReturn(response)
   }
 
   suspend fun mockFetchProfile(response: JellyseerrProfileResponse) {

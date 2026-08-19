@@ -6,9 +6,9 @@ import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.JellyseerrRequests
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
@@ -24,28 +24,20 @@ import com.divinelink.core.network.jellyseerr.mapper.server.sonarr.map
 import com.divinelink.core.network.jellyseerr.mapper.tv.map
 import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
-import com.divinelink.core.network.jellyseerr.service.JellyseerrService
+import com.divinelink.core.network.jellyseerr.service.SeerrService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class ProdJellyseerrRepository(
-  private val service: JellyseerrService,
+class ProdSeerrRepository(
+  private val service: SeerrService,
   private val authRepository: AuthRepository,
   private val mediaDao: MediaDao,
   val dispatcher: DispatcherProvider,
-) : JellyseerrRepository {
+) : SeerrRepository {
 
-  override suspend fun signInWithJellyfin(loginData: JellyseerrLoginData): Flow<Result<Unit>> =
-    service
-      .signInWithJellyfin(loginData)
-      .map { Result.success(Unit) }
-
-  override suspend fun signInWithJellyseerr(loginData: JellyseerrLoginData): Flow<Result<Unit>> =
-    service
-      .signInWithJellyseerr(loginData)
-      .map { Result.success(Unit) }
+  override suspend fun signIn(login: SeerrLoginData): Result<Unit> = service.signIn(login)
 
   override suspend fun getJellyseerrProfile(
     refresh: Boolean,

@@ -1,7 +1,7 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
@@ -59,7 +59,7 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnPasswordChange(password))
   }
 
-  fun onSelectedJellyseerrLoginMethod(method: JellyseerrAuthMethod) = apply {
+  fun onSelectedJellyseerrLoginMethod(method: SeerrAuthMethod) = apply {
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnSelectLoginMethod(method))
   }
 

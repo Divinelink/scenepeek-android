@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.ui.resources.core_ui_password
 import com.divinelink.core.ui.resources.core_ui_toggle_password_visibility_button
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -30,6 +31,7 @@ fun PasswordOutlinedTextField(
   modifier: Modifier = Modifier,
   colors: TextFieldColors = TextFieldDefaults.colors(),
   value: String,
+  labelResource: StringResource = UiString.core_ui_password,
   onValueChange: (String) -> Unit,
 ) {
   var isMasked by rememberSaveable { mutableStateOf(true) }
@@ -37,7 +39,7 @@ fun PasswordOutlinedTextField(
   OutlinedTextField(
     modifier = modifier,
     colors = colors,
-    label = { Text(text = stringResource(UiString.core_ui_password)) },
+    label = { Text(text = stringResource(labelResource)) },
     value = value,
     singleLine = true,
     visualTransformation = if (isMasked) {

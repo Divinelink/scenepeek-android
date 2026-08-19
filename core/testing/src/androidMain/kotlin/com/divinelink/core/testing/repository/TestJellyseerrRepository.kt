@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.repository
 
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
@@ -18,14 +18,10 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class TestJellyseerrRepository {
-  val mock: JellyseerrRepository = mock()
+  val mock: SeerrRepository = mock()
 
-  suspend fun mockSignInWithJellyfin(response: Result<Unit>) {
-    whenever(mock.signInWithJellyfin(any())).thenReturn(flowOf(response))
-  }
-
-  suspend fun mockSignInWithJellyseerr(response: Result<Unit>) {
-    whenever(mock.signInWithJellyseerr(any())).thenReturn(flowOf(response))
+  suspend fun mockSignIn(response: Result<Unit>) {
+    whenever(mock.signIn(any())).thenReturn(response)
   }
 
   suspend fun mockGetJellyseerrProfile(response: Flow<Resource<JellyseerrProfile?>>) {

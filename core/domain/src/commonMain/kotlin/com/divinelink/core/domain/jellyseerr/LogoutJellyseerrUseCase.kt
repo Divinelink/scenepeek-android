@@ -4,11 +4,11 @@ import com.divinelink.core.commons.data
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.auth.AuthRepository
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.SeerrRepository
 import kotlinx.coroutines.flow.first
 
 class LogoutJellyseerrUseCase(
-  private val repository: JellyseerrRepository,
+  private val repository: SeerrRepository,
   private val authRepository: AuthRepository,
   val dispatcher: DispatcherProvider,
 ) : UseCase<Unit, Unit>(dispatcher.default) {

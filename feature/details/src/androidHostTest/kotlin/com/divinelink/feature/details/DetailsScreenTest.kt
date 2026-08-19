@@ -939,7 +939,7 @@ class DetailsScreenTest : ComposeTest() {
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         authRepository = authRepository.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
-        jellyseerrRepository = TestJellyseerrRepository().mock,
+        seerrRepository = TestJellyseerrRepository().mock,
         mediaRepository = TestMediaRepository().mock,
       )
     }
@@ -1071,7 +1071,7 @@ class DetailsScreenTest : ComposeTest() {
         authRepository = authRepository.mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
-        jellyseerrRepository = jellyseerrRepository.mock,
+        seerrRepository = jellyseerrRepository.mock,
         mediaRepository = mediaRepository.mock,
       )
     }

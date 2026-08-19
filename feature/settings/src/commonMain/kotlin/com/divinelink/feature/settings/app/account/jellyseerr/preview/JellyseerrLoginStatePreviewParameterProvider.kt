@@ -5,61 +5,61 @@ import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
-import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
+import com.divinelink.core.model.jellyseerr.SeerrState
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginForm
 
 @ExcludeFromKoverReport
 class JellyseerrLoginStatePreviewParameterProvider :
-  PreviewParameterProvider<JellyseerrState.Login> {
-  override val values: Sequence<JellyseerrState.Login> = sequenceOf(
-    JellyseerrState.Login(
+  PreviewParameterProvider<SeerrState.Login> {
+  override val values: Sequence<SeerrState.Login> = sequenceOf(
+    SeerrState.Login(
       isLoading = false,
-      loginData = JellyseerrLoginData.empty(),
+      loginForm = SeerrLoginForm(),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
-      loginData = JellyseerrLoginData(
+      loginForm = SeerrLoginForm(
+        method = SeerrAuthMethod.SEERR,
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
-      loginData = JellyseerrLoginData(
+      loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.JELLYFIN,
+        method = SeerrAuthMethod.JELLYFIN,
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
-      loginData = JellyseerrLoginData(
+      loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.EMBY,
+        method = SeerrAuthMethod.EMBY,
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = false,
-      loginData = JellyseerrLoginData(
+      loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
-        password = Password.empty(),
-        authMethod = JellyseerrAuthMethod.EMBY,
+        password = Password.empty,
+        method = SeerrAuthMethod.EMBY,
       ),
     ),
-    JellyseerrState.Login(
+    SeerrState.Login(
       isLoading = true,
-      loginData = JellyseerrLoginData(
+      loginForm = SeerrLoginForm(
         address = Address.from("https://jellyseerr.com"),
         username = Username.from("DavidLynch"),
         password = Password("password"),
-        authMethod = JellyseerrAuthMethod.EMBY,
+        method = SeerrAuthMethod.EMBY,
       ),
     ),
   )

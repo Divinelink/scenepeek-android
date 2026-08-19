@@ -55,7 +55,7 @@ class RequestMovieModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
       authRepository = authRepository.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 
@@ -97,7 +97,7 @@ class RequestMovieModalTest : ComposeTest() {
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
       authRepository = authRepository.mock,
-      jellyseerrRepository = jellyseerrRepository.mock,
+      seerrRepository = jellyseerrRepository.mock,
       mediaRepository = mediaRepository.mock,
     )
 

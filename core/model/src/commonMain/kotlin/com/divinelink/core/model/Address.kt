@@ -10,8 +10,10 @@ value class Address private constructor(val address: String) {
   val normalized
     get() = address.trim()
 
+  val isBlank get() = value.isBlank()
+
   companion object {
     fun from(value: String) = Address(value)
-    fun empty() = Address("")
+    val empty = Address("")
   }
 }

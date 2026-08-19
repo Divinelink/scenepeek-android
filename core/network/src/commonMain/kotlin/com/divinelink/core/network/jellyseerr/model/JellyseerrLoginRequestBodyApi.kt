@@ -1,6 +1,6 @@
 package com.divinelink.core.network.jellyseerr.model
 
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.login.SeerrCredentials
 import kotlinx.serialization.Serializable
 
 sealed interface JellyseerrLoginRequestBodyApi {
@@ -16,21 +16,29 @@ sealed interface JellyseerrLoginRequestBodyApi {
     val email: String,
     val password: String,
   ) : JellyseerrLoginRequestBodyApi
+
+  @Serializable
+  data class Plex(
+    val authToken: String,
+  ) : JellyseerrLoginRequestBodyApi
 }
 
-fun JellyseerrAuthMethod.toRequestBodyApi(
-  username: String,
-  password: String,
-): JellyseerrLoginRequestBodyApi = when (this) {
-  JellyseerrAuthMethod.JELLYFIN,
-  JellyseerrAuthMethod.EMBY,
-    -> JellyseerrLoginRequestBodyApi.Jellyfin(
-      username = username,
-      password = password,
-      serverType = serverType,
-    )
-  JellyseerrAuthMethod.JELLYSEERR -> JellyseerrLoginRequestBodyApi.Jellyseerr(
-    email = username,
-    password = password,
+fun SeerrCredentials.toRequestBody(): JellyseerrLoginRequestBodyApi = when (this) {
+  is SeerrCredentials.Plex -> JellyseerrLoginRequestBodyApi.Plex(
+    authToken = authToken.normalized,
+  )
+  is SeerrCredentials.Seerr -> JellyseerrLoginRequestBodyApi.Jellyseerr(
+    email = username.normalized,
+    password = password.value,
+  )
+  is SeerrCredentials.StandardAuth.Jellyfin -> JellyseerrLoginRequestBodyApi.Jellyfin(
+    username = username.normalized,
+    password = password.value,
+    serverType = serverType,
+  )
+  is SeerrCredentials.StandardAuth.Emby -> JellyseerrLoginRequestBodyApi.Jellyfin(
+    username = username.normalized,
+    password = password.value,
+    serverType = serverType,
   )
 }

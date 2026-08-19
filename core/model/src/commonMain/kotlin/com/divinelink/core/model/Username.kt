@@ -4,14 +4,12 @@ import kotlin.jvm.JvmInline
 
 @JvmInline
 value class Username private constructor(private val username: String) {
-  val value
-    get() = username
-
-  val normalized
-    get() = username.trim()
+  val value get() = username
+  val isBlank get() = value.isBlank()
+  val normalized get() = username.trim()
 
   companion object {
     fun from(value: String) = Username(value)
-    fun empty() = Username("")
+    val empty = Username("")
   }
 }
