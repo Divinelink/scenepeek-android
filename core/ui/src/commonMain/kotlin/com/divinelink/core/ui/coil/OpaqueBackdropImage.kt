@@ -18,7 +18,7 @@ import org.jetbrains.compose.resources.stringResource
 fun OpaqueBackdropImage(
   path: String?,
   modifier: Modifier = Modifier,
-  contentScale: ContentScale = ContentScale.FillWidth,
+  contentScale: ContentScale = ContentScale.Crop,
 ) {
   val constants = rememberConstants()
 

@@ -10,6 +10,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
@@ -36,10 +37,11 @@ class RequestsViewModel(
   private val detailsRepository: DetailsRepository,
   private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,
+  filter: MediaRequestFilter? = null,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<RequestsUiState> = MutableStateFlow(
-    RequestsUiState.initial,
+    RequestsUiState.initial(filter),
   )
   val uiState: StateFlow<RequestsUiState> = _uiState
 

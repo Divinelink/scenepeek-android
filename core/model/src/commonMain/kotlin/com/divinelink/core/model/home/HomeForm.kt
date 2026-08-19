@@ -1,5 +1,6 @@
 package com.divinelink.core.model.home
 
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.media.MediaItem
 
 sealed interface HomeForm<out T : MediaItem> {
@@ -14,4 +15,6 @@ sealed interface HomeForm<out T : MediaItem> {
   ) : HomeForm<T> {
     val media = pages.values.flatten().distinctBy { it.uniqueIdentifier }
   }
+
+  data class SeerrData(val filter: MediaRequestFilter) : HomeForm<Nothing>
 }

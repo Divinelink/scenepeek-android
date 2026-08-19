@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MediaListsViewModel(
-  private val route: Navigation.MediaListsRoute,
+  route: Navigation.MediaListsRoute,
   private val repository: MediaRepository,
 ) : ViewModel() {
 
@@ -45,6 +45,7 @@ class MediaListsViewModel(
       is MediaListSection.TopRated -> fetchMediaLists(mediaType)
       is MediaListSection.Upcoming -> fetchMediaLists(mediaType)
       MediaListSection.Saved -> fetchFavorites(mediaType)
+      MediaListSection.RecentRequests -> Unit
     }
   }
 

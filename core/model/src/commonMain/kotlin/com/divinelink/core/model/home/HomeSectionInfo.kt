@@ -11,5 +11,6 @@ data class HomeSectionInfo(
       MediaListSection.TrendingAll -> "trending_all"
       is MediaListSection.Popular -> "popular_${section.mediaType.value}"
       is MediaListSection.Upcoming -> "upcoming_${section.mediaType.value}"
+      MediaListSection.RecentRequests -> "seerr_recent_request"
     }
 }

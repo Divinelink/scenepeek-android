@@ -26,9 +26,7 @@ import com.valentinilk.shimmer.shimmer
 @Composable
 fun RequestItemSkeleton(modifier: Modifier = Modifier) {
   Row(
-    modifier = modifier
-      .height(300.dp)
-      .fillMaxWidth(),
+    modifier = modifier.fillMaxWidth(),
   ) {
     Column {
       Row {
@@ -132,41 +130,6 @@ fun RequestItemSkeleton(modifier: Modifier = Modifier) {
             .background(MaterialTheme.colorScheme.onSurfaceVariant),
         )
       }
-
-      Spacer(modifier = Modifier.weight(1f))
-
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-      ) {
-        Box(
-          modifier = Modifier
-            .height(52.dp)
-            .weight(1f)
-            .padding(top = MaterialTheme.dimensions.keyline_8)
-            .shimmer()
-            .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.onSurfaceVariant),
-        )
-        Box(
-          modifier = Modifier
-            .height(52.dp)
-            .weight(1f)
-            .padding(top = MaterialTheme.dimensions.keyline_8)
-            .shimmer()
-            .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.onSurfaceVariant),
-        )
-      }
-
-      Box(
-        modifier = Modifier
-          .height(52.dp)
-          .fillMaxWidth()
-          .padding(top = MaterialTheme.dimensions.keyline_8)
-          .shimmer()
-          .clip(MaterialTheme.shapes.extraLarge)
-          .background(MaterialTheme.colorScheme.onSurfaceVariant),
-      )
     }
   }
 }

@@ -9,6 +9,8 @@ import com.divinelink.core.model.resources.popular_series
 import com.divinelink.core.model.resources.trending
 import com.divinelink.core.model.resources.upcoming_movies
 import com.divinelink.core.model.resources.upcoming_series
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.recent_request
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
@@ -17,6 +19,10 @@ fun buildHomeSections(clock: Clock): List<HomeSectionInfo> {
   val today = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString()
 
   return listOf(
+    HomeSectionInfo(
+      section = MediaListSection.RecentRequests,
+      title = UiString.recent_request,
+    ),
     HomeSectionInfo(
       section = MediaListSection.TrendingAll,
       title = Res.string.trending,

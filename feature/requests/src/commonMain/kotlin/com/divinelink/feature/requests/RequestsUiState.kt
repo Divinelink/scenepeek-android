@@ -17,9 +17,9 @@ data class RequestsUiState(
   val permissions: List<ProfilePermission>,
 ) {
   companion object {
-    val initial = RequestsUiState(
+    fun initial(filter: MediaRequestFilter?) = RequestsUiState(
       page = 1,
-      filter = MediaRequestFilter.Pending,
+      filter = filter ?: MediaRequestFilter.Pending,
       data = DataState.Initial,
       loadingMore = false,
       canLoadMore = false,

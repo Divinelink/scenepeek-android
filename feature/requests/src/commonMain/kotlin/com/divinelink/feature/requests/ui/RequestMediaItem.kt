@@ -184,9 +184,7 @@ fun LazyItemScope.RequestMediaItem(
       modifier = modifier,
     )
 
-    null -> {
-      // Do nothing
-    }
+    null -> Unit
   }
 }
 
@@ -246,8 +244,6 @@ fun ActionButtons(
       enabled = enabled,
       request = request,
     )
-    JellyseerrStatus.Request.UNKNOWN -> {
-      // Do nothing
-    }
+    JellyseerrStatus.Request.UNKNOWN -> Unit
   }
 }

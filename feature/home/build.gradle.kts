@@ -10,6 +10,8 @@ kotlin {
       implementation(projects.core.data)
       implementation(projects.core.domain)
 
+      implementation(projects.feature.requests)
+
       implementation(libs.kotlinx.datetime)
 
       implementation(projects.core.fixtures)

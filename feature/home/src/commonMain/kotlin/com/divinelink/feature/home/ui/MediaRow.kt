@@ -58,6 +58,10 @@ fun MediaRow(
         onNavigate = onNavigate,
         onRetry = { action(HomeAction.RetrySection(config.section)) },
       )
+      is HomeForm.SeerrData -> SeerrItems(
+        filter = form.filter,
+        onNavigate = onNavigate,
+      )
     }
   }
 }
