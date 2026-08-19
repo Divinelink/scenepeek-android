@@ -1,20 +1,18 @@
 package com.divinelink.core.model.jellyseerr
 
+import com.divinelink.core.model.Address
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginForm
+
 sealed class JellyseerrState(
-  open var loginData: JellyseerrLoginData = JellyseerrLoginData.empty(),
+  open var loginForm: SeerrLoginForm = SeerrLoginForm(),
 ) {
   data class Login(
     val isLoading: Boolean,
-    override var loginData: JellyseerrLoginData = JellyseerrLoginData.empty(),
+    override var loginForm: SeerrLoginForm = SeerrLoginForm(),
   ) : JellyseerrState(
-    loginData = loginData,
+    loginForm = loginForm,
   ) {
-    val isLoginEnabled = loginData.address.value.isNotEmpty() &&
-      loginData.username.value.isNotEmpty() &&
-      when (loginData.authMethod) {
-        SeerrAuthMethod.JELLYFIN, SeerrAuthMethod.EMBY -> true
-        else -> loginData.password.value.isNotEmpty()
-      }
+    val isLoginEnabled = loginForm.isLoginEnabled
   }
 
   data class LoggedIn(
@@ -22,6 +20,8 @@ sealed class JellyseerrState(
     val accountDetails: JellyseerrProfile,
     val address: String,
   ) : JellyseerrState(
-    loginData = JellyseerrLoginData.prefilled(address),
+    loginForm = SeerrLoginForm(
+      address = Address.from(address),
+    ),
   )
 }

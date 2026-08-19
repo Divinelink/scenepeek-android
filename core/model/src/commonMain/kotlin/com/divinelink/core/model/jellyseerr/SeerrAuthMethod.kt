@@ -8,6 +8,7 @@ enum class SeerrAuthMethod(
   SEERR("local", "Seerr", 2),
   JELLYFIN("jellyfin", "Jellyfin", 3),
   EMBY("jellyfin", "Emby", 4),
+  PLEX("plex", "Plex", -1),
   ;
 
   companion object {

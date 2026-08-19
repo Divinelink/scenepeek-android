@@ -23,7 +23,7 @@ class TestJellyseerrService {
 
   suspend fun mockSignInWithJellyfin(response: Unit) {
     whenever(
-      mock.signInWithJellyfin(jellyfinLogin = any()),
+      mock.signIn(jellyfinLogin = any()),
     ).thenReturn(
       flowOf(response),
     )

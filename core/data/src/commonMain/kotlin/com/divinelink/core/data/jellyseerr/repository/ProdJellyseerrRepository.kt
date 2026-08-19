@@ -6,9 +6,9 @@ import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.JellyseerrRequests
+import com.divinelink.core.model.jellyseerr.login.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
@@ -37,15 +37,7 @@ class ProdJellyseerrRepository(
   val dispatcher: DispatcherProvider,
 ) : JellyseerrRepository {
 
-  override suspend fun signInWithJellyfin(loginData: JellyseerrLoginData): Flow<Result<Unit>> =
-    service
-      .signInWithJellyfin(loginData)
-      .map { Result.success(Unit) }
-
-  override suspend fun signInWithJellyseerr(loginData: JellyseerrLoginData): Flow<Result<Unit>> =
-    service
-      .signInWithJellyseerr(loginData)
-      .map { Result.success(Unit) }
+  override suspend fun signIn(login: JellyseerrLoginData): Result<Unit> = service.signIn(login)
 
   override suspend fun getJellyseerrProfile(
     refresh: Boolean,

@@ -4,7 +4,8 @@ import kotlin.jvm.JvmInline
 
 @JvmInline
 value class Password(val value: String) {
+  val isBlank get() = value.isBlank()
   companion object {
-    fun empty() = Password("")
+    val empty = Password("")
   }
 }

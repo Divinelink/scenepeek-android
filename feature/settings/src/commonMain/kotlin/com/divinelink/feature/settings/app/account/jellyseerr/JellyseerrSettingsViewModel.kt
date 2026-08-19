@@ -10,13 +10,15 @@ import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.model.Address
+import com.divinelink.core.model.AuthToken
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.ExceptionConstants
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
+import com.divinelink.core.model.jellyseerr.login.SeerrLoginForm
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.resources.core_ui_error_retry
@@ -56,8 +58,8 @@ class JellyseerrSettingsViewModel(
                 it.copy(
                   jellyseerrState = JellyseerrState.Login(
                     isLoading = false,
-                    loginData = JellyseerrLoginData.prefilled(
-                      address = accountDetailsResult.address,
+                    loginForm = SeerrLoginForm(
+                      address = Address.from(accountDetailsResult.address),
                     ),
                   ),
                 )
@@ -96,8 +98,9 @@ class JellyseerrSettingsViewModel(
     when (interaction) {
       JellyseerrInteraction.OnLoginClick -> {
         if (uiState.value.jellyseerrState !is JellyseerrState.Login) return
+        val loginData = uiState.value.jellyseerrState.loginForm.loginData ?: return
 
-        loginJellyseerrUseCase.invoke(uiState.value.jellyseerrState.loginData)
+        loginJellyseerrUseCase.invoke(loginData)
           .onStart {
             _uiState.setJellyseerrLoading(true)
           }
@@ -138,7 +141,7 @@ class JellyseerrSettingsViewModel(
         it.copy(
           jellyseerrState = when (val state = it.jellyseerrState) {
             is JellyseerrState.Login -> state.copy(
-              loginData = uiState.value.jellyseerrState.loginData.copy(
+              loginForm = uiState.value.jellyseerrState.loginForm.copy(
                 address = Address.from(interaction.address),
               ),
             )
@@ -152,8 +155,8 @@ class JellyseerrSettingsViewModel(
           jellyseerrState = when (val state = it.jellyseerrState) {
             is JellyseerrState.Login -> {
               state.copy(
-                loginData = uiState.value.jellyseerrState.loginData.copy(
-                  authMethod = interaction.signInMethod,
+                loginForm = uiState.value.jellyseerrState.loginForm.copy(
+                  method = interaction.signInMethod,
                 ),
               )
             }
@@ -166,11 +169,17 @@ class JellyseerrSettingsViewModel(
         it.copy(
           jellyseerrState = when (val state = it.jellyseerrState) {
             is JellyseerrState.Login -> {
-              state.copy(
-                loginData = state.loginData.copy(
-                  password = Password(interaction.password),
-                ),
-              )
+              when (state.loginForm.method) {
+                SeerrAuthMethod.SEERR,
+                SeerrAuthMethod.JELLYFIN,
+                SeerrAuthMethod.EMBY,
+                  -> state.copy(
+                  loginForm = state.loginForm.copy(password = Password(interaction.password)),
+                )
+                SeerrAuthMethod.PLEX -> state.copy(
+                  loginForm = state.loginForm.copy(authToken = AuthToken(interaction.password)),
+                )
+              }
             }
             else -> state
           },
@@ -182,7 +191,7 @@ class JellyseerrSettingsViewModel(
           jellyseerrState = when (val state = it.jellyseerrState) {
             is JellyseerrState.Login -> {
               state.copy(
-                loginData = state.loginData.copy(
+                loginForm = state.loginForm.copy(
                   username = Username.from(interaction.username),
                 ),
               )

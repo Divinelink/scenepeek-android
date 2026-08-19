@@ -5,8 +5,8 @@ import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.selectedJellyseerrCredentials
 import com.divinelink.core.datastore.auth.selectedJellyseerrHostAddress
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
-import com.divinelink.core.network.jellyseerr.model.toRequestBodyApi
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpRequestRetry
@@ -60,10 +60,22 @@ class JellyseerrRestClient(
     val account = savedStateStorage.selectedJellyseerrCredentials
       ?: throw AppException.Unauthorized("Invalid jellyseerr authentication. Please log in again.")
 
-    val body = account.authMethod.toRequestBodyApi(
-      username = account.account,
-      password = account.password,
-    )
+    val body = when (account.authMethod) {
+      SeerrAuthMethod.SEERR -> JellyseerrLoginRequestBodyApi.Jellyseerr(
+        email = account.account,
+        password = account.password,
+      )
+      SeerrAuthMethod.JELLYFIN,
+      SeerrAuthMethod.EMBY,
+        -> JellyseerrLoginRequestBodyApi.Jellyfin(
+        username = account.account,
+        password = account.password,
+        serverType = account.authMethod.serverType,
+      )
+      SeerrAuthMethod.PLEX -> JellyseerrLoginRequestBodyApi.Plex(
+        authToken = account.password,
+      )
+    }
 
     post<JellyseerrLoginRequestBodyApi, Unit>(
       url = "${account.address}$AUTH_ENDPOINT/${account.authMethod.endpoint}",

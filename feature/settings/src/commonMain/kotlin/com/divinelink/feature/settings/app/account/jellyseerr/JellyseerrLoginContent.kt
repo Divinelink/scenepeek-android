@@ -30,7 +30,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
@@ -47,8 +46,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.SeerrAuthMethod
+import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.Plex
+import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.Seerr
+import com.divinelink.core.model.jellyseerr.login.SeerrCredentials.StandardAuth
 import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -61,7 +63,7 @@ import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_des
 import com.divinelink.feature.settings.resources.feature_settings_jellyseerr_server_url
 import com.divinelink.feature.settings.resources.feature_settings_sign_in_with
 import com.divinelink.feature.settings.resources.feature_settings_signing_in
-import com.divinelink.feature.settings.resources.feature_settings_username
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -88,7 +90,7 @@ fun JellyseerrLoginContent(
         modifier = Modifier
           .testTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD)
           .fillMaxWidth(),
-        value = state.loginData.address.value,
+        value = state.loginForm.address.value,
         colors = OutlinedTextFieldDefaults.colors(
           focusedBorderColor = Color(0xFF6366F1),
           focusedLabelColor = Color(0xFF6366F1),
@@ -109,7 +111,7 @@ fun JellyseerrLoginContent(
 
     item {
       AuthMethodSelector(
-        selectedMethod = state.loginData.authMethod,
+        selectedMethod = state.loginForm.method,
         onMethodSelected = { interaction.invoke(JellyseerrInteraction.OnSelectLoginMethod(it)) },
       )
     }
@@ -123,7 +125,7 @@ fun JellyseerrLoginContent(
 
     item {
       LoginButton(
-        selectedMethod = state.loginData.authMethod,
+        selectedMethod = state.loginForm.method,
         isLoading = state.isLoading,
         enabled = state.isLoginEnabled,
         onClick = { interaction.invoke(JellyseerrInteraction.OnLoginClick) },
@@ -224,43 +226,28 @@ private fun LoginForm(
   state: JellyseerrState.Login,
   interaction: (JellyseerrInteraction) -> Unit,
 ) {
-  val label = remember(state.loginData.authMethod) {
-    if (state.loginData.authMethod == SeerrAuthMethod.SEERR) {
-      Res.string.feature_settings_email
-    } else {
-      Res.string.feature_settings_username
+
+  Column(
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+  ) {
+    when (state.loginForm.credentials) {
+      is StandardAuth -> AccountInputField(
+        value = ((state.loginForm.credentials as StandardAuth).username.value),
+        interaction = interaction,
+        label = Res.string.feature_settings_email,
+      )
+      is Seerr -> AccountInputField(
+        value = ((state.loginForm.credentials as Seerr).username.value),
+        interaction = interaction,
+        label = Res.string.feature_settings_email,
+      )
+      is Plex -> Unit
     }
-  }
-
-  Column {
-    OutlinedTextField(
-      value = state.loginData.username.value,
-      onValueChange = {
-        interaction.invoke(JellyseerrInteraction.OnUsernameChange(it))
-      },
-      label = { Text(stringResource(label)) },
-      modifier = Modifier
-        .fillMaxWidth()
-        .testTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD),
-      colors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = Color(0xFF6366F1),
-        focusedLabelColor = Color(0xFF6366F1),
-        cursorColor = Color(0xFF6366F1),
-      ),
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Next,
-      ),
-      singleLine = true,
-    )
-
-    Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
 
     PasswordOutlinedTextField(
+      // TODO Add authToken placeholder for Plex
       modifier = Modifier
-        .semantics {
-          contentType = ContentType.Password
-        }
+        .semantics { contentType = ContentType.Password }
         .testTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
         .fillMaxWidth(),
       colors = OutlinedTextFieldDefaults.colors(
@@ -268,10 +255,42 @@ private fun LoginForm(
         focusedLabelColor = Color(0xFF6366F1),
         cursorColor = Color(0xFF6366F1),
       ),
-      value = state.loginData.password.value,
+      value = when (state.loginForm.credentials) {
+        is Seerr -> (state.loginForm.credentials as Seerr).password.value
+        is StandardAuth -> (state.loginForm.credentials as StandardAuth).password.value
+        is Plex -> (state.loginForm.credentials as Plex).authToken.value
+      },
       onValueChange = { interaction.invoke(JellyseerrInteraction.OnPasswordChange(it)) },
     )
   }
+}
+
+@Composable
+private fun AccountInputField(
+  value: String,
+  label: StringResource,
+  interaction: (JellyseerrInteraction) -> Unit,
+) {
+  OutlinedTextField(
+    value = value,
+    onValueChange = { value ->
+      interaction.invoke(JellyseerrInteraction.OnUsernameChange(value))
+    },
+    label = { Text(stringResource(label)) },
+    modifier = Modifier
+      .fillMaxWidth()
+      .testTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD),
+    colors = OutlinedTextFieldDefaults.colors(
+      focusedBorderColor = Color(0xFF6366F1),
+      focusedLabelColor = Color(0xFF6366F1),
+      cursorColor = Color(0xFF6366F1),
+    ),
+    keyboardOptions = KeyboardOptions(
+      keyboardType = KeyboardType.Text,
+      imeAction = ImeAction.Next,
+    ),
+    singleLine = true,
+  )
 }
 
 @Composable

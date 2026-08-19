@@ -1,7 +1,7 @@
 package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.login.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
@@ -19,9 +19,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface JellyseerrService {
 
-  suspend fun signInWithJellyfin(jellyfinLogin: JellyseerrLoginData): Flow<Unit>
-
-  suspend fun signInWithJellyseerr(jellyseerrLogin: JellyseerrLoginData): Flow<Unit>
+  suspend fun signIn(login: JellyseerrLoginData): Result<Unit>
 
   suspend fun fetchProfile(address: String): Flow<JellyseerrProfileResponse>
 
