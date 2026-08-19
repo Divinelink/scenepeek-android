@@ -6,14 +6,13 @@ import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.PaginationData
-import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.home.toRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.SearchEntryPoint
-import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.blankslate.toBlankSlateState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -122,17 +121,10 @@ class HomeViewModel(
   }
 
   private fun handleErrorForInitialForms(error: Throwable) {
-    when (error) {
-      is AppException.Offline -> _uiState.update { uiState ->
-        uiState.copy(
-          error = BlankSlateState.Offline,
-        )
-      }
-      else -> _uiState.update { uiState ->
-        uiState.copy(
-          error = BlankSlateState.Generic,
-        )
-      }
+    _uiState.update { uiState ->
+      uiState.copy(
+        error = error.toBlankSlateState(),
+      )
     }
   }
 

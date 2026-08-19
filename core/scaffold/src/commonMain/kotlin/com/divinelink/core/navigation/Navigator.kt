@@ -5,8 +5,7 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.isSameTopLevelDestination
 
 class Navigator {
-  val backStack =
-    mutableStateListOf<Navigation>(Navigation.HomeRoute)
+  val backStack = mutableStateListOf<Navigation>(Navigation.HomeRoute)
 
   fun navigate(destination: Navigation) {
     if (backStack.lastOrNull()?.isSameTopLevelDestination(destination) == true) return
