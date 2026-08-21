@@ -15,6 +15,7 @@ import com.divinelink.feature.discover.DiscoverViewModel
 import com.divinelink.feature.discover.filters.SelectFilterViewModel
 import com.divinelink.feature.episode.EpisodeViewModel
 import com.divinelink.feature.home.HomeViewModel
+import com.divinelink.feature.home.customize.CustomizeDashboardViewModel
 import com.divinelink.feature.lists.create.CreateListViewModel
 import com.divinelink.feature.lists.create.backdrop.SelectBackdropViewModel
 import com.divinelink.feature.lists.details.ListDetailsViewModel
@@ -72,6 +73,7 @@ val appViewModelModule = module {
   viewModelOf(::AwardsViewModel)
   viewModelOf(::AwardDetailsViewModel)
   viewModelOf(::AwardCategoryViewModel)
+  viewModelOf(::CustomizeDashboardViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

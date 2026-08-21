@@ -5,6 +5,7 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -119,4 +120,12 @@ class ProdPreferencesRepository(
   }
 
   override fun listSortOption(listId: Int): Flow<SortOption?> = storage.listSortOption(listId)
+
+  override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
+    storage.toggleHomeSectionVisibility(section)
+  }
+
+  override suspend fun updateSectionsOrder(section: List<MediaListSection.Home>) {
+    storage.updateSectionsOrder(section)
+  }
 }

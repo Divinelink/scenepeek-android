@@ -18,11 +18,11 @@ data class HomeUiState(
   val error: BlankSlateState?,
 ) {
   companion object {
-    fun initial(sections: List<HomeSectionInfo>) = HomeUiState(
+    val initial = HomeUiState(
       filters = HomeFilter.entries,
       pages = emptyMap(),
-      sections = sections,
-      forms = sections.buildForms(),
+      sections = emptyList(),
+      forms = emptyMap(),
       error = null,
     )
 

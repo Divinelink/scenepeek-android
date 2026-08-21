@@ -23,6 +23,9 @@ sealed interface Navigation : NavKey {
   data object SettingsRoute : Navigation
 
   @Serializable
+  data object CustomizeDashboardRoute : Navigation
+
+  @Serializable
   data object AboutSettingsRoute : Navigation
 
   @Serializable

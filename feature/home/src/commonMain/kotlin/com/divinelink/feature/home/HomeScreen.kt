@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DashboardCustomize
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,9 +23,11 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.extensions.showExpandedFab
+import com.divinelink.core.ui.resources.customize_dashboard
 import com.divinelink.feature.home.resources.Res
 import com.divinelink.feature.home.resources.settings_button_content_description
 import org.jetbrains.compose.resources.stringResource
@@ -54,6 +57,12 @@ fun HomeScreen(
           onNavigate(Navigation.SearchRoute(SearchEntryPoint.HOME))
         },
         actions = {
+          IconButton(onClick = { onNavigate(Navigation.CustomizeDashboardRoute) }) {
+            Icon(
+              imageVector = Icons.Filled.DashboardCustomize,
+              contentDescription = stringResource(UiString.customize_dashboard)
+            )
+          }
           IconButton(onClick = { onNavigate(Navigation.SettingsRoute) }) {
             Icon(
               imageVector = Icons.Filled.Settings,

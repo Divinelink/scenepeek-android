@@ -11,37 +11,27 @@ import com.divinelink.core.model.resources.upcoming_movies
 import com.divinelink.core.model.resources.upcoming_series
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.recent_request
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
 
-fun buildHomeSections(clock: Clock): List<HomeSectionInfo> {
-  val today = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString()
+fun buildHomeSections(
+  sections: List<MediaListSection.Home>,
+): List<HomeSectionInfo> = sections.map { section ->
+  val title = when (section) {
+    MediaListSection.RecentRequests -> UiString.recent_request
+    MediaListSection.TrendingAll -> Res.string.trending
+    is MediaListSection.Popular -> if (section.mediaType == MediaType.MOVIE) {
+      Res.string.popular_movies
+    } else {
+      Res.string.popular_series
+    }
+    is MediaListSection.Upcoming -> if (section.mediaType == MediaType.MOVIE) {
+      Res.string.upcoming_movies
+    } else {
+      Res.string.upcoming_series
+    }
+  }
 
-  return listOf(
-    HomeSectionInfo(
-      section = MediaListSection.RecentRequests,
-      title = UiString.recent_request,
-    ),
-    HomeSectionInfo(
-      section = MediaListSection.TrendingAll,
-      title = Res.string.trending,
-    ),
-    HomeSectionInfo(
-      section = MediaListSection.Popular(MediaType.MOVIE),
-      title = Res.string.popular_movies,
-    ),
-    HomeSectionInfo(
-      section = MediaListSection.Upcoming(MediaType.MOVIE, minDate = today),
-      title = Res.string.upcoming_movies,
-    ),
-    HomeSectionInfo(
-      section = MediaListSection.Popular(MediaType.TV),
-      title = Res.string.popular_series,
-    ),
-    HomeSectionInfo(
-      section = MediaListSection.Upcoming(MediaType.TV, minDate = today),
-      title = Res.string.upcoming_series,
-    ),
+  HomeSectionInfo(
+    title = title,
+    section = section,
   )
 }

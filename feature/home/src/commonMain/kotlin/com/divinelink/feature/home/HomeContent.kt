@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.model.filter.HomeFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.MediaListSection
@@ -97,11 +96,7 @@ fun HomeContent(
 fun HomeContentPreview() {
   PreviewLocalProvider {
     HomeContent(
-      uiState = HomeUiState.initial(
-        sections = buildHomeSections(
-          ClockFactory.decemberFirst2021(),
-        ),
-      ),
+      uiState = HomeUiState.initial,
       action = {},
       onNavigate = {},
     )

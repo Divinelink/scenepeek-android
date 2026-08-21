@@ -3,6 +3,7 @@ package com.divinelink.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.PaginationData
@@ -14,29 +15,50 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.ui.blankslate.toBlankSlateState
+import com.divinelink.feature.home.HomeUiState.Companion.buildForms
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
 class HomeViewModel(
   private val repository: MediaRepository,
+  private val preferencesRepository: PreferencesRepository,
   private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val searchStateManager: SearchStateManager,
-  clock: Clock,
+  private val clock: Clock,
 ) : ViewModel() {
 
-  private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(
-    HomeUiState.initial(
-      sections = buildHomeSections(clock),
-    ),
-  )
+  private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState.initial)
   val uiState: StateFlow<HomeUiState> = _uiState
 
   init {
-    fetchSections()
+    preferencesRepository
+      .uiPreferences
+      .distinctUntilChanged()
+      .onEach { ui ->
+        val sections = buildHomeSections(
+          ui.getVisibleSections(MediaListSection.homeEntries),
+        )
+        val forms = sections.buildForms()
+
+        _uiState.update { state ->
+          state.copy(
+            sections = sections,
+            forms = forms,
+          )
+        }
+
+        fetchSections()
+      }
+      .launchIn(viewModelScope)
   }
 
   private fun fetchSections() {
@@ -198,8 +220,11 @@ class HomeViewModel(
   private fun getPage(page: MediaListSection): Int = uiState.value.pages[page]?.plus(1) ?: 1
 
   private fun fetchMediaLists(section: MediaListSection) {
+    val today = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString()
+
     val request = section.toRequest(
       mediaType = MediaType.UNKNOWN,
+      minDate = today,
     ) ?: return
 
     viewModelScope.launch {

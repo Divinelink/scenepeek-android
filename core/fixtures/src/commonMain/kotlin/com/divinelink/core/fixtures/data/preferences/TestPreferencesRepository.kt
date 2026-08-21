@@ -4,6 +4,7 @@ import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -16,6 +17,7 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class TestPreferencesRepository(
@@ -154,5 +156,13 @@ class TestPreferencesRepository(
         listSortOptions = _uiPreferences.value.listSortOptions - listId,
       )
     }
+  }
+
+  override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
+    TODO("Not yet implemented")
+  }
+
+  override suspend fun updateSectionsOrder(section: List<MediaListSection.Home>) {
+    TODO("Not yet implemented")
   }
 }

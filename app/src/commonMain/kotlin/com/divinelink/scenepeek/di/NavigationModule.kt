@@ -31,6 +31,7 @@ import com.divinelink.feature.details.poster.PosterScreen
 import com.divinelink.feature.discover.ui.DiscoverScreen
 import com.divinelink.feature.episode.ui.EpisodeScreen
 import com.divinelink.feature.home.HomeScreen
+import com.divinelink.feature.home.customize.CustomizeDashboardModal
 import com.divinelink.feature.lists.create.ui.CreateListScreen
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
 import com.divinelink.feature.lists.user.ListsScreen
@@ -368,6 +369,13 @@ val navigationModule = module {
     LocalNavAnimatedContentScope.current.AwardCategoryScreen(
       route = route,
       onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.CustomizeDashboardRoute>(DialogSceneStrategy.dialog()) {
+    val navigator = get<Navigator>()
+    CustomizeDashboardModal(
+      onDismissRequest = navigator::goBack,
     )
   }
 }
