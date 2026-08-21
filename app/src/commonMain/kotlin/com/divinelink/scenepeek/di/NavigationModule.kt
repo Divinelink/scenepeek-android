@@ -8,6 +8,7 @@ import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.media.decodeToMediaItem
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
@@ -254,9 +255,12 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.JellyseerrRequestsRoute> {
+  navigation<Navigation.SeerrRequestsRoute> { key ->
+    val filter = MediaRequestFilter.from(key.filterValue)
+
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.RequestsScreen(
+      filter = filter,
       onNavigate = navigator::navigate,
     )
   }

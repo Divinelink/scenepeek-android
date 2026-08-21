@@ -42,8 +42,9 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.RequestsScreen(
+  filter: MediaRequestFilter,
   onNavigate: (Navigation) -> Unit,
-  viewModel: RequestsViewModel = koinViewModel { parametersOf(MediaRequestFilter.Pending) },
+  viewModel: RequestsViewModel = koinViewModel { parametersOf(filter) },
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   var showRequestModal by remember {

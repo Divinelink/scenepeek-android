@@ -151,6 +151,6 @@ class ProfileScreenTest : ComposeTest() {
     )
     onNodeWithText("Requests").performClick()
 
-    route shouldBe Navigation.JellyseerrRequestsRoute
+    route shouldBe Navigation.SeerrRequestsRoute
   }
 }
