@@ -14,6 +14,8 @@ import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
+import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
 import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.setLoading
@@ -374,6 +376,8 @@ class RequestsViewModel(
               RequestUiItem(
                 request = request,
                 mediaState = ItemState.Loading,
+                canManageRequest = uiState.permissions.canManageRequests,
+                canRequestAdvanced = uiState.permissions.canRequestAdvanced,
               )
             }
 

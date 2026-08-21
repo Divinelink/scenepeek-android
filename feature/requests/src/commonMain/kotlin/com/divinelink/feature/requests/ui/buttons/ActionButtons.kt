@@ -5,17 +5,12 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.feature.requests.RequestsAction
 
-/**
- * @param compact is used on home screen actions in order to reduce space and display only the
- * main actions.
- */
 @Composable
 fun ActionButtons(
   request: JellyseerrRequest,
   enabled: Boolean,
   canManageRequest: Boolean,
   canRequestAdvanced: Boolean,
-  compact: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
   when (request.requestStatus) {
@@ -25,7 +20,6 @@ fun ActionButtons(
       onAction = onAction,
       enabled = enabled,
       request = request,
-      compact = compact,
     )
     JellyseerrStatus.Request.APPROVED -> ApprovedActionButtons(
       hasPermission = canManageRequest,

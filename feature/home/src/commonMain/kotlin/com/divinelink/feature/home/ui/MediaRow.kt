@@ -58,7 +58,7 @@ fun MediaRow(
         onNavigate = onNavigate,
         onRetry = { action(HomeAction.RetrySection(config.section)) },
       )
-      is HomeForm.SeerrData -> SeerrItems(
+      is HomeForm.SeerrData -> SeerrContent(
         filter = form.filter,
         onNavigate = onNavigate,
       )

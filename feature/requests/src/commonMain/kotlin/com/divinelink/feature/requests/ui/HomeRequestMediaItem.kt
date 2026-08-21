@@ -34,14 +34,12 @@ import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.resources.core_ui_season
 import com.divinelink.core.ui.skeleton.RequestItemSkeleton
 import com.divinelink.feature.requests.RequestsAction
-import com.divinelink.feature.requests.ui.buttons.ActionButtons
+import com.divinelink.feature.requests.ui.buttons.group.GroupRequestActionButtons
 import org.jetbrains.compose.resources.pluralStringResource
 
 @Composable
-fun LazyItemScope.CompactRequestMediaItem(
+fun LazyItemScope.HomeRequestMediaItem(
   modifier: Modifier = Modifier,
-  canManageRequest: Boolean,
-  canRequestAdvanced: Boolean,
   item: RequestUiItem,
   onAction: (RequestsAction) -> Unit,
   onClick: (MediaItem.Media) -> Unit,
@@ -133,18 +131,11 @@ fun LazyItemScope.CompactRequestMediaItem(
             )
           }
 
-          Box(
-            modifier = Modifier.height(MaterialTheme.dimensions.keyline_48),
-          ) {
-            ActionButtons(
-              request = item.request,
-              enabled = !state.loading,
-              onAction = onAction,
-              canRequestAdvanced = canRequestAdvanced,
-              canManageRequest = canManageRequest,
-              compact = true,
-            )
-          }
+          GroupRequestActionButtons(
+            item = item,
+            enabled = !state.loading,
+            onAction = onAction,
+          )
 
           if (state.loading) {
             LinearProgressIndicator(

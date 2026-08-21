@@ -9,33 +9,62 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.permission.canManageRequests
-import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.rememberIsLandscape
 import com.divinelink.core.ui.skeleton.RequestItemSkeleton
+import com.divinelink.feature.request.media.RequestMediaModal
 import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.RequestsViewModel
-import com.divinelink.feature.requests.ui.CompactRequestMediaItem
+import com.divinelink.feature.requests.resources.Res
+import com.divinelink.feature.requests.resources.feature_requests_no_requests_available
+import com.divinelink.feature.requests.ui.HomeRequestMediaItem
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
-fun SeerrItems(
+fun SeerrContent(
   filter: MediaRequestFilter,
   viewModel: RequestsViewModel = koinViewModel { parametersOf(filter) },
   onNavigate: (Navigation) -> Unit,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
+  var showRequestModal by remember {
+    mutableStateOf<Pair<MediaItem.Media, JellyseerrRequest>?>(null)
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.displayRequestModal.collect {
+      showRequestModal = it
+    }
+  }
+
+  showRequestModal?.let { request ->
+    RequestMediaModal(
+      media = request.first,
+      request = request.second,
+      mediaType = request.first.mediaType,
+      onDismissRequest = { showRequestModal = null },
+      onUpdateRequestInfo = { viewModel.onAction(RequestsAction.UpdateRequestInfo(it)) },
+      onCancelRequest = { viewModel.onAction(RequestsAction.OnRequestCanceled(it)) },
+      onNavigate = onNavigate,
+    )
+  }
 
   LazyRow(
     modifier = Modifier.fillMaxWidth(),
@@ -65,14 +94,18 @@ fun SeerrItems(
 
           if (requests.isEmpty()) {
             item {
-              Text("You're all caught up!")
+              Text(
+                modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4),
+                text = stringResource(Res.string.feature_requests_no_requests_available),
+                style = MaterialTheme.typography.titleSmall,
+              )
             }
           } else {
             items(
               items = (state.data as DataState.Data).data,
               key = { it.request.id },
             ) { request ->
-              CompactRequestMediaItem(
+              HomeRequestMediaItem(
                 modifier = Modifier
                   .conditional(
                     condition = rememberIsLandscape(),
@@ -96,8 +129,6 @@ fun SeerrItems(
                 },
                 onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
                 onAction = viewModel::onAction,
-                canManageRequest = state.permissions.canManageRequests,
-                canRequestAdvanced = state.permissions.canRequestAdvanced,
               )
             }
           }

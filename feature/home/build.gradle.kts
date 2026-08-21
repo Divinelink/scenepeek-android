@@ -11,6 +11,7 @@ kotlin {
       implementation(projects.core.domain)
 
       implementation(projects.feature.requests)
+      implementation(projects.feature.requestMedia)
 
       implementation(libs.kotlinx.datetime)
 

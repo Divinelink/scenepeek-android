@@ -22,6 +22,7 @@ import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.ItemState
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.TestTags
@@ -129,7 +130,6 @@ fun LazyItemScope.RequestMediaItem(
             onAction = onAction,
             canRequestAdvanced = canRequestAdvanced,
             canManageRequest = canManageRequest,
-            compact = false,
           )
 
           if (state.loading) {
@@ -178,6 +178,13 @@ private fun RequestedBySection(item: RequestUiItem) {
 
 @Composable
 fun StatusSection(item: RequestUiItem) {
+  when (item.request.status) {
+    JellyseerrStatus.Media.UNKNOWN -> return
+    JellyseerrStatus.Request.UNKNOWN -> return
+    JellyseerrStatus.Season.UNKNOWN -> return
+    else -> Unit
+  }
+
   Row(
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     verticalAlignment = Alignment.CenterVertically,

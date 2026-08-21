@@ -41,8 +41,6 @@ fun RequestMediaModal(
       onCancelRequest = onCancelRequest,
       onNavigate = onNavigate,
     )
-    else -> {
-      // Do nothing
-    }
+    else -> Unit
   }
 }
