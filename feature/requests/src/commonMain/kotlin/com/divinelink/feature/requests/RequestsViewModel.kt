@@ -375,7 +375,7 @@ class RequestsViewModel(
             val requestUiItems = result.results.map { request ->
               RequestUiItem(
                 request = request,
-                mediaState = ItemState.Loading,
+                mediaState = getMediaStateForRequest(request),
                 canManageRequest = uiState.permissions.canManageRequests,
                 canRequestAdvanced = uiState.permissions.canRequestAdvanced,
               )
@@ -406,7 +406,8 @@ class RequestsViewModel(
   private fun fetchMediaItem(item: RequestUiItem) {
     if (item.mediaState !is ItemState.Data) {
       viewModelScope.launch {
-        detailsRepository.fetchMediaItem(item.request.media)
+        detailsRepository
+          .fetchMediaItem(item.request.media)
           .collect { result ->
             when (result) {
               is Resource.Error -> updateMediaItem(
@@ -469,4 +470,17 @@ class RequestsViewModel(
   ): Int? = pages.entries
     .firstOrNull { (_, itemList) -> itemList.any { it.request.id == requestId } }
     ?.key
+
+  private fun getMediaStateForRequest(request: JellyseerrRequest): ItemState<MediaItem.Media> {
+    val currentPages = (_uiState.value.data as? DataState.Data)?.pages ?: return ItemState.Loading
+    val pageToUpdate = findPageForRequestId(
+      pages = currentPages,
+      requestId = request.id,
+    ) ?: return ItemState.Loading
+
+    return currentPages[pageToUpdate]
+      ?.find { it.request.id == request.id }
+      ?.mediaState
+      ?: ItemState.Loading
+  }
 }

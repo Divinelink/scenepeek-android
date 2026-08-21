@@ -13,10 +13,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onVisibilityChanged
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.filter.MediaRequestFilter
@@ -43,14 +47,26 @@ fun SeerrContent(
   viewModel: RequestsViewModel = koinViewModel { parametersOf(filter) },
   onNavigate: (Navigation) -> Unit,
 ) {
+  val lifecycleOwner = LocalLifecycleOwner.current
   val state by viewModel.uiState.collectAsStateWithLifecycle()
   var showRequestModal by remember {
     mutableStateOf<Pair<MediaItem.Media, JellyseerrRequest>?>(null)
   }
+  var isFirstLoad by rememberSaveable { mutableStateOf(true) }
 
   LaunchedEffect(Unit) {
     viewModel.displayRequestModal.collect {
       showRequestModal = it
+    }
+  }
+
+  LaunchedEffect(lifecycleOwner) {
+    lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+      if (isFirstLoad) {
+        isFirstLoad = false
+      } else {
+        viewModel.onAction(RequestsAction.Refresh)
+      }
     }
   }
 
