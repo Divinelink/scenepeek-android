@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.home.toRequest
@@ -48,7 +49,9 @@ class SectionViewModel(
       is MediaListSection.Upcoming,
         -> fetchMediaLists()
       MediaListSection.TrendingAll -> fetchTrending()
-      is MediaListSection.RecentRequests -> Unit
+      is MediaListSection.RecentRequests -> _uiState.update { state ->
+        state.copy(form = HomeForm.SeerrData(filter = MediaRequestFilter.All))
+      }
     }
   }
 
