@@ -100,7 +100,6 @@ fun HomeScreen(
       HomeContent(
         modifier = Modifier,
         uiState = viewState,
-        action = viewModel::onAction,
         onNavigate = onNavigate,
         scrollState = scrollState,
       )

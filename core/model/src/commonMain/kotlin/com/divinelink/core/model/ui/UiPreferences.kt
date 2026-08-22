@@ -1,6 +1,5 @@
 package com.divinelink.core.model.ui
 
-import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
@@ -9,8 +8,6 @@ data class UiPreferences(
   val viewModes: Map<ViewableSection, ViewMode>,
   val sortOption: Map<ViewableSection, SortOption>,
   val listSortOptions: Map<Int, SortOption?>,
-  val hiddenHomeSections: Set<MediaListSection.Home>,
-  val homeSectionsDisplayOrder: List<MediaListSection.Home>,
 ) {
   companion object {
     val Initial = UiPreferences(
@@ -41,18 +38,6 @@ data class UiPreferences(
         ),
       ),
       listSortOptions = emptyMap(),
-      hiddenHomeSections = emptySet(),
-      homeSectionsDisplayOrder = emptyList(),
     )
   }
-
-  fun getVisibleSections(
-    allAvailableSections: List<MediaListSection.Home>,
-  ): List<MediaListSection.Home> {
-    return homeSectionsDisplayOrder
-      .filter { it !in hiddenHomeSections }
-      .intersect(allAvailableSections.toSet())
-      .sortedBy { homeSectionsDisplayOrder.indexOf(it) }
-  }
-
 }

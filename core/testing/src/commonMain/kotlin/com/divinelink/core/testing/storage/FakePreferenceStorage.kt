@@ -4,6 +4,8 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.home.HomeSectionsConfig
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -25,6 +27,7 @@ class FakePreferenceStorage(
   updaterOptIn: Boolean = true,
   appLanguage: AppLanguage = AppLanguage.DEFAULT,
   metadataLanguage: Language = Language.ENGLISH,
+  homeSections: HomeSectionsConfig = HomeSectionsConfig.initial,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -68,6 +71,9 @@ class FakePreferenceStorage(
 
   private val _metadataLanguage = MutableStateFlow(metadataLanguage)
   override val metadataLanguage: Flow<Language> = _metadataLanguage
+
+  private val _homeSections = MutableStateFlow(homeSections)
+  override val homeSections: Flow<HomeSectionsConfig> = _homeSections
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -123,5 +129,13 @@ class FakePreferenceStorage(
 
   override suspend fun setMetadataLanguage(language: Language) {
     _metadataLanguage.value = language
+  }
+
+  override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
+    // TODO
+  }
+
+  override suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) {
+    // TODO
   }
 }

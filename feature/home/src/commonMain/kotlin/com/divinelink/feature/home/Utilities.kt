@@ -12,9 +12,7 @@ import com.divinelink.core.model.resources.upcoming_series
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.recent_request
 
-fun buildHomeSections(
-  sections: List<MediaListSection.Home>,
-): List<HomeSectionInfo> = sections.map { section ->
+fun List<MediaListSection.Home>.buildSections() = map { section ->
   val title = when (section) {
     MediaListSection.RecentRequests -> UiString.recent_request
     MediaListSection.TrendingAll -> Res.string.trending

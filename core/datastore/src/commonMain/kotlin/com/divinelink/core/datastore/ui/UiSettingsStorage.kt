@@ -7,14 +7,11 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.availableListsKey
-import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.homeSectionDisplayOrderKey
-import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.homeSectionHiddenKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortBy
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortDirection
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.sortByKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.sortDirectionKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.viewModeKey
-import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
@@ -50,9 +47,6 @@ interface UiSettingsStorage {
   )
 
   suspend fun updateListSortDirection(listId: Int)
-
-  suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
-  suspend fun updateSectionsOrder(section: List<MediaListSection.Home>)
 }
 
 class DatastoreUiStorage(
@@ -73,9 +67,6 @@ class DatastoreUiStorage(
     fun listSortBy(listId: Int) = stringPreferencesKey("${listId}_sort_by")
     fun listSortDirection(listId: Int) = stringPreferencesKey("${listId}_sort_direction")
     val availableListsKey = stringSetPreferencesKey("available_lists")
-
-    val homeSectionHiddenKey = stringSetPreferencesKey("home_section_hidden")
-    val homeSectionDisplayOrderKey = stringPreferencesKey("home_sections_display_order")
   }
 
   override val uiPreferences: Flow<UiPreferences> = dataStore.data.map {
@@ -99,12 +90,6 @@ class DatastoreUiStorage(
       ),
       listSortOptions = (it[availableListsKey]?.map { key -> key.toInt() } ?: emptyList())
         .associateWith { listId -> listSortOption(listId).firstOrNull() },
-      hiddenHomeSections = it[homeSectionHiddenKey]
-        ?.mapNotNull { key -> MediaListSection.from(key) }?.toSet() ?: emptySet(),
-      homeSectionsDisplayOrder = it[homeSectionDisplayOrderKey]
-        ?.split(",")
-        ?.mapNotNull { key -> MediaListSection.from(key) }
-        ?: MediaListSection.homeEntries,
     )
   }.distinctUntilChanged()
 
@@ -168,24 +153,6 @@ class DatastoreUiStorage(
       preferences.removeFromAvailableLists(listId)
       preferences.remove(listSortBy(listId))
       preferences.remove(listSortBy(listId))
-    }
-  }
-
-  override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
-    dataStore.edit { preferences ->
-      val currentHidden = preferences[homeSectionHiddenKey].orEmpty()
-
-      if (section.key in currentHidden) {
-        preferences[homeSectionHiddenKey] = currentHidden - section.key
-      } else {
-        preferences[homeSectionHiddenKey] = currentHidden + section.key
-      }
-    }
-  }
-
-  override suspend fun updateSectionsOrder(section: List<MediaListSection.Home>) {
-    dataStore.edit { preferences ->
-      preferences[homeSectionDisplayOrderKey] = section.joinToString(separator = ",") { it.key }
     }
   }
 

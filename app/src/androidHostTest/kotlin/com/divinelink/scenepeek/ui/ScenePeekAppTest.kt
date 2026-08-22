@@ -185,10 +185,8 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
-        repository = mediaRepository.mock,
-        clock = clock,
       )
     }
 
@@ -236,9 +234,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }
@@ -308,9 +304,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }
@@ -388,9 +382,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }
@@ -481,9 +473,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }
@@ -550,9 +540,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }
@@ -652,9 +640,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }
@@ -774,9 +760,7 @@ class ScenePeekAppTest : ComposeTest() {
 
       declare {
         HomeViewModel(
-          clock = clock,
-          repository = mediaRepository.mock,
-          markAsFavoriteUseCase = markAsFavoriteUseCase,
+          preferencesRepository = preferencesRepository,
           searchStateManager = searchStateManager,
         )
       }
@@ -860,9 +844,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }
@@ -924,9 +906,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = searchStateManager,
       )
     }

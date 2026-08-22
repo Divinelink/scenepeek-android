@@ -121,9 +121,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
         searchStateManager = SearchStateManager(),
       )
     }

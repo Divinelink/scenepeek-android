@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.model.home.HomeSectionInfo
 import com.divinelink.core.model.home.MediaListSection
-import com.divinelink.feature.home.buildHomeSections
+import com.divinelink.feature.home.buildSections
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -25,14 +25,14 @@ class CustomizeDashboardViewModel(
 
   init {
     preferencesRepository
-      .uiPreferences
+      .homeSections
       .distinctUntilChanged()
       .onEach { preferences ->
         _uiState.update { state ->
-          val sections = buildHomeSections(preferences.homeSectionsDisplayOrder)
+          val sections = preferences.homeSectionsDisplayOrder.buildSections()
           state.copy(
             sections = sections,
-            hiddenSections = buildHomeSections(preferences.hiddenHomeSections.toList()).toSet(),
+            hiddenSections = preferences.hiddenHomeSections.toList().buildSections().toSet(),
           )
         }
       }

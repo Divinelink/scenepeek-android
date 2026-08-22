@@ -4,6 +4,7 @@ import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.home.HomeSectionsConfig
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
@@ -17,7 +18,6 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class TestPreferencesRepository(
@@ -25,6 +25,7 @@ class TestPreferencesRepository(
   themePreferences: ThemePreferences = ThemePreferences.initial,
   detailPreferences: DetailPreferences = DetailPreferences.initial,
   metadataLanguage: Language = Language.ENGLISH,
+  homeSections: HomeSectionsConfig = HomeSectionsConfig.initial,
 ) : PreferencesRepository {
 
   private val _uiPreferences = MutableStateFlow(uiPreferences)
@@ -38,6 +39,9 @@ class TestPreferencesRepository(
 
   private val _metadataLanguage = MutableStateFlow(metadataLanguage)
   override val metadataLanguage: Flow<Language> = _metadataLanguage
+
+  private val _homeSections = MutableStateFlow(homeSections)
+  override val homeSections: Flow<HomeSectionsConfig> = _homeSections
 
   override suspend fun switchViewMode(section: ViewableSection) {
     val currentViewMode = _uiPreferences.value.viewModes[section]
@@ -159,10 +163,22 @@ class TestPreferencesRepository(
   }
 
   override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
-    TODO("Not yet implemented")
+    val hiddenSet = _homeSections.value.hiddenHomeSections
+
+    _homeSections.value = _homeSections.value.copy(
+      hiddenHomeSections = if (section in hiddenSet) {
+        hiddenSet.minus(section)
+      } else {
+        hiddenSet.plus(section)
+      },
+    )
   }
 
-  override suspend fun updateSectionsOrder(section: List<MediaListSection.Home>) {
-    TODO("Not yet implemented")
+  override suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) {
+    val order = _homeSections.value.homeSectionsDisplayOrder
+
+    _homeSections.value = _homeSections.value.copy(
+      homeSectionsDisplayOrder = order,
+    )
   }
 }

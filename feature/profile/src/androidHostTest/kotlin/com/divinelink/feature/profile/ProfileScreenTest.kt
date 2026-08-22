@@ -7,6 +7,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
@@ -151,6 +152,6 @@ class ProfileScreenTest : ComposeTest() {
     )
     onNodeWithText("Requests").performClick()
 
-    route shouldBe Navigation.SeerrRequestsRoute
+    route shouldBe Navigation.SeerrRequestsRoute(filterValue = MediaRequestFilter.Pending.value)
   }
 }
