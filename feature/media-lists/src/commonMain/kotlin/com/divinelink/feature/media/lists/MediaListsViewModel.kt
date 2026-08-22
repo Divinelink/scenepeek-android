@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
 class MediaListsViewModel(
@@ -76,11 +78,11 @@ class MediaListsViewModel(
   }
 
   private fun fetchMediaLists(mediaType: MediaType) {
-//    val today = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString() // TODO
+    val today = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString()
 
     val request = uiState.value.section.toRequest(
       mediaType = mediaType,
-      minDate = ""
+      minDate = today,
     ) ?: return
 
     viewModelScope.launch {
