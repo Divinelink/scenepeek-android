@@ -24,11 +24,11 @@ class TestAuthRepository {
   }
 
   fun mockSeerrEnabled(isEnabled: Boolean) {
-    whenever(mock.isJellyseerrEnabled).thenReturn(flowOf(isEnabled))
+    whenever(mock.seerrEnabled).thenReturn(flowOf(isEnabled))
   }
 
   fun mockSeerrEnabled(isEnabled: Channel<Boolean>) {
-    whenever(mock.isJellyseerrEnabled).thenReturn(isEnabled.consumeAsFlow())
+    whenever(mock.seerrEnabled).thenReturn(isEnabled.consumeAsFlow())
   }
 
   fun mockJellyseerrCredentials(accounts: Map<String, SavedState.JellyseerrCredentials>) {

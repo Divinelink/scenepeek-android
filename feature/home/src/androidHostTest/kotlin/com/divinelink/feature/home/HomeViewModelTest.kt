@@ -77,6 +77,88 @@ class HomeViewModelTest {
       )
   }
 
+  @Test
+  fun `test reorder home sections`() = runTest {
+    testRobot
+      .buildViewModel()
+      .setSeerrEnabled(true)
+      .assertUiState(
+        createUiState(
+          sections = MediaListSection.homeEntries,
+        ),
+      )
+      .updateSectionsOrder(
+        sections = listOf(
+          MediaListSection.Popular(MediaType.MOVIE),
+          MediaListSection.TrendingAll,
+          MediaListSection.Popular(MediaType.TV),
+          MediaListSection.RecentRequests,
+          MediaListSection.Upcoming(MediaType.MOVIE),
+          MediaListSection.Upcoming(MediaType.TV),
+        ),
+      )
+      .assertUiState(
+        createUiState(
+          sections = listOf(
+            MediaListSection.Popular(MediaType.MOVIE),
+            MediaListSection.TrendingAll,
+            MediaListSection.Popular(MediaType.TV),
+            MediaListSection.RecentRequests,
+            MediaListSection.Upcoming(MediaType.MOVIE),
+            MediaListSection.Upcoming(MediaType.TV),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test reorder home sections with initially seerr disabled`() = runTest {
+    testRobot
+      .buildViewModel()
+      .setSeerrEnabled(false)
+      .assertUiState(
+        createUiState(
+          sections = MediaListSection.homeEntries.minus(
+            MediaListSection.RecentRequests,
+          ),
+        ),
+      )
+      .updateSectionsOrder(
+        sections = listOf(
+          MediaListSection.Popular(MediaType.MOVIE),
+          MediaListSection.TrendingAll,
+          MediaListSection.Popular(MediaType.TV),
+          MediaListSection.Upcoming(MediaType.MOVIE),
+          MediaListSection.Upcoming(MediaType.TV),
+        ),
+      )
+      .assertUiState(
+        createUiState(
+          sections = listOf(
+            MediaListSection.Popular(MediaType.MOVIE),
+            MediaListSection.TrendingAll,
+            MediaListSection.Popular(MediaType.TV),
+            MediaListSection.Upcoming(MediaType.MOVIE),
+            MediaListSection.Upcoming(MediaType.TV),
+          ),
+        ),
+      )
+      .setSeerrEnabled(true)
+      .assertUiState(
+        createUiState(
+          sections = listOf(
+            MediaListSection.Popular(MediaType.MOVIE),
+            MediaListSection.TrendingAll,
+            MediaListSection.Popular(MediaType.TV),
+            MediaListSection.Upcoming(MediaType.MOVIE),
+            MediaListSection.Upcoming(MediaType.TV),
+            MediaListSection.RecentRequests,
+          ),
+        ),
+      )
+  }
+
+
   private fun createUiState(
     sections: List<MediaListSection.Home>,
   ) = HomeUiState.initial.copy(

@@ -81,7 +81,7 @@ interface PreferenceStorage {
   val appLanguage: Flow<AppLanguage>
 
   suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
-  suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>)
+  suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>)
   val homeSections: Flow<HomeSectionsConfig>
 }
 
@@ -245,9 +245,9 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   override val homeSections: Flow<HomeSectionsConfig>
     get() = dataStore.data.map {
       HomeSectionsConfig(
-        hiddenHomeSections = it[homeSectionHiddenKey]
+        hidden = it[homeSectionHiddenKey]
           ?.mapNotNull { key -> MediaListSection.from(key) }?.toSet() ?: emptySet(),
-        homeSectionsDisplayOrder = it[homeSectionDisplayOrderKey]
+        order = it[homeSectionDisplayOrderKey]
           ?.split(",")
           ?.mapNotNull { key -> MediaListSection.from(key) }
           ?: MediaListSection.homeEntries,
@@ -266,7 +266,7 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     }
   }
 
-  override suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) {
+  override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
     dataStore.edit { preferences ->
       preferences[homeSectionDisplayOrderKey] = sections.joinToString(separator = ",") { it.key }
     }

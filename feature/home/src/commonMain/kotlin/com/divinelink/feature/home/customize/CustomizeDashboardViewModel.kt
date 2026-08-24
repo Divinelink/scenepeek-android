@@ -30,14 +30,14 @@ class CustomizeDashboardViewModel(
   init {
     preferencesRepository
       .homeSections
-      .withFeatureFlags(seerrEnabled = authRepository.isJellyseerrEnabled)
+      .withFeatureFlags(seerrEnabled = authRepository.seerrEnabled)
       .distinctUntilChanged()
       .onEach { preferences ->
         _uiState.update { state ->
-          val sections = preferences.homeSectionsDisplayOrder.buildSections()
+          val sections = preferences.order.buildSections()
           state.copy(
             sections = sections,
-            hiddenSections = preferences.hiddenHomeSections.toList().buildSections().toSet(),
+            hiddenSections = preferences.hidden.toList().buildSections().toSet(),
           )
         }
       }
@@ -49,7 +49,7 @@ class CustomizeDashboardViewModel(
       val sections = order.map { it.section }
 
       val currentConfig = preferencesRepository.homeSections.first()
-      val originalFullOrder = currentConfig.homeSectionsDisplayOrder
+      val originalFullOrder = currentConfig.order
 
       val finalOrder = mutableListOf<MediaListSection.Home>()
 
@@ -67,7 +67,7 @@ class CustomizeDashboardViewModel(
 
       finalOrder.addAll(newVisibleQueue)
 
-      preferencesRepository.updateSectionsOrder(finalOrder)
+      preferencesRepository.updateHomeSectionsOrder(finalOrder)
     }
   }
 

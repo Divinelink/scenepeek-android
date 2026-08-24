@@ -121,7 +121,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     fakePreferenceStorage = FakePreferenceStorage()
     preferencesRepository = TestPreferencesRepository(
       homeSections = HomeSectionsConfig.initial.copy(
-        hiddenHomeSections = setOf(MediaListSection.RecentRequests)
+        hidden = setOf(MediaListSection.RecentRequests)
       )
     )
     mediaRepository = TestMediaRepository()

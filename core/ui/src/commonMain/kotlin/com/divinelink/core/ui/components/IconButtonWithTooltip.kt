@@ -24,8 +24,6 @@ fun IconButtonWithTooltip(
   tooltipText: StringResource,
   icon: @Composable () -> Unit,
 ) {
-  val text = stringResource(tooltipText)
-
   TooltipBox(
     positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
       positioning = TooltipAnchorPosition.Below,
@@ -34,7 +32,7 @@ fun IconButtonWithTooltip(
       RichTooltip {
         Text(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_8),
-          text = text ,// stringResource(tooltipText),
+          text = stringResource(tooltipText),
         )
       }
     },

@@ -163,10 +163,10 @@ class TestPreferencesRepository(
   }
 
   override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
-    val hiddenSet = _homeSections.value.hiddenHomeSections
+    val hiddenSet = _homeSections.value.hidden
 
     _homeSections.value = _homeSections.value.copy(
-      hiddenHomeSections = if (section in hiddenSet) {
+      hidden = if (section in hiddenSet) {
         hiddenSet.minus(section)
       } else {
         hiddenSet.plus(section)
@@ -174,11 +174,9 @@ class TestPreferencesRepository(
     )
   }
 
-  override suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) {
-    val order = _homeSections.value.homeSectionsDisplayOrder
-
+  override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
     _homeSections.value = _homeSections.value.copy(
-      homeSectionsDisplayOrder = order,
+      order = sections,
     )
   }
 }

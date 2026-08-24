@@ -132,10 +132,20 @@ class FakePreferenceStorage(
   }
 
   override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
-    // TODO
+    val hiddenSet = _homeSections.value.hidden
+
+    _homeSections.value = _homeSections.value.copy(
+      hidden = if (section in hiddenSet) {
+        hiddenSet.minus(section)
+      } else {
+        hiddenSet.plus(section)
+      },
+    )
   }
 
-  override suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) {
-    // TODO
+  override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
+    _homeSections.value = _homeSections.value.copy(
+      order = sections,
+    )
   }
 }

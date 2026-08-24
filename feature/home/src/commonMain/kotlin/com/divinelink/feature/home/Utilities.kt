@@ -43,25 +43,25 @@ fun Flow<HomeSectionsConfig>.withFeatureFlags(
   val displayOrder = if (seerrEnabled) {
     val missingSections = MediaListSection
       .homeEntries
-      .filter { it !in config.homeSectionsDisplayOrder && it !in config.hiddenHomeSections }
+      .filter { it !in config.order && it !in config.hidden }
 
     if (missingSections.isEmpty()) {
-      config.homeSectionsDisplayOrder
+      config.order
     } else {
-      config.homeSectionsDisplayOrder + missingSections
+      config.order + missingSections
     }
   } else {
-    config.homeSectionsDisplayOrder.filter { it != MediaListSection.RecentRequests }
+    config.order.filter { it != MediaListSection.RecentRequests }
   }
 
   val hiddenSections = if (seerrEnabled) {
-    config.hiddenHomeSections
+    config.hidden
   } else {
-    config.hiddenHomeSections.minus(MediaListSection.RecentRequests)
+    config.hidden.minus(MediaListSection.RecentRequests)
   }
 
   config.copy(
-    homeSectionsDisplayOrder = displayOrder,
-    hiddenHomeSections = hiddenSections,
+    order = displayOrder,
+    hidden = hiddenSections,
   )
 }

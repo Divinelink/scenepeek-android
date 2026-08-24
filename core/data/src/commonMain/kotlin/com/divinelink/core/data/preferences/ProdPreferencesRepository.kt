@@ -129,7 +129,7 @@ class ProdPreferencesRepository(
     preferenceStorage.toggleHomeSectionVisibility(section)
   }
 
-  override suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) {
-    preferenceStorage.updateSectionsOrder(sections)
+  override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
+    preferenceStorage.updateHomeSectionsOrder(sections)
   }
 }

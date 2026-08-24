@@ -25,11 +25,11 @@ class HomeViewModel(
   init {
     preferencesRepository
       .homeSections
-      .withFeatureFlags(seerrEnabled = authRepository.isJellyseerrEnabled)
+      .withFeatureFlags(seerrEnabled = authRepository.seerrEnabled)
       .distinctUntilChanged()
       .onEach { sections ->
         val sections = sections
-          .getVisibleSections()
+          .visibleSections()
           .buildSections()
 
         _uiState.update { state ->

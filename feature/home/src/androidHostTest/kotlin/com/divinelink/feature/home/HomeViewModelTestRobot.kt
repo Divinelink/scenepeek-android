@@ -40,7 +40,7 @@ class HomeViewModelTestRobot {
   }
 
   suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) = apply {
-    preferencesRepository.updateSectionsOrder(sections)
+    preferencesRepository.updateHomeSectionsOrder(sections)
   }
 
   suspend fun setSeerrEnabled(enabled: Boolean) = apply {

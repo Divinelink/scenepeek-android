@@ -107,7 +107,7 @@ class ScenePeekAppTest : ComposeTest() {
   private val onboardingManager = TestOnboardingManager()
   private val preferencesRepository = TestPreferencesRepository(
     homeSections = HomeSectionsConfig.initial.copy(
-      hiddenHomeSections = setOf(MediaListSection.RecentRequests),
+      hidden = setOf(MediaListSection.RecentRequests),
     ),
   )
   private val mediaRepository = TestMediaRepository()

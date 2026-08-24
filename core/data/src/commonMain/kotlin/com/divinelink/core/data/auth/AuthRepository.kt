@@ -8,7 +8,7 @@ import com.divinelink.core.model.session.TmdbSession
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
-  val isJellyseerrEnabled: Flow<Boolean>
+  val seerrEnabled: Flow<Boolean>
   val jellyseerrCredentials: Flow<Map<String, SavedState.JellyseerrCredentials>>
   val selectedJellyseerrCredentials: Flow<SavedState.JellyseerrCredentials?>
   val selectedJellyseerrProfile: Flow<JellyseerrProfile?>

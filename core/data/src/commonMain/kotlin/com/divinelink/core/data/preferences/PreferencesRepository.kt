@@ -54,5 +54,5 @@ interface PreferencesRepository {
   suspend fun setStreamingServicesVisible(visible: Boolean)
 
   suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
-  suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>)
+  suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>)
 }
