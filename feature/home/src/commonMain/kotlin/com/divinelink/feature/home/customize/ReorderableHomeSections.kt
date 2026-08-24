@@ -1,5 +1,7 @@
 package com.divinelink.feature.home.customize
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -98,18 +101,35 @@ private fun SectionRow(
   isHidden: Boolean,
   onShowOrHide: () -> Unit,
 ) {
-  val elevation = if (isDragging) {
-    MaterialTheme.dimensions.keyline_8
-  } else {
-    MaterialTheme.dimensions.keyline_0
-  }
+  val elevation by animateDpAsState(
+    targetValue = if (isDragging) {
+      MaterialTheme.dimensions.keyline_8
+    } else {
+      MaterialTheme.dimensions.keyline_0
+    },
+  )
+
+  val tintColor by animateColorAsState(
+    targetValue = if (isHidden) {
+      MaterialTheme.colorScheme.onSurfaceVariant
+    } else {
+      MaterialTheme.colorScheme.onPrimaryContainer
+    },
+    label = "Container color animation",
+  )
+
+  val containerColor by animateColorAsState(
+    targetValue = if (isHidden) {
+      MaterialTheme.colorScheme.surfaceContainer
+    } else {
+      MaterialTheme.colorScheme.primaryContainer
+    },
+    label = "Container color animation",
+  )
+
   Card(
     colors = CardDefaults.cardColors(
-      containerColor = if (isHidden) {
-        MaterialTheme.colorScheme.surfaceContainerLowest
-      } else {
-        MaterialTheme.colorScheme.surfaceContainer
-      },
+      containerColor = containerColor,
     ),
     modifier = Modifier
       .fillMaxWidth()
@@ -128,6 +148,7 @@ private fun SectionRow(
         text = title,
         style = MaterialTheme.typography.bodyLarge,
         modifier = Modifier.weight(1f),
+        color = tintColor,
       )
       IconButton(
         onClick = onShowOrHide,
@@ -139,14 +160,13 @@ private fun SectionRow(
             Icons.Default.Visibility
           },
           contentDescription = null,
-          tint = MaterialTheme.colorScheme.onSurfaceVariant,
+          tint = tintColor,
         )
-
       }
       Icon(
         imageVector = Icons.Default.DragHandle,
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        tint = tintColor,
         modifier = Modifier
           .size(MaterialTheme.dimensions.keyline_40)
           .padding(MaterialTheme.dimensions.keyline_8)
