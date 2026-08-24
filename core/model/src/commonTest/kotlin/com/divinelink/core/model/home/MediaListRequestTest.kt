@@ -8,24 +8,36 @@ class MediaListRequestTest {
 
   @Test
   fun `test toRequest for favorites section`() {
-    MediaListSection.Saved.toRequest(MediaType.TV) shouldBe null
-    MediaListSection.Saved.toRequest(MediaType.MOVIE) shouldBe null
-    MediaListSection.Saved.toRequest(MediaType.PERSON) shouldBe null
-    MediaListSection.Saved.toRequest(MediaType.UNKNOWN) shouldBe null
+    MediaListSection.Saved.toRequest(MediaType.TV, "") shouldBe null
+    MediaListSection.Saved.toRequest(MediaType.MOVIE, "") shouldBe null
+    MediaListSection.Saved.toRequest(MediaType.PERSON, "") shouldBe null
+    MediaListSection.Saved.toRequest(MediaType.UNKNOWN, "") shouldBe null
   }
 
   @Test
   fun `test toRequest for top rated section`() {
-    MediaListSection.TopRated.toRequest(MediaType.TV) shouldBe MediaListRequest.TopRated(
+    MediaListSection.TopRated.toRequest(
+      mediaType = MediaType.TV,
+      minDate = "",
+    ) shouldBe MediaListRequest.TopRated(
       MediaType.TV,
     )
-    MediaListSection.TopRated.toRequest(MediaType.MOVIE) shouldBe MediaListRequest.TopRated(
+    MediaListSection.TopRated.toRequest(
+      mediaType = MediaType.MOVIE,
+      minDate = "",
+    ) shouldBe MediaListRequest.TopRated(
       MediaType.MOVIE,
     )
-    MediaListSection.TopRated.toRequest(MediaType.PERSON) shouldBe MediaListRequest.TopRated(
+    MediaListSection.TopRated.toRequest(
+      mediaType = MediaType.PERSON,
+      minDate = "",
+    ) shouldBe MediaListRequest.TopRated(
       MediaType.PERSON,
     )
-    MediaListSection.TopRated.toRequest(MediaType.UNKNOWN) shouldBe MediaListRequest.TopRated(
+    MediaListSection.TopRated.toRequest(
+      mediaType = MediaType.UNKNOWN,
+      minDate = "",
+    ) shouldBe MediaListRequest.TopRated(
       MediaType.UNKNOWN,
     )
   }
@@ -33,28 +45,31 @@ class MediaListRequestTest {
   @Test
   fun `test toRequest for popular section`() {
     MediaListSection.Popular(MediaType.TV).toRequest(
-      MediaType.UNKNOWN,
+      mediaType = MediaType.UNKNOWN,
+      minDate = "",
     ) shouldBe MediaListRequest.Popular(MediaType.TV)
 
     MediaListSection.Popular(MediaType.MOVIE).toRequest(
-      MediaType.UNKNOWN,
+      mediaType = MediaType.UNKNOWN,
+      minDate = "",
     ) shouldBe MediaListRequest.Popular(MediaType.MOVIE)
 
     MediaListSection.Popular(MediaType.PERSON).toRequest(
-      MediaType.UNKNOWN,
+      mediaType = MediaType.UNKNOWN,
+      minDate = "",
     ) shouldBe MediaListRequest.Popular(MediaType.PERSON)
 
     MediaListSection.Popular(MediaType.UNKNOWN).toRequest(
-      MediaType.TV,
+      mediaType = MediaType.TV,
+      minDate = "",
     ) shouldBe MediaListRequest.Popular(MediaType.UNKNOWN)
   }
 
   @Test
   fun `test toRequest for upcoming section`() {
     fun createUpcomingSection(mediaType: MediaType) = MediaListSection.Upcoming(
-      minDate = "2024-02-02",
       mediaType = mediaType,
-    ).toRequest(mediaType)
+    ).toRequest(mediaType, minDate = "2024-02-02")
 
     createUpcomingSection(MediaType.TV) shouldBe MediaListRequest.Upcoming(
       minDate = "2024-02-02",

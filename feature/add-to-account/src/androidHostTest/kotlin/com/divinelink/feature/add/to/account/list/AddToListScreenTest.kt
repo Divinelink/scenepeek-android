@@ -109,6 +109,7 @@ class AddToListScreenTest : ComposeTest() {
 
     val channel = Channel<Result<PaginationData<ListItem>>>()
     fetchUserListsUseCase.mockResponse(channel)
+    listRepository.mockGetItemStatus(Result.success(true))
 
     val viewModel = AddToListViewModel(
       fetchUserListsUseCase = fetchUserListsUseCase.mock,

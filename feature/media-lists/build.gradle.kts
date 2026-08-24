@@ -10,6 +10,8 @@ kotlin {
     commonMain.dependencies {
       implementation(projects.core.domain)
       implementation(projects.core.data)
+
+      implementation(libs.kotlinx.datetime)
     }
   }
 }

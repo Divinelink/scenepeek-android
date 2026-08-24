@@ -2,6 +2,7 @@ package com.divinelink.feature.credits.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -240,7 +241,12 @@ class CreditsScreenTest : ComposeTest() {
         longClick()
       }
 
-    onNodeWithText(getString(UiString.core_ui_hide_spoilers_tooltip)).assertIsDisplayed()
+    val tooltipText = getString(UiString.core_ui_hide_spoilers_tooltip)
+    onNodeWithText(tooltipText).assertIsDisplayed()
+
+    waitUntil(timeoutMillis = 5000) {
+      onNodeWithText(tooltipText).isNotDisplayed()
+    }
 
     onNodeWithTag(TestTags.Menu.SPOILERS_OBFUSCATION)
       .assertIsDisplayed()

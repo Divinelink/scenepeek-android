@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_APP_LANGUAGE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_COLOR_PREFERENCE
@@ -20,10 +21,14 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_STREAMING_SERVICES_VISIBLE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_UPDATER_OPT_IN
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.homeSectionDisplayOrderKey
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.homeSectionHiddenKey
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.home.HomeSectionsConfig
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -74,6 +79,10 @@ interface PreferenceStorage {
 
   suspend fun setAppLanguage(language: AppLanguage)
   val appLanguage: Flow<AppLanguage>
+
+  suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
+  suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>)
+  val homeSections: Flow<HomeSectionsConfig>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -103,6 +112,9 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_STREAMING_SERVICES_VISIBLE = booleanPreferencesKey("streaming.services.visible")
 
     val PREF_UPDATER_OPT_IN = booleanPreferencesKey("updater.opt.in")
+
+    val homeSectionHiddenKey = stringSetPreferencesKey("home_section_hidden")
+    val homeSectionDisplayOrderKey = stringPreferencesKey("home_sections_display_order")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -227,6 +239,36 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
       dataStore.removeKey(PREF_APP_LANGUAGE)
     } else {
       dataStore.edit { it[PREF_APP_LANGUAGE] = locale }
+    }
+  }
+
+  override val homeSections: Flow<HomeSectionsConfig>
+    get() = dataStore.data.map {
+      HomeSectionsConfig(
+        hidden = it[homeSectionHiddenKey]
+          ?.mapNotNull { key -> MediaListSection.from(key) }?.toSet() ?: emptySet(),
+        order = it[homeSectionDisplayOrderKey]
+          ?.split(",")
+          ?.mapNotNull { key -> MediaListSection.from(key) }
+          ?: MediaListSection.homeEntries,
+      )
+    }
+
+  override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
+    dataStore.edit { preferences ->
+      val currentHidden = preferences[homeSectionHiddenKey].orEmpty()
+
+      if (section.key in currentHidden) {
+        preferences[homeSectionHiddenKey] = currentHidden - section.key
+      } else {
+        preferences[homeSectionHiddenKey] = currentHidden + section.key
+      }
+    }
+  }
+
+  override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
+    dataStore.edit { preferences ->
+      preferences[homeSectionDisplayOrderKey] = sections.joinToString(separator = ",") { it.key }
     }
   }
 }

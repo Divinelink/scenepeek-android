@@ -30,7 +30,7 @@ class ProfileViewModel(
     fetchAccountDetails()
 
     viewModelScope.launch {
-      authRepository.isJellyseerrEnabled.collect { isEnabled ->
+      authRepository.seerrEnabled.collect { isEnabled ->
         _uiState.update { it.copy(isJellyseerrEnabled = isEnabled) }
       }
     }

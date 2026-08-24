@@ -5,6 +5,8 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.home.HomeSectionsConfig
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -53,6 +55,9 @@ class ProdPreferencesRepository(
 
   override val metadataLanguage: Flow<Language>
     get() = preferenceStorage.metadataLanguage
+
+  override val homeSections: Flow<HomeSectionsConfig>
+    get() = preferenceStorage.homeSections
 
   override suspend fun switchViewMode(section: ViewableSection) {
     storage.updateViewMode(
@@ -119,4 +124,12 @@ class ProdPreferencesRepository(
   }
 
   override fun listSortOption(listId: Int): Flow<SortOption?> = storage.listSortOption(listId)
+
+  override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
+    preferenceStorage.toggleHomeSectionVisibility(section)
+  }
+
+  override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
+    preferenceStorage.updateHomeSectionsOrder(sections)
+  }
 }

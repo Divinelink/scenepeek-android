@@ -11,6 +11,7 @@ import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.RoboTest
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
@@ -20,12 +21,9 @@ import com.divinelink.feature.add.to.account.resources.feature_add_to_account_re
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_single_item_success
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
-@RunWith(RobolectricTestRunner::class)
-class ListDetailsViewModelTest {
+class ListDetailsViewModelTest : RoboTest() {
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()

@@ -30,7 +30,7 @@ class ProfileViewModelTestRobot {
   }
 
   fun mockJellyseerrEnabled(enabled: Boolean) = apply {
-    authRepository.mockJellyseerrEnabled(enabled)
+    authRepository.mockSeerrEnabled(enabled)
   }
 
   fun assertUiState(expectedUiState: ProfileUiState) = apply {

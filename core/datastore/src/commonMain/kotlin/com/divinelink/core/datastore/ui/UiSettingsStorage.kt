@@ -156,6 +156,9 @@ class DatastoreUiStorage(
     }
   }
 
+  /**
+   * Helper functions
+   */
   private fun MutablePreferences.addToAvailableLists(listId: Int) {
     val currentLists = this[availableListsKey].orEmpty()
     this[availableListsKey] = currentLists + listId.toString()

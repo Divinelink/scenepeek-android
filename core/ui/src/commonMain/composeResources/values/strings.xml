@@ -197,4 +197,5 @@
   <string name="github" translatable="false">GitHub</string>
   <string name="codeberg" translatable="false">Codeberg</string>
   <string name="recent_request">Recent requests</string>
+  <string name="customize_dashboard">Customize dashboard</string>
 </resources>

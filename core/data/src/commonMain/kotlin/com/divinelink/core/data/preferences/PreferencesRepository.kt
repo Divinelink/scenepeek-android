@@ -3,6 +3,8 @@ package com.divinelink.core.data.preferences
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.home.HomeSectionsConfig
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -22,6 +24,8 @@ interface PreferencesRepository {
   val detailPreferences: Flow<DetailPreferences>
 
   val metadataLanguage: Flow<Language>
+
+  val homeSections: Flow<HomeSectionsConfig>
 
   fun listSortOption(listId: Int): Flow<SortOption?>
 
@@ -48,4 +52,7 @@ interface PreferencesRepository {
 
   suspend fun setRegion(country: Country)
   suspend fun setStreamingServicesVisible(visible: Boolean)
+
+  suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
+  suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>)
 }

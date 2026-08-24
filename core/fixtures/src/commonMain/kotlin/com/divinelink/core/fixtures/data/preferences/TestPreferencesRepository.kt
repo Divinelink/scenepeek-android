@@ -4,6 +4,8 @@ import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.home.HomeSectionsConfig
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
@@ -23,6 +25,7 @@ class TestPreferencesRepository(
   themePreferences: ThemePreferences = ThemePreferences.initial,
   detailPreferences: DetailPreferences = DetailPreferences.initial,
   metadataLanguage: Language = Language.ENGLISH,
+  homeSections: HomeSectionsConfig = HomeSectionsConfig.initial,
 ) : PreferencesRepository {
 
   private val _uiPreferences = MutableStateFlow(uiPreferences)
@@ -36,6 +39,9 @@ class TestPreferencesRepository(
 
   private val _metadataLanguage = MutableStateFlow(metadataLanguage)
   override val metadataLanguage: Flow<Language> = _metadataLanguage
+
+  private val _homeSections = MutableStateFlow(homeSections)
+  override val homeSections: Flow<HomeSectionsConfig> = _homeSections
 
   override suspend fun switchViewMode(section: ViewableSection) {
     val currentViewMode = _uiPreferences.value.viewModes[section]
@@ -154,5 +160,23 @@ class TestPreferencesRepository(
         listSortOptions = _uiPreferences.value.listSortOptions - listId,
       )
     }
+  }
+
+  override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
+    val hiddenSet = _homeSections.value.hidden
+
+    _homeSections.value = _homeSections.value.copy(
+      hidden = if (section in hiddenSet) {
+        hiddenSet.minus(section)
+      } else {
+        hiddenSet.plus(section)
+      },
+    )
+  }
+
+  override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
+    _homeSections.value = _homeSections.value.copy(
+      order = sections,
+    )
   }
 }

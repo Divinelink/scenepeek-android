@@ -19,8 +19,9 @@ import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.model.home.HomeSectionsConfig
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.navigation.Navigator
-import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.AboutSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.AppearanceSettingsRoute
@@ -37,6 +38,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.domain.SystemThemeProviderFactory
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -55,6 +57,7 @@ import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.feature.home.HomeViewModel
+import com.divinelink.feature.home.section.SectionViewModel
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
@@ -76,6 +79,8 @@ import org.junit.Rule
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -107,13 +112,18 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       modules(
         appModule,
         navigationModule,
+        sectionViewModelModule,
       )
     }
 
     navigator = get<Navigator>()
 
     fakePreferenceStorage = FakePreferenceStorage()
-    preferencesRepository = TestPreferencesRepository()
+    preferencesRepository = TestPreferencesRepository(
+      homeSections = HomeSectionsConfig.initial.copy(
+        hidden = setOf(MediaListSection.RecentRequests)
+      )
+    )
     mediaRepository = TestMediaRepository()
 
     fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
@@ -121,9 +131,8 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
     declare {
       HomeViewModel(
-        clock = clock,
-        repository = mediaRepository.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        preferencesRepository = preferencesRepository,
+        authRepository = TestAuthRepository().mock,
         searchStateManager = SearchStateManager(),
       )
     }
@@ -169,7 +178,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   fun `test navigate to AccountSettingsScreen`() = uiTest {
     setupContent()
 
-    appState.navigate(Navigation.SettingsRoute)
+    appState.navigate(SettingsRoute)
 
     declare {
       AccountSettingsViewModel(
@@ -367,5 +376,15 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
     onNodeWithText(getString(R.string.settings)).assertIsNotDisplayed()
     assertThat(appState.backStack.last()).isEqualTo(TMDBAuthRoute)
+  }
+
+  private val sectionViewModelModule = module {
+    viewModel { params ->
+      SectionViewModel(
+        section = params.get(),
+        repository = mediaRepository.mock,
+        clock = clock,
+      )
+    }
   }
 }

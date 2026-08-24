@@ -33,7 +33,7 @@ class ProdAuthRepositoryTest {
       mediaDao = mediaDao.mock,
     )
 
-    repository.isJellyseerrEnabled.test {
+    repository.seerrEnabled.test {
       awaitItem() shouldBe false
 
       savedStateStorage.setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())

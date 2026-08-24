@@ -18,7 +18,7 @@ class ProdAuthRepository(
   private val mediaDao: MediaDao,
 ) : AuthRepository {
 
-  override val isJellyseerrEnabled: Flow<Boolean> = savedStateStorage
+  override val seerrEnabled: Flow<Boolean> = savedStateStorage
     .savedState
     .map { it.isJellyseerrEnabled }
     .distinctUntilChanged()

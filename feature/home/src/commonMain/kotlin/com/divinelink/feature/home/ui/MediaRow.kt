@@ -10,25 +10,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSectionInfo
 import com.divinelink.core.model.home.MediaListSection
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.feature.home.HomeAction
+import com.divinelink.feature.home.section.HomeSectionAction
+import com.divinelink.feature.home.section.SectionViewModel
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MediaRow(
   config: HomeSectionInfo,
-  form: HomeForm<MediaItem>,
-  action: (HomeAction) -> Unit,
+  viewModel: SectionViewModel = koinViewModel(
+    key = config.section.key,
+    parameters = { parametersOf(config.section) },
+  ),
   onNavigate: (Navigation) -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
   Column(
     modifier = modifier.animateContentSize(),
   ) {
@@ -57,17 +65,17 @@ fun MediaRow(
       )
     }
 
-    when (form) {
+    when (val form = uiState.form) {
       HomeForm.Initial -> MediaRowSkeleton()
       HomeForm.Error -> MediaRowError(
         modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
-        onClick = { action(HomeAction.RetrySection(config.section)) },
+        onClick = { viewModel.onAction(HomeSectionAction.RetrySection(config.section)) },
       )
       is HomeForm.Data -> MediaRowContent(
         form = form,
-        onLoadMore = { action(HomeAction.LoadMore(config.section)) },
+        onLoadMore = { viewModel.onAction(HomeSectionAction.LoadMore(config.section)) },
         onNavigate = onNavigate,
-        onRetry = { action(HomeAction.RetrySection(config.section)) },
+        onRetry = { viewModel.onAction(HomeSectionAction.RetrySection(config.section)) },
       )
       is HomeForm.SeerrData -> SeerrContent(
         filter = form.filter,

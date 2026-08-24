@@ -7,15 +7,13 @@ import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.testing.RoboTest
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
-@RunWith(RobolectricTestRunner::class)
-class DatastoreUiStorageTest {
+class DatastoreUiStorageTest : RoboTest() {
 
   private lateinit var storage: DatastoreUiStorage
 
