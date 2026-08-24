@@ -46,7 +46,7 @@ import com.divinelink.core.ui.components.IconButtonWithTooltip
 import com.divinelink.core.ui.draganddrop.DraggableItem
 import com.divinelink.core.ui.draganddrop.dragContainer
 import com.divinelink.core.ui.draganddrop.rememberDragDropState
-import com.divinelink.core.ui.resources.customize_dashboard
+import com.divinelink.core.ui.resources.customize_home_layout
 import com.divinelink.core.ui.resources.restore_to_default
 import org.jetbrains.compose.resources.stringResource
 
@@ -87,7 +87,7 @@ fun ReorderableHomeSections(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Text(
-        text = stringResource(UiString.customize_dashboard),
+        text = stringResource(UiString.customize_home_layout),
         style = MaterialTheme.typography.titleMedium,
       )
 

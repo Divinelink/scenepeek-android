@@ -76,7 +76,10 @@ import com.divinelink.feature.onboarding.resources.v55_share_review_option
 import com.divinelink.feature.onboarding.resources.v56_add_company_discover_filter
 import com.divinelink.feature.onboarding.resources.v56_add_sorting_options_on_lists
 import com.divinelink.feature.onboarding.resources.v56_make_companies_clickable
-import com.divinelink.feature.onboarding.resources.v58_open_in_wikipedia
+import com.divinelink.feature.onboarding.resources.v58_allow_home_customization
+import com.divinelink.feature.onboarding.resources.v58_allow_plex_authorization
+import com.divinelink.feature.onboarding.resources.v58_seerr_recent_requests
+import com.divinelink.feature.onboarding.resources.v58_wikipedia_link
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -337,7 +340,10 @@ object IntroSections {
     IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
     IntroSection.WhatsNew("v0.38.0"),
     IntroSection.SecondaryHeader.Added,
-    IntroSection.Text(UIText.ResourceText(R.string.v58_open_in_wikipedia)),
+    IntroSection.Text(UIText.ResourceText(R.string.v58_allow_home_customization)),
+    IntroSection.Text(UIText.ResourceText(R.string.v58_wikipedia_link)),
+    IntroSection.Text(UIText.ResourceText(R.string.v58_seerr_recent_requests)),
+    IntroSection.Text(UIText.ResourceText(R.string.v58_allow_plex_authorization)),
   )
 
   /**

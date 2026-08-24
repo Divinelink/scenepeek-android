@@ -1,5 +1,8 @@
 🎉 Update v0.38.0
 
-- Add the ability to open wikipedia article by pressing the 3 dots menu on the movie or TV show screen
+- Added option to view Wikipedia articles in the movie and TV show 3-dot menu
+- Customize home layout: reorder sections and toggle visibility
+- Added Plex authentication support for Seerr
+- Show recent Seerr requests in home screen
 
 We're constantly working on improvements and new features. Stay tuned for more updates!

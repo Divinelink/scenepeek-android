@@ -99,5 +99,8 @@
   <string name="v56_add_company_discover_filter">- Add company filter on discover</string>
   <string name="v56_make_companies_clickable">- You can now click on any company name in the details section to browse content filtered by that studio</string>
 
-  <string name="v58_open_in_wikipedia">- Add the ability to open wikipedia article by pressing the 3 dots menu on the movie or TV show screen</string>
+  <string name="v58_wikipedia_link">- Added option to view Wikipedia articles in the movie and TV show 3-dot menu</string>
+  <string name="v58_allow_home_customization">- Customize home layout: reorder sections and toggle visibility</string>
+  <string name="v58_allow_plex_authorization">- Added Plex authentication support for Seerr</string>
+  <string name="v58_seerr_recent_requests">- Show recent Seerr requests in home screen</string>
 </resources>

@@ -27,7 +27,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.extensions.showExpandedFab
-import com.divinelink.core.ui.resources.customize_dashboard
+import com.divinelink.core.ui.resources.customize_home_layout
 import com.divinelink.feature.home.resources.Res
 import com.divinelink.feature.home.resources.settings_button_content_description
 import org.jetbrains.compose.resources.stringResource
@@ -60,7 +60,7 @@ fun HomeScreen(
           IconButton(onClick = { onNavigate(Navigation.CustomizeDashboardRoute) }) {
             Icon(
               imageVector = Icons.Filled.DashboardCustomize,
-              contentDescription = stringResource(UiString.customize_dashboard),
+              contentDescription = stringResource(UiString.customize_home_layout),
             )
           }
           IconButton(onClick = { onNavigate(Navigation.SettingsRoute) }) {

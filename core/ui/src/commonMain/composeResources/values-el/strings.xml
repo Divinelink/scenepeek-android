@@ -189,7 +189,7 @@
     <string name="core_ui_open_in">Άνοιγμα σε %1$s</string>
     <string name="core_ui_open_in_error_message">Αποτυχία ανοίγματος εξωτερικού συνδέσμου</string>
     <string name="recent_request">Πρόσφατα αιτήματα</string>
-    <string name="customize_dashboard">Επεξεργασία διάταξης αρχικής οθόνης</string>
+    <string name="customize_home_layout">Επεξεργασία διάταξης αρχικής οθόνης</string>
     <string name="error_at_least_one_section_visible">Πρέπει να είναι ορατή τουλάχιστον μία ενότητα</string>
     <string name="restore_to_default">Επαναφορά στις προεπιλογές</string>
 </resources>
