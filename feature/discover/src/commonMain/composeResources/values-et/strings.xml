@@ -9,4 +9,5 @@
     <string name="feature_discover_show_filter">Näita filtreid</string>
     <string name="feature_discover_user_score">Kasutaja punktiskoor: %1$s - %2$s</string>
     <string name="feature_discover_minimum_user_votes">Kasutajate häälte miinimumarv:%1$s</string>
+    <string name="feature_discover_empty_company_search_result">Ei leidunud ühtegi sellise nimega äriühingut.</string>
 </resources>
