@@ -37,9 +37,9 @@ fun GroupRequestActionButtons(
           SeerrRequestAction.RemoveFromRadarr,
           SeerrRequestAction.RemoveFromSonarr,
             -> RequestsAction.RemoveFromServer(
-            mediaId = item.request.media.mediaId,
-            requestId = item.request.id,
-          )
+              mediaId = item.request.media.mediaId,
+              requestId = item.request.id,
+            )
         }
 
         onAction(seerrAction)

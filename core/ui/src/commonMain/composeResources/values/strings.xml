@@ -198,4 +198,6 @@
   <string name="codeberg" translatable="false">Codeberg</string>
   <string name="recent_request">Recent requests</string>
   <string name="customize_dashboard">Customize dashboard</string>
+  <string name="error_at_least_one_section_visible">At least one section must be visible</string>
+  <string name="restore_to_default">Restore to default</string>
 </resources>

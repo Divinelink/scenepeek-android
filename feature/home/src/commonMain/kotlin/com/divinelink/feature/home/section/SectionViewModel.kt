@@ -55,9 +55,7 @@ class SectionViewModel(
     }
   }
 
-  private fun handleResult(
-    result: Result<PaginationData<MediaItem>>,
-  ) {
+  private fun handleResult(result: Result<PaginationData<MediaItem>>) {
     result.onSuccess { response ->
       _uiState.update { uiState ->
         val data = (uiState.form as? HomeForm.Data)?.pages ?: mapOf(

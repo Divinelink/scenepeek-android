@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
+import com.divinelink.core.model.DisplayMessage
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.home.HomeSectionInfo
 import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.error_at_least_one_section_visible
 import com.divinelink.feature.home.buildSections
 import com.divinelink.feature.home.withFeatureFlags
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +48,20 @@ class CustomizeDashboardViewModel(
       .launchIn(viewModelScope)
   }
 
-  fun updateSectionOrder(order: List<HomeSectionInfo>) {
+  fun onAction(action: CustomizeDashboardAction) {
+    when (action) {
+      CustomizeDashboardAction.ConsumeMessage -> _uiState.update { it.copy(displayMessage = null) }
+      CustomizeDashboardAction.RestoreSettings -> handleRestoreSettings()
+      is CustomizeDashboardAction.ReorderSections -> updateSectionOrder(action.newOrder)
+      is CustomizeDashboardAction.ToggleVisibility -> onToggleSectionVisibility(action.section)
+    }
+  }
+
+  private fun handleRestoreSettings() {
+    updateSectionOrder(MediaListSection.homeEntries.buildSections())
+  }
+
+  private fun updateSectionOrder(order: List<HomeSectionInfo>) {
     viewModelScope.launch {
       val sections = order.map { it.section }
 
@@ -71,10 +88,22 @@ class CustomizeDashboardViewModel(
     }
   }
 
-  fun onToggleSectionVisibility(section: MediaListSection.Home) {
+  private fun onToggleSectionVisibility(section: HomeSectionInfo) {
     viewModelScope.launch {
-      preferencesRepository.toggleHomeSectionVisibility(section)
+      val hiddenSections = uiState.value.hiddenSections
+      val currentSections = uiState.value.sections
+
+      if (currentSections.size - hiddenSections.size == 1 && section !in hiddenSections) {
+        _uiState.update { state ->
+          state.copy(
+            displayMessage = DisplayMessage.Error(
+              message = UIText.ResourceText(UiString.error_at_least_one_section_visible),
+            ),
+          )
+        }
+      } else {
+        preferencesRepository.toggleHomeSectionVisibility(section.section)
+      }
     }
   }
 }
-
