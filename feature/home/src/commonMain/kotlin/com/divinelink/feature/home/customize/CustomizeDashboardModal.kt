@@ -25,8 +25,7 @@ fun CustomizeDashboardModal(
   ) {
     ReorderableHomeSections(
       uiState = state,
-      onShowOrHide = viewModel::onToggleSectionVisibility,
-      onReorderSections = viewModel::updateSectionOrder,
+      action = viewModel::onAction,
     )
   }
 }

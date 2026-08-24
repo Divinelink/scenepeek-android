@@ -1,8 +1,10 @@
 package com.divinelink.feature.home.customize
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,18 +38,19 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.home.HomeSectionInfo
-import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.components.DisplayMessageSection
 import com.divinelink.core.ui.draganddrop.DraggableItem
 import com.divinelink.core.ui.draganddrop.dragContainer
 import com.divinelink.core.ui.draganddrop.rememberDragDropState
+import com.divinelink.core.ui.resources.customize_dashboard
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ReorderableHomeSections(
   modifier: Modifier = Modifier,
   uiState: CustomizeDashboardUiState,
-  onShowOrHide: (MediaListSection.Home) -> Unit,
-  onReorderSections: (List<HomeSectionInfo>) -> Unit,
+  action: (CustomizeDashboardAction) -> Unit,
 ) {
   val sections = remember { mutableStateListOf<HomeSectionInfo>() }
 
@@ -65,30 +68,51 @@ fun ReorderableHomeSections(
       sections.add(to.index, sections.removeAt(from.index))
     },
     onDragEnd = {
-      onReorderSections(sections)
+      action(CustomizeDashboardAction.ReorderSections(sections))
       haptics.performHapticFeedback(HapticFeedbackType.LongPress)
     },
   )
 
-  LazyColumn(
-    state = listState,
-    modifier = modifier
-      .fillMaxSize()
-      .dragContainer(dragDropState),
-    contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_16),
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-  ) {
-    itemsIndexed(
-      items = sections,
-      key = { _, section -> section.key },
-    ) { index, task ->
-      DraggableItem(dragDropState, index) { isDragging ->
-        SectionRow(
-          title = stringResource(task.title),
-          isDragging = isDragging,
-          isHidden = task in uiState.hiddenSections,
-          onShowOrHide = { onShowOrHide(task.section) },
-        )
+  Column {
+    Text(
+      modifier = Modifier.padding(
+        horizontal = MaterialTheme.dimensions.keyline_16,
+        vertical = MaterialTheme.dimensions.keyline_8,
+      ),
+      text = stringResource(UiString.customize_dashboard),
+      style = MaterialTheme.typography.titleMedium,
+    )
+
+    AnimatedVisibility(
+      modifier = Modifier.fillMaxWidth(),
+      visible = uiState.displayMessage != null,
+    ) {
+      DisplayMessageSection(
+        message = uiState.displayMessage,
+        onTimeout = { action(CustomizeDashboardAction.ConsumeMessage) },
+      )
+    }
+
+    LazyColumn(
+      state = listState,
+      modifier = modifier
+        .fillMaxSize()
+        .dragContainer(dragDropState),
+      contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_16),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    ) {
+      itemsIndexed(
+        items = sections,
+        key = { _, section -> section.key },
+      ) { index, draggable ->
+        DraggableItem(dragDropState, index) { isDragging ->
+          SectionRow(
+            title = stringResource(draggable.title),
+            isDragging = isDragging,
+            isHidden = draggable in uiState.hiddenSections,
+            onShowOrHide = { action(CustomizeDashboardAction.ToggleVisibility(draggable)) },
+          )
+        }
       }
     }
   }
