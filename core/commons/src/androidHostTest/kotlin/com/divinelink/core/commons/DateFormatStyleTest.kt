@@ -2,14 +2,12 @@ package com.divinelink.core.commons
 
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.jellyseerr.createdAtLocalDate
+import com.divinelink.core.testing.RoboTest
 import io.kotest.matchers.shouldBe
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.test.Test
 
-@RunWith(RobolectricTestRunner::class)
-class DateExtensionTest {
+class DateExtensionTest : RoboTest() {
 
   @Test
   @Config(qualifiers = "+it")

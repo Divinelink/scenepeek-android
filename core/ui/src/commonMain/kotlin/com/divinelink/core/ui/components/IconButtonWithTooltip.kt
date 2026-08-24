@@ -6,6 +6,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
@@ -23,13 +24,17 @@ fun IconButtonWithTooltip(
   tooltipText: StringResource,
   icon: @Composable () -> Unit,
 ) {
+  val text = stringResource(tooltipText)
+
   TooltipBox(
-    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+    positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+      positioning = TooltipAnchorPosition.Below,
+    ),
     tooltip = {
       RichTooltip {
         Text(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_8),
-          text = stringResource(tooltipText),
+          text = text ,// stringResource(tooltipText),
         )
       }
     },

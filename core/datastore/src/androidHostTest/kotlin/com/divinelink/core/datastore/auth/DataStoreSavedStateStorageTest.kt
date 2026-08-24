@@ -3,6 +3,7 @@ package com.divinelink.core.datastore.auth
 import app.cash.turbine.test
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.session.TmdbSessionFactory
+import com.divinelink.core.testing.RoboTest
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import com.divinelink.core.testing.factories.core.commons.JsonFactory
 import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
@@ -13,13 +14,10 @@ import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-@RunWith(RobolectricTestRunner::class)
-class DataStoreSavedStateStorageTest {
+class DataStoreSavedStateStorageTest : RoboTest() {
 
   private lateinit var dataStore: DataStoreSavedStateStorage
 

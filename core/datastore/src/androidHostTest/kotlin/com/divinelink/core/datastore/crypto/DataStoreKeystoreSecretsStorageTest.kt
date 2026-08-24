@@ -1,15 +1,13 @@
 package com.divinelink.core.datastore.crypto
 
 import app.cash.turbine.test
+import com.divinelink.core.testing.RoboTest
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
-@RunWith(RobolectricTestRunner::class)
-class DataStoreKeystoreSecretsStorageTest {
+class DataStoreKeystoreSecretsStorageTest : RoboTest() {
 
   private val dataStore = DataStoreKeystoreSecretsStorage(
     dataStore = TestDatastoreFactory.create(),

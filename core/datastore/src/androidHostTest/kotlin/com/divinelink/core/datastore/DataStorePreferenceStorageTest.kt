@@ -6,19 +6,17 @@ import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.seedLong
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.testing.RoboTest
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.AfterTest
 import kotlin.test.Test
 
-@RunWith(RobolectricTestRunner::class)
-class DataStorePreferenceStorageTest {
+class DataStorePreferenceStorageTest : RoboTest() {
 
   private lateinit var storage: DataStorePreferenceStorage
 

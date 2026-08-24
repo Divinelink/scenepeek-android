@@ -9,17 +9,15 @@ import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.RoboTest
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
-@RunWith(RobolectricTestRunner::class)
-class MainViewModelTest {
+class MainViewModelTest : RoboTest() {
 
   private val robot = MainViewModelRobot()
 

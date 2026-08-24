@@ -31,6 +31,8 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.home.HomeSectionsConfig
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.Navigator
@@ -73,6 +75,7 @@ import com.divinelink.core.ui.resources.core_ui_not_connected
 import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.home.HomeViewModel
+import com.divinelink.feature.home.section.SectionViewModel
 import com.divinelink.feature.onboarding.manager.IntroSections
 import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
@@ -86,6 +89,8 @@ import org.jetbrains.compose.resources.getString
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -100,7 +105,11 @@ class ScenePeekAppTest : ComposeTest() {
 
   private val networkMonitor = TestNetworkMonitor()
   private val onboardingManager = TestOnboardingManager()
-  private val preferencesRepository = TestPreferencesRepository()
+  private val preferencesRepository = TestPreferencesRepository(
+    homeSections = HomeSectionsConfig.initial.copy(
+      hiddenHomeSections = setOf(MediaListSection.RecentRequests)
+    )
+  )
   private val mediaRepository = TestMediaRepository()
   private val clock: Clock = ClockFactory.decemberFirst2021()
   private lateinit var navigator: Navigator
@@ -168,6 +177,7 @@ class ScenePeekAppTest : ComposeTest() {
     startKoin {
       modules(
         navigationModule,
+        sectionViewModelModule,
       )
     }
 
@@ -962,5 +972,15 @@ class ScenePeekAppTest : ComposeTest() {
     mediaRepository.mockFetchMediaLists(
       response = flowOf(response),
     )
+  }
+
+  private val sectionViewModelModule = module {
+    viewModel { params ->
+      SectionViewModel(
+        section = params.get(),
+        repository = mediaRepository.mock,
+        clock = clock,
+      )
+    }
   }
 }
