@@ -70,7 +70,7 @@ fun AwardCategoriesListContent(
           modifier = Modifier
             .onVisibilityChanged(
               minDurationMs = 100L,
-              minFractionVisible = 0.1f
+              minFractionVisible = 0.1f,
             ) { visible ->
               if (visible) {
                 action.invoke(AwardCategoryAction.FetchMediaItem(item))

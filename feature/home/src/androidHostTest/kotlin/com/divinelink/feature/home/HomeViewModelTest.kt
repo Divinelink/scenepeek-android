@@ -158,10 +158,7 @@ class HomeViewModelTest {
       )
   }
 
-
-  private fun createUiState(
-    sections: List<MediaListSection.Home>,
-  ) = HomeUiState.initial.copy(
+  private fun createUiState(sections: List<MediaListSection.Home>) = HomeUiState.initial.copy(
     sections = sections.buildSections(),
   )
 }

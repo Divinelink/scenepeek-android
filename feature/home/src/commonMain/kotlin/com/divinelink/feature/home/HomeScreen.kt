@@ -60,7 +60,7 @@ fun HomeScreen(
           IconButton(onClick = { onNavigate(Navigation.CustomizeDashboardRoute) }) {
             Icon(
               imageVector = Icons.Filled.DashboardCustomize,
-              contentDescription = stringResource(UiString.customize_dashboard)
+              contentDescription = stringResource(UiString.customize_dashboard),
             )
           }
           IconButton(onClick = { onNavigate(Navigation.SettingsRoute) }) {
