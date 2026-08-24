@@ -13,8 +13,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.swipeDown
+import androidx.compose.ui.test.v2.runComposeUiTest
 import app.cash.turbine.test
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -107,8 +107,8 @@ class ScenePeekAppTest : ComposeTest() {
   private val onboardingManager = TestOnboardingManager()
   private val preferencesRepository = TestPreferencesRepository(
     homeSections = HomeSectionsConfig.initial.copy(
-      hiddenHomeSections = setOf(MediaListSection.RecentRequests)
-    )
+      hiddenHomeSections = setOf(MediaListSection.RecentRequests),
+    ),
   )
   private val mediaRepository = TestMediaRepository()
   private val clock: Clock = ClockFactory.decemberFirst2021()
@@ -196,6 +196,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -240,11 +241,12 @@ class ScenePeekAppTest : ComposeTest() {
   fun `test navigate to profile`() = uiTest {
     mockHomeData()
 
-    authRepository.mockJellyseerrEnabled(true)
+    authRepository.mockSeerrEnabled(true)
 
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -315,6 +317,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -393,6 +396,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -484,6 +488,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -551,6 +556,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -633,7 +639,7 @@ class ScenePeekAppTest : ComposeTest() {
   fun `test navigate to profile when is on movie details`() = uiTest {
     mockHomeData()
 
-    authRepository.mockJellyseerrEnabled(false)
+    authRepository.mockSeerrEnabled(false)
 
     getAccountDetailsUseCase.mockSuccess(flowOf(Result.success(TMDBAccountFactory.loggedIn())))
 
@@ -651,6 +657,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -771,6 +778,7 @@ class ScenePeekAppTest : ComposeTest() {
       declare {
         HomeViewModel(
           preferencesRepository = preferencesRepository,
+          authRepository = authRepository.mock,
           searchStateManager = searchStateManager,
         )
       }
@@ -855,6 +863,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }
@@ -917,6 +926,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
         searchStateManager = searchStateManager,
       )
     }

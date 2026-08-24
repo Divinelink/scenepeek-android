@@ -38,6 +38,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.domain.SystemThemeProviderFactory
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -131,6 +132,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
+        authRepository = TestAuthRepository().mock,
         searchStateManager = SearchStateManager(),
       )
     }

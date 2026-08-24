@@ -4,7 +4,9 @@ import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.channels.Channel
 import org.junit.Rule
 
 class HomeViewModelTestRobot {
@@ -15,10 +17,16 @@ class HomeViewModelTestRobot {
   val mainDispatcherRule = MainDispatcherRule()
 
   private val preferencesRepository = TestPreferencesRepository()
+  private val authRepository = TestAuthRepository()
+
+  private val seerrEnabledChannel: Channel<Boolean> = Channel()
 
   fun buildViewModel() = apply {
+    authRepository.mockSeerrEnabled(seerrEnabledChannel)
+
     viewModel = HomeViewModel(
       preferencesRepository = preferencesRepository,
+      authRepository = authRepository.mock,
       searchStateManager = SearchStateManager(),
     )
   }
@@ -33,5 +41,9 @@ class HomeViewModelTestRobot {
 
   suspend fun updateSectionsOrder(sections: List<MediaListSection.Home>) = apply {
     preferencesRepository.updateSectionsOrder(sections)
+  }
+
+  suspend fun setSeerrEnabled(enabled: Boolean) = apply {
+    seerrEnabledChannel.send(enabled)
   }
 }

@@ -1,6 +1,7 @@
 package com.divinelink.feature.home
 
 import com.divinelink.core.model.home.HomeSectionInfo
+import com.divinelink.core.model.home.HomeSectionsConfig
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.resources.Res
@@ -11,6 +12,8 @@ import com.divinelink.core.model.resources.upcoming_movies
 import com.divinelink.core.model.resources.upcoming_series
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.recent_request
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 fun List<MediaListSection.Home>.buildSections() = map { section ->
   val title = when (section) {
@@ -31,5 +34,34 @@ fun List<MediaListSection.Home>.buildSections() = map { section ->
   HomeSectionInfo(
     title = title,
     section = section,
+  )
+}
+
+fun Flow<HomeSectionsConfig>.withFeatureFlags(
+  seerrEnabled: Flow<Boolean>,
+): Flow<HomeSectionsConfig> = combine(this, seerrEnabled) { config, seerrEnabled ->
+  val displayOrder = if (seerrEnabled) {
+    val missingSections = MediaListSection
+      .homeEntries
+      .filter { it !in config.homeSectionsDisplayOrder && it !in config.hiddenHomeSections }
+
+    if (missingSections.isEmpty()) {
+      config.homeSectionsDisplayOrder
+    } else {
+      config.homeSectionsDisplayOrder + missingSections
+    }
+  } else {
+    config.homeSectionsDisplayOrder.filter { it != MediaListSection.RecentRequests }
+  }
+
+  val hiddenSections = if (seerrEnabled) {
+    config.hiddenHomeSections
+  } else {
+    config.hiddenHomeSections.minus(MediaListSection.RecentRequests)
+  }
+
+  config.copy(
+    homeSectionsDisplayOrder = displayOrder,
+    hiddenHomeSections = hiddenSections,
   )
 }

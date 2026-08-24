@@ -34,7 +34,7 @@ class ProfileScreenTest : ComposeTest() {
   fun `test navigate to login when logged out`() = uiTest {
     var navigateToTMDBAuthCalled = false
     getAccountDetailsUseCase.mockSuccess(flowOf(Result.success(TMDBAccountFactory.anonymous())))
-    authRepository.mockJellyseerrEnabled(false)
+    authRepository.mockSeerrEnabled(false)
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       authRepository = authRepository.mock,
@@ -58,7 +58,7 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate to watchlist`() = uiTest {
     var userDataSection: UserDataSection? = null
-    authRepository.mockJellyseerrEnabled(false)
+    authRepository.mockSeerrEnabled(false)
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       authRepository = authRepository.mock,
@@ -82,7 +82,7 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate to ratings`() = uiTest {
     var userDataSection: UserDataSection? = null
-    authRepository.mockJellyseerrEnabled(false)
+    authRepository.mockSeerrEnabled(false)
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       authRepository = authRepository.mock,
@@ -106,7 +106,7 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate to lists`() = uiTest {
     var navigateToLists = false
-    authRepository.mockJellyseerrEnabled(false)
+    authRepository.mockSeerrEnabled(false)
 
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
@@ -132,7 +132,7 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate jellyseerr requests`() = uiTest {
     var route: Navigation? = null
-    authRepository.mockJellyseerrEnabled(true)
+    authRepository.mockSeerrEnabled(true)
 
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,

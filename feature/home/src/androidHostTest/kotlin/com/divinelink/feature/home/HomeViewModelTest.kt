@@ -18,6 +18,7 @@ class HomeViewModelTest {
   fun `successful initialise viewModel`() = runTest {
     testRobot
       .buildViewModel()
+      .setSeerrEnabled(true)
       .assertUiState(
         createUiState(
           sections = MediaListSection.homeEntries,
@@ -29,6 +30,7 @@ class HomeViewModelTest {
   fun `test updating home sections visibility`() = runTest {
     testRobot
       .buildViewModel()
+      .setSeerrEnabled(true)
       .assertUiState(
         createUiState(sections = MediaListSection.homeEntries),
       )
@@ -53,6 +55,24 @@ class HomeViewModelTest {
         createUiState(
           sections = MediaListSection.homeEntries
             .minus(MediaListSection.RecentRequests),
+        ),
+      )
+  }
+
+  @Test
+  fun `test with with enabled section recent requests is hidden`() = runTest {
+    testRobot
+      .buildViewModel()
+      .setSeerrEnabled(false)
+      .assertUiState(
+        createUiState(
+          sections = MediaListSection.homeEntries.minus(MediaListSection.RecentRequests),
+        ),
+      )
+      .setSeerrEnabled(true)
+      .assertUiState(
+        createUiState(
+          sections = MediaListSection.homeEntries,
         ),
       )
   }

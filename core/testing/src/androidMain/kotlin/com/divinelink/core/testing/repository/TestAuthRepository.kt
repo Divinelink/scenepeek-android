@@ -20,10 +20,15 @@ class TestAuthRepository {
 
   init {
     mockPermissions(flowOf(emptyList()))
+    mockSeerrEnabled(false)
   }
 
-  fun mockJellyseerrEnabled(isEnabled: Boolean) {
+  fun mockSeerrEnabled(isEnabled: Boolean) {
     whenever(mock.isJellyseerrEnabled).thenReturn(flowOf(isEnabled))
+  }
+
+  fun mockSeerrEnabled(isEnabled: Channel<Boolean>) {
+    whenever(mock.isJellyseerrEnabled).thenReturn(isEnabled.consumeAsFlow())
   }
 
   fun mockJellyseerrCredentials(accounts: Map<String, SavedState.JellyseerrCredentials>) {
