@@ -6,6 +6,7 @@ import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.home.toRequest
@@ -52,6 +53,13 @@ class HomeViewModel(
         -> fetchMediaLists(section)
       is MediaListSection.TopRated -> Unit
       MediaListSection.Saved -> Unit
+      is MediaListSection.RecentRequests -> _uiState.update { state ->
+        state.copy(
+          forms = state.forms.plus(
+            MediaListSection.RecentRequests to HomeForm.SeerrData(filter = MediaRequestFilter.All),
+          ),
+        )
+      }
     }
   }
 
@@ -160,6 +168,7 @@ class HomeViewModel(
         canLoadMore = false,
         isLoading = true,
       )
+      is HomeForm.SeerrData -> currentForm
       HomeForm.Error -> HomeForm.Initial
       HomeForm.Initial -> HomeForm.Initial
       null -> HomeForm.Initial

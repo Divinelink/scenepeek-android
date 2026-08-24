@@ -30,4 +30,7 @@ sealed interface MediaListSection {
     val mediaType: MediaType,
     val minDate: String,
   ) : Home
+
+  @Serializable
+  data object RecentRequests : Home
 }

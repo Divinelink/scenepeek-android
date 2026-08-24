@@ -152,7 +152,7 @@ sealed interface Navigation : NavKey {
   }
 
   @Serializable
-  data object JellyseerrRequestsRoute : Navigation
+  data class SeerrRequestsRoute(val filterValue: String) : Navigation
 
   @Serializable
   data class DiscoverRoute(

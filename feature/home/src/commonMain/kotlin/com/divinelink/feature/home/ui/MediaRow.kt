@@ -12,8 +12,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSectionInfo
+import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.feature.home.HomeAction
@@ -32,7 +34,16 @@ fun MediaRow(
   ) {
     TextButton(
       onClick = {
-        onNavigate(Navigation.MediaListsRoute(config.section))
+        val route = when (config.section) {
+          MediaListSection.TrendingAll -> Navigation.MediaListsRoute(config.section)
+          is MediaListSection.Upcoming -> Navigation.MediaListsRoute(config.section)
+          is MediaListSection.Popular -> Navigation.MediaListsRoute(config.section)
+          MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
+            filterValue = MediaRequestFilter.All.value,
+          )
+        }
+
+        onNavigate(route)
       },
     ) {
       Text(
@@ -57,6 +68,10 @@ fun MediaRow(
         onLoadMore = { action(HomeAction.LoadMore(config.section)) },
         onNavigate = onNavigate,
         onRetry = { action(HomeAction.RetrySection(config.section)) },
+      )
+      is HomeForm.SeerrData -> SeerrContent(
+        filter = form.filter,
+        onNavigate = onNavigate,
       )
     }
   }

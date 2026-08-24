@@ -16,6 +16,7 @@ sealed class MediaRequestFilter(
   override val value: String,
   override val name: UIText,
 ) : Filter(value, name) {
+
   data object All : MediaRequestFilter(
     value = "all",
     name = UIText.ResourceText(Res.string.all),
@@ -74,5 +75,7 @@ sealed class MediaRequestFilter(
         Deleted,
         Completed,
       )
+
+    fun from(value: String): MediaRequestFilter = entries.find { it.value == value } ?: Pending
   }
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -52,7 +53,9 @@ fun AnimatedVisibilityScope.ProfileScreen(
                 Navigation.UserDataRoute(userInteraction.section),
               )
               ProfileAction.NavigateToLists -> onNavigate(Navigation.ListsRoute)
-              ProfileAction.NavigateToRequests -> onNavigate(Navigation.JellyseerrRequestsRoute)
+              ProfileAction.NavigateToRequests -> onNavigate(
+                Navigation.SeerrRequestsRoute(filterValue = MediaRequestFilter.Pending.value),
+              )
             }
           },
         )

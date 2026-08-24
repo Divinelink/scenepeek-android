@@ -14,7 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onFirstVisible
+import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -68,11 +68,13 @@ fun AwardCategoriesListContent(
       ) { item ->
         NomineeMediaItem(
           modifier = Modifier
-            .onFirstVisible(
+            .onVisibilityChanged(
               minDurationMs = 100L,
-              minFractionVisible = 0.1f,
-            ) {
-              action.invoke(AwardCategoryAction.FetchMediaItem(item))
+              minFractionVisible = 0.1f
+            ) { visible ->
+              if (visible) {
+                action.invoke(AwardCategoryAction.FetchMediaItem(item))
+              }
             }
             .animateItem(),
           item = item,

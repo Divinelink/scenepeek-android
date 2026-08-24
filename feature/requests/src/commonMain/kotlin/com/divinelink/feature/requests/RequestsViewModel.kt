@@ -10,9 +10,12 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
+import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
 import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.setLoading
@@ -36,10 +39,11 @@ class RequestsViewModel(
   private val detailsRepository: DetailsRepository,
   private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,
+  filter: MediaRequestFilter? = null,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<RequestsUiState> = MutableStateFlow(
-    RequestsUiState.initial,
+    RequestsUiState.initial(filter),
   )
   val uiState: StateFlow<RequestsUiState> = _uiState
 
@@ -371,7 +375,9 @@ class RequestsViewModel(
             val requestUiItems = result.results.map { request ->
               RequestUiItem(
                 request = request,
-                mediaState = ItemState.Loading,
+                mediaState = getMediaStateForRequest(request),
+                canManageRequest = uiState.permissions.canManageRequests,
+                canRequestAdvanced = uiState.permissions.canRequestAdvanced,
               )
             }
 
@@ -400,7 +406,8 @@ class RequestsViewModel(
   private fun fetchMediaItem(item: RequestUiItem) {
     if (item.mediaState !is ItemState.Data) {
       viewModelScope.launch {
-        detailsRepository.fetchMediaItem(item.request.media)
+        detailsRepository
+          .fetchMediaItem(item.request.media)
           .collect { result ->
             when (result) {
               is Resource.Error -> updateMediaItem(
@@ -463,4 +470,17 @@ class RequestsViewModel(
   ): Int? = pages.entries
     .firstOrNull { (_, itemList) -> itemList.any { it.request.id == requestId } }
     ?.key
+
+  private fun getMediaStateForRequest(request: JellyseerrRequest): ItemState<MediaItem.Media> {
+    val currentPages = (_uiState.value.data as? DataState.Data)?.pages ?: return ItemState.Loading
+    val pageToUpdate = findPageForRequestId(
+      pages = currentPages,
+      requestId = request.id,
+    ) ?: return ItemState.Loading
+
+    return currentPages[pageToUpdate]
+      ?.find { it.request.id == request.id }
+      ?.mediaState
+      ?: ItemState.Loading
+  }
 }

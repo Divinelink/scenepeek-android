@@ -15,4 +15,5 @@ fun MediaListSection.toRequest(mediaType: MediaType): MediaListRequest? = when (
   MediaListSection.TrendingAll -> MediaListRequest.TrendingAll
   is MediaListSection.Popular -> MediaListRequest.Popular(this.mediaType)
   is MediaListSection.Upcoming -> MediaListRequest.Upcoming(this.mediaType, minDate)
+  MediaListSection.RecentRequests -> null
 }

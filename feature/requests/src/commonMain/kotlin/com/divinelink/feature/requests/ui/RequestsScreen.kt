@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.colors
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
@@ -36,12 +37,14 @@ import com.divinelink.feature.requests.resources.Res
 import com.divinelink.feature.requests.resources.feature_requests_title
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.RequestsScreen(
+  filter: MediaRequestFilter,
   onNavigate: (Navigation) -> Unit,
-  viewModel: RequestsViewModel = koinViewModel(),
+  viewModel: RequestsViewModel = koinViewModel { parametersOf(filter) },
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   var showRequestModal by remember {

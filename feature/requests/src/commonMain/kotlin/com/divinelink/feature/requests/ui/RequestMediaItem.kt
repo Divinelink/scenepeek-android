@@ -22,7 +22,6 @@ import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.ItemState
-import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 import com.divinelink.core.model.media.MediaItem
@@ -41,10 +40,7 @@ import com.divinelink.feature.requests.resources.Res
 import com.divinelink.feature.requests.resources.feature_requests_profile
 import com.divinelink.feature.requests.resources.feature_requests_request_by
 import com.divinelink.feature.requests.resources.feature_requests_requested
-import com.divinelink.feature.requests.ui.buttons.ApprovedActionButtons
-import com.divinelink.feature.requests.ui.buttons.DeclinedActionButtons
-import com.divinelink.feature.requests.ui.buttons.FailedActionButtons
-import com.divinelink.feature.requests.ui.buttons.PendingActionButtons
+import com.divinelink.feature.requests.ui.buttons.ActionButtons
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -120,42 +116,9 @@ fun LazyItemScope.RequestMediaItem(
             }
           }
 
-          Row(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
-            Text(
-              style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
-              ),
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-              text = stringResource(UiString.core_ui_status),
-            )
+          StatusSection(item)
 
-            JellyseerrStatusPill(status = item.request.status)
-          }
-
-          Row(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-          ) {
-            Text(
-              style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
-              ),
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-              text = stringResource(Res.string.feature_requests_requested),
-            )
-            item.request.requestDate?.date?.formatLocalized(DateFormatStyle.FULL)?.let { date ->
-              Text(
-                text = stringResource(
-                  Res.string.feature_requests_request_by,
-                  date,
-                  item.request.requester.displayName,
-                ),
-                style = MaterialTheme.typography.bodyMedium,
-              )
-            }
-          }
+          RequestedBySection(item)
 
           item.request.profileName?.let { profileName ->
             ProfileNameSection(profileName)
@@ -184,14 +147,62 @@ fun LazyItemScope.RequestMediaItem(
       modifier = modifier,
     )
 
-    null -> {
-      // Do nothing
+    null -> Unit
+  }
+}
+
+@Composable
+private fun RequestedBySection(item: RequestUiItem) {
+  Row(
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+  ) {
+    Text(
+      style = MaterialTheme.typography.bodyMedium.copy(
+        fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
+      ),
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      text = stringResource(Res.string.feature_requests_requested),
+    )
+    item.request.requestDate?.date?.formatLocalized(DateFormatStyle.FULL)?.let { date ->
+      Text(
+        text = stringResource(
+          Res.string.feature_requests_request_by,
+          date,
+          item.request.requester.displayName,
+        ),
+        style = MaterialTheme.typography.bodyMedium,
+      )
     }
   }
 }
 
 @Composable
-private fun ProfileNameSection(profileName: String) {
+fun StatusSection(item: RequestUiItem) {
+  when (item.request.status) {
+    JellyseerrStatus.Media.UNKNOWN -> return
+    JellyseerrStatus.Request.UNKNOWN -> return
+    JellyseerrStatus.Season.UNKNOWN -> return
+    else -> Unit
+  }
+
+  Row(
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      style = MaterialTheme.typography.bodyMedium.copy(
+        fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
+      ),
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      text = stringResource(UiString.core_ui_status),
+    )
+
+    JellyseerrStatusPill(status = item.request.status)
+  }
+}
+
+@Composable
+fun ProfileNameSection(profileName: String) {
   Row(
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     verticalAlignment = Alignment.CenterVertically,
@@ -207,47 +218,5 @@ private fun ProfileNameSection(profileName: String) {
       text = profileName,
       style = MaterialTheme.typography.bodyMedium,
     )
-  }
-}
-
-@Composable
-fun ActionButtons(
-  request: JellyseerrRequest,
-  enabled: Boolean,
-  canManageRequest: Boolean,
-  canRequestAdvanced: Boolean,
-  onAction: (RequestsAction) -> Unit,
-) {
-  when (request.requestStatus) {
-    JellyseerrStatus.Request.PENDING -> PendingActionButtons(
-      canManageRequests = canManageRequest,
-      canRequestAdvanced = canRequestAdvanced,
-      onAction = onAction,
-      enabled = enabled,
-      request = request,
-    )
-    JellyseerrStatus.Request.APPROVED -> ApprovedActionButtons(
-      hasPermission = canManageRequest,
-      onAction = onAction,
-      enabled = enabled,
-      request = request,
-    )
-
-    JellyseerrStatus.Request.DECLINED -> DeclinedActionButtons(
-      hasPermission = canManageRequest,
-      onAction = onAction,
-      enabled = enabled,
-      request = request,
-    )
-
-    JellyseerrStatus.Request.FAILED -> FailedActionButtons(
-      hasPermission = canManageRequest,
-      onAction = onAction,
-      enabled = enabled,
-      request = request,
-    )
-    JellyseerrStatus.Request.UNKNOWN -> {
-      // Do nothing
-    }
   }
 }

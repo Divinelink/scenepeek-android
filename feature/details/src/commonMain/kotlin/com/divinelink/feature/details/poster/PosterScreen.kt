@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalWindowInfo
 import com.divinelink.core.model.ImageQuality
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
@@ -23,6 +22,7 @@ import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.coil.PosterImage
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.conditional
+import com.divinelink.core.ui.rememberIsLandscape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,8 +65,7 @@ fun SharedTransitionScope.FullscreenPoster(
   onClick: () -> Unit,
   visibilityScope: AnimatedVisibilityScope,
 ) {
-  val windowInfo = LocalWindowInfo.current
-  val isLandscape = windowInfo.containerSize.width > windowInfo.containerSize.height
+  val isLandscape = rememberIsLandscape()
 
   Box(
     modifier = Modifier.fillMaxSize(),

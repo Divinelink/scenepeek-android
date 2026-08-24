@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.platform.Platform
@@ -39,3 +40,12 @@ fun rememberConfigProvider(): BuildConfigProvider = remember { getBuildConfigPro
 
 @Composable
 fun rememberCurrentPlatform(): Platform = remember { currentPlatform }
+
+@Composable
+fun rememberIsLandscape(): Boolean {
+  val windowInfo = LocalWindowInfo.current
+
+  return remember(windowInfo.containerSize) {
+    windowInfo.containerSize.width > windowInfo.containerSize.height
+  }
+}
