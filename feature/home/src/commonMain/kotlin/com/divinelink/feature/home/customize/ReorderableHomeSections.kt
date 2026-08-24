@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragHandle
+import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Card
@@ -40,10 +42,12 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.home.HomeSectionInfo
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.DisplayMessageSection
+import com.divinelink.core.ui.components.IconButtonWithTooltip
 import com.divinelink.core.ui.draganddrop.DraggableItem
 import com.divinelink.core.ui.draganddrop.dragContainer
 import com.divinelink.core.ui.draganddrop.rememberDragDropState
 import com.divinelink.core.ui.resources.customize_dashboard
+import com.divinelink.core.ui.resources.restore_to_default
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -74,14 +78,33 @@ fun ReorderableHomeSections(
   )
 
   Column {
-    Text(
+    Row(
       modifier = Modifier.padding(
         horizontal = MaterialTheme.dimensions.keyline_16,
         vertical = MaterialTheme.dimensions.keyline_8,
       ),
-      text = stringResource(UiString.customize_dashboard),
-      style = MaterialTheme.typography.titleMedium,
-    )
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      Text(
+        text = stringResource(UiString.customize_dashboard),
+        style = MaterialTheme.typography.titleMedium,
+      )
+
+      Spacer(modifier = Modifier.weight(1f))
+
+      IconButtonWithTooltip(
+        onClick = { action(CustomizeDashboardAction.RestoreSettings) },
+        enabled = uiState.restoreToDefaultEnabled,
+        tooltipText = UiString.restore_to_default,
+        icon = {
+          Icon(
+            imageVector = Icons.Default.Restore,
+            contentDescription = stringResource(UiString.restore_to_default),
+          )
+        },
+      )
+    }
 
     AnimatedVisibility(
       modifier = Modifier.fillMaxWidth(),

@@ -51,9 +51,14 @@ class CustomizeDashboardViewModel(
   fun onAction(action: CustomizeDashboardAction) {
     when (action) {
       CustomizeDashboardAction.ConsumeMessage -> _uiState.update { it.copy(displayMessage = null) }
+      CustomizeDashboardAction.RestoreSettings -> handleRestoreSettings()
       is CustomizeDashboardAction.ReorderSections -> updateSectionOrder(action.newOrder)
       is CustomizeDashboardAction.ToggleVisibility -> onToggleSectionVisibility(action.section)
     }
+  }
+
+  private fun handleRestoreSettings() {
+    updateSectionOrder(MediaListSection.homeEntries.buildSections())
   }
 
   private fun updateSectionOrder(order: List<HomeSectionInfo>) {

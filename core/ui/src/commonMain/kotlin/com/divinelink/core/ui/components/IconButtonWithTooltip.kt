@@ -22,6 +22,7 @@ fun IconButtonWithTooltip(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   tooltipText: StringResource,
+  enabled: Boolean = true,
   icon: @Composable () -> Unit,
 ) {
   TooltipBox(
@@ -40,6 +41,7 @@ fun IconButtonWithTooltip(
   ) {
     IconButton(
       modifier = modifier,
+      enabled = enabled,
       onClick = onClick,
     ) {
       icon()
