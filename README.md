@@ -3,25 +3,29 @@
 
 ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Divinelink/e1019c0e79b88046505566d98d96c710/raw/coverage.json)
 <img src="https://github.com/Divinelink/scenepeek-android/actions/workflows/coverage_static_analysis.yml/badge.svg" alt="CI">
-[![Join the community](https://img.shields.io/badge/matrix.org-join_community-teal?style=flat-square&logo=matrix)](https://matrix.to/#/#scenepeek:matrix.org)
 
 <div align="center">
-  <a href="https://f-droid.org/packages/com.divinelink.scenepeek/" target="_blank"><img src="https://f-droid.org/badge/get-it-on.png" height="75" alt="Get it on F-Droid"></a>
-  <a href="https://play.google.com/store/apps/details?id=com.divinelink.scenepeek" target="_blank"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75" alt="Get it on Google Play"></a>
-</div>
 
-<div align="center">
-  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Divinelink/scenepeek-android" target="_blank"><img alt='Get it on Obtainium' src='https://github.com/ImranR98/Obtainium/blob/main/assets/graphics/badge_obtainium.png' height='75'/></a>
-  <a href="https://github.com/Divinelink/scenepeek-android/releases/latest" target="_blank"><img alt='Get it on GitHub' src='https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png' height='75'/></a>
-</div>
+<a href="https://f-droid.org/packages/com.divinelink.scenepeek/" target="_blank">
+  <img src="docs/badges/fdroid.png" alt="Get it on F-Droid" width="180">
+</a>
 
-<div align="center">
-  <p><strong>The iOS version is under review from Apple since 20/12/2025, until they decide to approve it and release it on the AppStore, you can get the iOS app on TestFlight.</strong></p>
+<a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/Divinelink/scenepeek-tmdb" target="_blank">
+  <img src="docs/badges/obtainium.png" alt="Get it on Obtainium" width="180">
+</a>
 
-<a href="https://testflight.apple.com/join/9bdUBYwY" target="_blank"><img alt='Get it on TestFlight' src='https://askyourself.app/assets/testflight.png' height='80'/></a>
-</div>
+<a href="https://github.com/Divinelink/scenepeek-android/releases/latest" target="_blank">
+  <img src="docs/badges/github.svg" alt="Get it on Github" width="180">
+</a>
 
-<div align="center">
+<br>
+
+<a href="https://play.google.com/store/apps/details?id=com.divinelink.scenepeek" target="_blank">
+  <img src="docs/badges/google-play.png" alt="Get it on Google Play" width="180">
+</a>
+<a href="https://apps.apple.com/app/scenepeek-tmdb-seerr/id6756810408" target="_blank">
+  <img src="docs/badges/apple-appstore.png" alt="Get it on App Store" width="180">
+</a>
 
 ### Help translate the project!
 [![Translation status](https://hosted.weblate.org/widget/scenepeek/287x66-grey.png)](https://hosted.weblate.org/engage/scenepeek/)
