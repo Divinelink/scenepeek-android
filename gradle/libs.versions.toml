@@ -37,6 +37,7 @@ kotlinx-coroutines = '1.11.0'
 ktor = "3.4.3"
 kotlinx-serialization = "1.11.0"
 kotlinx-io = "0.9.1"
+ksoup = "0.2.6"
 
 # Depedency Injection
 koin = "4.2.2"
@@ -132,6 +133,8 @@ ktor-client-content-negotiation = { group = 'io.ktor', name = 'ktor-client-conte
 ktor-serialization-kotlinx-json = { group = 'io.ktor', name = 'ktor-serialization-kotlinx-json', version.ref = 'ktor' }
 kotlinx-serialization-json = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-serialization-json', version.ref = 'kotlinx-serialization' }
 kotlinx-serialization-core = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-serialization-core', version.ref = 'kotlinx-serialization' }
+ksoup = { group = "com.fleeksoft.ksoup", name = "ksoup", version.ref = "ksoup" }
+ksoup-network = { group = "com.fleeksoft.ksoup", name = "ksoup-network", version.ref = "ksoup" }
 
 # Depedency Injection
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
