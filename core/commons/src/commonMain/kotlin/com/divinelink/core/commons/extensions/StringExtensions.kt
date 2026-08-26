@@ -160,3 +160,12 @@ fun String.compareVersions(other: String): Int {
 }
 
 fun String.isNewerThan(other: String): Boolean = compareVersions(other) > 0
+
+/**
+ * Helper functions to extract attributes from HTML.
+ */
+fun String.extractAttributes(vararg attributes: String): Map<String, String?> = attributes
+  .associateWith { attr ->
+    val pattern = """$attr="([^"]*)"""".toRegex()
+    pattern.find(this)?.groupValues?.get(1)
+  }

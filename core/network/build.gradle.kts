@@ -18,9 +18,6 @@ kotlin {
       implementation(libs.ktor.serialization.kotlinx.json)
       implementation(libs.kotlinx.serialization.json)
 
-      implementation(libs.ksoup)
-      implementation(libs.ksoup.network)
-
       implementation(libs.kotlinx.datetime)
     }
 

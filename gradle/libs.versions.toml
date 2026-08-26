@@ -133,8 +133,6 @@ ktor-client-content-negotiation = { group = 'io.ktor', name = 'ktor-client-conte
 ktor-serialization-kotlinx-json = { group = 'io.ktor', name = 'ktor-serialization-kotlinx-json', version.ref = 'ktor' }
 kotlinx-serialization-json = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-serialization-json', version.ref = 'kotlinx-serialization' }
 kotlinx-serialization-core = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-serialization-core', version.ref = 'kotlinx-serialization' }
-ksoup = { group = "com.fleeksoft.ksoup", name = "ksoup", version.ref = "ksoup" }
-ksoup-network = { group = "com.fleeksoft.ksoup", name = "ksoup-network", version.ref = "ksoup" }
 
 # Depedency Injection
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
