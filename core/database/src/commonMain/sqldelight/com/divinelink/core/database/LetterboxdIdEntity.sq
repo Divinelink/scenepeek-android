@@ -1,0 +1,15 @@
+CREATE TABLE LetterboxdIdEntity (
+  url TEXT PRIMARY KEY NOT NULL,
+  mediaId INTEGER,
+  mediaType TEXT
+);
+
+insertMedia:
+INSERT OR REPLACE INTO LetterboxdIdEntity (
+  url, mediaId, mediaType
+)
+VALUES (?,?,?);
+
+getMediaFromUrl:
+SELECT * FROM LetterboxdIdEntity
+WHERE url = ?;

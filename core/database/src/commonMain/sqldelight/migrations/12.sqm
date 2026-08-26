@@ -1,0 +1,5 @@
+CREATE TABLE LetterboxdIdEntity (
+  url TEXT PRIMARY KEY NOT NULL,
+  mediaId INTEGER,
+  mediaType TEXT
+);

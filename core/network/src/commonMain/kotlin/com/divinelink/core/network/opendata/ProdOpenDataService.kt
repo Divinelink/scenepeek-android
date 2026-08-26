@@ -1,5 +1,6 @@
 package com.divinelink.core.network.opendata
 
+import com.divinelink.core.model.exception.NonTMDBContentException
 import com.divinelink.core.network.client.RestClient
 import com.divinelink.core.network.client.get
 import com.divinelink.core.network.opendata.model.wikidata.WikidataEntitiesResponse
@@ -21,8 +22,10 @@ class ProdOpenDataService(
   override suspend fun getIdFromLetterboxd(url: String): Result<Pair<Long, String>> = runCatching {
     val doc = Ksoup.parseGetRequest(url).body()
 
-    val id = doc.attr("data-tmdb-id").takeIf { it.isNotEmpty() } ?: error("id not found")
-    val mediaType = doc.attr("data-tmdb-type").takeIf { it.isNotEmpty() } ?: error("type not found")
+    val id = doc.attr("data-tmdb-id")
+      .takeIf { it.isNotEmpty() } ?: throw NonTMDBContentException()
+    val mediaType = doc.attr("data-tmdb-type")
+      .takeIf { it.isNotEmpty() } ?: throw NonTMDBContentException()
 
     id.toLong() to mediaType
   }

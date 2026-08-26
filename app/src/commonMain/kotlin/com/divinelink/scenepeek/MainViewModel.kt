@@ -15,6 +15,7 @@ import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.deeplink.DeeplinkPath
 import com.divinelink.core.model.deeplink.extractRouteFromDeeplink
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.Navigator
@@ -134,22 +135,7 @@ class MainViewModel(
             openDataRepository
               .getMediaFromLetterboxd(url = url)
               .fold(
-                onSuccess = { result ->
-                  when (result.mediaType) {
-                    MediaType.TV -> navigate(DeeplinkPath.TV(result.mediaId))
-                    MediaType.MOVIE -> navigate(DeeplinkPath.Movie(result.mediaId))
-                    MediaType.PERSON -> navigate(
-                      DeeplinkPath.Person(
-                        id = result.mediaId,
-                        knownForDepartment = null,
-                        name = null,
-                        profilePath = null,
-                        gender = null,
-                      ),
-                    )
-                    MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.OpenInBrowser(url))
-                  }
-                },
+                onSuccess = { media -> handleLetterboxdSuccess(media, url) },
                 onFailure = { updateUiEvent(MainUiEvent.OpenInBrowser(url)) },
               )
           }
@@ -220,6 +206,23 @@ class MainViewModel(
     }
 
     updateUiEvent(MainUiEvent.Navigate(route))
+  }
+
+  private fun handleLetterboxdSuccess(media: MediaReference, url: String) {
+    when (media.mediaType) {
+      MediaType.TV -> navigate(DeeplinkPath.TV(media.mediaId))
+      MediaType.MOVIE -> navigate(DeeplinkPath.Movie(media.mediaId))
+      MediaType.PERSON -> navigate(
+        DeeplinkPath.Person(
+          id = media.mediaId,
+          knownForDepartment = null,
+          name = null,
+          profilePath = null,
+          gender = null,
+        ),
+      )
+      MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.OpenInBrowser(url))
+    }
   }
 }
 
