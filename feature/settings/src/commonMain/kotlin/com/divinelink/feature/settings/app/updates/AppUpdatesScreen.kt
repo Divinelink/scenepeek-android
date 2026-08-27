@@ -1,16 +1,20 @@
 package com.divinelink.feature.settings.app.updates
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.extensions.epochSecondsToLocalDateTime
@@ -19,6 +23,7 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.model.app.InstallSource
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.IconWrapper
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.changelog
 import com.divinelink.feature.settings.components.SettingsClickItem
@@ -56,6 +61,19 @@ fun AppUpdatesScreen(
     ScenePeekLazyColumn(
       modifier = Modifier,
     ) {
+      item {
+        AnimatedVisibility(
+          visible = uiState.loading,
+          modifier = Modifier.fillMaxWidth(),
+        ) {
+          LinearProgressIndicator(
+            modifier = Modifier
+              .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+              .fillMaxWidth(),
+          )
+        }
+      }
+
       item {
         SettingsSwitchItem(
           title = stringResource(Res.string.auto_update_app_title),

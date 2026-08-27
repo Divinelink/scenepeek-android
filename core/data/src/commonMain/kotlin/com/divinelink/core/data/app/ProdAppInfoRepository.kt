@@ -5,6 +5,7 @@ import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.database.app.dao.AppInfoDao
 import com.divinelink.core.database.app.mapper.map
 import com.divinelink.core.database.currentEpochSeconds
+import com.divinelink.core.database.isOlderThanCurrentTime
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.app.AppVersion
 import com.divinelink.core.model.config.ConfigMessage
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.seconds
 
 class ProdAppInfoRepository(
   private val service: AppInfoService,
@@ -85,7 +87,10 @@ class ProdAppInfoRepository(
         }
       },
       shouldFetch = {
-        force || ((it?.canSearchForUpdate == null || it.canSearchForUpdate) && fetchRemote)
+        val canFetchRemote = it?.canSearchForUpdate != false && fetchRemote
+        val recentlyChecked = it?.lastCheck?.isOlderThanCurrentTime(clock, 30.seconds) == false
+
+        (force || canFetchRemote) && !recentlyChecked
       },
     )
   }
