@@ -26,11 +26,13 @@ import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.composition.LocalProvider
+import com.divinelink.core.ui.manager.url.rememberUrlHandler
 import com.divinelink.core.ui.network.AnnouncementPopup
 import com.divinelink.core.ui.network.NetworkStatusIndicator
 import com.divinelink.core.ui.resources.core_ui_okay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val NETWORK_STATUS_ANIMATION_DURATION = 4000L
 
@@ -48,6 +50,7 @@ fun ScenePeekApp(
   val isFirstLaunch by state.isInitialOnboarding.collectAsStateWithLifecycle()
   val theme by state.themePreferences.collectAsStateWithLifecycle()
   val announcement by state.announcement.collectAsStateWithLifecycle()
+  val urlHandler = rememberUrlHandler()
 
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
   var announcementMessage by remember { mutableStateOf<ConfigMessage?>(null) }
@@ -57,7 +60,7 @@ fun ScenePeekApp(
       when {
         isOffline -> {
           networkState = NetworkState.Offline.Initial
-          delay(NETWORK_STATUS_ANIMATION_DURATION)
+          delay(NETWORK_STATUS_ANIMATION_DURATION.milliseconds)
           if (networkState is NetworkState.Offline.Initial) {
             networkState = NetworkState.Offline.Persistent
           }
@@ -65,7 +68,7 @@ fun ScenePeekApp(
         else -> {
           if (networkState is NetworkState.Offline) {
             networkState = NetworkState.Online.Initial
-            delay(NETWORK_STATUS_ANIMATION_DURATION)
+            delay(NETWORK_STATUS_ANIMATION_DURATION.milliseconds)
             if (networkState is NetworkState.Online.Initial) {
               networkState = NetworkState.Online.Persistent
             }
@@ -80,6 +83,10 @@ fun ScenePeekApp(
       MainUiEvent.None -> Unit
       is MainUiEvent.Navigate -> {
         state.navigate(uiEvent.route)
+        onConsumeEvent()
+      }
+      is MainUiEvent.OpenInBrowser -> {
+        urlHandler.openUrl(uiEvent.uri)
         onConsumeEvent()
       }
     }

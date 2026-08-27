@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
 import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
+import com.divinelink.core.data.opendata.OpenDataRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.LocaleManager
@@ -14,6 +15,7 @@ import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.deeplink.DeeplinkPath
 import com.divinelink.core.model.deeplink.extractRouteFromDeeplink
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.Navigator
@@ -41,6 +43,7 @@ class MainViewModel(
   val preferencesRepository: PreferencesRepository,
   val navigator: Navigator,
   val appInfoRepository: AppInfoRepository,
+  val openDataRepository: OpenDataRepository,
   val localeManager: LocaleManager,
 ) : ViewModel() {
 
@@ -125,6 +128,19 @@ class MainViewModel(
           }
         },
       )
+      deeplinkUri.isForLetterboxd() -> handleSchemeLetterboxd(
+        uri = deeplinkUri,
+        onHandleDeeplink = { url ->
+          viewModelScope.launch {
+            openDataRepository
+              .getMediaFromLetterboxd(url = url)
+              .fold(
+                onSuccess = { media -> handleLetterboxdSuccess(media, url) },
+                onFailure = { updateUiEvent(MainUiEvent.OpenInBrowser(url)) },
+              )
+          }
+        },
+      )
       else -> handleScenePeekDeeplink(deeplinkUri)
     }
   }
@@ -191,6 +207,23 @@ class MainViewModel(
 
     updateUiEvent(MainUiEvent.Navigate(route))
   }
+
+  private fun handleLetterboxdSuccess(media: MediaReference, url: String) {
+    when (media.mediaType) {
+      MediaType.TV -> navigate(DeeplinkPath.TV(media.mediaId))
+      MediaType.MOVIE -> navigate(DeeplinkPath.Movie(media.mediaId))
+      MediaType.PERSON -> navigate(
+        DeeplinkPath.Person(
+          id = media.mediaId,
+          knownForDepartment = null,
+          name = null,
+          profilePath = null,
+          gender = null,
+        ),
+      )
+      MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.OpenInBrowser(url))
+    }
+  }
 }
 
 private fun handleSchemeIMDB(
@@ -229,6 +262,14 @@ private fun handleSchemeTMDBRedirect(
   }
 }
 
+private fun handleSchemeLetterboxd(
+  uri: DeepLinkUri,
+  onHandleDeeplink: (String) -> Unit,
+) {
+  val path = uri.raw
+  onHandleDeeplink(path)
+}
+
 private fun DeepLinkUri.isForTMDBAuth(): Boolean = scheme == "scenepeek" &&
   host == "auth" &&
   path == "/redirect"
@@ -238,3 +279,6 @@ private fun DeepLinkUri.isDeeplinkFromScenePeek(): Boolean = scheme == "scenepee
 
 private fun DeepLinkUri.isForIMDB(): Boolean = scheme == "https" &&
   (host == "imdb.com" || host == "www.imdb.com" || host == "m.imdb.com")
+
+private fun DeepLinkUri.isForLetterboxd(): Boolean = scheme == "https" &&
+  (host == "letterboxd.com" || host == "www.letterboxd.com" || host == "boxd.it")

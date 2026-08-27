@@ -17,7 +17,7 @@
   <string name="feature_onboarding_jellyseerr_page_description">Connect to your Seerr instance to request movies and TV shows instantly.</string>
 
   <string name="feature_onboarding_link_handling_page_title">IMDb &amp; TMDB Link Handling</string>
-  <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> & <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and people directly in the app.]]></string>
+  <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong>, <strong>TMDB</strong> & <strong>Letterboxd</strong> in the app. This can be useful for opening links to movies, TV shows and people directly in the app.]]></string>
 
   <string name="feature_onboarding_v29_grid_view">- Allow user to switch between grid and list view on media lists</string>
   <string name="feature_onboarding_v29_discover_rating_filter">- Add new discover filters. You can now also discover movies and tv shows by filtering with ratings and minimum votes.</string>
