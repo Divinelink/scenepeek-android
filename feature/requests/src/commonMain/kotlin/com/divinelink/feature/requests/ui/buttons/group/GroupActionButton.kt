@@ -35,8 +35,11 @@ fun SeerrRequestActionsButtonGroup(
   enabled: Boolean,
   action: (SeerrRequestAction) -> Unit,
 ) {
-  val interactionSources = remember { List(actions.size) { MutableInteractionSource() } }
-  key(actions.size, actions.hashCode()) {
+  val interactionSources = remember(actions) {
+    actions.associateWith { MutableInteractionSource() }
+  }
+
+  key(actions) {
     ButtonGroup(
       modifier = modifier,
       expandedRatio = 0.07f,
@@ -44,7 +47,9 @@ fun SeerrRequestActionsButtonGroup(
         ButtonGroupDefaults.OverflowIndicator(menuState = menuState)
       },
     ) {
-      actions.forEachIndexed { index, requestAction ->
+      actions.forEach { requestAction ->
+        val interactionSource = interactionSources[requestAction] ?: return@forEach
+
         customItem(
           buttonGroupContent = {
             val contentPadding = ButtonDefaults.ButtonWithIconContentPadding
@@ -77,9 +82,9 @@ fun SeerrRequestActionsButtonGroup(
                 pressedShape = connectedMiddleButtonPressShape,
               ),
               contentPadding = contentPadding,
-              interactionSource = interactionSources[index],
+              interactionSource = interactionSource,
               modifier = Modifier.animateWidth(
-                interactionSource = interactionSources[index],
+                interactionSource = interactionSource,
               ),
               onClick = { action(requestAction) },
             ) {
@@ -120,7 +125,7 @@ fun SeerrRequestActionsButtonGroup(
                 menuState.dismiss()
                 action(requestAction)
               },
-              interactionSource = interactionSources[index],
+              interactionSource = interactionSource,
             )
           },
         )
