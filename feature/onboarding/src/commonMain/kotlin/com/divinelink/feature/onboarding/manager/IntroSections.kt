@@ -82,6 +82,7 @@ import com.divinelink.feature.onboarding.resources.v58_allow_plex_authorization
 import com.divinelink.feature.onboarding.resources.v58_seerr_recent_requests
 import com.divinelink.feature.onboarding.resources.v58_wikipedia_link
 import com.divinelink.feature.onboarding.resources.v59_add_changelog_button
+import com.divinelink.feature.onboarding.resources.v59_add_delete_account_option
 import com.divinelink.feature.onboarding.resources.v59_fix_seerr_home_actions
 import com.divinelink.feature.onboarding.resources.v59_handle_letterboxd_urls
 import com.divinelink.feature.onboarding.resources.Res as R
@@ -356,6 +357,7 @@ object IntroSections {
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v59_handle_letterboxd_urls)),
     IntroSection.Text(UIText.ResourceText(R.string.v59_add_changelog_button)),
+    IntroSection.Text(UIText.ResourceText(R.string.v59_add_delete_account_option)),
     IntroSection.SecondaryHeader.Fixed,
     IntroSection.Text(UIText.ResourceText(R.string.v59_fix_seerr_home_actions)),
   )

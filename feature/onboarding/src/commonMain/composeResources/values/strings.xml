@@ -106,5 +106,6 @@
 
   <string name="v59_handle_letterboxd_urls">- Added support for Letterboxd URLs, allowing them to open directly in the app</string>
   <string name="v59_add_changelog_button">- Added a view changelog option in Settings > App updates</string>
+  <string name="v59_add_delete_account_option">- Added delete account option in account settings</string>
   <string name="v59_fix_seerr_home_actions">- Fixed an issue with Seerr actions on the home screen</string>
 </resources>

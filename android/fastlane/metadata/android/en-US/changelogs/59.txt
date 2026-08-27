@@ -2,6 +2,7 @@
 
 - Added support for Letterboxd URLs, allowing them to open directly in the app
 - Added a view changelog option in Settings > App updates
+- Added delete account option in account settings
 - Fixed an issue with Seerr actions on the home screen
 
 We're constantly working on improvements and new features. Stay tuned for more updates!
