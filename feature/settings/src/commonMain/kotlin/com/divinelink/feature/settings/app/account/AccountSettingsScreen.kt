@@ -44,7 +44,7 @@ fun AccountSettingsScreen(
       onLoginClick = viewModel::login,
       uiState = viewState,
       onLogoutClick = viewModel::logoutDialog,
-      onNavigateToJellyseerrLogin = { onNavigate(Navigation.JellyseerrSettingsRoute(true)) },
+      onNavigate = onNavigate,
     )
   }
 

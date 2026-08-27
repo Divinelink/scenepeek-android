@@ -2,6 +2,7 @@ package com.divinelink.feature.settings.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +30,7 @@ fun SettingsExternalLinkItem(
   modifier: Modifier = Modifier,
   onNavigate: (Navigation) -> Unit,
   text: String,
+  summary: String? = null,
   url: String,
 ) {
   val urlHandler = rememberUrlHandler()
@@ -38,6 +40,7 @@ fun SettingsExternalLinkItem(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     modifier = modifier
+      .fillMaxWidth()
       .clickable {
         urlHandler.openUrl(
           url = url,
@@ -51,13 +54,28 @@ fun SettingsExternalLinkItem(
           },
         )
       }
-      .padding(MaterialTheme.dimensions.keyline_16)
+      .padding(
+        vertical = MaterialTheme.dimensions.keyline_8,
+        horizontal = MaterialTheme.dimensions.keyline_16,
+      )
       .fillMaxWidth(),
   ) {
-    Text(
-      text = text,
-      style = MaterialTheme.typography.bodyLarge,
-    )
+    Column(
+      modifier = Modifier.fillMaxWidth(0.85f),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+    ) {
+      Text(
+        text = text,
+        style = MaterialTheme.typography.bodyLarge,
+      )
+      summary?.let {
+        Text(
+          text = summary,
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.secondary,
+        )
+      }
+    }
 
     Spacer(modifier = Modifier.weight(1f))
 

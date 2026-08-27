@@ -107,4 +107,7 @@
     <!-- Accessibility -->
     <string name="feature_settings_show_password">Show password</string>
     <string name="feature_settings_hide_password">Hide password</string>
+  <string name="feature_settings_delete_account">Delete account</string>
+  <string name="feature_settings_delete_account_summary">Request account deletion if you no longer wish to use your account.</string>
+  <string name="danger_zone">Danger zone!</string>
 </resources>
