@@ -1,6 +1,12 @@
 package com.divinelink.feature.settings.app.updates
 
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CloudDownload
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -12,7 +18,11 @@ import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.model.app.InstallSource
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.IconWrapper
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.changelog
 import com.divinelink.feature.settings.components.SettingsClickItem
+import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsSwitchItem
 import com.divinelink.feature.settings.components.SettingsTextItem
@@ -47,15 +57,13 @@ fun AppUpdatesScreen(
       modifier = Modifier,
     ) {
       item {
-        SettingsTextItem(
-          title = stringResource(Res.string.version),
-          summary = uiState.appVersion?.currentVersion ?: uiState.fallbackVersion,
-        )
-      }
-
-      item {
         SettingsSwitchItem(
           title = stringResource(Res.string.auto_update_app_title),
+          icon = if (uiState.updaterOptIn) {
+            IconWrapper.Vector(Icons.Outlined.Notifications)
+          } else {
+            IconWrapper.Vector(Icons.Outlined.NotificationsOff)
+          },
           summary = stringResource(Res.string.auto_update_app_summary),
           isChecked = uiState.updaterOptIn,
           onCheckedChange = viewModel::updateOptIn,
@@ -70,6 +78,7 @@ fun AppUpdatesScreen(
         }
         SettingsClickItem(
           text = text,
+          icon = IconWrapper.Vector(Icons.Outlined.CloudDownload),
           summary = lastChecked?.let {
             stringResource(
               Res.string.last_checked,
@@ -77,6 +86,26 @@ fun AppUpdatesScreen(
             )
           },
           onClick = viewModel::checkForUpdates,
+        )
+      }
+
+      item {
+        SettingsClickItem(
+          text = stringResource(UiString.changelog),
+          icon = IconWrapper.Vector(Icons.Outlined.History),
+          onClick = { onNavigate(Navigation.Onboarding.Changelog) },
+        )
+      }
+
+      item {
+        SettingsDivider()
+      }
+
+      item {
+        SettingsTextItem(
+          icon = IconWrapper.Vector(Icons.Outlined.Info),
+          title = stringResource(Res.string.version),
+          summary = uiState.appVersion?.currentVersion ?: uiState.fallbackVersion,
         )
       }
     }

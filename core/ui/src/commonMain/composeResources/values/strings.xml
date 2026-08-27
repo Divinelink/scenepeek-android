@@ -200,4 +200,5 @@
   <string name="customize_home_layout">Customize home layout</string>
   <string name="error_at_least_one_section_visible">At least one section must be visible</string>
   <string name="restore_to_default">Restore to default</string>
+  <string name="changelog">Changelog</string>
 </resources>

@@ -6,6 +6,7 @@ import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.onboarding.IntroSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 
 class ProdIntroManager(
@@ -32,6 +33,9 @@ class ProdIntroManager(
       getUnseenChangelogSections(lastSeenVersion, currentVersion)
     }
   }.take(1)
+
+  override val changelog: Flow<List<IntroSection>>
+    get() = flowOf(getAllChangelogs())
 
   override suspend fun onOnboardingComplete() {
     onboardingStorage.setOnboardingCompleted()
@@ -60,6 +64,28 @@ class ProdIntroManager(
       .filterIndexed { index, section ->
         if (section is IntroSection.Header) {
           unseenSections.indexOfFirst { it is IntroSection.Header } == index
+        } else {
+          true
+        }
+      }
+  }
+
+  private fun getAllChangelogs(): List<IntroSection> {
+    val changelogs = mutableListOf<IntroSection>()
+
+    IntroSections
+      .changelogSections
+      .values
+      .reversed()
+      .flatten()
+      .forEach { version ->
+        changelogs.add(version)
+      }
+
+    return changelogs
+      .filterIndexed { index, section ->
+        if (section is IntroSection.Header) {
+          changelogs.indexOfFirst { it is IntroSection.Header } == index
         } else {
           true
         }

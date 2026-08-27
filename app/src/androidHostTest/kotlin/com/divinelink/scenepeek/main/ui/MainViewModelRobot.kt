@@ -3,6 +3,7 @@ package com.divinelink.scenepeek.main.ui
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
+import com.divinelink.core.fixtures.data.opendata.TestOpenDataRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.fixtures.shared.TestLocaleManager
@@ -40,6 +41,7 @@ class MainViewModelRobot {
       appInfoRepository = TestAppInfoRepository(),
       navigator = Navigator(),
       localeManager = TestLocaleManager(),
+      openDataRepository = TestOpenDataRepository(),
     )
   }
 

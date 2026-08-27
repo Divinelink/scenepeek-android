@@ -4,6 +4,7 @@ import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.onboarding.IntroSection
+import com.divinelink.core.model.onboarding.IntroType
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
@@ -151,6 +152,38 @@ class IntroViewModelTest {
       .assertUiState(
         OnboardingUiState.initial().copy(
           sections = IntroSections.onboardingSections,
+        ),
+      )
+  }
+
+  @Test
+  fun `test changelog type displays all changelogs`() {
+    val flattenChangelogs = IntroSections
+      .changelogSections
+      .values
+      .reversed()
+      .flatten()
+      .filterIndexed { index, section ->
+        // Filter out changelog header for all versions except the first one
+        if (section is IntroSection.Header) {
+          0 == index
+        } else {
+          true
+        }
+      }
+
+    robot
+      .mockChangelogs(flattenChangelogs)
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .mockIsInitialOnboarding(false)
+      .mockGetJellyseerrAccountDetails(
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
+      )
+      .setType(introType = IntroType.Changelog)
+      .buildViewModel()
+      .assertUiState(
+        OnboardingUiState.initial().copy(
+          sections = flattenChangelogs,
         ),
       )
   }

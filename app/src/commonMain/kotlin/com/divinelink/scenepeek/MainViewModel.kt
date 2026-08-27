@@ -208,7 +208,10 @@ class MainViewModel(
     updateUiEvent(MainUiEvent.Navigate(route))
   }
 
-  private fun handleLetterboxdSuccess(media: MediaReference, url: String) {
+  private fun handleLetterboxdSuccess(
+    media: MediaReference,
+    url: String,
+  ) {
     when (media.mediaType) {
       MediaType.TV -> navigate(DeeplinkPath.TV(media.mediaId))
       MediaType.MOVIE -> navigate(DeeplinkPath.Movie(media.mediaId))

@@ -15,18 +15,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.model.onboarding.IntroType
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.composition.LocalIntentManager
 import com.divinelink.core.ui.conditional
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntroModalBottomSheet(
+  type: IntroType,
   modifier: Modifier = Modifier,
   onNavigate: (Navigation) -> Unit,
-  viewModel: IntroViewModel = koinViewModel(),
+  viewModel: IntroViewModel = koinViewModel { parametersOf(type) },
 ) {
   val intentManager = LocalIntentManager.current
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()

@@ -5,6 +5,7 @@ import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.onboarding.IntroSection
+import com.divinelink.core.model.onboarding.IntroType
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
@@ -14,6 +15,8 @@ import com.divinelink.feature.onboarding.ui.OnboardingUiState
 import kotlinx.coroutines.flow.Flow
 
 class IntroViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
+
+  private var type: IntroType = IntroType.Onboarding
 
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
   private val getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
@@ -31,6 +34,7 @@ class IntroViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = onboardingManager,
+      type = type,
     )
   }
 
@@ -40,6 +44,10 @@ class IntroViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
     }
   }
 
+  fun setType(introType: IntroType) = apply {
+    type = introType
+  }
+
   fun onboardingComplete() = apply {
     viewModel.onboardingComplete()
   }
@@ -47,6 +55,10 @@ class IntroViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
   // Mocks
   fun mockOnboardingPages(pages: List<IntroSection>) = apply {
     onboardingManager.setSections(pages)
+  }
+
+  fun mockChangelogs(pages: List<IntroSection>) = apply {
+    onboardingManager.setChangelogs(pages)
   }
 
   fun mockIsInitialOnboarding(isInitialOnboarding: Boolean) = apply {

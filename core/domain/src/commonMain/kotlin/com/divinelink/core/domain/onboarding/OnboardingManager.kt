@@ -7,5 +7,6 @@ interface OnboardingManager {
   val showIntro: Flow<Boolean>
   val sections: Flow<List<IntroSection>>
   val isInitialOnboarding: Flow<Boolean>
+  val changelog: Flow<List<IntroSection>>
   suspend fun onOnboardingComplete()
 }
