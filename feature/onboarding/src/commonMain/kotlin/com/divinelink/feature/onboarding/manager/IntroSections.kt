@@ -8,8 +8,9 @@ import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.core_model_ic_tmdb
 import com.divinelink.core.ui.UiDrawable
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.changelog
 import com.divinelink.core.ui.resources.core_ui_ic_jellyseerr
-import com.divinelink.feature.onboarding.resources.feature_onboarding_changelog
 import com.divinelink.feature.onboarding.resources.feature_onboarding_jellyseerr_page_description
 import com.divinelink.feature.onboarding.resources.feature_onboarding_jellyseerr_page_title
 import com.divinelink.feature.onboarding.resources.feature_onboarding_link_handling_page_description
@@ -80,6 +81,9 @@ import com.divinelink.feature.onboarding.resources.v58_allow_home_customization
 import com.divinelink.feature.onboarding.resources.v58_allow_plex_authorization
 import com.divinelink.feature.onboarding.resources.v58_seerr_recent_requests
 import com.divinelink.feature.onboarding.resources.v58_wikipedia_link
+import com.divinelink.feature.onboarding.resources.v59_add_changelog_button
+import com.divinelink.feature.onboarding.resources.v59_fix_seerr_home_actions
+import com.divinelink.feature.onboarding.resources.v59_handle_letterboxd_urls
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -122,7 +126,7 @@ object IntroSections {
   }
 
   val v29 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.21.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v29_grid_view)),
@@ -133,7 +137,7 @@ object IntroSections {
   )
 
   val v30 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.22.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(
@@ -151,7 +155,7 @@ object IntroSections {
   )
 
   val v32 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.23.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v32_improve_search)),
@@ -167,7 +171,7 @@ object IntroSections {
   )
 
   val v33 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.24.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v33_redesign_home_screen)),
@@ -177,7 +181,7 @@ object IntroSections {
   )
 
   val v34 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.25.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(
@@ -191,7 +195,7 @@ object IntroSections {
   )
 
   val v35 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.25.1"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(
@@ -200,14 +204,14 @@ object IntroSections {
   )
 
   val v36 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.26.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v36_season_and_episode_details_screen)),
   )
 
   val v37 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.27.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v37_movies_collection)),
@@ -217,7 +221,7 @@ object IntroSections {
   )
 
   val v39 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.28.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v38_streaming_providers)),
@@ -228,14 +232,14 @@ object IntroSections {
   )
 
   val v40 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.28.1"),
     IntroSection.SecondaryHeader.Fixed,
     IntroSection.Text(UIText.ResourceText(R.string.v40_fix_tabs_overlapping_on_details)),
   )
 
   val v41 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.29.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v41_add_version_checker)),
@@ -243,7 +247,7 @@ object IntroSections {
   )
 
   val v44 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.29.3"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v44_add_missing_www_subdomain_on_share_urls)),
@@ -252,14 +256,14 @@ object IntroSections {
   )
 
   val v46 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.30.0"),
     IntroSection.SecondaryHeader.Fixed,
     IntroSection.Text(UIText.ResourceText(R.string.v46_improve_ui_for_large_screens)),
   )
 
   val v47 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.31.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v47_movie_release_dates)),
@@ -269,7 +273,7 @@ object IntroSections {
   )
 
   val v48 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.31.1"),
     IntroSection.SecondaryHeader.Fixed,
     IntroSection.Text(UIText.ResourceText(R.string.v48_fix_tmdb_auth_issue)),
@@ -277,14 +281,14 @@ object IntroSections {
   )
 
   val v49 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.31.2"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v49_add_custom_remote_config)),
   )
 
   val v50 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.32.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v50_app_language)),
@@ -292,7 +296,7 @@ object IntroSections {
   )
 
   val v51 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.33.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v51_add_rating_label_popup)),
@@ -300,7 +304,7 @@ object IntroSections {
   )
 
   val v53 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.34.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v52_awards_feature)),
@@ -308,7 +312,7 @@ object IntroSections {
   )
 
   val v54 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.35.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v54_rename_collections_to_saved)),
@@ -317,7 +321,7 @@ object IntroSections {
   )
 
   val v55 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.36.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v55_share_review_option)),
@@ -327,7 +331,7 @@ object IntroSections {
   )
 
   val v56 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.37.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v56_add_sorting_options_on_lists)),
@@ -337,13 +341,23 @@ object IntroSections {
   )
 
   val v58 = listOf(
-    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
     IntroSection.WhatsNew("v0.38.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v58_allow_home_customization)),
     IntroSection.Text(UIText.ResourceText(R.string.v58_wikipedia_link)),
     IntroSection.Text(UIText.ResourceText(R.string.v58_seerr_recent_requests)),
     IntroSection.Text(UIText.ResourceText(R.string.v58_allow_plex_authorization)),
+  )
+
+  val v59 = listOf(
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
+    IntroSection.WhatsNew("v0.38.1"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v59_handle_letterboxd_urls)),
+    IntroSection.Text(UIText.ResourceText(R.string.v59_add_changelog_button)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.v59_fix_seerr_home_actions)),
   )
 
   /**
@@ -373,5 +387,6 @@ object IntroSections {
     55 to v55,
     56 to v56,
     58 to v58,
+    59 to v59,
   )
 }

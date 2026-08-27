@@ -35,6 +35,7 @@ import com.divinelink.core.model.home.HomeSectionsConfig
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.onboarding.IntroType
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.ScenePeekApp
@@ -874,6 +875,7 @@ class ScenePeekAppTest : ComposeTest() {
         getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
         getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
         onboardingManager = onboardingManager,
+        type = IntroType.Onboarding,
       )
     }
 
@@ -937,6 +939,7 @@ class ScenePeekAppTest : ComposeTest() {
         getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
         getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
         onboardingManager = onboardingManager,
+        type = IntroType.Onboarding,
       )
     }
 

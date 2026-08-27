@@ -6,12 +6,14 @@ data class AppUpdatesUiState(
   val appVersion: AppVersion?,
   val fallbackVersion: String,
   val updaterOptIn: Boolean,
+  val loading: Boolean,
 ) {
   companion object {
     fun initial(version: String) = AppUpdatesUiState(
       appVersion = null,
       fallbackVersion = version,
       updaterOptIn = false,
+      loading = false,
     )
   }
 }

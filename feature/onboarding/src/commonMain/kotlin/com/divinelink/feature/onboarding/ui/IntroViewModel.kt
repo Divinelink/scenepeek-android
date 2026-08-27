@@ -8,13 +8,16 @@ import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.onboarding.IntroSection
+import com.divinelink.core.model.onboarding.IntroType
 import com.divinelink.core.model.onboarding.OnboardingAction
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,6 +27,7 @@ class IntroViewModel(
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
   private val getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
   onboardingManager: OnboardingManager,
+  type: IntroType,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(OnboardingUiState.initial())
@@ -33,21 +37,34 @@ class IntroViewModel(
   val onNavigateUp: Flow<Unit> = _onNavigateUp.receiveAsFlow()
 
   init {
-    combine(
-      onboardingManager.isInitialOnboarding,
-      onboardingManager.sections,
-    ) { isFirstLaunch, sections ->
-      _uiState.update { uiState ->
-        uiState.copy(
-          sections = sections,
-          isFirstLaunch = isFirstLaunch,
-        )
-      }
+    when (type) {
+      IntroType.Changelog ->
+        onboardingManager
+          .changelog
+          .distinctUntilChanged()
+          .onEach {
+            _uiState.update { state ->
+              state.copy(sections = it)
+            }
+          }
+          .launchIn(viewModelScope)
 
-      if (isFirstLaunch) {
-        startAccountObservers()
-      }
-    }.launchIn(viewModelScope)
+      IntroType.Onboarding -> combine(
+        onboardingManager.isInitialOnboarding,
+        onboardingManager.sections,
+      ) { isFirstLaunch, sections ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            sections = sections,
+            isFirstLaunch = isFirstLaunch,
+          )
+        }
+
+        if (isFirstLaunch) {
+          startAccountObservers()
+        }
+      }.launchIn(viewModelScope)
+    }
   }
 
   fun onboardingComplete() {

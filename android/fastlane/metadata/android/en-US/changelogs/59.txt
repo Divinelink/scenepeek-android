@@ -1,0 +1,7 @@
+🎉 Update v0.38.1
+
+- Added support for Letterboxd URLs, allowing them to open directly in the app
+- Added a view changelog option in Settings > App updates
+- Fixed an issue with Seerr actions on the home screen
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

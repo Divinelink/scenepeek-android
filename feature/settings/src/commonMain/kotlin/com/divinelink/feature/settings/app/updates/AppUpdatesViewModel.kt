@@ -5,13 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.network.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class AppUpdatesViewModel(
   private val appInfoRepository: AppInfoRepository,
@@ -49,13 +53,15 @@ class AppUpdatesViewModel(
 
   fun checkForUpdates() {
     appInfoRepository
-      .fetchLatestAppVersion(
-        fetchRemote = true,
-        force = true,
-      )
+      .fetchLatestAppVersion(fetchRemote = true, force = true)
+      .onStart { _uiState.update { it.copy(loading = true) } }
+      .map { result ->
+        delay(300.milliseconds)
+        result
+      }
+      .onEach { _uiState.update { it.copy(loading = false) } }
       .launchIn(viewModelScope)
   }
-
   fun updateOptIn(enabled: Boolean) {
     viewModelScope.launch {
       appInfoRepository.updateUpdaterOptIn(enabled)

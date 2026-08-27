@@ -199,4 +199,30 @@ class ProdIntroManagerTest {
       awaitComplete()
     }
   }
+
+  @Test
+  fun `test changelog contains changelogs from all version`() = runTest {
+    manager = ProdIntroManager(
+      onboardingStorage = TestOnboardingStorage(isFirstLaunch = false, lastSeenVersion = 61),
+      currentVersion = 62,
+    )
+
+    manager.changelog.test {
+      awaitItem() shouldBe IntroSections
+        .changelogSections
+        .values
+        .reversed()
+        .flatten()
+        .filterIndexed { index, section ->
+          // Filter out changelog header for all versions except the first one
+          if (section is IntroSection.Header) {
+            0 == index
+          } else {
+            true
+          }
+        }
+
+      awaitComplete()
+    }
+  }
 }

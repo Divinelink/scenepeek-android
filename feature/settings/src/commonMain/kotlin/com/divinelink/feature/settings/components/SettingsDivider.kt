@@ -10,7 +10,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 @Composable
 fun SettingsDivider() {
   HorizontalDivider(
-    modifier = Modifier.padding(vertical = MaterialTheme.dimensions.keyline_16),
+    modifier = Modifier.padding(vertical = MaterialTheme.dimensions.keyline_8),
     color = MaterialTheme.colorScheme.surfaceVariant,
   )
 }

@@ -53,6 +53,9 @@ sealed interface Navigation : NavKey {
 
     @Serializable
     data object FullScreenRoute : Onboarding
+
+    @Serializable
+    data object Changelog : Onboarding
   }
 
   @Serializable

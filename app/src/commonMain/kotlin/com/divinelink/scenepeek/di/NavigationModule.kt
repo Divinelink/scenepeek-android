@@ -10,6 +10,7 @@ import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.media.decodeToMediaItem
+import com.divinelink.core.model.onboarding.IntroType
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
@@ -177,6 +178,7 @@ val navigationModule = module {
 
     IntroModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Onboarding.FULLSCREEN),
+      type = IntroType.Onboarding,
       onNavigate = navigator::navigate,
     )
   }
@@ -191,6 +193,17 @@ val navigationModule = module {
 
     IntroModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Onboarding.MODAL),
+      type = IntroType.Onboarding,
+      onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.Onboarding.Changelog>(metadata = DialogSceneStrategy.dialog()) { key ->
+    val navigator = get<Navigator>()
+
+    IntroModalBottomSheet(
+      modifier = Modifier.testTag(TestTags.Onboarding.MODAL),
+      type = IntroType.Changelog,
       onNavigate = navigator::navigate,
     )
   }
