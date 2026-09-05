@@ -201,6 +201,7 @@ enum class Country(
   val code: String,
 ) {
   PALESTINE(Res.string.country_palestine, "PS"),
+  LEBANON(Res.string.country_lebanon, "LB"),
   UKRAINE(Res.string.country_ukraine, "UA"),
   UNITED_STATES(Res.string.country_united_states, "US"),
   UNITED_KINGDOM(Res.string.country_united_kingdom, "GB"),
@@ -330,7 +331,6 @@ enum class Country(
   KUWAIT(Res.string.country_kuwait, "KW"),
   KYRGYZSTAN(Res.string.country_kyrgyzstan, "KG"),
   LAOS(Res.string.country_laos, "LA"),
-  LEBANON(Res.string.country_lebanon, "LB"),
   LESOTHO(Res.string.country_lesotho, "LS"),
   LIBERIA(Res.string.country_liberia, "LR"),
   LIBYA(Res.string.country_libya, "LY"),
