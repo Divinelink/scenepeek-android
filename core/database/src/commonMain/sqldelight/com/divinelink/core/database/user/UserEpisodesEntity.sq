@@ -1,0 +1,15 @@
+CREATE TABLE UserEpisodesEntity (
+  id INTEGER NOT NULL PRIMARY KEY,
+  episodeId TEXT NOT NULL,
+  watched INTEGER NOT NULL,
+  watchedAt TEXT
+);
+
+insertUserEpisode:
+INSERT OR REPLACE INTO UserEpisodesEntity (
+  id,
+  episodeId,
+  watched,
+  watchedAt
+)
+VALUES ?;

@@ -1,0 +1,21 @@
+CREATE TABLE UserShowsEntity (
+  id INTEGER NOT NULL PRIMARY KEY ,
+  showId TEXT NOT NULL,
+  addedAt TEXT NOT NULL,
+  updatedAt TEXT NOT NULL,
+  status TEXT NOT NULL,
+  notes TEXT,
+  rating INTEGER
+);
+
+insertUserShow:
+INSERT OR REPLACE INTO UserShowsEntity (
+  id,
+  showId,
+  addedAt,
+  updatedAt,
+  status,
+  notes,
+  rating
+)
+VALUES ?;
