@@ -9,6 +9,7 @@ import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
@@ -133,4 +134,12 @@ interface MediaDao {
   fun fetchSearchHistory(): Flow<List<SearchHistoryEntity>>
 
   fun selectByIds(ids: List<Long>): Flow<List<MediaItem>>
+
+  fun markEpisodeAsWatched(episodeId: Long)
+  fun unmarkEpisodeAsWatched(episodeId: Long)
+
+  fun markSeasonAsWatched(episodeIds: List<Long>)
+  fun unmarkSeasonAsWatched(episodeIds: List<Long>)
+
+  fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>>
 }

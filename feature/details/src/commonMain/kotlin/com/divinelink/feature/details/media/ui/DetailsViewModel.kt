@@ -11,6 +11,7 @@ import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -26,6 +27,8 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
+import com.divinelink.core.domain.track.CompleteSeasonParameters
+import com.divinelink.core.domain.track.CompleteSeasonUseCase
 import com.divinelink.core.model.LCEState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.AccountDataSection
@@ -60,6 +63,7 @@ import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.add.to.account.resources.must_be_logged_in_to_rate
 import com.divinelink.feature.add.to.account.resources.rating_deleted_successfully
 import com.divinelink.feature.add.to.account.resources.rating_submitted_successfully
+import com.divinelink.feature.details.DetailsAction
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.added_to_favorites_message
 import com.divinelink.feature.details.resources.details__added_to_watchlist
@@ -99,8 +103,10 @@ class DetailsViewModel(
   private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
+  private val completeSeasonUseCase: CompleteSeasonUseCase,
   authRepository: AuthRepository,
   repository: DetailsRepository,
+  private val mediaRepository: MediaRepository,
   preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
@@ -171,6 +177,20 @@ class DetailsViewModel(
       MediaType.MOVIE -> MediaRequestApi.Movie(route.id)
       MediaType.PERSON -> MediaRequestApi.Unknown
       MediaType.UNKNOWN -> MediaRequestApi.Unknown
+    }
+
+    if (viewState.value.mediaType == MediaType.TV) {
+      mediaRepository
+        .getSeasonsProgress(viewState.value.mediaId)
+        .distinctUntilChanged()
+        .onEach { progress ->
+          _viewState.update { state ->
+            state.copy(
+              seasonsProgress = progress,
+            )
+          }
+        }
+        .launchIn(viewModelScope)
     }
 
     getMediaDetailsUseCase(parameters = requestApi)
@@ -484,6 +504,24 @@ class DetailsViewModel(
           }
           setSectionState(AccountDataSection.Rating, false)
         },
+      )
+    }
+  }
+
+  fun onAction(action: DetailsAction) {
+    when (action) {
+      is DetailsAction.MarkSeasonComplete -> handleMarkSeasonComplete(action)
+    }
+  }
+
+  private fun handleMarkSeasonComplete(action: DetailsAction.MarkSeasonComplete) {
+    viewModelScope.launch {
+      completeSeasonUseCase(
+        parameters = CompleteSeasonParameters(
+          showId = viewState.value.mediaId,
+          seasonNumber = action.seasonNumber,
+          seasonComplete = action.isComplete,
+        ),
       )
     }
   }

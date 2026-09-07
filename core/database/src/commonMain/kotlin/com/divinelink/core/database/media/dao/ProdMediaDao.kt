@@ -18,6 +18,7 @@ import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
@@ -35,6 +36,7 @@ class ProdMediaDao(
   private val dispatcher: DispatcherProvider,
   private val clock: Clock,
 ) : MediaDao {
+  private val episodeQueries = database.userEpisodesEntityQueries
 
   override fun insertMedia(
     media: MediaItem.Media,
@@ -545,4 +547,51 @@ class ProdMediaDao(
       }
     }
   }
+
+  override fun markEpisodeAsWatched(episodeId: Long) = database.transaction {
+    episodeQueries.upsertUserEpisode(
+      episodeId = episodeId,
+      watchedAt = null,
+    )
+  }
+
+  override fun unmarkEpisodeAsWatched(episodeId: Long) = database.transaction {
+    episodeQueries.deleteUserEpisode(
+      episodeId = episodeId,
+    )
+  }
+
+  override fun markSeasonAsWatched(episodeIds: List<Long>) {
+    if (episodeIds.isEmpty()) return
+
+    database.transaction {
+      episodeIds.forEach { id ->
+        episodeQueries.upsertUserEpisode(episodeId = id, watchedAt = null)
+      }
+    }
+  }
+
+  override fun unmarkSeasonAsWatched(episodeIds: List<Long>) {
+    if (episodeIds.isEmpty()) return
+
+    database.transaction {
+      episodeIds.forEach { id ->
+        episodeQueries.deleteUserEpisode(episodeId = id)
+      }
+    }
+  }
+
+  override fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>> = episodeQueries
+    .seasonsProgress(showId = showId)
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .distinctUntilChanged()
+    .map { result ->
+      result.map { season ->
+        SeasonProgress(
+          seasonNumber = season.seasonNumber.toInt(),
+          watchedCount = season.watched_count.toInt(),
+        )
+      }
+    }
 }

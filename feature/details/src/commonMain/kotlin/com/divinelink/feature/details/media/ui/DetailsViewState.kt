@@ -8,6 +8,7 @@ import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.provider.WatchProviders
@@ -42,6 +43,7 @@ data class DetailsViewState(
   val permissions: List<ProfilePermission>,
   val tabs: List<Tab>,
   val forms: DetailsForms,
+  val seasonsProgress: List<SeasonProgress>,
 ) {
   companion object {
     fun initial(
@@ -70,6 +72,7 @@ data class DetailsViewState(
       permissions = emptyList(),
       tabs = tabs,
       forms = forms,
+      seasonsProgress = emptyList(),
     )
   }
 

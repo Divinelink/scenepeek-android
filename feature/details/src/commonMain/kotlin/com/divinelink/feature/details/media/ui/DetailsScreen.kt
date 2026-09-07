@@ -142,6 +142,7 @@ fun DetailsScreen(
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
       onUpdateMediaInfo = viewModel::onUpdateMediaInfo,
+      action = viewModel::onAction,
       onSwitchPreferences = switchViewButtonViewModel::onAction,
     )
 

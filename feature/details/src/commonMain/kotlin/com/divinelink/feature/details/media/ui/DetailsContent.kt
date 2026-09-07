@@ -73,6 +73,7 @@ import com.divinelink.core.ui.menu.DropdownMenuButton
 import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
+import com.divinelink.feature.details.DetailsAction
 import com.divinelink.feature.details.media.ui.components.DetailActions
 import com.divinelink.feature.details.media.ui.components.HeaderDetails
 import com.divinelink.feature.details.media.ui.components.MediaDetailsPager
@@ -102,6 +103,7 @@ fun DetailsContent(
   onDeleteRequest: (Int) -> Unit,
   onDeleteMedia: (Boolean) -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
+  action: (DetailsAction) -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
   val systemUiController = rememberSystemUiController()
@@ -285,12 +287,11 @@ fun DetailsContent(
             },
             onBackdropLoaded = { onBackdropLoaded = true },
             onOpenManageModal = { showManageMediaModal = true },
+            action = action,
             onSwitchPreferences = onSwitchPreferences,
             scope = scope,
           )
-          null -> {
-            // Do nothing
-          }
+          null -> Unit
         }
         if (viewState.error != null) {
           SimpleAlertDialog(
@@ -325,6 +326,7 @@ private fun SharedTransitionScope.MediaDetailsContent(
   onShowTitle: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
+  action: (DetailsAction) -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
   scope: CoroutineScope,
 ) {
@@ -398,6 +400,7 @@ private fun SharedTransitionScope.MediaDetailsContent(
         viewAllCreditsClick = viewAllCreditsClick,
         onSwitchPreferences = onSwitchPreferences,
         onMediaItemClick = onMediaItemClick,
+        action = action,
       )
     }
   }
@@ -440,6 +443,7 @@ fun DetailsContentPreview(
               onDeleteRequest = {},
               onDeleteMedia = {},
               onSwitchPreferences = {},
+              action = {},
               onUpdateMediaInfo = {},
             )
           }
