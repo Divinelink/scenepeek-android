@@ -1,15 +1,35 @@
 CREATE TABLE UserEpisodesEntity (
-  id INTEGER NOT NULL PRIMARY KEY,
-  episodeId TEXT NOT NULL,
-  watched INTEGER NOT NULL,
+  episodeId INTEGER NOT NULL PRIMARY KEY,
   watchedAt TEXT
 );
 
-insertUserEpisode:
+upsertUserEpisode:
 INSERT OR REPLACE INTO UserEpisodesEntity (
-  id,
   episodeId,
-  watched,
   watchedAt
 )
-VALUES ?;
+VALUES (?,?);
+
+deleteUserEpisode:
+DELETE FROM UserEpisodesEntity WHERE episodeId = ?;
+
+CREATE INDEX idx_user_episodes_episode_id
+ON UserEpisodesEntity(episodeId);
+
+watchedCountForSeason:
+SELECT COUNT(*) AS count
+FROM UserEpisodesEntity ue
+JOIN EpisodeEntity e ON ue.episodeId = e.id
+WHERE e.showId = :showId
+  AND e.seasonNumber = :seasonNumber;
+
+seasonsProgress:
+SELECT
+  e.seasonNumber,
+  COUNT(ue.episodeId) AS watched_count
+FROM EpisodeEntity e
+LEFT JOIN UserEpisodesEntity ue
+  ON e.id = ue.episodeId
+WHERE e.showId = :showId
+GROUP BY e.seasonNumber
+ORDER BY e.seasonNumber;

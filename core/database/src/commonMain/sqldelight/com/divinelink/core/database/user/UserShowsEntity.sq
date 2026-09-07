@@ -8,6 +8,13 @@ CREATE TABLE UserShowsEntity (
   rating INTEGER
 );
 
+-- Fast library filtering
+CREATE INDEX idx_user_shows_status ON UserShowsEntity(status);
+
+-- Check if specific episode is watched (most frequent query)
+CREATE UNIQUE INDEX idx_user_episode_unique
+ON UserShowsEntity(showId);
+
 insertUserShow:
 INSERT OR REPLACE INTO UserShowsEntity (
   id,

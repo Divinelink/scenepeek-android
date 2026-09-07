@@ -23,8 +23,6 @@ CREATE TABLE UserShowsEntity (
 );
 
 CREATE TABLE UserEpisodesEntity (
-  id INTEGER NOT NULL PRIMARY KEY,
-  episodeId TEXT NOT NULL,
-  watched INTEGER NOT NULL,
+  episodeId INTEGER NOT NULL PRIMARY KEY,
   watchedAt TEXT
 );
