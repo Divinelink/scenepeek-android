@@ -491,6 +491,12 @@ class ProdMediaRepository(
   override fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>> = dao
     .getSeasonsProgress(showId)
 
+  override fun getWatchedEpisodesForSeason(showId: Long, seasonNumber: Int): Flow<List<Long>> = dao
+    .getWatchedEpisodesForSeason(
+      showId = showId,
+      seasonNumber = seasonNumber,
+    )
+
   override fun markEpisodeAsWatched(episodeId: Long) = dao.markEpisodeAsWatched(
     episodeId = episodeId,
   )

@@ -594,4 +594,11 @@ class ProdMediaDao(
         )
       }
     }
+
+  override fun getWatchedEpisodesForSeason(showId: Long, seasonNumber: Int): Flow<List<Long>> =
+    episodeQueries
+      .watchedEpisodesForSeason(showId = showId, seasonNumber = seasonNumber.toLong())
+      .asFlow()
+      .mapToList(dispatcher.io)
+      .distinctUntilChanged()
 }

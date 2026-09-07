@@ -85,11 +85,14 @@ class SeasonViewModel(
         }
       }
       .launchIn(viewModelScope)
+
+    observeWatchedEpisodes()
   }
 
   fun onAction(action: SeasonAction) {
     when (action) {
       is SeasonAction.OnSelectTab -> handleSelectTab(action)
+      is SeasonAction.MarkEpisodeAsWatched -> handleMarkEpisodeAsWatched(action)
     }
   }
 
@@ -98,6 +101,14 @@ class SeasonViewModel(
       state.copy(
         selectedTab = action.index,
       )
+    }
+  }
+
+  private fun handleMarkEpisodeAsWatched(action: SeasonAction.MarkEpisodeAsWatched) {
+    if (action.watched) {
+      repository.unmarkEpisodeAsWatched(action.episodeId)
+    } else {
+      repository.markEpisodeAsWatched(action.episodeId)
     }
   }
 
@@ -132,5 +143,20 @@ class SeasonViewModel(
         forms = updatedForms,
       )
     }
+  }
+
+  private fun observeWatchedEpisodes() {
+    repository
+      .getWatchedEpisodesForSeason(
+        showId = route.showId,
+        seasonNumber = route.seasonNumber,
+      )
+      .distinctUntilChanged()
+      .onEach { episodes ->
+        _uiState.update { state ->
+          state.copy(watchedEpisodes = episodes)
+        }
+      }
+      .launchIn(viewModelScope)
   }
 }

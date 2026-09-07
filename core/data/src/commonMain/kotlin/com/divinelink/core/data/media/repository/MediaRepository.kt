@@ -133,6 +133,7 @@ interface MediaRepository {
   suspend fun searchCompany(request: SearchRequestApi): Result<PaginationData<Company>>
 
   fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>>
+  fun getWatchedEpisodesForSeason(showId: Long, seasonNumber: Int): Flow<List<Long>>
 
   fun markEpisodeAsWatched(episodeId: Long)
   fun unmarkEpisodeAsWatched(episodeId: Long)

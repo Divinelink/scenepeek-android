@@ -23,8 +23,10 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.season.SeasonData
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.button.MarkAsCompleteIconButton
 import com.divinelink.core.ui.components.details.AirDateWithRuntime
 import com.divinelink.core.ui.extension.getColorRating
+import com.divinelink.feature.season.SeasonAction
 
 @Composable
 fun EpisodesFormContent(
@@ -32,7 +34,9 @@ fun EpisodesFormContent(
   showTitle: String,
   seasonTitle: String,
   data: SeasonData.Episodes,
+  watchedEpisodes: List<Long>,
   onNavigate: (Navigation.EpisodeRoute) -> Unit,
+  action: (SeasonAction) -> Unit,
 ) {
   ScenePeekLazyColumn(
     modifier = modifier.fillMaxSize(),
@@ -43,6 +47,8 @@ fun EpisodesFormContent(
     ) { index, episode ->
       EpisodeItem(
         episode = episode,
+        action = action,
+        watched = episode.id.toLong() in watchedEpisodes,
         onClick = {
           onNavigate(
             Navigation.EpisodeRoute(
@@ -66,7 +72,9 @@ fun EpisodesFormContent(
 @Composable
 fun EpisodeItem(
   episode: Episode,
+  watched: Boolean,
   onClick: (Episode) -> Unit,
+  action: (SeasonAction) -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -86,6 +94,7 @@ fun EpisodeItem(
       )
 
       Column(
+        modifier = Modifier.weight(5f),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
         Text(
@@ -101,8 +110,6 @@ fun EpisodeItem(
         )
       }
 
-      Spacer(modifier = Modifier.weight(1f))
-
       AnimatedContent(
         targetState = episode.accountRating != null,
       ) {
@@ -112,6 +119,19 @@ fun EpisodeItem(
           color = episode.accountRating?.toDouble().getColorRating(),
         )
       }
+
+      MarkAsCompleteIconButton(
+        modifier = Modifier.weight(1f),
+        onClick = {
+          action(
+            SeasonAction.MarkEpisodeAsWatched(
+              episodeId = episode.id.toLong(),
+              watched = watched,
+            ),
+          )
+        },
+        isWatched = watched,
+      )
     }
 
     HorizontalDivider(

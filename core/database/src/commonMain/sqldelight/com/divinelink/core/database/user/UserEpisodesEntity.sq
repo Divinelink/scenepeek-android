@@ -33,3 +33,11 @@ LEFT JOIN UserEpisodesEntity ue
 WHERE e.showId = :showId
 GROUP BY e.seasonNumber
 ORDER BY e.seasonNumber;
+
+watchedEpisodesForSeason:
+SELECT
+  e.id AS episodeId
+FROM EpisodeEntity e
+INNER JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
+WHERE e.showId = :showId
+  AND e.seasonNumber = :seasonNumber;

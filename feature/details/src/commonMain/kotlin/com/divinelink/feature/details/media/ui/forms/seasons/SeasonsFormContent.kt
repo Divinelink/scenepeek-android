@@ -11,12 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,6 +36,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.button.MarkAsCompleteIconButton
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.resources.core_ui_episode_count
@@ -160,7 +156,7 @@ fun SeasonItem(
       )
     }
 
-    IconButton(
+    MarkAsCompleteIconButton(
       onClick = {
         action(
           DetailsAction.MarkSeasonComplete(
@@ -169,19 +165,9 @@ fun SeasonItem(
           ),
         )
       },
-    ) {
-      Icon(
-        imageVector = if (season.episodeCount == progress?.watchedCount) {
-          Icons.Filled.CheckCircle
-        } else {
-          Icons.Outlined.Circle
-        },
-        tint = MaterialTheme.colorScheme.primary,
-        contentDescription = null,
-      )
-    }
+      isWatched = season.episodeCount == progress?.watchedCount,
+    )
   }
-
 }
 
 // TODO Add screenshots
