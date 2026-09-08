@@ -60,6 +60,7 @@ import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
+import com.divinelink.core.testing.usecase.TestCompleteSeasonUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
@@ -140,6 +141,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var fetchAllRatingsUseCase: TestFetchAllRatingsUseCase
   private lateinit var deleteRequestUseCase: TestDeleteRequestUseCase
   private lateinit var deleteMediaUseCase: TestDeleteMediaUseCase
+  private lateinit var completeSeasonUseCase: TestCompleteSeasonUseCase
   private lateinit var authRepository: TestAuthRepository
   private lateinit var detailsRepository: TestDetailsRepository
   private lateinit var appInfoRepository: TestAppInfoRepository
@@ -174,6 +176,7 @@ class ScenePeekAppTest : ComposeTest() {
     detailsRepository = TestDetailsRepository()
     appInfoRepository = TestAppInfoRepository()
     searchRepository = TestSearchRepository()
+    completeSeasonUseCase = TestCompleteSeasonUseCase()
 
     startKoin {
       modules(
@@ -681,9 +684,11 @@ class ScenePeekAppTest : ComposeTest() {
         fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
         deleteRequestUseCase = deleteRequestUseCase.mock,
         deleteMediaUseCase = deleteMediaUseCase.mock,
+        completeSeasonUseCase = completeSeasonUseCase.mock,
         authRepository = authRepository.mock,
         repository = detailsRepository.mock,
         preferencesRepository = preferencesRepository,
+        mediaRepository = mediaRepository.mock,
         route = Navigation.DetailsRoute(
           id = 1,
           isFavorite = false,

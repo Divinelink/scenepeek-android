@@ -385,32 +385,34 @@ class ProdMediaRepository(
     shouldFetch = { true },
   )
 
-  override fun fetchSeasonEpisodes(showId: Long, season: Int): Flow<Resource<List<Episode>?>> =
-    networkBoundResource(
-      query = {
-        dao.fetchEpisodes(showId = showId, season = season)
-      },
-      fetch = {
-        remote.fetchSeason(
+  override fun fetchSeasonEpisodes(
+    showId: Long,
+    season: Int,
+  ): Flow<Resource<List<Episode>?>> = networkBoundResource(
+    query = {
+      dao.fetchEpisodes(showId = showId, season = season)
+    },
+    fetch = {
+      remote.fetchSeason(
+        showId = showId,
+        season = season,
+      ).map { it.map() }
+    },
+    saveFetchResult = { result ->
+      withContext(dispatcher.io) {
+        val data = result.data
+
+        dao.insertSeasonDetails(
+          seasonDetails = data,
           showId = showId,
-          season = season,
-        ).map { it.map() }
-      },
-      saveFetchResult = { result ->
-        withContext(dispatcher.io) {
-          val data = result.data
+          seasonNumber = season,
+        )
 
-          dao.insertSeasonDetails(
-            seasonDetails = data,
-            showId = showId,
-            seasonNumber = season,
-          )
-
-          dao.insertEpisodes(data.episodes)
-        }
-      },
-      shouldFetch = { it.isNullOrEmpty() },
-    )
+        dao.insertEpisodes(data.episodes)
+      }
+    },
+    shouldFetch = { it.isNullOrEmpty() },
+  )
 
   override fun getSeasonEpisodesNumber(
     showId: Long,
@@ -491,7 +493,10 @@ class ProdMediaRepository(
   override fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>> = dao
     .getSeasonsProgress(showId)
 
-  override fun getWatchedEpisodesForSeason(showId: Long, seasonNumber: Int): Flow<List<Long>> = dao
+  override fun getWatchedEpisodesForSeason(
+    showId: Long,
+    seasonNumber: Int,
+  ): Flow<List<Long>> = dao
     .getWatchedEpisodesForSeason(
       showId = showId,
       seasonNumber = seasonNumber,

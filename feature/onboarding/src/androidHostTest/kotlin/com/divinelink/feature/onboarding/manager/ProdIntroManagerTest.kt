@@ -4,7 +4,8 @@ import app.cash.turbine.test
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.testing.storage.TestOnboardingStorage
-import com.divinelink.feature.onboarding.resources.feature_onboarding_changelog
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.changelog
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_convert_app_to_multiplatform
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_display_fullscreen_posters
 import com.divinelink.feature.onboarding.resources.feature_onboarding_v30_external_ratings
@@ -150,7 +151,7 @@ class ProdIntroManagerTest {
     manager.sections.test {
       val sections = awaitItem()
       sections shouldContainExactly listOf(
-        IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+        IntroSection.Header(UIText.ResourceText(UiString.changelog)),
         IntroSection.WhatsNew("v0.24.0"),
         IntroSection.SecondaryHeader.Added,
         IntroSection.Text(

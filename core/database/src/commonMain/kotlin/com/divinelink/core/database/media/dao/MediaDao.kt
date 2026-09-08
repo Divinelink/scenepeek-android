@@ -142,5 +142,8 @@ interface MediaDao {
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 
   fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>>
-  fun getWatchedEpisodesForSeason(showId: Long, seasonNumber: Int): Flow<List<Long>>
+  fun getWatchedEpisodesForSeason(
+    showId: Long,
+    seasonNumber: Int,
+  ): Flow<List<Long>>
 }

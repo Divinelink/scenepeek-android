@@ -26,6 +26,7 @@ import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.ExternalIds
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.provider.WatchProviders
@@ -946,6 +947,7 @@ class DetailsViewModelTest {
   fun `given snackbar message, when I consume it I expect snackbar message null`() = runTest {
     testRobot
       .mockSubmitRate(response = Result.success(Unit))
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockFetchMediaDetails(
         response = defaultDetails(
           MediaDetailsResult.DetailsSuccess(
@@ -1306,6 +1308,7 @@ class DetailsViewModelTest {
   fun `test on CreditsSuccess MediaDetailsResult update tvCredits`() = runTest {
     val credits = AggregatedCreditsFactory.credits()
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
@@ -1375,6 +1378,7 @@ class DetailsViewModelTest {
   @Test
   fun `test on JellyseerrDetailsSuccess tv MediaDetailsResult update seasons status`() = runTest {
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -1420,6 +1424,7 @@ class DetailsViewModelTest {
   fun `test on JellyseerrDetailsSuccess MediaDetailsResult updates current seasons`() = runTest {
     val channel = Channel<Result<MediaDetailsResult>>()
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockFetchMediaDetails(channel)
       .mockPermissions(ProfilePermission.entries)
       .withNavArguments(mediaId, MediaType.TV)
@@ -1543,6 +1548,7 @@ class DetailsViewModelTest {
   @Test
   fun `test update media info for tv with success updates current seasons`() = runTest {
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -1622,6 +1628,7 @@ class DetailsViewModelTest {
     val allRatingsChannel = Channel<Result<Pair<RatingSource, RatingDetails>>>()
 
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockFetchMediaDetails(
         response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
       )
@@ -1751,6 +1758,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onMediaSourceClick for TV show emits openUrl`() = runTest {
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockFetchMediaDetails(
         response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
       )
@@ -1961,6 +1969,7 @@ class DetailsViewModelTest {
   fun `test onDeleteRequest on TV media with success overrides seasons`() {
     testRobot
       .mockPermissions(ProfilePermission.entries)
+      .mockGetSeasonProgress(flowOf(emptyList()))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2044,6 +2053,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteRequest on Movie media with success updates status`() = runTest {
     testRobot
+      .withNavArguments(mediaId, MediaType.MOVIE)
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -2060,7 +2070,6 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
         createUiState(
@@ -2171,6 +2180,7 @@ class DetailsViewModelTest {
   fun `test onDeleteRequest on TV media with failure`() {
     testRobot
       .mockPermissions(ProfilePermission.entries)
+      .mockGetSeasonProgress(flowOf(emptyList()))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2254,6 +2264,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on TV media with success`() = runTest {
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -2337,6 +2348,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on TV with success`() = runTest {
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -2420,6 +2432,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on TV with failure`() = runTest {
     testRobot
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -2676,6 +2689,7 @@ class DetailsViewModelTest {
     runTest {
       testRobot
         .mockPermissions(emptyList())
+        .mockGetSeasonProgress(response = flowOf(emptyList()))
         .mockFetchMediaDetails(
           response = flowOf(
             Result.success(
@@ -2724,6 +2738,7 @@ class DetailsViewModelTest {
   fun `test fetch media info with only requests adds manage action`() = runTest {
     testRobot
       .mockPermissions(emptyList())
+      .mockGetSeasonProgress(response = flowOf(emptyList()))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2885,6 +2900,40 @@ class DetailsViewModelTest {
       )
   }
 
+  @Test
+  fun `test observe season progress`() = runTest {
+    testRobot
+      .mockGetSeasonProgress(
+        flowOf(listOf(SeasonProgress(seasonNumber = 1, watchedCount = 5))),
+      )
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = tvDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(tvDetails.id, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        createUiState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = tvDetails.id,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          ratingSource = RatingSource.TMDB,
+          seasonProgress = listOf(SeasonProgress(seasonNumber = 1, watchedCount = 5)),
+        ),
+      )
+  }
+
   private fun createUiState(
     mediaId: Long,
     mediaType: MediaType,
@@ -2907,6 +2956,7 @@ class DetailsViewModelTest {
       .associateWith { false },
     navigateToLogin: Boolean? = null,
     watchProviders: LCEState<WatchProviders>? = null,
+    seasonProgress: List<SeasonProgress> = emptyList(),
   ) = DetailsViewState.initial(
     isLoading = isLoading,
     mediaId = mediaId,
@@ -2928,5 +2978,6 @@ class DetailsViewModelTest {
     accountDataState = accountDataState,
     navigateToLogin = navigateToLogin,
     watchProviders = watchProviders,
+    seasonsProgress = seasonProgress,
   )
 }

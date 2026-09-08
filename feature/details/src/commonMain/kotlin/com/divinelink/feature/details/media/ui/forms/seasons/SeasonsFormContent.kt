@@ -144,7 +144,6 @@ fun SeasonItem(
         color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
 
-
       LinearProgressIndicator(
         modifier = Modifier
           .fillMaxWidth()

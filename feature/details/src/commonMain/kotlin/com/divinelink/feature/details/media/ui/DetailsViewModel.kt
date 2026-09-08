@@ -106,7 +106,7 @@ class DetailsViewModel(
   private val completeSeasonUseCase: CompleteSeasonUseCase,
   authRepository: AuthRepository,
   repository: DetailsRepository,
-  private val mediaRepository: MediaRepository,
+  mediaRepository: MediaRepository,
   preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 

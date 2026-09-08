@@ -3,6 +3,7 @@ package com.divinelink.core.testing.repository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -15,14 +16,6 @@ import org.mockito.kotlin.whenever
 class TestMediaRepository {
 
   val mock: MediaRepository = mock()
-
-  fun mockFetchFavorites(response: List<MediaItem>) {
-    whenever(
-      mock.fetchFavorites(),
-    ).thenReturn(
-      flowOf(response),
-    )
-  }
 
   suspend fun mockFetchTrending(
     page: Int = any(),
@@ -71,25 +64,11 @@ class TestMediaRepository {
     ).thenReturn(response)
   }
 
-  suspend fun verifyCheckIsFavorite(response: Result<Boolean>) {
-    whenever(
-      mock.checkIfMediaIsFavorite(any(), any()),
-    ).thenReturn(response)
-  }
-
   fun mockFetchTvSeasons(response: Result<List<Season>>) {
     whenever(mock.fetchTvSeasons(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockRemoveFavorite(
-    id: Long,
-    mediaType: MediaType,
-    response: Unit,
-  ) {
-    whenever(
-      mock.removeFavoriteMedia(id, mediaType),
-    ).thenReturn(
-      response,
-    )
+  fun mockGetSeasonProgress(response: Flow<List<SeasonProgress>>) {
+    whenever(mock.getSeasonsProgress(any())).thenReturn(response)
   }
 }

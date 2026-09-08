@@ -590,15 +590,17 @@ class ProdMediaDao(
       result.map { season ->
         SeasonProgress(
           seasonNumber = season.seasonNumber.toInt(),
-          watchedCount = season.watched_count.toInt(),
+          watchedCount = season.watchedCount.toInt(),
         )
       }
     }
 
-  override fun getWatchedEpisodesForSeason(showId: Long, seasonNumber: Int): Flow<List<Long>> =
-    episodeQueries
-      .watchedEpisodesForSeason(showId = showId, seasonNumber = seasonNumber.toLong())
-      .asFlow()
-      .mapToList(dispatcher.io)
-      .distinctUntilChanged()
+  override fun getWatchedEpisodesForSeason(
+    showId: Long,
+    seasonNumber: Int,
+  ): Flow<List<Long>> = episodeQueries
+    .watchedEpisodesForSeason(showId = showId, seasonNumber = seasonNumber.toLong())
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .distinctUntilChanged()
 }
