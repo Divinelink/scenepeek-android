@@ -1,17 +1,3 @@
-CREATE TABLE ShowEntity (
-  id INTEGER NOT NULL PRIMARY KEY ,
-  title TEXT NOT NULL,
-  overview TEXT,
-  posterPath TEXT,
-  backdropPath TEXT,
-  firstAirDate TEXT,
-  status TEXT NOT NULL,
-  voteAverage REAL NOT NULL,
-  voteCount INTEGER NOT NULL,
-  totalSeasons INTEGER NOT NULL,
-  lastSyncedAt TEXT NOT NULL
-);
-
 CREATE TABLE UserShowsEntity (
   showId TEXT NOT NULL PRIMARY KEY,
   addedAt TEXT NOT NULL,
