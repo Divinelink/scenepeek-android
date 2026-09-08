@@ -1,6 +1,5 @@
 CREATE TABLE UserShowsEntity (
-  id INTEGER NOT NULL PRIMARY KEY ,
-  showId TEXT NOT NULL,
+  showId TEXT NOT NULL PRIMARY KEY,
   addedAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
   status TEXT NOT NULL,
@@ -17,7 +16,6 @@ ON UserShowsEntity(showId);
 
 insertUserShow:
 INSERT OR REPLACE INTO UserShowsEntity (
-  id,
   showId,
   addedAt,
   updatedAt,

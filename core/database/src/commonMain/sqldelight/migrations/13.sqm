@@ -13,8 +13,7 @@ CREATE TABLE ShowEntity (
 );
 
 CREATE TABLE UserShowsEntity (
-  id INTEGER NOT NULL PRIMARY KEY ,
-  showId TEXT NOT NULL,
+  showId TEXT NOT NULL PRIMARY KEY,
   addedAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
   status TEXT NOT NULL,
