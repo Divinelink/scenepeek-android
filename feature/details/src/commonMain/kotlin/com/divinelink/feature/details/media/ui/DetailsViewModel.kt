@@ -27,6 +27,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
+import com.divinelink.core.domain.track.AddShowUseCase
 import com.divinelink.core.domain.track.CompleteSeasonParameters
 import com.divinelink.core.domain.track.CompleteSeasonUseCase
 import com.divinelink.core.model.LCEState
@@ -104,9 +105,10 @@ class DetailsViewModel(
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
   private val completeSeasonUseCase: CompleteSeasonUseCase,
+  private val addShowUseCase: AddShowUseCase,
   authRepository: AuthRepository,
   repository: DetailsRepository,
-  private val mediaRepository: MediaRepository,
+  mediaRepository: MediaRepository,
   preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
@@ -517,7 +519,9 @@ class DetailsViewModel(
 
   private fun handleAddShow() {
     viewModelScope.launch {
-      mediaRepository.addShow(viewState.value.mediaId)
+      viewState.value.mediaItem?.let { show ->
+        addShowUseCase(parameters = show)
+      }
     }
   }
 

@@ -24,3 +24,60 @@ INSERT OR REPLACE INTO UserShowsEntity (
   rating
 )
 VALUES (?,?,?,?,?,?);
+
+getAllUserShows:
+SELECT
+  s.id AS showId,
+  s.name,
+  s.posterPath AS posterPath,
+  us.status,
+  us.addedAt,
+  us.updatedAt
+FROM MediaItemEntity s
+JOIN UserShowsEntity us ON s.id = us.showId
+LEFT JOIN EpisodeEntity e ON s.id = e.showId
+LEFT JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
+GROUP BY s.id
+ORDER BY us.updatedAt DESC;
+
+nextUpEpisode:
+SELECT
+  e.id AS episodeId,
+  e.seasonNumber AS seasonNumber,
+  e.episodeNumber AS episodeNumber,
+  e.name AS episodeName,
+  e.stillPath AS thumbnailPath,
+  e.airDate AS airDate
+FROM EpisodeEntity e
+LEFT JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
+WHERE e.showId = :showId
+  AND e.airDate <= CURRENT_DATE -- Only show episodes that have actually aired
+  AND ue.episodeId IS NULL -- Exclude episodes that are already watched
+ORDER BY e.seasonNumber ASC, e.episodeNumber ASC
+LIMIT 1;
+
+getAllUpNextEpisodes:
+SELECT
+  s.id AS showId,
+  s.name AS showTitle,
+  s.posterPath AS showPosterPath,
+  e.id AS episodeId,
+  e.seasonNumber AS seasonNumber,
+  e.episodeNumber AS episodeNumber,
+  e.name AS episodeName,
+  e.stillPath AS episodeThumbnail,
+  e.airDate AS airDate
+FROM MediaItemEntity s
+JOIN UserShowsEntity us ON s.id = us.showId
+JOIN EpisodeEntity e ON e.id = (
+    SELECT e2.id
+    FROM EpisodeEntity e2
+    LEFT JOIN UserEpisodesEntity ue2 ON e2.id = ue2.episodeId
+    WHERE e2.showId = s.id
+      AND e2.airDate <= CURRENT_DATE
+      AND ue2.episodeId IS NULL
+    ORDER BY e2.seasonNumber ASC, e2.episodeNumber ASC
+    LIMIT 1
+)
+WHERE us.status != 'completed'
+ORDER BY us.updatedAt DESC;

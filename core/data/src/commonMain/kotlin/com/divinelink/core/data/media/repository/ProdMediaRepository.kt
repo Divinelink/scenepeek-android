@@ -273,9 +273,13 @@ class ProdMediaRepository(
       Result.success(data.copy(searchList = updatedMedia))
     }
 
+  override fun saveMediaItem(mediaItem: MediaItem.Media) {
+    dao.insertMedia(mediaItem)
+  }
+
   override suspend fun insertFavoriteMedia(media: MediaItem) {
     when (media) {
-      is MediaItem.Media -> dao.insertMedia(media, null)
+      is MediaItem.Media -> saveMediaItem(media)
       is MediaItem.Person -> Unit
       is MediaItem.Unknown -> Unit
     }
@@ -517,6 +521,12 @@ class ProdMediaRepository(
   override fun unmarkSeasonAsWatched(episodeIds: List<Long>) = dao.unmarkSeasonAsWatched(
     episodeIds = episodeIds,
   )
+
+  override fun getUserShows(): Flow<List<Long>> = dao.getUserShows()
+
+  override fun getUpNextEpisode(showId: Long): Flow<Episode> = dao.getNextUpEpisode(showId)
+
+  override fun getUpNextEpisodes(): Flow<List<Episode>> = dao.getNextUpEpisodes()
 
   override fun addShow(showId: Long) = dao.addShow(showId)
 }

@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlin.time.Clock
 
 class ProdMediaDao(
@@ -616,4 +617,61 @@ class ProdMediaDao(
       rating = null,
     )
   }
+
+  override fun getUserShows(): Flow<List<Long>> = userShowQueries
+    .getAllUserShows()
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { entity ->
+      entity.map { show -> show.showId }
+    }
+
+  override fun getNextUpEpisode(showId: Long): Flow<Episode> = userShowQueries
+    .nextUpEpisode(showId = showId)
+    .asFlow()
+    .mapToOneOrNull(dispatcher.io)
+    .mapNotNull { entity ->
+      if (entity == null) return@mapNotNull null
+      Episode(
+        id = entity.episodeId.toInt(),
+        name = entity.episodeName,
+        airDate = entity.airDate,
+        overview = null,
+        runtime = null,
+        number = entity.episodeNumber.toInt(),
+        seasonNumber = entity.seasonNumber.toInt(),
+        showId = showId,
+        stillPath = entity.thumbnailPath,
+        voteAverage = null,
+        voteCount = null,
+        crew = emptyList(),
+        guestStars = emptyList(),
+        accountRating = null,
+      )
+    }
+
+  override fun getNextUpEpisodes(): Flow<List<Episode>> = userShowQueries
+    .getAllUpNextEpisodes()
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { entities ->
+      entities.map { entity ->
+        Episode(
+          id = entity.episodeId.toInt(),
+          name = entity.episodeName,
+          airDate = entity.airDate,
+          overview = null,
+          runtime = null,
+          number = entity.episodeNumber.toInt(),
+          seasonNumber = entity.seasonNumber.toInt(),
+          showId = entity.showId,
+          stillPath = entity.episodeThumbnail,
+          voteAverage = null,
+          voteCount = null,
+          crew = emptyList(),
+          guestStars = emptyList(),
+          accountRating = null,
+        )
+      }
+    }
 }

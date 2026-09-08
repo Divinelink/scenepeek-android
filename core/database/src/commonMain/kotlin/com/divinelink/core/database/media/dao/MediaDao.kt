@@ -148,4 +148,8 @@ interface MediaDao {
   ): Flow<List<Long>>
 
   fun addShow(showId: Long)
+
+  fun getUserShows(): Flow<List<Long>>
+  fun getNextUpEpisode(showId: Long): Flow<Episode>
+  fun getNextUpEpisodes(): Flow<List<Episode>>
 }

@@ -80,6 +80,8 @@ interface MediaRepository {
     seasonNumber: Int,
   ): Flow<Result<Season>>
 
+  fun saveMediaItem(mediaItem: MediaItem.Media)
+
   /**
    * Add favorite [media] to local storage.
    */
@@ -144,5 +146,8 @@ interface MediaRepository {
   fun markSeasonAsWatched(episodeIds: List<Long>)
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 
+  fun getUserShows(): Flow<List<Long>>
+  fun getUpNextEpisode(showId: Long): Flow<Episode>
+  fun getUpNextEpisodes(): Flow<List<Episode>>
   fun addShow(showId: Long)
 }
