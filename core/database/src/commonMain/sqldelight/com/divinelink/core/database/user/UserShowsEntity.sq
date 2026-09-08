@@ -1,5 +1,5 @@
 CREATE TABLE UserShowsEntity (
-  showId TEXT NOT NULL PRIMARY KEY,
+  showId INTEGER NOT NULL PRIMARY KEY,
   addedAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
   status TEXT NOT NULL,
@@ -23,4 +23,4 @@ INSERT OR REPLACE INTO UserShowsEntity (
   notes,
   rating
 )
-VALUES ?;
+VALUES (?,?,?,?,?,?);

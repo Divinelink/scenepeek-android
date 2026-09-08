@@ -143,4 +143,6 @@ interface MediaRepository {
 
   fun markSeasonAsWatched(episodeIds: List<Long>)
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
+
+  fun addShow(showId: Long)
 }

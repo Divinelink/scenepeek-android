@@ -201,4 +201,6 @@
   <string name="error_at_least_one_section_visible">At least one section must be visible</string>
   <string name="restore_to_default">Restore to default</string>
   <string name="changelog">Changelog</string>
+  <string name="add_to_your_shows">Add to your shows</string>
+  <string name="added_to_your_shows">Added to your shows</string>
 </resources>

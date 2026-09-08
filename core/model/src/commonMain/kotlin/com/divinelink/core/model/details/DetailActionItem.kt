@@ -8,6 +8,7 @@ sealed interface DetailActionItem {
   data object Request : DetailActionItem
   data object ManageMovie : DetailActionItem
   data object ManageTvShow : DetailActionItem
+  data object AddShow : DetailActionItem
 
   companion object {
     val defaultItems = listOf(
@@ -15,6 +16,9 @@ sealed interface DetailActionItem {
       Watchlist,
       Favorite,
       List,
+    )
+    val defaultTvItems = defaultItems.plus(
+      AddShow,
     )
   }
 }

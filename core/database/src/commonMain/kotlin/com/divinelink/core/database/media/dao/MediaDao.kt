@@ -146,4 +146,6 @@ interface MediaDao {
     showId: Long,
     seasonNumber: Int,
   ): Flow<List<Long>>
+
+  fun addShow(showId: Long)
 }

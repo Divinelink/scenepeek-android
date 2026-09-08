@@ -255,6 +255,8 @@ fun DetailsContent(
         onRequestClicked = { showRequestModal = true },
         onManageMovie = { showManageMediaModal = true },
         onManageTv = { showManageMediaModal = true },
+        isAddedShow = true,
+        onAddShow = { action(DetailsAction.AddShow) },
       )
     },
     navigationRail = {

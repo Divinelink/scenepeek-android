@@ -3,11 +3,13 @@ package com.divinelink.core.model.details.actions
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 
-class DetailActionsBuilder internal constructor() {
+class DetailActionsBuilder internal constructor(
+  currentActions: List<DetailActionItem>,
+) {
   private val actions = mutableListOf<DetailActionItem>()
 
   init {
-    actions.addAll(DetailActionItem.defaultItems)
+    actions.addAll(currentActions)
   }
 
   fun withRequest(
@@ -37,5 +39,9 @@ class DetailActionsBuilder internal constructor() {
   fun build(): List<DetailActionItem> = actions.toList()
 }
 
-fun buildActions(configure: DetailActionsBuilder.() -> Unit): List<DetailActionItem> =
-  DetailActionsBuilder().apply(configure).build()
+fun buildActions(
+  currentActions: List<DetailActionItem>,
+  configure: DetailActionsBuilder.() -> Unit,
+): List<DetailActionItem> = DetailActionsBuilder(currentActions)
+  .apply(configure)
+  .build()

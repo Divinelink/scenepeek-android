@@ -106,7 +106,7 @@ class DetailsViewModel(
   private val completeSeasonUseCase: CompleteSeasonUseCase,
   authRepository: AuthRepository,
   repository: DetailsRepository,
-  mediaRepository: MediaRepository,
+  private val mediaRepository: MediaRepository,
   preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
@@ -334,7 +334,7 @@ class DetailsViewModel(
               }
 
               is MediaDetailsResult.JellyseerrDetails.NotRequested -> viewState.copy(
-                actionButtons = buildActions {
+                actionButtons = buildActions(viewState.actionButtons) {
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
@@ -511,6 +511,13 @@ class DetailsViewModel(
   fun onAction(action: DetailsAction) {
     when (action) {
       is DetailsAction.MarkSeasonComplete -> handleMarkSeasonComplete(action)
+      DetailsAction.AddShow -> handleAddShow()
+    }
+  }
+
+  private fun handleAddShow() {
+    viewModelScope.launch {
+      mediaRepository.addShow(viewState.value.mediaId)
     }
   }
 
@@ -829,7 +836,7 @@ class DetailsViewModel(
               viewState.copy(
                 isLoading = false,
                 jellyseerrMediaInfo = null,
-                actionButtons = buildActions {
+                actionButtons = buildActions(viewState.actionButtons) {
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
@@ -948,7 +955,7 @@ class DetailsViewModel(
     info: JellyseerrMediaInfo?,
     permissions: List<ProfilePermission>,
     seasons: List<Season>,
-  ): List<DetailActionItem> = buildActions {
+  ): List<DetailActionItem> = buildActions(viewState.value.actionButtons) {
     val status = info?.status
 
     withManageTv(
@@ -966,7 +973,7 @@ class DetailsViewModel(
   private fun findMovieActions(
     info: JellyseerrMediaInfo,
     permissions: List<ProfilePermission>,
-  ): List<DetailActionItem> = buildActions {
+  ): List<DetailActionItem> = buildActions(viewState.value.actionButtons) {
     /**
      * Display ManageMovie action if user has MANAGE_REQUESTS permissions or requests are not empty.
      */

@@ -25,6 +25,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.model.track.ShowStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -37,6 +38,7 @@ class ProdMediaDao(
   private val clock: Clock,
 ) : MediaDao {
   private val episodeQueries = database.userEpisodesEntityQueries
+  private val userShowQueries = database.userShowsEntityQueries
 
   override fun insertMedia(
     media: MediaItem.Media,
@@ -603,4 +605,15 @@ class ProdMediaDao(
     .asFlow()
     .mapToList(dispatcher.io)
     .distinctUntilChanged()
+
+  override fun addShow(showId: Long) = database.transaction {
+    userShowQueries.insertUserShow(
+      showId = showId,
+      addedAt = clock.currentEpochSeconds(),
+      updatedAt = clock.currentEpochSeconds(),
+      status = ShowStatus.WATCHING.value,
+      notes = null,
+      rating = null,
+    )
+  }
 }

@@ -10,7 +10,7 @@ import kotlin.test.Test
 
 class DetailActionsBuilderTest {
 
-  private val defaultItems = DetailActionItem.defaultItems
+  private val defaultItems = DetailActionItem.defaultMovieItems
 
   @Test
   fun `test include default items by default`() {
