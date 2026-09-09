@@ -17,4 +17,6 @@ sealed interface HomeForm<out T : MediaItem> {
   }
 
   data class SeerrData(val filter: MediaRequestFilter) : HomeForm<Nothing>
+
+  data object UpNextEpisodes : HomeForm<Nothing>
 }

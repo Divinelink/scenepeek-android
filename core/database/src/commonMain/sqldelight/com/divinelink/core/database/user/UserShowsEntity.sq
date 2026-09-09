@@ -25,6 +25,16 @@ INSERT OR REPLACE INTO UserShowsEntity (
 )
 VALUES (?,?,?,?,?,?);
 
+deleteUserShow:
+DELETE FROM UserShowsEntity WHERE showId = :showId;
+
+getUserShowStatus:
+SELECT
+  showId,
+  status
+FROM UserShowsEntity
+WHERE showId = :showId;
+
 getAllUserShows:
 SELECT
   s.id AS showId,
@@ -58,26 +68,26 @@ LIMIT 1;
 
 getAllUpNextEpisodes:
 SELECT
-  s.id AS showId,
-  s.name AS showTitle,
-  s.posterPath AS showPosterPath,
-  e.id AS episodeId,
-  e.seasonNumber AS seasonNumber,
-  e.episodeNumber AS episodeNumber,
-  e.name AS episodeName,
-  e.stillPath AS episodeThumbnail,
-  e.airDate AS airDate
-FROM MediaItemEntity s
-JOIN UserShowsEntity us ON s.id = us.showId
-JOIN EpisodeEntity e ON e.id = (
-    SELECT e2.id
-    FROM EpisodeEntity e2
-    LEFT JOIN UserEpisodesEntity ue2 ON e2.id = ue2.episodeId
-    WHERE e2.showId = s.id
-      AND e2.airDate <= CURRENT_DATE
-      AND ue2.episodeId IS NULL
-    ORDER BY e2.seasonNumber ASC, e2.episodeNumber ASC
+  show.id AS showId,
+  show.name AS showTitle,
+  show.posterPath AS showPosterPath,
+  episode.id AS episodeId,
+  episode.seasonNumber AS seasonNumber,
+  episode.episodeNumber AS episodeNumber,
+  episode.name AS episodeName,
+  episode.stillPath AS episodeThumbnail,
+  episode.airDate AS airDate
+FROM MediaItemEntity show
+JOIN UserShowsEntity userShow ON show.id = userShow.showId
+JOIN EpisodeEntity episode ON episode.id = (
+    SELECT episode2.id
+    FROM EpisodeEntity episode2
+    LEFT JOIN UserEpisodesEntity userEpisode ON episode2.id = userEpisode.episodeId
+    WHERE episode2.showId = show.id
+      AND episode2.airDate <= CURRENT_DATE
+      AND userEpisode.episodeId IS NULL
+    ORDER BY episode2.seasonNumber ASC, episode2.episodeNumber ASC
     LIMIT 1
 )
-WHERE us.status != 'completed'
-ORDER BY us.updatedAt DESC;
+WHERE userShow.status != 'completed' AND episode.seasonNumber != 0
+ORDER BY userShow.updatedAt DESC;

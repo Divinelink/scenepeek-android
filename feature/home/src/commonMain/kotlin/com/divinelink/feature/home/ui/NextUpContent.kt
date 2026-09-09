@@ -1,0 +1,151 @@
+package com.divinelink.feature.home.ui
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.model.DataState
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.conditional
+import com.divinelink.core.ui.rememberIsLandscape
+import com.divinelink.feature.home.nextup.NextUpViewModel
+import com.divinelink.feature.requests.resources.Res
+import com.divinelink.feature.requests.resources.feature_requests_no_requests_available
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+fun NextUpContent(
+  modifier: Modifier = Modifier,
+  viewModel: NextUpViewModel = koinViewModel(),
+  onNavigate: (Navigation) -> Unit,
+) {
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+  LazyRow(
+    modifier = modifier.fillMaxWidth(),
+    contentPadding = PaddingValues(horizontal = MaterialTheme.dimensions.keyline_8),
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+  ) {
+    when (state.data) {
+      DataState.Initial -> Unit
+      is DataState.Data -> {
+        val requests = (state.data as DataState.Data).data
+
+        if (requests.isEmpty()) {
+          item {
+            Text(
+              modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4),
+              text = stringResource(Res.string.feature_requests_no_requests_available),
+              style = MaterialTheme.typography.titleSmall,
+            )
+          }
+        } else {
+          items(
+            items = (state.data as DataState.Data).data,
+            key = { it.episode.id },
+          ) { upNext ->
+            Row(
+              modifier = Modifier
+                .clickable {
+                  onNavigate(
+                    Navigation.DetailsRoute(
+                      id = upNext.episode.showId,
+                      mediaType = MediaType.TV.value,
+                      isFavorite = null,
+                    ),
+                  )
+                }
+                .conditional(
+                  condition = rememberIsLandscape(),
+                  ifTrue = { fillParentMaxWidth(0.5f) },
+                  ifFalse = { fillParentMaxWidth(0.85f) },
+                ),
+              horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+            ) {
+              MovieImage(
+                modifier = Modifier.height(MaterialTheme.dimensions.posterSizeSmall),
+                path = upNext.showPosterPath,
+              )
+
+              Column(
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+              ) {
+                Text(
+                  maxLines = 1,
+                  overflow = TextOverflow.Ellipsis,
+                  text = upNext.showTitle,
+                  style = MaterialTheme.typography.titleSmall,
+                )
+
+                Row(
+                  verticalAlignment = Alignment.Top,
+                ) {
+                  Text(
+                    modifier = Modifier
+                      .background(
+                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        shape = MaterialTheme.shape.medium,
+                      )
+                      .padding(
+                        horizontal = MaterialTheme.dimensions.keyline_4,
+                        vertical = MaterialTheme.dimensions.keyline_2,
+                      ),
+                    text = "S.${upNext.episode.seasonNumber} E.${upNext.episode.number}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                  )
+
+                  Text(
+                    modifier = Modifier
+                      .padding(
+                        horizontal = MaterialTheme.dimensions.keyline_4,
+                        vertical = MaterialTheme.dimensions.keyline_2,
+                      ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    text = upNext.episode.name,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                  )
+                }
+
+                IconButton(
+                  onClick = { viewModel.markEpisodeAsWatched(episode = upNext.episode) },
+                ) {
+                  Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                  )
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

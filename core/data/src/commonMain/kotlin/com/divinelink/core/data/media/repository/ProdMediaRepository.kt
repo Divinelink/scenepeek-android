@@ -20,6 +20,8 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.track.ShowStatus
+import com.divinelink.core.model.track.NextUpEpisode
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.details.map
@@ -526,7 +528,9 @@ class ProdMediaRepository(
 
   override fun getUpNextEpisode(showId: Long): Flow<Episode> = dao.getNextUpEpisode(showId)
 
-  override fun getUpNextEpisodes(): Flow<List<Episode>> = dao.getNextUpEpisodes()
+  override fun getNextUpEpisodes(): Flow<List<NextUpEpisode>> = dao.getNextUpEpisodes()
 
+  override fun getUserShowStatus(showId: Long): ShowStatus? = dao.getUserShowStatus(showId)
   override fun addShow(showId: Long) = dao.addShow(showId)
+  override fun deleteShow(showId: Long) = dao.deleteShow(showId)
 }

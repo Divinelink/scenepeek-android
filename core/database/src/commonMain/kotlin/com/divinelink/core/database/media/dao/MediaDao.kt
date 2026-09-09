@@ -14,6 +14,8 @@ import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.track.ShowStatus
+import com.divinelink.core.model.track.NextUpEpisode
 import kotlinx.coroutines.flow.Flow
 
 interface MediaDao {
@@ -147,9 +149,11 @@ interface MediaDao {
     seasonNumber: Int,
   ): Flow<List<Long>>
 
+  fun getUserShowStatus(showId: Long): ShowStatus?
   fun addShow(showId: Long)
+  fun deleteShow(showId: Long)
 
   fun getUserShows(): Flow<List<Long>>
   fun getNextUpEpisode(showId: Long): Flow<Episode>
-  fun getNextUpEpisodes(): Flow<List<Episode>>
+  fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
 }

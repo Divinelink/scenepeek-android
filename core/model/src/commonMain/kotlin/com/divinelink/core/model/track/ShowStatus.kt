@@ -9,8 +9,8 @@ enum class ShowStatus(val value: String) {
   ;
 
   companion object {
-    fun from(value: String): ShowStatus = ShowStatus.entries.find {
+    fun from(value: String?): ShowStatus? = ShowStatus.entries.find {
       it.value == value
-    } ?: WATCHING
+    }
   }
 }

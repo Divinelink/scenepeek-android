@@ -26,6 +26,7 @@ import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.track.ShowStatus
+import com.divinelink.core.model.track.NextUpEpisode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -618,6 +619,18 @@ class ProdMediaDao(
     )
   }
 
+  override fun deleteShow(showId: Long) = database.transaction {
+    userShowQueries.deleteUserShow(showId)
+  }
+
+  override fun getUserShowStatus(showId: Long): ShowStatus? {
+    val entity = userShowQueries
+      .getUserShowStatus(showId)
+      .executeAsOneOrNull()
+
+    return ShowStatus.from(entity?.status)
+  }
+
   override fun getUserShows(): Flow<List<Long>> = userShowQueries
     .getAllUserShows()
     .asFlow()
@@ -650,13 +663,13 @@ class ProdMediaDao(
       )
     }
 
-  override fun getNextUpEpisodes(): Flow<List<Episode>> = userShowQueries
+  override fun getNextUpEpisodes(): Flow<List<NextUpEpisode>> = userShowQueries
     .getAllUpNextEpisodes()
     .asFlow()
     .mapToList(dispatcher.io)
     .map { entities ->
       entities.map { entity ->
-        Episode(
+        val episode = Episode(
           id = entity.episodeId.toInt(),
           name = entity.episodeName,
           airDate = entity.airDate,
@@ -671,6 +684,12 @@ class ProdMediaDao(
           crew = emptyList(),
           guestStars = emptyList(),
           accountRating = null,
+        )
+
+        NextUpEpisode(
+          episode = episode,
+          showTitle = entity.showTitle,
+          showPosterPath = entity.showPosterPath,
         )
       }
     }
