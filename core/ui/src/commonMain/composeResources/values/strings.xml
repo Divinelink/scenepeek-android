@@ -204,4 +204,6 @@
   <string name="add_to_your_shows">Add to your shows</string>
   <string name="added_to_your_shows">Added to your shows</string>
   <string name="next_up_episodes">Next up</string>
+  <string name="you_are_all_caught_up">You're all caught up!</string>
+  <string name="no_next_up_episodes">Add more shows to your library to see what's next.</string>
 </resources>

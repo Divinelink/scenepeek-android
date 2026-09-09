@@ -29,11 +29,12 @@ import com.divinelink.core.model.DataState
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.rememberIsLandscape
+import com.divinelink.core.ui.resources.no_next_up_episodes
+import com.divinelink.core.ui.resources.you_are_all_caught_up
 import com.divinelink.feature.home.nextup.NextUpViewModel
-import com.divinelink.feature.requests.resources.Res
-import com.divinelink.feature.requests.resources.feature_requests_no_requests_available
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -53,15 +54,29 @@ fun NextUpContent(
     when (state.data) {
       DataState.Initial -> Unit
       is DataState.Data -> {
-        val requests = (state.data as DataState.Data).data
+        val progress = (state.data as DataState.Data).data
 
-        if (requests.isEmpty()) {
+        if (progress.isEmpty()) {
           item {
-            Text(
-              modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4),
-              text = stringResource(Res.string.feature_requests_no_requests_available),
-              style = MaterialTheme.typography.titleSmall,
-            )
+            Column(
+              modifier = Modifier
+                .padding(MaterialTheme.dimensions.keyline_4)
+                .conditional(
+                  condition = rememberIsLandscape(),
+                  ifTrue = { fillParentMaxWidth(0.5f) },
+                  ifFalse = { fillParentMaxWidth(0.85f) },
+                ),
+              verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+            ) {
+              Text(
+                text = stringResource(UiString.you_are_all_caught_up),
+                style = MaterialTheme.typography.titleMedium,
+              )
+              Text(
+                text = stringResource(UiString.no_next_up_episodes),
+                style = MaterialTheme.typography.bodyMedium,
+              )
+            }
           }
         } else {
           items(
