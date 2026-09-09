@@ -86,10 +86,11 @@ JOIN EpisodeEntity episode ON episode.id = (
     WHERE episode2.showId = show.id
       AND episode2.airDate <= CURRENT_DATE
       AND userEpisode.episodeId IS NULL
+      AND episode2.seasonNumber > 0
     ORDER BY episode2.seasonNumber ASC, episode2.episodeNumber ASC
     LIMIT 1
 )
-WHERE userShow.status != 'completed' AND episode.seasonNumber != 0
+WHERE userShow.status != 'completed' AND episode.seasonNumber > 0
 ORDER BY userShow.updatedAt DESC;
 
 -- Find the first season that is NOT fully watched
