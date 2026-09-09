@@ -91,3 +91,20 @@ JOIN EpisodeEntity episode ON episode.id = (
 )
 WHERE userShow.status != 'completed' AND episode.seasonNumber != 0
 ORDER BY userShow.updatedAt DESC;
+
+-- Find the first season that is NOT fully watched
+findFirstIncompleteSeason:
+SELECT episode.seasonNumber AS seasonNumber
+FROM EpisodeEntity episode
+LEFT JOIN UserEpisodesEntity userEpisode ON episode.id = userEpisode.episodeId
+WHERE episode.showId = :showId AND episode.seasonNumber > 0
+GROUP BY episode.seasonNumber
+HAVING COUNT(episode.id) > COUNT(userEpisode.episodeId) -- Total eps > Watched eps
+ORDER BY episode.seasonNumber ASC
+LIMIT 1;
+
+-- Get total episodes in a specific season (to know how many to expect)
+getEpisodeCountForSeason:
+SELECT COUNT(*) AS count
+FROM EpisodeEntity
+WHERE showId = :showId AND seasonNumber = :seasonNumber;

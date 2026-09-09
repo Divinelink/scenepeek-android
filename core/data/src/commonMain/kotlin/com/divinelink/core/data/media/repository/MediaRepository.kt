@@ -152,6 +152,10 @@ interface MediaRepository {
   fun getUpNextEpisode(showId: Long): Flow<Episode>
   fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
 
+  suspend fun findFirstIncompleteSeason(showId: Long): Int?
+  suspend fun findFirstMissingSeason(showId: Long, maxSeason: Int): Int?
+  suspend fun getMaxLocalSeason(showId: Long): Int?
+
   fun getUserShowStatus(showId: Long): ShowStatus?
   fun addShow(showId: Long)
   fun deleteShow(showId: Long)

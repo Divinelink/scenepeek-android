@@ -34,6 +34,11 @@ WHERE e.showId = :showId
 GROUP BY e.seasonNumber
 ORDER BY e.seasonNumber;
 
+getAllSeasonNumbers:
+SELECT DISTINCT seasonNumber
+FROM EpisodeEntity
+WHERE showId = :showId;
+
 watchedEpisodesForSeason:
 SELECT
   e.id AS episodeId

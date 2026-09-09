@@ -25,8 +25,8 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
-import com.divinelink.core.model.track.ShowStatus
 import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.ShowStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -693,4 +693,32 @@ class ProdMediaDao(
         )
       }
     }
+
+  override suspend fun findFirstIncompleteSeason(showId: Long): Int? = userShowQueries
+    .findFirstIncompleteSeason(showId)
+    .executeAsOneOrNull()
+    ?.toInt()
+
+  override suspend fun findFirstMissingSeason(showId: Long, maxSeason: Int): Int? {
+    // Get all season numbers we currently have locally
+    val existingSeasons = episodeQueries.getAllSeasonNumbers(showId)
+      .executeAsList()
+      .map { it.toInt() }
+      .toSet()
+
+    // Check 1 up to maxSeason for any missing seasons
+    for (i in 1..maxSeason) {
+      if (i !in existingSeasons) {
+        return i
+      }
+    }
+    return null
+  }
+
+  override suspend fun getMaxLocalSeason(showId: Long): Int? = database
+    .episodeEntityQueries
+    .getMaxLocalSeason(showId)
+    .executeAsOneOrNull()
+    ?.MAX
+    ?.toInt()
 }

@@ -48,10 +48,13 @@ SELECT episodeNumber
 FROM EpisodeEntity
 WHERE showId = ? AND seasonNumber = ?;
 
+getMaxLocalSeason:
+SELECT MAX(seasonNumber)
+FROM EpisodeEntity
+WHERE showId = :showId;
+
 -- Episode list rendering per show
 CREATE INDEX idx_episodes_show_season ON EpisodeEntity(showId, seasonNumber, episodeNumber);
-
 -- Calendar/upcoming feature
 CREATE INDEX idx_episodes_air_date ON EpisodeEntity(airDate);
-
 CREATE INDEX idx_episodes_show_airdate ON EpisodeEntity(showId, airDate);
