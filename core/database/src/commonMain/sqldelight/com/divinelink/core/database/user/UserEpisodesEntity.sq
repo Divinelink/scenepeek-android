@@ -46,3 +46,12 @@ FROM EpisodeEntity e
 INNER JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
 WHERE e.showId = :showId
   AND e.seasonNumber = :seasonNumber;
+
+isSeasonComplete:
+SELECT
+  COUNT(e.id) AS totalEpisodes,
+  COUNT(ue.episodeId) AS watchedEpisodes
+FROM EpisodeEntity e
+LEFT JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
+WHERE e.showId = :showId
+  AND e.seasonNumber = :seasonNumber;

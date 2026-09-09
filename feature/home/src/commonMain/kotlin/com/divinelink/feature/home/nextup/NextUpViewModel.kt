@@ -3,6 +3,7 @@ package com.divinelink.feature.home.nextup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.details.Episode
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,9 +12,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class NextUpViewModel(
-  private val repository: MediaRepository,
+  repository: MediaRepository,
+  private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<NextUpUiState> = MutableStateFlow(
@@ -40,6 +43,8 @@ class NextUpViewModel(
   fun markEpisodeAsWatched(
     episode: Episode,
   ) {
-    repository.markEpisodeAsWatched(episode.id.toLong())
+    viewModelScope.launch {
+      markEpisodeAsWatchedUseCase(episode)
+    }
   }
 }
