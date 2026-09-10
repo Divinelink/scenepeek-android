@@ -11,3 +11,9 @@ CREATE TABLE UserEpisodesEntity (
   episodeId INTEGER NOT NULL PRIMARY KEY,
   watchedAt TEXT
 );
+
+CREATE TABLE ShowDetailsEntity (
+  id INTEGER NOT NULL PRIMARY KEY,
+  totalEpisodes INTEGER NOT NULL,
+  totalSeasons INTEGER NOT NULL
+);

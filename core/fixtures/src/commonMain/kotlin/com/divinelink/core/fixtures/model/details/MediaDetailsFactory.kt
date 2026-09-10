@@ -128,5 +128,6 @@ object MediaDetailsFactory {
       nextEpisodeAirDate = null,
     ),
     keywords = KeywordFactory.theOffice,
+    totalEpisodes = 186,
   )
 }

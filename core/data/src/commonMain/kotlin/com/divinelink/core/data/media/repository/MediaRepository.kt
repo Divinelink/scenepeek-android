@@ -10,6 +10,7 @@ import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
@@ -83,6 +84,7 @@ interface MediaRepository {
   ): Flow<Result<Season>>
 
   fun saveMediaItem(mediaItem: MediaItem.Media)
+  fun saveShowDetails(show: TV)
 
   /**
    * Add favorite [media] to local storage.

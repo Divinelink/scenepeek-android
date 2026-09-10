@@ -19,6 +19,8 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
@@ -50,6 +52,16 @@ class ProdMediaDao(
     seasons?.let {
       insertSeasons(media.id, seasons)
     }
+  }
+
+  override fun insertShowDetails(show: TV) = database.transaction {
+    insertMedia(media = show.toMediaItem())
+
+    database.showDetailsEntityQueries.insertShowDetails(
+      id = show.id,
+      totalEpisodes = show.totalEpisodes.toLong(),
+      totalSeasons = show.numberOfSeasons.toLong(),
+    )
   }
 
   override fun insertMediaList(media: List<MediaItem.Media>) {
@@ -690,6 +702,8 @@ class ProdMediaDao(
           episode = episode,
           showTitle = entity.showTitle,
           showPosterPath = entity.showPosterPath,
+          watchedEpisodes = entity.watchedEpisodes.toInt(),
+          totalEpisodes = entity.totalEpisodes.toInt(),
         )
       }
     }

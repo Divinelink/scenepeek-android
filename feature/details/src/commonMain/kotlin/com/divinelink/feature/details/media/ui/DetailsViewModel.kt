@@ -519,7 +519,7 @@ class DetailsViewModel(
 
   private fun handleAddShow() {
     viewModelScope.launch {
-      viewState.value.mediaItem?.let { show ->
+      (viewState.value.mediaDetails as? TV)?.let { show ->
         addShowUseCase(parameters = show)
       }
     }

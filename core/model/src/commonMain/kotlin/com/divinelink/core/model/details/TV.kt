@@ -26,4 +26,5 @@ data class TV(
   val creators: List<MediaItem.Person>?,
   val seasons: List<Season>,
   val numberOfSeasons: Int,
+  val totalEpisodes: Int,
 ) : MediaDetails()

@@ -3,14 +3,14 @@ package com.divinelink.core.domain.track
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.media.repository.MediaRepository
-import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.details.TV
 import kotlinx.coroutines.flow.collect
 
 class AddShowUseCase(
   private val repository: MediaRepository,
   dispatcher: DispatcherProvider,
-) : UseCase<MediaItem.Media, Unit>(dispatcher.default) {
-  override suspend fun execute(parameters: MediaItem.Media) {
+) : UseCase<TV, Unit>(dispatcher.default) {
+  override suspend fun execute(parameters: TV) {
     val showId = parameters.id
 
     val currentStatus = repository.getUserShowStatus(showId)
@@ -18,9 +18,8 @@ class AddShowUseCase(
     if (currentStatus != null) {
       repository.deleteShow(showId)
     } else {
-      repository.saveMediaItem(parameters)
-
-      repository.addShow(showId)
+      repository.saveShowDetails(parameters)
+      repository.addShow(showId = showId)
 
       var targetSeason = repository.findFirstIncompleteSeason(showId)
       if (targetSeason == null) {

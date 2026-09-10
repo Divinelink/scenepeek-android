@@ -37,7 +37,6 @@ sealed class MediaDetails {
     genres: List<Genre>? = this.genres,
     isFavorite: Boolean = this.isFavorite,
     ratingCount: RatingCount = this.ratingCount,
-//    imdbId: String? = this.imdbId,
   ): MediaDetails = when (this) {
     is Movie -> Movie(
       id = id,
@@ -77,6 +76,7 @@ sealed class MediaDetails {
       popularity = popularity,
       information = information,
       keywords = keywords,
+      totalEpisodes = totalEpisodes,
     )
   }
 }

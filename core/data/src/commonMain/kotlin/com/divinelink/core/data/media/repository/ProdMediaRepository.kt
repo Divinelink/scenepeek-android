@@ -14,6 +14,7 @@ import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
@@ -277,6 +278,10 @@ class ProdMediaRepository(
 
   override fun saveMediaItem(mediaItem: MediaItem.Media) {
     dao.insertMedia(mediaItem)
+  }
+
+  override fun saveShowDetails(show: TV) {
+    dao.insertShowDetails(show)
   }
 
   override suspend fun insertFavoriteMedia(media: MediaItem) {

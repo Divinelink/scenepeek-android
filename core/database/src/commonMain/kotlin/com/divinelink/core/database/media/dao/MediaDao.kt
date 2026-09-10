@@ -10,6 +10,7 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
@@ -26,6 +27,8 @@ interface MediaDao {
     media: MediaItem.Media,
     seasons: List<Season>? = null,
   )
+
+  fun insertShowDetails(show: TV)
 
   fun insertMediaEntities(media: List<MediaItemEntity>)
 

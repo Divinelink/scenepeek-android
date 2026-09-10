@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonShapes
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -161,6 +162,26 @@ fun NextUpContent(
                       text = upNext.episode.name,
                       style = MaterialTheme.typography.bodySmall,
                       color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                  }
+
+                  Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+                  ) {
+                    Text(
+                      modifier = Modifier,
+                      text = "${upNext.watchedEpisodes}/${upNext.totalEpisodes}",
+                      style = MaterialTheme.typography.bodySmall,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+
+                    LinearProgressIndicator(
+                      modifier = Modifier
+                        .fillMaxWidth()
+                        .height(MaterialTheme.dimensions.keyline_8),
+                      progress = { upNext.watchedEpisodes.toFloat() / upNext.totalEpisodes.toFloat() },
+                      drawStopIndicator = {},
                     )
                   }
                 }

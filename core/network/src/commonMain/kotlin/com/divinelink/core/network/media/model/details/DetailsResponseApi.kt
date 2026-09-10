@@ -210,6 +210,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
     },
   ),
   keywords = keywords.map(),
+  totalEpisodes = numberOfEpisodes,
 )
 
 private fun List<CastApi>.toActors(): List<MediaItem.Person> = this.map(CastApi::toPerson)

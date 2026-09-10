@@ -71,26 +71,38 @@ SELECT
   show.id AS showId,
   show.name AS showTitle,
   show.posterPath AS showPosterPath,
-  episode.id AS episodeId,
-  episode.seasonNumber AS seasonNumber,
-  episode.episodeNumber AS episodeNumber,
-  episode.name AS episodeName,
-  episode.stillPath AS episodeThumbnail,
-  episode.airDate AS airDate
+
+  showDetails.totalEpisodes,
+  COUNT(DISTINCT userEpisode.episodeId) AS watchedEpisodes,
+
+  ep_next.id AS episodeId,
+  ep_next.seasonNumber AS seasonNumber,
+  ep_next.episodeNumber AS episodeNumber,
+  ep_next.name AS episodeName,
+  ep_next.stillPath AS episodeThumbnail,
+  ep_next.airDate AS airDate
+
 FROM MediaItemEntity show
 JOIN UserShowsEntity userShow ON show.id = userShow.showId
-JOIN EpisodeEntity episode ON episode.id = (
-    SELECT episode2.id
-    FROM EpisodeEntity episode2
-    LEFT JOIN UserEpisodesEntity userEpisode ON episode2.id = userEpisode.episodeId
-    WHERE episode2.showId = show.id
-      AND episode2.airDate <= CURRENT_DATE
-      AND userEpisode.episodeId IS NULL
-      AND episode2.seasonNumber > 0
-    ORDER BY episode2.seasonNumber ASC, episode2.episodeNumber ASC
+JOIN ShowDetailsEntity showDetails ON showDetails.id = userShow.showId
+
+-- A. Join for the NEXT UP episode
+JOIN EpisodeEntity ep_next ON ep_next.id = (
+    SELECT n.id
+    FROM EpisodeEntity n
+    LEFT JOIN UserEpisodesEntity u ON n.id = u.episodeId
+    WHERE n.showId = show.id
+      AND n.airDate <= CURRENT_DATE
+      AND u.episodeId IS NULL
+      AND n.seasonNumber > 0
+    ORDER BY n.seasonNumber ASC, n.episodeNumber ASC
     LIMIT 1
 )
-WHERE userShow.status != 'completed' AND episode.seasonNumber > 0
+LEFT JOIN EpisodeEntity ep_all ON show.id = ep_all.showId AND ep_all.seasonNumber > 0
+LEFT JOIN UserEpisodesEntity userEpisode ON ep_all.id = userEpisode.episodeId
+
+WHERE userShow.status != 'completed'
+GROUP BY show.id
 ORDER BY userShow.updatedAt DESC;
 
 -- Find the first season that is NOT fully watched
