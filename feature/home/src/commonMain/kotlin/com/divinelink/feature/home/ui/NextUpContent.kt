@@ -3,6 +3,7 @@ package com.divinelink.feature.home.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,10 +14,14 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ButtonGroupDefaults.connectedMiddleButtonPressShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonShapes
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,6 +47,7 @@ import com.divinelink.feature.home.nextup.NextUpViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NextUpContent(
   modifier: Modifier = Modifier,
@@ -87,84 +93,90 @@ fun NextUpContent(
             items = (state.data as DataState.Data).data,
             key = { it.episode.id },
           ) { upNext ->
-            Row(
-              modifier = Modifier
-                .clip(CardDefaults.shape)
-                .clickable {
-                  onNavigate(
-                    Navigation.DetailsRoute(
-                      id = upNext.episode.showId,
-                      mediaType = MediaType.TV.value,
-                    ),
-                  )
-                }
-                .padding(MaterialTheme.dimensions.keyline_4)
-                .conditional(
-                  condition = rememberIsLandscape(),
-                  ifTrue = { fillParentMaxWidth(0.5f) },
-                  ifFalse = { fillParentMaxWidth(0.85f) },
-                ),
-              horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-            ) {
-              MovieImage(
-                modifier = Modifier.height(MaterialTheme.dimensions.posterSizeSmall),
-                path = upNext.showPosterPath,
-              )
-
-              Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+            Box {
+              Row(
+                modifier = Modifier
+                  .clip(CardDefaults.shape)
+                  .clickable {
+                    onNavigate(
+                      Navigation.DetailsRoute(
+                        id = upNext.episode.showId,
+                        mediaType = MediaType.TV.value,
+                      ),
+                    )
+                  }
+                  .padding(MaterialTheme.dimensions.keyline_4)
+                  .conditional(
+                    condition = rememberIsLandscape(),
+                    ifTrue = { fillParentMaxWidth(0.5f) },
+                    ifFalse = { fillParentMaxWidth(0.85f) },
+                  ),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
               ) {
-                Text(
-                  maxLines = 1,
-                  overflow = TextOverflow.Ellipsis,
-                  text = upNext.showTitle,
-                  style = MaterialTheme.typography.titleSmall,
+                MovieImage(
+                  modifier = Modifier.height(MaterialTheme.dimensions.posterSizeSmall),
+                  path = upNext.showPosterPath,
                 )
 
-                Row(
-                  verticalAlignment = Alignment.Top,
+                Column(
+                  verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
                 ) {
                   Text(
-                    modifier = Modifier
-                      .background(
-                        color = MaterialTheme.colorScheme.surfaceContainer,
-                        shape = MaterialTheme.shape.medium,
-                      )
-                      .padding(
-                        horizontal = MaterialTheme.dimensions.keyline_4,
-                        vertical = MaterialTheme.dimensions.keyline_2,
-                      ),
-                    text = stringResource(
-                      UiString.season_episode_format,
-                      upNext.episode.seasonNumber.zeroPad(),
-                      upNext.episode.number.zeroPad(),
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                  )
-
-                  Text(
-                    modifier = Modifier
-                      .padding(
-                        horizontal = MaterialTheme.dimensions.keyline_4,
-                        vertical = MaterialTheme.dimensions.keyline_2,
-                      ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    text = upNext.episode.name,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    text = upNext.showTitle,
+                    style = MaterialTheme.typography.titleSmall,
                   )
-                }
 
-                IconButton(
-                  onClick = { viewModel.markEpisodeAsWatched(episode = upNext.episode) },
-                ) {
-                  Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                  )
+                  Row(
+                    verticalAlignment = Alignment.Top,
+                  ) {
+                    Text(
+                      modifier = Modifier
+                        .background(
+                          color = MaterialTheme.colorScheme.surfaceContainer,
+                          shape = MaterialTheme.shape.medium,
+                        )
+                        .padding(
+                          horizontal = MaterialTheme.dimensions.keyline_4,
+                          vertical = MaterialTheme.dimensions.keyline_2,
+                        ),
+                      text = stringResource(
+                        UiString.season_episode_format,
+                        upNext.episode.seasonNumber.zeroPad(),
+                        upNext.episode.number.zeroPad(),
+                      ),
+                      style = MaterialTheme.typography.bodySmall,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+
+                    Text(
+                      modifier = Modifier
+                        .padding(
+                          horizontal = MaterialTheme.dimensions.keyline_4,
+                          vertical = MaterialTheme.dimensions.keyline_2,
+                        ),
+                      maxLines = 1,
+                      overflow = TextOverflow.Ellipsis,
+                      text = upNext.episode.name,
+                      style = MaterialTheme.typography.bodySmall,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                  }
                 }
+              }
+              FilledTonalIconButton(
+                modifier = Modifier.align(Alignment.BottomEnd),
+                shapes = IconButtonShapes(
+                  shape = ShapeDefaults.ExtraExtraLarge,
+                  pressedShape = connectedMiddleButtonPressShape,
+                ),
+                onClick = { viewModel.markEpisodeAsWatched(episode = upNext.episode) },
+              ) {
+                Icon(
+                  imageVector = Icons.Default.Check,
+                  contentDescription = null,
+                )
               }
             }
           }
