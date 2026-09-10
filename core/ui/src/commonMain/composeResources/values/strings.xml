@@ -206,4 +206,5 @@
   <string name="next_up_episodes">Next up</string>
   <string name="you_are_all_caught_up">You're all caught up!</string>
   <string name="no_next_up_episodes">Add more shows to your library to see what's next.</string>
+  <string name="season_episode_format" translatable="false">S. %1$s E. %2$s</string>
 </resources>

@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,8 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.commons.extensions.zeroPad
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.DataState
@@ -33,6 +36,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.rememberIsLandscape
 import com.divinelink.core.ui.resources.no_next_up_episodes
+import com.divinelink.core.ui.resources.season_episode_format
 import com.divinelink.core.ui.resources.you_are_all_caught_up
 import com.divinelink.feature.home.nextup.NextUpViewModel
 import org.jetbrains.compose.resources.stringResource
@@ -48,7 +52,7 @@ fun NextUpContent(
 
   LazyRow(
     modifier = modifier.fillMaxWidth(),
-    contentPadding = PaddingValues(horizontal = MaterialTheme.dimensions.keyline_8),
+    contentPadding = PaddingValues(horizontal = MaterialTheme.dimensions.keyline_4),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
     when (state.data) {
@@ -85,15 +89,16 @@ fun NextUpContent(
           ) { upNext ->
             Row(
               modifier = Modifier
+                .clip(CardDefaults.shape)
                 .clickable {
                   onNavigate(
                     Navigation.DetailsRoute(
                       id = upNext.episode.showId,
                       mediaType = MediaType.TV.value,
-                      isFavorite = null,
                     ),
                   )
                 }
+                .padding(MaterialTheme.dimensions.keyline_4)
                 .conditional(
                   condition = rememberIsLandscape(),
                   ifTrue = { fillParentMaxWidth(0.5f) },
@@ -129,7 +134,11 @@ fun NextUpContent(
                         horizontal = MaterialTheme.dimensions.keyline_4,
                         vertical = MaterialTheme.dimensions.keyline_2,
                       ),
-                    text = "S.${upNext.episode.seasonNumber} E.${upNext.episode.number}",
+                    text = stringResource(
+                      UiString.season_episode_format,
+                      upNext.episode.seasonNumber.zeroPad(),
+                      upNext.episode.number.zeroPad(),
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                   )

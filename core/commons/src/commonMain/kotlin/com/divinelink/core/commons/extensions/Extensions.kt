@@ -61,3 +61,5 @@ fun Long.bytesToHumanReadable(decimalPlaces: Int = 2): String {
 
 expect fun Int.formatWithCommas(): String
 expect fun Long.formatWithCommas(): String
+
+fun Any.zeroPad(): String = this.toString().padStart(2, '0')
