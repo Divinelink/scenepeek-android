@@ -69,11 +69,15 @@ interface MediaDao {
     mediaType: MediaType,
   ): Boolean
 
-  fun fetchGenres(mediaType: MediaType): Flow<List<Genre>>
+  fun fetchGenres(
+    mediaType: MediaType,
+    locale: String,
+  ): Flow<List<Genre>>
 
   fun insertGenres(
     mediaType: MediaType,
     genres: List<Genre>,
+    locale: String,
   )
 
   fun insertEpisodes(episodes: List<Episode>)

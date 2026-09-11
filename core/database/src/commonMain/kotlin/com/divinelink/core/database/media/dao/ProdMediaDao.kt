@@ -293,9 +293,12 @@ class ProdMediaDao(
     }
   }
 
-  override fun fetchGenres(mediaType: MediaType): Flow<List<Genre>> = database
+  override fun fetchGenres(
+    mediaType: MediaType,
+    locale: String,
+  ): Flow<List<Genre>> = database
     .genreEntityQueries
-    .fetchGenres(mediaType = mediaType.value, locale = "en")
+    .fetchGenres(mediaType = mediaType.value, locale = locale)
     .asFlow()
     .mapToList(dispatcher.io)
     .map { list ->
@@ -310,13 +313,14 @@ class ProdMediaDao(
   override fun insertGenres(
     mediaType: MediaType,
     genres: List<Genre>,
+    locale: String,
   ) = database.transaction {
     genres.forEach { genre ->
       database.genreEntityQueries.insertGenre(
         id = genre.id.toLong(),
         name = genre.name,
         mediaType = mediaType.value,
-        locale = "en",
+        locale = locale,
       )
     }
   }
