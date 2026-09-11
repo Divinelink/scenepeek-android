@@ -255,7 +255,7 @@ fun DetailsContent(
         onRequestClicked = { showRequestModal = true },
         onManageMovie = { showManageMediaModal = true },
         onManageTv = { showManageMediaModal = true },
-        isAddedShow = true,
+        isAddedShow = viewState.userShowStatus != null,
         onAddShow = { action(DetailsAction.AddShow) },
       )
     },

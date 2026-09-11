@@ -20,6 +20,7 @@ import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.Tab
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 @Immutable
@@ -44,6 +45,7 @@ data class DetailsViewState(
   val tabs: List<Tab>,
   val forms: DetailsForms,
   val seasonsProgress: List<SeasonProgress>,
+  val userShowStatus: UserShowStatus?,
 ) {
   companion object {
     fun initial(
@@ -73,6 +75,7 @@ data class DetailsViewState(
       tabs = tabs,
       forms = forms,
       seasonsProgress = emptyList(),
+      userShowStatus = null,
     )
   }
 

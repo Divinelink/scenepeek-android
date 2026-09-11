@@ -193,6 +193,18 @@ class DetailsViewModel(
           }
         }
         .launchIn(viewModelScope)
+
+      mediaRepository
+        .getUserShowStatus(viewState.value.mediaId)
+        .distinctUntilChanged()
+        .onEach { status ->
+          _viewState.update { state ->
+            state.copy(
+              userShowStatus = status,
+            )
+          }
+        }
+        .launchIn(viewModelScope)
     }
 
     getMediaDetailsUseCase(parameters = requestApi)

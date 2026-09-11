@@ -30,7 +30,7 @@ import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.track.NextUpEpisode
-import com.divinelink.core.model.track.ShowStatus
+import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -627,7 +627,7 @@ class ProdMediaDao(
       showId = showId,
       addedAt = clock.currentEpochSeconds(),
       updatedAt = clock.currentEpochSeconds(),
-      status = ShowStatus.WATCHING.value,
+      status = UserShowStatus.WATCHING.value,
       notes = null,
       rating = null,
     )
@@ -637,13 +637,13 @@ class ProdMediaDao(
     userShowQueries.deleteUserShow(showId)
   }
 
-  override fun getUserShowStatus(showId: Long): ShowStatus? {
-    val entity = userShowQueries
-      .getUserShowStatus(showId)
-      .executeAsOneOrNull()
-
-    return ShowStatus.from(entity?.status)
-  }
+  override fun getUserShowStatus(showId: Long): Flow<UserShowStatus?> = userShowQueries
+    .getUserShowStatus(showId)
+    .asFlow()
+    .mapToOneOrNull(dispatcher.io)
+    .map { entity ->
+      UserShowStatus.from(entity?.status)
+    }
 
   override fun getUserShows(): Flow<List<Long>> = userShowQueries
     .getAllUserShows()

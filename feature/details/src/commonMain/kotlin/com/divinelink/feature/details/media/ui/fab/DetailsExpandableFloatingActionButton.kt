@@ -8,6 +8,7 @@ import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.LibraryAdd
+import androidx.compose.material.icons.rounded.LibraryAddCheck
 import androidx.compose.material.icons.rounded.SettingsSuggest
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.runtime.Composable
@@ -19,8 +20,8 @@ import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
-import com.divinelink.core.ui.resources.add_to_your_shows
-import com.divinelink.core.ui.resources.added_to_your_shows
+import com.divinelink.core.ui.resources.track_show
+import com.divinelink.core.ui.resources.tracking_show
 import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details__add_to_list
@@ -100,15 +101,20 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
           onClick = onManageTv,
         )
         DetailActionItem.AddShow -> {
-          val resource = if (isAddedShow) {
-            UiString.add_to_your_shows
+          val text = if (isAddedShow) {
+            UiString.tracking_show
           } else {
-            UiString.added_to_your_shows
+            UiString.track_show
+          }
+          val icon = if (isAddedShow) {
+            Icons.Rounded.LibraryAddCheck
+          } else {
+            Icons.Rounded.LibraryAdd
           }
           FloatingActionButtonItem(
-            icon = IconWrapper.Vector(Icons.Rounded.LibraryAdd),
-            label = UIText.ResourceText(resource),
-            contentDescription = UIText.ResourceText(resource),
+            icon = IconWrapper.Vector(icon),
+            label = UIText.ResourceText(text),
+            contentDescription = UIText.ResourceText(text),
             onClick = onAddShow,
           )
         }
