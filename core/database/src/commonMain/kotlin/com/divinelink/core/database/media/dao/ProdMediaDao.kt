@@ -566,19 +566,6 @@ class ProdMediaDao(
     }
   }
 
-  override fun markEpisodeAsWatched(episodeId: Long) = database.transaction {
-    episodeQueries.upsertUserEpisode(
-      episodeId = episodeId,
-      watchedAt = null,
-    )
-  }
-
-  override fun unmarkEpisodeAsWatched(episodeId: Long) = database.transaction {
-    episodeQueries.deleteUserEpisode(
-      episodeId = episodeId,
-    )
-  }
-
   override fun markSeasonAsWatched(episodeIds: List<Long>) {
     if (episodeIds.isEmpty()) return
 

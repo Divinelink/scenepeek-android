@@ -16,6 +16,11 @@ DELETE FROM UserEpisodesEntity WHERE episodeId = ?;
 CREATE INDEX idx_user_episodes_episode_id
 ON UserEpisodesEntity(episodeId);
 
+isWatchedEpisode:
+SELECT COUNT(*) > 0 AS watched
+FROM UserEpisodesEntity
+WHERE episodeId = ?;
+
 watchedCountForSeason:
 SELECT COUNT(*) AS count
 FROM UserEpisodesEntity ue

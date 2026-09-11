@@ -62,12 +62,29 @@ class ProdTrackDao(
   override fun fetchNumberOfSeasons(showId: Long): Int = database
     .showDetailsEntityQueries
     .fetchNumberOfSeasons(showId)
-    .executeAsOne()
-    .toInt()
+    .executeAsOneOrNull()
+    ?.toInt() ?: 0
 
   override suspend fun findCurrentWatchingSeason(showId: Long): Int? = database
     .userShowsEntityQueries
     .findCurrentWatchingSeason(showId)
     .executeAsOneOrNull()
     ?.toInt()
+
+  override fun isWatchedEpisode(episodeId: Long): Boolean = userEpisodeQueries
+    .isWatchedEpisode(episodeId)
+    .executeAsOneOrNull() ?: false
+
+  override fun markEpisodeAsWatched(episodeId: Long) = database.transaction {
+    userEpisodeQueries.upsertUserEpisode(
+      episodeId = episodeId,
+      watchedAt = null,
+    )
+  }
+
+  override fun unmarkEpisodeAsWatched(episodeId: Long) = database.transaction {
+    userEpisodeQueries.deleteUserEpisode(
+      episodeId = episodeId,
+    )
+  }
 }

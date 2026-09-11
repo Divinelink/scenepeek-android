@@ -22,4 +22,8 @@ interface TrackDao {
   )
   fun getSyncErrors(): Flow<List<ShowSyncError>>
   fun clearSyncErrors(showIds: List<Long>)
+
+  fun isWatchedEpisode(episodeId: Long): Boolean
+  fun markEpisodeAsWatched(episodeId: Long)
+  fun unmarkEpisodeAsWatched(episodeId: Long)
 }

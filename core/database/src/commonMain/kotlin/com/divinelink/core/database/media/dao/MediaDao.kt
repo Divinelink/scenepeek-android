@@ -140,9 +140,6 @@ interface MediaDao {
 
   fun selectByIds(ids: List<Long>): Flow<List<MediaItem>>
 
-  fun markEpisodeAsWatched(episodeId: Long)
-  fun unmarkEpisodeAsWatched(episodeId: Long)
-
   fun markSeasonAsWatched(episodeIds: List<Long>)
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 

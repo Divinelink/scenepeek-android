@@ -37,4 +37,16 @@ class ProdTrackRepository(
 
   override fun clearSyncErrors(showIds: List<Long>) = dao
     .clearSyncErrors(showIds)
+
+
+  override fun markEpisodeAsWatched(episodeId: Long) = dao.markEpisodeAsWatched(
+    episodeId = episodeId,
+  )
+
+  override fun unmarkEpisodeAsWatched(episodeId: Long) = dao.unmarkEpisodeAsWatched(
+    episodeId = episodeId,
+  )
+
+  override fun isWatchedEpisode(episodeId: Long): Boolean = dao
+    .isWatchedEpisode(episodeId)
 }

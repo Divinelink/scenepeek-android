@@ -145,9 +145,6 @@ interface MediaRepository {
     seasonNumber: Int,
   ): Flow<List<Long>>
 
-  fun markEpisodeAsWatched(episodeId: Long)
-  fun unmarkEpisodeAsWatched(episodeId: Long)
-
   fun markSeasonAsWatched(episodeIds: List<Long>)
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 
