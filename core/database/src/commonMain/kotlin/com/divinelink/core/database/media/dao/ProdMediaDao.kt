@@ -45,6 +45,7 @@ class ProdMediaDao(
 ) : MediaDao {
   private val episodeQueries = database.userEpisodesEntityQueries
   private val userShowQueries = database.userShowsEntityQueries
+  private val mediaQueries = database.mediaItemEntityQueries
 
   override fun insertMedia(
     media: MediaItem.Media,
@@ -58,6 +59,14 @@ class ProdMediaDao(
 
   override fun insertShowDetails(show: TV) = database.transaction {
     insertMedia(media = show.toMediaItem())
+
+    show.genres?.map { it.id }?.joinToString()?.let { ids ->
+      mediaQueries.updateMediaGenres(
+        genreIdsJson = ids,
+        id = show.id,
+        mediaType = MediaType.TV.value
+      )
+    }
 
     database.showDetailsEntityQueries.insertShowDetails(
       id = show.id,
