@@ -159,7 +159,4 @@ interface MediaDao {
   fun getUserShows(): Flow<List<Long>>
   fun getNextUpEpisode(showId: Long): Flow<Episode>
   fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
-  suspend fun findFirstIncompleteSeason(showId: Long): Int?
-  suspend fun findFirstMissingSeason(showId: Long, maxSeason: Int): Int?
-  suspend fun getMaxLocalSeason(showId: Long): Int?
 }

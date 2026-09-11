@@ -9,12 +9,10 @@ class GetDetailsActionItemsUseCase(
   val dispatcher: DispatcherProvider,
 ) : UseCase<MediaType, List<DetailActionItem>>(dispatcher.default) {
 
-  override suspend fun execute(parameters: MediaType): List<DetailActionItem> {
-    return when (parameters) {
-      MediaType.TV -> DetailActionItem.defaultTvItems
-      MediaType.MOVIE -> DetailActionItem.defaultItems
-      MediaType.PERSON -> emptyList()
-      MediaType.UNKNOWN -> emptyList()
-    }
+  override suspend fun execute(parameters: MediaType): List<DetailActionItem> = when (parameters) {
+    MediaType.TV -> DetailActionItem.defaultTvItems
+    MediaType.MOVIE -> DetailActionItem.defaultItems
+    MediaType.PERSON -> emptyList()
+    MediaType.UNKNOWN -> emptyList()
   }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("LargeClass")
+
 package com.divinelink.core.database.media.dao
 
 import app.cash.sqldelight.coroutines.asFlow
@@ -707,32 +709,4 @@ class ProdMediaDao(
         )
       }
     }
-
-  override suspend fun findFirstIncompleteSeason(showId: Long): Int? = userShowQueries
-    .findFirstIncompleteSeason(showId)
-    .executeAsOneOrNull()
-    ?.toInt()
-
-  override suspend fun findFirstMissingSeason(showId: Long, maxSeason: Int): Int? {
-    // Get all season numbers we currently have locally
-    val existingSeasons = episodeQueries.getAllSeasonNumbers(showId)
-      .executeAsList()
-      .map { it.toInt() }
-      .toSet()
-
-    // Check 1 up to maxSeason for any missing seasons
-    for (i in 1..maxSeason) {
-      if (i !in existingSeasons) {
-        return i
-      }
-    }
-    return null
-  }
-
-  override suspend fun getMaxLocalSeason(showId: Long): Int? = database
-    .episodeEntityQueries
-    .getMaxLocalSeason(showId)
-    .executeAsOneOrNull()
-    ?.MAX
-    ?.toInt()
 }

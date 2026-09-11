@@ -72,6 +72,7 @@ class SeasonViewModel(
     repository.fetchSeasonDetails(
       showId = route.showId,
       season = route.seasonNumber,
+      forceRefresh = true,
     )
       .distinctUntilChanged()
       .catch {

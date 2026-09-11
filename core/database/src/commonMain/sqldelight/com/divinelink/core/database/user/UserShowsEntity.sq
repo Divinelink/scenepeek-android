@@ -86,7 +86,6 @@ FROM MediaItemEntity show
 JOIN UserShowsEntity userShow ON show.id = userShow.showId
 JOIN ShowDetailsEntity showDetails ON showDetails.id = userShow.showId
 
--- A. Join for the NEXT UP episode
 JOIN EpisodeEntity ep_next ON ep_next.id = (
     SELECT n.id
     FROM EpisodeEntity n
@@ -105,8 +104,7 @@ WHERE userShow.status != 'completed'
 GROUP BY show.id
 ORDER BY userShow.updatedAt DESC;
 
--- Find the first season that is NOT fully watched
-findFirstIncompleteSeason:
+findCurrentWatchingSeason:
 SELECT episode.seasonNumber AS seasonNumber
 FROM EpisodeEntity episode
 LEFT JOIN UserEpisodesEntity userEpisode ON episode.id = userEpisode.episodeId
@@ -115,9 +113,3 @@ GROUP BY episode.seasonNumber
 HAVING COUNT(episode.id) > COUNT(userEpisode.episodeId) -- Total eps > Watched eps
 ORDER BY episode.seasonNumber ASC
 LIMIT 1;
-
--- Get total episodes in a specific season (to know how many to expect)
-getEpisodeCountForSeason:
-SELECT COUNT(*) AS count
-FROM EpisodeEntity
-WHERE showId = :showId AND seasonNumber = :seasonNumber;

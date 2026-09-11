@@ -38,6 +38,7 @@ import com.divinelink.core.domain.theme.material.you.MaterialYouProvider
 import com.divinelink.core.domain.theme.material.you.ProdMaterialYouProvider
 import com.divinelink.core.domain.track.AddShowUseCase
 import com.divinelink.core.domain.track.CompleteSeasonUseCase
+import com.divinelink.core.domain.track.FetchNextMissingSeasonUseCase
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
@@ -101,6 +102,7 @@ val useCaseModule = module {
   factoryOf(::CompleteSeasonUseCase)
   factoryOf(::AddShowUseCase)
   factoryOf(::MarkEpisodeAsWatchedUseCase)
+  factoryOf(::FetchNextMissingSeasonUseCase)
 
   singleOf(::SearchStateManager)
 }

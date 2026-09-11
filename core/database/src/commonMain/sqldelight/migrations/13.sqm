@@ -17,3 +17,8 @@ CREATE TABLE ShowDetailsEntity (
   totalEpisodes INTEGER NOT NULL,
   totalSeasons INTEGER NOT NULL
 );
+
+CREATE TABLE ShowSyncError (
+  showId INTEGER NOT NULL,
+  targetSeason INTEGER NOT NULL
+);

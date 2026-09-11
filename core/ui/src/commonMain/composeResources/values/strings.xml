@@ -204,7 +204,8 @@
   <string name="add_to_your_shows">Add to your shows</string>
   <string name="added_to_your_shows">Added to your shows</string>
   <string name="next_up_episodes">Next up</string>
-  <string name="you_are_all_caught_up">You're all caught up!</string>
-  <string name="no_next_up_episodes">Add more shows to your library to see what's next.</string>
   <string name="season_episode_format" translatable="false">S.%1$s E.%2$s</string>
+  <string name="next_up_syncing_issue">Couldn't load progress for some shows. Tap to retry.</string>
+  <string name="show_progress_empty_state_title">Let's find something to watch!</string>
+  <string name="show_progress_empty_state_subtitle">Add shows to your library to start tracking your progress.</string>
 </resources>

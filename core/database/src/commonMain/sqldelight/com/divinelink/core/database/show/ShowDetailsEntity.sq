@@ -9,3 +9,7 @@ INSERT OR REPLACE INTO ShowDetailsEntity (
   id, totalEpisodes, totalSeasons
 )
 VALUES (?,?,?);
+
+fetchNumberOfSeasons:
+SELECT totalSeasons FROM ShowDetailsEntity
+WHERE id = ?;

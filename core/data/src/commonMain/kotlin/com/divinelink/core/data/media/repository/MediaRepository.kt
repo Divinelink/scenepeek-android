@@ -17,8 +17,8 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.model.sort.SortOption
-import com.divinelink.core.model.track.ShowStatus
 import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.ShowStatus
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
@@ -109,6 +109,7 @@ interface MediaRepository {
   fun fetchSeasonDetails(
     showId: Long,
     season: Int,
+    forceRefresh: Boolean,
   ): Flow<Resource<SeasonDetails?>>
 
   fun fetchSeasonEpisodes(
@@ -153,10 +154,6 @@ interface MediaRepository {
   fun getUserShows(): Flow<List<Long>>
   fun getUpNextEpisode(showId: Long): Flow<Episode>
   fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
-
-  suspend fun findFirstIncompleteSeason(showId: Long): Int?
-  suspend fun findFirstMissingSeason(showId: Long, maxSeason: Int): Int?
-  suspend fun getMaxLocalSeason(showId: Long): Int?
 
   fun getUserShowStatus(showId: Long): ShowStatus?
   fun addShow(showId: Long)

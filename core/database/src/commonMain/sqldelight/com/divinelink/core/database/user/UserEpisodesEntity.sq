@@ -47,7 +47,7 @@ INNER JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
 WHERE e.showId = :showId
   AND e.seasonNumber = :seasonNumber;
 
-isSeasonComplete:
+getUserSeasonProgress:
 SELECT
   COUNT(e.id) AS totalEpisodes,
   COUNT(ue.episodeId) AS watchedEpisodes

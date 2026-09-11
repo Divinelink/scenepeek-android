@@ -352,6 +352,7 @@ class ProdMediaRepository(
   override fun fetchSeasonDetails(
     showId: Long,
     season: Int,
+    forceRefresh: Boolean,
   ): Flow<Resource<SeasonDetails?>> = networkBoundResource(
     query = {
       combine(
@@ -393,7 +394,7 @@ class ProdMediaRepository(
         }
       }
     },
-    shouldFetch = { true },
+    shouldFetch = { it == null || forceRefresh },
   )
 
   override fun fetchSeasonEpisodes(
@@ -538,13 +539,4 @@ class ProdMediaRepository(
   override fun getUserShowStatus(showId: Long): ShowStatus? = dao.getUserShowStatus(showId)
   override fun addShow(showId: Long) = dao.addShow(showId)
   override fun deleteShow(showId: Long) = dao.deleteShow(showId)
-
-  override suspend fun findFirstIncompleteSeason(showId: Long): Int? = dao
-    .findFirstIncompleteSeason(showId)
-
-  override suspend fun getMaxLocalSeason(showId: Long): Int? = dao
-    .getMaxLocalSeason(showId)
-
-  override suspend fun findFirstMissingSeason(showId: Long, maxSeason: Int): Int? = dao
-    .findFirstMissingSeason(showId, maxSeason)
 }
