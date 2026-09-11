@@ -16,6 +16,7 @@ import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.preferences.DetailPreferences
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
@@ -27,6 +28,7 @@ import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeDeleteRatingUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
+import com.divinelink.core.testing.usecase.TestAddShowUseCase
 import com.divinelink.core.testing.usecase.TestCompleteSeasonUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
@@ -72,6 +74,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     ),
   )
   private val completeSeasonUseCase = TestCompleteSeasonUseCase()
+  private val addShowUseCase = TestAddShowUseCase()
   private val mediaRepository = TestMediaRepository()
 
   override fun buildViewModel() = apply {
@@ -90,6 +93,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       repository = detailsRepository.mock,
       mediaRepository = mediaRepository.mock,
       completeSeasonUseCase = completeSeasonUseCase.mock,
+      addShowUseCase = addShowUseCase.mock,
       preferencesRepository = preferencesRepository,
     )
   }
@@ -122,6 +126,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun mockGetSeasonProgress(response: Flow<List<SeasonProgress>>) = apply {
     mediaRepository.mockGetSeasonProgress(response)
+  }
+
+  fun mockGetUserShowStatus(response: Flow<UserShowStatus?>) = apply {
+    mediaRepository.mockGetUserShowStatus(response)
   }
 
   fun onSubmitRate(rating: Int) = apply {

@@ -1,9 +1,10 @@
 package com.divinelink.core.domain
 
 import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
-import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.first
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -15,20 +16,31 @@ class GetDetailsActionItemsUseCaseTest {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   @Test
-  fun `test detail action items`() = runTest {
+  fun `test detail action items for movies`() = runTest {
     val useCase = createUseCase()
 
-    useCase.invoke(Unit).first().let { result ->
-      assertThat(result.isSuccess).isTrue()
-      assertThat(result.getOrNull()).isEqualTo(
-        listOf(
-          DetailActionItem.Rate,
-          DetailActionItem.Watchlist,
-          DetailActionItem.Favorite,
-          DetailActionItem.List,
-        ),
+    useCase.invoke(parameters = MediaType.MOVIE).let { result ->
+      result.isSuccess shouldBe true
+      result.getOrNull() shouldContainExactly listOf(
+        DetailActionItem.Rate,
+        DetailActionItem.Watchlist,
+        DetailActionItem.Favorite,
+        DetailActionItem.List,
       )
     }
+  }
+
+  @Test
+  fun `test detail action items for tv`() = runTest {
+    val useCase = createUseCase()
+
+    useCase(parameters = MediaType.TV).getOrNull() shouldContainExactly listOf(
+      DetailActionItem.Rate,
+      DetailActionItem.Watchlist,
+      DetailActionItem.Favorite,
+      DetailActionItem.List,
+      DetailActionItem.AddShow,
+    )
   }
 
   private fun createUseCase() = GetDetailsActionItemsUseCase(

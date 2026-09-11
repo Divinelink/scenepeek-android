@@ -63,6 +63,7 @@ import com.divinelink.core.testing.usecase.FakeFetchAccountMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
+import com.divinelink.core.testing.usecase.TestAddShowUseCase
 import com.divinelink.core.testing.usecase.TestCompleteSeasonUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
@@ -119,6 +120,7 @@ class DetailsScreenTest : ComposeTest() {
   private val authRepository = TestAuthRepository()
   private val detailsRepository = TestDetailsRepository()
   private val completeSeasonUseCase = TestCompleteSeasonUseCase()
+  private val addShowUseCase = TestAddShowUseCase()
   private val mediaRepository = TestMediaRepository()
 
   private val preferencesRepository = TestPreferencesRepository(
@@ -188,23 +190,7 @@ class DetailsScreenTest : ComposeTest() {
       isFavorite = false,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -259,23 +245,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.MOVIE.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -330,23 +300,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.MOVIE.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -424,23 +378,7 @@ class DetailsScreenTest : ComposeTest() {
           }
         },
         switchViewButtonViewModel = switchViewButtonViewModel,
-        viewModel = DetailsViewModel(
-          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-          onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-          submitRatingUseCase = submitRateUseCase.mock,
-          deleteRatingUseCase = deleteRatingUseCase.mock,
-          addToAccountUseCase = addToWatchlistUseCase.mock,
-          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-          deleteRequestUseCase = deleteRequestUseCase.mock,
-          deleteMediaUseCase = deleteMediaUseCase.mock,
-          authRepository = authRepository.mock,
-          repository = detailsRepository.mock,
-          preferencesRepository = preferencesRepository,
-          mediaRepository = mediaRepository.mock,
-          completeSeasonUseCase = completeSeasonUseCase.mock,
-          route = route,
-        ),
+        viewModel = createViewModel(route),
         animatedVisibilityScope = this,
       )
     }
@@ -509,23 +447,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.MOVIE.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -573,23 +495,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.MOVIE.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -660,6 +566,7 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     mediaRepository.mockGetSeasonProgress(flowOf(emptyList()))
+    mediaRepository.mockGetUserShowStatus(flowOf(null))
 
     val route = Navigation.DetailsRoute(
       id = 2316,
@@ -676,23 +583,7 @@ class DetailsScreenTest : ComposeTest() {
           }
         },
         switchViewButtonViewModel = switchViewButtonViewModel,
-        viewModel = DetailsViewModel(
-          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-          onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-          submitRatingUseCase = submitRateUseCase.mock,
-          deleteRatingUseCase = deleteRatingUseCase.mock,
-          addToAccountUseCase = addToWatchlistUseCase.mock,
-          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-          deleteRequestUseCase = deleteRequestUseCase.mock,
-          deleteMediaUseCase = deleteMediaUseCase.mock,
-          authRepository = authRepository.mock,
-          repository = detailsRepository.mock,
-          preferencesRepository = preferencesRepository,
-          mediaRepository = mediaRepository.mock,
-          completeSeasonUseCase = completeSeasonUseCase.mock,
-          route = route,
-        ),
+        viewModel = createViewModel(route),
         animatedVisibilityScope = this,
       )
     }
@@ -759,23 +650,7 @@ class DetailsScreenTest : ComposeTest() {
         route = route,
         onNavigate = {},
         switchViewButtonViewModel = switchViewButtonViewModel,
-        viewModel = DetailsViewModel(
-          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-          onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-          submitRatingUseCase = submitRateUseCase.mock,
-          deleteRatingUseCase = deleteRatingUseCase.mock,
-          addToAccountUseCase = addToWatchlistUseCase.mock,
-          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-          deleteRequestUseCase = deleteRequestUseCase.mock,
-          deleteMediaUseCase = deleteMediaUseCase.mock,
-          authRepository = authRepository.mock,
-          repository = detailsRepository.mock,
-          preferencesRepository = preferencesRepository,
-          mediaRepository = mediaRepository.mock,
-          completeSeasonUseCase = completeSeasonUseCase.mock,
-          route = route,
-        ),
+        viewModel = createViewModel(route),
         animatedVisibilityScope = this,
       )
     }
@@ -819,23 +694,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.MOVIE.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -884,23 +743,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.MOVIE.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -1003,23 +846,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.MOVIE.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -1079,8 +906,6 @@ class DetailsScreenTest : ComposeTest() {
     val mediaRepository = TestMediaRepository()
     val jellyseerrRepository = TestJellyseerrRepository()
 
-    mediaRepository.mockGetSeasonProgress(flowOf(emptyList()))
-
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(response = JellyseerrMediaInfoFactory.Tv.unknown())
 
@@ -1139,23 +964,7 @@ class DetailsScreenTest : ComposeTest() {
       mediaType = MediaType.TV.value,
     )
 
-    val viewModel = DetailsViewModel(
-      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      submitRatingUseCase = submitRateUseCase.mock,
-      deleteRatingUseCase = deleteRatingUseCase.mock,
-      addToAccountUseCase = addToWatchlistUseCase.mock,
-      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-      deleteRequestUseCase = deleteRequestUseCase.mock,
-      deleteMediaUseCase = deleteMediaUseCase.mock,
-      authRepository = authRepository.mock,
-      repository = detailsRepository.mock,
-      preferencesRepository = preferencesRepository,
-      mediaRepository = mediaRepository.mock,
-      completeSeasonUseCase = completeSeasonUseCase.mock,
-      route = route,
-    )
+    val viewModel = createViewModel(route)
 
     setVisibilityScopeContent {
       DetailsScreen(
@@ -1216,4 +1025,23 @@ class DetailsScreenTest : ComposeTest() {
       .onFirst()
       .assertIsNotDisplayed()
   }
+
+  private fun createViewModel(route: Navigation.DetailsRoute) = DetailsViewModel(
+    getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+    onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+    submitRatingUseCase = submitRateUseCase.mock,
+    deleteRatingUseCase = deleteRatingUseCase.mock,
+    addToAccountUseCase = addToWatchlistUseCase.mock,
+    spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+    fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+    deleteRequestUseCase = deleteRequestUseCase.mock,
+    deleteMediaUseCase = deleteMediaUseCase.mock,
+    authRepository = authRepository.mock,
+    repository = detailsRepository.mock,
+    preferencesRepository = preferencesRepository,
+    mediaRepository = mediaRepository.mock,
+    completeSeasonUseCase = completeSeasonUseCase.mock,
+    addShowUseCase = addShowUseCase.mock,
+    route = route,
+  )
 }

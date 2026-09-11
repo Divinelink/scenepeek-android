@@ -348,7 +348,7 @@ class DetailsViewModel(
               }
 
               is MediaDetailsResult.JellyseerrDetails.NotRequested -> viewState.copy(
-                actionButtons = buildActions(viewState.actionButtons) {
+                actionButtons = buildActions(viewState.mediaType) {
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
@@ -852,7 +852,7 @@ class DetailsViewModel(
               viewState.copy(
                 isLoading = false,
                 jellyseerrMediaInfo = null,
-                actionButtons = buildActions(viewState.actionButtons) {
+                actionButtons = buildActions(viewState.mediaType) {
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
@@ -971,7 +971,7 @@ class DetailsViewModel(
     info: JellyseerrMediaInfo?,
     permissions: List<ProfilePermission>,
     seasons: List<Season>,
-  ): List<DetailActionItem> = buildActions(viewState.value.actionButtons) {
+  ): List<DetailActionItem> = buildActions(viewState.value.mediaType) {
     val status = info?.status
 
     withManageTv(
@@ -989,7 +989,7 @@ class DetailsViewModel(
   private fun findMovieActions(
     info: JellyseerrMediaInfo,
     permissions: List<ProfilePermission>,
-  ): List<DetailActionItem> = buildActions(viewState.value.actionButtons) {
+  ): List<DetailActionItem> = buildActions(viewState.value.mediaType) {
     /**
      * Display ManageMovie action if user has MANAGE_REQUESTS permissions or requests are not empty.
      */

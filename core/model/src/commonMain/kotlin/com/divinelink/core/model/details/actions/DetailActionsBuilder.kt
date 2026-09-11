@@ -2,14 +2,17 @@ package com.divinelink.core.model.details.actions
 
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.media.MediaType
 
-class DetailActionsBuilder internal constructor(
-  currentActions: List<DetailActionItem>,
-) {
+class DetailActionsBuilder internal constructor() {
   private val actions = mutableListOf<DetailActionItem>()
 
-  init {
-    actions.addAll(currentActions)
+  fun applyDefaults(type: MediaType) = apply {
+    when (type) {
+      MediaType.MOVIE -> actions.addAll(DetailActionItem.defaultItems)
+      MediaType.TV -> actions.addAll(DetailActionItem.defaultTvItems)
+      else -> Unit
+    }
   }
 
   fun withRequest(
@@ -40,8 +43,9 @@ class DetailActionsBuilder internal constructor(
 }
 
 fun buildActions(
-  currentActions: List<DetailActionItem>,
+  type: MediaType,
   configure: DetailActionsBuilder.() -> Unit,
-): List<DetailActionItem> = DetailActionsBuilder(currentActions)
+): List<DetailActionItem> = DetailActionsBuilder()
+  .applyDefaults(type)
   .apply(configure)
   .build()

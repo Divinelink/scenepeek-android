@@ -40,6 +40,7 @@ import com.divinelink.core.testing.domain.SystemThemeProviderFactory
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
+import com.divinelink.core.testing.repository.TestTrackRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
@@ -53,10 +54,12 @@ import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutUseCase
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
+import com.divinelink.core.testing.usecase.TestMarkEpisodeAsWatchedUseCase
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.feature.home.HomeViewModel
+import com.divinelink.feature.home.nextup.NextUpViewModel
 import com.divinelink.feature.home.section.SectionViewModel
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
@@ -134,6 +137,14 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
         authRepository = TestAuthRepository().mock,
         searchStateManager = SearchStateManager(),
+      )
+    }
+
+    declare {
+      NextUpViewModel(
+        repository = mediaRepository.mock,
+        trackRepository = TestTrackRepository().mock,
+        markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
       )
     }
 

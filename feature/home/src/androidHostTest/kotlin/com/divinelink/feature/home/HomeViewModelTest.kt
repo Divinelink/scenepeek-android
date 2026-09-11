@@ -106,6 +106,7 @@ class HomeViewModelTest {
             MediaListSection.RecentRequests,
             MediaListSection.Upcoming(MediaType.MOVIE),
             MediaListSection.Upcoming(MediaType.TV),
+            MediaListSection.NextUpEpisodes,
           ),
         ),
       )
@@ -127,6 +128,7 @@ class HomeViewModelTest {
         sections = listOf(
           MediaListSection.Popular(MediaType.MOVIE),
           MediaListSection.TrendingAll,
+          MediaListSection.NextUpEpisodes,
           MediaListSection.Popular(MediaType.TV),
           MediaListSection.Upcoming(MediaType.MOVIE),
           MediaListSection.Upcoming(MediaType.TV),
@@ -137,6 +139,7 @@ class HomeViewModelTest {
           sections = listOf(
             MediaListSection.Popular(MediaType.MOVIE),
             MediaListSection.TrendingAll,
+            MediaListSection.NextUpEpisodes,
             MediaListSection.Popular(MediaType.TV),
             MediaListSection.Upcoming(MediaType.MOVIE),
             MediaListSection.Upcoming(MediaType.TV),
@@ -149,6 +152,7 @@ class HomeViewModelTest {
           sections = listOf(
             MediaListSection.Popular(MediaType.MOVIE),
             MediaListSection.TrendingAll,
+            MediaListSection.NextUpEpisodes,
             MediaListSection.Popular(MediaType.TV),
             MediaListSection.Upcoming(MediaType.MOVIE),
             MediaListSection.Upcoming(MediaType.TV),
