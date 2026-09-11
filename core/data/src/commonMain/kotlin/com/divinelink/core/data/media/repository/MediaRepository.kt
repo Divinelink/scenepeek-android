@@ -148,7 +148,6 @@ interface MediaRepository {
   fun markSeasonAsWatched(episodeIds: List<Long>)
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 
-  fun getUserShows(): Flow<List<Long>>
   fun getUpNextEpisode(showId: Long): Flow<Episode>
   fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
 

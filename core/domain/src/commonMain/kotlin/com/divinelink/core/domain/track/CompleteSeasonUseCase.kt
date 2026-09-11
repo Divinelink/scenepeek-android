@@ -14,7 +14,8 @@ data class CompleteSeasonParameters(
 
 class CompleteSeasonUseCase(
   private val repository: MediaRepository,
-  val dispatcher: DispatcherProvider,
+  private val fetchNextMissingSeasonUseCase: FetchNextMissingSeasonUseCase,
+  dispatcher: DispatcherProvider,
 ) : UseCase<CompleteSeasonParameters, Unit>(dispatcher.default) {
   override suspend fun execute(parameters: CompleteSeasonParameters) {
     val episodeIds = repository.fetchSeasonEpisodes(
@@ -31,5 +32,7 @@ class CompleteSeasonUseCase(
     } else {
       repository.markSeasonAsWatched(episodeIds)
     }
+
+    fetchNextMissingSeasonUseCase(parameters.showId)
   }
 }

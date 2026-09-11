@@ -4,6 +4,8 @@ import com.divinelink.core.database.show.ShowSyncError
 import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {
+  fun getUserShows(): Flow<List<Long>>
+
   fun episodesLeftThisSeason(
     showId: Long,
     seasonNumber: Int,

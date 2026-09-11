@@ -8,6 +8,8 @@ class ProdTrackRepository(
   val dao: TrackDao,
 ) : TrackRepository {
 
+  override fun getUserShows(): Flow<List<Long>> = dao.getUserShows()
+
   override fun episodesLeftThisSeason(
     showId: Long,
     seasonNumber: Int,
@@ -37,7 +39,6 @@ class ProdTrackRepository(
 
   override fun clearSyncErrors(showIds: List<Long>) = dao
     .clearSyncErrors(showIds)
-
 
   override fun markEpisodeAsWatched(episodeId: Long) = dao.markEpisodeAsWatched(
     episodeId = episodeId,

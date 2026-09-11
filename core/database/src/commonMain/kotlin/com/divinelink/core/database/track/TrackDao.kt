@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface TrackDao {
 
+  fun getUserShows(): Flow<List<Long>>
+
   fun getEpisodesLeftThisSeason(
     showId: Long,
     seasonNumber: Int,

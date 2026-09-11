@@ -514,7 +514,6 @@ class ProdMediaRepository(
       seasonNumber = seasonNumber,
     )
 
-
   override fun markSeasonAsWatched(episodeIds: List<Long>) = dao.markSeasonAsWatched(
     episodeIds = episodeIds,
   )
@@ -523,13 +522,13 @@ class ProdMediaRepository(
     episodeIds = episodeIds,
   )
 
-  override fun getUserShows(): Flow<List<Long>> = dao.getUserShows()
-
   override fun getUpNextEpisode(showId: Long): Flow<Episode> = dao.getNextUpEpisode(showId)
 
   override fun getNextUpEpisodes(): Flow<List<NextUpEpisode>> = dao.getNextUpEpisodes()
 
-  override fun getUserShowStatus(showId: Long): Flow<UserShowStatus?> = dao.getUserShowStatus(showId)
+  override fun getUserShowStatus(showId: Long): Flow<UserShowStatus?> = dao.getUserShowStatus(
+    showId = showId,
+  )
   override fun addShow(showId: Long) = dao.addShow(showId)
   override fun deleteShow(showId: Long) = dao.deleteShow(showId)
 }

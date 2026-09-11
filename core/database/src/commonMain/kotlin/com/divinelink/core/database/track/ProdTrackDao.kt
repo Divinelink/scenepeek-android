@@ -6,6 +6,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.show.ShowSyncError
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ProdTrackDao(
   private val database: Database,
@@ -13,6 +14,15 @@ class ProdTrackDao(
 ) : TrackDao {
   private val userEpisodeQueries = database.userEpisodesEntityQueries
   private val syncErrorQueries = database.showSyncErrorQueries
+  private val userShowQueries = database.userShowsEntityQueries
+
+  override fun getUserShows(): Flow<List<Long>> = userShowQueries
+    .getAllUserShows()
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { entity ->
+      entity.map { show -> show.showId }
+    }
 
   override fun getEpisodesLeftThisSeason(
     showId: Long,

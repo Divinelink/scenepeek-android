@@ -632,14 +632,6 @@ class ProdMediaDao(
       UserShowStatus.from(entity?.status)
     }
 
-  override fun getUserShows(): Flow<List<Long>> = userShowQueries
-    .getAllUserShows()
-    .asFlow()
-    .mapToList(dispatcher.io)
-    .map { entity ->
-      entity.map { show -> show.showId }
-    }
-
   override fun getNextUpEpisode(showId: Long): Flow<Episode> = userShowQueries
     .nextUpEpisode(showId = showId)
     .asFlow()
