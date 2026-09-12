@@ -41,7 +41,7 @@ import kotlin.time.Clock
 class ProdMediaDao(
   private val database: Database,
   private val dispatcher: DispatcherProvider,
-  private val clock: Clock,
+  private val clockProvider: ClockProvider,
 ) : MediaDao {
   private val episodeQueries = database.userEpisodesEntityQueries
   private val userShowQueries = database.userShowsEntityQueries
@@ -210,7 +210,7 @@ class ProdMediaDao(
     database.favoriteMediaEntityQueries.addToFavorites(
       mediaId = mediaId,
       mediaType = mediaType.value,
-      favoritedAt = clock.currentEpochSeconds(),
+      favoritedAt = clockProvider.clock.currentEpochSeconds(),
     )
   }
 
@@ -542,7 +542,7 @@ class ProdMediaDao(
       searchHistoryEntityQueries.insertSearchQuery(
         mediaId = media.mediaId,
         mediaType = media.mediaType.value,
-        timestamp = clock.currentEpochSeconds().toLong(),
+        timestamp = clockProvider.clock.currentEpochSeconds().toLong(),
       )
     }
   }
@@ -621,8 +621,8 @@ class ProdMediaDao(
   override fun addShow(showId: Long) = database.transaction {
     userShowQueries.insertUserShow(
       showId = showId,
-      addedAt = clock.currentEpochSeconds(),
-      updatedAt = clock.currentEpochSeconds(),
+      addedAt = clockProvider.clock.currentEpochSeconds(),
+      updatedAt = clockProvider.clock.currentEpochSeconds(),
       status = UserShowStatus.WATCHING.value,
       notes = null,
       rating = null,

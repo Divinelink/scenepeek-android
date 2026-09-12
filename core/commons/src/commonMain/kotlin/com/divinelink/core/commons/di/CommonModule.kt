@@ -1,8 +1,10 @@
 package com.divinelink.core.commons.di
 
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.commons.provider.SecretProvider
 import com.divinelink.core.commons.provider.getConfigProvider
 import com.divinelink.core.commons.util.JsonHelper
+import kotlinx.datetime.TimeZone
 import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -10,6 +12,13 @@ import kotlin.time.Clock
 
 val commonModule = module {
   single<Clock> { Clock.System }
+  single<TimeZone> { TimeZone.currentSystemDefault() }
+  single<ClockProvider> {
+    object : ClockProvider {
+      override val clock: Clock = get()
+      override val timezone: TimeZone = get()
+    }
+  }
 
   single {
     Json {

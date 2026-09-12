@@ -8,6 +8,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.preferences.PreferencesRepository
@@ -31,6 +32,7 @@ fun rememberScenePeekAppState(
   onboardingManager: OnboardingManager,
   preferencesRepository: PreferencesRepository,
   appInfoRepository: AppInfoRepository,
+  clock: ClockProvider,
   navigator: Navigator,
   scope: CoroutineScope = rememberCoroutineScope(),
   snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -43,6 +45,7 @@ fun rememberScenePeekAppState(
     snackbarHostState = snackbarHostState,
     appInfoRepository = appInfoRepository,
     preferencesRepository = preferencesRepository,
+    clock = clock,
   )
 }
 
@@ -51,6 +54,7 @@ class ScenePeekAppState internal constructor(
   val scope: CoroutineScope,
   val navigator: Navigator,
   val snackbarHostState: SnackbarHostState,
+  val clock: ClockProvider,
   preferencesRepository: PreferencesRepository,
   private val appInfoRepository: AppInfoRepository,
   networkMonitor: NetworkMonitor,

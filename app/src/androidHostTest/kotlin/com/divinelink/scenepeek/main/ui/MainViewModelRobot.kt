@@ -1,6 +1,7 @@
 package com.divinelink.scenepeek.main.ui
 
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.opendata.TestOpenDataRepository
@@ -42,6 +43,7 @@ class MainViewModelRobot {
       navigator = Navigator(),
       localeManager = TestLocaleManager(),
       openDataRepository = TestOpenDataRepository(),
+      clock = PreviewClockProvider(),
     )
   }
 

@@ -131,6 +131,7 @@ fun ScenePeekApp(
     LocalProvider(
       snackbarHostState = state.snackbarHostState,
       coroutineScope = state.scope,
+      clock = state.clock,
       buildConfigProvider = getBuildConfigProvider(),
     ) {
       Column(modifier = Modifier.fillMaxSize()) {

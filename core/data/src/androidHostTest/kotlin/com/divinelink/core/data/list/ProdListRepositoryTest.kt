@@ -6,6 +6,7 @@ import com.divinelink.core.commons.data
 import com.divinelink.core.database.list.ProdListDao
 import com.divinelink.core.database.media.dao.ProdMediaDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -198,7 +199,7 @@ class ProdListRepositoryTest {
     val mediaDao = ProdMediaDao(
       database = database,
       dispatcher = testDispatcher,
-      clock = ClockFactory.augustFirst2021(),
+      clockProvider = PreviewClockProvider(),
     )
     repository = ProdListRepository(
       listDao = dao,
@@ -660,7 +661,7 @@ class ProdListRepositoryTest {
     val mediaDao = ProdMediaDao(
       database = database,
       dispatcher = testDispatcher,
-      clock = ClockFactory.augustFirst2021(),
+      clockProvider = PreviewClockProvider(),
     )
     repository = ProdListRepository(
       listDao = dao,

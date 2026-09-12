@@ -33,6 +33,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.rememberSystemUiController
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -408,6 +409,10 @@ private fun SharedTransitionScope.MediaDetailsContent(
   }
 }
 
+fun mockScenePeekAppState() {
+
+}
+
 @Previews
 @Composable
 fun DetailsContentPreview(
@@ -420,6 +425,7 @@ fun DetailsContentPreview(
       preferencesRepository = TestPreferencesRepository(),
       appInfoRepository = TestAppInfoRepository(),
       navigator = Navigator(),
+      clock = PreviewClockProvider(),
     )
 
     ProvideScenePeekAppState(
