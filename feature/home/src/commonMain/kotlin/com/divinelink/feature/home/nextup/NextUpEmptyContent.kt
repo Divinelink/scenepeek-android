@@ -14,9 +14,7 @@ import com.divinelink.core.ui.resources.show_progress_empty_state_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun NextUpEmptyContent(
-  modifier: Modifier = Modifier,
-) {
+fun NextUpEmptyContent(modifier: Modifier = Modifier) {
   Column(
     modifier = modifier
       .padding(horizontal = MaterialTheme.dimensions.keyline_12),

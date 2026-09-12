@@ -409,10 +409,6 @@ private fun SharedTransitionScope.MediaDetailsContent(
   }
 }
 
-fun mockScenePeekAppState() {
-
-}
-
 @Previews
 @Composable
 fun DetailsContentPreview(

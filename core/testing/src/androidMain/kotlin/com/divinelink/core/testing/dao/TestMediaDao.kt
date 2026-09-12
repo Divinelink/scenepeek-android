@@ -117,6 +117,6 @@ class TestMediaDao {
   }
 
   fun mockFetchGenres(result: Flow<List<Genre>>) {
-    whenever(mock.fetchGenres(any())).thenReturn(result)
+    whenever(mock.fetchGenres(any(), any())).thenReturn(result)
   }
 }

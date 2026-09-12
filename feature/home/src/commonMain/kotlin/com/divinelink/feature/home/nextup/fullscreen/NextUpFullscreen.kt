@@ -76,7 +76,6 @@ fun AnimatedVisibilityScope.NextUpFullscreen(
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
-
         ScenePeekLazyColumn(
           verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
         ) {
@@ -95,7 +94,6 @@ fun AnimatedVisibilityScope.NextUpFullscreen(
 
           if (state.available.isEmpty() && state.upcoming.isEmpty()) {
             item {
-
             }
           }
 

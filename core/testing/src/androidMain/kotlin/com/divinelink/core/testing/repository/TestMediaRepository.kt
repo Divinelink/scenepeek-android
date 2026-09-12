@@ -1,13 +1,14 @@
 package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.fixtures.model.track.UserEpisodesFactory
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
-import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserEpisodes
 import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -21,7 +22,7 @@ class TestMediaRepository {
 
   init {
     mockGetSeasonProgress(flowOf(emptyList()))
-    mockGetNextUpEpisodes(flowOf(emptyList()))
+    mockGetNextUpEpisodes(flowOf(UserEpisodesFactory.empty))
     mockGetUserShowStatus(flowOf(null))
   }
 
@@ -84,7 +85,7 @@ class TestMediaRepository {
     whenever(mock.getUserShowStatus(any())).thenReturn(response)
   }
 
-  fun mockGetNextUpEpisodes(response: Flow<List<NextUpEpisode>>) {
+  fun mockGetNextUpEpisodes(response: Flow<UserEpisodes>) {
     whenever(mock.getNextUpEpisodes()).thenReturn(response)
   }
 }

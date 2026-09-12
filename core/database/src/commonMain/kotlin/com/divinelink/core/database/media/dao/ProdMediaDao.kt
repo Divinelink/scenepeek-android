@@ -67,7 +67,7 @@ class ProdMediaDao(
       mediaQueries.updateMediaGenres(
         genreIdsJson = ids,
         id = show.id,
-        mediaType = MediaType.TV.value
+        mediaType = MediaType.TV.value,
       )
     }
 
@@ -668,28 +668,27 @@ class ProdMediaDao(
       )
     }
 
-  override fun getNextUpEpisodes(): Flow<UserEpisodes> =
-    userShowQueries
-      .getAllUpNextEpisodes()
-      .asFlow()
-      .mapToList(dispatcher.io)
-      .map { entities ->
-        val today = clockProvider.now
+  override fun getNextUpEpisodes(): Flow<UserEpisodes> = userShowQueries
+    .getAllUpNextEpisodes()
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { entities ->
+      val today = clockProvider.now
 
-        val available = mutableListOf<NextUpEpisode>()
-        val upcoming = mutableListOf<NextUpEpisode>()
+      val available = mutableListOf<NextUpEpisode>()
+      val upcoming = mutableListOf<NextUpEpisode>()
 
-        for (entity in entities) {
-          val date = LocalDate.parseOrNull(entity.airDate) ?: continue
-          when {
-            date <= today -> available += entity.map()
-            date > today -> upcoming += entity.map()
-          }
+      for (entity in entities) {
+        val date = LocalDate.parseOrNull(entity.airDate) ?: continue
+        when {
+          date <= today -> available += entity.map()
+          date > today -> upcoming += entity.map()
         }
-
-        UserEpisodes(
-          available = available,
-          upcoming = upcoming.sortedBy { it.episode.airDate },
-        )
       }
+
+      UserEpisodes(
+        available = available,
+        upcoming = upcoming.sortedBy { it.episode.airDate },
+      )
+    }
 }

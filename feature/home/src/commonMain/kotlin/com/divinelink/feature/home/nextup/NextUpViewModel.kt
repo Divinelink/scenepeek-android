@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
-import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.Resource

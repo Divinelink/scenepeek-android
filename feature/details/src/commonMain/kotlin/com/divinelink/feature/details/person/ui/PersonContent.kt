@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
-import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
