@@ -63,6 +63,7 @@ import com.divinelink.core.testing.usecase.FakeFetchAccountMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
+import com.divinelink.core.testing.usecase.TestCompleteSeasonUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
@@ -117,6 +118,8 @@ class DetailsScreenTest : ComposeTest() {
   private val deleteMediaUseCase = TestDeleteMediaUseCase()
   private val authRepository = TestAuthRepository()
   private val detailsRepository = TestDetailsRepository()
+  private val completeSeasonUseCase = TestCompleteSeasonUseCase()
+  private val mediaRepository = TestMediaRepository()
 
   private val preferencesRepository = TestPreferencesRepository(
     detailPreferences = DetailPreferences.initial.copy(
@@ -198,6 +201,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -267,6 +272,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -336,6 +343,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -428,6 +437,8 @@ class DetailsScreenTest : ComposeTest() {
           authRepository = authRepository.mock,
           repository = detailsRepository.mock,
           preferencesRepository = preferencesRepository,
+          mediaRepository = mediaRepository.mock,
+          completeSeasonUseCase = completeSeasonUseCase.mock,
           route = route,
         ),
         animatedVisibilityScope = this,
@@ -511,6 +522,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -573,6 +586,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -644,6 +659,8 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    mediaRepository.mockGetSeasonProgress(flowOf(emptyList()))
+
     val route = Navigation.DetailsRoute(
       id = 2316,
       isFavorite = false,
@@ -672,6 +689,8 @@ class DetailsScreenTest : ComposeTest() {
           authRepository = authRepository.mock,
           repository = detailsRepository.mock,
           preferencesRepository = preferencesRepository,
+          mediaRepository = mediaRepository.mock,
+          completeSeasonUseCase = completeSeasonUseCase.mock,
           route = route,
         ),
         animatedVisibilityScope = this,
@@ -727,6 +746,8 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
+    mediaRepository.mockGetSeasonProgress(flowOf(emptyList()))
+
     val route = Navigation.DetailsRoute(
       id = 2316,
       isFavorite = false,
@@ -751,6 +772,8 @@ class DetailsScreenTest : ComposeTest() {
           authRepository = authRepository.mock,
           repository = detailsRepository.mock,
           preferencesRepository = preferencesRepository,
+          mediaRepository = mediaRepository.mock,
+          completeSeasonUseCase = completeSeasonUseCase.mock,
           route = route,
         ),
         animatedVisibilityScope = this,
@@ -809,6 +832,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -872,6 +897,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -989,6 +1016,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 
@@ -1049,6 +1078,8 @@ class DetailsScreenTest : ComposeTest() {
     val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
     val mediaRepository = TestMediaRepository()
     val jellyseerrRepository = TestJellyseerrRepository()
+
+    mediaRepository.mockGetSeasonProgress(flowOf(emptyList()))
 
     mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
     jellyseerrRepository.mockGetTvDetails(response = JellyseerrMediaInfoFactory.Tv.unknown())
@@ -1121,6 +1152,8 @@ class DetailsScreenTest : ComposeTest() {
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
       preferencesRepository = preferencesRepository,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       route = route,
     )
 

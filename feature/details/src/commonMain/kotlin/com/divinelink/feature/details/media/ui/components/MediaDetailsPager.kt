@@ -25,6 +25,7 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.feature.details.DetailsAction
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
@@ -44,6 +45,7 @@ fun MediaDetailsPager(
   viewAllCreditsClick: () -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
   onMediaItemClick: (MediaItem) -> Unit,
+  action: (DetailsAction) -> Unit,
 ) {
   HorizontalPager(
     modifier = modifier
@@ -100,7 +102,9 @@ fun MediaDetailsPager(
           is DetailsData.Seasons -> SeasonsFormContent(
             modifier = Modifier.fillMaxSize().nestedScroll(scroll),
             title = mediaDetails.title,
-            reviews = form.data as DetailsData.Seasons,
+            seasons = form.data as DetailsData.Seasons,
+            action = action,
+            progress = uiState.seasonsProgress,
             onClick = { seasonNumber ->
               onNavigate(
                 Navigation.SeasonRoute(

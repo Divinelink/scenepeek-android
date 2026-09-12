@@ -6,6 +6,7 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.details.AccountDataSection
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.RatingDetails
@@ -20,11 +21,13 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeDeleteRatingUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
+import com.divinelink.core.testing.usecase.TestCompleteSeasonUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
@@ -68,6 +71,8 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       streamingServicesVisible = false,
     ),
   )
+  private val completeSeasonUseCase = TestCompleteSeasonUseCase()
+  private val mediaRepository = TestMediaRepository()
 
   override fun buildViewModel() = apply {
     viewModel = DetailsViewModel(
@@ -83,6 +88,8 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       deleteMediaUseCase = testDeleteMediaUseCase.mock,
       authRepository = authRepository.mock,
       repository = detailsRepository.mock,
+      mediaRepository = mediaRepository.mock,
+      completeSeasonUseCase = completeSeasonUseCase.mock,
       preferencesRepository = preferencesRepository,
     )
   }
@@ -111,6 +118,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     fakeGetMovieDetailsUseCase.mockFetchMediaDetails(
       response = response,
     )
+  }
+
+  fun mockGetSeasonProgress(response: Flow<List<SeasonProgress>>) = apply {
+    mediaRepository.mockGetSeasonProgress(response)
   }
 
   fun onSubmitRate(rating: Int) = apply {

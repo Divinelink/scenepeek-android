@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.io.IOException
+import kotlin.coroutines.cancellation.CancellationException
 
 sealed class Resource<T> {
   data class Success<T>(val data: T) : Resource<T>()
@@ -43,6 +44,8 @@ inline fun <ResultType, RequestType> networkBoundResource(
       query().collect { newData ->
         emit(Resource.Success(newData))
       }
+    } catch (e: CancellationException) {
+      throw e
     } catch (throwable: Throwable) {
       // Emit error with cached data
       query().collect { cachedData ->

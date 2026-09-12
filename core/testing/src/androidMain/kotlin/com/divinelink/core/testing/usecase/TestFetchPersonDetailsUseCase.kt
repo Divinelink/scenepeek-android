@@ -10,14 +10,14 @@ import org.mockito.kotlin.whenever
 
 class TestFetchPersonDetailsUseCase {
 
-  val mock: FetchPersonDetailsUseCase = org.mockito.kotlin.mock()
+  val mock: FetchPersonDetailsUseCase = mock()
 
   init {
     mockFailure()
   }
 
   private fun mockFailure() {
-    org.mockito.kotlin.whenever(
+    whenever(
       mock.invoke(org.mockito.kotlin.any()),
     ).thenReturn(
       flowOf(Result.failure(Exception())),
@@ -25,14 +25,14 @@ class TestFetchPersonDetailsUseCase {
   }
 
   fun mockSuccess(result: PersonDetailsResult) {
-    org.mockito.kotlin.whenever(mock.invoke(org.mockito.kotlin.any())).thenReturn(
+    whenever(mock.invoke(org.mockito.kotlin.any())).thenReturn(
       flowOf(Result.success(result)),
     )
   }
 
   // Mock multiple emissions
   fun mockSuccess(response: Channel<Result<PersonDetailsResult>>) {
-    org.mockito.kotlin.whenever(
+    whenever(
       mock.invoke(org.mockito.kotlin.any()),
     ).thenReturn(response.consumeAsFlow())
   }

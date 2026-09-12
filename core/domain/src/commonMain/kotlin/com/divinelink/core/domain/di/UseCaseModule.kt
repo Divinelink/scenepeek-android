@@ -36,6 +36,7 @@ import com.divinelink.core.domain.theme.ProdSystemThemeProvider
 import com.divinelink.core.domain.theme.SystemThemeProvider
 import com.divinelink.core.domain.theme.material.you.MaterialYouProvider
 import com.divinelink.core.domain.theme.material.you.ProdMaterialYouProvider
+import com.divinelink.core.domain.track.CompleteSeasonUseCase
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -95,4 +96,6 @@ val useCaseModule = module {
   factoryOf(::CreateListUseCase)
 
   singleOf(::SearchStateManager)
+
+  singleOf(::CompleteSeasonUseCase)
 }

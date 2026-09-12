@@ -14,6 +14,7 @@ data class SeasonUiState(
   val tabs: List<Tab>,
   val selectedTab: Int,
   val forms: SeasonForms,
+  val watchedEpisodes: List<Long>,
 ) {
   companion object {
     fun initial(route: Navigation.SeasonRoute) = SeasonUiState(
@@ -30,6 +31,7 @@ data class SeasonUiState(
           SeasonTab.GuestStars -> SeasonForm.Loading
         }
       },
+      watchedEpisodes = emptyList(),
     )
   }
 }

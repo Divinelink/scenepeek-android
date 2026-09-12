@@ -13,6 +13,7 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
@@ -384,6 +385,35 @@ class ProdMediaRepository(
     shouldFetch = { true },
   )
 
+  override fun fetchSeasonEpisodes(
+    showId: Long,
+    season: Int,
+  ): Flow<Resource<List<Episode>?>> = networkBoundResource(
+    query = {
+      dao.fetchEpisodes(showId = showId, season = season)
+    },
+    fetch = {
+      remote.fetchSeason(
+        showId = showId,
+        season = season,
+      ).map { it.map() }
+    },
+    saveFetchResult = { result ->
+      withContext(dispatcher.io) {
+        val data = result.data
+
+        dao.insertSeasonDetails(
+          seasonDetails = data,
+          showId = showId,
+          seasonNumber = season,
+        )
+
+        dao.insertEpisodes(data.episodes)
+      }
+    },
+    shouldFetch = { it.isNullOrEmpty() },
+  )
+
   override fun getSeasonEpisodesNumber(
     showId: Long,
     season: Int,
@@ -459,4 +489,32 @@ class ProdMediaRepository(
           list = response.results.mapNotNull(ProductionCompanyResponse::map),
         )
       }
+
+  override fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>> = dao
+    .getSeasonsProgress(showId)
+
+  override fun getWatchedEpisodesForSeason(
+    showId: Long,
+    seasonNumber: Int,
+  ): Flow<List<Long>> = dao
+    .getWatchedEpisodesForSeason(
+      showId = showId,
+      seasonNumber = seasonNumber,
+    )
+
+  override fun markEpisodeAsWatched(episodeId: Long) = dao.markEpisodeAsWatched(
+    episodeId = episodeId,
+  )
+
+  override fun unmarkEpisodeAsWatched(episodeId: Long) = dao.unmarkEpisodeAsWatched(
+    episodeId = episodeId,
+  )
+
+  override fun markSeasonAsWatched(episodeIds: List<Long>) = dao.markSeasonAsWatched(
+    episodeIds = episodeIds,
+  )
+
+  override fun unmarkSeasonAsWatched(episodeIds: List<Long>) = dao.unmarkSeasonAsWatched(
+    episodeIds = episodeIds,
+  )
 }

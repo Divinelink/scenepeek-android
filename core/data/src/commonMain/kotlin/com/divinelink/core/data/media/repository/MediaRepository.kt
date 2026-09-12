@@ -9,6 +9,7 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
+import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
@@ -104,6 +105,11 @@ interface MediaRepository {
     season: Int,
   ): Flow<Resource<SeasonDetails?>>
 
+  fun fetchSeasonEpisodes(
+    showId: Long,
+    season: Int,
+  ): Flow<Resource<List<Episode>?>>
+
   fun fetchEpisode(
     showId: Long,
     season: Int,
@@ -125,4 +131,16 @@ interface MediaRepository {
   fun clearAllEpisodeRatings(): Result<Unit>
 
   suspend fun searchCompany(request: SearchRequestApi): Result<PaginationData<Company>>
+
+  fun getSeasonsProgress(showId: Long): Flow<List<SeasonProgress>>
+  fun getWatchedEpisodesForSeason(
+    showId: Long,
+    seasonNumber: Int,
+  ): Flow<List<Long>>
+
+  fun markEpisodeAsWatched(episodeId: Long)
+  fun unmarkEpisodeAsWatched(episodeId: Long)
+
+  fun markSeasonAsWatched(episodeIds: List<Long>)
+  fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 }
