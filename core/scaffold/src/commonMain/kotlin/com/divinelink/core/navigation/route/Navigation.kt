@@ -178,6 +178,9 @@ sealed interface Navigation : NavKey {
   data class MediaListsRoute(val section: MediaListSection) : Navigation
 
   @Serializable
+  data object NextUpFullscreenRoute : Navigation
+
+  @Serializable
   data class CollectionRoute(
     val id: Int,
     val name: String,
