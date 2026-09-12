@@ -5,6 +5,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.database.person.PersonDao
+import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.details.Company
@@ -33,6 +34,7 @@ import com.divinelink.core.network.media.service.MediaService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -44,7 +46,9 @@ class ProdMediaRepository(
   private val dao: MediaDao,
   private val personDao: PersonDao,
   private val dispatcher: DispatcherProvider,
+  private val storage: PreferenceStorage,
 ) : MediaRepository {
+  suspend fun locale() = storage.metadataLanguage.first().code
 
   override suspend fun fetchTrending(page: Int): Flow<Result<PaginationData<MediaItem>>> = combine(
     flowOf(remote.fetchMediaLists(MediaListRequest.TrendingAll, page)),
@@ -311,15 +315,27 @@ class ProdMediaRepository(
       seasonNumber = seasonNumber,
     ).map { Result.success(it) }
 
-  override suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>> =
-    networkBoundResource(
-      query = { dao.fetchGenres(mediaType) },
+  override suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>> {
+    val locale = locale()
+
+    return networkBoundResource(
+      query = {
+        dao.fetchGenres(
+          mediaType = mediaType,
+          locale = locale,
+        )
+      },
       fetch = { remote.fetchGenres(mediaType).map(GenresListResponse::map) },
       saveFetchResult = { remoteData ->
-        dao.insertGenres(mediaType = mediaType, genres = remoteData.data)
+        dao.insertGenres(
+          mediaType = mediaType,
+          genres = remoteData.data,
+          locale = locale,
+        )
       },
       shouldFetch = { it.isEmpty() },
     )
+  }
 
   override fun fetchSeasonDetails(
     showId: Long,
