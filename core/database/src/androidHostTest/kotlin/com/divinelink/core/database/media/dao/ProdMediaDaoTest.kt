@@ -2,7 +2,7 @@ package com.divinelink.core.database.media.dao
 
 import app.cash.turbine.test
 import com.divinelink.core.database.Database
-import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -35,7 +35,7 @@ class ProdMediaDaoTest {
     dao = ProdMediaDao(
       database = database,
       dispatcher = testDispatcher,
-      clock = ClockFactory.augustFirst2021(),
+      clockProvider = PreviewClockProvider(),
     )
   }
 
@@ -165,20 +165,49 @@ class ProdMediaDaoTest {
   }
 
   @Test
-  fun `test fetch and insert genres for movies`() = runTest {
-    dao.fetchGenres(mediaType = MediaType.MOVIE).test {
+  fun `test fetch and insert genres for movies for en locale`() = runTest {
+    dao.fetchGenres(mediaType = MediaType.MOVIE, locale = "en").test {
       awaitItem() shouldBe emptyList()
-      dao.insertGenres(mediaType = MediaType.MOVIE, genres = GenreFactory.Movie.all)
+      dao.insertGenres(
+        mediaType = MediaType.MOVIE,
+        genres = GenreFactory.Movie.all,
+        locale = "en",
+      )
       awaitItem() shouldBe GenreFactory.Movie.all.sortedBy { it.name }
     }
   }
 
   @Test
   fun `test fetch and insert genres for tv`() = runTest {
-    dao.fetchGenres(mediaType = MediaType.TV).test {
+    dao.fetchGenres(mediaType = MediaType.TV, locale = "en").test {
       awaitItem() shouldBe emptyList()
-      dao.insertGenres(mediaType = MediaType.TV, genres = GenreFactory.Tv.all)
+      dao.insertGenres(
+        mediaType = MediaType.TV,
+        genres = GenreFactory.Tv.all,
+        locale = "en",
+      )
       awaitItem() shouldBe GenreFactory.Tv.all.sortedBy { it.name }
+    }
+  }
+
+  @Test
+  fun `test fetch and insert genres for tv with different locale`() = runTest {
+    dao.fetchGenres(mediaType = MediaType.TV, locale = "en").test {
+      awaitItem() shouldBe emptyList()
+      dao.insertGenres(
+        mediaType = MediaType.TV,
+        genres = GenreFactory.Tv.all,
+        locale = "it",
+      )
+      awaitItem() shouldBe emptyList()
+
+      dao.insertGenres(
+        mediaType = MediaType.TV,
+        genres = listOf(GenreFactory.Tv.comedy),
+        locale = "en",
+      )
+
+      awaitItem() shouldBe listOf(GenreFactory.Tv.comedy)
     }
   }
 

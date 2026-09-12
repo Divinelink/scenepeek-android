@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.mapper.details
 
+import com.divinelink.core.commons.extensions.parseOrNull
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.media.MediaItem
@@ -9,12 +10,13 @@ import com.divinelink.core.network.media.model.details.season.SeasonDetailsRespo
 import com.divinelink.core.network.media.model.details.toHourMinuteFormat
 import com.divinelink.core.network.media.model.states.EpisodeAccountStatesResponse
 import com.divinelink.core.network.media.model.states.RateResponseApi
+import kotlinx.datetime.LocalDate
 
 fun SeasonDetailsResponse.map(): SeasonDetails = SeasonDetails(
   id = id,
   name = name,
   overview = overview,
-  airDate = airDate,
+  airDate = LocalDate.parseOrNull(airDate),
   episodeCount = episodes.count(),
   posterPath = posterPath,
   voteAverage = voteAverage,

@@ -1,14 +1,16 @@
 package com.divinelink.core.network.media.mapper.details
 
+import com.divinelink.core.commons.extensions.parseOrNull
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.network.media.model.details.season.EpisodeResponse
 import com.divinelink.core.network.media.model.details.toHourMinuteFormat
 import com.divinelink.core.network.media.model.details.toPerson
+import kotlinx.datetime.LocalDate
 
 fun EpisodeResponse.map(accountRating: Int?) = Episode(
   id = id,
   name = name,
-  airDate = airDate,
+  airDate = LocalDate.parseOrNull(airDate),
   overview = overview,
   runtime = runtime.toHourMinuteFormat(),
   seasonNumber = seasonNumber,

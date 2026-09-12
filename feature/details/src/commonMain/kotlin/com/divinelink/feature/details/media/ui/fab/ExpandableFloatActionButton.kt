@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -218,6 +219,7 @@ private fun ExpandableFloatingActionButton() {
     preferencesRepository = TestPreferencesRepository(),
     appInfoRepository = TestAppInfoRepository(),
     navigator = Navigator(),
+    clock = PreviewClockProvider(),
   )
 
   ProvideScenePeekAppState(

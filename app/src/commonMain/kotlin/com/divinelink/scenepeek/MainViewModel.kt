@@ -3,6 +3,7 @@ package com.divinelink.scenepeek
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.opendata.OpenDataRepository
@@ -45,6 +46,7 @@ class MainViewModel(
   val appInfoRepository: AppInfoRepository,
   val openDataRepository: OpenDataRepository,
   val localeManager: LocaleManager,
+  val clock: ClockProvider,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)

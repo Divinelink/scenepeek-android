@@ -2,12 +2,13 @@ package com.divinelink.core.model.details.season
 
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.media.MediaItem
+import kotlinx.datetime.LocalDate
 
 data class SeasonInformation(
   val totalEpisodes: Int,
   val totalRuntime: String?,
-  val firstAirDate: String?,
-  val lastAirDate: String?,
+  val firstAirDate: LocalDate?,
+  val lastAirDate: LocalDate?,
   val airedEpisodes: Int?,
 )
 

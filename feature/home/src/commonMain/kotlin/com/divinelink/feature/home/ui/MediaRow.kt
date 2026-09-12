@@ -49,7 +49,7 @@ fun MediaRow(
           MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
             filterValue = MediaRequestFilter.All.value,
           )
-          MediaListSection.NextUpEpisodes -> return@TextButton
+          MediaListSection.NextUpEpisodes -> Navigation.NextUpFullscreenRoute
         }
 
         onNavigate(route)

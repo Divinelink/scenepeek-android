@@ -15,6 +15,7 @@ import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
 import com.divinelink.core.domain.theme.GetAvailableThemesUseCase
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -170,6 +171,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
         appInfoRepository = TestAppInfoRepository(),
         navigator = navigator,
+        clock = PreviewClockProvider(),
       )
       appState = state
 

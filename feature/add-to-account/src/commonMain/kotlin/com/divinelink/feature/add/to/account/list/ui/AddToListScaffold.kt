@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -107,6 +108,7 @@ fun AddToListScaffoldPreview(
     preferencesRepository = TestPreferencesRepository(),
     appInfoRepository = TestAppInfoRepository(),
     navigator = Navigator(),
+    clock = PreviewClockProvider(),
   )
 
   ProvideScenePeekAppState(

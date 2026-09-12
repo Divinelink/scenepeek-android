@@ -7,6 +7,8 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.commons.extensions.parseOrNull
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.database.SearchHistoryEntity
@@ -30,18 +32,19 @@ import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserEpisodes
 import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import kotlin.time.Clock
+import kotlinx.datetime.LocalDate
 
 class ProdMediaDao(
   private val database: Database,
   private val dispatcher: DispatcherProvider,
-  private val clock: Clock,
+  private val clockProvider: ClockProvider,
 ) : MediaDao {
   private val episodeQueries = database.userEpisodesEntityQueries
   private val userShowQueries = database.userShowsEntityQueries
@@ -64,7 +67,7 @@ class ProdMediaDao(
       mediaQueries.updateMediaGenres(
         genreIdsJson = ids,
         id = show.id,
-        mediaType = MediaType.TV.value
+        mediaType = MediaType.TV.value,
       )
     }
 
@@ -210,7 +213,7 @@ class ProdMediaDao(
     database.favoriteMediaEntityQueries.addToFavorites(
       mediaId = mediaId,
       mediaType = mediaType.value,
-      favoritedAt = clock.currentEpochSeconds(),
+      favoritedAt = clockProvider.clock.currentEpochSeconds(),
     )
   }
 
@@ -247,7 +250,7 @@ class ProdMediaDao(
             name = entity.name,
             overview = entity.overview,
             posterPath = entity.posterPath,
-            airDate = entity.airDate,
+            airDate = LocalDate.parse(entity.airDate),
             episodeCount = entity.episodeCount.toInt(),
             voteAverage = entity.voteAverage,
             seasonNumber = entity.seasonNumber.toInt(),
@@ -273,7 +276,7 @@ class ProdMediaDao(
             name = entity.name,
             overview = entity.overview,
             posterPath = entity.posterPath,
-            airDate = entity.airDate,
+            airDate = LocalDate.parse(entity.airDate),
             episodeCount = entity.episodeCount.toInt(),
             voteAverage = entity.voteAverage,
             seasonNumber = entity.seasonNumber.toInt(),
@@ -294,7 +297,7 @@ class ProdMediaDao(
           overview = season.overview,
           name = season.name,
           posterPath = season.posterPath,
-          airDate = season.airDate,
+          airDate = season.airDate.toString(),
           episodeCount = season.episodeCount.toLong(),
           voteAverage = season.voteAverage,
           seasonNumber = season.seasonNumber.toLong(),
@@ -365,7 +368,7 @@ class ProdMediaDao(
           runtime = episode.runtime,
           episodeNumber = episode.number.toLong(),
           seasonNumber = episode.seasonNumber.toLong(),
-          airDate = episode.airDate,
+          airDate = episode.airDate?.toString(),
           stillPath = episode.stillPath,
           voteAverage = episode.voteAverage?.toDouble() ?: 0.0,
           voteCount = episode.voteCount?.toLong() ?: 0,
@@ -466,7 +469,7 @@ class ProdMediaDao(
           name = seasonDetails.name,
           overview = seasonDetails.overview,
           posterPath = seasonDetails.posterPath,
-          airDate = seasonDetails.airDate,
+          airDate = seasonDetails.airDate.toString(),
           episodeCount = seasonDetails.episodeCount.toLong(),
           voteAverage = seasonDetails.voteAverage,
           seasonNumber = seasonNumber.toLong(),
@@ -542,7 +545,7 @@ class ProdMediaDao(
       searchHistoryEntityQueries.insertSearchQuery(
         mediaId = media.mediaId,
         mediaType = media.mediaType.value,
-        timestamp = clock.currentEpochSeconds().toLong(),
+        timestamp = clockProvider.clock.currentEpochSeconds().toLong(),
       )
     }
   }
@@ -621,8 +624,8 @@ class ProdMediaDao(
   override fun addShow(showId: Long) = database.transaction {
     userShowQueries.insertUserShow(
       showId = showId,
-      addedAt = clock.currentEpochSeconds(),
-      updatedAt = clock.currentEpochSeconds(),
+      addedAt = clockProvider.clock.currentEpochSeconds(),
+      updatedAt = clockProvider.clock.currentEpochSeconds(),
       status = UserShowStatus.WATCHING.value,
       notes = null,
       rating = null,
@@ -650,7 +653,7 @@ class ProdMediaDao(
       Episode(
         id = entity.episodeId.toInt(),
         name = entity.episodeName,
-        airDate = entity.airDate,
+        airDate = LocalDate.parseOrNull(entity.airDate),
         overview = null,
         runtime = null,
         number = entity.episodeNumber.toInt(),
@@ -665,36 +668,27 @@ class ProdMediaDao(
       )
     }
 
-  override fun getNextUpEpisodes(): Flow<List<NextUpEpisode>> = userShowQueries
+  override fun getNextUpEpisodes(): Flow<UserEpisodes> = userShowQueries
     .getAllUpNextEpisodes()
     .asFlow()
     .mapToList(dispatcher.io)
     .map { entities ->
-      entities.map { entity ->
-        val episode = Episode(
-          id = entity.episodeId.toInt(),
-          name = entity.episodeName,
-          airDate = entity.airDate,
-          overview = null,
-          runtime = null,
-          number = entity.episodeNumber.toInt(),
-          seasonNumber = entity.seasonNumber.toInt(),
-          showId = entity.showId,
-          stillPath = entity.episodeThumbnail,
-          voteAverage = null,
-          voteCount = null,
-          crew = emptyList(),
-          guestStars = emptyList(),
-          accountRating = null,
-        )
+      val today = clockProvider.now
 
-        NextUpEpisode(
-          episode = episode,
-          showTitle = entity.showTitle,
-          showPosterPath = entity.showPosterPath,
-          watchedEpisodes = entity.watchedEpisodes.toInt(),
-          totalEpisodes = entity.totalEpisodes.toInt(),
-        )
+      val available = mutableListOf<NextUpEpisode>()
+      val upcoming = mutableListOf<NextUpEpisode>()
+
+      for (entity in entities) {
+        val date = LocalDate.parseOrNull(entity.airDate) ?: continue
+        when {
+          date <= today -> available += entity.map()
+          date > today -> upcoming += entity.map()
+        }
       }
+
+      UserEpisodes(
+        available = available,
+        upcoming = upcoming.sortedBy { it.episode.airDate },
+      )
     }
 }

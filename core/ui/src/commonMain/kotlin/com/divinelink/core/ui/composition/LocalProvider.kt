@@ -7,8 +7,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.divinelink.core.commons.provider.BuildConfigProvider
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.ui.manager.rememberIntentManager
 import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
 import com.divinelink.core.ui.snackbar.controller.SnackbarController
@@ -19,6 +21,7 @@ fun LocalProvider(
   snackbarHostState: SnackbarHostState,
   coroutineScope: CoroutineScope,
   buildConfigProvider: BuildConfigProvider,
+  clock: ClockProvider,
   content: @Composable () -> Unit,
 ) {
   CompositionLocalProvider(
@@ -29,6 +32,7 @@ fun LocalProvider(
       snackbarHostState = snackbarHostState,
       coroutineScope = coroutineScope,
     ),
+    LocalClockProvider provides clock,
     content = content,
   )
 }
@@ -45,6 +49,7 @@ fun PreviewLocalProvider(content: @Composable () -> Unit) {
     snackbarHostState = snackbarHostState,
     coroutineScope = coroutineScope,
     buildConfigProvider = PreviewBuildConfigProvider(),
+    clock = PreviewClockProvider(),
     content = {
       AppTheme {
         Surface {

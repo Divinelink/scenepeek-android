@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         preferencesRepository = viewModel.preferencesRepository,
         navigator = viewModel.navigator,
         appInfoRepository = viewModel.appInfoRepository,
+        clock = viewModel.clock,
       )
 
       ScenePeekApp(

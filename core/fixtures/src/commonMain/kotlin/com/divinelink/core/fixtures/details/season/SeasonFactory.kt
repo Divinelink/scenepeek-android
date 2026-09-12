@@ -2,6 +2,7 @@ package com.divinelink.core.fixtures.details.season
 
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import kotlinx.datetime.LocalDate
 
 object SeasonFactory {
 
@@ -10,7 +11,7 @@ object SeasonFactory {
     name = "Specials",
     overview = "",
     posterPath = "/gV550EDGeDw6AVpGH32xxxey7gj.jpg",
-    airDate = "2006-07-13",
+    airDate = LocalDate.parse("2006-07-13"),
     episodeCount = 130,
     voteAverage = 0.0,
     seasonNumber = 0,
@@ -28,7 +29,7 @@ object SeasonFactory {
       " insensitivities and flubs; and temporary employee Ryan Howard is acting mostly" +
       " as an observer of the insanity around him.",
     posterPath = "/d71JQWhX75ZE2D383DlIsHVH1In.jpg",
-    airDate = "2005-03-24",
+    airDate = LocalDate.parse("2005-03-24"),
     episodeCount = 6,
     voteAverage = 7.6,
     seasonNumber = 1,
@@ -46,7 +47,7 @@ object SeasonFactory {
       " more obvious as Jim's feelings for Pam continue to grow, while she struggles with her" +
       " relationship with the warehouse worker Roy Anderson.",
     posterPath = "/sAd3RhOjhTuaIBpyiI1QmB0YUq8.jpg",
-    airDate = "2005-09-20",
+    airDate = LocalDate.parse("2005-09-20"),
     episodeCount = 22,
     voteAverage = 8.1,
     seasonNumber = 2,
@@ -63,7 +64,7 @@ object SeasonFactory {
       "in seasons one and two—the problem of company downsizing—while in the last half of " +
       "the season, inter-office relationships also became a major plot point.",
     posterPath = "/1SR5ZR0KNHTRvAzFayaKbhKAFSu.jpg",
-    airDate = "2006-09-21",
+    airDate = LocalDate.parse("2006-09-21"),
     episodeCount = 23,
     voteAverage = 8.2,
     seasonNumber = 3,
@@ -83,7 +84,7 @@ object SeasonFactory {
       " as the office staff struggled with initiatives introduced by Ryan" +
       " Howard to modernize the company.",
     posterPath = "/zunFI6wdYJQRHnfXnziArUTs2e2.jpg",
-    airDate = "2007-09-27",
+    airDate = LocalDate.parse("2007-09-27"),
     episodeCount = 14,
     voteAverage = 8.2,
     seasonNumber = 4,
@@ -96,7 +97,7 @@ object SeasonFactory {
     overview = "Michael Scott and his fellow Dunder Mifflin-ites steal" +
       " customers, frame co-workers, and indulge in intra-office love affairs.",
     posterPath = "/hwlQxOPGIybqBz5TYYIe6XtOfi4.jpg",
-    airDate = "2008-09-25",
+    airDate = LocalDate.parse("2008-09-25"),
     episodeCount = 26,
     voteAverage = 8.2,
     seasonNumber = 5,
@@ -109,7 +110,7 @@ object SeasonFactory {
     overview = "In Season 6, the crew faces romances, marriage, parenthood," +
       " new corporate ownership, Darryl's rise to middle management, and a ball-busting new boss.",
     posterPath = "/hk3a9U26J726oV8nHTdeMTtH91B.jpg",
-    airDate = "2009-09-17",
+    airDate = LocalDate.parse("2009-09-17"),
     episodeCount = 24,
     voteAverage = 7.8,
     seasonNumber = 6,
@@ -123,7 +124,7 @@ object SeasonFactory {
       " is courting Erin, Jim and Pam struggle with being new parents," +
       " and past girlfriends haunt Michael.",
     posterPath = "/uR3y9BwPA8gnk2nmB6ncQejEe8k.jpg",
-    airDate = "2010-09-23",
+    airDate = LocalDate.parse("2010-09-23"),
     episodeCount = 24,
     voteAverage = 8.0,
     seasonNumber = 7,
@@ -141,7 +142,7 @@ object SeasonFactory {
       " Erin Hannon, and Cathy —travel to Florida to help set up a Sabre Store," +
       " where Nellie Bertram is introduced.",
     posterPath = "/sQLtAEBbQNIXGZyTUt3IK9gX4VE.jpg",
-    airDate = "2011-09-22",
+    airDate = LocalDate.parse("2011-09-22"),
     episodeCount = 24,
     voteAverage = 7.6,
     seasonNumber = 8,
@@ -155,7 +156,7 @@ object SeasonFactory {
       " Jim lands the job of his dreams, Erin struggles with love," +
       " and Angela's marriage isn't what it seems.",
     posterPath = "/ncR9y2RApOTSjfggJHjvoIlAqDG.jpg",
-    airDate = "2012-09-20",
+    airDate = LocalDate.parse("2012-09-20"),
     episodeCount = 23,
     voteAverage = 7.7,
     seasonNumber = 9,

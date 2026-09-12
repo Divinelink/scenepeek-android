@@ -17,7 +17,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.model.sort.SortOption
-import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserEpisodes
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
@@ -149,7 +149,7 @@ interface MediaRepository {
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 
   fun getUpNextEpisode(showId: Long): Flow<Episode>
-  fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
+  fun getNextUpEpisodes(): Flow<UserEpisodes>
 
   fun getUserShowStatus(showId: Long): Flow<UserShowStatus?>
   fun addShow(showId: Long)

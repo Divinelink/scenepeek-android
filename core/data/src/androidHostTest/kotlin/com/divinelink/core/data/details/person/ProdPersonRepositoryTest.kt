@@ -10,6 +10,7 @@ import com.divinelink.core.database.media.dao.ProdMediaDao
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
@@ -63,7 +64,7 @@ class ProdPersonRepositoryTest {
     )
     service = TestPersonService()
     mediaDao = ProdMediaDao(
-      clock = ClockFactory.augustFifteenth2021(),
+      clockProvider = PreviewClockProvider(),
       database = database,
       dispatcher = testDispatcher,
     )

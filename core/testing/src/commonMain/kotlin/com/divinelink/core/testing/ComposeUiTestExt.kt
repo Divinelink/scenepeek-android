@@ -9,6 +9,7 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.v2.runComposeUiTest
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -54,6 +55,7 @@ fun ComposeUiTest.setVisibilityScopeContent(
       preferencesRepository = preferencesRepository,
       appInfoRepository = TestAppInfoRepository(),
       navigator = Navigator(),
+      clock = PreviewClockProvider(),
     )
     ProvideScenePeekAppState(appState = state) {
       PreviewLocalProvider {
@@ -78,6 +80,7 @@ fun ComposeUiTest.setScaffoldContent(
       preferencesRepository = TestPreferencesRepository(),
       appInfoRepository = TestAppInfoRepository(),
       navigator = navigator,
+      clock = PreviewClockProvider(),
     )
 
     ProvideScenePeekAppState(appState = state) {

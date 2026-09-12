@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -455,6 +456,7 @@ fun PersonContentListPreview(
     ),
     appInfoRepository = TestAppInfoRepository(),
     navigator = Navigator(),
+    clock = PreviewClockProvider(),
   )
 
   ProvideScenePeekAppState(appState = appState) {
@@ -488,6 +490,7 @@ fun PersonContentGridPreview() {
     ),
     appInfoRepository = TestAppInfoRepository(),
     navigator = Navigator(),
+    clock = PreviewClockProvider(),
   )
   ProvideScenePeekAppState(appState = appState) {
     SharedTransitionScopeProvider { scope ->

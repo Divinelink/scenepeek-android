@@ -34,7 +34,8 @@ class NextUpViewModel(
     ) { episodes, errors ->
       _uiState.update { state ->
         state.copy(
-          episodes = episodes,
+          available = episodes.available,
+          upcoming = episodes.upcoming,
           errors = errors,
           loading = false,
         )
@@ -43,7 +44,7 @@ class NextUpViewModel(
       .launchIn(viewModelScope)
   }
 
-  fun onRetry() {
+  private fun onRetry() {
     val currentErrors = _uiState.value.errors
     if (currentErrors.isEmpty()) return
 
@@ -81,9 +82,16 @@ class NextUpViewModel(
     }
   }
 
-  fun markEpisodeAsWatched(episode: Episode) {
+  private fun markEpisodeAsWatched(episode: Episode) {
     viewModelScope.launch {
       markEpisodeAsWatchedUseCase(episode)
+    }
+  }
+
+  fun onAction(action: NextUpAction) {
+    when (action) {
+      NextUpAction.Retry -> onRetry()
+      is NextUpAction.MarkEpisodeAsWatched -> markEpisodeAsWatched(action.episode)
     }
   }
 }

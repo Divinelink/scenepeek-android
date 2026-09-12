@@ -1,13 +1,14 @@
 package com.divinelink.core.model.details
 
 import com.divinelink.core.model.media.MediaItem
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Episode(
   val id: Int,
   val name: String,
-  val airDate: String?,
+  val airDate: LocalDate?,
   val overview: String?,
   val runtime: String?,
   val number: Int,

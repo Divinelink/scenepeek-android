@@ -7,6 +7,7 @@ import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.database.person.mapper.map
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.toStub
 import com.divinelink.core.testing.MainDispatcherRule
@@ -35,7 +36,7 @@ class ProdSearchRepositoryTest {
     mediaDao = ProdMediaDao(
       database = database,
       dispatcher = testDispatcher,
-      clock = ClockFactory.augustFirst2021(),
+      clockProvider = PreviewClockProvider(),
     )
     personDao = ProdPersonDao(
       clock = ClockFactory.augustFifteenth2021(),

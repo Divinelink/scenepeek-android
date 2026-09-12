@@ -20,6 +20,7 @@ import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -118,6 +119,7 @@ class ScenePeekAppTest : ComposeTest() {
   )
   private val mediaRepository = TestMediaRepository()
   private val clock: Clock = ClockFactory.decemberFirst2021()
+  private val clockProvider = PreviewClockProvider()
   private lateinit var navigator: Navigator
 
   private val homeTab = "Home"
@@ -219,6 +221,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(
@@ -276,6 +279,8 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
+
       )
 
       ScenePeekApp(
@@ -348,6 +353,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(
@@ -427,6 +433,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(
@@ -519,6 +526,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(
@@ -587,6 +595,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(
@@ -712,6 +721,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(
@@ -746,6 +756,7 @@ class ScenePeekAppTest : ComposeTest() {
           navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
+          clock = clockProvider,
         ),
         uiState = uiState,
         uiEvent = uiEvent,
@@ -769,6 +780,7 @@ class ScenePeekAppTest : ComposeTest() {
           navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
+          clock = clockProvider,
         )
       }
 
@@ -805,6 +817,7 @@ class ScenePeekAppTest : ComposeTest() {
           navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
+          clock = clockProvider,
         )
 
         ScenePeekApp(
@@ -840,6 +853,7 @@ class ScenePeekAppTest : ComposeTest() {
           navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
+          clock = clockProvider,
         )
       }
 
@@ -860,6 +874,7 @@ class ScenePeekAppTest : ComposeTest() {
           navigator = navigator,
           preferencesRepository = preferencesRepository,
           appInfoRepository = appInfoRepository,
+          clock = clockProvider,
         )
       }
 
@@ -903,6 +918,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(
@@ -966,6 +982,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigator = navigator,
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
+        clock = clockProvider,
       )
 
       ScenePeekApp(

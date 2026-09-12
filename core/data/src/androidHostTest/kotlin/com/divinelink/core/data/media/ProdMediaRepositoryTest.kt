@@ -18,6 +18,7 @@ import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.service.TestMediaService
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -52,6 +53,7 @@ class ProdMediaRepositoryTest {
       personDao = personDao,
       remote = mediaService.mock,
       dispatcher = testDispatcher,
+      storage = FakePreferenceStorage(),
     )
   }
 
