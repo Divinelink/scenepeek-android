@@ -2,6 +2,7 @@ package com.divinelink.core.network.media.mapper.details
 
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.network.media.model.details.season.SeasonResponseApi
+import kotlinx.datetime.LocalDate
 
 fun List<SeasonResponseApi>.map(): List<Season> = mapNotNull { it.map() }
 
@@ -12,7 +13,7 @@ fun SeasonResponseApi.map(): Season? {
     id = id,
     name = name,
     overview = overview,
-    airDate = airDate,
+    airDate = LocalDate.parse(airDate),
     episodeCount = episodeCount,
     posterPath = posterPath,
     seasonNumber = seasonNumber,

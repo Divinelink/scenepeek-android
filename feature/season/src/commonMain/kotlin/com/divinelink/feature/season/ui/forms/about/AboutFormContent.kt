@@ -95,14 +95,14 @@ fun SeasonAboutInformation(info: SeasonInformation) {
       )
     }
 
-    info.firstAirDate?.toLocalDate()?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
+    info.firstAirDate?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
       SimpleInformationRow(
         title = stringResource(UiString.core_ui_first_air_date),
         data = airDate,
       )
     }
 
-    info.lastAirDate?.toLocalDate()?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
+    info.lastAirDate?.formatLocalized(DateFormatStyle.LONG)?.let { airDate ->
       SimpleInformationRow(
         title = stringResource(UiString.core_ui_last_air_date),
         data = airDate,
