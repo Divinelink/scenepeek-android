@@ -48,6 +48,7 @@ fun DisplayMessageSection(
   val containerColor by animateColorAsState(
     targetValue = when (message) {
       is DisplayMessage.Success -> MaterialTheme.colorScheme.primaryContainer
+      is DisplayMessage.Warning -> MaterialTheme.colorScheme.surfaceContainer
       is DisplayMessage.Error -> MaterialTheme.colorScheme.errorContainer
       else -> MaterialTheme.colorScheme.surfaceContainerLow
     },
@@ -57,6 +58,7 @@ fun DisplayMessageSection(
   val primary by animateColorAsState(
     targetValue = when (message) {
       is DisplayMessage.Success -> MaterialTheme.colorScheme.primary
+      is DisplayMessage.Warning -> MaterialTheme.colorScheme.surface
       is DisplayMessage.Error -> MaterialTheme.colorScheme.error
       else -> MaterialTheme.colorScheme.surface
     },
@@ -67,6 +69,7 @@ fun DisplayMessageSection(
     targetValue = when (message) {
       is DisplayMessage.Success -> MaterialTheme.colorScheme.onPrimaryContainer
       is DisplayMessage.Error -> MaterialTheme.colorScheme.onErrorContainer
+      is DisplayMessage.Warning -> MaterialTheme.colorScheme.onSurface
       else -> MaterialTheme.colorScheme.onSurfaceVariant
     },
     label = "Color animation",

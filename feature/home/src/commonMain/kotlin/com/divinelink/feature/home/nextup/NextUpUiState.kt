@@ -1,16 +1,28 @@
 package com.divinelink.feature.home.nextup
 
 import com.divinelink.core.database.show.ShowSyncError
+import com.divinelink.core.model.DisplayMessage
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.next_up_syncing_issue
 
 data class NextUpUiState(
-  val episodes: List<NextUpEpisode>,
+  val available: List<NextUpEpisode>,
+  val upcoming: List<NextUpEpisode>,
   val errors: List<ShowSyncError>,
   val loading: Boolean,
 ) {
+  val displayMessage = if (errors.isNotEmpty() && !loading) {
+    DisplayMessage.Warning(message = UIText.ResourceText(UiString.next_up_syncing_issue))
+  } else {
+    null
+  }
+
   companion object {
     val initial = NextUpUiState(
-      episodes = emptyList(),
+      available = emptyList(),
+      upcoming = emptyList(),
       errors = emptyList(),
       loading = true,
     )

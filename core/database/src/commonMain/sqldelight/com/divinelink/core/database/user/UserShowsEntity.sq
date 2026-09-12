@@ -91,7 +91,7 @@ JOIN EpisodeEntity ep_next ON ep_next.id = (
     FROM EpisodeEntity n
     LEFT JOIN UserEpisodesEntity u ON n.id = u.episodeId
     WHERE n.showId = show.id
-      AND n.airDate <= CURRENT_DATE
+--       AND n.airDate <= CURRENT_DATE
       AND u.episodeId IS NULL
       AND n.seasonNumber > 0
     ORDER BY n.seasonNumber ASC, n.episodeNumber ASC

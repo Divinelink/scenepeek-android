@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
+import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.Resource
@@ -34,7 +35,8 @@ class NextUpViewModel(
     ) { episodes, errors ->
       _uiState.update { state ->
         state.copy(
-          episodes = episodes,
+          available = episodes.available,
+          upcoming = episodes.upcoming,
           errors = errors,
           loading = false,
         )
@@ -43,7 +45,7 @@ class NextUpViewModel(
       .launchIn(viewModelScope)
   }
 
-  fun onRetry() {
+  private fun onRetry() {
     val currentErrors = _uiState.value.errors
     if (currentErrors.isEmpty()) return
 
@@ -81,9 +83,16 @@ class NextUpViewModel(
     }
   }
 
-  fun markEpisodeAsWatched(episode: Episode) {
+  private fun markEpisodeAsWatched(episode: Episode) {
     viewModelScope.launch {
       markEpisodeAsWatchedUseCase(episode)
+    }
+  }
+
+  fun onAction(action: NextUpAction) {
+    when (action) {
+      NextUpAction.Retry -> onRetry()
+      is NextUpAction.MarkEpisodeAsWatched -> markEpisodeAsWatched(action.episode)
     }
   }
 }

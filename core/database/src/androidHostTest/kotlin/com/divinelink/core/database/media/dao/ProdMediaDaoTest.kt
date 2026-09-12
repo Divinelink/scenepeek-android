@@ -2,7 +2,7 @@ package com.divinelink.core.database.media.dao
 
 import app.cash.turbine.test
 import com.divinelink.core.database.Database
-import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -35,7 +35,7 @@ class ProdMediaDaoTest {
     dao = ProdMediaDao(
       database = database,
       dispatcher = testDispatcher,
-      clock = ClockFactory.augustFirst2021(),
+      clockProvider = PreviewClockProvider(),
     )
   }
 
