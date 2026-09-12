@@ -1,0 +1,19 @@
+CREATE TABLE ShowSyncError (
+  showId INTEGER NOT NULL PRIMARY KEY,
+  targetSeason INTEGER NOT NULL
+);
+
+insertSyncError:
+INSERT OR REPLACE INTO ShowSyncError(
+  showId, targetSeason
+)
+VALUES (?, ?);
+
+hasSyncError:
+SELECT COUNT(*) > 0 FROM ShowSyncError WHERE showId = :showId;
+
+clearSyncErrors:
+DELETE FROM ShowSyncError WHERE showId = :showId;
+
+getAllSyncErrors:
+SELECT * FROM ShowSyncError ORDER BY showId DESC;

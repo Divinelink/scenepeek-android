@@ -10,10 +10,13 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.coroutines.flow.Flow
 
 interface MediaDao {
@@ -24,6 +27,8 @@ interface MediaDao {
     media: MediaItem.Media,
     seasons: List<Season>? = null,
   )
+
+  fun insertShowDetails(show: TV)
 
   fun insertMediaEntities(media: List<MediaItemEntity>)
 
@@ -135,9 +140,6 @@ interface MediaDao {
 
   fun selectByIds(ids: List<Long>): Flow<List<MediaItem>>
 
-  fun markEpisodeAsWatched(episodeId: Long)
-  fun unmarkEpisodeAsWatched(episodeId: Long)
-
   fun markSeasonAsWatched(episodeIds: List<Long>)
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 
@@ -146,4 +148,11 @@ interface MediaDao {
     showId: Long,
     seasonNumber: Int,
   ): Flow<List<Long>>
+
+  fun getUserShowStatus(showId: Long): Flow<UserShowStatus?>
+  fun addShow(showId: Long)
+  fun deleteShow(showId: Long)
+
+  fun getNextUpEpisode(showId: Long): Flow<Episode>
+  fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
 }

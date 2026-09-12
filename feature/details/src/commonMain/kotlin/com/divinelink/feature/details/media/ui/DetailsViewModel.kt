@@ -27,6 +27,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
+import com.divinelink.core.domain.track.AddShowUseCase
 import com.divinelink.core.domain.track.CompleteSeasonParameters
 import com.divinelink.core.domain.track.CompleteSeasonUseCase
 import com.divinelink.core.model.LCEState
@@ -104,6 +105,7 @@ class DetailsViewModel(
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
   private val completeSeasonUseCase: CompleteSeasonUseCase,
+  private val addShowUseCase: AddShowUseCase,
   authRepository: AuthRepository,
   repository: DetailsRepository,
   mediaRepository: MediaRepository,
@@ -187,6 +189,18 @@ class DetailsViewModel(
           _viewState.update { state ->
             state.copy(
               seasonsProgress = progress,
+            )
+          }
+        }
+        .launchIn(viewModelScope)
+
+      mediaRepository
+        .getUserShowStatus(viewState.value.mediaId)
+        .distinctUntilChanged()
+        .onEach { status ->
+          _viewState.update { state ->
+            state.copy(
+              userShowStatus = status,
             )
           }
         }
@@ -334,7 +348,7 @@ class DetailsViewModel(
               }
 
               is MediaDetailsResult.JellyseerrDetails.NotRequested -> viewState.copy(
-                actionButtons = buildActions {
+                actionButtons = buildActions(viewState.mediaType) {
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
@@ -511,6 +525,15 @@ class DetailsViewModel(
   fun onAction(action: DetailsAction) {
     when (action) {
       is DetailsAction.MarkSeasonComplete -> handleMarkSeasonComplete(action)
+      DetailsAction.AddShow -> handleAddShow()
+    }
+  }
+
+  private fun handleAddShow() {
+    viewModelScope.launch {
+      (viewState.value.mediaDetails as? TV)?.let { show ->
+        addShowUseCase(parameters = show)
+      }
     }
   }
 
@@ -829,7 +852,7 @@ class DetailsViewModel(
               viewState.copy(
                 isLoading = false,
                 jellyseerrMediaInfo = null,
-                actionButtons = buildActions {
+                actionButtons = buildActions(viewState.mediaType) {
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
@@ -948,7 +971,7 @@ class DetailsViewModel(
     info: JellyseerrMediaInfo?,
     permissions: List<ProfilePermission>,
     seasons: List<Season>,
-  ): List<DetailActionItem> = buildActions {
+  ): List<DetailActionItem> = buildActions(viewState.value.mediaType) {
     val status = info?.status
 
     withManageTv(
@@ -966,7 +989,7 @@ class DetailsViewModel(
   private fun findMovieActions(
     info: JellyseerrMediaInfo,
     permissions: List<ProfilePermission>,
-  ): List<DetailActionItem> = buildActions {
+  ): List<DetailActionItem> = buildActions(viewState.value.mediaType) {
     /**
      * Display ManageMovie action if user has MANAGE_REQUESTS permissions or requests are not empty.
      */

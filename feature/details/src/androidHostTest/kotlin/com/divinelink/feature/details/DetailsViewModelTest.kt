@@ -42,6 +42,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.model.tab.TvTab
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
@@ -948,6 +949,7 @@ class DetailsViewModelTest {
     testRobot
       .mockSubmitRate(response = Result.success(Unit))
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockFetchMediaDetails(
         response = defaultDetails(
           MediaDetailsResult.DetailsSuccess(
@@ -1309,6 +1311,7 @@ class DetailsViewModelTest {
     val credits = AggregatedCreditsFactory.credits()
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
@@ -1341,6 +1344,7 @@ class DetailsViewModelTest {
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(movieDetails, RatingSource.TMDB)),
+          Result.success(MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultItems)),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.pending(),
@@ -1379,10 +1383,12 @@ class DetailsViewModelTest {
   fun `test on JellyseerrDetailsSuccess tv MediaDetailsResult update seasons status`() = runTest {
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+          Result.success(MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems)),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.available(),
@@ -1412,6 +1418,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
@@ -1425,6 +1432,7 @@ class DetailsViewModelTest {
     val channel = Channel<Result<MediaDetailsResult>>()
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockFetchMediaDetails(channel)
       .mockPermissions(ProfilePermission.entries)
       .withNavArguments(mediaId, MediaType.TV)
@@ -1490,6 +1498,7 @@ class DetailsViewModelTest {
               DetailActionItem.Watchlist,
               DetailActionItem.Favorite,
               DetailActionItem.List,
+              DetailActionItem.AddShow,
               DetailActionItem.ManageTvShow,
               DetailActionItem.Request,
             ),
@@ -1511,6 +1520,7 @@ class DetailsViewModelTest {
               ratingSource = RatingSource.TMDB,
             ),
           ),
+          Result.success(MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultItems)),
         ),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
@@ -1549,6 +1559,7 @@ class DetailsViewModelTest {
   fun `test update media info for tv with success updates current seasons`() = runTest {
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -1557,6 +1568,9 @@ class DetailsViewModelTest {
               mediaDetails = tvDetails,
               ratingSource = RatingSource.TMDB,
             ),
+          ),
+          Result.success(
+            MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
@@ -1589,6 +1603,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
@@ -1616,6 +1631,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
           permissions = ProfilePermission.entries,
@@ -1629,6 +1645,7 @@ class DetailsViewModelTest {
 
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockFetchMediaDetails(
         response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
       )
@@ -1759,6 +1776,7 @@ class DetailsViewModelTest {
   fun `test onMediaSourceClick for TV show emits openUrl`() = runTest {
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockFetchMediaDetails(
         response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
       )
@@ -1970,6 +1988,7 @@ class DetailsViewModelTest {
     testRobot
       .mockPermissions(ProfilePermission.entries)
       .mockGetSeasonProgress(flowOf(emptyList()))
+      .mockGetUserShowStatus(flowOf(null))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -1977,6 +1996,9 @@ class DetailsViewModelTest {
               mediaDetails = tvDetails,
               ratingSource = RatingSource.TMDB,
             ),
+          ),
+          Result.success(
+            MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
@@ -2005,6 +2027,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2037,6 +2060,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.unknown(),
@@ -2063,6 +2087,7 @@ class DetailsViewModelTest {
               ratingSource = RatingSource.TMDB,
             ),
           ),
+          Result.success(MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultItems)),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.processing(),
@@ -2181,6 +2206,7 @@ class DetailsViewModelTest {
     testRobot
       .mockPermissions(ProfilePermission.entries)
       .mockGetSeasonProgress(flowOf(emptyList()))
+      .mockGetUserShowStatus(flowOf(null))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2188,6 +2214,9 @@ class DetailsViewModelTest {
               mediaDetails = tvDetails,
               ratingSource = RatingSource.TMDB,
             ),
+          ),
+          Result.success(
+            MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
@@ -2216,6 +2245,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2248,6 +2278,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2265,6 +2296,7 @@ class DetailsViewModelTest {
   fun `test onDeleteMedia and file on TV media with success`() = runTest {
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -2273,6 +2305,9 @@ class DetailsViewModelTest {
               mediaDetails = tvDetails,
               ratingSource = RatingSource.TMDB,
             ),
+          ),
+          Result.success(
+            MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
@@ -2301,6 +2336,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2331,6 +2367,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = null,
@@ -2348,7 +2385,8 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on TV with success`() = runTest {
     testRobot
-      .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetSeasonProgress(flowOf(emptyList()))
+      .mockGetUserShowStatus(flowOf(null))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -2357,6 +2395,9 @@ class DetailsViewModelTest {
               mediaDetails = tvDetails,
               ratingSource = RatingSource.TMDB,
             ),
+          ),
+          Result.success(
+            MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
@@ -2385,6 +2426,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2415,6 +2457,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = null,
@@ -2433,6 +2476,7 @@ class DetailsViewModelTest {
   fun `test onDeleteMedia and file on TV with failure`() = runTest {
     testRobot
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
@@ -2441,6 +2485,9 @@ class DetailsViewModelTest {
               mediaDetails = tvDetails,
               ratingSource = RatingSource.TMDB,
             ),
+          ),
+          Result.success(
+            MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
@@ -2469,6 +2516,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2500,6 +2548,7 @@ class DetailsViewModelTest {
               DetailActionItem.Watchlist,
               DetailActionItem.Favorite,
               DetailActionItem.List,
+              DetailActionItem.AddShow,
               DetailActionItem.ManageTvShow,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2524,6 +2573,7 @@ class DetailsViewModelTest {
               DetailActionItem.Watchlist,
               DetailActionItem.Favorite,
               DetailActionItem.List,
+              DetailActionItem.AddShow,
               DetailActionItem.ManageTvShow,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2548,6 +2598,7 @@ class DetailsViewModelTest {
               DetailActionItem.Watchlist,
               DetailActionItem.Favorite,
               DetailActionItem.List,
+              DetailActionItem.AddShow,
               DetailActionItem.ManageTvShow,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2575,6 +2626,7 @@ class DetailsViewModelTest {
               ratingSource = RatingSource.TMDB,
             ),
           ),
+          Result.success(MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultItems)),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.processing(),
@@ -2690,6 +2742,7 @@ class DetailsViewModelTest {
       testRobot
         .mockPermissions(emptyList())
         .mockGetSeasonProgress(response = flowOf(emptyList()))
+        .mockGetUserShowStatus(response = flowOf(null))
         .mockFetchMediaDetails(
           response = flowOf(
             Result.success(
@@ -2697,6 +2750,9 @@ class DetailsViewModelTest {
                 mediaDetails = tvDetails,
                 ratingSource = RatingSource.TMDB,
               ),
+            ),
+            Result.success(
+              MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
             ),
             Result.success(
               MediaDetailsResult.JellyseerrDetails.Requested(
@@ -2729,6 +2785,7 @@ class DetailsViewModelTest {
               DetailActionItem.Watchlist,
               DetailActionItem.Favorite,
               DetailActionItem.List,
+              DetailActionItem.AddShow,
             ),
           ),
         )
@@ -2739,6 +2796,7 @@ class DetailsViewModelTest {
     testRobot
       .mockPermissions(emptyList())
       .mockGetSeasonProgress(response = flowOf(emptyList()))
+      .mockGetUserShowStatus(response = flowOf(null))
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2746,6 +2804,9 @@ class DetailsViewModelTest {
               mediaDetails = tvDetails,
               ratingSource = RatingSource.TMDB,
             ),
+          ),
+          Result.success(
+            MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultTvItems),
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetails.Requested(
@@ -2778,6 +2839,7 @@ class DetailsViewModelTest {
             DetailActionItem.Watchlist,
             DetailActionItem.Favorite,
             DetailActionItem.List,
+            DetailActionItem.AddShow,
             DetailActionItem.ManageTvShow,
           ),
         ),
@@ -2796,6 +2858,7 @@ class DetailsViewModelTest {
               ratingSource = RatingSource.TMDB,
             ),
           ),
+          Result.success(MediaDetailsResult.ActionButtonsSuccess(DetailActionItem.defaultItems)),
         ),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
@@ -2906,6 +2969,7 @@ class DetailsViewModelTest {
       .mockGetSeasonProgress(
         flowOf(listOf(SeasonProgress(seasonNumber = 1, watchedCount = 5))),
       )
+      .mockGetUserShowStatus(flowOf(null))
       .mockFetchMediaDetails(
         response = defaultDetails(
           MediaDetailsResult.DetailsSuccess(
@@ -2934,6 +2998,39 @@ class DetailsViewModelTest {
       )
   }
 
+  @Test
+  fun `test observe user show status`() = runTest {
+    testRobot
+      .mockGetSeasonProgress(flowOf(emptyList()))
+      .mockGetUserShowStatus(flowOf(null, UserShowStatus.WATCHING))
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = tvDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(tvDetails.id, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        createUiState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = tvDetails.id,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          ratingSource = RatingSource.TMDB,
+          userShowStatus = UserShowStatus.WATCHING,
+        ),
+      )
+  }
+
   private fun createUiState(
     mediaId: Long,
     mediaType: MediaType,
@@ -2957,6 +3054,7 @@ class DetailsViewModelTest {
     navigateToLogin: Boolean? = null,
     watchProviders: LCEState<WatchProviders>? = null,
     seasonProgress: List<SeasonProgress> = emptyList(),
+    userShowStatus: UserShowStatus? = null,
   ) = DetailsViewState.initial(
     isLoading = isLoading,
     mediaId = mediaId,
@@ -2979,5 +3077,6 @@ class DetailsViewModelTest {
     navigateToLogin = navigateToLogin,
     watchProviders = watchProviders,
     seasonsProgress = seasonProgress,
+    userShowStatus = userShowStatus,
   )
 }

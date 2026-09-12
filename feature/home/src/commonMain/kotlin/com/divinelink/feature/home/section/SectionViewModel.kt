@@ -40,6 +40,7 @@ class SectionViewModel(
       HomeForm.Error -> fetchMediaSection()
       HomeForm.Initial -> fetchMediaSection()
       is HomeForm.SeerrData -> Unit
+      HomeForm.UpNextEpisodes -> Unit
     }
   }
 
@@ -51,6 +52,9 @@ class SectionViewModel(
       MediaListSection.TrendingAll -> fetchTrending()
       is MediaListSection.RecentRequests -> _uiState.update { state ->
         state.copy(form = HomeForm.SeerrData(filter = MediaRequestFilter.All))
+      }
+      is MediaListSection.NextUpEpisodes -> _uiState.update { state ->
+        state.copy(form = HomeForm.UpNextEpisodes)
       }
     }
   }
@@ -122,6 +126,7 @@ class SectionViewModel(
         isLoading = true,
       )
       is HomeForm.SeerrData -> currentForm
+      HomeForm.UpNextEpisodes -> currentForm
       HomeForm.Error -> HomeForm.Initial
       HomeForm.Initial -> HomeForm.Initial
     }

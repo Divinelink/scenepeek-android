@@ -50,6 +50,6 @@ WHERE showId = ? AND seasonNumber = ?;
 
 -- Episode list rendering per show
 CREATE INDEX idx_episodes_show_season ON EpisodeEntity(showId, seasonNumber, episodeNumber);
-
 -- Calendar/upcoming feature
 CREATE INDEX idx_episodes_air_date ON EpisodeEntity(airDate);
+CREATE INDEX idx_episodes_show_airdate ON EpisodeEntity(showId, airDate);

@@ -1,3 +1,5 @@
+@file:Suppress("LargeClass")
+
 package com.divinelink.core.database.media.dao
 
 import app.cash.sqldelight.coroutines.asFlow
@@ -19,16 +21,21 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlin.time.Clock
 
 class ProdMediaDao(
@@ -37,6 +44,8 @@ class ProdMediaDao(
   private val clock: Clock,
 ) : MediaDao {
   private val episodeQueries = database.userEpisodesEntityQueries
+  private val userShowQueries = database.userShowsEntityQueries
+  private val mediaQueries = database.mediaItemEntityQueries
 
   override fun insertMedia(
     media: MediaItem.Media,
@@ -46,6 +55,24 @@ class ProdMediaDao(
     seasons?.let {
       insertSeasons(media.id, seasons)
     }
+  }
+
+  override fun insertShowDetails(show: TV) = database.transaction {
+    insertMedia(media = show.toMediaItem())
+
+    show.genres?.map { it.id }?.joinToString()?.let { ids ->
+      mediaQueries.updateMediaGenres(
+        genreIdsJson = ids,
+        id = show.id,
+        mediaType = MediaType.TV.value
+      )
+    }
+
+    database.showDetailsEntityQueries.insertShowDetails(
+      id = show.id,
+      totalEpisodes = show.totalEpisodes.toLong(),
+      totalSeasons = show.numberOfSeasons.toLong(),
+    )
   }
 
   override fun insertMediaList(media: List<MediaItem.Media>) {
@@ -548,19 +575,6 @@ class ProdMediaDao(
     }
   }
 
-  override fun markEpisodeAsWatched(episodeId: Long) = database.transaction {
-    episodeQueries.upsertUserEpisode(
-      episodeId = episodeId,
-      watchedAt = null,
-    )
-  }
-
-  override fun unmarkEpisodeAsWatched(episodeId: Long) = database.transaction {
-    episodeQueries.deleteUserEpisode(
-      episodeId = episodeId,
-    )
-  }
-
   override fun markSeasonAsWatched(episodeIds: List<Long>) {
     if (episodeIds.isEmpty()) return
 
@@ -603,4 +617,84 @@ class ProdMediaDao(
     .asFlow()
     .mapToList(dispatcher.io)
     .distinctUntilChanged()
+
+  override fun addShow(showId: Long) = database.transaction {
+    userShowQueries.insertUserShow(
+      showId = showId,
+      addedAt = clock.currentEpochSeconds(),
+      updatedAt = clock.currentEpochSeconds(),
+      status = UserShowStatus.WATCHING.value,
+      notes = null,
+      rating = null,
+    )
+  }
+
+  override fun deleteShow(showId: Long) = database.transaction {
+    userShowQueries.deleteUserShow(showId)
+  }
+
+  override fun getUserShowStatus(showId: Long): Flow<UserShowStatus?> = userShowQueries
+    .getUserShowStatus(showId)
+    .asFlow()
+    .mapToOneOrNull(dispatcher.io)
+    .map { entity ->
+      UserShowStatus.from(entity?.status)
+    }
+
+  override fun getNextUpEpisode(showId: Long): Flow<Episode> = userShowQueries
+    .nextUpEpisode(showId = showId)
+    .asFlow()
+    .mapToOneOrNull(dispatcher.io)
+    .mapNotNull { entity ->
+      if (entity == null) return@mapNotNull null
+      Episode(
+        id = entity.episodeId.toInt(),
+        name = entity.episodeName,
+        airDate = entity.airDate,
+        overview = null,
+        runtime = null,
+        number = entity.episodeNumber.toInt(),
+        seasonNumber = entity.seasonNumber.toInt(),
+        showId = showId,
+        stillPath = entity.thumbnailPath,
+        voteAverage = null,
+        voteCount = null,
+        crew = emptyList(),
+        guestStars = emptyList(),
+        accountRating = null,
+      )
+    }
+
+  override fun getNextUpEpisodes(): Flow<List<NextUpEpisode>> = userShowQueries
+    .getAllUpNextEpisodes()
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { entities ->
+      entities.map { entity ->
+        val episode = Episode(
+          id = entity.episodeId.toInt(),
+          name = entity.episodeName,
+          airDate = entity.airDate,
+          overview = null,
+          runtime = null,
+          number = entity.episodeNumber.toInt(),
+          seasonNumber = entity.seasonNumber.toInt(),
+          showId = entity.showId,
+          stillPath = entity.episodeThumbnail,
+          voteAverage = null,
+          voteCount = null,
+          crew = emptyList(),
+          guestStars = emptyList(),
+          accountRating = null,
+        )
+
+        NextUpEpisode(
+          episode = episode,
+          showTitle = entity.showTitle,
+          showPosterPath = entity.showPosterPath,
+          watchedEpisodes = entity.watchedEpisodes.toInt(),
+          totalEpisodes = entity.totalEpisodes.toInt(),
+        )
+      }
+    }
 }

@@ -50,6 +50,7 @@ import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.repository.TestSearchRepository
+import com.divinelink.core.testing.repository.TestTrackRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
@@ -60,11 +61,13 @@ import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
+import com.divinelink.core.testing.usecase.TestAddShowUseCase
 import com.divinelink.core.testing.usecase.TestCompleteSeasonUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
+import com.divinelink.core.testing.usecase.TestMarkEpisodeAsWatchedUseCase
 import com.divinelink.core.testing.usecase.TestMarkOnboardingCompleteUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.MainUiEvent
@@ -77,6 +80,7 @@ import com.divinelink.core.ui.resources.core_ui_not_connected
 import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.home.HomeViewModel
+import com.divinelink.feature.home.nextup.NextUpViewModel
 import com.divinelink.feature.home.section.SectionViewModel
 import com.divinelink.feature.onboarding.manager.IntroSections
 import com.divinelink.feature.onboarding.ui.IntroViewModel
@@ -142,6 +146,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var deleteRequestUseCase: TestDeleteRequestUseCase
   private lateinit var deleteMediaUseCase: TestDeleteMediaUseCase
   private lateinit var completeSeasonUseCase: TestCompleteSeasonUseCase
+  private lateinit var addShowUseCase: TestAddShowUseCase
   private lateinit var authRepository: TestAuthRepository
   private lateinit var detailsRepository: TestDetailsRepository
   private lateinit var appInfoRepository: TestAppInfoRepository
@@ -177,11 +182,13 @@ class ScenePeekAppTest : ComposeTest() {
     appInfoRepository = TestAppInfoRepository()
     searchRepository = TestSearchRepository()
     completeSeasonUseCase = TestCompleteSeasonUseCase()
+    addShowUseCase = TestAddShowUseCase()
 
     startKoin {
       modules(
         navigationModule,
         sectionViewModelModule,
+        nextUpViewModel,
       )
     }
 
@@ -685,6 +692,7 @@ class ScenePeekAppTest : ComposeTest() {
         deleteRequestUseCase = deleteRequestUseCase.mock,
         deleteMediaUseCase = deleteMediaUseCase.mock,
         completeSeasonUseCase = completeSeasonUseCase.mock,
+        addShowUseCase = addShowUseCase.mock,
         authRepository = authRepository.mock,
         repository = detailsRepository.mock,
         preferencesRepository = preferencesRepository,
@@ -998,6 +1006,16 @@ class ScenePeekAppTest : ComposeTest() {
         section = params.get(),
         repository = mediaRepository.mock,
         clock = clock,
+      )
+    }
+  }
+
+  private val nextUpViewModel = module {
+    viewModel {
+      NextUpViewModel(
+        repository = mediaRepository.mock,
+        trackRepository = TestTrackRepository().mock,
+        markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
       )
     }
   }

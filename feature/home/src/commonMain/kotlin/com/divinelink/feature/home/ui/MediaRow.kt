@@ -49,6 +49,7 @@ fun MediaRow(
           MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
             filterValue = MediaRequestFilter.All.value,
           )
+          MediaListSection.NextUpEpisodes -> return@TextButton
         }
 
         onNavigate(route)
@@ -79,6 +80,9 @@ fun MediaRow(
       )
       is HomeForm.SeerrData -> SeerrContent(
         filter = form.filter,
+        onNavigate = onNavigate,
+      )
+      is HomeForm.UpNextEpisodes -> NextUpContent(
         onNavigate = onNavigate,
       )
     }

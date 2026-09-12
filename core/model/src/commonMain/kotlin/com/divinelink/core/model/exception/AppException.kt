@@ -1,8 +1,6 @@
 package com.divinelink.core.model.exception
 
-import kotlinx.io.IOException
-
-sealed class AppException(message: String? = null) : IOException(message) {
+sealed class AppException(message: String? = null) : Exception(message) {
 
   // Network Errors
   class Offline(message: String? = null) : AppException(message)

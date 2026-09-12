@@ -14,6 +14,7 @@ import com.divinelink.core.model.resources.upcoming_movies
 import com.divinelink.core.model.resources.upcoming_series
 import com.divinelink.core.model.tab.MediaListTab
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.next_up_episodes
 import com.divinelink.core.ui.resources.recent_request
 import com.divinelink.feature.media.lists.ui.MediaListsForm
 
@@ -57,6 +58,7 @@ data class MediaListsUiState(
         MediaListSection.Saved -> UIText.ResourceText(Res.string.saved)
         is MediaListSection.TopRated -> UIText.ResourceText(Res.string.top_rated)
         MediaListSection.RecentRequests -> UIText.ResourceText(UiString.recent_request)
+        MediaListSection.NextUpEpisodes -> UIText.ResourceText(UiString.next_up_episodes)
       },
       pages = emptyMap(),
       forms = when (section) {
@@ -81,6 +83,7 @@ data class MediaListsUiState(
         MediaListSection.RecentRequests -> mapOf(
           MediaType.UNKNOWN to MediaListsForm.Initial,
         )
+        MediaListSection.NextUpEpisodes -> mapOf(MediaType.UNKNOWN to MediaListsForm.Initial)
       },
       tabs = when (section) {
         MediaListSection.Saved -> MediaListTab.all
@@ -89,6 +92,7 @@ data class MediaListsUiState(
         is MediaListSection.Upcoming -> MediaListTab.from(section.mediaType)
         MediaListSection.TrendingAll -> MediaListTab.from(null)
         MediaListSection.RecentRequests -> MediaListTab.from(null)
+        MediaListSection.NextUpEpisodes -> MediaListTab.from(null)
       },
     )
   }

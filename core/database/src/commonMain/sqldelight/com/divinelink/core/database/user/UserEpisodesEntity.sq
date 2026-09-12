@@ -16,6 +16,11 @@ DELETE FROM UserEpisodesEntity WHERE episodeId = ?;
 CREATE INDEX idx_user_episodes_episode_id
 ON UserEpisodesEntity(episodeId);
 
+isWatchedEpisode:
+SELECT COUNT(*) > 0 AS watched
+FROM UserEpisodesEntity
+WHERE episodeId = ?;
+
 watchedCountForSeason:
 SELECT COUNT(*) AS count
 FROM UserEpisodesEntity ue
@@ -34,10 +39,24 @@ WHERE e.showId = :showId
 GROUP BY e.seasonNumber
 ORDER BY e.seasonNumber;
 
+getAllSeasonNumbers:
+SELECT DISTINCT seasonNumber
+FROM EpisodeEntity
+WHERE showId = :showId;
+
 watchedEpisodesForSeason:
 SELECT
   e.id AS episodeId
 FROM EpisodeEntity e
 INNER JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
+WHERE e.showId = :showId
+  AND e.seasonNumber = :seasonNumber;
+
+getUserSeasonProgress:
+SELECT
+  COUNT(e.id) AS totalEpisodes,
+  COUNT(ue.episodeId) AS watchedEpisodes
+FROM EpisodeEntity e
+LEFT JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
 WHERE e.showId = :showId
   AND e.seasonNumber = :seasonNumber;

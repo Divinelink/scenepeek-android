@@ -122,14 +122,7 @@ fun EpisodeItem(
 
       MarkAsCompleteIconButton(
         modifier = Modifier.weight(1f),
-        onClick = {
-          action(
-            SeasonAction.MarkEpisodeAsWatched(
-              episodeId = episode.id.toLong(),
-              watched = watched,
-            ),
-          )
-        },
+        onClick = { action(SeasonAction.MarkEpisodeAsWatched(episode = episode)) },
         isWatched = watched,
       )
     }

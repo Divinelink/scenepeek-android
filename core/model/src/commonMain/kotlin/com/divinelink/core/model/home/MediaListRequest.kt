@@ -19,4 +19,5 @@ fun MediaListSection.toRequest(
   is MediaListSection.Popular -> MediaListRequest.Popular(this.mediaType)
   is MediaListSection.Upcoming -> MediaListRequest.Upcoming(this.mediaType, minDate)
   MediaListSection.RecentRequests -> null
+  MediaListSection.NextUpEpisodes -> null
 }

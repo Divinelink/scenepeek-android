@@ -7,6 +7,8 @@ import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.LibraryAdd
+import androidx.compose.material.icons.rounded.LibraryAddCheck
 import androidx.compose.material.icons.rounded.SettingsSuggest
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.runtime.Composable
@@ -19,6 +21,8 @@ import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.core.ui.resources.core_ui_add_rating
+import com.divinelink.core.ui.resources.track_show
+import com.divinelink.core.ui.resources.tracking_show
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details__add_to_list
 import com.divinelink.feature.details.resources.feature_details__favorite
@@ -32,6 +36,7 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
   modifier: Modifier = Modifier,
   actionButtons: List<DetailActionItem>,
   isFavorite: Boolean,
+  isAddedShow: Boolean,
   onWatchlist: Boolean,
   onAddRateClicked: () -> Unit,
   onAddToAccount: (AccountDataSection) -> Unit,
@@ -39,6 +44,7 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
   onRequestClicked: () -> Unit,
   onManageMovie: () -> Unit,
   onManageTv: () -> Unit,
+  onAddShow: () -> Unit,
 ) {
   ExpandableFloatActionButton(
     modifier = modifier,
@@ -94,6 +100,24 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
           contentDescription = UIText.ResourceText(Res.string.feature_details_manage_tv),
           onClick = onManageTv,
         )
+        DetailActionItem.AddShow -> {
+          val text = if (isAddedShow) {
+            UiString.tracking_show
+          } else {
+            UiString.track_show
+          }
+          val icon = if (isAddedShow) {
+            Icons.Rounded.LibraryAddCheck
+          } else {
+            Icons.Rounded.LibraryAdd
+          }
+          FloatingActionButtonItem(
+            icon = IconWrapper.Vector(icon),
+            label = UIText.ResourceText(text),
+            contentDescription = UIText.ResourceText(text),
+            onClick = onAddShow,
+          )
+        }
       }
     },
   )

@@ -11,6 +11,7 @@ import com.divinelink.core.model.resources.trending
 import com.divinelink.core.model.resources.upcoming_movies
 import com.divinelink.core.model.resources.upcoming_series
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.next_up_episodes
 import com.divinelink.core.ui.resources.recent_request
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.combine
 fun List<MediaListSection.Home>.buildSections() = map { section ->
   val title = when (section) {
     MediaListSection.RecentRequests -> UiString.recent_request
+    MediaListSection.NextUpEpisodes -> UiString.next_up_episodes
     MediaListSection.TrendingAll -> Res.string.trending
     is MediaListSection.Popular -> if (section.mediaType == MediaType.MOVIE) {
       Res.string.popular_movies

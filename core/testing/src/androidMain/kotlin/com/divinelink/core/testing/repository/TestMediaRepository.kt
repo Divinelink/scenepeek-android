@@ -7,6 +7,8 @@ import com.divinelink.core.model.details.SeasonProgress
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -16,6 +18,12 @@ import org.mockito.kotlin.whenever
 class TestMediaRepository {
 
   val mock: MediaRepository = mock()
+
+  init {
+    mockGetSeasonProgress(flowOf(emptyList()))
+    mockGetNextUpEpisodes(flowOf(emptyList()))
+    mockGetUserShowStatus(flowOf(null))
+  }
 
   suspend fun mockFetchTrending(
     page: Int = any(),
@@ -70,5 +78,13 @@ class TestMediaRepository {
 
   fun mockGetSeasonProgress(response: Flow<List<SeasonProgress>>) {
     whenever(mock.getSeasonsProgress(any())).thenReturn(response)
+  }
+
+  fun mockGetUserShowStatus(response: Flow<UserShowStatus?>) {
+    whenever(mock.getUserShowStatus(any())).thenReturn(response)
+  }
+
+  fun mockGetNextUpEpisodes(response: Flow<List<NextUpEpisode>>) {
+    whenever(mock.getNextUpEpisodes()).thenReturn(response)
   }
 }

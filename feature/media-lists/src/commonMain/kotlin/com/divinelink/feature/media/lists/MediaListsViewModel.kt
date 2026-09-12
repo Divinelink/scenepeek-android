@@ -50,6 +50,7 @@ class MediaListsViewModel(
       is MediaListSection.Upcoming -> fetchMediaLists(mediaType)
       MediaListSection.Saved -> fetchFavorites(mediaType)
       MediaListSection.RecentRequests -> Unit
+      MediaListSection.NextUpEpisodes -> Unit
     }
   }
 

@@ -78,7 +78,7 @@ sealed interface Navigation : NavKey {
   data class DetailsRoute(
     val id: Long,
     val mediaType: String,
-    val isFavorite: Boolean?,
+    val isFavorite: Boolean? = null,
   ) : Navigation
 
   @Serializable

@@ -14,12 +14,15 @@ import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.details.map
@@ -273,9 +276,17 @@ class ProdMediaRepository(
       Result.success(data.copy(searchList = updatedMedia))
     }
 
+  override fun saveMediaItem(mediaItem: MediaItem.Media) {
+    dao.insertMedia(mediaItem)
+  }
+
+  override fun saveShowDetails(show: TV) {
+    dao.insertShowDetails(show)
+  }
+
   override suspend fun insertFavoriteMedia(media: MediaItem) {
     when (media) {
-      is MediaItem.Media -> dao.insertMedia(media, null)
+      is MediaItem.Media -> saveMediaItem(media)
       is MediaItem.Person -> Unit
       is MediaItem.Unknown -> Unit
     }
@@ -341,6 +352,7 @@ class ProdMediaRepository(
   override fun fetchSeasonDetails(
     showId: Long,
     season: Int,
+    forceRefresh: Boolean,
   ): Flow<Resource<SeasonDetails?>> = networkBoundResource(
     query = {
       combine(
@@ -382,7 +394,7 @@ class ProdMediaRepository(
         }
       }
     },
-    shouldFetch = { true },
+    shouldFetch = { it == null || forceRefresh },
   )
 
   override fun fetchSeasonEpisodes(
@@ -502,14 +514,6 @@ class ProdMediaRepository(
       seasonNumber = seasonNumber,
     )
 
-  override fun markEpisodeAsWatched(episodeId: Long) = dao.markEpisodeAsWatched(
-    episodeId = episodeId,
-  )
-
-  override fun unmarkEpisodeAsWatched(episodeId: Long) = dao.unmarkEpisodeAsWatched(
-    episodeId = episodeId,
-  )
-
   override fun markSeasonAsWatched(episodeIds: List<Long>) = dao.markSeasonAsWatched(
     episodeIds = episodeIds,
   )
@@ -517,4 +521,14 @@ class ProdMediaRepository(
   override fun unmarkSeasonAsWatched(episodeIds: List<Long>) = dao.unmarkSeasonAsWatched(
     episodeIds = episodeIds,
   )
+
+  override fun getUpNextEpisode(showId: Long): Flow<Episode> = dao.getNextUpEpisode(showId)
+
+  override fun getNextUpEpisodes(): Flow<List<NextUpEpisode>> = dao.getNextUpEpisodes()
+
+  override fun getUserShowStatus(showId: Long): Flow<UserShowStatus?> = dao.getUserShowStatus(
+    showId = showId,
+  )
+  override fun addShow(showId: Long) = dao.addShow(showId)
+  override fun deleteShow(showId: Long) = dao.deleteShow(showId)
 }

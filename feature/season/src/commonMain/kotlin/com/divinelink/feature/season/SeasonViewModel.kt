@@ -3,6 +3,7 @@ package com.divinelink.feature.season
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.season.SeasonData
 import com.divinelink.core.model.details.season.SeasonForm
@@ -18,10 +19,12 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class SeasonViewModel(
   private val route: Navigation.SeasonRoute,
   val repository: MediaRepository,
+  private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<SeasonUiState> = MutableStateFlow(
@@ -72,6 +75,7 @@ class SeasonViewModel(
     repository.fetchSeasonDetails(
       showId = route.showId,
       season = route.seasonNumber,
+      forceRefresh = true,
     )
       .distinctUntilChanged()
       .catch {
@@ -105,10 +109,8 @@ class SeasonViewModel(
   }
 
   private fun handleMarkEpisodeAsWatched(action: SeasonAction.MarkEpisodeAsWatched) {
-    if (action.watched) {
-      repository.unmarkEpisodeAsWatched(action.episodeId)
-    } else {
-      repository.markEpisodeAsWatched(action.episodeId)
+    viewModelScope.launch {
+      markEpisodeAsWatchedUseCase(action.episode)
     }
   }
 

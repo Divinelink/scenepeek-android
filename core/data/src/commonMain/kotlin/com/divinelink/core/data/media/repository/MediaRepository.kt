@@ -10,12 +10,15 @@ import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.SeasonProgress
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.home.MediaListRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
@@ -80,6 +83,9 @@ interface MediaRepository {
     seasonNumber: Int,
   ): Flow<Result<Season>>
 
+  fun saveMediaItem(mediaItem: MediaItem.Media)
+  fun saveShowDetails(show: TV)
+
   /**
    * Add favorite [media] to local storage.
    */
@@ -103,6 +109,7 @@ interface MediaRepository {
   fun fetchSeasonDetails(
     showId: Long,
     season: Int,
+    forceRefresh: Boolean,
   ): Flow<Resource<SeasonDetails?>>
 
   fun fetchSeasonEpisodes(
@@ -138,9 +145,13 @@ interface MediaRepository {
     seasonNumber: Int,
   ): Flow<List<Long>>
 
-  fun markEpisodeAsWatched(episodeId: Long)
-  fun unmarkEpisodeAsWatched(episodeId: Long)
-
   fun markSeasonAsWatched(episodeIds: List<Long>)
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
+
+  fun getUpNextEpisode(showId: Long): Flow<Episode>
+  fun getNextUpEpisodes(): Flow<List<NextUpEpisode>>
+
+  fun getUserShowStatus(showId: Long): Flow<UserShowStatus?>
+  fun addShow(showId: Long)
+  fun deleteShow(showId: Long)
 }

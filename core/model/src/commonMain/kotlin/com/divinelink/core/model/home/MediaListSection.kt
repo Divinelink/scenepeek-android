@@ -39,9 +39,15 @@ sealed interface MediaListSection {
     override val key: String = "seerr_recent_requests"
   }
 
+  @Serializable
+  data object NextUpEpisodes : Home {
+    override val key: String = "up_next_episodes"
+  }
+
   companion object {
     val homeEntries = listOf(
       RecentRequests,
+      NextUpEpisodes,
       TrendingAll,
       Popular(MediaType.MOVIE),
       Popular(MediaType.TV),

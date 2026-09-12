@@ -13,6 +13,8 @@ import com.divinelink.core.database.opendata.OpenDataDao
 import com.divinelink.core.database.opendata.ProdOpenDataDao
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
+import com.divinelink.core.database.track.ProdTrackDao
+import com.divinelink.core.database.track.TrackDao
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -27,4 +29,5 @@ val databaseModule = module {
   singleOf(::ProdMediaDao) { bind<MediaDao>() }
   singleOf(::ProdAppInfoDao) { bind<AppInfoDao>() }
   singleOf(::ProdOpenDataDao) { bind<OpenDataDao>() }
+  singleOf(::ProdTrackDao) { bind<TrackDao>() }
 }

@@ -31,6 +31,11 @@ INSERT OR REPLACE INTO MediaItemEntity (
 )
 VALUES ?;
 
+updateMediaGenres:
+UPDATE MediaItemEntity
+SET genreIdsJson = ?
+WHERE id = ? AND mediaType = ?;
+
 selectMediaItemByIdAndType:
 SELECT * FROM MediaItemEntity
 WHERE id = ? AND mediaType = ?;

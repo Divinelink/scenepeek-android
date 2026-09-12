@@ -245,12 +245,10 @@ open class GetMediaDetailsUseCase(
       }
 
       launch(dispatcher.default) {
-        getDetailsActionItemsUseCase(Unit)
-          .catch { Napier.e("$it") }
-          .collect { result ->
-            result.onSuccess {
-              send(Result.success(MediaDetailsResult.ActionButtonsSuccess(result.data)))
-            }
+        getDetailsActionItemsUseCase(parameters = parameters.mediaType)
+          .getOrNull()
+          ?.let { items ->
+            send(Result.success(MediaDetailsResult.ActionButtonsSuccess(items)))
           }
       }
     }
@@ -258,7 +256,7 @@ open class GetMediaDetailsUseCase(
   /**
    * Calculates requests based on user permissions.
    * Display all requests if user has MANAGE_REQUESTS permission.
-   * Otherwise displays only user's requests.
+   * Otherwise, displays only user's requests.
    */
   private suspend fun ProducerScope<Result<MediaDetailsResult>>.filterRequestsBasedOnPermission(
     result: JellyseerrMediaInfo,

@@ -1,0 +1,15 @@
+CREATE TABLE ShowDetailsEntity (
+  id INTEGER NOT NULL PRIMARY KEY,
+  totalEpisodes INTEGER NOT NULL,
+  totalSeasons INTEGER NOT NULL
+);
+
+insertShowDetails:
+INSERT OR REPLACE INTO ShowDetailsEntity (
+  id, totalEpisodes, totalSeasons
+)
+VALUES (?,?,?);
+
+fetchNumberOfSeasons:
+SELECT totalSeasons FROM ShowDetailsEntity
+WHERE id = ?;

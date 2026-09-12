@@ -1,6 +1,5 @@
 CREATE TABLE UserShowsEntity (
-  id INTEGER NOT NULL PRIMARY KEY ,
-  showId TEXT NOT NULL,
+  showId INTEGER NOT NULL PRIMARY KEY,
   addedAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
   status TEXT NOT NULL,
@@ -17,7 +16,6 @@ ON UserShowsEntity(showId);
 
 insertUserShow:
 INSERT OR REPLACE INTO UserShowsEntity (
-  id,
   showId,
   addedAt,
   updatedAt,
@@ -25,4 +23,93 @@ INSERT OR REPLACE INTO UserShowsEntity (
   notes,
   rating
 )
-VALUES ?;
+VALUES (?,?,?,?,?,?);
+
+deleteUserShow:
+DELETE FROM UserShowsEntity WHERE showId = :showId;
+
+getUserShowStatus:
+SELECT
+  showId,
+  status
+FROM UserShowsEntity
+WHERE showId = :showId;
+
+getAllUserShows:
+SELECT
+  s.id AS showId,
+  s.name,
+  s.posterPath AS posterPath,
+  us.status,
+  us.addedAt,
+  us.updatedAt
+FROM MediaItemEntity s
+JOIN UserShowsEntity us ON s.id = us.showId
+LEFT JOIN EpisodeEntity e ON s.id = e.showId
+LEFT JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
+GROUP BY s.id
+ORDER BY us.updatedAt DESC;
+
+nextUpEpisode:
+SELECT
+  e.id AS episodeId,
+  e.seasonNumber AS seasonNumber,
+  e.episodeNumber AS episodeNumber,
+  e.name AS episodeName,
+  e.stillPath AS thumbnailPath,
+  e.airDate AS airDate
+FROM EpisodeEntity e
+LEFT JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
+WHERE e.showId = :showId
+  AND e.airDate <= CURRENT_DATE -- Only show episodes that have actually aired
+  AND ue.episodeId IS NULL -- Exclude episodes that are already watched
+ORDER BY e.seasonNumber ASC, e.episodeNumber ASC
+LIMIT 1;
+
+getAllUpNextEpisodes:
+SELECT
+  show.id AS showId,
+  show.name AS showTitle,
+  show.posterPath AS showPosterPath,
+
+  showDetails.totalEpisodes,
+  COUNT(DISTINCT userEpisode.episodeId) AS watchedEpisodes,
+
+  ep_next.id AS episodeId,
+  ep_next.seasonNumber AS seasonNumber,
+  ep_next.episodeNumber AS episodeNumber,
+  ep_next.name AS episodeName,
+  ep_next.stillPath AS episodeThumbnail,
+  ep_next.airDate AS airDate
+
+FROM MediaItemEntity show
+JOIN UserShowsEntity userShow ON show.id = userShow.showId
+JOIN ShowDetailsEntity showDetails ON showDetails.id = userShow.showId
+
+JOIN EpisodeEntity ep_next ON ep_next.id = (
+    SELECT n.id
+    FROM EpisodeEntity n
+    LEFT JOIN UserEpisodesEntity u ON n.id = u.episodeId
+    WHERE n.showId = show.id
+      AND n.airDate <= CURRENT_DATE
+      AND u.episodeId IS NULL
+      AND n.seasonNumber > 0
+    ORDER BY n.seasonNumber ASC, n.episodeNumber ASC
+    LIMIT 1
+)
+LEFT JOIN EpisodeEntity ep_all ON show.id = ep_all.showId AND ep_all.seasonNumber > 0
+LEFT JOIN UserEpisodesEntity userEpisode ON ep_all.id = userEpisode.episodeId
+
+WHERE userShow.status != 'completed'
+GROUP BY show.id
+ORDER BY userShow.updatedAt DESC;
+
+findCurrentWatchingSeason:
+SELECT episode.seasonNumber AS seasonNumber
+FROM EpisodeEntity episode
+LEFT JOIN UserEpisodesEntity userEpisode ON episode.id = userEpisode.episodeId
+WHERE episode.showId = :showId AND episode.seasonNumber > 0
+GROUP BY episode.seasonNumber
+HAVING COUNT(episode.id) > COUNT(userEpisode.episodeId) -- Total eps > Watched eps
+ORDER BY episode.seasonNumber ASC
+LIMIT 1;
