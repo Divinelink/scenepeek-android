@@ -63,7 +63,7 @@ object MediaDetailsFactory {
         Country.GERMANY,
         Country.UNITED_STATES,
       ),
-      releaseDates = null,
+      releaseDates = ReleaseDatesFactory.fightClub,
     ),
     keywords = KeywordFactory.fightClub,
     contentRating = "R",

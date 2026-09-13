@@ -179,7 +179,7 @@ class ProdDetailsRepositoryTest {
       request = MediaRequestApiFactory.movie(),
     ).first()
 
-    assertThat(expectedResult).isEqualTo(actualResult.data)
+    actualResult.getOrNull() shouldBe expectedResult
   }
 
   @Test

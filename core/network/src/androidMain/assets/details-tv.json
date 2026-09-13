@@ -241,5 +241,179 @@
     "facebook_id": "TheOfficeTV",
     "instagram_id": "theoffice",
     "twitter_id": "theofficetv"
+  },
+  "content_ratings": {
+    "results": [
+      {
+        "descriptors": [],
+        "iso_3166_1": "AU",
+        "rating": "M"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "US",
+        "rating": "TV-14"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "RU",
+        "rating": "16+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "DE",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "KR",
+        "rating": "15"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "GB",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "BR",
+        "rating": "14"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "NL",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "ES",
+        "rating": "13"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "SG",
+        "rating": "NC16"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "PH",
+        "rating": "SPG"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "TR",
+        "rating": "13+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "MX",
+        "rating": "B-15"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "PT",
+        "rating": "12AP"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "FR",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "CA",
+        "rating": "14+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "HU",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "IN",
+        "rating": "U/A 13+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "PL",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "GR",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "IT",
+        "rating": "VM12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "DK",
+        "rating": "15"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "SE",
+        "rating": "Från 11 år"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "FI",
+        "rating": "K12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "NO",
+        "rating": "A"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "IE",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "AR",
+        "rating": "SAM 16"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "IL",
+        "rating": "12+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "MY",
+        "rating": "P13"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "NZ",
+        "rating": "M"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "ZA",
+        "rating": "13"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "TH",
+        "rating": "น 13+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "PR",
+        "rating": "TV-14"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "VI",
+        "rating": "TV-14"
+      }
+    ]
   }
 }
