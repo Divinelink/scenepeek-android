@@ -53,7 +53,6 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
         DetailActionItem.Rate -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.Rounded.StarRate),
           label = UIText.ResourceText(UiString.core_ui_add_rating),
-          contentDescription = UIText.ResourceText(UiString.core_ui_add_rating),
           onClick = onAddRateClicked,
         )
         DetailActionItem.Watchlist -> FloatingActionButtonItem(
@@ -63,7 +62,6 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
             IconWrapper.Vector(Icons.Outlined.BookmarkAdd)
           },
           label = UIText.ResourceText(Res.string.feature_details__watchlist),
-          contentDescription = UIText.ResourceText(Res.string.feature_details__watchlist),
           onClick = { onAddToAccount(AccountDataSection.Watchlist) },
         )
         DetailActionItem.Favorite -> FloatingActionButtonItem(
@@ -73,31 +71,26 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
             IconWrapper.Vector(Icons.Rounded.FavoriteBorder)
           },
           label = UIText.ResourceText(Res.string.feature_details__favorite),
-          contentDescription = UIText.ResourceText(Res.string.feature_details__favorite),
           onClick = { onAddToAccount(AccountDataSection.Favorite) },
         )
         DetailActionItem.List -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.AutoMirrored.Rounded.PlaylistAdd),
           label = UIText.ResourceText(Res.string.feature_details__add_to_list),
-          contentDescription = UIText.ResourceText(Res.string.feature_details__add_to_list),
           onClick = onAddToListClicked,
         )
         DetailActionItem.Request -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.Rounded.Download),
           label = UIText.ResourceText(Res.string.feature_details_request),
-          contentDescription = UIText.ResourceText(Res.string.feature_details_request),
           onClick = onRequestClicked,
         )
         DetailActionItem.ManageMovie -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.Rounded.SettingsSuggest),
           label = UIText.ResourceText(Res.string.feature_details_manage_movie),
-          contentDescription = UIText.ResourceText(Res.string.feature_details_manage_movie),
           onClick = onManageMovie,
         )
         DetailActionItem.ManageTvShow -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.Rounded.SettingsSuggest),
           label = UIText.ResourceText(Res.string.feature_details_manage_tv),
-          contentDescription = UIText.ResourceText(Res.string.feature_details_manage_tv),
           onClick = onManageTv,
         )
         DetailActionItem.AddShow -> {
@@ -114,7 +107,6 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
           FloatingActionButtonItem(
             icon = IconWrapper.Vector(icon),
             label = UIText.ResourceText(text),
-            contentDescription = UIText.ResourceText(text),
             onClick = onAddShow,
           )
         }

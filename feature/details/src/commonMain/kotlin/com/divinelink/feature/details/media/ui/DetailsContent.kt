@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -27,6 +30,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -56,11 +60,13 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
+import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SaveButton
 import com.divinelink.core.ui.SharedTransitionScopeProvider
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
@@ -75,10 +81,11 @@ import com.divinelink.core.ui.resources.core_ui_okay
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.DetailsAction
+import com.divinelink.feature.details.media.ui.actions.MediaAction
+import com.divinelink.feature.details.media.ui.actions.MediaActionModal
 import com.divinelink.feature.details.media.ui.components.DetailActions
 import com.divinelink.feature.details.media.ui.components.HeaderDetails
 import com.divinelink.feature.details.media.ui.components.MediaDetailsPager
-import com.divinelink.feature.details.media.ui.fab.DetailsExpandableFloatingActionButton
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
 import com.divinelink.feature.request.media.RequestMediaModal
 import kotlinx.coroutines.CoroutineScope
@@ -116,6 +123,8 @@ fun DetailsContent(
   var onBackdropLoaded by remember { mutableStateOf(false) }
   var showRequestModal by remember { mutableStateOf(false) }
   var showManageMediaModal by rememberSaveable { mutableStateOf(false) }
+  var showActionsModal by rememberSaveable { mutableStateOf(false) }
+  val actionSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -130,6 +139,42 @@ fun DetailsContent(
       onDismissRequest = { showRequestModal = false },
       onUpdateMediaInfo = onUpdateMediaInfo,
       onNavigate = onNavigate,
+    )
+  }
+
+  if (showActionsModal) {
+    MediaActionModal(
+      sheetState = actionSheetState,
+      actionButtons = viewState.actionButtons,
+      accountState = viewState.userDetails,
+      addedShow = viewState.userShowStatus != null,
+      onDismissRequest = { showActionsModal = false },
+      action = { mediaAction ->
+        when (mediaAction) {
+          MediaAction.AddRating -> onAddRateClick()
+          MediaAction.AddShow -> action(DetailsAction.AddShow)
+          is MediaAction.AddToAccount -> onAddToAccount(mediaAction.section)
+          MediaAction.AddToList -> viewState.mediaItem?.let {
+            onNavigate(
+              Navigation.AddToListRoute(
+                id = it.id,
+                mediaType = it.mediaType.value,
+              ),
+            )
+          }
+          MediaAction.ManageMovie -> showManageMediaModal = true
+          MediaAction.ManageTv -> showManageMediaModal = true
+          MediaAction.Request -> showRequestModal = true
+        }
+
+        scope.launch {
+          actionSheetState.hide()
+        }.invokeOnCompletion {
+          if (!actionSheetState.isVisible) {
+            showActionsModal = false
+          }
+        }
+      },
     )
   }
 
@@ -237,27 +282,13 @@ fun DetailsContent(
       )
     },
     floatingActionButton = {
-      DetailsExpandableFloatingActionButton(
-        actionButtons = viewState.actionButtons,
-        isFavorite = viewState.userDetails.favorite,
-        onWatchlist = viewState.userDetails.watchlist,
-        onAddRateClicked = onAddRateClick,
-        onAddToAccount = onAddToAccount,
-        onAddToListClicked = {
-          viewState.mediaItem?.let {
-            onNavigate(
-              Navigation.AddToListRoute(
-                id = it.id,
-                mediaType = it.mediaType.value,
-              ),
-            )
-          }
-        },
-        onRequestClicked = { showRequestModal = true },
-        onManageMovie = { showManageMediaModal = true },
-        onManageTv = { showManageMediaModal = true },
-        isAddedShow = viewState.userShowStatus != null,
-        onAddShow = { action(DetailsAction.AddShow) },
+      ScaffoldFab(
+        modifier = Modifier
+          .testTag(TestTags.Components.ExpandableFab.BUTTON),
+        text = null,
+        icon = Icons.Rounded.Add,
+        onClick = { showActionsModal = true },
+        expanded = false,
       )
     },
     navigationRail = {

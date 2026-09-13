@@ -6,6 +6,6 @@ import com.divinelink.core.ui.IconWrapper
 open class FloatingActionButtonItem(
   val icon: IconWrapper,
   val label: UIText,
-  val contentDescription: UIText,
+  val seerrMode: Boolean = false,
   val onClick: () -> Unit,
 )

@@ -128,7 +128,7 @@ fun DetailsScreen(
           onNavigate(
             Navigation.CreditsRoute(
               mediaType = viewState.mediaType.value,
-              id = id.toLong(),
+              id = id,
             ),
           )
         }

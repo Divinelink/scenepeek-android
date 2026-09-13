@@ -194,15 +194,15 @@ fun StaggeredAnimatedFloatingActionButton(
         when (fabItem.icon) {
           is IconWrapper.Image -> Image(
             painter = painterResource((fabItem.icon as IconWrapper.Image).resourceId),
-            contentDescription = fabItem.contentDescription.getString(),
+            contentDescription = fabItem.label.getString(),
           )
           is IconWrapper.Icon -> Icon(
             painter = painterResource((fabItem.icon as IconWrapper.Icon).resourceId),
-            contentDescription = fabItem.contentDescription.getString(),
+            contentDescription = fabItem.label.getString(),
           )
           is IconWrapper.Vector -> Icon(
             imageVector = (fabItem.icon as IconWrapper.Vector).vector,
-            contentDescription = fabItem.contentDescription.getString(),
+            contentDescription = fabItem.label.getString(),
           )
         }
       }
@@ -241,19 +241,16 @@ private fun ExpandableFloatingActionButton() {
             FloatingActionButtonItem(
               icon = IconWrapper.Vector(Icons.Filled.Brush),
               label = UIText.StringText("Brush"),
-              contentDescription = UIText.StringText("Add"),
               onClick = {},
             ),
             FloatingActionButtonItem(
               icon = IconWrapper.Vector(Icons.Filled.Adb),
               label = UIText.StringText("Adb"),
-              contentDescription = UIText.StringText("Add"),
               onClick = {},
             ),
             FloatingActionButtonItem(
               icon = IconWrapper.Vector(Icons.Filled.Call),
               label = UIText.StringText("Call"),
-              contentDescription = UIText.StringText("Add"),
               onClick = {},
             ),
           ),

@@ -174,7 +174,6 @@ internal val LocalColors = staticCompositionLocalOf { ExtendedColors() }
 
 @Immutable
 data class ExtendedColors(
-  val redHighlight: Color = PrimitiveColors.redHighlight,
   val crimsonRed: Color = PrimitiveColors.crimsonRed,
   val vibrantPurple: Color = PrimitiveColors.vibrantPurple,
   val brightOrange: Color = PrimitiveColors.brightOrange,
@@ -186,13 +185,12 @@ data class ExtendedColors(
 )
 
 private data object PrimitiveColors {
-  val redHighlight = Color(0xFFEF5350)
-  val crimsonRed = Color(0xFFDB2360)
+  val crimsonRed = Color(0xFFC62828)
   val vibrantPurple = Color(99, 102, 241)
   val brightOrange = Color(0xFFFF5722)
   val limeYellow = Color(234, 179, 8, 255)
-  val mediumSeaGreen = Color(0xFF28a745)
-  val emeraldGreen = Color(1, 210, 119, 255)
+  val mediumSeaGreen = Color(0xFF1B7A32)
+  val emeraldGreen = Color(0xFF008F52)
   val gray = Color(105, 114, 132, 255)
   val jellyseerrGradientBrush = Brush.linearGradient(
     colors = listOf(
