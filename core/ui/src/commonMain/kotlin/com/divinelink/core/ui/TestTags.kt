@@ -36,7 +36,6 @@ object TestTags {
     }
 
     object ExpandableFab {
-      const val BACKGROUND = "Floating Button Background"
       const val BUTTON = "Expandable Floating Action Button"
     }
 
@@ -50,7 +49,6 @@ object TestTags {
 
   const val LOADING_CONTENT = "LOADING_CONTENT"
   const val LINEAR_LOADING_INDICATOR = "Linear Loading Indicator"
-  const val MEDIA_LIST_TAG = "MEDIA_LIST_TAG"
   const val SCROLL_TO_TOP_BUTTON = "SCROLL_TO_TOP_BUTTON_TAG"
   const val LOADING_PROGRESS = "Loading Progress Bar"
   const val BLANK_SLATE = "Blank Slate"
@@ -160,6 +158,7 @@ object TestTags {
   }
 
   object Modal {
+    const val MEDIA_ACTIONS = "Media Actions Modal"
     const val REQUEST_MOVIE = "Request Movie Modal"
     const val REQUEST_SEASONS = "Select Seasons Modal"
     const val ACTION_MENU = "Action Menu Modal"

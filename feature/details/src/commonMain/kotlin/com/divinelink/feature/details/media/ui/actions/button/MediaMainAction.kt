@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.media.ui.actions.button
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.components.action.MediaActionButtonItem
@@ -27,8 +27,6 @@ fun MediaMainAction(
   modifier: Modifier = Modifier,
   action: MediaActionButtonItem,
   containerColor: Color = Color.Unspecified,
-  iconTint: Color = MaterialTheme.colorScheme.onSurface,
-  border: BorderStroke? = null,
 ) {
   Card(
     modifier = modifier
@@ -37,7 +35,6 @@ fun MediaMainAction(
     colors = CardDefaults.cardColors(
       containerColor = containerColor,
     ),
-    border = border,
   ) {
     Column(
       modifier = Modifier
@@ -53,12 +50,10 @@ fun MediaMainAction(
         )
         is IconWrapper.Icon -> Icon(
           painter = painterResource((action.icon as IconWrapper.Icon).resourceId),
-          tint = iconTint,
           contentDescription = action.label.getString(),
         )
         is IconWrapper.Vector -> Icon(
           imageVector = (action.icon as IconWrapper.Vector).vector,
-          tint = iconTint,
           contentDescription = action.label.getString(),
         )
       }
@@ -66,6 +61,9 @@ fun MediaMainAction(
       Text(
         text = action.label.getString(),
         textAlign = TextAlign.Center,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 2,
+        minLines = 2,
         style = MaterialTheme.typography.bodySmall,
       )
     }

@@ -13,7 +13,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -124,7 +123,6 @@ fun DetailsContent(
   var showRequestModal by remember { mutableStateOf(false) }
   var showManageMediaModal by rememberSaveable { mutableStateOf(false) }
   var showActionsModal by rememberSaveable { mutableStateOf(false) }
-  val actionSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -142,41 +140,33 @@ fun DetailsContent(
     )
   }
 
-  if (showActionsModal) {
-    MediaActionModal(
-      sheetState = actionSheetState,
-      actionButtons = viewState.actionButtons,
-      accountState = viewState.userDetails,
-      addedShow = viewState.userShowStatus != null,
-      onDismissRequest = { showActionsModal = false },
-      action = { mediaAction ->
-        when (mediaAction) {
-          MediaAction.AddRating -> onAddRateClick()
-          MediaAction.AddShow -> action(DetailsAction.AddShow)
-          is MediaAction.AddToAccount -> onAddToAccount(mediaAction.section)
-          MediaAction.AddToList -> viewState.mediaItem?.let {
-            onNavigate(
-              Navigation.AddToListRoute(
-                id = it.id,
-                mediaType = it.mediaType.value,
-              ),
-            )
-          }
-          MediaAction.ManageMovie -> showManageMediaModal = true
-          MediaAction.ManageTv -> showManageMediaModal = true
-          MediaAction.Request -> showRequestModal = true
+  MediaActionModal(
+    isVisible = showActionsModal,
+    actionButtons = viewState.actionButtons,
+    accountState = viewState.userDetails,
+    addedShow = viewState.userShowStatus != null,
+    onDismissRequest = { showActionsModal = false },
+    action = { mediaAction ->
+      when (mediaAction) {
+        MediaAction.AddRating -> onAddRateClick()
+        MediaAction.AddShow -> action(DetailsAction.AddShow)
+        is MediaAction.AddToAccount -> onAddToAccount(mediaAction.section)
+        MediaAction.AddToList -> viewState.mediaItem?.let {
+          onNavigate(
+            Navigation.AddToListRoute(
+              id = it.id,
+              mediaType = it.mediaType.value,
+            ),
+          )
         }
+        MediaAction.ManageMovie -> showManageMediaModal = true
+        MediaAction.ManageTv -> showManageMediaModal = true
+        MediaAction.Request -> showRequestModal = true
+      }
 
-        scope.launch {
-          actionSheetState.hide()
-        }.invokeOnCompletion {
-          if (!actionSheetState.isVisible) {
-            showActionsModal = false
-          }
-        }
-      },
-    )
-  }
+      showActionsModal = false
+    },
+  )
 
   LaunchedEffect(viewState.jellyseerrMediaInfo) {
     if (viewState.jellyseerrMediaInfo?.status == JellyseerrStatus.Media.UNKNOWN ||

@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -65,8 +64,6 @@ fun DetailsScreen(
       viewModel.consumeNavigateToLogin()
     }
   }
-  val rateBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-  val allRatingsBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   LaunchedEffect(Unit) {
     viewModel.openUrlTab.collect { url ->
@@ -84,30 +81,26 @@ fun DetailsScreen(
     }
   }
 
-  if (openRateBottomSheet) {
-    RateModalBottomSheet(
-      modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
-      sheetState = rateBottomSheetState,
-      value = viewState.userDetails.beautifiedRating,
-      mediaTitle = viewState.mediaDetails?.title ?: "",
-      onSubmitRate = {
-        openRateBottomSheet = false
-        viewModel.onSubmitRate(it)
-      },
-      onClearRate = viewModel::onClearRating,
-      onDismissRequest = { openRateBottomSheet = false },
-    )
-  }
+  RateModalBottomSheet(
+    isVisible = openRateBottomSheet,
+    modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
+    value = viewState.userDetails.beautifiedRating,
+    mediaTitle = viewState.mediaDetails?.title ?: "",
+    onSubmitRate = {
+      openRateBottomSheet = false
+      viewModel.onSubmitRate(it)
+    },
+    onClearRate = viewModel::onClearRating,
+    onDismissRequest = { openRateBottomSheet = false },
+  )
 
-  if (showAllRatingBottomSheet) {
-    viewState.mediaDetails?.ratingCount?.let { ratingCount ->
-      AllRatingsModalBottomSheet(
-        sheetState = allRatingsBottomSheetState,
-        onDismissRequest = { showAllRatingBottomSheet = false },
-        ratingCount = ratingCount,
-        onClick = viewModel::onMediaSourceClick,
-      )
-    }
+  viewState.mediaDetails?.ratingCount?.let { ratingCount ->
+    AllRatingsModalBottomSheet(
+      isVisible = showAllRatingBottomSheet,
+      onDismissRequest = { showAllRatingBottomSheet = false },
+      ratingCount = ratingCount,
+      onClick = viewModel::onMediaSourceClick,
+    )
   }
 
   Box(
