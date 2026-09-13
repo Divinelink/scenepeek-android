@@ -23,6 +23,7 @@ fun List<CountryReleaseResponse>.mapToSortedReleases(
     CountryRelease(
       country = country,
       releaseDetail = releaseDetail,
+      certification = releaseDetail.certification,
     )
   }
 }.sortedWith(
@@ -35,6 +36,11 @@ fun List<CountryReleaseResponse>.mapToSortedReleases(
   },
 )
 
+fun List<CountryRelease>.getContentRating(selectedRegion: Country?) = this
+  .firstOrNull { it.country == selectedRegion }
+  ?.certification
+  ?: this.firstOrNull { it.country == Country.UNITED_STATES }?.certification
+
 fun ReleaseDetailResponse.map(): ReleaseDetail? {
   val type = ReleaseType.from(type) ?: return null
   val releaseDate = releaseDate.toLocalDateTime() ?: return null
@@ -43,5 +49,6 @@ fun ReleaseDetailResponse.map(): ReleaseDetail? {
     note = note,
     releaseDate = releaseDate.date,
     type = type,
+    certification = certification.takeIf { it != "" },
   )
 }

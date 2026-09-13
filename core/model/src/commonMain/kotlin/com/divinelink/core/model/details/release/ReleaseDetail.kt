@@ -6,4 +6,5 @@ data class ReleaseDetail(
   val note: String,
   val releaseDate: LocalDate,
   val type: ReleaseType,
+  val certification: String?,
 )

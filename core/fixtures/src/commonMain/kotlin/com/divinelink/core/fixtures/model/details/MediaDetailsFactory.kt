@@ -66,6 +66,7 @@ object MediaDetailsFactory {
       releaseDates = null,
     ),
     keywords = KeywordFactory.fightClub,
+    contentRating = "R",
   )
 
   fun TheOffice() = TV(
@@ -129,5 +130,6 @@ object MediaDetailsFactory {
     ),
     keywords = KeywordFactory.theOffice,
     totalEpisodes = 186,
+    contentRating = "TV-14",
   )
 }
