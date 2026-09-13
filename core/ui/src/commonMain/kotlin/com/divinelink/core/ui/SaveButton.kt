@@ -42,7 +42,7 @@ fun SaveButton(
 ) {
   val color by animateColorAsState(
     targetValue = when (saved) {
-      true -> MaterialTheme.colors.redHighlight
+      true -> MaterialTheme.colors.crimsonRed
       false -> inactiveColor
     },
     label = "Like button color",

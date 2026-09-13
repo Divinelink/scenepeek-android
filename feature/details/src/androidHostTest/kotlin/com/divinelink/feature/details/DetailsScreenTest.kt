@@ -858,9 +858,19 @@ class DetailsScreenTest : ComposeTest() {
       )
     }
 
+    onNodeWithTag(TestTags.Modal.MEDIA_ACTIONS).assertIsNotDisplayed()
+
     onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON).performClick()
 
-    onNodeWithContentDescription(getString(Res.string.feature_details_request))
+    onNodeWithTag(TestTags.Modal.MEDIA_ACTIONS)
+      .assertIsDisplayed()
+      .performTouchInput {
+        swipeUp()
+      }
+
+    awaitIdle()
+
+    onNodeWithText(getString(Res.string.feature_details_request))
       .assertIsDisplayed()
       .performClick()
 
@@ -874,10 +884,19 @@ class DetailsScreenTest : ComposeTest() {
 
     // Delete request from now on
     onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON).performClick()
-    onNodeWithContentDescription(getString(Res.string.feature_details_request))
+
+    awaitIdle()
+
+    onNodeWithTag(TestTags.Modal.MEDIA_ACTIONS)
+      .assertIsDisplayed()
+      .performTouchInput {
+        swipeUp()
+      }
+
+    onNodeWithText(getString(Res.string.feature_details_request))
       .assertIsNotDisplayed()
 
-    onNodeWithContentDescription(getString(Res.string.feature_details_manage_movie))
+    onNodeWithText(getString(Res.string.feature_details_manage_movie))
       .assertIsDisplayed()
       .performClick()
 
@@ -996,7 +1015,15 @@ class DetailsScreenTest : ComposeTest() {
     onNodeWithContentDescription(getString(Res.string.feature_details_request))
       .assertIsNotDisplayed()
 
-    onNodeWithContentDescription(getString(Res.string.feature_details_manage_tv))
+    onNodeWithTag(TestTags.Modal.MEDIA_ACTIONS)
+      .assertIsDisplayed()
+      .performTouchInput {
+        swipeUp()
+      }
+
+    awaitIdle()
+
+    onNodeWithText(getString(Res.string.feature_details_manage_tv))
       .assertIsDisplayed()
       .performClick()
 

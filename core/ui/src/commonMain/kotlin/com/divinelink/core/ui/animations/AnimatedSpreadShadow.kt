@@ -38,14 +38,14 @@ import com.divinelink.core.ui.composition.PreviewLocalProvider
 fun Modifier.animatedSpreadShadow(
   shape: Shape,
   colors: List<Color> = listOf(
-    MaterialTheme.colors.redHighlight,
+    MaterialTheme.colors.crimsonRed,
     MaterialTheme.colors.crimsonRed,
     MaterialTheme.colors.vibrantPurple,
     MaterialTheme.colors.brightOrange,
     MaterialTheme.colors.limeYellow,
     MaterialTheme.colors.emeraldGreen,
     MaterialTheme.colors.gray,
-    MaterialTheme.colors.redHighlight,
+    MaterialTheme.colors.crimsonRed,
   ),
   minSpread: Dp = MaterialTheme.dimensions.keyline_2,
   maxSpread: Dp = MaterialTheme.dimensions.keyline_14,

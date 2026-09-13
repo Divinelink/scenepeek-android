@@ -38,16 +38,15 @@ fun EpisodeTitleDetails(
 ) {
   var showRateModal by rememberSaveable { mutableStateOf(false) }
 
-  if (showRateModal) {
-    RateModalBottomSheet(
-      modifier = modifier,
-      value = episode.accountRating,
-      mediaTitle = episode.name,
-      onSubmitRate = { action(EpisodeAction.OnSubmitRate(it)) },
-      onClearRate = { action(EpisodeAction.OnClearRate) },
-      onDismissRequest = { showRateModal = false },
-    )
-  }
+  RateModalBottomSheet(
+    isVisible = showRateModal,
+    modifier = modifier,
+    value = episode.accountRating,
+    mediaTitle = episode.name,
+    onSubmitRate = { action(EpisodeAction.OnSubmitRate(it)) },
+    onClearRate = { action(EpisodeAction.OnClearRate) },
+    onDismissRequest = { showRateModal = false },
+  )
 
   Column(
     modifier = modifier,

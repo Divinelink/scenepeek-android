@@ -1,11 +1,11 @@
-package com.divinelink.core.ui.components.expandablefab
+package com.divinelink.core.ui.components.action
 
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.IconWrapper
 
-open class FloatingActionButtonItem(
+open class MediaActionButtonItem(
   val icon: IconWrapper,
   val label: UIText,
-  val contentDescription: UIText,
+  val seerrMode: Boolean = false,
   val onClick: () -> Unit,
 )

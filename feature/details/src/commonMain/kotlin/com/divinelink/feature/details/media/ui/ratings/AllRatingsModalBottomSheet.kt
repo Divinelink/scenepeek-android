@@ -1,10 +1,7 @@
 package com.divinelink.feature.details.media.ui.ratings
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -14,20 +11,21 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.modal.ScenePeekBottomSheet
 import com.divinelink.core.ui.provider.RatingCountParameterProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllRatingsModalBottomSheet(
+  isVisible: Boolean,
   modifier: Modifier = Modifier,
-  sheetState: SheetState,
   onDismissRequest: () -> Unit,
   ratingCount: RatingCount,
   onClick: (RatingSource) -> Unit,
 ) {
-  ModalBottomSheet(
+  ScenePeekBottomSheet(
     modifier = modifier.testTag(TestTags.Rating.ALL_RATINGS_BOTTOM_SHEET),
-    sheetState = sheetState,
+    isVisible = isVisible,
     onDismissRequest = onDismissRequest,
   ) {
     AllRatingsContent(
@@ -47,11 +45,9 @@ private fun AllRatingsModalBottomSheetPreview(
     Surface {
       AllRatingsModalBottomSheet(
         onDismissRequest = {},
+        isVisible = true,
         ratingCount = ratingCount,
         onClick = {},
-        sheetState = rememberModalBottomSheetState(
-          skipPartiallyExpanded = true,
-        ),
       )
     }
   }
