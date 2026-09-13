@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
-import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
+import com.divinelink.core.ui.components.action.MediaActionButtonItem
 import com.divinelink.core.ui.getString
 import org.jetbrains.compose.resources.painterResource
 
@@ -27,7 +27,7 @@ import org.jetbrains.compose.resources.painterResource
 fun MediaSecondaryAction(
   modifier: Modifier = Modifier,
   containerColor: Color = Color.Unspecified,
-  action: FloatingActionButtonItem,
+  action: MediaActionButtonItem,
 ) {
   Card(
     modifier = modifier

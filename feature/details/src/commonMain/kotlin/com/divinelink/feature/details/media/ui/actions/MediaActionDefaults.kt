@@ -15,7 +15,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.UiString
-import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
+import com.divinelink.core.ui.components.action.MediaActionButtonItem
 import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.track_show
 import com.divinelink.core.ui.resources.tracking_show
@@ -32,7 +32,7 @@ object MediaActionDefaults {
   fun rate(
     rating: Float?,
     action: (MediaAction) -> Unit,
-  ) = FloatingActionButtonItem(
+  ) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.Rounded.StarRate),
     label = if (rating == null) {
       UIText.ResourceText(UiString.core_ui_add_rating)
@@ -45,7 +45,7 @@ object MediaActionDefaults {
   fun watchlist(
     onWatchlist: Boolean,
     action: (MediaAction) -> Unit,
-  ) = FloatingActionButtonItem(
+  ) = MediaActionButtonItem(
     icon = if (onWatchlist) {
       IconWrapper.Vector(Icons.Filled.BookmarkAdded)
     } else {
@@ -55,7 +55,7 @@ object MediaActionDefaults {
     onClick = { action(MediaAction.AddToAccount(AccountDataSection.Watchlist)) },
   )
 
-  fun addToList(action: (MediaAction) -> Unit) = FloatingActionButtonItem(
+  fun addToList(action: (MediaAction) -> Unit) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.AutoMirrored.Rounded.PlaylistAdd),
     label = UIText.ResourceText(Res.string.feature_details__add_to_list),
     onClick = { action(MediaAction.AddToList) },
@@ -65,8 +65,8 @@ object MediaActionDefaults {
   fun favorite(
     favorite: Boolean,
     action: (MediaAction) -> Unit,
-  ): FloatingActionButtonItem {
-    return FloatingActionButtonItem(
+  ): MediaActionButtonItem {
+    return MediaActionButtonItem(
       icon = if (favorite) {
         IconWrapper.Vector(Icons.Rounded.Favorite)
       } else {
@@ -80,7 +80,7 @@ object MediaActionDefaults {
   fun addShow(
     added: Boolean,
     action: (MediaAction) -> Unit,
-  ): FloatingActionButtonItem {
+  ): MediaActionButtonItem {
     val text = if (added) {
       UiString.tracking_show
     } else {
@@ -91,7 +91,7 @@ object MediaActionDefaults {
     } else {
       Icons.Rounded.LibraryAdd
     }
-    return FloatingActionButtonItem(
+    return MediaActionButtonItem(
       icon = IconWrapper.Vector(icon),
       label = UIText.ResourceText(text),
       onClick = { action(MediaAction.AddShow) },
@@ -100,7 +100,7 @@ object MediaActionDefaults {
 
   fun request(
     action: (MediaAction) -> Unit,
-  ) = FloatingActionButtonItem(
+  ) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.Rounded.Download),
     label = UIText.ResourceText(Res.string.feature_details_request),
     seerrMode = true,
@@ -109,7 +109,7 @@ object MediaActionDefaults {
 
   fun manageMovie(
     action: (MediaAction) -> Unit,
-  ) = FloatingActionButtonItem(
+  ) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.Rounded.SettingsSuggest),
     label = UIText.ResourceText(Res.string.feature_details_manage_movie),
     seerrMode = true,
@@ -118,7 +118,7 @@ object MediaActionDefaults {
 
   fun manageTv(
     action: (MediaAction) -> Unit,
-  ) = FloatingActionButtonItem(
+  ) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.Rounded.SettingsSuggest),
     label = UIText.ResourceText(Res.string.feature_details_manage_tv),
     seerrMode = true,

@@ -18,14 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
-import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
+import com.divinelink.core.ui.components.action.MediaActionButtonItem
 import com.divinelink.core.ui.getString
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun MediaMainAction(
   modifier: Modifier = Modifier,
-  action: FloatingActionButtonItem,
+  action: MediaActionButtonItem,
   containerColor: Color = Color.Unspecified,
   iconTint: Color = MaterialTheme.colorScheme.onSurface,
   border: BorderStroke? = null,
