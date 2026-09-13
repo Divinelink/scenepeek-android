@@ -36,11 +36,12 @@ import com.divinelink.core.model.track.NextUpEpisode
 import com.divinelink.core.model.track.NextUpSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.LocalClockProvider
 import com.divinelink.core.ui.resources.days_left_to_air
 import com.divinelink.core.ui.resources.season_episode_format
-import com.divinelink.core.ui.resources.tomorrow
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -161,20 +162,21 @@ fun LazyItemScope.NextUpEpisode(
         )
       }
 
-      NextUpSection.Upcoming -> when (
-        val daysLeft = nextUp.episode.airDate?.daysFromToday(clock)
-      ) {
-        null -> null
-        1 -> stringResource(UiString.tomorrow)
-        else -> stringResource(UiString.days_left_to_air, daysLeft)
-      }?.let { text ->
+      NextUpSection.Upcoming -> {
+        val daysLeft = nextUp.episode.airDate?.daysFromToday(clock) ?: 0
+        val resource = pluralStringResource(
+          UiPlurals.days_left_to_air,
+          daysLeft,
+          daysLeft,
+        )
+
         Text(
           modifier = Modifier
             .padding(MaterialTheme.dimensions.keyline_8)
             .align(Alignment.BottomEnd),
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
-          text = text,
+          text = resource,
         )
       }
     }

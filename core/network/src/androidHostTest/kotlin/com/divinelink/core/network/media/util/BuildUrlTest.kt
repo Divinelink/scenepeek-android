@@ -18,7 +18,7 @@ class BuildUrlTest {
 
     url shouldBe "https://api.themoviedb.org/3/tv/1234" +
       "?language=en-US" +
-      "&append_to_response=external_ids%2Ckeywords"
+      "&append_to_response=external_ids%2Ckeywords%2Ccontent_ratings"
   }
 
   @Test

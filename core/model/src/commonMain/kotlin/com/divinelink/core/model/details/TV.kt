@@ -27,4 +27,5 @@ data class TV(
   val seasons: List<Season>,
   val numberOfSeasons: Int,
   val totalEpisodes: Int,
+  override val contentRating: String?,
 ) : MediaDetails()

@@ -14,10 +14,13 @@ import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.network.media.mapper.certifications.getContentRating
+import com.divinelink.core.network.media.mapper.certifications.map
 import com.divinelink.core.network.media.mapper.credits.map
 import com.divinelink.core.network.media.mapper.details.map
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenreResponse
+import com.divinelink.core.network.media.model.details.certifications.ContentRatingsResponse
 import com.divinelink.core.network.media.model.details.credits.CastApi
 import com.divinelink.core.network.media.model.details.credits.CrewApi
 import com.divinelink.core.network.media.model.details.credits.SeriesCreatorApi
@@ -118,62 +121,69 @@ sealed class DetailsResponseApi {
     @SerialName("production_companies") override val companies: List<ProductionCompanyResponse>,
     @SerialName("production_countries") override val countries: List<ProductionCountryResponse>,
     override val keywords: KeywordsResponse?,
+    @SerialName("content_ratings") val contentRatings: ContentRatingsResponse?,
   ) : DetailsResponseApi()
 }
 
 fun DetailsResponseApi.toDomainMedia(selectedRegion: Country?): MediaDetails = when (this) {
   is DetailsResponseApi.Movie -> this.toDomainMovie(selectedRegion)
-  is DetailsResponseApi.TV -> this.toDomainTVShow()
+  is DetailsResponseApi.TV -> this.toDomainTVShow(selectedRegion)
 }
 
-private fun DetailsResponseApi.Movie.toDomainMovie(selectedRegion: Country?): MediaDetails = Movie(
-  id = this.id,
-  posterPath = this.posterPath ?: "",
-  backdropPath = this.backdropPath ?: "",
-  releaseDate = this.releaseDate,
-  title = this.title,
-  ratingCount = RatingCount.tmdb(
-    tmdbVoteAverage = this.voteAverage.round(1),
-    tmdbVoteCount = voteCount,
-  ),
-  tagline = this.tagline.takeIf { it.isNotBlank() },
-  overview = this.overview,
-  genres = this.genres.takeIf { it.isNotEmpty() }?.map { it.map() },
-  creators = this.credits?.crew?.takeIf { it.isNotEmpty() }?.map(),
-  cast = this.credits?.cast?.toActors() ?: emptyList(),
-  runtime = this.runtime.toHourMinuteFormat(),
-  isFavorite = false,
-  externalIds = ExternalIds(
-    imdbId = this.imdbId,
-    wikidataId = this.externalIds?.wikidataId,
-  ),
-  popularity = popularity,
-  collection = collection?.map(),
-  information = MediaDetailsInformation.Movie(
-    originalTitle = originalTitle,
-    status = status ?: "-",
-    runtime = runtime.toHourMinuteFormat(),
-    originalLanguage = Language.fromCode(originalLanguage),
-    countries = this.countries.mapNotNull {
-      Country.fromCode(it.iso31611)
-    },
-    companies = this.companies.mapNotNull(ProductionCompanyResponse::map),
-    budget = if (budget == 0) {
-      "-"
-    } else {
-      "$${budget.formatWithCommas()}"
-    },
-    revenue = if (revenue == 0L) {
-      "-"
-    } else {
-      "$${revenue.formatWithCommas()}"
-    },
-    releaseDates = releaseDates.map(selectedRegion),
-  ),
-  keywords = keywords.map(),
-)
+private fun DetailsResponseApi.Movie.toDomainMovie(selectedRegion: Country?): MediaDetails {
+  val releaseDates = releaseDates.map(selectedRegion)
+  val contentRating = releaseDates?.getContentRating(selectedRegion)
 
-private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
+  return Movie(
+    id = this.id,
+    posterPath = this.posterPath ?: "",
+    backdropPath = this.backdropPath ?: "",
+    releaseDate = this.releaseDate,
+    title = this.title,
+    ratingCount = RatingCount.tmdb(
+      tmdbVoteAverage = this.voteAverage.round(1),
+      tmdbVoteCount = voteCount,
+    ),
+    tagline = this.tagline.takeIf { it.isNotBlank() },
+    overview = this.overview,
+    genres = this.genres.takeIf { it.isNotEmpty() }?.map { it.map() },
+    creators = this.credits?.crew?.takeIf { it.isNotEmpty() }?.map(),
+    cast = this.credits?.cast?.toActors() ?: emptyList(),
+    runtime = this.runtime.toHourMinuteFormat(),
+    isFavorite = false,
+    externalIds = ExternalIds(
+      imdbId = this.imdbId,
+      wikidataId = this.externalIds?.wikidataId,
+    ),
+    popularity = popularity,
+    collection = collection?.map(),
+    information = MediaDetailsInformation.Movie(
+      originalTitle = originalTitle,
+      status = status ?: "-",
+      runtime = runtime.toHourMinuteFormat(),
+      originalLanguage = Language.fromCode(originalLanguage),
+      countries = this.countries.mapNotNull {
+        Country.fromCode(it.iso31611)
+      },
+      companies = this.companies.mapNotNull(ProductionCompanyResponse::map),
+      budget = if (budget == 0) {
+        "-"
+      } else {
+        "$${budget.formatWithCommas()}"
+      },
+      revenue = if (revenue == 0L) {
+        "-"
+      } else {
+        "$${revenue.formatWithCommas()}"
+      },
+      releaseDates = releaseDates,
+    ),
+    keywords = keywords.map(),
+    contentRating = contentRating,
+  )
+}
+
+private fun DetailsResponseApi.TV.toDomainTVShow(selectedRegion: Country?): MediaDetails = TV(
   id = this.id,
   posterPath = this.posterPath ?: "",
   backdropPath = this.backdropPath ?: "",
@@ -211,6 +221,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   ),
   keywords = keywords.map(),
   totalEpisodes = numberOfEpisodes,
+  contentRating = contentRatings?.map(selectedRegion = selectedRegion),
 )
 
 private fun List<CastApi>.toActors(): List<MediaItem.Person> = this.map(CastApi::toPerson)

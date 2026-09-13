@@ -27,4 +27,5 @@ data class Movie(
   override val popularity: Double,
   override val isFavorite: Boolean,
   override val keywords: List<Keyword>?,
+  override val contentRating: String?,
 ) : MediaDetails()

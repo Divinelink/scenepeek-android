@@ -63,9 +63,10 @@ object MediaDetailsFactory {
         Country.GERMANY,
         Country.UNITED_STATES,
       ),
-      releaseDates = null,
+      releaseDates = ReleaseDatesFactory.fightClub,
     ),
     keywords = KeywordFactory.fightClub,
+    contentRating = "R",
   )
 
   fun TheOffice() = TV(
@@ -129,5 +130,6 @@ object MediaDetailsFactory {
     ),
     keywords = KeywordFactory.theOffice,
     totalEpisodes = 186,
+    contentRating = "TV-14",
   )
 }

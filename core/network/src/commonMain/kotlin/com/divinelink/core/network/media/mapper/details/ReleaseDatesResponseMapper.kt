@@ -23,6 +23,7 @@ fun List<CountryReleaseResponse>.mapToSortedReleases(
     CountryRelease(
       country = country,
       releaseDetail = releaseDetail,
+      certification = releaseDetail.certification,
     )
   }
 }.sortedWith(
@@ -43,5 +44,6 @@ fun ReleaseDetailResponse.map(): ReleaseDetail? {
     note = note,
     releaseDate = releaseDate.date,
     type = type,
+    certification = certification.takeIf { it != "" },
   )
 }

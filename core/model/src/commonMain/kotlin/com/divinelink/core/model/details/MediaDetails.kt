@@ -25,6 +25,7 @@ sealed class MediaDetails {
   abstract val information: MediaDetailsInformation
   abstract val keywords: List<Keyword>?
   abstract val externalIds: ExternalIds
+  abstract val contentRating: String?
 
   fun copy(
     id: Long = this.id,
@@ -57,6 +58,7 @@ sealed class MediaDetails {
       collection = collection,
       information = information,
       keywords = keywords,
+      contentRating = contentRating,
     )
     is TV -> TV(
       id = id,
@@ -77,6 +79,7 @@ sealed class MediaDetails {
       information = information,
       keywords = keywords,
       totalEpisodes = totalEpisodes,
+      contentRating = contentRating,
     )
   }
 }

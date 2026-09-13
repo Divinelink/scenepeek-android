@@ -7,6 +7,7 @@ import com.divinelink.core.network.media.model.details.ProductionCompanyResponse
 import com.divinelink.core.network.media.model.details.ProductionCountryResponse
 import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.factories.api.media.KeywordsResponseFactory
+import com.divinelink.core.testing.factories.api.media.ReleaseDatesResponseFactory
 import com.divinelink.factories.CreditsFactory
 
 object DetailsResponseApiFactory {
@@ -86,6 +87,6 @@ object DetailsResponseApiFactory {
     voteCount = 30_452,
     credits = CreditsFactory.all(),
     keywords = KeywordsResponseFactory.fightClub,
-    releaseDates = null,
+    releaseDates = ReleaseDatesResponseFactory.fightClub,
   )
 }
