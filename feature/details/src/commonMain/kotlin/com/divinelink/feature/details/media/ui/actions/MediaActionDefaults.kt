@@ -61,21 +61,18 @@ object MediaActionDefaults {
     onClick = { action(MediaAction.AddToList) },
   )
 
-
   fun favorite(
     favorite: Boolean,
     action: (MediaAction) -> Unit,
-  ): MediaActionButtonItem {
-    return MediaActionButtonItem(
-      icon = if (favorite) {
-        IconWrapper.Vector(Icons.Rounded.Favorite)
-      } else {
-        IconWrapper.Vector(Icons.Rounded.FavoriteBorder)
-      },
-      label = UIText.ResourceText(Res.string.feature_details__favorite),
-      onClick = { action(MediaAction.AddToAccount(AccountDataSection.Favorite)) },
-    )
-  }
+  ): MediaActionButtonItem = MediaActionButtonItem(
+    icon = if (favorite) {
+      IconWrapper.Vector(Icons.Rounded.Favorite)
+    } else {
+      IconWrapper.Vector(Icons.Rounded.FavoriteBorder)
+    },
+    label = UIText.ResourceText(Res.string.feature_details__favorite),
+    onClick = { action(MediaAction.AddToAccount(AccountDataSection.Favorite)) },
+  )
 
   fun addShow(
     added: Boolean,
@@ -98,27 +95,21 @@ object MediaActionDefaults {
     )
   }
 
-  fun request(
-    action: (MediaAction) -> Unit,
-  ) = MediaActionButtonItem(
+  fun request(action: (MediaAction) -> Unit) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.Rounded.Download),
     label = UIText.ResourceText(Res.string.feature_details_request),
     seerrMode = true,
     onClick = { action(MediaAction.Request) },
   )
 
-  fun manageMovie(
-    action: (MediaAction) -> Unit,
-  ) = MediaActionButtonItem(
+  fun manageMovie(action: (MediaAction) -> Unit) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.Rounded.SettingsSuggest),
     label = UIText.ResourceText(Res.string.feature_details_manage_movie),
     seerrMode = true,
     onClick = { action(MediaAction.ManageMovie) },
   )
 
-  fun manageTv(
-    action: (MediaAction) -> Unit,
-  ) = MediaActionButtonItem(
+  fun manageTv(action: (MediaAction) -> Unit) = MediaActionButtonItem(
     icon = IconWrapper.Vector(Icons.Rounded.SettingsSuggest),
     label = UIText.ResourceText(Res.string.feature_details_manage_tv),
     seerrMode = true,

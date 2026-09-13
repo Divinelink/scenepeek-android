@@ -10,15 +10,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.extension.getColorRating
+import com.divinelink.core.ui.resources.added_to_your_shows
+import com.divinelink.core.ui.resources.removed_from_your_shows
+import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.details.media.ui.actions.button.MediaMainAction
 import com.divinelink.feature.details.media.ui.actions.button.MediaSecondaryAction
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,6 +42,26 @@ fun MediaActionModal(
   onDismissRequest: () -> Unit,
   action: (MediaAction) -> Unit,
 ) {
+  var snackbarMessage by remember { mutableStateOf<SnackbarMessage?>(null) }
+  val scope = rememberCoroutineScope()
+
+  fun onAddShow(action: MediaAction) {
+    scope.launch { action(action) }
+
+    val text = if (addedShow) {
+      UiString.removed_from_your_shows
+    } else {
+      UiString.added_to_your_shows
+    }
+    snackbarMessage = SnackbarMessage.from(text = UIText.ResourceText(text))
+  }
+
+  SnackbarMessageHandler(
+    snackbarMessage = snackbarMessage,
+    onDismissSnackbar = { snackbarMessage = null },
+    onShowMessage = {},
+  )
+
   ModalBottomSheet(
     sheetState = sheetState,
     onDismissRequest = onDismissRequest,
@@ -74,7 +106,7 @@ fun MediaActionModal(
       MediaSecondaryAction(
         action = MediaActionDefaults.addShow(
           added = addedShow,
-          action = action,
+          action = { onAddShow(it) },
         ),
         containerColor = if (addedShow) {
           MaterialTheme.colors.mediumSeaGreen
@@ -119,5 +151,3 @@ fun MediaActionModal(
     }
   }
 }
-
-

@@ -213,4 +213,6 @@
     <item quantity="one">Airs tomorrow</item>
     <item quantity="other">Airs in %1$s days</item>
   </plurals>
+  <string name="added_to_your_shows">Added to your shows</string>
+  <string name="removed_from_your_shows">Removed from your shows</string>
 </resources>
