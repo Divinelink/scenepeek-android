@@ -36,11 +36,6 @@ fun List<CountryReleaseResponse>.mapToSortedReleases(
   },
 )
 
-fun List<CountryRelease>.getContentRating(selectedRegion: Country?) = this
-  .firstOrNull { it.country == selectedRegion }
-  ?.certification
-  ?: this.firstOrNull { it.country == Country.UNITED_STATES }?.certification
-
 fun ReleaseDetailResponse.map(): ReleaseDetail? {
   val type = ReleaseType.from(type) ?: return null
   val releaseDate = releaseDate.toLocalDateTime() ?: return null

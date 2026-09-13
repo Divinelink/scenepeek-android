@@ -29,7 +29,7 @@ fun buildFetchDetailsUrl(
           name = "append_to_response",
           value = "credits,keywords,release_dates,external_ids",
         )
-        MediaType.TV -> append("append_to_response", "external_ids,keywords")
+        MediaType.TV -> append("append_to_response", "external_ids,keywords,content_ratings")
         else -> Unit
       }
     }

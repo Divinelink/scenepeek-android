@@ -14,11 +14,13 @@ import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.network.media.mapper.certifications.getContentRating
+import com.divinelink.core.network.media.mapper.certifications.map
 import com.divinelink.core.network.media.mapper.credits.map
-import com.divinelink.core.network.media.mapper.details.getContentRating
 import com.divinelink.core.network.media.mapper.details.map
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenreResponse
+import com.divinelink.core.network.media.model.details.certifications.ContentRatingsResponse
 import com.divinelink.core.network.media.model.details.credits.CastApi
 import com.divinelink.core.network.media.model.details.credits.CrewApi
 import com.divinelink.core.network.media.model.details.credits.SeriesCreatorApi
@@ -119,14 +121,14 @@ sealed class DetailsResponseApi {
     @SerialName("production_companies") override val companies: List<ProductionCompanyResponse>,
     @SerialName("production_countries") override val countries: List<ProductionCountryResponse>,
     override val keywords: KeywordsResponse?,
+    @SerialName("content_ratings") val contentRatings: ContentRatingsResponse?,
   ) : DetailsResponseApi()
 }
 
 fun DetailsResponseApi.toDomainMedia(selectedRegion: Country?): MediaDetails = when (this) {
   is DetailsResponseApi.Movie -> this.toDomainMovie(selectedRegion)
-  is DetailsResponseApi.TV -> this.toDomainTVShow()
+  is DetailsResponseApi.TV -> this.toDomainTVShow(selectedRegion)
 }
-
 
 private fun DetailsResponseApi.Movie.toDomainMovie(selectedRegion: Country?): MediaDetails {
   val releaseDates = releaseDates.map(selectedRegion)
@@ -181,7 +183,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(selectedRegion: Country?): Me
   )
 }
 
-private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
+private fun DetailsResponseApi.TV.toDomainTVShow(selectedRegion: Country?): MediaDetails = TV(
   id = this.id,
   posterPath = this.posterPath ?: "",
   backdropPath = this.backdropPath ?: "",
@@ -219,7 +221,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   ),
   keywords = keywords.map(),
   totalEpisodes = numberOfEpisodes,
-  contentRating = null,
+  contentRating = contentRatings?.map(selectedRegion = selectedRegion),
 )
 
 private fun List<CastApi>.toActors(): List<MediaItem.Person> = this.map(CastApi::toPerson)
