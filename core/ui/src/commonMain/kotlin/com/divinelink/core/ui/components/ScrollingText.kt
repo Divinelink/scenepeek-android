@@ -25,6 +25,7 @@ fun ScrollingText(
   ) { state ->
     Text(
       text = state,
+      maxLines = 1,
       style = MaterialTheme.typography.titleMedium,
       modifier = modifier,
     )

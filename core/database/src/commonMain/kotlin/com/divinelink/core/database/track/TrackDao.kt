@@ -26,6 +26,9 @@ interface TrackDao {
   fun clearSyncErrors(showIds: List<Long>)
 
   fun isWatchedEpisode(episodeId: Long): Boolean
-  fun markEpisodeAsWatched(episodeId: Long)
+  fun markEpisodeAsWatched(
+    episodeId: Long,
+    watchedAt: String,
+  )
   fun unmarkEpisodeAsWatched(episodeId: Long)
 }

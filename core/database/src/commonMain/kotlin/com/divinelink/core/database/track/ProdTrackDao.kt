@@ -85,10 +85,13 @@ class ProdTrackDao(
     .isWatchedEpisode(episodeId)
     .executeAsOneOrNull() ?: false
 
-  override fun markEpisodeAsWatched(episodeId: Long) = database.transaction {
+  override fun markEpisodeAsWatched(
+    episodeId: Long,
+    watchedAt: String,
+  ) = database.transaction {
     userEpisodeQueries.upsertUserEpisode(
       episodeId = episodeId,
-      watchedAt = null,
+      watchedAt = watchedAt,
     )
   }
 

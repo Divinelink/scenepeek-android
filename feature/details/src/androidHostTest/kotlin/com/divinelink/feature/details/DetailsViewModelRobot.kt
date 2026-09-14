@@ -4,6 +4,7 @@ import androidx.compose.material3.SnackbarResult
 import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.SeasonProgress
@@ -95,6 +96,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       completeSeasonUseCase = completeSeasonUseCase.mock,
       addShowUseCase = addShowUseCase.mock,
       preferencesRepository = preferencesRepository,
+      clock = PreviewClockProvider(),
     )
   }
 

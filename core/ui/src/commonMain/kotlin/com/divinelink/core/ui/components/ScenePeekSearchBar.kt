@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -76,6 +77,7 @@ import com.divinelink.core.ui.text.BasicTextFieldWithCursorAtEnd
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,7 +135,7 @@ fun ScenePeekSearchBar(
 
   LaunchedEffect(Unit) {
     while (true) {
-      delay(3500)
+      delay(3500.milliseconds)
 
       typeIndex = (typeIndex + 1) % typeOptions.size
     }
@@ -212,6 +214,7 @@ fun ScenePeekSearchBar(
             )
           } else {
             SearchPlaceHolder(
+              modifier = Modifier.fillMaxWidth(0.7f),
               typeOptions = typeOptions,
               typeIndex = typeIndex,
             )
@@ -248,9 +251,10 @@ private fun SearchPlaceHolder(
   typeOptions: List<StringResource>,
   typeIndex: Int,
 ) {
-  Row(modifier = modifier) {
+  Row(modifier = modifier.basicMarquee()) {
     Text(
       text = stringResource(UiString.core_ui_toolbar_search),
+      maxLines = 1,
       style = MaterialTheme.typography.titleMedium,
       color = MaterialTheme.colorScheme.onSurface,
     )

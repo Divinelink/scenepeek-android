@@ -578,12 +578,15 @@ class ProdMediaDao(
     }
   }
 
-  override fun markSeasonAsWatched(episodeIds: List<Long>) {
+  override fun markSeasonAsWatched(
+    episodeIds: List<Long>,
+    watchedAt: String,
+  ) {
     if (episodeIds.isEmpty()) return
 
     database.transaction {
       episodeIds.forEach { id ->
-        episodeQueries.upsertUserEpisode(episodeId = id, watchedAt = null)
+        episodeQueries.upsertUserEpisode(episodeId = id, watchedAt = watchedAt)
       }
     }
   }

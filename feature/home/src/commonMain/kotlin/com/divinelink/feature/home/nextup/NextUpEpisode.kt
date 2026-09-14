@@ -1,6 +1,7 @@
 package com.divinelink.feature.home.nextup
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -83,6 +84,7 @@ fun LazyItemScope.NextUpEpisode(
       ) {
         Text(
           maxLines = 1,
+          modifier = Modifier.basicMarquee(),
           overflow = TextOverflow.Ellipsis,
           text = nextUp.showTitle,
           style = MaterialTheme.typography.titleSmall,

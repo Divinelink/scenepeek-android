@@ -24,7 +24,10 @@ interface TrackRepository {
   fun getSyncErrors(): Flow<List<ShowSyncError>>
   fun clearSyncErrors(showIds: List<Long>)
 
-  fun markEpisodeAsWatched(episodeId: Long)
+  fun markEpisodeAsWatched(
+    episodeId: Long,
+    watchedAt: String,
+  )
   fun unmarkEpisodeAsWatched(episodeId: Long)
   fun isWatchedEpisode(episodeId: Long): Boolean
 }

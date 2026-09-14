@@ -7,6 +7,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
@@ -110,6 +111,7 @@ class DetailsViewModel(
   repository: DetailsRepository,
   mediaRepository: MediaRepository,
   preferencesRepository: PreferencesRepository,
+  private val clock: ClockProvider,
 ) : ViewModel() {
 
   private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
@@ -544,6 +546,7 @@ class DetailsViewModel(
           showId = viewState.value.mediaId,
           seasonNumber = action.seasonNumber,
           seasonComplete = action.isComplete,
+          watchedAt = clock.now,
         ),
       )
     }

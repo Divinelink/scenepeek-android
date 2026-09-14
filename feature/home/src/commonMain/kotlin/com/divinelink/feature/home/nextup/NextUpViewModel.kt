@@ -2,9 +2,11 @@ package com.divinelink.feature.home.nextup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
+import com.divinelink.core.domain.track.MarkEpisodeParameters
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.Resource
@@ -15,11 +17,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 class NextUpViewModel(
   private val repository: MediaRepository,
   private val trackRepository: TrackRepository,
   private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
+  private val clock: ClockProvider,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<NextUpUiState> = MutableStateFlow(
@@ -82,16 +86,27 @@ class NextUpViewModel(
     }
   }
 
-  private fun markEpisodeAsWatched(episode: Episode) {
+  private fun markEpisodeAsWatched(
+    episode: Episode,
+    watchedAt: LocalDate,
+  ) {
     viewModelScope.launch {
-      markEpisodeAsWatchedUseCase(episode)
+      markEpisodeAsWatchedUseCase(
+        MarkEpisodeParameters(
+          episode = episode,
+          watchedAt = watchedAt,
+        ),
+      )
     }
   }
 
   fun onAction(action: NextUpAction) {
     when (action) {
       NextUpAction.Retry -> onRetry()
-      is NextUpAction.MarkEpisodeAsWatched -> markEpisodeAsWatched(action.episode)
+      is NextUpAction.MarkEpisodeAsWatched -> markEpisodeAsWatched(
+        episode = action.episode,
+        watchedAt = clock.now,
+      )
     }
   }
 }
