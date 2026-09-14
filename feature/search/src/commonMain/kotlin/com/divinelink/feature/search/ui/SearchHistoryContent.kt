@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,8 +21,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -30,6 +36,7 @@ import com.divinelink.core.model.media.toStub
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.components.IconButtonWithTooltip
 import com.divinelink.core.ui.resources.core_ui_clear_history
 import com.divinelink.core.ui.resources.core_ui_remove_item_from_history_content_desc
 import com.divinelink.feature.search.resources.Res
@@ -43,6 +50,8 @@ fun SearchHistoryContent(
   action: (SearchAction) -> Unit,
   history: List<MediaItem>,
 ) {
+  var visualOverflow by rememberSaveable { mutableStateOf(false) }
+
   ScenePeekLazyColumn(
     state = state,
   ) {
@@ -64,10 +73,37 @@ fun SearchHistoryContent(
 
         Spacer(Modifier.weight(1f))
 
-        TextButton(
-          onClick = { action(SearchAction.ClearHistory) },
-        ) {
-          Text(text = stringResource(UiString.core_ui_clear_history))
+        if (visualOverflow) {
+          IconButtonWithTooltip(
+            onClick = {
+              action(SearchAction.ClearHistory)
+            },
+            icon = {
+              IconButton(
+                onClick = { action(SearchAction.ClearHistory) },
+              ) {
+                Icon(
+                  imageVector = Icons.Default.DeleteForever,
+                  tint = MaterialTheme.colorScheme.primary,
+                  contentDescription = stringResource(UiString.core_ui_clear_history),
+                )
+              }
+            },
+            tooltipText = UiString.core_ui_clear_history,
+          )
+        } else {
+          TextButton(
+            onClick = { action(SearchAction.ClearHistory) },
+          ) {
+            Text(
+              text = stringResource(UiString.core_ui_clear_history),
+              textAlign = TextAlign.Center,
+              maxLines = 2,
+              onTextLayout = { result ->
+                visualOverflow = result.hasVisualOverflow
+              },
+            )
+          }
         }
       }
     }
