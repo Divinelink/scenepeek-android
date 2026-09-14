@@ -19,7 +19,6 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
-import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
@@ -102,7 +101,6 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.time.Clock
 import com.divinelink.core.scaffold.resources.Res as scaffoldR
 
 class ScenePeekAppTest : ComposeTest() {
@@ -118,7 +116,6 @@ class ScenePeekAppTest : ComposeTest() {
     ),
   )
   private val mediaRepository = TestMediaRepository()
-  private val clock: Clock = ClockFactory.decemberFirst2021()
   private val clockProvider = PreviewClockProvider()
   private lateinit var navigator: Navigator
 
@@ -158,6 +155,8 @@ class ScenePeekAppTest : ComposeTest() {
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
   private val getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
   private val getJellyseerrAccountDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
+
+  private val clock = PreviewClockProvider()
 
   @BeforeTest
   override fun setUp() {
@@ -706,6 +705,7 @@ class ScenePeekAppTest : ComposeTest() {
         repository = detailsRepository.mock,
         preferencesRepository = preferencesRepository,
         mediaRepository = mediaRepository.mock,
+        clock = clock,
         route = Navigation.DetailsRoute(
           id = 1,
           isFavorite = false,
@@ -1022,7 +1022,7 @@ class ScenePeekAppTest : ComposeTest() {
       SectionViewModel(
         section = params.get(),
         repository = mediaRepository.mock,
-        clock = clock,
+        clock = clock.clock,
       )
     }
   }
@@ -1033,6 +1033,7 @@ class ScenePeekAppTest : ComposeTest() {
         repository = mediaRepository.mock,
         trackRepository = TestTrackRepository().mock,
         markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
+        clock = clock,
       )
     }
   }

@@ -2,8 +2,10 @@ package com.divinelink.feature.season
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
+import com.divinelink.core.domain.track.MarkEpisodeParameters
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.season.SeasonData
 import com.divinelink.core.model.details.season.SeasonForm
@@ -23,8 +25,9 @@ import kotlinx.coroutines.launch
 
 class SeasonViewModel(
   private val route: Navigation.SeasonRoute,
-  val repository: MediaRepository,
+  private val repository: MediaRepository,
   private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
+  private val clock: ClockProvider,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<SeasonUiState> = MutableStateFlow(
@@ -110,7 +113,12 @@ class SeasonViewModel(
 
   private fun handleMarkEpisodeAsWatched(action: SeasonAction.MarkEpisodeAsWatched) {
     viewModelScope.launch {
-      markEpisodeAsWatchedUseCase(action.episode)
+      markEpisodeAsWatchedUseCase(
+        MarkEpisodeParameters(
+          episode = action.episode,
+          watchedAt = clock.now,
+        ),
+      )
     }
   }
 

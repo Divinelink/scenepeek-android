@@ -514,8 +514,12 @@ class ProdMediaRepository(
       seasonNumber = seasonNumber,
     )
 
-  override fun markSeasonAsWatched(episodeIds: List<Long>) = dao.markSeasonAsWatched(
+  override fun markSeasonAsWatched(
+    episodeIds: List<Long>,
+    watchedAt: String,
+  ) = dao.markSeasonAsWatched(
     episodeIds = episodeIds,
+    watchedAt = watchedAt,
   )
 
   override fun unmarkSeasonAsWatched(episodeIds: List<Long>) = dao.unmarkSeasonAsWatched(

@@ -146,6 +146,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         repository = mediaRepository.mock,
         trackRepository = TestTrackRepository().mock,
         markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
+        clock = PreviewClockProvider(),
       )
     }
 

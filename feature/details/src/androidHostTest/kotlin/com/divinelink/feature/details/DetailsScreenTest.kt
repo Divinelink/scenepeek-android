@@ -18,6 +18,7 @@ import androidx.compose.ui.test.swipeUp
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
 import com.divinelink.core.fixtures.data.opendata.TestOpenDataRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
@@ -1070,5 +1071,6 @@ class DetailsScreenTest : ComposeTest() {
     completeSeasonUseCase = completeSeasonUseCase.mock,
     addShowUseCase = addShowUseCase.mock,
     route = route,
+    clock = PreviewClockProvider(),
   )
 }
