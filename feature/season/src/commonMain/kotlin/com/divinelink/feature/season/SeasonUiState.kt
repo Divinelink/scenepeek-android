@@ -6,6 +6,7 @@ import com.divinelink.core.model.details.season.SeasonForms
 import com.divinelink.core.model.tab.SeasonTab
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class SeasonUiState(
   val backdropPath: String?,
@@ -15,6 +16,7 @@ data class SeasonUiState(
   val selectedTab: Int,
   val forms: SeasonForms,
   val watchedEpisodes: List<Long>,
+  val snackbarMessage: SnackbarMessage?,
 ) {
   companion object {
     fun initial(route: Navigation.SeasonRoute) = SeasonUiState(
@@ -32,6 +34,7 @@ data class SeasonUiState(
         }
       },
       watchedEpisodes = emptyList(),
+      snackbarMessage = null,
     )
   }
 }

@@ -35,6 +35,7 @@ import com.divinelink.core.ui.components.DisplayMessageDuration
 import com.divinelink.core.ui.components.DisplayMessageSection
 import com.divinelink.core.ui.resources.next_up_episodes
 import com.divinelink.core.ui.resources.upcoming
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.home.nextup.NextUpAction
 import com.divinelink.feature.home.nextup.NextUpEpisode
 import com.divinelink.feature.home.nextup.NextUpViewModel
@@ -49,6 +50,11 @@ fun AnimatedVisibilityScope.NextUpFullscreen(
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+  SnackbarMessageHandler(
+    snackbarMessage = state.snackbarMessage,
+    onDismissSnackbar = { viewModel.onAction(NextUpAction.DismissSnackbarMessage) },
+  )
 
   rememberScaffoldState(
     animatedVisibilityScope = this,

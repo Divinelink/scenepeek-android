@@ -15,8 +15,8 @@ class MarkEpisodeAsWatchedUseCase(
   private val repository: TrackRepository,
   private val fetchNextMissingSeasonUseCase: FetchNextMissingSeasonUseCase,
   dispatcher: DispatcherProvider,
-) : UseCase<MarkEpisodeParameters, Unit>(dispatcher.default) {
-  override suspend fun execute(parameters: MarkEpisodeParameters) {
+) : UseCase<MarkEpisodeParameters, Boolean>(dispatcher.default) {
+  override suspend fun execute(parameters: MarkEpisodeParameters): Boolean {
     val episodeId = parameters.episode.id
     val showId = parameters.episode.showId
 
@@ -32,5 +32,7 @@ class MarkEpisodeAsWatchedUseCase(
     }
 
     fetchNextMissingSeasonUseCase(showId)
+
+    return !isWatched
   }
 }
