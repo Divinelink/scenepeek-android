@@ -12,6 +12,7 @@ import com.divinelink.core.model.track.backup.ShowExport
 import com.divinelink.core.model.track.backup.WatchedEpisodeExport
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.Json
 
 class ProdTrackDao(
   private val database: Database,
@@ -22,7 +23,6 @@ class ProdTrackDao(
   private val syncErrorQueries = database.showSyncErrorQueries
   private val userShowQueries = database.userShowsEntityQueries
   private val mediaQueries = database.mediaItemEntityQueries
-  private val savedQueries = database.favoriteMediaEntityQueries
 
   override fun getUserShows(): Flow<List<Long>> = userShowQueries
     .getAllUserShows()
@@ -116,6 +116,12 @@ class ProdTrackDao(
       exportedAt = clock.clock.now().toString(),
       shows = shows,
     )
+  }
+
+  override fun restoreLibrary(encoded: String): Result<Boolean> = runCatching {
+    val library = Json.decodeFromString<LibraryExport>(encoded)
+
+    return Result.success(true)
   }
 
   private fun getShowExports() = userShowQueries

@@ -2,6 +2,7 @@ package com.divinelink.core.ui.manager
 
 import androidx.compose.runtime.Composable
 import com.divinelink.core.commons.provider.BuildConfigProvider
+import com.divinelink.core.model.export.FileData
 import kotlinx.cinterop.BetaInteropApi
 import platform.Foundation.NSCharacterSet
 import platform.Foundation.NSString
@@ -81,6 +82,14 @@ class IOSIntentManager(
         println("Failed to open email app")
       }
     }
+  }
+
+  override suspend fun saveFile(fileData: FileData) {
+    TODO("Not yet implemented")
+  }
+
+  override suspend fun readFile(extensions: Set<String>?): FileData? {
+    TODO("Not yet implemented")
   }
 
   @OptIn(BetaInteropApi::class)

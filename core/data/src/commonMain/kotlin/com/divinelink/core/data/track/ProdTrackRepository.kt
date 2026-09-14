@@ -59,4 +59,7 @@ class ProdTrackRepository(
   override fun backupLibrary(): Result<LibraryExport> = runCatching {
     dao.exportLibrary()
   }
+
+  override fun restoreLibrary(encodedFile: String): Result<Boolean> = dao
+    .restoreLibrary(encodedFile)
 }

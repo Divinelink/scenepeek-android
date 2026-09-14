@@ -32,6 +32,9 @@ sealed interface Navigation : NavKey {
   data object AppUpdatesSettingsRoute : Navigation
 
   @Serializable
+  data object BackupAndRestoreSettingsRoute : Navigation
+
+  @Serializable
   data class JellyseerrSettingsRoute(val withNavigationBar: Boolean) : Navigation
 
   @Serializable

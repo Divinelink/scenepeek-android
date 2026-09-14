@@ -25,6 +25,7 @@ ktlint-cli = "1.8.0"
 secrets = "2.0.1"
 detekt = "1.23.8"
 sentry-android = "8.53.0"
+filekit = "0.16.0"
 
 # Internal Database
 sqldelight = "2.3.2"
@@ -147,6 +148,7 @@ koin-compose-nav3 = { group = "io.insert-koin", name = "koin-compose-navigation3
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 sentry-android = { group = "io.sentry", name = "sentry-android-core", version.ref = "sentry-android" }
 android-youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "android-youtube-player" }
+filekit-dialogs = { group = "io.github.vinceglb", name = "filekit-dialogs-compose", version.ref = "filekit" }
 
 # Database
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }

@@ -12,6 +12,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.commons.provider.BuildConfigProvider
+import com.divinelink.core.model.export.FileData
+import io.github.vinceglb.filekit.AndroidFile
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.openFilePicker
+import io.github.vinceglb.filekit.dialogs.openFileSaver
+import io.github.vinceglb.filekit.extension
+import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.readString
+import io.github.vinceglb.filekit.writeString
 
 @ExcludeFromKoverReport
 internal class AndroidIntentManager(
@@ -96,6 +107,45 @@ internal class AndroidIntentManager(
       Toast.makeText(context, "No email app installed", Toast.LENGTH_SHORT).show()
     }
   }
+
+  override suspend fun saveFile(
+    fileData: FileData,
+  ) {
+    val file = FileKit.openFileSaver(
+      suggestedName = fileData.name,
+      defaultExtension = fileData.extension,
+    )
+
+    file?.writeString(fileData.content)
+  }
+
+  override suspend fun readFile(extensions: Set<String>?): FileData? {
+    val openFile = FileKit
+      .openFilePicker(FileKitType.File(extensions = extensions))
+      ?.androidFile
+
+    return when (openFile) {
+      is AndroidFile.FileWrapper -> FileData(
+        extension = openFile.file.extension,
+        name = openFile.file.name,
+        content = openFile.file.readText(),
+      )
+      is AndroidFile.UriWrapper -> {
+        val path = openFile.uri
+
+        val file = PlatformFile(path)
+        val content = file.readString()
+
+        FileData(
+          extension = file.extension,
+          name = file.name,
+          content = content,
+        )
+      }
+      null -> null
+    }
+  }
+
 
   companion object {
     private const val PACKAGE_SCHEME = "package"

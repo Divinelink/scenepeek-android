@@ -33,4 +33,5 @@ interface TrackRepository {
   fun isWatchedEpisode(episodeId: Long): Boolean
 
   fun backupLibrary(): Result<LibraryExport>
+  fun restoreLibrary(encodedFile: String): Result<Boolean>
 }

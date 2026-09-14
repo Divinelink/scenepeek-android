@@ -101,6 +101,7 @@ dependencies {
 
   fullImplementation(libs.sentry.android)
   implementation(libs.napier)
+  implementation(libs.filekit.dialogs)
 
   // Testing Libs
   testImplementation(projects.core.testing)

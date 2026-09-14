@@ -3,6 +3,8 @@ package com.divinelink.core.ui.manager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import com.divinelink.core.commons.provider.BuildConfigProvider
+import com.divinelink.core.model.export.FileData
+import io.github.vinceglb.filekit.PlatformFile
 
 @Immutable
 interface IntentManager {
@@ -21,6 +23,10 @@ interface IntentManager {
   )
 
   fun navigateToAppSettings()
+
+  suspend fun saveFile(fileData: FileData)
+
+  suspend fun readFile(extensions: Set<String>?): FileData?
 }
 
 @Composable
