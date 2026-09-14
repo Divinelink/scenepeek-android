@@ -3,18 +3,26 @@ package com.divinelink.core.database.track
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.show.ShowSyncError
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.track.backup.LibraryExport
+import com.divinelink.core.model.track.backup.ShowExport
+import com.divinelink.core.model.track.backup.WatchedEpisodeExport
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ProdTrackDao(
   private val database: Database,
   private val dispatcher: DispatcherProvider,
+  private val clock: ClockProvider,
 ) : TrackDao {
   private val userEpisodeQueries = database.userEpisodesEntityQueries
   private val syncErrorQueries = database.showSyncErrorQueries
   private val userShowQueries = database.userShowsEntityQueries
+  private val mediaQueries = database.mediaItemEntityQueries
+  private val savedQueries = database.favoriteMediaEntityQueries
 
   override fun getUserShows(): Flow<List<Long>> = userShowQueries
     .getAllUserShows()
@@ -100,4 +108,40 @@ class ProdTrackDao(
       episodeId = episodeId,
     )
   }
+
+  override fun exportLibrary(): LibraryExport {
+    val shows = getShowExports()
+
+    return LibraryExport(
+      exportedAt = clock.clock.now().toString(),
+      shows = shows,
+    )
+  }
+
+  private fun getShowExports() = userShowQueries
+    .getAllUserShows()
+    .executeAsList().map { userShow ->
+      val watchedEpisodes = userEpisodeQueries.watchedEpisodesForShow(userShow.showId)
+        .executeAsList()
+        .map {
+          WatchedEpisodeExport(
+            it.episodeId,
+            it.watchedAt,
+          )
+        }
+
+      val media = mediaQueries.selectMediaItemByIdAndType(
+        id = userShow.showId,
+        mediaType = MediaType.TV.value,
+      ).executeAsOne()
+
+      ShowExport(
+        tmdbId = userShow.showId,
+        title = media.name,
+        posterPath = media.posterPath,
+        status = userShow.status,
+        watchedEpisodes = watchedEpisodes,
+        addedAt = userShow.addedAt,
+      )
+    }
 }

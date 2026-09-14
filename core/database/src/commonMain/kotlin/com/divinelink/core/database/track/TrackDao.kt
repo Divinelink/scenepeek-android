@@ -1,6 +1,8 @@
 package com.divinelink.core.database.track
 
 import com.divinelink.core.database.show.ShowSyncError
+import com.divinelink.core.model.track.backup.LibraryExport
+import com.divinelink.core.model.track.backup.ShowExport
 import kotlinx.coroutines.flow.Flow
 
 interface TrackDao {
@@ -31,4 +33,6 @@ interface TrackDao {
     watchedAt: String,
   )
   fun unmarkEpisodeAsWatched(episodeId: Long)
+
+  fun exportLibrary(): LibraryExport
 }

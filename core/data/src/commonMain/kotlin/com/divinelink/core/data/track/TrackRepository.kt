@@ -1,6 +1,7 @@
 package com.divinelink.core.data.track
 
 import com.divinelink.core.database.show.ShowSyncError
+import com.divinelink.core.model.track.backup.LibraryExport
 import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {
@@ -30,4 +31,6 @@ interface TrackRepository {
   )
   fun unmarkEpisodeAsWatched(episodeId: Long)
   fun isWatchedEpisode(episodeId: Long): Boolean
+
+  fun backupLibrary(): Result<LibraryExport>
 }
