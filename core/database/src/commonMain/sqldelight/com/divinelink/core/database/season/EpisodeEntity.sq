@@ -29,14 +29,12 @@ INSERT OR REPLACE INTO EpisodeEntity (
 )
 VALUES ?;
 
-fetchEpisodesForSeason:
-SELECT * FROM EpisodeEntity
-WHERE showId = ? AND seasonNumber = ?
-ORDER BY episodeNumber;
-
 fetchEpisodes:
 SELECT * FROM EpisodeEntity
 WHERE showId = ? AND seasonNumber = ?;
+
+fetchAllEpisodes:
+SELECT * FROM EpisodeEntity;
 
 fetchEpisode:
 SELECT * FROM EpisodeEntity

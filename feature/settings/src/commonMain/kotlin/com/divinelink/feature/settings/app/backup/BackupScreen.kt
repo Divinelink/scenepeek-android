@@ -79,7 +79,7 @@ fun AnimatedVisibilityScope.BackupScreen(
           text = stringResource(Res.string.restore),
           onClick = {
             scope.launch {
-              viewModel.restore(intentManager.readFile(setOf(".json")))
+              viewModel.restore(intentManager.readFile(setOf("json")))
             }
           },
         )

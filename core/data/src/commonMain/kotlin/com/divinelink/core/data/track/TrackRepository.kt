@@ -2,6 +2,7 @@ package com.divinelink.core.data.track
 
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.model.track.backup.LibraryExport
+import com.divinelink.core.model.track.backup.ShowExport
 import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {
@@ -33,5 +34,5 @@ interface TrackRepository {
   fun isWatchedEpisode(episodeId: Long): Boolean
 
   fun backupLibrary(): Result<LibraryExport>
-  fun restoreLibrary(encodedFile: String): Result<Boolean>
+  fun restoreLibrary(encodedFile: String): Result<List<ShowExport>>
 }

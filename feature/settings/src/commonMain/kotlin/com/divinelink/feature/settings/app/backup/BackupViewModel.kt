@@ -3,17 +3,28 @@ package com.divinelink.feature.settings.app.backup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.util.encodeToString
+import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.model.export.FileData
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.Resource
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
-class BackupViewModel(private val trackRepository: TrackRepository) : ViewModel() {
+class BackupViewModel(
+  private val trackRepository: TrackRepository,
+  private val repository: DetailsRepository,
+) : ViewModel() {
 
   private val _uiState = MutableStateFlow(BackupUiState.initial)
   val uiState: StateFlow<BackupUiState> = _uiState
@@ -29,7 +40,7 @@ class BackupViewModel(private val trackRepository: TrackRepository) : ViewModel(
         .fold(
           onSuccess = { export ->
             val file = FileData(
-              extension = ".json",
+              extension = "json",
               name = "scenepeek-export-${export.exportedAt}",
               content = export.encodeToString(),
             )
@@ -53,10 +64,19 @@ class BackupViewModel(private val trackRepository: TrackRepository) : ViewModel(
         .restoreLibrary(fileData.content)
         .fold(
           onSuccess = {
-            _uiState.update { it.copy(loading = false) }
+            it.forEach { show ->
+              delay(1.seconds)
+              repository.fetchMediaItem(
+                media = MediaReference(
+                  mediaId = show.id,
+                  mediaType = MediaType.TV,
+                ),
+              ).first { result -> result is Resource.Success }
+            }
+            _uiState.update { state -> state.copy(loading = false) }
           },
           onFailure = {
-            _uiState.update { it.copy(loading = false) }
+            _uiState.update { state -> state.copy(loading = false) }
           },
         )
     }

@@ -21,6 +21,7 @@ import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.CollectionDetails
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.provider.WatchProviders
 import com.divinelink.core.model.details.rating.ExternalRatings
@@ -125,6 +126,11 @@ class ProdDetailsRepository(
       },
       saveFetchResult = { remoteData ->
         val mediaDetails = remoteData.toDomainMedia(null)
+        when (mediaDetails) {
+          is Movie -> Unit
+          is TV -> mediaDao.insertShowDetails(mediaDetails)
+        }
+
         mediaDao.insertMedia(
           media = mediaDetails.toMediaItem(),
           seasons = if (mediaDetails is TV) {

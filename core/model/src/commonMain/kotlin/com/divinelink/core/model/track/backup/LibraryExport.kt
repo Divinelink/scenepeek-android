@@ -7,4 +7,6 @@ data class LibraryExport(
   val version: Int = 1,
   val exportedAt: String,
   val shows: List<ShowExport>,
+  val seasons: List<SeasonExport>,
+  val episodes: List<EpisodeExport>,
 )

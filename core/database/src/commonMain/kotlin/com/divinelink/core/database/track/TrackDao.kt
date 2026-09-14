@@ -35,5 +35,5 @@ interface TrackDao {
   fun unmarkEpisodeAsWatched(episodeId: Long)
 
   fun exportLibrary(): LibraryExport
-  fun restoreLibrary(encoded: String): Result<Boolean>
+  fun restoreLibrary(encoded: String): Result<List<ShowExport>>
 }
