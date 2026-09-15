@@ -5,4 +5,5 @@ import com.divinelink.core.model.details.Episode
 sealed interface SeasonAction {
   data class OnSelectTab(val index: Int) : SeasonAction
   data class MarkEpisodeAsWatched(val episode: Episode) : SeasonAction
+  data object DismissSnackbar : SeasonAction
 }

@@ -20,6 +20,7 @@ import com.divinelink.core.model.track.NextUpSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.components.DisplayMessageDuration
 import com.divinelink.core.ui.components.DisplayMessageSection
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.home.nextup.EpisodesList
 import com.divinelink.feature.home.nextup.NextUpAction
 import com.divinelink.feature.home.nextup.NextUpEmptyContent
@@ -46,6 +47,11 @@ fun NextUpContent(
       onTimeout = { viewModel.onAction(NextUpAction.Retry) },
     )
   }
+
+  SnackbarMessageHandler(
+    snackbarMessage = state.snackbarMessage,
+    onDismissSnackbar = { viewModel.onAction(NextUpAction.DismissSnackbarMessage) },
+  )
 
   if (state.loading) {
     Box(

@@ -161,6 +161,7 @@ fun SeasonItem(
           DetailsAction.MarkSeasonComplete(
             seasonNumber = season.seasonNumber,
             isComplete = season.episodeCount == progress?.watchedCount,
+            seasonName = season.name,
           ),
         )
       },

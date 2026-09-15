@@ -13,7 +13,7 @@ class TestMarkEpisodeAsWatchedUseCase {
     whenever(mock.invoke(any())).thenReturn(Result.failure(exception))
   }
 
-  suspend fun mockResponse(response: Result<Unit>) {
+  suspend fun mockResponse(response: Result<Boolean>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

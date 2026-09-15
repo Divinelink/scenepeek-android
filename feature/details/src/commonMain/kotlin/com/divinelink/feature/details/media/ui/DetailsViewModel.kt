@@ -61,6 +61,8 @@ import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_error_retry
+import com.divinelink.core.ui.resources.removed_from_history
+import com.divinelink.core.ui.resources.saved_to_history
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.add.to.account.resources.must_be_logged_in_to_rate
 import com.divinelink.feature.add.to.account.resources.rating_deleted_successfully
@@ -548,7 +550,17 @@ class DetailsViewModel(
           seasonComplete = action.isComplete,
           watchedAt = clock.now,
         ),
-      )
+      ).onSuccess {
+        val resource = if (!action.isComplete) {
+          UIText.ResourceText(UiString.saved_to_history, action.seasonName)
+        } else {
+          UIText.ResourceText(UiString.removed_from_history, action.seasonName)
+        }
+
+        _viewState.update { state ->
+          state.copy(snackbarMessage = SnackbarMessage.from(resource))
+        }
+      }
     }
   }
 

@@ -7,9 +7,13 @@ import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
 import com.divinelink.core.domain.track.MarkEpisodeParameters
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.Resource
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.saved_to_history
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -96,13 +100,24 @@ class NextUpViewModel(
           episode = episode,
           watchedAt = watchedAt,
         ),
-      )
+      ).onSuccess {
+        setSnackbarMessage(
+          SnackbarMessage.from(
+            text = UIText.ResourceText(UiString.saved_to_history, episode.name),
+          ),
+        )
+      }
     }
+  }
+
+  private fun setSnackbarMessage(snackbarMessage: SnackbarMessage?) {
+    _uiState.update { it.copy(snackbarMessage = snackbarMessage) }
   }
 
   fun onAction(action: NextUpAction) {
     when (action) {
       NextUpAction.Retry -> onRetry()
+      NextUpAction.DismissSnackbarMessage -> setSnackbarMessage(null)
       is NextUpAction.MarkEpisodeAsWatched -> markEpisodeAsWatched(
         episode = action.episode,
         watchedAt = clock.now,

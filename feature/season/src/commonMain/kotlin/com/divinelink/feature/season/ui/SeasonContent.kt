@@ -45,6 +45,7 @@ import com.divinelink.core.ui.resources.core_ui_no_cast_available
 import com.divinelink.core.ui.resources.core_ui_no_cast_available_description
 import com.divinelink.core.ui.resources.core_ui_no_guest_stars_available
 import com.divinelink.core.ui.resources.core_ui_no_guest_stars_available_description
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.season.SeasonAction
 import com.divinelink.feature.season.SeasonUiState
@@ -87,6 +88,11 @@ fun SharedTransitionScope.SeasonContent(
         action(SeasonAction.OnSelectTab(page))
       }
   }
+
+  SnackbarMessageHandler(
+    snackbarMessage = uiState.snackbarMessage,
+    onDismissSnackbar = { action(SeasonAction.DismissSnackbar) },
+  )
 
   LazyColumnWithOffset(
     paddingOffset = topPadding,

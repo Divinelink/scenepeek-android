@@ -6,6 +6,7 @@ import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
 import com.divinelink.core.domain.track.MarkEpisodeParameters
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.SeasonDetails
 import com.divinelink.core.model.details.season.SeasonData
 import com.divinelink.core.model.details.season.SeasonForm
@@ -13,6 +14,10 @@ import com.divinelink.core.model.details.season.SeasonInformation
 import com.divinelink.core.model.tab.SeasonTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.network.Resource
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.removed_from_history
+import com.divinelink.core.ui.resources.saved_to_history
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -100,6 +105,7 @@ class SeasonViewModel(
     when (action) {
       is SeasonAction.OnSelectTab -> handleSelectTab(action)
       is SeasonAction.MarkEpisodeAsWatched -> handleMarkEpisodeAsWatched(action)
+      is SeasonAction.DismissSnackbar -> handleSetSnackbarMessage(null)
     }
   }
 
@@ -118,8 +124,20 @@ class SeasonViewModel(
           episode = action.episode,
           watchedAt = clock.now,
         ),
-      )
+      ).onSuccess { added ->
+        val resource = if (added) {
+          UIText.ResourceText(UiString.saved_to_history, action.episode.name)
+        } else {
+          UIText.ResourceText(UiString.removed_from_history, action.episode.name)
+        }
+
+        handleSetSnackbarMessage(SnackbarMessage.from(resource))
+      }
     }
+  }
+
+  private fun handleSetSnackbarMessage(snackbarMessage: SnackbarMessage?) {
+    _uiState.update { it.copy(snackbarMessage = snackbarMessage) }
   }
 
   private fun handleSuccessResponse(data: SeasonDetails) {
