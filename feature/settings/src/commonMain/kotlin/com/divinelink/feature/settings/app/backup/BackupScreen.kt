@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,7 +32,9 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.backup
 import com.divinelink.feature.settings.resources.backup_and_restore
+import com.divinelink.feature.settings.resources.backup_summary
 import com.divinelink.feature.settings.resources.restore
+import com.divinelink.feature.settings.resources.restore_summary
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -115,14 +118,16 @@ fun AnimatedVisibilityScope.BackupScreen(
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Default.Backup),
           text = stringResource(Res.string.backup),
+          summary = stringResource(Res.string.backup_summary),
           onClick = { viewModel.backupLibrary() },
         )
       }
 
       item {
         SettingsClickItem(
-          icon = IconWrapper.Vector(Icons.Default.Restore),
+          icon = IconWrapper.Vector(Icons.Default.SettingsBackupRestore),
           text = stringResource(Res.string.restore),
+          summary = stringResource(Res.string.restore_summary),
           onClick = {
             scope.launch {
               viewModel.restore(intentManager.readFile(setOf("json")))

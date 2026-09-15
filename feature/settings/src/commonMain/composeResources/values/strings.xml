@@ -112,5 +112,7 @@
   <string name="danger_zone">Danger zone!</string>
   <string name="backup_and_restore">Backup and restore</string>
   <string name="backup">Backup</string>
+  <string name="backup_summary">Export your watch history to a backup file</string>
   <string name="restore">Restore</string>
+  <string name="restore_summary">Import a previously created backup</string>
 </resources>
