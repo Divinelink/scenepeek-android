@@ -130,7 +130,6 @@ fun AnimatedVisibilityScope.BackupScreen(
           },
         )
       }
-
     }
   }
 }

@@ -95,9 +95,7 @@ class BackupViewModel(
     }
   }
 
-  fun setDialog(
-    dialog: DialogState?,
-  ) {
+  fun setDialog(dialog: DialogState?) {
     _uiState.update {
       it.copy(
         restoreProcess = null,

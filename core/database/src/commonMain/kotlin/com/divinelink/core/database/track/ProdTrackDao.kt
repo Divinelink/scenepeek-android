@@ -160,95 +160,15 @@ class ProdTrackDao(
     var seasonsRestored = 0
 
     database.transaction {
-      library.seasons.forEach { season ->
-        seasonQueries.insertSeasonDetails(
-          SeasonDetailsEntity = SeasonDetailsEntity(
-            id = season.id,
-            showId = season.showId,
-            name = season.name,
-            posterPath = season.posterPath,
-            airDate = season.airDate,
-            episodeCount = season.number.toLong(),
-            voteAverage = 0.0,
-            seasonNumber = season.seasonNumber.toLong(),
-            runtime = season.runtime,
-            overview = "",
-          ),
-        )
-        seasonsRestored += 1
-      }
-      library.shows.forEach { show ->
-        userShowQueries.insertUserShow(
-          showId = show.id,
-          addedAt = show.addedAt,
-          updatedAt = show.addedAt,
-          status = show.status,
-          notes = null,
-          rating = null,
-        )
-        tvDetailsQueries.insertShowDetails(
-          id = show.id,
-          totalSeasons = show.seasons.toLong(),
-          totalEpisodes = show.episodes.toLong(),
-        )
-        insertShow(show)
-
-        show.watched.forEach { episode ->
-          userEpisodeQueries.upsertUserEpisode(
-            episode.id,
-            episode.watchedAt,
-          )
-        }
-        showsRestored += 1
-      }
-      library.episodes.forEach { episode ->
-        episodeQueries.insertEpisode(
-          EpisodeEntity(
-            id = episode.id.toLong(),
-            showId = episode.showId,
-            overview = null,
-            name = episode.name,
-            runtime = episode.runtime,
-            episodeNumber = episode.number.toLong(),
-            seasonNumber = episode.seasonNumber.toLong(),
-            airDate = episode.airDate,
-            stillPath = episode.stillPath,
-            voteAverage = 0.0,
-            voteCount = 0,
-          ),
-        )
-        episodesRestored += 1
-      }
+      seasonsRestored = restoreSeasons(library)
+      showsRestored = restoreShows(library)
+      episodesRestored = restoreEpisodes(library)
     }
 
     RestoreProcess(
       shows = showsRestored,
       seasons = seasonsRestored,
       episodes = episodesRestored,
-    )
-  }
-
-  private fun insertShow(show: ShowExport) {
-    mediaQueries.insertMediaItem(
-      MediaItemEntity(
-        id = show.id,
-        posterPath = show.posterPath,
-        mediaType = MediaType.TV.value,
-        name = show.title,
-        originalName = show.title,
-        genreIdsJson = show.genres,
-        adult = -1,
-        originalLanguage = "",
-        popularity = 0.0,
-        voteAverage = 0.0,
-        voteCount = 0,
-        overview = "",
-        releaseDate = "",
-        video = -1,
-        firstAirDate = "",
-        originCountryJson = "",
-        backdropPath = null,
-      ),
     )
   }
 
@@ -287,4 +207,107 @@ class ProdTrackDao(
         genres = media.genreIdsJson,
       )
     }
+
+  /** Helper restore library functions **/
+  private fun restoreSeasons(library: LibraryExport): Int {
+    var seasonsRestored = 0
+
+    library.seasons.forEach { season ->
+      seasonQueries.insertSeasonDetails(
+        SeasonDetailsEntity = SeasonDetailsEntity(
+          id = season.id,
+          showId = season.showId,
+          name = season.name,
+          posterPath = season.posterPath,
+          airDate = season.airDate,
+          episodeCount = season.number.toLong(),
+          voteAverage = 0.0,
+          seasonNumber = season.seasonNumber.toLong(),
+          runtime = season.runtime,
+          overview = "",
+        ),
+      )
+      seasonsRestored += 1
+    }
+    return seasonsRestored
+  }
+
+  private fun restoreShows(library: LibraryExport): Int {
+    var totalRestored = 0
+
+    library.shows.forEach { show ->
+      userShowQueries.insertUserShow(
+        showId = show.id,
+        addedAt = show.addedAt,
+        updatedAt = show.addedAt,
+        status = show.status,
+        notes = null,
+        rating = null,
+      )
+      tvDetailsQueries.insertShowDetails(
+        id = show.id,
+        totalSeasons = show.seasons.toLong(),
+        totalEpisodes = show.episodes.toLong(),
+      )
+      insertShow(show)
+
+      show.watched.forEach { episode ->
+        userEpisodeQueries.upsertUserEpisode(
+          episode.id,
+          episode.watchedAt,
+        )
+      }
+      totalRestored += 1
+    }
+    return totalRestored
+  }
+
+  private fun restoreEpisodes(library: LibraryExport): Int {
+    var totalRestored = 0
+
+    library.episodes.forEach { episode ->
+      episodeQueries.insertEpisode(
+        EpisodeEntity(
+          id = episode.id.toLong(),
+          showId = episode.showId,
+          overview = null,
+          name = episode.name,
+          runtime = episode.runtime,
+          episodeNumber = episode.number.toLong(),
+          seasonNumber = episode.seasonNumber.toLong(),
+          airDate = episode.airDate,
+          stillPath = episode.stillPath,
+          voteAverage = 0.0,
+          voteCount = 0,
+        ),
+      )
+      totalRestored += 1
+    }
+    return totalRestored
+  }
+
+  private fun insertShow(show: ShowExport) {
+    mediaQueries.insertMediaItem(
+      MediaItemEntity(
+        id = show.id,
+        posterPath = show.posterPath,
+        mediaType = MediaType.TV.value,
+        name = show.title,
+        originalName = show.title,
+        genreIdsJson = show.genres,
+        adult = -1,
+        originalLanguage = "",
+        popularity = 0.0,
+        voteAverage = 0.0,
+        voteCount = 0,
+        overview = "",
+        releaseDate = "",
+        video = -1,
+        firstAirDate = "",
+        originCountryJson = "",
+        backdropPath = null,
+      ),
+    )
+  }
+  /** End region restore library functions **/
 }

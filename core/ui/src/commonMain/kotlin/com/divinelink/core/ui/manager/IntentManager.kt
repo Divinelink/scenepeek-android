@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.model.export.FileData
-import io.github.vinceglb.filekit.PlatformFile
 
 @Immutable
 interface IntentManager {

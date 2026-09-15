@@ -108,9 +108,7 @@ internal class AndroidIntentManager(
     }
   }
 
-  override suspend fun saveFile(
-    fileData: FileData,
-  ): Result<Boolean> = runCatching {
+  override suspend fun saveFile(fileData: FileData): Result<Boolean> = runCatching {
     val file = FileKit.openFileSaver(
       suggestedName = fileData.name,
       defaultExtension = fileData.extension,
@@ -146,7 +144,6 @@ internal class AndroidIntentManager(
       null -> null
     }
   }
-
 
   companion object {
     private const val PACKAGE_SCHEME = "package"
