@@ -44,7 +44,7 @@ ksoup = "0.2.6"
 koin = "4.2.2"
 
 # Compose Multiplatform
-compose-multiplatform = "1.11.1"
+compose-multiplatform = "1.12.0"
 compose-multiplatform-adaptive = "1.2.0"
 compose-multiplatform-material3 = "1.10.0-alpha05"
 compose-material-icons-extended = "1.7.3"
