@@ -202,7 +202,7 @@
   <string name="restore_to_default">Restore to default</string>
   <string name="changelog">Changelog</string>
   <string name="track_show">Track this show</string>
-  <string name="tracking_show">Tracking this show</string>
+  <string name="tracked_show">Tracked</string>
   <string name="next_up_episodes">Next up</string>
   <string name="season_episode_format" translatable="false">S.%1$s E.%2$s</string>
   <string name="next_up_syncing_issue">Couldn't load progress for some shows. Tap to retry.</string>

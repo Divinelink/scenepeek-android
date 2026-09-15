@@ -18,7 +18,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.action.MediaActionButtonItem
 import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.track_show
-import com.divinelink.core.ui.resources.tracking_show
+import com.divinelink.core.ui.resources.tracked_show
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details__add_to_list
 import com.divinelink.feature.details.resources.feature_details__favorite
@@ -79,7 +79,7 @@ object MediaActionDefaults {
     action: (MediaAction) -> Unit,
   ): MediaActionButtonItem {
     val text = if (added) {
-      UiString.tracking_show
+      UiString.tracked_show
     } else {
       UiString.track_show
     }
