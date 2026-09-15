@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backup
-import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable

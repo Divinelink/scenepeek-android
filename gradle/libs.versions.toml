@@ -6,7 +6,7 @@ compile-sdk = "37"
 target-sdk = "37"
 min-sdk = "26"
 
-kotlin = "2.4.10"
+kotlin = "2.4.20"
 ksp = "2.3.11"
 android-tools = "32.3.1"
 # android-tools and agp should be updated together
@@ -38,7 +38,6 @@ kotlinx-coroutines = '1.11.0'
 ktor = "3.4.3"
 kotlinx-serialization = "1.11.0"
 kotlinx-io = "0.9.1"
-ksoup = "0.2.6"
 
 # Depedency Injection
 koin = "4.2.2"
@@ -52,7 +51,7 @@ lifecycle-multiplatform = "2.11.0"
 navigation3 = "1.1.1"
 compose-shimmer = "1.5.0"
 compose-colorpicker = "1.2.0"
-materialkolor = "5.0.0"
+materialkolor = "5.0.1"
 
 # Misc
 napier = "2.7.1"
@@ -68,7 +67,7 @@ turbine = "1.2.1"
 kotest = "6.2.4"
 
 # UI
-robolectric = "4.16.1"
+robolectric = "4.17"
 ui-automator = "2.4.0"
 
 # Mockers

@@ -88,8 +88,8 @@ import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.scenepeek.di.navigationModule
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.compose.resources.getString
 import org.koin.core.component.get
@@ -279,7 +279,6 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
         appInfoRepository = appInfoRepository,
         clock = clockProvider,
-
       )
 
       ScenePeekApp(
@@ -795,70 +794,66 @@ class ScenePeekAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test when state is offline not connected snackbar is visible`() = uiTest {
-    runTest(
-      MainDispatcherRule().testDispatcher.unconfined,
-    ) {
-      mockHomeData(Result.failure(AppException.Unknown()))
+  fun `test when state is offline not connected snackbar is visible`() = runComposeUiTest {
+    mockHomeData(Result.failure(AppException.Unknown()))
 
-      declare {
-        HomeViewModel(
-          preferencesRepository = preferencesRepository,
-          authRepository = authRepository.mock,
-          searchStateManager = searchStateManager,
-        )
-      }
-
-      setContentWithTheme {
-        state = rememberScenePeekAppState(
-          scope = backgroundScope,
-          networkMonitor = networkMonitor,
-          onboardingManager = onboardingManager,
-          navigator = navigator,
-          preferencesRepository = preferencesRepository,
-          appInfoRepository = appInfoRepository,
-          clock = clockProvider,
-        )
-
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
-
-      networkMonitor.setConnected(false)
-
-      onNodeWithText(getString(UiString.core_ui_not_connected)).assertIsDisplayed()
-
-      networkMonitor.setConnected(true)
-
-      onNodeWithText(getString(UiString.core_ui_connected)).assertIsDisplayed()
-      onNodeWithText(getString(UiString.core_ui_not_connected)).assertIsNotDisplayed()
-
-      advanceTimeBy(5000)
-
-      onNodeWithText(getString(UiString.core_ui_connected)).assertIsNotDisplayed()
+    declare {
+      HomeViewModel(
+        preferencesRepository = preferencesRepository,
+        authRepository = authRepository.mock,
+        searchStateManager = searchStateManager,
+      )
     }
+
+    setContentWithTheme {
+      state = rememberScenePeekAppState(
+        scope = rememberCoroutineScope(),
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+        navigator = navigator,
+        preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
+        clock = clockProvider,
+      )
+
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
+    }
+    networkMonitor.setConnected(false)
+
+    onNodeWithText(getString(UiString.core_ui_not_connected)).assertIsDisplayed()
+
+    networkMonitor.setConnected(true)
+
+    onNodeWithText(getString(UiString.core_ui_connected)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_not_connected)).assertIsNotDisplayed()
+
+    mainClock.advanceTimeBy(1000)
+    onNodeWithText(getString(UiString.core_ui_connected)).assertIsDisplayed()
+    onNodeWithText(getString(UiString.core_ui_not_connected)).assertIsNotDisplayed()
+
+    mainClock.advanceTimeBy(5000)
+
+    onNodeWithText(getString(UiString.core_ui_connected)).assertIsNotDisplayed()
   }
 
   fun `test currentDestination`() = uiTest {
-    runTest {
-      setContentWithTheme {
-        state = rememberScenePeekAppState(
-          scope = backgroundScope,
-          networkMonitor = networkMonitor,
-          onboardingManager = onboardingManager,
-          navigator = navigator,
-          preferencesRepository = preferencesRepository,
-          appInfoRepository = appInfoRepository,
-          clock = clockProvider,
-        )
-      }
-
-      assertThat(state.currentTab).isEqualTo(TopLevelDestination.HOME)
+    setContentWithTheme {
+      state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+        navigator = navigator,
+        preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
+        clock = clockProvider,
+      )
     }
+
+    state.currentTab shouldBe TopLevelDestination.HOME
   }
 
   @Test
