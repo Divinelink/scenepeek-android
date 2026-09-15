@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.database.Database
+import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.database.season.EpisodeEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.database.show.ShowSyncError
@@ -29,6 +30,7 @@ class ProdTrackDao(
   private val mediaQueries = database.mediaItemEntityQueries
   private val episodeQueries = database.episodeEntityQueries
   private val seasonQueries = database.seasonDetailsEntityQueries
+  private val tvDetailsQueries = database.showDetailsEntityQueries
 
   override fun getUserShows(): Flow<List<Long>> = userShowQueries
     .getAllUserShows()
@@ -180,6 +182,13 @@ class ProdTrackDao(
           notes = null,
           rating = null,
         )
+        tvDetailsQueries.insertShowDetails(
+          id = show.id,
+          totalSeasons = show.seasons.toLong(),
+          totalEpisodes = show.episodes.toLong(),
+        )
+        insertShow(show)
+
         show.watched.forEach { episode ->
           userEpisodeQueries.upsertUserEpisode(
             episode.id,
@@ -210,6 +219,30 @@ class ProdTrackDao(
     addedShows
   }
 
+  private fun insertShow(show: ShowExport) {
+    mediaQueries.insertMediaItem(
+      MediaItemEntity(
+        id = show.id,
+        posterPath = show.posterPath,
+        mediaType = MediaType.TV.value,
+        name = show.title,
+        originalName = show.title,
+        genreIdsJson = show.genres,
+        adult = -1,
+        originalLanguage = "",
+        popularity = 0.0,
+        voteAverage = 0.0,
+        voteCount = 0,
+        overview = "",
+        releaseDate = "",
+        video = -1,
+        firstAirDate = "",
+        originCountryJson = "",
+        backdropPath = null,
+      ),
+    )
+  }
+
   private fun getShowExports(): List<ShowExport> = userShowQueries
     .getAllUserShows()
     .executeAsList()
@@ -229,6 +262,10 @@ class ProdTrackDao(
         mediaType = MediaType.TV.value,
       ).executeAsOne()
 
+      val showDetails = tvDetailsQueries
+        .fetchShowDetails(userShow.showId)
+        .executeAsOne()
+
       ShowExport(
         id = userShow.showId,
         title = media.name,
@@ -236,6 +273,9 @@ class ProdTrackDao(
         status = userShow.status,
         watched = userEpisodes,
         addedAt = userShow.addedAt,
+        episodes = showDetails.totalEpisodes.toInt(),
+        seasons = showDetails.totalSeasons.toInt(),
+        genres = media.genreIdsJson,
       )
     }
 }

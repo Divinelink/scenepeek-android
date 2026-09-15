@@ -10,4 +10,7 @@ data class ShowExport(
   val status: String,
   val watched: List<UserEpisodeExport>,
   val addedAt: String,
+  val episodes: Int,
+  val seasons: Int,
+  val genres: String,
 )
