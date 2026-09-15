@@ -108,4 +108,11 @@
   <string name="v59_add_changelog_button">- Added a view changelog option in Settings > App updates</string>
   <string name="v59_add_delete_account_option">- Added delete account option in account settings</string>
   <string name="v59_fix_seerr_home_actions">- Fixed an issue with Seerr actions on the home screen</string>
+
+  <string name="v60_add_show_tracking">- Introduced show tracking functionality! You can now add shows to your list, mark individual episodes or complete seasons as watched, and monitor your viewing progress</string>
+  <string name="v60_add_next_up_section">- Added "Next Up" section in home to display your released and upcoming episodes</string>
+  <string name="v60_add_backup_and_restore">- Added Backup and Restore options in Settings, so you can easily save and recover your watch history</string>
+  <string name="v60_add_content_ratings">- Added age/content ratings information for movies and shows</string>
+  <string name="v60_ios_dark_themed_icon">- Added a dark-themed app icon for iOS</string>
+  <string name="v60_redesign_media_action_menu">- Updated the action menu for movies and shows. Just tap the FAB (bottom-right) to access the new look and quickly track your favorite series</string>
 </resources>

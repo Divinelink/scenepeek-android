@@ -85,6 +85,12 @@ import com.divinelink.feature.onboarding.resources.v59_add_changelog_button
 import com.divinelink.feature.onboarding.resources.v59_add_delete_account_option
 import com.divinelink.feature.onboarding.resources.v59_fix_seerr_home_actions
 import com.divinelink.feature.onboarding.resources.v59_handle_letterboxd_urls
+import com.divinelink.feature.onboarding.resources.v60_add_backup_and_restore
+import com.divinelink.feature.onboarding.resources.v60_add_content_ratings
+import com.divinelink.feature.onboarding.resources.v60_add_next_up_section
+import com.divinelink.feature.onboarding.resources.v60_add_show_tracking
+import com.divinelink.feature.onboarding.resources.v60_ios_dark_themed_icon
+import com.divinelink.feature.onboarding.resources.v60_redesign_media_action_menu
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -362,6 +368,19 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v59_fix_seerr_home_actions)),
   )
 
+  val v60 = listOf(
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
+    IntroSection.WhatsNew("v0.39.0"),
+    IntroSection.SecondaryHeader.Features,
+    IntroSection.Text(UIText.ResourceText(R.string.v60_add_show_tracking)),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v60_add_next_up_section)),
+    IntroSection.Text(UIText.ResourceText(R.string.v60_add_backup_and_restore)),
+    IntroSection.Text(UIText.ResourceText(R.string.v60_add_content_ratings)),
+    IntroSection.Text(UIText.ResourceText(R.string.v60_ios_dark_themed_icon)),
+    IntroSection.Text(UIText.ResourceText(R.string.v60_redesign_media_action_menu)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -390,5 +409,6 @@ object IntroSections {
     56 to v56,
     58 to v58,
     59 to v59,
+    60 to v60,
   )
 }
