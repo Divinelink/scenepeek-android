@@ -91,6 +91,7 @@ import com.divinelink.feature.onboarding.resources.v60_add_next_up_section
 import com.divinelink.feature.onboarding.resources.v60_add_show_tracking
 import com.divinelink.feature.onboarding.resources.v60_ios_dark_themed_icon
 import com.divinelink.feature.onboarding.resources.v60_redesign_media_action_menu
+import com.divinelink.feature.onboarding.resources.v61_fixed_issue_with_material3
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -381,6 +382,13 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v60_redesign_media_action_menu)),
   )
 
+  val v61 = listOf(
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
+    IntroSection.WhatsNew("v0.39.1"),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.v61_fixed_issue_with_material3)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -410,5 +418,6 @@ object IntroSections {
     58 to v58,
     59 to v59,
     60 to v60,
+    61 to v61,
   )
 }

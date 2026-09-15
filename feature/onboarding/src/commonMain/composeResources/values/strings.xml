@@ -115,4 +115,6 @@
   <string name="v60_add_content_ratings">- Added age/content ratings information for movies and shows</string>
   <string name="v60_ios_dark_themed_icon">- Added a dark-themed app icon for iOS</string>
   <string name="v60_redesign_media_action_menu">- Updated the action menu for movies and shows. Just tap the FAB (bottom-right) to access the new look and quickly track your favorite series</string>
+
+  <string name="v61_fixed_issue_with_material3">- Fixed an issue that made the app unresponsive due to an outdated library</string>
 </resources>

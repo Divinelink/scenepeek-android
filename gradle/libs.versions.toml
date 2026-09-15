@@ -1,6 +1,6 @@
 [versions]
-version-name = "0.39.0"
-version-code = "60"
+version-name = "0.39.1"
+version-code = "61"
 
 compile-sdk = "37"
 target-sdk = "37"
