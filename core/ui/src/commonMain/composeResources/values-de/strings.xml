@@ -173,4 +173,5 @@
         <item quantity="one">Firma</item>
         <item quantity="other">Firmen</item>
     </plurals>
+    <string name="changelog">Änderungsprotokoll</string>
 </resources>
