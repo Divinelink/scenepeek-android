@@ -3,6 +3,14 @@ package com.divinelink.core.ui.manager
 import androidx.compose.runtime.Composable
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.model.export.FileData
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.openFilePicker
+import io.github.vinceglb.filekit.dialogs.openFileSaver
+import io.github.vinceglb.filekit.extension
+import io.github.vinceglb.filekit.nameWithoutExtension
+import io.github.vinceglb.filekit.readString
+import io.github.vinceglb.filekit.writeString
 import kotlinx.cinterop.BetaInteropApi
 import platform.Foundation.NSCharacterSet
 import platform.Foundation.NSString
@@ -84,12 +92,27 @@ class IOSIntentManager(
     }
   }
 
-  override suspend fun saveFile(fileData: FileData): Result<Boolean> {
-    TODO("Not yet implemented")
+  override suspend fun saveFile(fileData: FileData): Result<Boolean> = runCatching {
+    val file = FileKit.openFileSaver(
+      suggestedName = fileData.name,
+      defaultExtension = fileData.extension,
+    )
+
+    file?.writeString(fileData.content)
+    file != null
   }
 
   override suspend fun readFile(extensions: Set<String>?): FileData? {
-    TODO("Not yet implemented")
+    val openFile = FileKit.openFilePicker(
+      FileKitType.File(extensions = extensions),
+    )
+    if (openFile == null) return null
+
+    return FileData(
+      extension = openFile.extension,
+      name = openFile.nameWithoutExtension,
+      content = openFile.readString(),
+    )
   }
 
   @OptIn(BetaInteropApi::class)
