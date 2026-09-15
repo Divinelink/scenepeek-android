@@ -243,14 +243,27 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   }
 
   override val homeSections: Flow<HomeSectionsConfig>
-    get() = dataStore.data.map {
+    get() = dataStore.data.map { prefs ->
+      val hidden = prefs[homeSectionHiddenKey]
+        ?.mapNotNull { key -> MediaListSection.from(key) }
+        ?.toSet()
+        ?: emptySet()
+
+      val storedOrder = prefs[homeSectionDisplayOrderKey]
+        ?.split(",")
+        ?.mapNotNull { key -> MediaListSection.from(key) }
+        ?: emptyList()
+
+      val order = MediaListSection.homeEntries
+        .filter { it !in hidden }
+        .sortedBy { section ->
+          val storedIndex = storedOrder.indexOf(section)
+          if (storedIndex != -1) storedIndex else MediaListSection.homeEntries.indexOf(section)
+        }
+
       HomeSectionsConfig(
-        hidden = it[homeSectionHiddenKey]
-          ?.mapNotNull { key -> MediaListSection.from(key) }?.toSet() ?: emptySet(),
-        order = it[homeSectionDisplayOrderKey]
-          ?.split(",")
-          ?.mapNotNull { key -> MediaListSection.from(key) }
-          ?: MediaListSection.homeEntries,
+        hidden = hidden,
+        order = order,
       )
     }
 
