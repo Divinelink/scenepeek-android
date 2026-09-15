@@ -12,6 +12,7 @@ import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.backup.EpisodeExport
 import com.divinelink.core.model.track.backup.LibraryExport
+import com.divinelink.core.model.track.backup.RestoreProcess
 import com.divinelink.core.model.track.backup.SeasonExport
 import com.divinelink.core.model.track.backup.ShowExport
 import com.divinelink.core.model.track.backup.UserEpisodeExport
@@ -152,11 +153,13 @@ class ProdTrackDao(
     )
   }
 
-  override fun restoreLibrary(encoded: String): Result<List<ShowExport>> = runCatching {
+  override fun restoreLibrary(encoded: String): Result<RestoreProcess> = runCatching {
     val library = Json.decodeFromString<LibraryExport>(encoded)
-    val addedShows = mutableListOf<ShowExport>()
+    var showsRestored = 0
+    var episodesRestored = 0
+    var seasonsRestored = 0
 
-    database.transactionWithResult {
+    database.transaction {
       library.seasons.forEach { season ->
         seasonQueries.insertSeasonDetails(
           SeasonDetailsEntity = SeasonDetailsEntity(
@@ -172,6 +175,7 @@ class ProdTrackDao(
             overview = "",
           ),
         )
+        seasonsRestored += 1
       }
       library.shows.forEach { show ->
         userShowQueries.insertUserShow(
@@ -195,7 +199,7 @@ class ProdTrackDao(
             episode.watchedAt,
           )
         }
-        addedShows.add(show)
+        showsRestored += 1
       }
       library.episodes.forEach { episode ->
         episodeQueries.insertEpisode(
@@ -213,10 +217,15 @@ class ProdTrackDao(
             voteCount = 0,
           ),
         )
+        episodesRestored += 1
       }
     }
 
-    addedShows
+    RestoreProcess(
+      shows = showsRestored,
+      seasons = seasonsRestored,
+      episodes = episodesRestored,
+    )
   }
 
   private fun insertShow(show: ShowExport) {

@@ -110,13 +110,14 @@ internal class AndroidIntentManager(
 
   override suspend fun saveFile(
     fileData: FileData,
-  ) {
+  ): Result<Boolean> = runCatching {
     val file = FileKit.openFileSaver(
       suggestedName = fileData.name,
       defaultExtension = fileData.extension,
     )
 
     file?.writeString(fileData.content)
+    file != null
   }
 
   override suspend fun readFile(extensions: Set<String>?): FileData? {

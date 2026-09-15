@@ -84,7 +84,7 @@ class IOSIntentManager(
     }
   }
 
-  override suspend fun saveFile(fileData: FileData) {
+  override suspend fun saveFile(fileData: FileData): Result<Boolean> {
     TODO("Not yet implemented")
   }
 

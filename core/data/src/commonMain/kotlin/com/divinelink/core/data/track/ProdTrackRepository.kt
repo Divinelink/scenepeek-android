@@ -3,7 +3,7 @@ package com.divinelink.core.data.track
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.database.track.TrackDao
 import com.divinelink.core.model.track.backup.LibraryExport
-import com.divinelink.core.model.track.backup.ShowExport
+import com.divinelink.core.model.track.backup.RestoreProcess
 import kotlinx.coroutines.flow.Flow
 
 class ProdTrackRepository(
@@ -61,6 +61,6 @@ class ProdTrackRepository(
     dao.exportLibrary()
   }
 
-  override fun restoreLibrary(encodedFile: String): Result<List<ShowExport>> = dao
+  override fun restoreLibrary(encodedFile: String): Result<RestoreProcess> = dao
     .restoreLibrary(encodedFile)
 }

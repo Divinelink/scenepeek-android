@@ -15,10 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
+import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.components.dialog.BasicDialog
+import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.composition.LocalIntentManager
+import com.divinelink.core.ui.resources.backup_completed
+import com.divinelink.core.ui.resources.backup_failed
+import com.divinelink.core.ui.resources.restore_completed
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.resources.Res
@@ -40,8 +47,47 @@ fun AnimatedVisibilityScope.BackupScreen(
 
   LaunchedEffect(Unit) {
     viewModel.exportFile.collect { file ->
-      intentManager.saveFile(file)
+      intentManager
+        .saveFile(file)
+        .fold(
+          onSuccess = { saved ->
+            if (saved) {
+              viewModel.setDialog(
+                dialog = DialogState(
+                  message = UIText.ResourceText(UiString.backup_completed),
+                  error = null,
+                ),
+              )
+            }
+          },
+          onFailure = {
+            viewModel.setDialog(
+              dialog = DialogState(
+                message = UIText.ResourceText(UiString.backup_failed),
+                error = null,
+              ),
+            )
+          },
+        )
     }
+  }
+
+  uiState.dialog?.let { state ->
+    BasicDialog(
+      dialogState = state,
+      onDismissRequest = { viewModel.setDialog(null) },
+    )
+  }
+
+  uiState.restoreProcess?.let { process ->
+    BasicDialog(
+      dialogState = DialogState(
+        title = UIText.ResourceText(UiString.restore_completed),
+        message = UIText.StringText(process.toRestoreMessage()),
+        error = null,
+      ),
+      onDismissRequest = { viewModel.setDialog(null) },
+    )
   }
 
   SettingsScaffold(

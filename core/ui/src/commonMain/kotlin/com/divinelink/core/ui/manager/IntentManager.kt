@@ -24,7 +24,7 @@ interface IntentManager {
 
   fun navigateToAppSettings()
 
-  suspend fun saveFile(fileData: FileData)
+  suspend fun saveFile(fileData: FileData): Result<Boolean>
 
   suspend fun readFile(extensions: Set<String>?): FileData?
 }
