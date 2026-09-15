@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.rememberScenePeekAppState
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.init
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalAnimationApi
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    FileKit.init(this)
     handleIntent(intent)
     enableEdgeToEdge()
     setContent {

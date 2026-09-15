@@ -136,7 +136,7 @@ class AboutSettingsScreenTest : ComposeTest() {
       )
     }
 
-    onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToIndex(9)
+    onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToIndex(10)
 
     onNodeWithText(getString(R.string.feature_settings_about)).performClick()
 

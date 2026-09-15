@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.DisplaySettings
 import androidx.compose.material.icons.outlined.Feedback
 import androidx.compose.material.icons.outlined.Groups2
@@ -37,6 +38,7 @@ import com.divinelink.feature.settings.modal.SettingsModalContent
 import com.divinelink.feature.settings.modal.SettingsModalOption
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.app_updates
+import com.divinelink.feature.settings.resources.backup_and_restore
 import com.divinelink.feature.settings.resources.feature_settings_about
 import com.divinelink.feature.settings.resources.feature_settings_details_preferences
 import com.divinelink.feature.settings.resources.feature_settings_help_with_translation_summary
@@ -130,6 +132,14 @@ fun SettingsScreen(
           icon = IconWrapper.Vector(Icons.Outlined.Update),
           text = stringResource(Res.string.app_updates),
           onClick = { onNavigate(Navigation.AppUpdatesSettingsRoute) },
+        )
+      }
+
+      item {
+        SettingsClickItem(
+          icon = IconWrapper.Vector(Icons.Outlined.Backup),
+          text = stringResource(Res.string.backup_and_restore),
+          onClick = { onNavigate(Navigation.BackupAndRestoreSettingsRoute) },
         )
       }
 

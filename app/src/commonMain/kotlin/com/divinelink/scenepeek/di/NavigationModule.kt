@@ -48,6 +48,7 @@ import com.divinelink.feature.settings.app.about.AboutSettingsScreen
 import com.divinelink.feature.settings.app.account.AccountSettingsScreen
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsScreen
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsScreen
+import com.divinelink.feature.settings.app.backup.BackupScreen
 import com.divinelink.feature.settings.app.details.DetailPreferencesSettingsScreen
 import com.divinelink.feature.settings.app.links.LinkHandlingSettingsScreen
 import com.divinelink.feature.settings.app.updates.AppUpdatesScreen
@@ -396,6 +397,13 @@ val navigationModule = module {
   navigation<Navigation.NextUpFullscreenRoute> {
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.NextUpFullscreen(
+      onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.BackupAndRestoreSettingsRoute> {
+    val navigator = get<Navigator>()
+    LocalNavAnimatedContentScope.current.BackupScreen(
       onNavigate = navigator::navigate,
     )
   }

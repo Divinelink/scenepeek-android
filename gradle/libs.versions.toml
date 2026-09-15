@@ -6,7 +6,7 @@ compile-sdk = "37"
 target-sdk = "37"
 min-sdk = "26"
 
-kotlin = "2.4.10"
+kotlin = "2.4.20"
 ksp = "2.3.11"
 android-tools = "32.3.1"
 # android-tools and agp should be updated together
@@ -25,6 +25,7 @@ ktlint-cli = "1.8.0"
 secrets = "2.0.1"
 detekt = "1.23.8"
 sentry-android = "8.53.0"
+filekit = "0.16.0"
 
 # Internal Database
 sqldelight = "2.3.2"
@@ -37,13 +38,12 @@ kotlinx-coroutines = '1.11.0'
 ktor = "3.4.3"
 kotlinx-serialization = "1.11.0"
 kotlinx-io = "0.9.1"
-ksoup = "0.2.6"
 
 # Depedency Injection
 koin = "4.2.2"
 
 # Compose Multiplatform
-compose-multiplatform = "1.11.1"
+compose-multiplatform = "1.12.0"
 compose-multiplatform-adaptive = "1.2.0"
 compose-multiplatform-material3 = "1.10.0-alpha05"
 compose-material-icons-extended = "1.7.3"
@@ -51,7 +51,7 @@ lifecycle-multiplatform = "2.11.0"
 navigation3 = "1.1.1"
 compose-shimmer = "1.5.0"
 compose-colorpicker = "1.2.0"
-materialkolor = "5.0.0"
+materialkolor = "5.0.1"
 
 # Misc
 napier = "2.7.1"
@@ -67,7 +67,7 @@ turbine = "1.2.1"
 kotest = "6.2.4"
 
 # UI
-robolectric = "4.16.1"
+robolectric = "4.17"
 ui-automator = "2.4.0"
 
 # Mockers
@@ -147,6 +147,7 @@ koin-compose-nav3 = { group = "io.insert-koin", name = "koin-compose-navigation3
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 sentry-android = { group = "io.sentry", name = "sentry-android-core", version.ref = "sentry-android" }
 android-youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "android-youtube-player" }
+filekit-dialogs = { group = "io.github.vinceglb", name = "filekit-dialogs-compose", version.ref = "filekit" }
 
 # Database
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }

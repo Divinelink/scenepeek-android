@@ -2,6 +2,8 @@ package com.divinelink.core.data.track
 
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.database.track.TrackDao
+import com.divinelink.core.model.track.backup.LibraryExport
+import com.divinelink.core.model.track.backup.RestoreProcess
 import kotlinx.coroutines.flow.Flow
 
 class ProdTrackRepository(
@@ -54,4 +56,11 @@ class ProdTrackRepository(
 
   override fun isWatchedEpisode(episodeId: Long): Boolean = dao
     .isWatchedEpisode(episodeId)
+
+  override fun backupLibrary(): Result<LibraryExport> = runCatching {
+    dao.exportLibrary()
+  }
+
+  override fun restoreLibrary(encodedFile: String): Result<RestoreProcess> = dao
+    .restoreLibrary(encodedFile)
 }

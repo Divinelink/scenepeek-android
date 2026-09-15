@@ -24,6 +24,7 @@ fun MainViewController(): UIViewController = ComposeUIViewController {
     preferencesRepository = viewModel.preferencesRepository,
     navigator = viewModel.navigator,
     appInfoRepository = viewModel.appInfoRepository,
+    clock = viewModel.clock,
   )
 
   DisposableEffect(Unit) {

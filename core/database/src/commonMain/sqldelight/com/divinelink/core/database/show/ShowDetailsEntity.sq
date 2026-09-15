@@ -13,3 +13,7 @@ VALUES (?,?,?);
 fetchNumberOfSeasons:
 SELECT totalSeasons FROM ShowDetailsEntity
 WHERE id = ?;
+
+fetchShowDetails:
+SELECT * FROM ShowDetailsEntity
+WHERE id = ?;

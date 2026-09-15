@@ -30,3 +30,6 @@ VALUES ?;
 fetchSeasonDetails:
 SELECT * FROM SeasonDetailsEntity
 WHERE showId = ? AND seasonNumber = ?;
+
+fetchAllSeasons:
+SELECT * FROM SeasonDetailsEntity;

@@ -217,4 +217,9 @@
   <string name="removed_from_your_shows">Removed from your shows</string>
   <string name="saved_to_history">%1$s saved to history</string>
   <string name="removed_from_history">%1$s removed from history</string>
+  <string name="backup_completed">Backup completed</string>
+  <string name="backup_failed">Backup failed</string>
+  <string name="restore_completed">Restore completed</string>
+  <string name="restore_failed">Restore failed</string>
+  <string name="restore_header">All items have been successfully restored!</string>
 </resources>

@@ -37,6 +37,7 @@ import com.divinelink.core.ui.resources.next_up_episodes
 import com.divinelink.core.ui.resources.upcoming
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.home.nextup.NextUpAction
+import com.divinelink.feature.home.nextup.NextUpEmptyContent
 import com.divinelink.feature.home.nextup.NextUpEpisode
 import com.divinelink.feature.home.nextup.NextUpViewModel
 import org.jetbrains.compose.resources.stringResource
@@ -100,6 +101,9 @@ fun AnimatedVisibilityScope.NextUpFullscreen(
 
           if (state.available.isEmpty() && state.upcoming.isEmpty()) {
             item {
+              NextUpEmptyContent(
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
+              )
             }
           }
 
