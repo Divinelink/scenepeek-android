@@ -91,4 +91,12 @@
     <string name="check_for_updates_on_default_source">Ελέγξτε για ενημερώσεις στο Codeberg</string>
     <string name="view_on">Προβολή στο %1$s</string>
     <string name="star_on">Αστέρι στο %1$s</string>
+    <string name="danger_zone">Επικίνδυνη περιοχή!</string>
+    <string name="feature_settings_delete_account">Διαγραφή λογαριασμού</string>
+    <string name="feature_settings_delete_account_summary">Ζητήστε τη διαγραφή του λογαριασμού σας, εάν δεν επιθυμείτε πλέον να τον χρησιμοποιείτε.</string>
+    <string name="restore_summary">Εισαγωγή ενός αντιγράφου ασφαλείας που έχει δημιουργηθεί προηγουμένως</string>
+    <string name="restore">Επαναφορά</string>
+    <string name="backup_summary">Εξαγωγή του ιστορικού προβολής σας σε αρχείο αντιγράφου ασφαλείας</string>
+    <string name="backup_and_restore">Αντίγραφα ασφ. και επαναφορά</string>
+    <string name="backup">Αντίγραφο ασφαλείας</string>
 </resources>

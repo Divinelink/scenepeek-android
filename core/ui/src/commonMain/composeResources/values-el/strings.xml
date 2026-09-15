@@ -192,4 +192,26 @@
     <string name="customize_home_layout">Επεξεργασία διάταξης αρχικής οθόνης</string>
     <string name="error_at_least_one_section_visible">Πρέπει να είναι ορατή τουλάχιστον μία ενότητα</string>
     <string name="restore_to_default">Επαναφορά στις προεπιλογές</string>
+    <string name="changelog">Αρχείο αλλαγών</string>
+    <string name="upcoming">Επερχόμενα</string>
+    <string name="core_ui_auth_token">Auth token</string>
+    <string name="track_show">Παρακολουθήστε αυτή τη σειρά</string>
+    <string name="tracked_show">Παρακολουθείται</string>
+    <string name="next_up_episodes">Επόμενο</string>
+    <string name="added_to_your_shows">Προστέθηκε στις σειρές σας</string>
+    <string name="removed_from_your_shows">Αφαιρέθηκε από τις σειρές σας</string>
+    <string name="removed_from_history">%1$s αφαιρέθηκε από το ιστορικό</string>
+    <string name="backup_completed">Το αντίγραφο ασφαλείας ολοκληρώθηκε</string>
+    <string name="backup_failed">Το αντίγραφο ασφαλείας απέτυχε</string>
+    <string name="restore_completed">Η επαναφορά ολοκληρώθηκε</string>
+    <string name="restore_failed">Η επαναφορά απέτυχε</string>
+    <string name="restore_header">Όλα τα στοιχεία επαναφέρθηκαν με επιτυχία!</string>
+    <string name="saved_to_history">%1$s αποθηκεύτηκε στο ιστορικό</string>
+    <plurals name="days_left_to_air">
+        <item quantity="one">Προβάλλεται αύριο</item>
+        <item quantity="other">Προβάλλεται σε %1$s μέρες</item>
+    </plurals>
+    <string name="show_progress_empty_state_subtitle">Προσθέστε σειρές στη βιβλιοθήκη σας για να ξεκινήσετε να παρακολουθείτε την πρόοδό σας.</string>
+    <string name="show_progress_empty_state_title">Ας βρούμε κάτι να δούμε!</string>
+    <string name="next_up_syncing_issue">Δεν ήταν δυνατή η φόρτωση της προόδου για ορισμένες σειρές. Πατήστε για επανάληψη.</string>
 </resources>
