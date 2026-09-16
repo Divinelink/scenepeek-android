@@ -3,8 +3,10 @@ package com.divinelink.core.network.media.model.movie
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonNames
 
 @Serializable
 data class MoviesResponseApi(
@@ -15,18 +17,18 @@ data class MoviesResponseApi(
 )
 
 @Serializable
-data class MovieResponseApi(
+data class MovieResponseApi @OptIn(ExperimentalSerializationApi::class) constructor(
   val adult: Boolean,
   @SerialName("backdrop_path") val backdropPath: String?,
   @SerialName("genre_ids") val genreIds: List<Int>?,
   val id: Long,
   @SerialName("original_language") val originalLanguage: String,
-  @SerialName("original_title") val originalTitle: String,
+  @JsonNames("original_title", "original_name") val originalTitle: String,
   val overview: String,
   val popularity: Double?,
   @SerialName("poster_path") val posterPath: String?,
   @SerialName("release_date") val releaseDate: String?,
-  val title: String,
+  @JsonNames("name", "title") val title: String,
   val video: Boolean?,
   @SerialName("vote_average") val voteAverage: Double?,
   @SerialName("vote_count") val voteCount: Int?,
