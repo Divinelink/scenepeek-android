@@ -191,6 +191,8 @@ kotlin-native/
 *.cinteropLibraries.json
 
 iosApp/Config/Secret.xcconfig
+iosApp/fastlane/config/AuthKey.p8
+iosApp/fastlane/config/config.properties
 
 android/sentry.properties
 /android/src/main/config.properties

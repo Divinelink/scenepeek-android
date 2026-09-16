@@ -1,0 +1,44 @@
+# Fastfile
+default_platform(:ios)
+
+config_dir = File.expand_path("../fastlane/config", Dir.pwd)
+config = File.read(File.join(config_dir, "config.properties"))
+  .gsub("\r", "\n")
+  .lines
+  .each_with_object({}) do |line, hash|
+    key, value = line.strip.split("=", 2)
+    next if key.nil? || key.empty? || key.start_with?("#")
+    hash[key] = value&.gsub(/\A"|"\z/, "")
+  end
+
+platform :ios do
+  desc "Build and submit app to App Store"
+  lane :release do
+    # increment_build_number(xcodeproj: "iosApp.xcodeproj")
+    key_path = File.expand_path(File.join(config_dir, config["keyFilePath"]))
+
+    build_app(
+      scheme: config["scheme"],
+      project: config["project"],
+      include_bitcode: true,
+      clean: false
+    )
+
+    api_key = app_store_connect_api_key(
+      key_id:  config["keyId"],
+      issuer_id: config["issuerId"],
+      key_filepath: key_path,
+      duration: 1200,
+      in_house: false
+    )
+
+    upload_to_app_store(
+      api_key: api_key,
+      skip_metadata: false,
+      skip_screenshots: true,
+      submit_for_review: true,
+      automatic_release: true,
+      force: true
+    )
+  end
+end
