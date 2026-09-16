@@ -255,7 +255,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
         ?: emptyList()
 
       val order = MediaListSection.homeEntries
-        .filter { it !in hidden }
         .sortedBy { section ->
           val storedIndex = storedOrder.indexOf(section)
           if (storedIndex != -1) storedIndex else MediaListSection.homeEntries.indexOf(section)
