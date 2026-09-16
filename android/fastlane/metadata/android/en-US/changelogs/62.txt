@@ -1,0 +1,10 @@
+🎉 Update v0.39.2
+
+- Introduced show tracking functionality! You can now add shows to your list, mark individual episodes or complete seasons as watched, and monitor your viewing progress
+- Added "Next Up" section in home to display your released and upcoming episodes
+- Added Backup and Restore options in Settings, so you can easily save and recover your watch history
+- Added age/content ratings information for movies and shows
+- Added a dark-themed app icon for iOS
+- Updated the action menu for movies and shows. Just tap the FAB (bottom-right) to access the new look and quickly track your favorite series
+
+We're constantly working on improvements and new features. Stay tuned for more updates!
