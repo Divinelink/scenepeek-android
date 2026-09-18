@@ -42,10 +42,6 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
           api(libs.compose.multiplatform.navigation3)
           api(libs.lifecycle.multiplatform.viewmodel.navigation3)
         }
-
-        androidMain.dependencies {
-          implementation(libs.compose.multiplatform.ui.tooling)
-        }
       }
     }
   }
