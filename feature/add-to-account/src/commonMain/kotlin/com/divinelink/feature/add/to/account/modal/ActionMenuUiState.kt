@@ -33,19 +33,20 @@ data class ActionMenuUiState(
 
   val availableActions = when (entryPoint) {
     is ActionMenuEntryPoint.ListDetails -> listOf(
-      ActionMenuIntent.AddToList,
-      ActionMenuIntent.RemoveFromList,
-      ActionMenuIntent.MultiSelect,
-      ActionMenuIntent.Share,
+      ActionMenuSection.Intent.AddToList,
+      ActionMenuSection.Intent.RemoveFromList,
+      ActionMenuSection.Intent.MultiSelect,
+      ActionMenuSection.Intent.Share,
     )
     is ActionMenuEntryPoint.Other -> listOf(
-      ActionMenuIntent.AddToList,
-      ActionMenuIntent.Share,
+      ActionMenuSection.Intent.AddToList,
+      ActionMenuSection.Intent.Share,
     )
     is ActionMenuEntryPoint.ShowProgress -> listOf(
-      ActionMenuIntent.PauseShow,
-      ActionMenuIntent.AddToList,
-      ActionMenuIntent.Share,
+      ActionMenuSection.Intent.PauseShow,
+      ActionMenuSection.Divider,
+      ActionMenuSection.Intent.AddToList,
+      ActionMenuSection.Intent.Share,
     )
   }
 }

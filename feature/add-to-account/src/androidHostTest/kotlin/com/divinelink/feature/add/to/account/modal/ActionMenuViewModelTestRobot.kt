@@ -3,6 +3,7 @@ package com.divinelink.feature.add.to.account.modal
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.google.common.truth.Truth.assertThat
@@ -12,6 +13,7 @@ import org.junit.Rule
 class ActionMenuViewModelTestRobot : ViewModelTestRobot<ActionMenuUiState>() {
 
   private val listRepository = TestListRepository()
+  private val detailsRepository = TestDetailsRepository()
   private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   private lateinit var viewModel: ActionMenuViewModel
   private lateinit var entryPoint: ActionMenuEntryPoint
@@ -23,8 +25,8 @@ class ActionMenuViewModelTestRobot : ViewModelTestRobot<ActionMenuUiState>() {
   override fun buildViewModel() = apply {
     viewModel = ActionMenuViewModel(
       entryPoint = entryPoint,
-      mediaItem = mediaItem,
       listRepository = listRepository.mock,
+      detailsRepository = detailsRepository.mock,
       markAsFavoriteUseCase = markAsFavoriteUseCase,
     )
   }
@@ -65,7 +67,7 @@ class ActionMenuViewModelTestRobot : ViewModelTestRobot<ActionMenuUiState>() {
   }
 
   fun onRemoveItemsFromList() = apply {
-    viewModel.onAction(ActionMenuIntent.RemoveFromList)
+    viewModel.onAction(ActionMenuSection.Intent.RemoveFromList)
   }
 
   fun onDismissSnackbar() = apply {

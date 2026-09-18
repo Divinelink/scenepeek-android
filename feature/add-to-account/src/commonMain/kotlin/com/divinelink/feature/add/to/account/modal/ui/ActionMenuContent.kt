@@ -26,15 +26,16 @@ import com.divinelink.core.ui.LoadMoreContent
 import com.divinelink.core.ui.SaveButton
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.getString
-import com.divinelink.feature.add.to.account.modal.ActionMenuIntent
+import com.divinelink.feature.add.to.account.modal.ActionMenuSection
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
+import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ActionMenuContent(
   uiState: ActionMenuUiState,
   onMarkAsFavorite: () -> Unit,
-  onAction: (ActionMenuIntent) -> Unit,
+  onAction: (ActionMenuSection.Intent) -> Unit,
 ) {
   if (uiState.mediaState is ItemState.Loading) {
     LoadMoreContent()
@@ -96,29 +97,46 @@ fun ActionMenuContent(
       }
       items(
         items = uiState.availableActions,
-        key = { it.name },
+        key = {
+          when (it) {
+            ActionMenuSection.Divider -> Uuid.random()
+            ActionMenuSection.Intent.AddToList -> "AddToList"
+            ActionMenuSection.Intent.MultiSelect -> "MultiSelect"
+            ActionMenuSection.Intent.RemoveFromList -> "RemoveFromList"
+            ActionMenuSection.Intent.Share -> "Share"
+            ActionMenuSection.Intent.PauseShow -> "PauseShow"
+            ActionMenuSection.Intent.PlanToWatch -> "PlanToWatchShow"
+          }
+        },
       ) { action ->
-        Row(
-          modifier = Modifier
-            .clickable {
-              onAction(action)
-            }
-            .padding(MaterialTheme.dimensions.keyline_16),
-          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-          verticalAlignment = Alignment.CenterVertically,
-        ) {
-          Icon(
-            imageVector = action.icon,
-            contentDescription = null,
+        when (action) {
+          ActionMenuSection.Divider -> HorizontalDivider(
+            modifier = Modifier
+              .padding(vertical = MaterialTheme.dimensions.keyline_8)
+              .fillMaxWidth(),
           )
+          is ActionMenuSection.Intent -> Row(
+            modifier = Modifier
+              .clickable {
+                onAction(action)
+              }
+              .padding(MaterialTheme.dimensions.keyline_16),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Icon(
+              imageVector = action.icon,
+              contentDescription = null,
+            )
 
-          Text(
-            text = action.textRes.getString(),
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.weight(1f),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-          )
+            Text(
+              text = action.textRes.getString(),
+              style = MaterialTheme.typography.bodyLarge,
+              modifier = Modifier.weight(1f),
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
+            )
+          }
         }
       }
     }

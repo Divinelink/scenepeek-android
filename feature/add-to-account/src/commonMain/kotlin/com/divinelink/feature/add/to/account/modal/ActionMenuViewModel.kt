@@ -57,19 +57,20 @@ class ActionMenuViewModel(
     }
   }
 
-  fun onAction(intent: ActionMenuIntent) {
+  fun onAction(intent: ActionMenuSection.Intent) {
     when (intent) {
-      ActionMenuIntent.Share -> uiState.value.media?.let { media ->
+      ActionMenuSection.Intent.Share -> uiState.value.media?.let { media ->
         viewModelScope.launch {
           _shareUrl.send(media.shareUrl(domain = "themoviedb.org"))
         }
       }
-      ActionMenuIntent.AddToList -> _uiState.value.media?.let {
+      ActionMenuSection.Intent.AddToList -> _uiState.value.media?.let {
         viewModelScope.launch { _addToList.send(it) }
       }
-      ActionMenuIntent.RemoveFromList -> removeItemFromList()
-      ActionMenuIntent.MultiSelect -> Unit
-      ActionMenuIntent.PauseShow -> Unit
+      ActionMenuSection.Intent.RemoveFromList -> removeItemFromList()
+      ActionMenuSection.Intent.MultiSelect -> Unit
+      ActionMenuSection.Intent.PauseShow -> Unit
+      ActionMenuSection.Intent.PlanToWatch -> Unit
     }
   }
 

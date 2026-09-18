@@ -77,18 +77,19 @@ fun ActionMenuModal(
         onMarkAsFavorite = viewModel::onMarkAsFavorite,
         onAction = { intent ->
           when (intent) {
-            ActionMenuIntent.MultiSelect -> {
+            ActionMenuSection.Intent.MultiSelect -> {
               uiState.media?.let { onMultiSelect(it) }
               onDismissRequest()
             }
-            ActionMenuIntent.AddToList,
-            ActionMenuIntent.PauseShow,
+            ActionMenuSection.Intent.AddToList,
+            ActionMenuSection.Intent.PauseShow,
+            ActionMenuSection.Intent.PlanToWatch,
               -> {
               onDismissRequest()
               viewModel.onAction(intent)
             }
-            ActionMenuIntent.Share,
-            ActionMenuIntent.RemoveFromList,
+            ActionMenuSection.Intent.Share,
+            ActionMenuSection.Intent.RemoveFromList,
               -> viewModel.onAction(intent)
           }
         },
