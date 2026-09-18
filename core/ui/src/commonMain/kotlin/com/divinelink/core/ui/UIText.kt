@@ -14,5 +14,10 @@ import org.jetbrains.compose.resources.stringResource
 fun UIText.getString(): String = when (this) {
   is UIText.StringText -> this.value
   is UIText.ResourceText -> stringResource(this.value, *this.formatArgs)
+  is UIText.MultiResourceText -> {
+    val args = this.formatArgs.map { stringResource(it) }.toTypedArray()
+
+    return stringResource(this.value, *args)
+  }
   is UIText.PluralResource -> pluralStringResource(this.value, this.size, *this.formatArgs)
 }

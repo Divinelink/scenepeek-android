@@ -8,6 +8,30 @@ import org.jetbrains.compose.resources.StringResource
 sealed class UIText {
   data class StringText(val value: String) : UIText()
 
+  class MultiResourceText(
+    val value: StringResource,
+    val formatArgs: Array<StringResource>,
+  ) : UIText() {
+
+    override fun equals(other: Any?): Boolean {
+      if (this === other) return true
+
+      other as MultiResourceText
+
+      if (value != other.value) return false
+      if (!formatArgs.contentEquals(other.formatArgs)) return false
+
+      return true
+    }
+
+    override fun hashCode(): Int {
+      var result = value.hashCode()
+      result = 31 * result + formatArgs.contentHashCode()
+      return result
+    }
+  }
+
+
   class ResourceText(
     val value: StringResource,
     vararg val formatArgs: Any,

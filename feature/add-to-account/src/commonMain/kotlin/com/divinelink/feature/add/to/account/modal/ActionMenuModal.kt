@@ -3,8 +3,9 @@ package com.divinelink.feature.add.to.account.modal
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,7 +38,7 @@ fun ActionMenuModal(
   ) { parametersOf(mediaItem, entryPoint) },
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val sheetState = rememberBottomSheetState(initialValue = SheetValue.Hidden)
   val intentManager = LocalIntentManager.current
 
   LaunchedEffect(Unit) {
@@ -81,6 +82,7 @@ fun ActionMenuModal(
             ActionMenuIntent.Share,
             ActionMenuIntent.RemoveFromList,
               -> viewModel.onAction(intent)
+            ActionMenuIntent.PauseShow -> TODO()
           }
         },
       )

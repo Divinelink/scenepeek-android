@@ -19,9 +19,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.SaveButton
+import com.divinelink.core.ui.getString
 import com.divinelink.feature.add.to.account.modal.ActionMenuIntent
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ActionMenuContent(
@@ -92,7 +92,7 @@ fun ActionMenuContent(
         )
 
         Text(
-          text = stringResource(action.textRes),
+          text = action.textRes.getString(),
           style = MaterialTheme.typography.bodyLarge,
           modifier = Modifier.weight(1f),
           maxLines = 1,

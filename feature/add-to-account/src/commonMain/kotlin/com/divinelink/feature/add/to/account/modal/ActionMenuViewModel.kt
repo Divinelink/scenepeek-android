@@ -55,9 +55,8 @@ class ActionMenuViewModel(
         _addToList.send(_uiState.value.media)
       }
       ActionMenuIntent.RemoveFromList -> removeItemFromList()
-      ActionMenuIntent.MultiSelect -> {
-        // Do nothing
-      }
+      ActionMenuIntent.MultiSelect -> Unit
+      ActionMenuIntent.PauseShow -> TODO()
     }
   }
 

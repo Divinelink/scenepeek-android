@@ -29,6 +29,7 @@ data class ActionMenuUiState(
     ActionMenuEntryPoint.Other -> listOf(
       ActionMenuIntent.AddToList,
       ActionMenuIntent.Share,
+      ActionMenuIntent.PauseShow,
     )
   }
 }
