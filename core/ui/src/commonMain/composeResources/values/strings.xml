@@ -222,4 +222,9 @@
   <string name="restore_completed">Restore completed</string>
   <string name="restore_failed">Restore failed</string>
   <string name="restore_header">All items have been successfully restored!</string>
+  <string name="move_progress_show_to">Add to '%1$s'</string>
+  <string name="watching">Watching</string>
+  <string name="plan_to_watch">Plan to watch</string>
+  <string name="on_hold">On hold</string>
+  <string name="dropped">Stopped watching</string>
 </resources>
