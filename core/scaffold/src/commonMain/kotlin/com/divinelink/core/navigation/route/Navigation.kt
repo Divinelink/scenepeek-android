@@ -158,6 +158,9 @@ sealed interface Navigation : NavKey {
 
     @Serializable
     data class Media(val encodedMediaItem: String) : ActionMenuRoute
+
+    @Serializable
+    data class ShowProgress(val showId: Long) : ActionMenuRoute
   }
 
   @Serializable

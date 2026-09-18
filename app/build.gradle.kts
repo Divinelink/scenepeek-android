@@ -31,6 +31,7 @@ kotlin {
       implementation(projects.feature.mediaLists)
       implementation(projects.feature.onboarding)
       implementation(projects.feature.profile)
+      implementation(projects.feature.progress)
       implementation(projects.feature.requestMedia)
       implementation(projects.feature.requests)
       implementation(projects.feature.search)

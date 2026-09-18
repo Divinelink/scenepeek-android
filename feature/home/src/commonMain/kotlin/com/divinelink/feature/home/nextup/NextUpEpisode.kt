@@ -2,7 +2,7 @@ package com.divinelink.feature.home.nextup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,14 +63,24 @@ fun LazyItemScope.NextUpEpisode(
     Row(
       modifier = modifier
         .clip(CardDefaults.shape)
-        .clickable {
-          onNavigate(
-            Navigation.DetailsRoute(
-              id = nextUp.episode.showId,
-              mediaType = MediaType.TV.value,
-            ),
-          )
-        }
+        .combinedClickable(
+          onClick = {
+            onNavigate(
+              Navigation.DetailsRoute(
+                id = nextUp.episode.showId,
+                mediaType = MediaType.TV.value,
+              ),
+            )
+          },
+          onLongClick = {
+            onNavigate(
+              Navigation.ActionMenuRoute.ShowProgress(
+                showId = nextUp.episode.showId,
+              ),
+            )
+
+          },
+        )
         .padding(MaterialTheme.dimensions.keyline_4),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     ) {

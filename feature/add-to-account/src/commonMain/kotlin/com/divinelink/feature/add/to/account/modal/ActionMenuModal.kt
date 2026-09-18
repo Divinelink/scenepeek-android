@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.LocalIntentManager
@@ -28,14 +29,14 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActionMenuModal(
-  mediaItem: MediaItem,
   entryPoint: ActionMenuEntryPoint,
   onDismissRequest: () -> Unit,
   onMultiSelect: (MediaItem) -> Unit = {},
-  onNavigateToAddToList: (MediaItem) -> Unit = {},
+  onNavigate: (Navigation) -> Unit,
   viewModel: ActionMenuViewModel = koinViewModel(
-    key = "${mediaItem.id} ${mediaItem.mediaType.value}",
-  ) { parametersOf(mediaItem, entryPoint) },
+    key = entryPoint.toString(),
+    parameters = { parametersOf(entryPoint) },
+  ),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val sheetState = rememberBottomSheetState(initialValue = SheetValue.Hidden)
@@ -49,8 +50,13 @@ fun ActionMenuModal(
   }
 
   LaunchedEffect(Unit) {
-    viewModel.addToList.collect {
-      onNavigateToAddToList(it)
+    viewModel.addToList.collect { mediaItem ->
+      onNavigate(
+        Navigation.AddToListRoute(
+          id = mediaItem.id,
+          mediaType = mediaItem.mediaType.value,
+        ),
+      )
     }
   }
 
@@ -72,17 +78,18 @@ fun ActionMenuModal(
         onAction = { intent ->
           when (intent) {
             ActionMenuIntent.MultiSelect -> {
-              onMultiSelect(uiState.media)
+              uiState.media?.let { onMultiSelect(it) }
               onDismissRequest()
             }
-            ActionMenuIntent.AddToList -> {
+            ActionMenuIntent.AddToList,
+            ActionMenuIntent.PauseShow,
+              -> {
               onDismissRequest()
               viewModel.onAction(intent)
             }
             ActionMenuIntent.Share,
             ActionMenuIntent.RemoveFromList,
               -> viewModel.onAction(intent)
-            ActionMenuIntent.PauseShow -> TODO()
           }
         },
       )
