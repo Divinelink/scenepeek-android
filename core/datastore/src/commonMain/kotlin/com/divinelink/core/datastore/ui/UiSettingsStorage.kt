@@ -3,10 +3,12 @@ package com.divinelink.core.datastore.ui
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.availableListsKey
+import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.expandedSection
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortBy
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortDirection
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.sortByKey
@@ -16,6 +18,7 @@ import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.sort.other
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -47,6 +50,8 @@ interface UiSettingsStorage {
   )
 
   suspend fun updateListSortDirection(listId: Int)
+
+  suspend fun expandSection(section: ExpandableSection)
 }
 
 class DatastoreUiStorage(
@@ -62,6 +67,9 @@ class DatastoreUiStorage(
     fun sortByKey(section: ViewableSection) = stringPreferencesKey("$${section.key}_sort_by")
     fun sortDirectionKey(section: ViewableSection) = stringPreferencesKey(
       "${section.key}_sort_direction",
+    )
+    fun expandedSection(section: ExpandableSection) = booleanPreferencesKey(
+      "${section.key}_expanded",
     )
 
     fun listSortBy(listId: Int) = stringPreferencesKey("${listId}_sort_by")
@@ -90,6 +98,9 @@ class DatastoreUiStorage(
       ),
       listSortOptions = (it[availableListsKey]?.map { key -> key.toInt() } ?: emptyList())
         .associateWith { listId -> listSortOption(listId).firstOrNull() },
+      expanded = ExpandableSection.entries.associateWith { section ->
+        it[expandedSection(section)] == true
+      },
     )
   }.distinctUntilChanged()
 
@@ -153,6 +164,14 @@ class DatastoreUiStorage(
       preferences.removeFromAvailableLists(listId)
       preferences.remove(listSortBy(listId))
       preferences.remove(listSortBy(listId))
+    }
+  }
+
+  override suspend fun expandSection(section: ExpandableSection) {
+    dataStore.edit { preferences ->
+      val expanded = preferences[expandedSection(section)] == true
+
+      preferences[expandedSection(section)] = !expanded
     }
   }
 

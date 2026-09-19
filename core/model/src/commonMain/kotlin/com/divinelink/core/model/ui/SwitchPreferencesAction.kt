@@ -18,4 +18,6 @@ sealed interface SwitchPreferencesAction {
   data class SwitchListSortDirection(val listId: Int) : SwitchPreferencesAction
 
   data class ClearSortOption(val listId: Int) : SwitchPreferencesAction
+
+  data class UpdateExpandedState(val section: ExpandableSection) : SwitchPreferencesAction
 }

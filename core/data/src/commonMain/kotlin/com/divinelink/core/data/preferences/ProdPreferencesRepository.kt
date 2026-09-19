@@ -13,6 +13,7 @@ import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -131,5 +132,9 @@ class ProdPreferencesRepository(
 
   override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
     preferenceStorage.updateHomeSectionsOrder(sections)
+  }
+
+  override suspend fun switchExpandedState(section: ExpandableSection) {
+    storage.expandSection(section)
   }
 }

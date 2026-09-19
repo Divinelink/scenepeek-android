@@ -5,6 +5,7 @@ import androidx.compose.runtime.compositionLocalOf
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -38,4 +39,11 @@ fun rememberListSortOption(listId: Int): SortOption? {
   val uiPreferences = rememberUiPreferences()
 
   return uiPreferences.listSortOptions[listId]
+}
+
+@Composable
+fun rememberExpandState(section: ExpandableSection): Boolean {
+  val uiPreferences = rememberUiPreferences()
+
+  return uiPreferences.expanded[section] == true
 }
