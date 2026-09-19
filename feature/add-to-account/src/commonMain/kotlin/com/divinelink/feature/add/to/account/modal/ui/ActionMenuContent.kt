@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,89 +18,132 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.LoadMoreContent
 import com.divinelink.core.ui.SaveButton
-import com.divinelink.feature.add.to.account.modal.ActionMenuIntent
+import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.Material3CircularProgressIndicator
+import com.divinelink.core.ui.getString
+import com.divinelink.feature.add.to.account.modal.ActionMenuSection
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
-import org.jetbrains.compose.resources.stringResource
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ActionMenuContent(
   uiState: ActionMenuUiState,
   onMarkAsFavorite: () -> Unit,
-  onAction: (ActionMenuIntent) -> Unit,
+  onAction: (ActionMenuSection.Intent) -> Unit,
 ) {
-  LazyColumn {
-    item {
-      Row(
-        modifier = Modifier.padding(
-          start = MaterialTheme.dimensions.keyline_16,
-          end = MaterialTheme.dimensions.keyline_8,
-        ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-      ) {
-        Column(
-          Modifier
-            .weight(1f)
-            .padding(vertical = MaterialTheme.dimensions.keyline_16),
-          verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-        ) {
-          Text(
-            text = uiState.media.name,
-            style = MaterialTheme.typography.titleMedium,
-          )
-          val releaseDate = when (uiState.media) {
-            is MediaItem.Media.Movie -> uiState.media.releaseDate
-            is MediaItem.Media.TV -> uiState.media.releaseDate
-            else -> null
-          }
+  if (uiState.mediaState is ItemState.Loading) {
+    LoadMoreContent()
+  } else {
+    LazyColumn(
+      modifier = Modifier
+        .fillMaxWidth()
+        .testTag(TestTags.Components.SCROLLABLE_CONTENT),
+    ) {
+      when (val mediaState = uiState.mediaState) {
+        is ItemState.Data -> item {
+          Row(
+            modifier = Modifier.padding(
+              start = MaterialTheme.dimensions.keyline_16,
+              end = MaterialTheme.dimensions.keyline_8,
+            ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+          ) {
+            Column(
+              Modifier
+                .weight(1f)
+                .padding(vertical = MaterialTheme.dimensions.keyline_16),
+              verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+            ) {
+              Text(
+                text = mediaState.item.name,
+                style = MaterialTheme.typography.titleMedium,
+              )
+              val releaseDate = when (uiState.media) {
+                is MediaItem.Media.Movie -> uiState.media.releaseDate
+                is MediaItem.Media.TV -> uiState.media.releaseDate
+                else -> null
+              }
 
-          releaseDate?.let {
-            Text(
-              text = releaseDate.take(4),
-              style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+              releaseDate?.let {
+                Text(
+                  text = releaseDate.take(4),
+                  style = MaterialTheme.typography.bodyMedium,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+              }
+            }
+            if (uiState.media is MediaItem.Media) {
+              SaveButton(
+                saved = uiState.media.saved == true,
+                onClick = onMarkAsFavorite,
+              )
+            }
           }
+          HorizontalDivider()
+          Spacer(modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4))
         }
-        if (uiState.media is MediaItem.Media) {
-          SaveButton(
-            saved = uiState.media.saved == true,
-            onClick = onMarkAsFavorite,
+
+        ItemState.Loading -> item {
+          Material3CircularProgressIndicator(
+            modifier = Modifier
+              .wrapContentSize(),
           )
         }
       }
-      HorizontalDivider()
-      Spacer(modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4))
-    }
-    items(
-      items = uiState.availableActions,
-      key = { it.name },
-    ) { action ->
-      Row(
-        modifier = Modifier
-          .clickable {
-            onAction(action)
+      items(
+        items = uiState.availableActions,
+        key = {
+          when (it) {
+            ActionMenuSection.Divider -> Uuid.random()
+            ActionMenuSection.Intent.AddToList -> "AddToList"
+            ActionMenuSection.Intent.MultiSelect -> "MultiSelect"
+            ActionMenuSection.Intent.RemoveFromList -> "RemoveFromList"
+            ActionMenuSection.Intent.Share -> "Share"
+            ActionMenuSection.Intent.PauseShow -> "PauseShow"
+            ActionMenuSection.Intent.PlanToWatch -> "PlanToWatchShow"
+            ActionMenuSection.Intent.ContinueWatching -> "ContinueWatching"
+            ActionMenuSection.Intent.DropShow -> "DropShow"
           }
-          .padding(MaterialTheme.dimensions.keyline_16),
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        Icon(
-          imageVector = action.icon,
-          contentDescription = null,
-        )
+        },
+      ) { action ->
+        when (action) {
+          ActionMenuSection.Divider -> HorizontalDivider(
+            modifier = Modifier
+              .padding(vertical = MaterialTheme.dimensions.keyline_8)
+              .fillMaxWidth(),
+          )
+          is ActionMenuSection.Intent -> Row(
+            modifier = Modifier
+              .clickable {
+                onAction(action)
+              }
+              .padding(MaterialTheme.dimensions.keyline_16),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Icon(
+              imageVector = action.icon,
+              contentDescription = null,
+            )
 
-        Text(
-          text = stringResource(action.textRes),
-          style = MaterialTheme.typography.bodyLarge,
-          modifier = Modifier.weight(1f),
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-        )
+            Text(
+              text = action.textRes.getString(),
+              style = MaterialTheme.typography.bodyLarge,
+              modifier = Modifier.weight(1f),
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
+            )
+          }
+        }
       }
     }
   }

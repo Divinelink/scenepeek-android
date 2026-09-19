@@ -10,4 +10,5 @@ data class NextUpEpisode(
   val showPosterPath: String?,
   val watchedEpisodes: Int,
   val totalEpisodes: Int,
+  val showStatus: UserShowStatus,
 )

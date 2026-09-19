@@ -190,6 +190,7 @@ class ScenePeekAppTest : ComposeTest() {
         navigationModule,
         sectionViewModelModule,
         nextUpViewModel,
+        switchViewModel,
       )
     }
 
@@ -1029,6 +1030,14 @@ class ScenePeekAppTest : ComposeTest() {
         trackRepository = TestTrackRepository().mock,
         markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
         clock = clock,
+      )
+    }
+  }
+
+  private val switchViewModel = module {
+    viewModel {
+      SwitchViewButtonViewModel(
+        repository = preferencesRepository,
       )
     }
   }

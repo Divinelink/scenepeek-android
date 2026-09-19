@@ -2,9 +2,10 @@ package com.divinelink.feature.home.nextup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.commons.extensions.daysFromToday
+import com.divinelink.core.commons.extensions.isAfterNow
 import com.divinelink.core.commons.extensions.zeroPad
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.media.MediaType
@@ -63,14 +66,24 @@ fun LazyItemScope.NextUpEpisode(
     Row(
       modifier = modifier
         .clip(CardDefaults.shape)
-        .clickable {
-          onNavigate(
-            Navigation.DetailsRoute(
-              id = nextUp.episode.showId,
-              mediaType = MediaType.TV.value,
-            ),
-          )
-        }
+        .combinedClickable(
+          onClick = {
+            onNavigate(
+              Navigation.DetailsRoute(
+                id = nextUp.episode.showId,
+                mediaType = MediaType.TV.value,
+              ),
+            )
+          },
+          onLongClick = {
+            onNavigate(
+              Navigation.ActionMenuRoute.ShowProgress(
+                showId = nextUp.episode.showId,
+                status = nextUp.showStatus,
+              ),
+            )
+          },
+        )
         .padding(MaterialTheme.dimensions.keyline_4),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     ) {
@@ -150,37 +163,58 @@ fun LazyItemScope.NextUpEpisode(
       }
     }
     when (section) {
-      NextUpSection.Available -> FilledTonalIconButton(
-        modifier = Modifier.align(Alignment.BottomEnd),
-        shapes = IconButtonShapes(
-          shape = ShapeDefaults.ExtraExtraLarge,
-          pressedShape = connectedMiddleButtonPressShape,
-        ),
-        onClick = { action(NextUpAction.MarkEpisodeAsWatched(nextUp.episode)) },
-      ) {
-        Icon(
-          imageVector = Icons.Default.Check,
-          contentDescription = null,
-        )
-      }
-
-      NextUpSection.Upcoming -> {
-        val daysLeft = nextUp.episode.airDate?.daysFromToday(clock) ?: 0
-        val resource = pluralStringResource(
-          UiPlurals.days_left_to_air,
-          daysLeft,
-          daysLeft,
-        )
-
-        Text(
-          modifier = Modifier
-            .padding(MaterialTheme.dimensions.keyline_8)
-            .align(Alignment.BottomEnd),
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-          text = resource,
-        )
+      NextUpSection.Available -> AvailableButton(action, nextUp)
+      NextUpSection.Upcoming -> AirsInButton(nextUp, clock)
+      NextUpSection.Paused -> nextUp.episode.airDate?.let { airDate ->
+        if (airDate.isAfterNow(clock)) {
+          AirsInButton(nextUp, clock)
+        } else {
+          AvailableButton(action, nextUp)
+        }
       }
     }
   }
+}
+
+@Composable
+private fun BoxScope.AvailableButton(
+  action: (NextUpAction) -> Unit,
+  nextUp: NextUpEpisode,
+) {
+  FilledTonalIconButton(
+    modifier = Modifier.align(Alignment.BottomEnd),
+    shapes = IconButtonShapes(
+      shape = ShapeDefaults.ExtraExtraLarge,
+      pressedShape = connectedMiddleButtonPressShape,
+    ),
+    onClick = { action(NextUpAction.MarkEpisodeAsWatched(nextUp.episode)) },
+  ) {
+    Icon(
+      imageVector = Icons.Default.Check,
+      contentDescription = null,
+    )
+  }
+}
+
+@Composable
+private fun BoxScope.AirsInButton(
+  nextUp: NextUpEpisode,
+  clock: ClockProvider,
+) {
+  val daysLeft = nextUp.episode.airDate?.daysFromToday(clock) ?: 0
+
+  val resource = pluralStringResource(
+    UiPlurals.days_left_to_air,
+    daysLeft,
+    daysLeft,
+  )
+
+  Text(
+    modifier = Modifier
+      .padding(MaterialTheme.dimensions.keyline_8)
+      .align(Alignment.BottomEnd),
+    style = MaterialTheme.typography.bodyMedium,
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
+    text = resource,
+  )
 }

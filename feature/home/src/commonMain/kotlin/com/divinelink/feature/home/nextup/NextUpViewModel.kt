@@ -44,6 +44,7 @@ class NextUpViewModel(
         state.copy(
           available = episodes.available,
           upcoming = episodes.upcoming,
+          paused = episodes.paused,
           errors = errors,
           loading = false,
         )

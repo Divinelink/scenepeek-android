@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.domain.theme.GetAvailableColorSystemsUseCase
@@ -117,6 +118,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         appModule,
         navigationModule,
         sectionViewModelModule,
+        switchViewModelModule,
       )
     }
 
@@ -398,6 +400,14 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         section = params.get(),
         repository = mediaRepository.mock,
         clock = clock,
+      )
+    }
+  }
+
+  private val switchViewModelModule = module {
+    viewModel {
+      SwitchViewButtonViewModel(
+        repository = preferencesRepository,
       )
     }
   }

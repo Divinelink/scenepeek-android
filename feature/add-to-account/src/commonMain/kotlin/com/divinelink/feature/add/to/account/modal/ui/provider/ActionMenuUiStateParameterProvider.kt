@@ -3,6 +3,7 @@ package com.divinelink.feature.add.to.account.modal.ui.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
 
@@ -10,15 +11,22 @@ import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
 class ActionMenuUiStateParameterProvider : PreviewParameterProvider<ActionMenuUiState> {
   override val values: Sequence<ActionMenuUiState> = sequenceOf(
     ActionMenuUiState.initial(
-      media = MediaItemFactory.theWire(),
       entryPoint = ActionMenuEntryPoint.ListDetails(
+        media = MediaItemFactory.theWire(),
         listName = "TV Shows",
         listId = 123,
       ),
     ),
     ActionMenuUiState.initial(
-      media = MediaItemFactory.FightClub(),
-      entryPoint = ActionMenuEntryPoint.Other,
+      entryPoint = ActionMenuEntryPoint.Other(
+        media = MediaItemFactory.FightClub(),
+      ),
+    ),
+    ActionMenuUiState.initial(
+      entryPoint = ActionMenuEntryPoint.ShowProgress(
+        showId = MediaItemFactory.theOffice().id,
+        status = UserShowStatus.WATCHING,
+      ),
     ),
   )
 }

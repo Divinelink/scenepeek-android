@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ class SwitchViewButtonViewModel(private val repository: PreferencesRepository) :
       is SwitchPreferencesAction.SwitchListSortBy -> switchListSortBy(action)
       is SwitchPreferencesAction.SwitchListSortDirection -> switchListSortDirection(action.listId)
       is SwitchPreferencesAction.ClearSortOption -> clearListSortOption(action.listId)
+      is SwitchPreferencesAction.UpdateExpandedState -> switchExpandedState(action.section)
     }
   }
 
@@ -57,6 +59,12 @@ class SwitchViewButtonViewModel(private val repository: PreferencesRepository) :
   private fun clearListSortOption(listId: Int) {
     viewModelScope.launch {
       repository.clearListSortOption(listId)
+    }
+  }
+
+  private fun switchExpandedState(section: ExpandableSection) {
+    viewModelScope.launch {
+      repository.switchExpandedState(section)
     }
   }
 }

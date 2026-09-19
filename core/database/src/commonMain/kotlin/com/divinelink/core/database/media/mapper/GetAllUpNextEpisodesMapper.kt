@@ -4,6 +4,7 @@ import com.divinelink.core.commons.extensions.parseOrNull
 import com.divinelink.core.database.user.GetAllUpNextEpisodes
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.track.NextUpEpisode
+import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.datetime.LocalDate
 
 fun GetAllUpNextEpisodes.map(): NextUpEpisode {
@@ -28,6 +29,7 @@ fun GetAllUpNextEpisodes.map(): NextUpEpisode {
     episode = episode,
     showTitle = showTitle,
     showPosterPath = showPosterPath,
+    showStatus = UserShowStatus.from(showStatus) ?: UserShowStatus.WATCHING,
     watchedEpisodes = watchedEpisodes.toInt(),
     totalEpisodes = totalEpisodes.toInt(),
   )

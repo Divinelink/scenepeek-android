@@ -2,13 +2,20 @@ package com.divinelink.feature.add.to.account.modal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.list.ListRepository
+import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
+import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.shareUrl
 import com.divinelink.core.model.media.toStub
+import com.divinelink.core.model.track.UserShowStatus
+import com.divinelink.core.network.Resource
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
@@ -25,14 +32,14 @@ import kotlinx.coroutines.launch
 
 class ActionMenuViewModel(
   entryPoint: ActionMenuEntryPoint,
-  mediaItem: MediaItem,
+  private val detailsRepository: DetailsRepository,
   private val listRepository: ListRepository,
+  private val trackRepository: TrackRepository,
   private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<ActionMenuUiState> = MutableStateFlow(
     ActionMenuUiState.initial(
-      media = mediaItem,
       entryPoint = entryPoint,
     ),
   )
@@ -44,21 +51,39 @@ class ActionMenuViewModel(
   private val _addToList = Channel<MediaItem>()
   val addToList: Flow<MediaItem> = _addToList.receiveAsFlow()
 
-  fun onAction(intent: ActionMenuIntent) {
-    when (intent) {
-      ActionMenuIntent.Share -> viewModelScope.launch {
-        _shareUrl.send(
-          _uiState.value.media.shareUrl(domain = "themoviedb.org"),
-        )
-      }
-      ActionMenuIntent.AddToList -> viewModelScope.launch {
-        _addToList.send(_uiState.value.media)
-      }
-      ActionMenuIntent.RemoveFromList -> removeItemFromList()
-      ActionMenuIntent.MultiSelect -> {
-        // Do nothing
-      }
+  init {
+    when (entryPoint) {
+      is ActionMenuEntryPoint.ShowProgress -> fetchMediaItem(entryPoint.showId)
+      is ActionMenuEntryPoint.ListDetails,
+      is ActionMenuEntryPoint.Other,
+        -> Unit
     }
+  }
+
+  fun onAction(intent: ActionMenuSection.Intent) {
+    when (intent) {
+      ActionMenuSection.Intent.Share -> uiState.value.media?.let { media ->
+        viewModelScope.launch {
+          _shareUrl.send(media.shareUrl(domain = "themoviedb.org"))
+        }
+      }
+      ActionMenuSection.Intent.AddToList -> _uiState.value.media?.let {
+        viewModelScope.launch { _addToList.send(it) }
+      }
+      ActionMenuSection.Intent.RemoveFromList -> removeItemFromList()
+      ActionMenuSection.Intent.MultiSelect -> Unit
+      ActionMenuSection.Intent.PauseShow -> updateShowStatus(UserShowStatus.ON_HOLD)
+      ActionMenuSection.Intent.PlanToWatch -> updateShowStatus(UserShowStatus.PLAN_TO_WATCH)
+      ActionMenuSection.Intent.ContinueWatching -> updateShowStatus(UserShowStatus.WATCHING)
+      ActionMenuSection.Intent.DropShow -> updateShowStatus(UserShowStatus.DROPPED)
+    }
+  }
+
+  private fun updateShowStatus(status: UserShowStatus) = viewModelScope.launch {
+    val showId = (uiState.value.entryPoint as? ActionMenuEntryPoint.ShowProgress)?.showId
+      ?: return@launch
+
+    trackRepository.updateShowStatus(showId, status)
   }
 
   fun onMarkAsFavorite() {
@@ -66,13 +91,16 @@ class ActionMenuViewModel(
 
     viewModelScope.launch {
       markAsFavoriteUseCase(uiState.value.media as MediaItem.Media)
-        .onSuccess { isFavorite ->
+        .onSuccess { saved ->
           _uiState.update { uiState ->
-            when (val media = uiState.media) {
-              is MediaItem.Media.Movie -> uiState.copy(media = media.copy(saved = isFavorite))
-              is MediaItem.Media.TV -> uiState.copy(media = media.copy(saved = isFavorite))
-              else -> uiState
+            val media = when (val media = uiState.media) {
+              is MediaItem.Media.Movie -> media.copy(saved = saved)
+              is MediaItem.Media.TV -> media.copy(saved = saved)
+              null -> return@onSuccess
+              else -> media
             }
+
+            uiState.updateMedia(media)
           }
         }
     }
@@ -86,18 +114,19 @@ class ActionMenuViewModel(
 
   private fun removeItemFromList() {
     if (uiState.value.entryPoint !is ActionMenuEntryPoint.ListDetails) return
+    val media = uiState.value.media ?: return
 
     viewModelScope.launch {
       listRepository.removeItems(
         listId = (uiState.value.entryPoint as ActionMenuEntryPoint.ListDetails).listId,
-        items = listOf(_uiState.value.media.toStub()),
+        items = listOf(media.toStub()),
       ).onSuccess {
         _uiState.update {
           it.copy(
             snackbarMessage = SnackbarMessage.from(
               UIText.ResourceText(
                 Res.string.feature_add_to_account_remove_single_item_success,
-                _uiState.value.media.name,
+                media.name,
                 (_uiState.value.entryPoint as ActionMenuEntryPoint.ListDetails).listName,
               ),
             ),
@@ -121,6 +150,43 @@ class ActionMenuViewModel(
                   SnackbarMessage.from(UIText.StringText(message))
                 } ?: SnackbarMessage.from(UIText.ResourceText(UiString.core_ui_error_retry)),
               )
+            }
+          }
+        }
+    }
+  }
+
+  private fun fetchMediaItem(showId: Long) {
+    viewModelScope.launch {
+      detailsRepository
+        .fetchMediaItem(
+          media = MediaReference(
+            mediaId = showId,
+            mediaType = MediaType.TV,
+          ),
+        )
+        .collect { result ->
+          when (result) {
+            is Resource.Error -> Unit
+            is Resource.Loading -> result.data?.let { media ->
+              _uiState.update { state ->
+                state.copy(
+                  mediaState = ItemState.Data(
+                    item = media,
+                    loading = false,
+                  ),
+                )
+              }
+            }
+            is Resource.Success -> result.data?.let { media ->
+              _uiState.update { state ->
+                state.copy(
+                  mediaState = ItemState.Data(
+                    item = media,
+                    loading = false,
+                  ),
+                )
+              }
             }
           }
         }

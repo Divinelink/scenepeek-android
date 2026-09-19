@@ -4,6 +4,7 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.sort.other
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
@@ -82,6 +83,14 @@ class TestUiSettingsStorage(uiPreferences: UiPreferences = UiPreferences.Initial
       _uiPreferences.value = _uiPreferences.value.copy(
         listSortOptions = _uiPreferences.value.listSortOptions +
           (listId to option.copy(direction = option.direction.other())),
+      )
+    }
+  }
+
+  override suspend fun expandSection(section: ExpandableSection) {
+    _uiPreferences.value.expanded[section]?.let { option ->
+      _uiPreferences.value = _uiPreferences.value.copy(
+        expanded = _uiPreferences.value.expanded + (section to !option),
       )
     }
   }

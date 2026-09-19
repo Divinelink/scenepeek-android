@@ -1,15 +1,23 @@
 package com.divinelink.feature.add.to.account.modal
 
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.track.UserShowStatus
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.add.to.account.resources.Res
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_from_list_offline_error
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_remove_single_item_success
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -25,13 +33,15 @@ class ActionMenuViewModelTest {
   fun `test mark tv show as favorite when item is non favorite`() = runTest {
     robot
       .setup(
-        mediaItem = MediaItemFactory.theOffice(),
-        entryPoint = ActionMenuEntryPoint.Other,
+        entryPoint = ActionMenuEntryPoint.Other(
+          media = MediaItemFactory.theOffice(),
+        ),
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.theOffice(),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.theOffice(),
+          ),
         ),
       )
       .mockMarkAsFavorite(
@@ -41,8 +51,14 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.theOffice().copy(saved = true),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.theOffice().copy(saved = true),
+          ),
+        ).copy(
+          mediaState = ItemState.Data(
+            item = MediaItemFactory.theOffice().copy(saved = true),
+            loading = false,
+          ),
         ),
       )
       .mockMarkAsFavorite(
@@ -52,8 +68,9 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.theOffice().copy(saved = false),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.theOffice().copy(saved = false),
+          ),
         ),
       )
   }
@@ -62,13 +79,15 @@ class ActionMenuViewModelTest {
   fun `test mark movie as favorite when item is non favorite`() = runTest {
     robot
       .setup(
-        mediaItem = MediaItemFactory.FightClub(),
-        entryPoint = ActionMenuEntryPoint.Other,
+        entryPoint = ActionMenuEntryPoint.Other(
+          media = MediaItemFactory.FightClub(),
+        ),
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub(),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.FightClub(),
+          ),
         ),
       )
       .mockMarkAsFavorite(
@@ -78,8 +97,9 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub().copy(saved = true),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.FightClub().copy(saved = true),
+          ),
         ),
       )
       .mockMarkAsFavorite(
@@ -89,8 +109,9 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub().copy(saved = false),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.FightClub().copy(saved = false),
+          ),
         ),
       )
   }
@@ -99,13 +120,15 @@ class ActionMenuViewModelTest {
   fun `test mark movie as favorite with failure does nothing`() = runTest {
     robot
       .setup(
-        mediaItem = MediaItemFactory.FightClub(),
-        entryPoint = ActionMenuEntryPoint.Other,
+        entryPoint = ActionMenuEntryPoint.Other(
+          media = MediaItemFactory.FightClub(),
+        ),
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub(),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.FightClub(),
+          ),
         ),
       )
       .mockMarkAsFavorite(
@@ -115,8 +138,9 @@ class ActionMenuViewModelTest {
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub(),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.FightClub(),
+          ),
         ),
       )
   }
@@ -125,20 +149,23 @@ class ActionMenuViewModelTest {
   fun `test attempt to mark as favorite non media item does nothing`() = runTest {
     robot
       .setup(
-        mediaItem = MediaItemFactory.Person(),
-        entryPoint = ActionMenuEntryPoint.Other,
+        entryPoint = ActionMenuEntryPoint.Other(
+          media = MediaItemFactory.Person(),
+        ),
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.Person(),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.Person(),
+          ),
         ),
       )
       .onMarkAsFavorite()
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.Person(),
-          entryPoint = ActionMenuEntryPoint.Other,
+          entryPoint = ActionMenuEntryPoint.Other(
+            media = MediaItemFactory.Person(),
+          ),
         ),
       )
   }
@@ -146,18 +173,17 @@ class ActionMenuViewModelTest {
   @Test
   fun `test remove single item from list with success`() = runTest {
     val list = ActionMenuEntryPoint.ListDetails(
+      media = MediaItemFactory.FightClub(),
       listId = 1234,
       listName = "List name",
     )
 
     robot
       .setup(
-        mediaItem = MediaItemFactory.FightClub(),
         entryPoint = list,
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub(),
           entryPoint = list,
         ),
       )
@@ -165,7 +191,10 @@ class ActionMenuViewModelTest {
       .onRemoveItemsFromList()
       .assertUiState(
         ActionMenuUiState(
-          media = MediaItemFactory.FightClub(),
+          mediaState = ItemState.Data(
+            item = MediaItemFactory.FightClub(),
+            loading = false,
+          ),
           entryPoint = list,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
@@ -181,18 +210,17 @@ class ActionMenuViewModelTest {
   @Test
   fun `test remove single item from list with offline error`() = runTest {
     val list = ActionMenuEntryPoint.ListDetails(
+      media = MediaItemFactory.FightClub(),
       listId = 1234,
       listName = "List name",
     )
 
     robot
       .setup(
-        mediaItem = MediaItemFactory.FightClub(),
         entryPoint = list,
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub(),
           entryPoint = list,
         ),
       )
@@ -200,7 +228,10 @@ class ActionMenuViewModelTest {
       .onRemoveItemsFromList()
       .assertUiState(
         ActionMenuUiState(
-          media = MediaItemFactory.FightClub(),
+          mediaState = ItemState.Data(
+            item = MediaItemFactory.FightClub(),
+            loading = false,
+          ),
           entryPoint = list,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
@@ -214,18 +245,17 @@ class ActionMenuViewModelTest {
   @Test
   fun `test remove single item from list with generic error`() = runTest {
     val list = ActionMenuEntryPoint.ListDetails(
+      media = MediaItemFactory.FightClub(),
       listId = 1234,
       listName = "List name",
     )
 
     robot
       .setup(
-        mediaItem = MediaItemFactory.FightClub(),
         entryPoint = list,
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub(),
           entryPoint = list,
         ),
       )
@@ -233,7 +263,10 @@ class ActionMenuViewModelTest {
       .onRemoveItemsFromList()
       .assertUiState(
         ActionMenuUiState(
-          media = MediaItemFactory.FightClub(),
+          mediaState = ItemState.Data(
+            item = MediaItemFactory.FightClub(),
+            loading = false,
+          ),
           entryPoint = list,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(UiString.core_ui_error_retry),
@@ -247,16 +280,15 @@ class ActionMenuViewModelTest {
     val list = ActionMenuEntryPoint.ListDetails(
       listId = 1234,
       listName = "List name",
+      media = MediaItemFactory.FightClub(),
     )
 
     robot
       .setup(
-        mediaItem = MediaItemFactory.FightClub(),
         entryPoint = list,
       )
       .assertUiState(
         ActionMenuUiState.initial(
-          media = MediaItemFactory.FightClub(),
           entryPoint = list,
         ),
       )
@@ -264,7 +296,10 @@ class ActionMenuViewModelTest {
       .onRemoveItemsFromList()
       .assertUiState(
         ActionMenuUiState(
-          media = MediaItemFactory.FightClub(),
+          mediaState = ItemState.Data(
+            item = MediaItemFactory.FightClub(),
+            loading = false,
+          ),
           entryPoint = list,
           snackbarMessage = SnackbarMessage.from(
             UIText.StringText("Failed to delete."),
@@ -274,9 +309,94 @@ class ActionMenuViewModelTest {
       .onDismissSnackbar()
       .assertUiState(
         ActionMenuUiState(
-          media = MediaItemFactory.FightClub(),
+          mediaState = ItemState.Data(
+            item = MediaItemFactory.FightClub(),
+            loading = false,
+          ),
           entryPoint = list,
           snackbarMessage = null,
+        ),
+      )
+  }
+
+  @Test
+  fun `test setup action menu with ShowProgress entry point and watching status`() = runTest {
+    robot
+      .mockFetchMediaItem(
+        response = flowOf(
+          Resource.Loading(null),
+          Resource.Success(MediaItemFactory.theOffice()),
+        ),
+      )
+      .setup(
+        entryPoint = ActionMenuEntryPoint.ShowProgress(
+          showId = MediaItemFactory.theOffice().id,
+          status = UserShowStatus.WATCHING,
+        ),
+      )
+      .assertUiState(
+        ActionMenuUiState(
+          mediaState = ItemState.Data(
+            item = MediaItemFactory.theOffice(),
+            loading = false,
+          ),
+          entryPoint = ActionMenuEntryPoint.ShowProgress(
+            showId = MediaItemFactory.theOffice().id,
+            status = UserShowStatus.WATCHING,
+          ),
+          snackbarMessage = null,
+        ),
+      )
+  }
+
+  @Test
+  fun `test setup action menu with ShowProgress entry point and loading`() = runTest {
+    val channel = Channel<Resource<MediaItem.Media?>>()
+
+    robot
+      .mockFetchMediaItem(response = channel)
+      .setup(
+        entryPoint = ActionMenuEntryPoint.ShowProgress(
+          showId = MediaItemFactory.theOffice().id,
+          status = UserShowStatus.WATCHING,
+        ),
+      )
+      .assertUiState(
+        ActionMenuUiState(
+          mediaState = ItemState.Loading,
+          entryPoint = ActionMenuEntryPoint.ShowProgress(
+            showId = MediaItemFactory.theOffice().id,
+            status = UserShowStatus.WATCHING,
+          ),
+          snackbarMessage = null,
+        ),
+      )
+      .expectUiStates(
+        action = {
+          launch {
+            channel.send(Resource.Success(MediaItemFactory.theOffice()))
+          }
+        },
+        uiStates = listOf(
+          ActionMenuUiState(
+            mediaState = ItemState.Loading,
+            entryPoint = ActionMenuEntryPoint.ShowProgress(
+              showId = MediaItemFactory.theOffice().id,
+              status = UserShowStatus.WATCHING,
+            ),
+            snackbarMessage = null,
+          ),
+          ActionMenuUiState(
+            mediaState = ItemState.Data(
+              item = MediaItemFactory.theOffice(),
+              loading = false,
+            ),
+            entryPoint = ActionMenuEntryPoint.ShowProgress(
+              showId = MediaItemFactory.theOffice().id,
+              status = UserShowStatus.WATCHING,
+            ),
+            snackbarMessage = null,
+          ),
         ),
       )
   }

@@ -3,8 +3,9 @@ package com.divinelink.feature.add.to.account.modal
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,6 +15,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.LocalIntentManager
@@ -27,17 +29,17 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActionMenuModal(
-  mediaItem: MediaItem,
   entryPoint: ActionMenuEntryPoint,
   onDismissRequest: () -> Unit,
   onMultiSelect: (MediaItem) -> Unit = {},
-  onNavigateToAddToList: (MediaItem) -> Unit = {},
+  onNavigate: (Navigation) -> Unit,
   viewModel: ActionMenuViewModel = koinViewModel(
-    key = "${mediaItem.id} ${mediaItem.mediaType.value}",
-  ) { parametersOf(mediaItem, entryPoint) },
+    key = entryPoint.toString(),
+    parameters = { parametersOf(entryPoint) },
+  ),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val sheetState = rememberBottomSheetState(initialValue = SheetValue.Hidden)
   val intentManager = LocalIntentManager.current
 
   LaunchedEffect(Unit) {
@@ -48,8 +50,13 @@ fun ActionMenuModal(
   }
 
   LaunchedEffect(Unit) {
-    viewModel.addToList.collect {
-      onNavigateToAddToList(it)
+    viewModel.addToList.collect { mediaItem ->
+      onNavigate(
+        Navigation.AddToListRoute(
+          id = mediaItem.id,
+          mediaType = mediaItem.mediaType.value,
+        ),
+      )
     }
   }
 
@@ -70,16 +77,21 @@ fun ActionMenuModal(
         onMarkAsFavorite = viewModel::onMarkAsFavorite,
         onAction = { intent ->
           when (intent) {
-            ActionMenuIntent.MultiSelect -> {
-              onMultiSelect(uiState.media)
+            ActionMenuSection.Intent.MultiSelect -> {
+              uiState.media?.let { onMultiSelect(it) }
               onDismissRequest()
             }
-            ActionMenuIntent.AddToList -> {
+            ActionMenuSection.Intent.AddToList,
+            ActionMenuSection.Intent.PauseShow,
+            ActionMenuSection.Intent.PlanToWatch,
+            ActionMenuSection.Intent.ContinueWatching,
+            ActionMenuSection.Intent.DropShow,
+              -> {
               onDismissRequest()
               viewModel.onAction(intent)
             }
-            ActionMenuIntent.Share,
-            ActionMenuIntent.RemoveFromList,
+            ActionMenuSection.Intent.Share,
+            ActionMenuSection.Intent.RemoveFromList,
               -> viewModel.onAction(intent)
           }
         },

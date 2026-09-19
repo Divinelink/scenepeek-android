@@ -625,7 +625,7 @@ class ProdMediaDao(
     .distinctUntilChanged()
 
   override fun addShow(showId: Long) = database.transaction {
-    userShowQueries.insertUserShow(
+    userShowQueries.upsertUserShow(
       showId = showId,
       addedAt = clockProvider.clock.currentEpochSeconds(),
       updatedAt = clockProvider.clock.currentEpochSeconds(),
@@ -680,18 +680,23 @@ class ProdMediaDao(
 
       val available = mutableListOf<NextUpEpisode>()
       val upcoming = mutableListOf<NextUpEpisode>()
+      val paused = mutableListOf<NextUpEpisode>()
 
       for (entity in entities) {
-        val date = LocalDate.parseOrNull(entity.airDate) ?: continue
+        val nextUp = entity.map()
+
+        val date = nextUp.episode.airDate ?: continue
         when {
-          date <= today -> available += entity.map()
-          date > today -> upcoming += entity.map()
+          nextUp.showStatus == UserShowStatus.ON_HOLD -> paused += nextUp
+          date <= today -> available += nextUp
+          date > today -> upcoming += nextUp
         }
       }
 
       UserEpisodes(
         available = available,
         upcoming = upcoming.sortedBy { it.episode.airDate },
+        paused = paused,
       )
     }
 }

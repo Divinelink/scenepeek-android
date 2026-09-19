@@ -22,8 +22,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.track.NextUpSection
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -33,6 +35,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.DisplayMessageDuration
 import com.divinelink.core.ui.components.DisplayMessageSection
+import com.divinelink.core.ui.composition.rememberExpandState
 import com.divinelink.core.ui.resources.next_up_episodes
 import com.divinelink.core.ui.resources.upcoming
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
@@ -40,6 +43,7 @@ import com.divinelink.feature.home.nextup.NextUpAction
 import com.divinelink.feature.home.nextup.NextUpEmptyContent
 import com.divinelink.feature.home.nextup.NextUpEpisode
 import com.divinelink.feature.home.nextup.NextUpViewModel
+import com.divinelink.feature.home.nextup.PausedShowsButton
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -47,10 +51,12 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun AnimatedVisibilityScope.NextUpFullscreen(
   viewModel: NextUpViewModel = koinViewModel(),
+  switchViewModel: SwitchViewButtonViewModel = koinViewModel(),
   onNavigate: (Navigation) -> Unit,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+  val pausedExpanded = rememberExpandState(ExpandableSection.ON_HOLD_SHOWS)
 
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
@@ -99,7 +105,7 @@ fun AnimatedVisibilityScope.NextUpFullscreen(
             }
           }
 
-          if (state.available.isEmpty() && state.upcoming.isEmpty()) {
+          if (state.available.isEmpty() && state.upcoming.isEmpty() && state.paused.isEmpty()) {
             item {
               NextUpEmptyContent(
                 modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
@@ -139,6 +145,30 @@ fun AnimatedVisibilityScope.NextUpFullscreen(
                 action = viewModel::onAction,
                 onNavigate = onNavigate,
               )
+            }
+          }
+
+          if (state.paused.isNotEmpty()) {
+            item {
+              PausedShowsButton(
+                expanded = pausedExpanded,
+                onSwitchAction = switchViewModel::onAction,
+              )
+            }
+
+            if (pausedExpanded) {
+              items(
+                items = state.paused,
+                key = { episode -> episode.episode.showId },
+              ) { episode ->
+                NextUpEpisode(
+                  boxModifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
+                  nextUp = episode,
+                  section = NextUpSection.Paused,
+                  action = viewModel::onAction,
+                  onNavigate = onNavigate,
+                )
+              }
             }
           }
 

@@ -8,6 +8,7 @@ data class UiPreferences(
   val viewModes: Map<ViewableSection, ViewMode>,
   val sortOption: Map<ViewableSection, SortOption>,
   val listSortOptions: Map<Int, SortOption?>,
+  val expanded: Map<ExpandableSection, Boolean>,
 ) {
   companion object {
     val Initial = UiPreferences(
@@ -38,6 +39,11 @@ data class UiPreferences(
         ),
       ),
       listSortOptions = emptyMap(),
+      expanded = ExpandableSection.entries.associateWith { section ->
+        when (section) {
+          ExpandableSection.ON_HOLD_SHOWS -> false
+        }
+      },
     )
   }
 }

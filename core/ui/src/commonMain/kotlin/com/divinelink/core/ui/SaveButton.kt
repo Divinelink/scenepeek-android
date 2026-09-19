@@ -21,10 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.UIText
+import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.resources.core_ui_add_to_collection_button_content_description
 import com.divinelink.core.ui.resources.core_ui_added_to_your_saved
 import com.divinelink.core.ui.resources.core_ui_removed_from_your_saved
@@ -69,6 +71,7 @@ fun SaveButton(
 
   Box(
     modifier = modifier
+      .testTag(TestTags.Components.Button.SAVE_BUTTON.format(saved))
       .padding(MaterialTheme.dimensions.keyline_4)
       .clip(MaterialTheme.shape.rounded)
       .clickable { onToggleSave() }
@@ -84,7 +87,8 @@ fun SaveButton(
         false -> Icons.Outlined.Save
       }
       Icon(
-        modifier = Modifier.size(MaterialTheme.dimensions.keyline_26),
+        modifier = Modifier
+          .size(MaterialTheme.dimensions.keyline_26),
         imageVector = image,
         tint = color,
         contentDescription = stringResource(

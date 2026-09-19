@@ -286,18 +286,23 @@ val navigationModule = module {
     val mediaItem = key.encodedMediaItem.decodeToMediaItem()
 
     ActionMenuModal(
-      mediaItem = mediaItem,
-      entryPoint = ActionMenuEntryPoint.Other,
+      entryPoint = ActionMenuEntryPoint.Other(mediaItem),
       onDismissRequest = navigator::goBack,
       onMultiSelect = {},
-      onNavigateToAddToList = {
-        navigator.navigate(
-          Navigation.AddToListRoute(
-            id = mediaItem.id,
-            mediaType = mediaItem.mediaType.value,
-          ),
-        )
-      },
+      onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.ActionMenuRoute.ShowProgress>(DialogSceneStrategy.dialog()) { key ->
+    val navigator = get<Navigator>()
+
+    ActionMenuModal(
+      entryPoint = ActionMenuEntryPoint.ShowProgress(
+        key.showId,
+        key.status,
+      ),
+      onDismissRequest = navigator::goBack,
+      onNavigate = navigator::navigate,
     )
   }
 

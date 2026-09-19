@@ -125,11 +125,11 @@ fun ListScrollableContent(
     onLoadMore = { action(ListDetailsAction.LoadMore) },
   )
 
-  if (showActionModal != null) {
+  showActionModal?.let { media ->
     ActionMenuModal(
-      mediaItem = showActionModal!!,
       onDismissRequest = { showActionModal = null },
       entryPoint = ActionMenuEntryPoint.ListDetails(
+        media = media,
         listId = state.id,
         listName = state.details.name,
       ),
@@ -138,14 +138,7 @@ fun ListScrollableContent(
         action(ListDetailsAction.SelectMedia(media))
         showActionModal = null
       },
-      onNavigateToAddToList = {
-        onNavigate(
-          Navigation.AddToListRoute(
-            id = it.id,
-            mediaType = it.mediaType.value,
-          ),
-        )
-      },
+      onNavigate = onNavigate,
     )
   }
 

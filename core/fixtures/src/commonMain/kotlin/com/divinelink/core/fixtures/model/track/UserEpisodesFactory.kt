@@ -7,5 +7,6 @@ object UserEpisodesFactory {
   val empty = UserEpisodes(
     available = emptyList(),
     upcoming = emptyList(),
+    paused = emptyList(),
   )
 }

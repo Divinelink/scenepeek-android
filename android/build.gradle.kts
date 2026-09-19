@@ -110,8 +110,6 @@ dependencies {
   testImplementation(libs.ui.automator)
   debugImplementation(libs.androidx.test.ktx)
 
-  testImplementation(libs.kotlin.test.junit)
-
+  debugImplementation(libs.compose.multiplatform.ui.tooling)
   screenshotTestImplementation(libs.screenshot.validation.api)
-  screenshotTestImplementation(libs.compose.multiplatform.ui.tooling)
 }

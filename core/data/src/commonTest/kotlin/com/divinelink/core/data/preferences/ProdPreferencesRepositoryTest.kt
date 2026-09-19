@@ -8,6 +8,7 @@ import com.divinelink.core.designsystem.theme.model.ThemePreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -55,6 +56,9 @@ class ProdPreferencesRepositoryTest {
           ),
         ),
         listSortOptions = mapOf(),
+        expanded = ExpandableSection.entries.associateWith {
+          false
+        },
       )
     }
   }
@@ -90,6 +94,9 @@ class ProdPreferencesRepositoryTest {
           ),
         ),
         listSortOptions = mapOf(),
+        expanded = ExpandableSection.entries.associateWith {
+          false
+        },
       )
 
       repository.switchViewMode(
@@ -124,6 +131,9 @@ class ProdPreferencesRepositoryTest {
           ),
         ),
         listSortOptions = mapOf(),
+        expanded = ExpandableSection.entries.associateWith {
+          false
+        },
       )
 
       repository.switchViewMode(
@@ -158,6 +168,9 @@ class ProdPreferencesRepositoryTest {
           ),
         ),
         listSortOptions = mapOf(),
+        expanded = ExpandableSection.entries.associateWith {
+          false
+        },
       )
     }
   }

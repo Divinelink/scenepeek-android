@@ -13,6 +13,7 @@ import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.sort.other
+import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
@@ -178,5 +179,13 @@ class TestPreferencesRepository(
     _homeSections.value = _homeSections.value.copy(
       order = sections,
     )
+  }
+
+  override suspend fun switchExpandedState(section: ExpandableSection) {
+    _uiPreferences.value.expanded[section]?.let { option ->
+      _uiPreferences.value = _uiPreferences.value.copy(
+        expanded = _uiPreferences.value.expanded + (section to !option),
+      )
+    }
   }
 }
