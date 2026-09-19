@@ -31,7 +31,9 @@ import com.divinelink.core.navigation.route.Navigation.ListDetailsRoute
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestListRepository
+import com.divinelink.core.testing.repository.TestTrackRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
@@ -60,6 +62,8 @@ import com.divinelink.feature.add.to.account.resources.Res as R
 class ListDetailsScreenTest : ComposeTest() {
 
   private val repository = TestListRepository()
+  private val detailsRepository = TestDetailsRepository()
+  private val trackRepository = TestTrackRepository()
   private val authRepository = TestAuthRepository()
   private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
@@ -391,9 +395,11 @@ class ListDetailsScreenTest : ComposeTest() {
         entryPoint = ActionMenuEntryPoint.ListDetails(
           listId = 1234,
           listName = "TV Shows",
+          media = ListDetailsFactory.page1().media.first(),
         ),
-        mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
+        detailsRepository = detailsRepository.mock,
+        trackRepository = trackRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
       )
     }
@@ -482,9 +488,11 @@ class ListDetailsScreenTest : ComposeTest() {
         entryPoint = ActionMenuEntryPoint.ListDetails(
           listId = 1234,
           listName = "TV Shows",
+          media = ListDetailsFactory.page1().media.first(),
         ),
-        mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
+        detailsRepository = detailsRepository.mock,
+        trackRepository = trackRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
       )
     }
@@ -594,11 +602,13 @@ class ListDetailsScreenTest : ComposeTest() {
     declare {
       ActionMenuViewModel(
         entryPoint = ActionMenuEntryPoint.ListDetails(
+          media = ListDetailsFactory.page1().media.first(),
           listId = 1234,
           listName = "TV Shows",
         ),
-        mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
+        detailsRepository = detailsRepository.mock,
+        trackRepository = trackRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
       )
     }
@@ -655,11 +665,13 @@ class ListDetailsScreenTest : ComposeTest() {
     declare {
       ActionMenuViewModel(
         entryPoint = ActionMenuEntryPoint.ListDetails(
+          media = ListDetailsFactory.page1().media.first(),
           listId = 1234,
           listName = "TV Shows",
         ),
-        mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
+        detailsRepository = detailsRepository.mock,
+        trackRepository = trackRepository.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
       )
     }

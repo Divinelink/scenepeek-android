@@ -31,7 +31,6 @@ sealed class UIText {
     }
   }
 
-
   class ResourceText(
     val value: StringResource,
     vararg val formatArgs: Any,

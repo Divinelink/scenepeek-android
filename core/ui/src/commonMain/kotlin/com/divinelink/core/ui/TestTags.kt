@@ -18,6 +18,7 @@ object TestTags {
     }
 
     object Button {
+      const val SAVE_BUTTON = "Saved: %s"
       const val CLEAR_FILTERS = "Clear language button"
       const val SWITCH_VIEW = "Switch View Button"
     }

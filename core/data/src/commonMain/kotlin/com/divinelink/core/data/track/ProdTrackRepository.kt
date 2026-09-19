@@ -13,7 +13,10 @@ class ProdTrackRepository(
 
   override fun getUserShows(): Flow<List<Long>> = dao.getUserShows()
 
-  override fun updateShowStatus(showId: Long, status: UserShowStatus): Result<Unit> = dao
+  override fun updateShowStatus(
+    showId: Long,
+    status: UserShowStatus,
+  ): Result<Unit> = dao
     .updateShowStatus(showId, status)
 
   override fun episodesLeftThisSeason(

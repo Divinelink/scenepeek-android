@@ -18,12 +18,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.LoadMoreContent
 import com.divinelink.core.ui.SaveButton
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.add.to.account.modal.ActionMenuSection
@@ -41,7 +43,9 @@ fun ActionMenuContent(
     LoadMoreContent()
   } else {
     LazyColumn(
-      modifier = Modifier.fillMaxWidth(),
+      modifier = Modifier
+        .fillMaxWidth()
+        .testTag(TestTags.Components.SCROLLABLE_CONTENT),
     ) {
       when (val mediaState = uiState.mediaState) {
         is ItemState.Data -> item {

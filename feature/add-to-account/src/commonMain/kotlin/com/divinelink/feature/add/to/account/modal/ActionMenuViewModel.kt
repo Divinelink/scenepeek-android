@@ -86,7 +86,6 @@ class ActionMenuViewModel(
     trackRepository.updateShowStatus(showId, status)
   }
 
-
   fun onMarkAsFavorite() {
     if (uiState.value.media !is MediaItem.Media) return
 

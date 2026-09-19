@@ -1,12 +1,15 @@
 package com.divinelink.feature.add.to.account.modal
 
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestListRepository
+import com.divinelink.core.testing.repository.TestTrackRepository
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
 
@@ -14,10 +17,10 @@ class ActionMenuViewModelTestRobot : ViewModelTestRobot<ActionMenuUiState>() {
 
   private val listRepository = TestListRepository()
   private val detailsRepository = TestDetailsRepository()
+  private val trackRepository = TestTrackRepository()
   private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   private lateinit var viewModel: ActionMenuViewModel
   private lateinit var entryPoint: ActionMenuEntryPoint
-  private lateinit var mediaItem: MediaItem
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -27,6 +30,7 @@ class ActionMenuViewModelTestRobot : ViewModelTestRobot<ActionMenuUiState>() {
       entryPoint = entryPoint,
       listRepository = listRepository.mock,
       detailsRepository = detailsRepository.mock,
+      trackRepository = trackRepository.mock,
       markAsFavoriteUseCase = markAsFavoriteUseCase,
     )
   }
@@ -34,11 +38,7 @@ class ActionMenuViewModelTestRobot : ViewModelTestRobot<ActionMenuUiState>() {
   override val actualUiState: Flow<ActionMenuUiState>
     get() = viewModel.uiState
 
-  fun setup(
-    mediaItem: MediaItem,
-    entryPoint: ActionMenuEntryPoint,
-  ) = apply {
-    this@ActionMenuViewModelTestRobot.mediaItem = mediaItem
+  fun setup(entryPoint: ActionMenuEntryPoint) = apply {
     this@ActionMenuViewModelTestRobot.entryPoint = entryPoint
 
     buildViewModel()
@@ -72,5 +72,13 @@ class ActionMenuViewModelTestRobot : ViewModelTestRobot<ActionMenuUiState>() {
 
   fun onDismissSnackbar() = apply {
     viewModel.onDismissSnackbar()
+  }
+
+  fun mockFetchMediaItem(response: Flow<Resource<MediaItem.Media?>>) = apply {
+    detailsRepository.mockFetchMediaItem(response)
+  }
+
+  fun mockFetchMediaItem(response: Channel<Resource<MediaItem.Media?>>) = apply {
+    detailsRepository.mockFetchMediaItem(response)
   }
 }

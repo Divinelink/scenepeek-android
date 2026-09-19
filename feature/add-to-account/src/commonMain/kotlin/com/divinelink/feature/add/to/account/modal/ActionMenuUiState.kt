@@ -13,9 +13,7 @@ data class ActionMenuUiState(
   val media = (mediaState as? ItemState.Data)?.item
 
   companion object {
-    fun initial(
-      entryPoint: ActionMenuEntryPoint,
-    ): ActionMenuUiState = ActionMenuUiState(
+    fun initial(entryPoint: ActionMenuEntryPoint): ActionMenuUiState = ActionMenuUiState(
       mediaState = when (entryPoint) {
         is ActionMenuEntryPoint.ListDetails -> ItemState.Data(
           item = entryPoint.media,
@@ -72,12 +70,14 @@ data class ActionMenuUiState(
   }
 }
 
-internal fun ActionMenuUiState.updateMedia(
-  mediaItem: MediaItem,
-) = copy(
+internal fun ActionMenuUiState.updateMedia(mediaItem: MediaItem) = copy(
   entryPoint = when (entryPoint) {
     is ActionMenuEntryPoint.ListDetails -> entryPoint.copy(media = mediaItem)
     is ActionMenuEntryPoint.Other -> entryPoint.copy(media = mediaItem)
     is ActionMenuEntryPoint.ShowProgress -> entryPoint
   },
+  mediaState = ItemState.Data(
+    item = mediaItem,
+    loading = false,
+  ),
 )

@@ -11,6 +11,7 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.MediaRequestApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -142,5 +143,13 @@ class TestDetailsRepository {
 
   suspend fun mockFetchWatchProviders(response: Result<WatchProviders>) {
     whenever(mock.fetchWatchProviders(any())).thenReturn(response)
+  }
+
+  fun mockFetchMediaItem(response: Flow<Resource<MediaItem.Media?>>) {
+    whenever(mock.fetchMediaItem(any())).thenReturn(response)
+  }
+
+  fun mockFetchMediaItem(response: Channel<Resource<MediaItem.Media?>>) {
+    whenever(mock.fetchMediaItem(any())).thenReturn(response.consumeAsFlow())
   }
 }

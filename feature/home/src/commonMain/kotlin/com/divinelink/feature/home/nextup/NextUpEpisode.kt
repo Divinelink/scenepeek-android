@@ -82,7 +82,6 @@ fun LazyItemScope.NextUpEpisode(
                 status = nextUp.showStatus,
               ),
             )
-
           },
         )
         .padding(MaterialTheme.dimensions.keyline_4),

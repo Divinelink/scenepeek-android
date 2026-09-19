@@ -42,7 +42,10 @@ class ProdTrackDao(
       entity.map { show -> show.showId }
     }
 
-  override fun updateShowStatus(showId: Long, status: UserShowStatus): Result<Unit> = runCatching {
+  override fun updateShowStatus(
+    showId: Long,
+    status: UserShowStatus,
+  ): Result<Unit> = runCatching {
     database.transaction {
       userShowQueries.updateStatus(
         showId = showId,

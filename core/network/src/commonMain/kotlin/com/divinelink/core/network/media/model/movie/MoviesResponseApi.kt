@@ -17,7 +17,9 @@ data class MoviesResponseApi(
 )
 
 @Serializable
-data class MovieResponseApi @OptIn(ExperimentalSerializationApi::class) constructor(
+data class MovieResponseApi
+@OptIn(ExperimentalSerializationApi::class)
+constructor(
   val adult: Boolean,
   @SerialName("backdrop_path") val backdropPath: String?,
   @SerialName("genre_ids") val genreIds: List<Int>?,

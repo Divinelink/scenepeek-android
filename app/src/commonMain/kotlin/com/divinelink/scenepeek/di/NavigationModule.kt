@@ -306,7 +306,6 @@ val navigationModule = module {
     )
   }
 
-
   navigation<Navigation.DiscoverRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.DiscoverScreen(

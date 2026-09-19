@@ -19,6 +19,4 @@ fun LocalDate.daysFromToday(clock: ClockProvider): Int {
   return dayOfYear - today
 }
 
-fun LocalDate.isAfterNow(clock: ClockProvider): Boolean {
-  return compareTo(clock.now) > 0
-}
+fun LocalDate.isAfterNow(clock: ClockProvider): Boolean = compareTo(clock.now) > 0
