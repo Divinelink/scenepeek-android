@@ -10,6 +10,7 @@ import com.divinelink.core.database.season.EpisodeEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.track.backup.EpisodeExport
 import com.divinelink.core.model.track.backup.LibraryExport
 import com.divinelink.core.model.track.backup.RestoreProcess
@@ -40,6 +41,15 @@ class ProdTrackDao(
     .map { entity ->
       entity.map { show -> show.showId }
     }
+
+  override fun updateShowStatus(showId: Long, status: UserShowStatus): Result<Unit> = runCatching {
+    database.transaction {
+      userShowQueries.updateStatus(
+        showId = showId,
+        status = status.value,
+      )
+    }
+  }
 
   override fun getEpisodesLeftThisSeason(
     showId: Long,
@@ -236,7 +246,7 @@ class ProdTrackDao(
     var totalRestored = 0
 
     library.shows.forEach { show ->
-      userShowQueries.insertUserShow(
+      userShowQueries.upsertUserShow(
         showId = show.id,
         addedAt = show.addedAt,
         updatedAt = show.addedAt,

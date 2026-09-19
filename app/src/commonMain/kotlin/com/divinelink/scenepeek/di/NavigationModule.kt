@@ -297,7 +297,10 @@ val navigationModule = module {
     val navigator = get<Navigator>()
 
     ActionMenuModal(
-      entryPoint = ActionMenuEntryPoint.ShowProgress(key.showId),
+      entryPoint = ActionMenuEntryPoint.ShowProgress(
+        key.showId,
+        key.status,
+      ),
       onDismissRequest = navigator::goBack,
       onNavigate = navigator::navigate,
     )

@@ -76,6 +76,7 @@ fun LazyItemScope.NextUpEpisode(
             onNavigate(
               Navigation.ActionMenuRoute.ShowProgress(
                 showId = nextUp.episode.showId,
+                status = nextUp.showStatus,
               ),
             )
 

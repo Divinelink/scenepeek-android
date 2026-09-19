@@ -14,7 +14,7 @@ CREATE INDEX idx_user_shows_status ON UserShowsEntity(status);
 CREATE UNIQUE INDEX idx_user_episode_unique
 ON UserShowsEntity(showId);
 
-insertUserShow:
+upsertUserShow:
 INSERT OR REPLACE INTO UserShowsEntity (
   showId,
   addedAt,
@@ -24,6 +24,11 @@ INSERT OR REPLACE INTO UserShowsEntity (
   rating
 )
 VALUES (?,?,?,?,?,?);
+
+updateStatus:
+UPDATE UserShowsEntity
+SET status = ?
+WHERE showId = ?;
 
 deleteUserShow:
 DELETE FROM UserShowsEntity WHERE showId = :showId;
@@ -71,6 +76,7 @@ SELECT
   show.id AS showId,
   show.name AS showTitle,
   show.posterPath AS showPosterPath,
+  userShow.status AS showStatus,
 
   showDetails.totalEpisodes,
   COUNT(DISTINCT userEpisode.episodeId) AS watchedEpisodes,

@@ -2,6 +2,7 @@ package com.divinelink.core.data.track
 
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.database.track.TrackDao
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.track.backup.LibraryExport
 import com.divinelink.core.model.track.backup.RestoreProcess
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,9 @@ class ProdTrackRepository(
 ) : TrackRepository {
 
   override fun getUserShows(): Flow<List<Long>> = dao.getUserShows()
+
+  override fun updateShowStatus(showId: Long, status: UserShowStatus): Result<Unit> = dao
+    .updateShowStatus(showId, status)
 
   override fun episodesLeftThisSeason(
     showId: Long,

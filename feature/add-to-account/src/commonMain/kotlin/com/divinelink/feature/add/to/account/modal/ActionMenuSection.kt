@@ -7,14 +7,18 @@ import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.PauseCircleOutline
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_select
 import com.divinelink.core.ui.resources.core_ui_share
+import com.divinelink.core.ui.resources.dropped
 import com.divinelink.core.ui.resources.move_progress_show_to
 import com.divinelink.core.ui.resources.on_hold
 import com.divinelink.core.ui.resources.plan_to_watch
+import com.divinelink.core.ui.resources.watching
 import com.divinelink.feature.add.to.account.resources.Res
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_action_remove_from_list
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_title
@@ -60,6 +64,22 @@ sealed interface ActionMenuSection {
       textRes = UIText.MultiResourceText(
         UiString.move_progress_show_to,
         arrayOf(UiString.plan_to_watch),
+      ),
+    )
+
+    data object ContinueWatching : Intent(
+      icon = Icons.Outlined.PlayArrow,
+      textRes = UIText.MultiResourceText(
+        UiString.move_progress_show_to,
+        arrayOf(UiString.watching),
+      ),
+    )
+
+    data object DropShow : Intent(
+      icon = Icons.Outlined.Stop,
+      textRes = UIText.MultiResourceText(
+        UiString.move_progress_show_to,
+        arrayOf(UiString.dropped),
       ),
     )
   }

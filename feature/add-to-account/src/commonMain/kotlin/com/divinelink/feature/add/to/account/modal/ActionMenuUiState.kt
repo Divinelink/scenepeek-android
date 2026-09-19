@@ -2,6 +2,7 @@ package com.divinelink.feature.add.to.account.modal
 
 import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class ActionMenuUiState(
@@ -42,12 +43,32 @@ data class ActionMenuUiState(
       ActionMenuSection.Intent.AddToList,
       ActionMenuSection.Intent.Share,
     )
-    is ActionMenuEntryPoint.ShowProgress -> listOf(
-      ActionMenuSection.Intent.PauseShow,
-      ActionMenuSection.Divider,
-      ActionMenuSection.Intent.AddToList,
-      ActionMenuSection.Intent.Share,
-    )
+    is ActionMenuEntryPoint.ShowProgress -> buildList<ActionMenuSection> {
+      when (entryPoint.status) {
+        UserShowStatus.WATCHING -> {
+          add(ActionMenuSection.Intent.PauseShow)
+          add(ActionMenuSection.Intent.DropShow)
+        }
+        UserShowStatus.COMPLETED -> Unit
+        UserShowStatus.ON_HOLD -> {
+          add(ActionMenuSection.Intent.ContinueWatching)
+          add(ActionMenuSection.Intent.DropShow)
+        }
+        UserShowStatus.DROPPED -> {
+          add(ActionMenuSection.Intent.ContinueWatching)
+          add(ActionMenuSection.Intent.PauseShow)
+        }
+        UserShowStatus.PLAN_TO_WATCH -> {
+          add(ActionMenuSection.Intent.ContinueWatching)
+          add(ActionMenuSection.Intent.PauseShow)
+          add(ActionMenuSection.Intent.DropShow)
+        }
+      }
+
+      add(ActionMenuSection.Divider)
+      add(ActionMenuSection.Intent.AddToList)
+      add(ActionMenuSection.Intent.Share)
+    }
   }
 }
 

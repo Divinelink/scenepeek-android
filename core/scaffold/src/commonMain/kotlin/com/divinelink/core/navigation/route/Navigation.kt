@@ -5,6 +5,7 @@ import com.divinelink.core.model.awards.Ceremony
 import com.divinelink.core.model.awards.CeremonyCategory
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.search.SearchEntryPoint
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.serialization.Serializable
 
@@ -160,7 +161,10 @@ sealed interface Navigation : NavKey {
     data class Media(val encodedMediaItem: String) : ActionMenuRoute
 
     @Serializable
-    data class ShowProgress(val showId: Long) : ActionMenuRoute
+    data class ShowProgress(
+      val showId: Long,
+      val status: UserShowStatus,
+    ) : ActionMenuRoute
   }
 
   @Serializable

@@ -625,7 +625,7 @@ class ProdMediaDao(
     .distinctUntilChanged()
 
   override fun addShow(showId: Long) = database.transaction {
-    userShowQueries.insertUserShow(
+    userShowQueries.upsertUserShow(
       showId = showId,
       addedAt = clockProvider.clock.currentEpochSeconds(),
       updatedAt = clockProvider.clock.currentEpochSeconds(),

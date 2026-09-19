@@ -84,6 +84,8 @@ fun ActionMenuModal(
             ActionMenuSection.Intent.AddToList,
             ActionMenuSection.Intent.PauseShow,
             ActionMenuSection.Intent.PlanToWatch,
+            ActionMenuSection.Intent.ContinueWatching,
+            ActionMenuSection.Intent.DropShow,
               -> {
               onDismissRequest()
               viewModel.onAction(intent)

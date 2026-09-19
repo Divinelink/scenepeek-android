@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.list.ListRepository
+import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.UIText
@@ -13,6 +14,7 @@ import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.shareUrl
 import com.divinelink.core.model.media.toStub
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.network.Resource
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_error_retry
@@ -32,6 +34,7 @@ class ActionMenuViewModel(
   entryPoint: ActionMenuEntryPoint,
   private val detailsRepository: DetailsRepository,
   private val listRepository: ListRepository,
+  private val trackRepository: TrackRepository,
   private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
 ) : ViewModel() {
 
@@ -69,10 +72,20 @@ class ActionMenuViewModel(
       }
       ActionMenuSection.Intent.RemoveFromList -> removeItemFromList()
       ActionMenuSection.Intent.MultiSelect -> Unit
-      ActionMenuSection.Intent.PauseShow -> Unit
-      ActionMenuSection.Intent.PlanToWatch -> Unit
+      ActionMenuSection.Intent.PauseShow -> updateShowStatus(UserShowStatus.ON_HOLD)
+      ActionMenuSection.Intent.PlanToWatch -> updateShowStatus(UserShowStatus.PLAN_TO_WATCH)
+      ActionMenuSection.Intent.ContinueWatching -> updateShowStatus(UserShowStatus.WATCHING)
+      ActionMenuSection.Intent.DropShow -> updateShowStatus(UserShowStatus.DROPPED)
     }
   }
+
+  private fun updateShowStatus(status: UserShowStatus) = viewModelScope.launch {
+    val showId = (uiState.value.entryPoint as? ActionMenuEntryPoint.ShowProgress)?.showId
+      ?: return@launch
+
+    trackRepository.updateShowStatus(showId, status)
+  }
+
 
   fun onMarkAsFavorite() {
     if (uiState.value.media !is MediaItem.Media) return

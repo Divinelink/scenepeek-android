@@ -3,6 +3,7 @@ package com.divinelink.feature.add.to.account.modal.ui.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
 
@@ -24,6 +25,7 @@ class ActionMenuUiStateParameterProvider : PreviewParameterProvider<ActionMenuUi
     ActionMenuUiState.initial(
       entryPoint = ActionMenuEntryPoint.ShowProgress(
         showId = MediaItemFactory.theOffice().id,
+        status = UserShowStatus.WATCHING,
       ),
     ),
   )

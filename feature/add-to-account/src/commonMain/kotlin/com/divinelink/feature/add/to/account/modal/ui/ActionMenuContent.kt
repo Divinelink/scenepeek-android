@@ -106,6 +106,8 @@ fun ActionMenuContent(
             ActionMenuSection.Intent.Share -> "Share"
             ActionMenuSection.Intent.PauseShow -> "PauseShow"
             ActionMenuSection.Intent.PlanToWatch -> "PlanToWatchShow"
+            ActionMenuSection.Intent.ContinueWatching -> "ContinueWatching"
+            ActionMenuSection.Intent.DropShow -> "DropShow"
           }
         },
       ) { action ->
