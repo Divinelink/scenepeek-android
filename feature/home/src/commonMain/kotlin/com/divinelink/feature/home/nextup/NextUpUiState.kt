@@ -11,6 +11,7 @@ import com.divinelink.core.ui.snackbar.SnackbarMessage
 data class NextUpUiState(
   val available: List<NextUpEpisode>,
   val upcoming: List<NextUpEpisode>,
+  val paused: List<NextUpEpisode>,
   val errors: List<ShowSyncError>,
   val loading: Boolean,
   val snackbarMessage: SnackbarMessage?,
@@ -25,6 +26,7 @@ data class NextUpUiState(
     val initial = NextUpUiState(
       available = emptyList(),
       upcoming = emptyList(),
+      paused = emptyList(),
       errors = emptyList(),
       loading = true,
       snackbarMessage = null,

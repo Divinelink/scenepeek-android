@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.track.NextUpSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.components.DisplayMessageDuration
@@ -33,6 +34,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun NextUpContent(
   modifier: Modifier = Modifier,
   viewModel: NextUpViewModel = koinViewModel(),
+  switchViewModel: SwitchViewButtonViewModel = koinViewModel(),
   onNavigate: (Navigation) -> Unit,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -76,6 +78,7 @@ fun NextUpContent(
         episodes = state.available,
         action = viewModel::onAction,
         section = NextUpSection.Available,
+        switchAction = switchViewModel::onAction,
         onNavigate = onNavigate,
       )
 
@@ -85,6 +88,18 @@ fun NextUpContent(
           episodes = state.upcoming,
           section = NextUpSection.Upcoming,
           action = viewModel::onAction,
+          switchAction = switchViewModel::onAction,
+          onNavigate = onNavigate,
+        )
+      }
+
+      if (state.paused.isNotEmpty()) {
+        EpisodesList(
+          modifier = modifier,
+          episodes = state.paused,
+          section = NextUpSection.Paused,
+          action = viewModel::onAction,
+          switchAction = switchViewModel::onAction,
           onNavigate = onNavigate,
         )
       }
