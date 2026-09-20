@@ -145,18 +145,17 @@ class ProdMediaService(
     emit(response)
   }
 
-  override fun fetchReviews(request: MediaRequestApi): Flow<ReviewsResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
-    val url = baseUrl +
-      "${request.id}" +
-      "/reviews?" +
-      "&language=${restClient.language()}" +
-      "&include_adult=false"
+  override suspend fun fetchReviews(request: MediaRequestApi): Result<ReviewsResponseApi> =
+    runCatching {
+      val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
+      val url = baseUrl +
+        "${request.id}" +
+        "/reviews?" +
+        "&language=${restClient.language()}" +
+        "&include_adult=false"
 
-    val response = restClient.get<ReviewsResponseApi>(url = url)
-
-    emit(response)
-  }
+      restClient.get<ReviewsResponseApi>(url = url)
+    }
 
   override fun fetchRecommendedMovies(request: MediaRequestApi.Movie): Flow<MoviesResponseApi> =
     flow {

@@ -11,88 +11,80 @@ import kotlin.jvm.JvmStatic
 object DetailsFormFactory {
 
   object Movie {
-    fun loading() = MovieTab.entries.associate { tab ->
+    fun loading(id: Long) = MovieTab.entries.associate { tab ->
       tab.order to when (tab) {
         MovieTab.About -> DetailsForm.Loading
         MovieTab.Cast -> DetailsForm.Loading
-        MovieTab.Recommendations -> DetailsForm.Loading
-        MovieTab.Reviews -> DetailsForm.Loading
+        MovieTab.Recommendations -> DetailsForm.Section(DetailSection.MovieRecommendations(id))
+        MovieTab.Reviews -> DetailsForm.Section(DetailSection.MovieReviews(id))
       }
     }
 
-    fun error() = MovieTab.entries.associate { tab ->
+    fun error(id: Long) = MovieTab.entries.associate { tab ->
       tab.order to when (tab) {
         MovieTab.About -> DetailsForm.Error
         MovieTab.Cast -> DetailsForm.Error
-        MovieTab.Recommendations -> DetailsForm.Error
-        MovieTab.Reviews -> DetailsForm.Error
+        MovieTab.Recommendations -> DetailsForm.Section(DetailSection.MovieRecommendations(id))
+        MovieTab.Reviews -> DetailsForm.Section(DetailSection.MovieReviews(id))
       }
     }
 
-    fun empty() = MovieTab.entries.associate { tab ->
+    fun empty(id: Long) = MovieTab.entries.associate { tab ->
       tab.order to when (tab) {
         MovieTab.About -> DetailsForm.Content(DetailsDataFactory.Empty.about())
         MovieTab.Cast -> DetailsForm.Content(DetailsDataFactory.Empty.cast(isTv = false))
-        MovieTab.Recommendations -> DetailsForm.Section(
-          DetailSection.MovieRecommendations(id = 1),
-        )
-        MovieTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Empty.reviews())
+        MovieTab.Recommendations -> DetailsForm.Section(DetailSection.MovieRecommendations(id))
+        MovieTab.Reviews -> DetailsForm.Section(DetailSection.MovieReviews(id))
       }
     }
 
-    fun full() = MovieTab.entries.associate { tab ->
+    fun full(id: Long) = MovieTab.entries.associate { tab ->
       tab.order to when (tab) {
         MovieTab.About -> DetailsForm.Content(DetailsDataFactory.Movie.about())
         MovieTab.Cast -> DetailsForm.Content(DetailsDataFactory.Movie.cast())
-        MovieTab.Recommendations -> DetailsForm.Section(
-          DetailSection.MovieRecommendations(id = 1),
-        )
-        MovieTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Movie.reviews())
+        MovieTab.Recommendations -> DetailsForm.Section(DetailSection.MovieRecommendations(id))
+        MovieTab.Reviews -> DetailsForm.Section(DetailSection.MovieReviews(id))
       }
     }
   }
 
   object Tv {
-    fun loading() = TvTab.entries.associate { tab ->
+    fun loading(id: Long) = TvTab.entries.associate { tab ->
       tab.order to when (tab) {
         TvTab.About -> DetailsForm.Loading
         TvTab.Cast -> DetailsForm.Loading
-        TvTab.Recommendations -> DetailsForm.Loading
-        TvTab.Reviews -> DetailsForm.Loading
+        TvTab.Recommendations -> DetailsForm.Section(DetailSection.TvRecommendations(id))
+        TvTab.Reviews -> DetailsForm.Section(DetailSection.TvReviews(id))
         TvTab.Seasons -> DetailsForm.Loading
       }
     }
 
-    fun error() = TvTab.entries.associate { tab ->
+    fun error(id: Long) = TvTab.entries.associate { tab ->
       tab.order to when (tab) {
         TvTab.About -> DetailsForm.Error
         TvTab.Cast -> DetailsForm.Error
-        TvTab.Recommendations -> DetailsForm.Error
-        TvTab.Reviews -> DetailsForm.Error
+        TvTab.Recommendations -> DetailsForm.Section(DetailSection.TvRecommendations(id))
+        TvTab.Reviews -> DetailsForm.Section(DetailSection.TvReviews(id))
         TvTab.Seasons -> DetailsForm.Error
       }
     }
 
-    fun empty() = TvTab.entries.associate { tab ->
+    fun empty(id: Long) = TvTab.entries.associate { tab ->
       tab.order to when (tab) {
         TvTab.About -> DetailsForm.Content(DetailsDataFactory.Empty.about())
         TvTab.Cast -> DetailsForm.Content(DetailsDataFactory.Empty.cast(isTv = true))
-        TvTab.Recommendations -> DetailsForm.Section(
-          DetailSection.TvRecommendation(id = 1),
-        )
-        TvTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Empty.reviews())
+        TvTab.Recommendations -> DetailsForm.Section(DetailSection.TvRecommendations(id))
+        TvTab.Reviews -> DetailsForm.Section(DetailSection.TvReviews(id))
         TvTab.Seasons -> DetailsForm.Content(DetailsDataFactory.Empty.seasons())
       }
     }
 
-    fun full() = TvTab.entries.associate { tab ->
+    fun full(id: Long) = TvTab.entries.associate { tab ->
       tab.order to when (tab) {
         TvTab.About -> DetailsForm.Content(DetailsDataFactory.Tv.about())
         TvTab.Cast -> DetailsForm.Content(DetailsDataFactory.Tv.cast())
-        TvTab.Recommendations -> DetailsForm.Section(
-          DetailSection.TvRecommendation(id = 1),
-        )
-        TvTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Tv.reviews())
+        TvTab.Recommendations -> DetailsForm.Section(DetailSection.TvRecommendations(id))
+        TvTab.Reviews -> DetailsForm.Section(DetailSection.TvReviews(id))
         TvTab.Seasons -> DetailsForm.Content(DetailsDataFactory.Tv.seasons())
       }
     }
@@ -106,10 +98,6 @@ object DetailsFormFactory {
     fun withCast(cast: DetailsData.Cast) = apply {
       forms = forms + (MovieTab.Cast.order to DetailsForm.Content(cast))
     }
-
-//    fun withRecommendations(recommendations: DetailsData.Recommendations) = apply {
-//      forms = forms + (MovieTab.Recommendations.order to DetailsForm.Content(recommendations))
-//    }
 
     fun withReviews(reviews: DetailsData.Reviews) = apply {
       forms = forms + (MovieTab.Reviews.order to DetailsForm.Content(reviews))
@@ -126,10 +114,6 @@ object DetailsFormFactory {
     fun withCast(cast: DetailsData.Cast) = apply {
       forms = forms + (TvTab.Cast.order to DetailsForm.Content(cast))
     }
-
-//    fun withRecommendations(recommendations: DetailsData.Recommendations) = apply {
-//      forms = forms + (TvTab.Recommendations.order to DetailsForm.Content(recommendations))
-//    }
 
     fun withReviews(reviews: DetailsData.Reviews) = apply {
       forms = forms + (TvTab.Reviews.order to DetailsForm.Content(reviews))

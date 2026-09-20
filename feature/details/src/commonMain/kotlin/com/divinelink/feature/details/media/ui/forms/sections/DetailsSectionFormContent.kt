@@ -1,10 +1,11 @@
-package com.divinelink.feature.details.media.ui.forms.recommendation
+package com.divinelink.feature.details.media.ui.forms.sections
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
@@ -65,7 +66,7 @@ fun DetailsSectionFormContent(
     }
     DetailSectionData.Loading -> DetailFormLoading()
     is DetailSectionData.Reviews -> ScenePeekLazyColumn(
-      modifier = modifier.testTag(TestTags.Details.Reviews.FORM),
+      modifier = Modifier.fillMaxSize().testTag(TestTags.Details.Reviews.FORM),
       contentPadding = PaddingValues(
         top = MaterialTheme.dimensions.keyline_16,
         start = MaterialTheme.dimensions.keyline_16,
@@ -100,7 +101,7 @@ fun DetailsSectionFormContent(
     }
     is DetailSectionData.Media -> ScrollableMediaContent(
       modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
-      items = data.media,
+      items = data.data,
       section = ViewableSection.MEDIA_DETAILS,
       onLoadMore = {},
       onSwitchPreferences = onSwitchPreferences,

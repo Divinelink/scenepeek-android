@@ -10,7 +10,6 @@ import com.divinelink.core.data.details.mapper.api.toSeriesCrewEntity
 import com.divinelink.core.data.details.mapper.api.toSeriesCrewJobEntity
 import com.divinelink.core.data.details.mapper.map
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.database.credits.dao.CreditsDao
@@ -143,13 +142,10 @@ class ProdDetailsRepository(
       shouldFetch = { it == null },
     )
 
-  override fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>> = mediaRemote
-    .fetchReviews(request)
-    .map { apiResponse ->
-      Result.success(apiResponse.map())
-    }.catch {
-      throw ReviewsException()
-    }
+  override suspend fun fetchMediaReviews(request: MediaRequestApi): Result<List<Review>> =
+    mediaRemote
+      .fetchReviews(request)
+      .map { apiResponse -> apiResponse.map() }
 
   override fun fetchRecommendedMovies(
     request: MediaRequestApi.Movie,

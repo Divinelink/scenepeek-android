@@ -32,7 +32,7 @@ interface DetailsRepository {
 
   fun fetchMediaItem(media: MediaReference): Flow<Resource<MediaItem.Media?>>
 
-  fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>>
+  suspend fun fetchMediaReviews(request: MediaRequestApi): Result<List<Review>>
 
   fun fetchRecommendedMovies(
     request: MediaRequestApi.Movie,

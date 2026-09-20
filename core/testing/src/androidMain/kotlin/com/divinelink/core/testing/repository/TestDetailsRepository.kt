@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.details.repository.DetailsRepository
@@ -40,26 +42,30 @@ class TestDetailsRepository {
     whenever(mock.fetchMediaDetails(any())).thenReturn(response.consumeAsFlow())
   }
 
-  fun mockFetchMovieReviews(
+  suspend fun mockFetchMovieReviews(
     request: MediaRequestApi,
     response: Result<List<Review>>,
   ) {
-    whenever(
-      mock.fetchMediaReviews(request),
-    ).thenReturn(
-      flowOf(response),
-    )
+    whenever(mock.fetchMediaReviews(request)).thenReturn(response)
+  }
+
+  suspend fun mockFetchReviews(response: Result<List<Review>>) {
+    whenever(mock.fetchMediaReviews(any())).thenReturn(response)
   }
 
   fun mockFetchSimilarMovies(
     request: MediaRequestApi.Movie,
     response: Result<PaginationData<MediaItem.Media>>,
   ) {
-    whenever(
-      mock.fetchRecommendedMovies(request),
-    ).thenReturn(
-      flowOf(response),
-    )
+    whenever(mock.fetchRecommendedMovies(request)).thenReturn(flowOf(response))
+  }
+
+  fun mockFetchRecommendedMovies(response: Result<PaginationData<MediaItem.Media>>) {
+    whenever(mock.fetchRecommendedMovies(any())).thenReturn(flowOf(response))
+  }
+
+  fun mockFetchRecommendedTv(response: Result<PaginationData<MediaItem.Media>>) {
+    whenever(mock.fetchRecommendedTv(any())).thenReturn(flowOf(response))
   }
 
   fun mockFetchMovieVideos(

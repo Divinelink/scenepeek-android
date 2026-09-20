@@ -15,7 +15,6 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.compose.ui.test.swipeUp
-import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.core.commons.PreviewClockProvider
@@ -24,6 +23,7 @@ import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
+import com.divinelink.core.fixtures.model.FooException
 import com.divinelink.core.fixtures.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
@@ -38,6 +38,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanc
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.ScreenType
 import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.model.details.media.DetailSection
 import com.divinelink.core.model.details.media.MediaDetailsResult
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
@@ -82,6 +83,7 @@ import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_descr
 import com.divinelink.core.ui.resources.core_ui_view_all
 import com.divinelink.feature.add.to.account.resources.submit_rating_button
 import com.divinelink.feature.details.media.ui.DetailsScreen
+import com.divinelink.feature.details.media.ui.DetailsSectionViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details_manage_movie
@@ -96,6 +98,8 @@ import org.jetbrains.compose.resources.getString
 import org.junit.Rule
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -136,7 +140,9 @@ class DetailsScreenTest : ComposeTest() {
   @BeforeTest
   fun setup() {
     startKoin {
-      // Do nothing
+      modules(
+        sectionViewModelModule,
+      )
     }
     declare {
       DropdownMenuViewModel(
@@ -162,6 +168,16 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test switch between movie tabs`() = uiTest {
+    val id = MediaDetailsFactory.FightClub().id
+
+    detailsRepository.mockFetchRecommendedMovies(
+      Result.success(MediaItemFactory.moviesPagination()),
+    )
+
+    detailsRepository.mockFetchReviews(
+      Result.success(ReviewFactory.all()),
+    )
+
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
@@ -170,23 +186,11 @@ class DetailsScreenTest : ComposeTest() {
             ratingSource = RatingSource.TMDB,
           ),
         ),
-        Result.success(
-          MediaDetailsResult.RecommendedSuccess(
-            similar = MediaItemFactory.MoviesList(),
-            formOrder = MovieTab.Recommendations.order,
-          ),
-        ),
-        Result.success(
-          MediaDetailsResult.ReviewsSuccess(
-            reviews = ReviewFactory.all(),
-            formOrder = MovieTab.Reviews.order,
-          ),
-        ),
       ),
     )
 
     val route = Navigation.DetailsRoute(
-      id = 0,
+      id = id,
       mediaType = MediaType.MOVIE.value,
       isFavorite = false,
     )
@@ -228,6 +232,17 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test switch between movie tabs with error`() = uiTest {
+    val id = MediaDetailsFactory.FightClub().id
+
+    detailsRepository.mockFetchRecommendedMovies(Result.failure(FooException()))
+
+    declare {
+      DetailsSectionViewModel(
+        section = DetailSection.MovieRecommendations(id = id),
+        repository = detailsRepository.mock,
+      )
+    }
+
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
@@ -236,12 +251,11 @@ class DetailsScreenTest : ComposeTest() {
             ratingSource = RatingSource.TMDB,
           ),
         ),
-        Result.failure(RecommendedException(MovieTab.Recommendations.order)),
       ),
     )
 
     val route = Navigation.DetailsRoute(
-      id = 0,
+      id = id,
       isFavorite = false,
       mediaType = MediaType.MOVIE.value,
     )
@@ -278,6 +292,10 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test empty reviews for movies`() = uiTest {
+    val id = MediaDetailsFactory.FightClub().id
+
+    detailsRepository.mockFetchReviews(Result.success(emptyList()))
+
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
@@ -286,17 +304,11 @@ class DetailsScreenTest : ComposeTest() {
             ratingSource = RatingSource.TMDB,
           ),
         ),
-        Result.success(
-          MediaDetailsResult.ReviewsSuccess(
-            reviews = emptyList(),
-            formOrder = MovieTab.Reviews.order,
-          ),
-        ),
       ),
     )
 
     val route = Navigation.DetailsRoute(
-      id = 0,
+      id = id,
       isFavorite = false,
       mediaType = MediaType.MOVIE.value,
     )
@@ -340,6 +352,11 @@ class DetailsScreenTest : ComposeTest() {
   @Test
   fun navigateToAnotherDetailsScreen() = uiTest {
     var detailsRoute: Navigation.DetailsRoute? = null
+    val id = MediaDetailsFactory.FightClub().id
+
+    detailsRepository.mockFetchRecommendedMovies(
+      Result.success(MediaItemFactory.moviesPagination()),
+    )
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       response = flowOf(
@@ -355,17 +372,11 @@ class DetailsScreenTest : ComposeTest() {
             ratingSource = RatingSource.TMDB,
           ),
         ),
-        Result.success(
-          MediaDetailsResult.RecommendedSuccess(
-            similar = MediaItemFactory.MoviesList(),
-            formOrder = MovieTab.Recommendations.order,
-          ),
-        ),
       ),
     )
 
     val route = Navigation.DetailsRoute(
-      id = 0,
+      id = id,
       isFavorite = false,
       mediaType = MediaType.MOVIE.value,
     )
@@ -1073,4 +1084,13 @@ class DetailsScreenTest : ComposeTest() {
     route = route,
     clock = PreviewClockProvider(),
   )
+
+  private val sectionViewModelModule = module {
+    viewModel { params ->
+      DetailsSectionViewModel(
+        section = params.get(),
+        repository = detailsRepository.mock,
+      )
+    }
+  }
 }

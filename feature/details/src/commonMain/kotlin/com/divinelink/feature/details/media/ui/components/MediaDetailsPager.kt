@@ -32,8 +32,8 @@ import com.divinelink.feature.details.DetailsAction
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
-import com.divinelink.feature.details.media.ui.forms.recommendation.DetailsSectionFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
+import com.divinelink.feature.details.media.ui.forms.sections.DetailsSectionFormContent
 
 @Composable
 fun MediaDetailsPager(
@@ -108,18 +108,18 @@ fun MediaDetailsPager(
           )
         }
         is DetailsForm.Section -> when (form.section) {
-          is DetailSection.TvRecommendation,
+          is DetailSection.TvRecommendations,
           is DetailSection.MovieRecommendations,
           is DetailSection.MovieReviews,
           is DetailSection.TvReviews,
             -> DetailsSectionFormContent(
-            modifier = Modifier.nestedScroll(scroll),
-            section = form.section,
-            title = mediaDetails.title,
-            onSwitchPreferences = onSwitchPreferences,
-            onItemClick = onMediaItemClick,
-            onLongClick = { onNavigate(Media(it.encodeToString())) },
-          )
+              modifier = Modifier.nestedScroll(scroll),
+              section = form.section,
+              title = mediaDetails.title,
+              onSwitchPreferences = onSwitchPreferences,
+              onItemClick = onMediaItemClick,
+              onLongClick = { onNavigate(Media(it.encodeToString())) },
+            )
         }
       }
     }

@@ -59,6 +59,7 @@ import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -82,6 +83,7 @@ import com.divinelink.core.ui.resources.core_ui_show_total_episodes_item
 import com.divinelink.core.ui.resources.core_ui_tmdb_user_score
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.media.ui.DetailsContent
+import com.divinelink.feature.details.media.ui.DetailsSectionViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.feature_details_request
@@ -92,6 +94,8 @@ import org.jetbrains.compose.resources.getString
 import org.junit.Rule
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -108,11 +112,14 @@ class DetailsContentTest : ComposeTest() {
     preferenceStorage = FakePreferenceStorage(spoilersObfuscation = false),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
   )
+  private val detailsRepository = TestDetailsRepository()
 
   @BeforeTest
   fun setup() {
     startKoin {
-      // Do nothing
+      modules(
+        sectionViewModelModule,
+      )
     }
 
     declare {
@@ -141,7 +148,7 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
         ),
         onMarkAsFavoriteClicked = {
@@ -207,14 +214,16 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test reviews form is empty when reviews are empty`() = uiTest {
+    detailsRepository.mockFetchReviews(Result.success(emptyList()))
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(0),
           selectedTabIndex = MovieTab.Reviews.order,
         ),
         onMarkAsFavoriteClicked = {},
@@ -248,15 +257,19 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test render movie reviews`() = uiTest {
+    detailsRepository.mockFetchReviews(Result.success(reviews))
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
           selectedTabIndex = MovieTab.Reviews.order,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -295,7 +308,7 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           error = UIText.ResourceText(
             com.divinelink.core.model.resources.Res.string.fatal_error_fetching_details,
@@ -338,12 +351,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
           trailer = VideoFactory.Youtube(),
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -375,11 +390,13 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           userDetails = AccountMediaDetailsFactory.Rated(),
           mediaDetails = MediaDetailsFactory.FightClub(),
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
           tabs = MovieTab.entries,
         ),
         onMarkAsFavoriteClicked = {},
@@ -424,10 +441,12 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
           tabs = MovieTab.entries,
         ),
         onMarkAsFavoriteClicked = {},
@@ -462,11 +481,11 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(0),
           userDetails = AccountMediaDetailsFactory.NotRated(),
         ),
         onMarkAsFavoriteClicked = {},
@@ -500,11 +519,11 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(0),
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withWatchlist(true)
           },
@@ -544,7 +563,9 @@ class DetailsContentTest : ComposeTest() {
         mediaType = MediaType.MOVIE,
         mediaDetails = MediaDetailsFactory.FightClub(),
         tabs = MovieTab.entries,
-        forms = DetailsFormFactory.Movie.empty(),
+        forms = DetailsFormFactory.Movie.empty(
+          id = MediaDetailsFactory.FightClub().id,
+        ),
         userDetails = AccountMediaDetailsFactory.NotRated(),
       ),
     )
@@ -605,11 +626,11 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(0),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -641,11 +662,11 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(0),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -677,7 +698,7 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = null,
         ),
@@ -736,7 +757,7 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           actionButtons = listOf(
             DetailActionItem.Rate,
@@ -744,7 +765,9 @@ class DetailsContentTest : ComposeTest() {
             DetailActionItem.Request,
           ),
           mediaDetails = MediaDetailsFactory.TheOffice(),
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
           tabs = TvTab.entries,
         ),
         onMarkAsFavoriteClicked = {},
@@ -804,7 +827,7 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           actionButtons = listOf(
             DetailActionItem.Rate,
@@ -812,7 +835,7 @@ class DetailsContentTest : ComposeTest() {
             DetailActionItem.Request,
           ),
           mediaDetails = MediaDetailsFactory.FightClub(),
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(0),
           tabs = MovieTab.entries,
         ),
         onMarkAsFavoriteClicked = {},
@@ -872,7 +895,9 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -923,7 +948,9 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
           spoilersObfuscated = true,
         ),
         onMarkAsFavoriteClicked = {},
@@ -962,10 +989,12 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
           tabs = MovieTab.entries,
         ),
         onMarkAsFavoriteClicked = {},
@@ -1001,13 +1030,15 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub().copy(
             ratingCount = RatingCountFactory.full(),
           ),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
           ratingSource = RatingSource.IMDB,
         ),
         onMarkAsFavoriteClicked = {},
@@ -1045,14 +1076,16 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub().copy(
             ratingCount = RatingCountFactory.full(),
           ),
           ratingSource = RatingSource.TRAKT,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1088,13 +1121,15 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub().copy(
             ratingCount = RatingCountFactory.full(),
           ),
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.empty(),
+          forms = DetailsFormFactory.Movie.empty(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
           ratingSource = RatingSource.TMDB,
         ),
         onMarkAsFavoriteClicked = {},
@@ -1131,7 +1166,7 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             information = MediaDetailsFactory.TheOffice().information.copy(
@@ -1139,7 +1174,9 @@ class DetailsContentTest : ComposeTest() {
             ),
           ),
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
           ratingSource = RatingSource.TMDB,
         ),
         onMarkAsFavoriteClicked = {},
@@ -1178,7 +1215,7 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             information = MediaDetailsFactory.TheOffice().information.copy(
@@ -1186,7 +1223,9 @@ class DetailsContentTest : ComposeTest() {
             ),
           ),
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
           ratingSource = RatingSource.TMDB,
         ),
         onMarkAsFavoriteClicked = {},
@@ -1223,11 +1262,13 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
           ratingSource = RatingSource.TMDB,
         ),
         onMarkAsFavoriteClicked = {},
@@ -1257,12 +1298,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
           selectedTabIndex = MovieTab.About.order,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1298,12 +1341,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.About.order,
-          forms = DetailsFormFactory.Tv.full(),
+          forms = DetailsFormFactory.Tv.full(
+            MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1339,12 +1384,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
           selectedTabIndex = MovieTab.Cast.order,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1386,12 +1433,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.Cast.order,
-          forms = DetailsFormFactory.Tv.full(),
+          forms = DetailsFormFactory.Tv.full(
+            MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1431,12 +1480,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.Cast.order,
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1469,15 +1520,21 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test recommendations form for movies with data`() = uiTest {
+    detailsRepository.mockFetchRecommendedMovies(
+      Result.success(MediaItemFactory.moviesPagination()),
+    )
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
           selectedTabIndex = MovieTab.Recommendations.order,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1514,15 +1571,25 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test recommendations form for tv with data`() = uiTest {
+    detailsRepository.mockFetchRecommendedTv(
+      Result.success(
+        MediaItemFactory.tvPagination().copy(
+          list = MediaItemFactory.TVList(),
+        ),
+      ),
+    )
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.Recommendations.order,
-          forms = DetailsFormFactory.Tv.full(),
+          forms = DetailsFormFactory.Tv.full(
+            MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1558,15 +1625,21 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test recommendations form for tv with empty data`() = uiTest {
+    detailsRepository.mockFetchRecommendedTv(
+      Result.success(MediaItemFactory.emptyPaginationData()),
+    )
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.Recommendations.order,
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1602,12 +1675,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.Seasons.order,
-          forms = DetailsFormFactory.Tv.full(),
+          forms = DetailsFormFactory.Tv.full(
+            MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1647,12 +1722,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.Seasons.order,
-          forms = DetailsFormFactory.Tv.empty(),
+          forms = DetailsFormFactory.Tv.empty(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1688,12 +1765,12 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           tabs = TvTab.entries,
           selectedTabIndex = TvTab.Seasons.order,
-          forms = DetailsFormFactory.Tv.loading(),
+          forms = DetailsFormFactory.Tv.loading(0),
         ),
         onMarkAsFavoriteClicked = {},
         onMediaItemClick = {},
@@ -1729,12 +1806,14 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = createUiState(
-          mediaId = 0,
+          mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           tabs = MovieTab.entries,
           selectedTabIndex = MovieTab.About.order,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
           watchProviders = LCEState.Content(WatchProvidersFactory.all),
         ),
         onMarkAsFavoriteClicked = {},
@@ -1814,4 +1893,13 @@ class DetailsContentTest : ComposeTest() {
     navigateToLogin = navigateToLogin,
     watchProviders = watchProviders,
   )
+
+  private val sectionViewModelModule = module {
+    viewModel { params ->
+      DetailsSectionViewModel(
+        section = params.get(),
+        repository = detailsRepository.mock,
+      )
+    }
+  }
 }

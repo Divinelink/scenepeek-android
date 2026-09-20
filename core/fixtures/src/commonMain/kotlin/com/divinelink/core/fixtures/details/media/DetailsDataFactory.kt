@@ -5,7 +5,6 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.KeywordFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
-import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.media.MediaType
 

@@ -77,7 +77,7 @@ class DetailsViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val mediaId = 1234L
+  val mediaId = 1234L
   private val movieDetails = MediaDetailsFactory.FightClub()
   private val tvDetails = MediaDetailsFactory.TheOffice()
 
@@ -106,7 +106,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -136,7 +136,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -166,7 +166,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -203,7 +203,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -220,7 +220,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -259,7 +259,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -274,7 +274,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -318,7 +318,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -355,7 +355,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -384,7 +384,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -416,7 +416,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -431,7 +431,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -451,7 +451,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -498,7 +498,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -516,7 +516,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -534,7 +534,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -574,7 +574,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -594,7 +594,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -626,7 +626,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -641,7 +641,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -674,7 +674,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -698,7 +698,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -734,7 +734,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -749,7 +749,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -795,7 +795,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -808,7 +808,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -826,7 +826,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -863,7 +863,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -897,7 +897,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -913,7 +913,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -926,7 +926,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -944,7 +944,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -982,7 +982,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -997,7 +997,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1033,7 +1033,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
             withCast(DetailsDataFactory.Tv.cast())
@@ -1067,7 +1067,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1111,7 +1111,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
           },
@@ -1168,7 +1168,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading(),
+            forms = DetailsFormFactory.Tv.loading(mediaId),
             jellyseerrMediaInfo = null,
             mediaId = mediaId,
             isLoading = true,
@@ -1177,7 +1177,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasons())
             },
@@ -1191,7 +1191,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
             },
@@ -1243,7 +1243,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1294,7 +1294,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(
               DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
@@ -1324,7 +1324,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
@@ -1364,7 +1364,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
           },
@@ -1396,7 +1396,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasons())
             },
@@ -1424,7 +1424,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasons())
             },
@@ -1452,7 +1452,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasons())
             },
@@ -1496,7 +1496,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(2316).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
           },
@@ -1540,7 +1540,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(550).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1568,6 +1568,8 @@ class DetailsViewModelTest {
 
   @Test
   fun `test onMediaSourceClick for movie emits openUrls`() = runTest {
+    val mediaId = MediaDetailsFactory.FightClub().id
+
     testRobot
       .mockFetchMediaDetails(
         response = defaultDetails(
@@ -1584,7 +1586,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1628,7 +1630,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(550).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1661,7 +1663,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1678,7 +1680,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1722,7 +1724,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
@@ -1754,7 +1756,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
           },
@@ -1809,7 +1811,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -1841,7 +1843,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -1862,7 +1864,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -1883,7 +1885,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -1940,7 +1942,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
@@ -1972,7 +1974,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
@@ -2031,7 +2033,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
@@ -2061,7 +2063,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
           },
@@ -2121,7 +2123,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
@@ -2151,7 +2153,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
           },
@@ -2211,7 +2213,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
@@ -2242,7 +2244,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
             },
@@ -2267,7 +2269,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
             },
@@ -2292,7 +2294,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
             },
@@ -2349,7 +2351,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -2375,7 +2377,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -2396,7 +2398,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -2417,7 +2419,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.MOVIE,
             tabs = MovieTab.entries,
-            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
               withAbout(DetailsDataFactory.Movie.about())
               withCast(DetailsDataFactory.Movie.cast())
             },
@@ -2476,7 +2478,7 @@ class DetailsViewModelTest {
           createUiState(
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
-            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(
                 DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
@@ -2530,7 +2532,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(mediaId).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(
               DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
@@ -2579,7 +2581,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -2621,7 +2623,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -2658,7 +2660,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+          forms = DetailsFormFactory.Movie.loading(mediaId).toMovieWzd {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
@@ -2693,7 +2695,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(2316).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
           },
@@ -2726,7 +2728,7 @@ class DetailsViewModelTest {
         createUiState(
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+          forms = DetailsFormFactory.Tv.loading(2316).toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasons())
           },

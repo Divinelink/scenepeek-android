@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class DetailsSectionViewModel(
   section: DetailSection,
@@ -32,7 +33,7 @@ class DetailsSectionViewModel(
   init {
     when (section) {
       is DetailSection.MovieRecommendations -> fetchMovieRecommendations(section.id)
-      is DetailSection.TvRecommendation -> fetchTvRecommendations(section.id)
+      is DetailSection.TvRecommendations -> fetchTvRecommendations(section.id)
       is DetailSection.MovieReviews -> fetchReviews(MediaType.MOVIE)
       is DetailSection.TvReviews -> fetchReviews(MediaType.TV)
     }
@@ -46,10 +47,10 @@ class DetailsSectionViewModel(
       else -> return
     }
 
-    repository
-      .fetchMediaReviews(request)
-      .onEach { response ->
-        response.fold(
+    viewModelScope.launch {
+      repository
+        .fetchMediaReviews(request)
+        .fold(
           onSuccess = { reviews ->
             _uiState.update { state ->
               state.copy(data = DetailSectionData.Reviews(reviews))
@@ -67,8 +68,7 @@ class DetailsSectionViewModel(
             }
           },
         )
-      }
-      .launchIn(viewModelScope)
+    }
   }
 
   private fun <T> fetchRecommendations(
@@ -95,6 +95,16 @@ class DetailsSectionViewModel(
             1 to transformResponse(response),
           )
           state.copy(data = DetailSectionData.Media(data))
+        }
+      }.onFailure { error ->
+        _uiState.update { state ->
+          val data = when (state.data) {
+            is DetailSectionData.Error -> DetailSectionData.Error(error.toBlankSlateState())
+            DetailSectionData.Loading -> DetailSectionData.Error(error.toBlankSlateState())
+            is DetailSectionData.Reviews -> DetailSectionData.Error(error.toBlankSlateState())
+            is DetailSectionData.Media -> state.data
+          }
+          state.copy(data = data)
         }
       }
     }

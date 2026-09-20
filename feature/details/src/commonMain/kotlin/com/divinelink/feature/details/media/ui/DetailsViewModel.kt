@@ -10,7 +10,6 @@ import com.divinelink.core.commons.data
 import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
@@ -134,7 +133,7 @@ class DetailsViewModel(
             TvTab.Seasons -> DetailsForm.Loading
             TvTab.Cast -> DetailsForm.Loading
             TvTab.Recommendations -> DetailsForm.Section(
-              section = DetailSection.TvRecommendation(route.id),
+              section = DetailSection.TvRecommendations(route.id),
             )
             TvTab.Reviews -> DetailsForm.Section(DetailSection.TvReviews(route.id))
           }
@@ -279,27 +278,6 @@ class DetailsViewModel(
                 ),
               )
 
-//              is MediaDetailsResult.ReviewsSuccess -> {
-//                val data = result.data as MediaDetailsResult.ReviewsSuccess
-//
-//                val updatedForms = viewState.forms.toMutableMap().apply {
-//                  this[data.formOrder] = DetailsForm.Content(DetailsData.Reviews(data.reviews))
-//                }
-//
-//                viewState.copy(forms = updatedForms)
-//              }
-
-//              is MediaDetailsResult.RecommendedSuccess -> {
-//                val data = result.data as MediaDetailsResult.RecommendedSuccess
-//
-//                val updatedForms = viewState.forms.toMutableMap().apply {
-//                  this[data.formOrder] = DetailsForm.Content(
-//                    DetailsData.Recommendations(data.similar),
-//                  )
-//                }
-//                viewState.copy(forms = updatedForms)
-//              }
-
               is MediaDetailsResult.VideosSuccess -> viewState.copy(
                 trailer = (result.data as MediaDetailsResult.VideosSuccess).trailer,
               )
@@ -399,13 +377,6 @@ class DetailsViewModel(
                 error = MediaDetailsResult.Failure.FatalError().message,
                 isLoading = false,
               )
-            }
-            is RecommendedException -> _viewState.update { viewState ->
-              val updatedForms = viewState.forms.toMutableMap().apply {
-                this[error.order] = DetailsForm.Error
-              }
-
-              viewState.copy(forms = updatedForms)
             }
 
             else -> _viewState.update { viewState ->

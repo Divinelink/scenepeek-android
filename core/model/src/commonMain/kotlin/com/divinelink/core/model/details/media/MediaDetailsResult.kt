@@ -7,10 +7,8 @@ import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.fatal_error_fetching_details
 import com.divinelink.core.model.resources.general_error_message

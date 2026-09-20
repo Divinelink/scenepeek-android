@@ -64,7 +64,7 @@ interface MediaService {
     appendToResponse: Boolean,
   ): Flow<DetailsResponseApi>
 
-  fun fetchReviews(request: MediaRequestApi): Flow<ReviewsResponseApi>
+  suspend fun fetchReviews(request: MediaRequestApi): Result<ReviewsResponseApi>
 
   fun fetchRecommendedMovies(request: MediaRequestApi.Movie): Flow<MoviesResponseApi>
   fun fetchRecommendedTv(request: MediaRequestApi.TV): Flow<TvResponseApi>
