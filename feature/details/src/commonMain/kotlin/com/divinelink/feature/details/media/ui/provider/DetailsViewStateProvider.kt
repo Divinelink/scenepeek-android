@@ -35,7 +35,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ).copy(
           userDetails = AccountMediaDetails(
             id = 8679,
@@ -49,7 +51,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           isLoading = false,
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
-          forms = DetailsFormFactory.Tv.full(),
+          forms = DetailsFormFactory.Tv.full(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
           tabs = TvTab.entries,
         ).copy(
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -59,7 +63,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.full(),
+          forms = DetailsFormFactory.Tv.full(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             numberOfSeasons = 0,
@@ -83,7 +89,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
@@ -92,7 +100,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.FightClub(),
           userDetails = AccountMediaDetails(
@@ -116,7 +126,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.full(),
+          forms = DetailsFormFactory.Movie.full(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.FightClub(),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.pending(),
@@ -126,7 +138,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.full(),
+          forms = DetailsFormFactory.Tv.full(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.TheOffice(),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
@@ -136,7 +150,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.full().toTvWzd {
+          forms = DetailsFormFactory.Tv.full(
+            id = MediaDetailsFactory.TheOffice().id,
+          ).toTvWzd {
             withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
           },
         ).copy(
@@ -149,7 +165,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.error(),
+          forms = DetailsFormFactory.Tv.error(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ).copy(
           selectedTabIndex = 1,
           mediaDetails = MediaDetailsFactory.TheOffice(),
@@ -160,7 +178,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.error(),
+          forms = DetailsFormFactory.Movie.error(
+            id = MediaDetailsFactory.TheOffice().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.FightClub(),
           selectedTabIndex = MovieTab.Recommendations.order,
@@ -170,7 +190,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.error(),
+          forms = DetailsFormFactory.Movie.error(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.FightClub(),
           selectedTabIndex = MovieTab.Recommendations.order,
@@ -180,7 +202,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.error(),
+          forms = DetailsFormFactory.Movie.error(
+            id = MediaDetailsFactory.FightClub().id,
+          ),
         ).copy(
           mediaDetails = MediaDetailsFactory.FightClub(),
           selectedTabIndex = MovieTab.Recommendations.order,

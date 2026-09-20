@@ -25,13 +25,14 @@ import kotlinx.coroutines.flow.Flow
 /**
  * The data layer for any requests related to Movie Details Movies.
  */
+// Usage:
 interface DetailsRepository {
 
   fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>>
 
   fun fetchMediaItem(media: MediaReference): Flow<Resource<MediaItem.Media?>>
 
-  fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>>
+  suspend fun fetchMediaReviews(request: MediaRequestApi): Result<List<Review>>
 
   fun fetchRecommendedMovies(
     request: MediaRequestApi.Movie,

@@ -54,15 +54,13 @@ class TestMediaService {
     )
   }
 
-  fun mockFetchMovieReviews(
+  suspend fun mockFetchMovieReviews(
     request: MediaRequestApi,
-    response: Flow<ReviewsResponseApi>,
+    response: Result<ReviewsResponseApi>,
   ) {
     whenever(
       mock.fetchReviews(request),
-    ).thenReturn(
-      response,
-    )
+    ).thenReturn(response)
   }
 
   fun mockFetchRecommendedMovies(

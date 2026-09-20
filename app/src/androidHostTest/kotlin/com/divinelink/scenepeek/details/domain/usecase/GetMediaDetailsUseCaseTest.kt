@@ -2,7 +2,6 @@ package com.divinelink.scenepeek.details.domain.usecase
 
 import app.cash.turbine.test
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.domain.details.media.GetMediaDetailsUseCase
 import com.divinelink.core.fixtures.details.review.ReviewFactory
@@ -25,7 +24,6 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.api.media.MediaRequestApiFactory
@@ -135,9 +133,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       assertThat(awaitItem()).isEqualTo(
         Result.success(
           MediaDetailsResult.RatingSuccess(
@@ -184,9 +179,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       assertThat(awaitItem()).isEqualTo(
         Result.success(
           MediaDetailsResult.RatingSuccess(
@@ -232,9 +224,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       assertThat(awaitItem()).isEqualTo(
         Result.success(
           MediaDetailsResult.RatingSuccess(
@@ -279,9 +268,6 @@ class GetMediaDetailsUseCaseTest {
             ratingSource = RatingSource.IMDB,
           ),
         ),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
       )
       assertThat(awaitItem()).isEqualTo(
         Result.success(
@@ -329,9 +315,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       assertThat(awaitItem()).isEqualTo(
         Result.success(
           MediaDetailsResult.RatingSuccess(
@@ -369,68 +352,6 @@ class GetMediaDetailsUseCaseTest {
         ),
       ),
     )
-  }
-
-  @Test
-  fun `successfully fetch movie reviews`() = runTest {
-    repository.mockFetchMovieReviews(
-      request = MediaRequestApiFactory.movie(),
-      response = Result.success(ReviewFactory.ReviewList()),
-    )
-
-    val flow = createGetMediaDetailsUseCase()
-
-    val result = flow(movieRequest).last()
-
-    assertThat(
-      result,
-    ).isEqualTo(
-      Result.success(
-        MediaDetailsResult.ReviewsSuccess(
-          formOrder = MovieTab.Reviews.order,
-          reviews = ReviewFactory.ReviewList(),
-        ),
-      ),
-    )
-  }
-
-  @Test
-  fun `successfully fetch similar movies`() = runTest {
-    repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
-    repository.mockFetchMovieReviews(movieRequest, Result.success(ReviewFactory.ReviewList()))
-    repository.mockFetchSimilarMovies(
-      MediaRequestApiFactory.movie(),
-      Result.success(MediaItemFactory.moviesPagination()),
-    )
-    val useCase = createGetMediaDetailsUseCase()
-
-    useCase(movieRequest).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          MediaDetailsResult.DetailsSuccess(
-            mediaDetails = movieDetails,
-            ratingSource = RatingSource.TMDB,
-          ),
-        ),
-      )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          MediaDetailsResult.RecommendedSuccess(
-            formOrder = MovieTab.Recommendations.order,
-            similar = MediaItemFactory.moviesPagination().list,
-          ),
-        ),
-      )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          MediaDetailsResult.ReviewsSuccess(
-            formOrder = MovieTab.Reviews.order,
-            reviews = ReviewFactory.ReviewList(),
-          ),
-        ),
-      )
-      awaitComplete()
-    }
   }
 
   @Test
@@ -473,11 +394,6 @@ class GetMediaDetailsUseCaseTest {
   fun `catch error case in details`() = runTest {
     val expectedResult = Result.failure<Exception>(MediaDetailsException())
 
-    repository.mockFetchSimilarMovies(
-      MediaRequestApiFactory.movie(),
-      Result.failure(RecommendedException(MovieTab.Recommendations.order)),
-    )
-
     val useCase = createGetMediaDetailsUseCase()
 
     val result = useCase(movieRequest).last()
@@ -489,10 +405,6 @@ class GetMediaDetailsUseCaseTest {
   fun `successfully get movie details even when similar call fails`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
     repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
-    repository.mockFetchSimilarMovies(
-      MediaRequestApiFactory.movie(),
-      Result.failure(RecommendedException(MovieTab.Recommendations.order)),
-    )
     val flow = createGetMediaDetailsUseCase()
 
     val result = flow(movieRequest).first()
@@ -589,9 +501,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       assertThat(awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.VideosSuccess(VideoFactory.Youtube())),
       )
@@ -616,9 +525,6 @@ class GetMediaDetailsUseCaseTest {
             ratingSource = RatingSource.TMDB,
           ),
         ),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
       )
       assertThat(awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.CreditsSuccess(AggregatedCreditsFactory.credits())),
@@ -648,9 +554,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       assertThat(awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.VideosSuccess(trailer = null)),
       )
@@ -673,9 +576,6 @@ class GetMediaDetailsUseCaseTest {
             ratingSource = RatingSource.TMDB,
           ),
         ),
-      )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
       )
       assertThat(awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.VideosSuccess(null)),
@@ -723,9 +623,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       assertThat(awaitItem()).isEqualTo(expectedResult)
       awaitComplete()
     }
@@ -750,9 +647,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       awaitComplete()
     }
   }
@@ -772,9 +666,6 @@ class GetMediaDetailsUseCaseTest {
           ),
         ),
       )
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
       awaitComplete()
     }
   }
@@ -790,10 +681,6 @@ class GetMediaDetailsUseCaseTest {
     val useCase = createGetMediaDetailsUseCase()
 
     useCase(movieRequest).test {
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
-
       channel.trySend(Result.success(movieDetails))
 
       assertThat(awaitItem()).isEqualTo(
@@ -827,11 +714,6 @@ class GetMediaDetailsUseCaseTest {
       val useCase = createGetMediaDetailsUseCase()
 
       useCase(movieRequest).test {
-        assertThat(awaitItem().toString()).isEqualTo(
-          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
-            .toString(),
-        )
-
         channel.trySend(Result.success(movieDetails))
 
         assertThat(awaitItem()).isEqualTo(
@@ -861,10 +743,6 @@ class GetMediaDetailsUseCaseTest {
     val useCase = createGetMediaDetailsUseCase()
 
     useCase(tvRequest).test {
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order)).toString(),
-      )
-
       channel.trySend(Result.success(tvDetails))
 
       assertThat(awaitItem()).isEqualTo(
@@ -897,11 +775,6 @@ class GetMediaDetailsUseCaseTest {
       val useCase = createGetMediaDetailsUseCase()
 
       useCase(tvRequest).test {
-        assertThat(awaitItem().toString()).isEqualTo(
-          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
-            .toString(),
-        )
-
         channel.trySend(Result.success(tvDetails))
 
         assertThat(awaitItem()).isEqualTo(
@@ -936,11 +809,6 @@ class GetMediaDetailsUseCaseTest {
       val useCase = createGetMediaDetailsUseCase()
 
       useCase(movieRequest).test {
-        assertThat(awaitItem().toString()).isEqualTo(
-          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
-            .toString(),
-        )
-
         channel.trySend(Result.success(movieDetails))
 
         assertThat(awaitItem()).isEqualTo(
@@ -979,11 +847,6 @@ class GetMediaDetailsUseCaseTest {
       val useCase = createGetMediaDetailsUseCase()
 
       useCase(movieRequest).test {
-        assertThat(awaitItem().toString()).isEqualTo(
-          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
-            .toString(),
-        )
-
         channel.trySend(Result.success(movieDetails))
 
         assertThat(awaitItem()).isEqualTo(
@@ -1021,11 +884,6 @@ class GetMediaDetailsUseCaseTest {
     val useCase = createGetMediaDetailsUseCase()
 
     useCase(movieRequest).test {
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
-          .toString(),
-      )
-
       channel.trySend(Result.success(tvDetails))
 
       assertThat(awaitItem()).isEqualTo(

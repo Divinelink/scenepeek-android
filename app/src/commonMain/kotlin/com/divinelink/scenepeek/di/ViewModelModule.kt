@@ -9,6 +9,7 @@ import com.divinelink.feature.awards.detail.AwardDetailsViewModel
 import com.divinelink.feature.awards.popular.AwardsViewModel
 import com.divinelink.feature.collections.CollectionsViewModel
 import com.divinelink.feature.credits.ui.CreditsViewModel
+import com.divinelink.feature.details.media.ui.DetailsSectionViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
 import com.divinelink.feature.discover.DiscoverViewModel
@@ -80,6 +81,7 @@ val appViewModelModule = module {
   viewModelOf(::SectionViewModel)
   viewModelOf(::NextUpViewModel)
   viewModelOf(::BackupViewModel)
+  viewModelOf(::DetailsSectionViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

@@ -16,12 +16,15 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.media.DetailSection
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.ActionMenuRoute.Media
+import com.divinelink.core.navigation.route.Navigation.SeasonRoute
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
@@ -29,9 +32,8 @@ import com.divinelink.feature.details.DetailsAction
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
-import com.divinelink.feature.details.media.ui.forms.recommendation.RecommendationsFormContent
-import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
+import com.divinelink.feature.details.media.ui.forms.sections.DetailsSectionFormContent
 
 @Composable
 fun MediaDetailsPager(
@@ -86,19 +88,7 @@ fun MediaDetailsPager(
             obfuscateSpoilers = obfuscateEpisodes,
             onViewAllClick = viewAllCreditsClick,
           )
-          is DetailsData.Recommendations -> RecommendationsFormContent(
-            modifier = Modifier.fillMaxSize().nestedScroll(scroll),
-            recommendations = form.data as DetailsData.Recommendations,
-            title = mediaDetails.title,
-            onSwitchPreferences = onSwitchPreferences,
-            onItemClick = onMediaItemClick,
-            onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
-          )
-          is DetailsData.Reviews -> ReviewsFormContent(
-            modifier = Modifier.fillMaxSize().nestedScroll(scroll),
-            title = mediaDetails.title,
-            reviews = form.data as DetailsData.Reviews,
-          )
+          is DetailsData.Reviews -> Unit
           is DetailsData.Seasons -> SeasonsFormContent(
             modifier = Modifier.fillMaxSize().nestedScroll(scroll),
             title = mediaDetails.title,
@@ -107,7 +97,7 @@ fun MediaDetailsPager(
             progress = uiState.seasonsProgress,
             onClick = { seasonNumber ->
               onNavigate(
-                Navigation.SeasonRoute(
+                SeasonRoute(
                   showId = mediaDetails.id,
                   backdropPath = mediaDetails.backdropPath,
                   title = mediaDetails.title,
@@ -116,6 +106,20 @@ fun MediaDetailsPager(
               )
             },
           )
+        }
+        is DetailsForm.Section -> when (form.section) {
+          is DetailSection.TvRecommendations,
+          is DetailSection.MovieRecommendations,
+          is DetailSection.MovieReviews,
+          is DetailSection.TvReviews,
+            -> DetailsSectionFormContent(
+              modifier = Modifier.nestedScroll(scroll),
+              section = form.section,
+              title = mediaDetails.title,
+              onSwitchPreferences = onSwitchPreferences,
+              onItemClick = onMediaItemClick,
+              onLongClick = { onNavigate(Media(it.encodeToString())) },
+            )
         }
       }
     }

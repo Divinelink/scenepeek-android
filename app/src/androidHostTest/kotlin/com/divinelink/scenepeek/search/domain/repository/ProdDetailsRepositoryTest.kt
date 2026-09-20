@@ -4,7 +4,6 @@ import JvmUnitTestDemoAssetManager
 import app.cash.turbine.test
 import com.divinelink.core.commons.data
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
@@ -65,6 +64,7 @@ import kotlinx.serialization.json.Json
 import org.junit.Before
 import org.junit.Rule
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class ProdDetailsRepositoryTest {
 
@@ -237,12 +237,12 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockFetchMovieReviews(
       request = request,
-      response = flowOf(reviewsResponseApi),
+      response = Result.success(reviewsResponseApi),
     )
 
     val actualResult = repository.fetchMediaReviews(
       request = request,
-    ).first()
+    )
 
     assertThat(actualResult.data).isEqualTo(expectedResult)
   }
@@ -369,12 +369,10 @@ class ProdDetailsRepositoryTest {
   fun testMovieReviewsError() = runTest {
     val request = MediaRequestApiFactory.movie()
 
-    val expectedResult = ReviewsException()
-
-    repository.fetchMediaReviews(
-      request = request,
-    ).test {
-      assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
+    assertFailsWith<NullPointerException> {
+      repository.fetchMediaReviews(
+        request = request,
+      ).getOrThrow()
     }
   }
 

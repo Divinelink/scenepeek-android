@@ -25,8 +25,6 @@ sealed interface DetailsData {
     val items: List<MediaItem.Person>,
   ) : DetailsData
 
-  data class Recommendations(val items: List<MediaItem.Media>) : DetailsData
-
   data class Reviews(val items: List<Review>) : DetailsData
 
   data class Seasons(val items: List<Season>) : DetailsData

@@ -277,7 +277,7 @@ object MediaItemFactory {
     list = MoviesList(),
   )
 
-  fun emptyPaginationData() = PaginationData<MediaItem>(
+  fun emptyPaginationData() = PaginationData<MediaItem.Media>(
     page = 1,
     totalPages = 1,
     totalResults = 0,

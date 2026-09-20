@@ -5,7 +5,6 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.KeywordFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
-import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.media.MediaType
 
@@ -25,10 +24,6 @@ object DetailsDataFactory {
 
     fun cast(isTv: Boolean) = DetailsData.Cast(
       isTv = isTv,
-      items = emptyList(),
-    )
-
-    fun recommendations() = DetailsData.Recommendations(
       items = emptyList(),
     )
 
@@ -58,9 +53,9 @@ object DetailsDataFactory {
       items = MediaDetailsFactory.FightClub().cast,
     )
 
-    fun recommendations() = DetailsData.Recommendations(
-      items = MediaItemFactory.MoviesList(),
-    )
+//    fun recommendations() = DetailsData.Recommendations(
+//      items = MediaItemFactory.MoviesList(),
+//    )
 
     fun reviews() = DetailsData.Reviews(
       items = ReviewFactory.ReviewList(),
@@ -84,9 +79,9 @@ object DetailsDataFactory {
       items = SeriesCastFactory.cast(),
     )
 
-    fun recommendations() = DetailsData.Recommendations(
-      items = MediaItemFactory.TVList(),
-    )
+//    fun recommendations() = DetailsData.Recommendations(
+//      items = MediaItemFactory.TVList(),
+//    )
 
     fun reviews() = DetailsData.Reviews(
       items = ReviewFactory.ReviewList(),
