@@ -28,10 +28,6 @@ object DetailsDataFactory {
       items = emptyList(),
     )
 
-    fun recommendations() = DetailsData.Recommendations(
-      items = emptyList(),
-    )
-
     fun reviews() = DetailsData.Reviews(
       items = emptyList(),
     )
@@ -58,9 +54,9 @@ object DetailsDataFactory {
       items = MediaDetailsFactory.FightClub().cast,
     )
 
-    fun recommendations() = DetailsData.Recommendations(
-      items = MediaItemFactory.MoviesList(),
-    )
+//    fun recommendations() = DetailsData.Recommendations(
+//      items = MediaItemFactory.MoviesList(),
+//    )
 
     fun reviews() = DetailsData.Reviews(
       items = ReviewFactory.ReviewList(),
@@ -84,9 +80,9 @@ object DetailsDataFactory {
       items = SeriesCastFactory.cast(),
     )
 
-    fun recommendations() = DetailsData.Recommendations(
-      items = MediaItemFactory.TVList(),
-    )
+//    fun recommendations() = DetailsData.Recommendations(
+//      items = MediaItemFactory.TVList(),
+//    )
 
     fun reviews() = DetailsData.Reviews(
       items = ReviewFactory.ReviewList(),

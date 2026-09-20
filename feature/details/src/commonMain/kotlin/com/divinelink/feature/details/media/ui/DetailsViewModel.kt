@@ -43,6 +43,7 @@ import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.clearSeasonsStatus
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.isAvailable
+import com.divinelink.core.model.details.media.DetailSection
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.media.MediaDetailsResult
@@ -132,16 +133,20 @@ class DetailsViewModel(
             TvTab.About -> DetailsForm.Loading
             TvTab.Seasons -> DetailsForm.Loading
             TvTab.Cast -> DetailsForm.Loading
-            TvTab.Recommendations -> DetailsForm.Loading
-            TvTab.Reviews -> DetailsForm.Loading
+            TvTab.Recommendations -> DetailsForm.Section(
+              section = DetailSection.TvRecommendation(route.id),
+            )
+            TvTab.Reviews -> DetailsForm.Section(DetailSection.TvReviews(route.id))
           }
         }
         MediaType.MOVIE -> MovieTab.entries.associate { tab ->
           tab.order to when (tab) {
             MovieTab.About -> DetailsForm.Loading
             MovieTab.Cast -> DetailsForm.Loading
-            MovieTab.Recommendations -> DetailsForm.Loading
-            MovieTab.Reviews -> DetailsForm.Loading
+            MovieTab.Recommendations -> DetailsForm.Section(
+              section = DetailSection.MovieRecommendations(route.id),
+            )
+            MovieTab.Reviews -> DetailsForm.Section(DetailSection.MovieReviews(route.id))
           }
         }
         else -> emptyMap()
@@ -274,26 +279,26 @@ class DetailsViewModel(
                 ),
               )
 
-              is MediaDetailsResult.ReviewsSuccess -> {
-                val data = result.data as MediaDetailsResult.ReviewsSuccess
+//              is MediaDetailsResult.ReviewsSuccess -> {
+//                val data = result.data as MediaDetailsResult.ReviewsSuccess
+//
+//                val updatedForms = viewState.forms.toMutableMap().apply {
+//                  this[data.formOrder] = DetailsForm.Content(DetailsData.Reviews(data.reviews))
+//                }
+//
+//                viewState.copy(forms = updatedForms)
+//              }
 
-                val updatedForms = viewState.forms.toMutableMap().apply {
-                  this[data.formOrder] = DetailsForm.Content(DetailsData.Reviews(data.reviews))
-                }
-
-                viewState.copy(forms = updatedForms)
-              }
-
-              is MediaDetailsResult.RecommendedSuccess -> {
-                val data = result.data as MediaDetailsResult.RecommendedSuccess
-
-                val updatedForms = viewState.forms.toMutableMap().apply {
-                  this[data.formOrder] = DetailsForm.Content(
-                    DetailsData.Recommendations(data.similar),
-                  )
-                }
-                viewState.copy(forms = updatedForms)
-              }
+//              is MediaDetailsResult.RecommendedSuccess -> {
+//                val data = result.data as MediaDetailsResult.RecommendedSuccess
+//
+//                val updatedForms = viewState.forms.toMutableMap().apply {
+//                  this[data.formOrder] = DetailsForm.Content(
+//                    DetailsData.Recommendations(data.similar),
+//                  )
+//                }
+//                viewState.copy(forms = updatedForms)
+//              }
 
               is MediaDetailsResult.VideosSuccess -> viewState.copy(
                 trailer = (result.data as MediaDetailsResult.VideosSuccess).trailer,

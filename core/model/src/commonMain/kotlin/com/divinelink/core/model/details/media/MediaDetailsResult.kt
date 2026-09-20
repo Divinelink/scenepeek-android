@@ -29,16 +29,6 @@ sealed class MediaDetailsResult {
 
   data class RatingSuccess(val rating: RatingCount) : MediaDetailsResult()
 
-  data class ReviewsSuccess(
-    val formOrder: Int,
-    val reviews: List<Review>,
-  ) : MediaDetailsResult()
-
-  data class RecommendedSuccess(
-    val formOrder: Int,
-    val similar: List<MediaItem.Media>,
-  ) : MediaDetailsResult()
-
   data class VideosSuccess(val trailer: Video?) : MediaDetailsResult()
 
   data class CreditsSuccess(val aggregateCredits: AggregateCredits) : MediaDetailsResult()

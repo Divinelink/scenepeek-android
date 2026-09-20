@@ -372,68 +372,6 @@ class GetMediaDetailsUseCaseTest {
   }
 
   @Test
-  fun `successfully fetch movie reviews`() = runTest {
-    repository.mockFetchMovieReviews(
-      request = MediaRequestApiFactory.movie(),
-      response = Result.success(ReviewFactory.ReviewList()),
-    )
-
-    val flow = createGetMediaDetailsUseCase()
-
-    val result = flow(movieRequest).last()
-
-    assertThat(
-      result,
-    ).isEqualTo(
-      Result.success(
-        MediaDetailsResult.ReviewsSuccess(
-          formOrder = MovieTab.Reviews.order,
-          reviews = ReviewFactory.ReviewList(),
-        ),
-      ),
-    )
-  }
-
-  @Test
-  fun `successfully fetch similar movies`() = runTest {
-    repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
-    repository.mockFetchMovieReviews(movieRequest, Result.success(ReviewFactory.ReviewList()))
-    repository.mockFetchSimilarMovies(
-      MediaRequestApiFactory.movie(),
-      Result.success(MediaItemFactory.moviesPagination()),
-    )
-    val useCase = createGetMediaDetailsUseCase()
-
-    useCase(movieRequest).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          MediaDetailsResult.DetailsSuccess(
-            mediaDetails = movieDetails,
-            ratingSource = RatingSource.TMDB,
-          ),
-        ),
-      )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          MediaDetailsResult.RecommendedSuccess(
-            formOrder = MovieTab.Recommendations.order,
-            similar = MediaItemFactory.moviesPagination().list,
-          ),
-        ),
-      )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(
-          MediaDetailsResult.ReviewsSuccess(
-            formOrder = MovieTab.Reviews.order,
-            reviews = ReviewFactory.ReviewList(),
-          ),
-        ),
-      )
-      awaitComplete()
-    }
-  }
-
-  @Test
   fun `test similar movies are not fetched if details has error`() = runTest {
     repository.mockFetchMovieReviews(
       MediaRequestApiFactory.movie(),

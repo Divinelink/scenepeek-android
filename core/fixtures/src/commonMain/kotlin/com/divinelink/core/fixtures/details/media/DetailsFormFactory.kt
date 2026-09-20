@@ -1,5 +1,6 @@
 package com.divinelink.core.fixtures.details.media
 
+import com.divinelink.core.model.details.media.DetailSection
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.media.DetailsForms
@@ -32,7 +33,9 @@ object DetailsFormFactory {
       tab.order to when (tab) {
         MovieTab.About -> DetailsForm.Content(DetailsDataFactory.Empty.about())
         MovieTab.Cast -> DetailsForm.Content(DetailsDataFactory.Empty.cast(isTv = false))
-        MovieTab.Recommendations -> DetailsForm.Content(DetailsDataFactory.Empty.recommendations())
+        MovieTab.Recommendations -> DetailsForm.Section(
+          DetailSection.MovieRecommendations(id = 1),
+        )
         MovieTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Empty.reviews())
       }
     }
@@ -41,7 +44,9 @@ object DetailsFormFactory {
       tab.order to when (tab) {
         MovieTab.About -> DetailsForm.Content(DetailsDataFactory.Movie.about())
         MovieTab.Cast -> DetailsForm.Content(DetailsDataFactory.Movie.cast())
-        MovieTab.Recommendations -> DetailsForm.Content(DetailsDataFactory.Movie.recommendations())
+        MovieTab.Recommendations -> DetailsForm.Section(
+          DetailSection.MovieRecommendations(id = 1),
+        )
         MovieTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Movie.reviews())
       }
     }
@@ -72,7 +77,9 @@ object DetailsFormFactory {
       tab.order to when (tab) {
         TvTab.About -> DetailsForm.Content(DetailsDataFactory.Empty.about())
         TvTab.Cast -> DetailsForm.Content(DetailsDataFactory.Empty.cast(isTv = true))
-        TvTab.Recommendations -> DetailsForm.Content(DetailsDataFactory.Empty.recommendations())
+        TvTab.Recommendations -> DetailsForm.Section(
+          DetailSection.TvRecommendation(id = 1),
+        )
         TvTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Empty.reviews())
         TvTab.Seasons -> DetailsForm.Content(DetailsDataFactory.Empty.seasons())
       }
@@ -82,7 +89,9 @@ object DetailsFormFactory {
       tab.order to when (tab) {
         TvTab.About -> DetailsForm.Content(DetailsDataFactory.Tv.about())
         TvTab.Cast -> DetailsForm.Content(DetailsDataFactory.Tv.cast())
-        TvTab.Recommendations -> DetailsForm.Content(DetailsDataFactory.Tv.recommendations())
+        TvTab.Recommendations -> DetailsForm.Section(
+          DetailSection.TvRecommendation(id = 1),
+        )
         TvTab.Reviews -> DetailsForm.Content(DetailsDataFactory.Tv.reviews())
         TvTab.Seasons -> DetailsForm.Content(DetailsDataFactory.Tv.seasons())
       }
@@ -98,9 +107,9 @@ object DetailsFormFactory {
       forms = forms + (MovieTab.Cast.order to DetailsForm.Content(cast))
     }
 
-    fun withRecommendations(recommendations: DetailsData.Recommendations) = apply {
-      forms = forms + (MovieTab.Recommendations.order to DetailsForm.Content(recommendations))
-    }
+//    fun withRecommendations(recommendations: DetailsData.Recommendations) = apply {
+//      forms = forms + (MovieTab.Recommendations.order to DetailsForm.Content(recommendations))
+//    }
 
     fun withReviews(reviews: DetailsData.Reviews) = apply {
       forms = forms + (MovieTab.Reviews.order to DetailsForm.Content(reviews))
@@ -118,9 +127,9 @@ object DetailsFormFactory {
       forms = forms + (TvTab.Cast.order to DetailsForm.Content(cast))
     }
 
-    fun withRecommendations(recommendations: DetailsData.Recommendations) = apply {
-      forms = forms + (TvTab.Recommendations.order to DetailsForm.Content(recommendations))
-    }
+//    fun withRecommendations(recommendations: DetailsData.Recommendations) = apply {
+//      forms = forms + (TvTab.Recommendations.order to DetailsForm.Content(recommendations))
+//    }
 
     fun withReviews(reviews: DetailsData.Reviews) = apply {
       forms = forms + (TvTab.Reviews.order to DetailsForm.Content(reviews))

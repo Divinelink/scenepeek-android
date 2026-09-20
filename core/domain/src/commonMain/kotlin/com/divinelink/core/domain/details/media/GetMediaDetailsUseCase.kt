@@ -117,67 +117,6 @@ open class GetMediaDetailsUseCase(
           }
       }
 
-      launch(dispatcher.default) {
-        when (parameters) {
-          is MediaRequestApi.Movie -> repository.fetchRecommendedMovies(parameters)
-            .catch {
-              Napier.e("$it")
-              send(Result.failure(RecommendedException(MovieTab.Recommendations.order)))
-            }
-            .collect { result ->
-              result.onSuccess {
-                send(
-                  Result.success(
-                    MediaDetailsResult.RecommendedSuccess(
-                      formOrder = MovieTab.Recommendations.order,
-                      similar = result.data.list,
-                    ),
-                  ),
-                )
-              }
-            }
-          is MediaRequestApi.TV -> repository.fetchRecommendedTv(parameters)
-            .catch {
-              Napier.e("$it")
-              send(Result.failure(RecommendedException(TvTab.Recommendations.order)))
-            }
-            .collect { result ->
-              result.onSuccess {
-                send(
-                  Result.success(
-                    MediaDetailsResult.RecommendedSuccess(
-                      formOrder = TvTab.Recommendations.order,
-                      similar = result.data.list,
-                    ),
-                  ),
-                )
-              }
-            }
-          MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
-        }
-      }
-
-      launch(dispatcher.default) {
-        repository.fetchMediaReviews(requestApi)
-          .catch { Napier.e("$it") }
-          .collect { result ->
-            result.onSuccess {
-              send(
-                Result.success(
-                  MediaDetailsResult.ReviewsSuccess(
-                    formOrder = if (parameters is MediaRequestApi.Movie) {
-                      MovieTab.Reviews.order
-                    } else {
-                      TvTab.Reviews.order
-                    },
-                    reviews = result.data,
-                  ),
-                ),
-              )
-            }
-          }
-      }
-
       if (parameters is MediaRequestApi.TV) {
         launch(dispatcher.default) {
           repository.fetchAggregateCredits(parameters.id)
