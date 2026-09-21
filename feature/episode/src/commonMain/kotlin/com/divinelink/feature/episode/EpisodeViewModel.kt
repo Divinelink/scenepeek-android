@@ -5,8 +5,11 @@ import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
+import com.divinelink.core.domain.track.MarkEpisodeParameters
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.tab.EpisodeTab
@@ -34,6 +37,8 @@ class EpisodeViewModel(
   route: Navigation.Episode,
   private val repository: MediaRepository,
   private val accountRepository: AccountRepository,
+  private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
+  private val clock: ClockProvider,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<EpisodeUiState> = MutableStateFlow(
@@ -62,6 +67,16 @@ class EpisodeViewModel(
         onFailure = {
         },
       )
+
+    repository.getWatchedEpisodesForSeason(
+      showId = route.showId,
+      seasonNumber = route.seasonNumber,
+    )
+      .distinctUntilChanged()
+      .onEach { episodes ->
+        _uiState.update { it.copy(watchedEpisodes = episodes) }
+      }
+      .launchIn(viewModelScope)
   }
 
   private fun fetchEpisode() {
@@ -107,6 +122,7 @@ class EpisodeViewModel(
       EpisodeAction.OnClearRate -> handleOnClearRate()
       is EpisodeAction.OnSubmitRate -> handleOnSubmitRate(action)
       EpisodeAction.DismissSnackbar -> handleDismissSnackbar()
+      is EpisodeAction.MarkAsWatched -> handleMarkEpisodeAsWatched()
     }
   }
 
@@ -221,6 +237,19 @@ class EpisodeViewModel(
   private fun handleDismissSnackbar() {
     _uiState.update { uiState ->
       uiState.copy(snackbarMessage = null)
+    }
+  }
+
+  private fun handleMarkEpisodeAsWatched() {
+    val episode = uiState.value.episode ?: return
+
+    viewModelScope.launch {
+      markEpisodeAsWatchedUseCase(
+        parameters = MarkEpisodeParameters(
+          episode = episode,
+          watchedAt = clock.now,
+        ),
+      )
     }
   }
 

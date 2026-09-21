@@ -227,4 +227,7 @@
   <string name="plan_to_watch">Plan to watch</string>
   <string name="on_hold">On hold</string>
   <string name="dropped">Stopped watching</string>
+  <string name="mark_as_watched">Mark as watched</string>
+  <string name="watched">Watched</string>
+  <string name="watched_at">Watched at %1$s</string>
 </resources>

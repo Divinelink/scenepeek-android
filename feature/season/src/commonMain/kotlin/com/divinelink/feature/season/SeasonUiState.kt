@@ -15,7 +15,7 @@ data class SeasonUiState(
   val tabs: List<Tab>,
   val selectedTab: Int,
   val forms: SeasonForms,
-  val watchedEpisodes: List<Long>,
+  val watchedEpisodes: Set<Long>,
   val snackbarMessage: SnackbarMessage?,
 ) {
   companion object {
@@ -33,7 +33,7 @@ data class SeasonUiState(
           SeasonTab.GuestStars -> SeasonForm.Loading
         }
       },
-      watchedEpisodes = emptyList(),
+      watchedEpisodes = emptySet(),
       snackbarMessage = null,
     )
   }

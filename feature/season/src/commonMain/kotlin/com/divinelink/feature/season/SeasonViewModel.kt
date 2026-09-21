@@ -182,7 +182,7 @@ class SeasonViewModel(
       .distinctUntilChanged()
       .onEach { episodes ->
         _uiState.update { state ->
-          state.copy(watchedEpisodes = episodes)
+          state.copy(watchedEpisodes = episodes.keys)
         }
       }
       .launchIn(viewModelScope)

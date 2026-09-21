@@ -1,18 +1,26 @@
 package com.divinelink.feature.home.nextup.modal
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,12 +33,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.DateFormatStyle
 import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
-import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.modal.ScenePeekBottomSheet
+import com.divinelink.core.ui.resources.mark_as_watched
+import com.divinelink.core.ui.resources.watched
+import com.divinelink.core.ui.resources.watched_at
 import com.divinelink.core.ui.tab.EpisodeTabs
 import com.divinelink.feature.episode.EpisodeAction
 import com.divinelink.feature.episode.EpisodeViewModel
@@ -39,6 +50,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -95,6 +108,8 @@ fun EpisodesOverviewModal(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
         val episode = state.episodes[page]
+        val isWatched = state.watchedEpisodes.contains(episode?.id?.toLong())
+        val watchedAt = state.watchedEpisodes[episode?.id?.toLong()]
 
         if (episode == null) {
           item {
@@ -136,14 +151,74 @@ fun EpisodesOverviewModal(
           }
 
           item {
-            Spacer(
-              modifier = Modifier
-                .padding(MaterialTheme.dimensions.keyline_16)
-                .height(LocalBottomNavigationPadding.current),
+            MarkAsWatchedButton(
+              isWatched = isWatched,
+              watchedAt = watchedAt,
+              onClick = { viewModel.onAction(EpisodeAction.MarkAsWatched) },
             )
           }
         }
       }
+    }
+  }
+}
+
+@Composable
+private fun MarkAsWatchedButton(
+  isWatched: Boolean,
+  watchedAt: LocalDate?,
+  onClick: () -> Unit,
+) {
+  val containerColor by animateColorAsState(
+    targetValue = when (isWatched) {
+      true -> ButtonDefaults.buttonColors().containerColor
+      false -> ButtonDefaults.outlinedButtonColors().containerColor
+    },
+    label = "ContainerColor",
+  )
+
+  val contentColor by animateColorAsState(
+    targetValue = when (isWatched) {
+      true -> ButtonDefaults.buttonColors().contentColor
+      false -> ButtonDefaults.outlinedButtonColors().contentColor
+    },
+    label = "ContentColor",
+  )
+
+  OutlinedButton(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(
+        horizontal = MaterialTheme.dimensions.keyline_16,
+        vertical = MaterialTheme.dimensions.keyline_8,
+      ),
+    border = ButtonDefaults.outlinedButtonBorder(!isWatched),
+    colors = ButtonDefaults.outlinedButtonColors(
+      containerColor = containerColor,
+      contentColor = contentColor,
+    ),
+    onClick = onClick,
+  ) {
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      AnimatedVisibility(visible = isWatched) {
+        Icon(
+          imageVector = Icons.Default.Check,
+          contentDescription = null,
+        )
+      }
+      Text(
+        modifier = Modifier.basicMarquee(),
+        text = if (isWatched) {
+          watchedAt?.let { date ->
+            stringResource(UiString.watched_at, date.formatLocalized())
+          } ?: stringResource(UiString.watched)
+        } else {
+          stringResource(UiString.mark_as_watched)
+        },
+      )
     }
   }
 }

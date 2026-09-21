@@ -4,6 +4,7 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.tab.EpisodeTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import kotlinx.datetime.LocalDate
 
 data class EpisodeUiState(
   val showId: Long,
@@ -12,6 +13,7 @@ data class EpisodeUiState(
   val seasonNumber: Int,
   val episode: Episode?,
   val episodes: Map<Int, Episode>,
+  val watchedEpisodes: Map<Long, LocalDate?>,
   val tabs: List<EpisodeTab>,
   val snackbarMessage: SnackbarMessage?,
   val ratingLoading: Boolean,
@@ -42,6 +44,7 @@ data class EpisodeUiState(
         tabs = emptyList(),
         episode = episode,
         snackbarMessage = null,
+        watchedEpisodes = emptyMap(),
         ratingLoading = false,
       )
     }

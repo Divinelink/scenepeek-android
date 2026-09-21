@@ -34,7 +34,7 @@ fun EpisodesFormContent(
   showTitle: String,
   seasonTitle: String,
   data: SeasonData.Episodes,
-  watchedEpisodes: List<Long>,
+  watchedEpisodes: Set<Long>,
   onNavigate: (Navigation.Episode.FullScreenRoute) -> Unit,
   action: (SeasonAction) -> Unit,
 ) {
