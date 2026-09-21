@@ -31,7 +31,7 @@ SELECT
     f.favoritedAt,
     p.*
 FROM FavoriteMediaEntity f
-INNER JOIN PersonDetailsEntity p ON (f.mediaId = p.id)
+INNER JOIN PersonEntity p ON (f.mediaId = p.id)
 ORDER BY f.favoritedAt DESC;
 
 getFavoriteMediaIds:

@@ -4,4 +4,5 @@ data class RestoreProcess(
   val shows: Int,
   val seasons: Int,
   val episodes: Int,
+  val saved: Int,
 )

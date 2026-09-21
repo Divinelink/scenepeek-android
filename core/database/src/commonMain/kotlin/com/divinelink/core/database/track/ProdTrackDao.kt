@@ -6,6 +6,8 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.MediaItemEntity
+import com.divinelink.core.database.cast.PersonEntity
+import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.database.season.EpisodeEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.database.show.ShowSyncError
@@ -13,7 +15,10 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.track.backup.EpisodeExport
 import com.divinelink.core.model.track.backup.LibraryExport
+import com.divinelink.core.model.track.backup.MediaExport
+import com.divinelink.core.model.track.backup.PersonExport
 import com.divinelink.core.model.track.backup.RestoreProcess
+import com.divinelink.core.model.track.backup.SavedExport
 import com.divinelink.core.model.track.backup.SeasonExport
 import com.divinelink.core.model.track.backup.ShowExport
 import com.divinelink.core.model.track.backup.UserEpisodeExport
@@ -33,6 +38,8 @@ class ProdTrackDao(
   private val episodeQueries = database.episodeEntityQueries
   private val seasonQueries = database.seasonDetailsEntityQueries
   private val tvDetailsQueries = database.showDetailsEntityQueries
+  private val personQueries = database.personEntityQueries
+  private val savedQueries = database.favoriteMediaEntityQueries
 
   override fun getUserShows(): Flow<List<Long>> = userShowQueries
     .getAllUserShows()
@@ -133,36 +140,18 @@ class ProdTrackDao(
 
   override fun exportLibrary(): LibraryExport {
     val shows = getShowExports()
-    val seasons = seasonQueries.fetchAllSeasons().executeAsList().map { entity ->
-      SeasonExport(
-        id = entity.id,
-        name = entity.name,
-        airDate = entity.airDate,
-        runtime = entity.runtime,
-        number = entity.episodeCount.toInt(),
-        seasonNumber = entity.seasonNumber.toInt(),
-        showId = entity.showId,
-        posterPath = entity.posterPath,
-      )
-    }
-    val episodes = episodeQueries.fetchAllEpisodes().executeAsList().map { entity ->
-      EpisodeExport(
-        id = entity.id.toInt(),
-        name = entity.name,
-        airDate = entity.airDate.toString(),
-        runtime = entity.runtime,
-        number = entity.episodeNumber.toInt(),
-        seasonNumber = entity.seasonNumber.toInt(),
-        showId = entity.showId,
-        stillPath = entity.stillPath,
-      )
-    }
+    val seasons = getSeasonExports()
+    val episodes = getEpisodeExports()
+    val saved = getSavedExport()
 
     return LibraryExport(
       exportedAt = clock.clock.now().toString(),
       shows = shows,
       seasons = seasons,
       episodes = episodes,
+      saved = saved.first,
+      media = saved.second,
+      people = saved.third,
     )
   }
 
@@ -171,8 +160,10 @@ class ProdTrackDao(
     var showsRestored = 0
     var episodesRestored = 0
     var seasonsRestored = 0
+    var savedRestored = 0
 
     database.transaction {
+      savedRestored = restoreSaved(library)
       seasonsRestored = restoreSeasons(library)
       showsRestored = restoreShows(library)
       episodesRestored = restoreEpisodes(library)
@@ -182,6 +173,7 @@ class ProdTrackDao(
       shows = showsRestored,
       seasons = seasonsRestored,
       episodes = episodesRestored,
+      saved = savedRestored,
     )
   }
 
@@ -321,6 +313,138 @@ class ProdTrackDao(
         backdropPath = null,
       ),
     )
+  }
+
+  private fun getSavedExport(): Triple<SavedExport, List<MediaExport>, List<PersonExport>> {
+    val tvIds = mutableSetOf<Long>()
+    val movieIds = mutableSetOf<Long>()
+    val peopleIds = mutableSetOf<Long>()
+    val media = mutableListOf<MediaExport>()
+    val people = mutableListOf<PersonExport>()
+
+    database
+      .favoriteMediaEntityQueries
+      .getAllFavorites()
+      .executeAsList()
+      .forEach { saved ->
+        when (MediaType.from(saved.mediaType)) {
+          MediaType.TV -> {
+            tvIds.add(saved.id)
+            media.add(saved.map())
+          }
+          MediaType.MOVIE -> {
+            movieIds.add(saved.id)
+            media.add(saved.map())
+          }
+          MediaType.PERSON,
+          MediaType.UNKNOWN,
+            -> Unit
+        }
+      }
+
+    database.favoriteMediaEntityQueries.getFavoritePeople()
+      .executeAsList()
+      .forEach { saved ->
+        peopleIds.add(saved.id)
+        people.add(saved.map())
+      }
+
+    return Triple(
+      first = SavedExport(
+        movies = movieIds,
+        tv = tvIds,
+        people = peopleIds,
+      ),
+      second = media,
+      third = people,
+    )
+  }
+
+  private fun getSeasonExports() = seasonQueries
+    .fetchAllSeasons()
+    .executeAsList()
+    .map { entity ->
+      SeasonExport(
+        id = entity.id,
+        name = entity.name,
+        airDate = entity.airDate,
+        runtime = entity.runtime,
+        number = entity.episodeCount.toInt(),
+        seasonNumber = entity.seasonNumber.toInt(),
+        showId = entity.showId,
+        posterPath = entity.posterPath,
+      )
+    }
+
+  private fun getEpisodeExports() = episodeQueries
+    .fetchAllEpisodes()
+    .executeAsList()
+    .map { entity ->
+      EpisodeExport(
+        id = entity.id.toInt(),
+        name = entity.name,
+        airDate = entity.airDate.toString(),
+        runtime = entity.runtime,
+        number = entity.episodeNumber.toInt(),
+        seasonNumber = entity.seasonNumber.toInt(),
+        showId = entity.showId,
+        stillPath = entity.stillPath,
+      )
+    }
+
+  private fun restoreSaved(library: LibraryExport): Int {
+    var totalRestored = 0
+
+    library.people?.forEach { person ->
+      personQueries.insertPerson(
+        PersonEntity = PersonEntity(
+          id = person.id,
+          name = person.name,
+          originalName = person.name,
+          profilePath = person.profilePath,
+          knownForDepartment = person.knownForDepartment,
+          gender = person.gender.toLong(),
+        ),
+      )
+      savedQueries.addToFavorites(
+        mediaId = person.id,
+        mediaType = MediaType.PERSON.value,
+        favoritedAt = person.savedAt,
+      )
+      totalRestored += 1
+    }
+
+    library.media?.forEach { media ->
+      mediaQueries.insertMediaItem(
+        MediaItemEntity(
+          id = media.id,
+          posterPath = media.posterPath,
+          mediaType = media.type,
+          name = media.title,
+          originalName = media.title,
+          genreIdsJson = "",
+          adult = -1,
+          originalLanguage = "",
+          popularity = 0.0,
+          voteAverage = 0.0,
+          voteCount = 0,
+          overview = "",
+          releaseDate = "",
+          video = -1,
+          firstAirDate = "",
+          originCountryJson = "",
+          backdropPath = null,
+        ),
+      )
+      savedQueries.addToFavorites(
+        mediaId = media.id,
+        mediaType = media.type,
+        favoritedAt = media.savedAt,
+      )
+      totalRestored += 1
+    }
+
+    return totalRestored
   }
   /** End region restore library functions **/
 }
