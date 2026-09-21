@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class EpisodeViewModel(
-  private val route: Navigation.EpisodeRoute,
+  route: Navigation.Episode,
   private val repository: MediaRepository,
   private val accountRepository: AccountRepository,
 ) : ViewModel() {
@@ -65,13 +65,22 @@ class EpisodeViewModel(
   }
 
   private fun fetchEpisode() {
-    val cachedEpisode = uiState.value.episodes[uiState.value.selectedIndex]
+    val currentIndex = uiState.value.selectedIndex
+    val currentEpisode = uiState.value.episode?.number ?: 1
+    val index = if (currentIndex == -1) {
+      uiState.value.tabs.indexOf(EpisodeTab(currentEpisode)).takeIf { it != -1 } ?: 0
+    } else {
+      currentIndex
+    }
+    _uiState.update { it.copy(selectedIndex = index) }
+
+    val cachedEpisode = uiState.value.episodes[index]
 
     if (cachedEpisode == null) {
       repository.fetchEpisode(
         showId = uiState.value.showId,
         season = uiState.value.seasonNumber,
-        number = uiState.value.tabs[uiState.value.selectedIndex].number,
+        number = uiState.value.tabs[index].number,
       )
         .distinctUntilChanged()
         .onEach {
@@ -80,7 +89,7 @@ class EpisodeViewModel(
 
             uiState.copy(
               episode = episode,
-              episodes = uiState.episodes.plus(uiState.selectedIndex to episode),
+              episodes = uiState.episodes.plus(index to episode),
             )
           }
         }
@@ -102,8 +111,10 @@ class EpisodeViewModel(
   }
 
   private fun handleOnSelectEpisode(action: EpisodeAction.OnSelectEpisode) {
-    _uiState.update { uiState ->
-      uiState.copy(selectedIndex = action.index)
+    if (action.index != -1) {
+      _uiState.update { uiState ->
+        uiState.copy(selectedIndex = action.index)
+      }
     }
 
     fetchEpisode()

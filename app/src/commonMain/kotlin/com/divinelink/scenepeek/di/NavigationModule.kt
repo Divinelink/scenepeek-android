@@ -34,6 +34,7 @@ import com.divinelink.feature.episode.ui.EpisodeScreen
 import com.divinelink.feature.home.HomeScreen
 import com.divinelink.feature.home.customize.CustomizeDashboardModal
 import com.divinelink.feature.home.nextup.fullscreen.NextUpFullscreen
+import com.divinelink.feature.home.nextup.modal.EpisodesOverviewModal
 import com.divinelink.feature.lists.create.ui.CreateListScreen
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
 import com.divinelink.feature.lists.user.ListsScreen
@@ -338,11 +339,20 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.EpisodeRoute> { key ->
+  navigation<Navigation.Episode.FullScreenRoute> { key ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.EpisodeScreen(
       route = key,
       onNavigate = navigator::navigate,
+    )
+  }
+
+  navigation<Navigation.Episode.ModalRoute>(metadata = DialogSceneStrategy.dialog()) { key ->
+    val navigator = get<Navigator>()
+
+    EpisodesOverviewModal(
+      route = key,
+      onDismissRequest = navigator::goBack,
     )
   }
 

@@ -5,7 +5,6 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,11 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.ButtonGroupDefaults.connectedMiddleButtonPressShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonShapes
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -162,14 +163,37 @@ fun LazyItemScope.NextUpEpisode(
         }
       }
     }
-    when (section) {
-      NextUpSection.Available -> AvailableButton(action, nextUp)
-      NextUpSection.Upcoming -> AirsInButton(nextUp, clock)
-      NextUpSection.Paused -> nextUp.episode.airDate?.let { airDate ->
-        if (airDate.isAfterNow(clock)) {
-          AirsInButton(nextUp, clock)
-        } else {
-          AvailableButton(action, nextUp)
+    Row(
+      modifier = Modifier.align(Alignment.BottomEnd),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      IconButton(
+        onClick = {
+          onNavigate(
+            Navigation.Episode.ModalRoute(
+              showId = nextUp.episode.showId,
+              seasonNumber = nextUp.episode.seasonNumber,
+              showTitle = nextUp.showTitle,
+              episode = nextUp.episode,
+            ),
+          )
+        },
+      ) {
+        Icon(
+          imageVector = Icons.Default.MoreHoriz,
+          tint = MaterialTheme.colorScheme.secondary,
+          contentDescription = "Open episode details for ${nextUp.episode.name}",
+        )
+      }
+      when (section) {
+        NextUpSection.Available -> AvailableButton(action, nextUp)
+        NextUpSection.Upcoming -> AirsInButton(nextUp, clock)
+        NextUpSection.Paused -> nextUp.episode.airDate?.let { airDate ->
+          if (airDate.isAfterNow(clock)) {
+            AirsInButton(nextUp, clock)
+          } else {
+            AvailableButton(action, nextUp)
+          }
         }
       }
     }
@@ -177,12 +201,12 @@ fun LazyItemScope.NextUpEpisode(
 }
 
 @Composable
-private fun BoxScope.AvailableButton(
+private fun AvailableButton(
   action: (NextUpAction) -> Unit,
   nextUp: NextUpEpisode,
 ) {
   FilledTonalIconButton(
-    modifier = Modifier.align(Alignment.BottomEnd),
+//    modifier = Modifier.align(Alignment.BottomEnd),
     shapes = IconButtonShapes(
       shape = ShapeDefaults.ExtraExtraLarge,
       pressedShape = connectedMiddleButtonPressShape,
@@ -197,7 +221,7 @@ private fun BoxScope.AvailableButton(
 }
 
 @Composable
-private fun BoxScope.AirsInButton(
+private fun AirsInButton(
   nextUp: NextUpEpisode,
   clock: ClockProvider,
 ) {
@@ -211,8 +235,8 @@ private fun BoxScope.AirsInButton(
 
   Text(
     modifier = Modifier
-      .padding(MaterialTheme.dimensions.keyline_8)
-      .align(Alignment.BottomEnd),
+      .padding(MaterialTheme.dimensions.keyline_8),
+//      .align(Alignment.BottomEnd),
     style = MaterialTheme.typography.bodyMedium,
     color = MaterialTheme.colorScheme.onSurfaceVariant,
     text = resource,
