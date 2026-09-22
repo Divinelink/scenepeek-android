@@ -98,7 +98,7 @@ class ProdMediaDao(
     ?.map()
 
   override fun fetchAllFavorites(): Flow<List<MediaItem.Media>> = database
-    .favoriteMediaEntityQueries
+    .savedMediaEntityQueries
     .getAllFavorites()
     .asFlow()
     .mapToList(dispatcher.io)
@@ -138,7 +138,7 @@ class ProdMediaDao(
     }
 
   override fun fetchFavorites(mediaType: MediaType): Flow<List<MediaItem.Media>> = database
-    .favoriteMediaEntityQueries
+    .savedMediaEntityQueries
     .getAllFavoritesByMediaType(mediaType.value)
     .asFlow()
     .mapToList(dispatcher.io)
@@ -178,7 +178,7 @@ class ProdMediaDao(
     }
 
   override fun fetchFavoritePeople(): Flow<List<MediaItem.Person>> = database
-    .favoriteMediaEntityQueries
+    .savedMediaEntityQueries
     .getFavoritePeople()
     .asFlow()
     .mapToList(dispatcher.io)
@@ -198,7 +198,7 @@ class ProdMediaDao(
     }
 
   override fun getFavoriteMediaIds(mediaType: MediaType): Flow<List<Long>> = database
-    .favoriteMediaEntityQueries
+    .savedMediaEntityQueries
     .getFavoriteMediaIds(mediaType.value)
     .asFlow()
     .mapToList(dispatcher.io)
@@ -210,10 +210,10 @@ class ProdMediaDao(
     mediaId: Long,
     mediaType: MediaType,
   ) = database.transaction {
-    database.favoriteMediaEntityQueries.addToFavorites(
+    database.savedMediaEntityQueries.addToFavorites(
       mediaId = mediaId,
       mediaType = mediaType.value,
-      favoritedAt = clockProvider.clock.currentEpochSeconds(),
+      savedAt = clockProvider.clock.currentEpochSeconds(),
     )
   }
 
@@ -221,7 +221,7 @@ class ProdMediaDao(
     mediaId: Long,
     mediaType: MediaType,
   ) = database.transaction {
-    database.favoriteMediaEntityQueries.removeFromFavorites(
+    database.savedMediaEntityQueries.removeFromFavorites(
       mediaId,
       mediaType.value,
     )
@@ -231,7 +231,7 @@ class ProdMediaDao(
     mediaId: Long,
     mediaType: MediaType,
   ) = database.transactionWithResult {
-    database.favoriteMediaEntityQueries.isMediaFavorite(
+    database.savedMediaEntityQueries.isMediaFavorite(
       mediaId = mediaId,
       mediaType = mediaType.value,
     ).executeAsOneOrNull() == true

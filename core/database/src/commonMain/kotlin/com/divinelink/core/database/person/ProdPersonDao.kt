@@ -34,9 +34,19 @@ class ProdPersonDao(
     .asFlow()
     .mapToOneOrNull(context = dispatcher.io)
 
-  override fun insertPerson(person: PersonDetailsEntity) = database
-    .personDetailsEntityQueries
-    .insertPerson(person)
+  override fun insertPerson(person: PersonDetailsEntity) = database.transaction {
+    database.personDetailsEntityQueries.insertPerson(person)
+    database.personEntityQueries.insertPerson(
+      PersonEntity(
+        id = person.id,
+        name = person.name,
+        originalName = person.name,
+        profilePath = person.profilePath,
+        knownForDepartment = person.knownForDepartment,
+        gender = person.gender,
+      ),
+    )
+  }
 
   override fun updatePerson(
     biography: String?,

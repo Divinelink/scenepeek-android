@@ -9,4 +9,7 @@ data class LibraryExport(
   val shows: List<ShowExport>,
   val seasons: List<SeasonExport>,
   val episodes: List<EpisodeExport>,
+  val media: List<MediaExport>? = null,
+  val people: List<PersonExport>? = null,
+  val saved: SavedExport? = null,
 )

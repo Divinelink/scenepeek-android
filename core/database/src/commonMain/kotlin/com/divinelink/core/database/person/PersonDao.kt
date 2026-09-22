@@ -10,7 +10,7 @@ interface PersonDao {
 
   fun fetchPersonById(id: Long): Flow<PersonDetailsEntity?>
 
-  fun insertPerson(person: PersonDetailsEntity): QueryResult<Long>
+  fun insertPerson(person: PersonDetailsEntity)
 
   fun updatePerson(
     biography: String? = null,
