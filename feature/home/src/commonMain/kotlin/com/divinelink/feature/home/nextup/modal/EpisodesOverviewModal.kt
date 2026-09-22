@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +39,6 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.details.BackdropImage
-import com.divinelink.core.ui.modal.ScenePeekBottomSheet
 import com.divinelink.core.ui.resources.mark_as_watched
 import com.divinelink.core.ui.resources.watched
 import com.divinelink.core.ui.resources.watched_at
@@ -79,9 +79,7 @@ fun EpisodesOverviewModal(
       }
   }
 
-  ScenePeekBottomSheet(
-    modifier = Modifier,
-    isVisible = true,
+  ModalBottomSheet(
     onDismissRequest = onDismissRequest,
     dragHandle = null,
   ) {
