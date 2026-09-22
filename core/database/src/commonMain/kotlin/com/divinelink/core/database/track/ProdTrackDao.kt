@@ -39,7 +39,7 @@ class ProdTrackDao(
   private val seasonQueries = database.seasonDetailsEntityQueries
   private val tvDetailsQueries = database.showDetailsEntityQueries
   private val personQueries = database.personEntityQueries
-  private val savedQueries = database.favoriteMediaEntityQueries
+  private val savedQueries = database.savedMediaEntityQueries
 
   override fun getUserShows(): Flow<List<Long>> = userShowQueries
     .getAllUserShows()
@@ -323,7 +323,7 @@ class ProdTrackDao(
     val people = mutableListOf<PersonExport>()
 
     database
-      .favoriteMediaEntityQueries
+      .savedMediaEntityQueries
       .getAllFavorites()
       .executeAsList()
       .forEach { saved ->
@@ -342,7 +342,7 @@ class ProdTrackDao(
         }
       }
 
-    database.favoriteMediaEntityQueries.getFavoritePeople()
+    database.savedMediaEntityQueries.getFavoritePeople()
       .executeAsList()
       .forEach { saved ->
         peopleIds.add(saved.id)
@@ -409,7 +409,7 @@ class ProdTrackDao(
       savedQueries.addToFavorites(
         mediaId = person.id,
         mediaType = MediaType.PERSON.value,
-        favoritedAt = person.savedAt,
+        savedAt = person.savedAt,
       )
       totalRestored += 1
     }
@@ -439,7 +439,7 @@ class ProdTrackDao(
       savedQueries.addToFavorites(
         mediaId = media.id,
         mediaType = media.type,
-        favoritedAt = media.savedAt,
+        savedAt = media.savedAt,
       )
       totalRestored += 1
     }

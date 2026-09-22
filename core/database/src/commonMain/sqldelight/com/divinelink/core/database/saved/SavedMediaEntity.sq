@@ -1,0 +1,53 @@
+CREATE TABLE SavedMediaEntity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  mediaId INTEGER NOT NULL,
+  mediaType TEXT NOT NULL,
+  savedAt TEXT NOT NULL, -- ISO timestamp when saved
+  FOREIGN KEY(mediaId, mediaType) REFERENCES MediaItemEntity(id, mediaType),
+  UNIQUE(mediaId, mediaType)
+);
+
+CREATE INDEX idx_favorite_media ON SavedMediaEntity(mediaId, mediaType);
+
+getAllFavorites:
+SELECT
+    f.savedAt,
+    mi.*
+FROM SavedMediaEntity f
+INNER JOIN MediaItemEntity mi ON (f.mediaId = mi.id AND f.mediaType = mi.mediaType)
+ORDER BY f.savedAt DESC;
+
+getAllFavoritesByMediaType:
+SELECT
+    s.savedAt,
+    mi.*
+FROM SavedMediaEntity s
+INNER JOIN MediaItemEntity mi ON (s.mediaId = mi.id AND s.mediaType = mi.mediaType)
+WHERE s.mediaType = ?
+ORDER BY s.savedAt DESC;
+
+getFavoritePeople:
+SELECT
+    s.savedAt,
+    p.*
+FROM SavedMediaEntity s
+INNER JOIN PersonEntity p ON (s.mediaId = p.id)
+ORDER BY s.savedAt DESC;
+
+getFavoriteMediaIds:
+SELECT mediaId, mediaType
+FROM SavedMediaEntity
+WHERE mediaType = ?;
+
+isMediaFavorite:
+SELECT COUNT(*) > 0 AS saved
+FROM SavedMediaEntity
+WHERE mediaId = ? AND mediaType = ?;
+
+addToFavorites:
+INSERT OR IGNORE INTO SavedMediaEntity (mediaId, mediaType, savedAt)
+VALUES (?, ?, ?);
+
+removeFromFavorites:
+DELETE FROM SavedMediaEntity
+WHERE mediaId = ? AND mediaType = ?;

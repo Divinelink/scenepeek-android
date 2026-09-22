@@ -1,3 +1,24 @@
-INSERT INTO PersonEntity (id, name, originalName, profilePath, knownForDepartment, gender)
+INSERT OR ABORT INTO PersonEntity (id, name, originalName, profilePath, knownForDepartment, gender)
 SELECT id, name, name, profilePath, knownForDepartment, gender
 FROM PersonDetailsEntity;
+
+-- Update FavoriteMediaEntity table to SavedMediaEntity
+-- rename favoritedAt to savedAt and make it non null
+UPDATE FavoriteMediaEntity
+SET favoritedAt = ''
+WHERE favoritedAt IS NULL;
+
+CREATE TABLE SavedMediaEntity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  mediaId INTEGER NOT NULL,
+  mediaType TEXT NOT NULL,
+  savedAt TEXT NOT NULL,
+  FOREIGN KEY(mediaId, mediaType) REFERENCES MediaItemEntity(id, mediaType),
+  UNIQUE(mediaId, mediaType)
+);
+
+INSERT INTO SavedMediaEntity (id, mediaId, mediaType, savedAt)
+SELECT id, mediaId, mediaType, favoritedAt
+FROM FavoriteMediaEntity;
+
+DROP TABLE FavoriteMediaEntity;
