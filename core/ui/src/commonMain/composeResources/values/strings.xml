@@ -230,4 +230,5 @@
   <string name="mark_as_watched">Mark as watched</string>
   <string name="watched">Watched</string>
   <string name="watched_at">Watched at %1$s</string>
+  <string name="show_episode_details_content_description">Show episode details for %1$s</string>
 </resources>

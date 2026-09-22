@@ -46,6 +46,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.LocalClockProvider
 import com.divinelink.core.ui.resources.days_left_to_air
 import com.divinelink.core.ui.resources.season_episode_format
+import com.divinelink.core.ui.resources.show_episode_details_content_description
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -182,7 +183,10 @@ fun LazyItemScope.NextUpEpisode(
         Icon(
           imageVector = Icons.Default.MoreHoriz,
           tint = MaterialTheme.colorScheme.secondary,
-          contentDescription = "Open episode details for ${nextUp.episode.name}",
+          contentDescription = stringResource(
+            UiString.show_episode_details_content_description,
+            nextUp.episode.name,
+          ),
         )
       }
       when (section) {
@@ -206,7 +210,6 @@ private fun AvailableButton(
   nextUp: NextUpEpisode,
 ) {
   FilledTonalIconButton(
-//    modifier = Modifier.align(Alignment.BottomEnd),
     shapes = IconButtonShapes(
       shape = ShapeDefaults.ExtraExtraLarge,
       pressedShape = connectedMiddleButtonPressShape,
@@ -236,7 +239,6 @@ private fun AirsInButton(
   Text(
     modifier = Modifier
       .padding(MaterialTheme.dimensions.keyline_8),
-//      .align(Alignment.BottomEnd),
     style = MaterialTheme.typography.bodyMedium,
     color = MaterialTheme.colorScheme.onSurfaceVariant,
     text = resource,
