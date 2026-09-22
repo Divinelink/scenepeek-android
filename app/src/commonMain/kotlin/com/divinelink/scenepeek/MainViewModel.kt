@@ -8,6 +8,8 @@ import com.divinelink.core.data.app.AppInfoRepository
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.opendata.OpenDataRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
+import com.divinelink.core.data.track.TrackRepository
+import com.divinelink.core.domain.BackupManager
 import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.LocaleManager
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
@@ -39,6 +41,7 @@ class MainViewModel(
   private val createSessionUseCase: CreateSessionUseCase,
   private val findByIdUseCase: FindByIdUseCase,
   private val getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
+  private val trackRepository: TrackRepository,
   val networkMonitor: NetworkMonitor,
   val onboardingManager: OnboardingManager,
   val preferencesRepository: PreferencesRepository,
@@ -46,6 +49,7 @@ class MainViewModel(
   val appInfoRepository: AppInfoRepository,
   val openDataRepository: OpenDataRepository,
   val localeManager: LocaleManager,
+  val backupManager: BackupManager,
   val clock: ClockProvider,
 ) : ViewModel() {
 
@@ -77,6 +81,16 @@ class MainViewModel(
       .distinctUntilChanged()
       .filter { it != localeManager.currentLanguageTag() }
       .onEach { localeManager.apply(it) }
+      .launchIn(viewModelScope)
+
+    appInfoRepository
+      .backupInfo
+      .distinctUntilChanged()
+      .onEach { backupInfo ->
+        if (backupInfo.eligibleForAutoBackups(clock)) {
+          backupInfo.pathBackup?.let { path -> handleAutomaticBackup(path) }
+        }
+      }
       .launchIn(viewModelScope)
   }
 
@@ -228,6 +242,21 @@ class MainViewModel(
       )
       MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.OpenInBrowser(url))
     }
+  }
+
+  private fun handleAutomaticBackup(path: String) = viewModelScope.launch {
+    trackRepository
+      .backupLibrary()
+      .onSuccess { backup ->
+        backupManager.silentSave(
+          fileData = backup,
+          path = path,
+        ).onSuccess { saved ->
+          if (saved) {
+            appInfoRepository.updateLastBackup()
+          }
+        }
+      }
   }
 }
 

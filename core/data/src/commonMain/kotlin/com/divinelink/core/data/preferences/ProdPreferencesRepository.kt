@@ -105,6 +105,14 @@ class ProdPreferencesRepository(
     preferenceStorage.setStreamingServicesVisible(visible)
   }
 
+  override suspend fun setBackupPath(path: String) {
+    preferenceStorage.setBackupPath(path)
+  }
+
+  override suspend fun setAutomaticBackups(enabled: Boolean) {
+    preferenceStorage.setAutomaticBackups(enabled)
+  }
+
   override suspend fun setAppLanguage(language: AppLanguage) {
     preferenceStorage.setAppLanguage(language)
   }

@@ -191,4 +191,16 @@ class TestPreferencesRepository(
       )
     }
   }
+
+  override suspend fun setBackupPath(path: String) {
+    _appSettings.value = _appSettings.value.copy(
+      backupPath = path,
+    )
+  }
+
+  override suspend fun setAutomaticBackups(enabled: Boolean) {
+    _appSettings.value = _appSettings.value.copy(
+      automaticBackups = enabled,
+    )
+  }
 }

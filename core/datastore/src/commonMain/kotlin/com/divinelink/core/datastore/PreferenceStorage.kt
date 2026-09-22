@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.AUTOMATIC_BACKUPS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.BACKUP_PATH
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.ENABLE_PERIODIC_BACKUPS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_APP_LANGUAGE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_COLOR_PREFERENCE
@@ -73,6 +73,8 @@ interface PreferenceStorage {
   suspend fun setUpdaterOptIn(checkForUpdates: Boolean)
   suspend fun setMetadataLanguage(language: Language)
   suspend fun setAppLanguage(language: AppLanguage)
+  suspend fun setBackupPath(path: String)
+  suspend fun setAutomaticBackups(enabled: Boolean)
   val appLanguage: Flow<AppLanguage>
 
   suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
@@ -113,13 +115,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val homeSectionHiddenKey = stringSetPreferencesKey("home_section_hidden")
     val homeSectionDisplayOrderKey = stringPreferencesKey("home_sections_display_order")
 
-    val ENABLE_PERIODIC_BACKUPS = booleanPreferencesKey("enable_periodic_backups")
+    val AUTOMATIC_BACKUPS = booleanPreferencesKey("automatic_backups")
     val BACKUP_PATH = stringPreferencesKey("backup_path")
   }
 
   override val appSettings: Flow<AppSettings> = dataStore.data.map { preferences ->
     AppSettings(
-      enablePeriodicBackups = preferences[ENABLE_PERIODIC_BACKUPS] ?: false,
+      automaticBackups = preferences[AUTOMATIC_BACKUPS] ?: false,
       backupPath = preferences[BACKUP_PATH],
       visibleStreamingServices = preferences[PREF_STREAMING_SERVICES_VISIBLE] ?: true,
       inAppUpdaterOptIn = preferences[PREF_UPDATER_OPT_IN] ?: true,
@@ -278,5 +280,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     dataStore.edit { preferences ->
       preferences[homeSectionDisplayOrderKey] = sections.joinToString(separator = ",") { it.key }
     }
+  }
+
+  override suspend fun setBackupPath(path: String) {
+    dataStore.edit { it[BACKUP_PATH] = path }
+  }
+
+  override suspend fun setAutomaticBackups(enabled: Boolean) {
+    dataStore.edit { it[AUTOMATIC_BACKUPS] = enabled }
   }
 }

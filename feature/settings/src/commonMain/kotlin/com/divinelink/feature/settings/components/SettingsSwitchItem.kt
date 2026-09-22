@@ -21,6 +21,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.conditional
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -29,13 +30,17 @@ fun SettingsSwitchItem(
   summary: String,
   icon: IconWrapper? = null,
   isChecked: Boolean,
+  enabled: Boolean = true,
   onCheckedChange: (Boolean) -> Unit,
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     modifier = Modifier
-      .clickable { onCheckedChange(!isChecked) }
+      .conditional(
+        condition = enabled,
+        ifTrue = { clickable { onCheckedChange(!isChecked) } },
+      )
       .padding(MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
   ) {
@@ -77,6 +82,7 @@ fun SettingsSwitchItem(
     Switch(
       modifier = Modifier.weight(1f),
       checked = isChecked,
+      enabled = enabled,
       onCheckedChange = onCheckedChange,
     )
   }

@@ -19,7 +19,6 @@ kotlin {
       implementation(libs.koin.compose.viewmodel)
 
       implementation(libs.kotlinx.datetime)
-      implementation(libs.filekit.dialogs)
 
       implementation(projects.core.fixtures)
 

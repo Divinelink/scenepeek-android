@@ -1,9 +1,10 @@
 package com.divinelink.core.data.track
 
+import com.divinelink.core.commons.util.encodeToString
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.database.track.TrackDao
+import com.divinelink.core.model.export.FileData
 import com.divinelink.core.model.track.UserShowStatus
-import com.divinelink.core.model.track.backup.LibraryExport
 import com.divinelink.core.model.track.backup.RestoreProcess
 import kotlinx.coroutines.flow.Flow
 
@@ -64,8 +65,14 @@ class ProdTrackRepository(
   override fun isWatchedEpisode(episodeId: Long): Boolean = dao
     .isWatchedEpisode(episodeId)
 
-  override fun backupLibrary(): Result<LibraryExport> = runCatching {
-    dao.exportLibrary()
+  override fun backupLibrary(): Result<FileData> = runCatching {
+    val export = dao.exportLibrary()
+
+    FileData(
+      extension = "json",
+      name = "scenepeek-backup-${export.exportedAt}",
+      content = export.encodeToString(),
+    )
   }
 
   override fun restoreLibrary(encodedFile: String): Result<RestoreProcess> = dao

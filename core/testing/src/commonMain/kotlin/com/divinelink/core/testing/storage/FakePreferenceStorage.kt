@@ -137,4 +137,16 @@ class FakePreferenceStorage(
       order = sections,
     )
   }
+
+  override suspend fun setAutomaticBackups(enabled: Boolean) {
+    _appSettings.value = _appSettings.value.copy(
+      automaticBackups = enabled,
+    )
+  }
+
+  override suspend fun setBackupPath(path: String) {
+    _appSettings.value = _appSettings.value.copy(
+      backupPath = path,
+    )
+  }
 }

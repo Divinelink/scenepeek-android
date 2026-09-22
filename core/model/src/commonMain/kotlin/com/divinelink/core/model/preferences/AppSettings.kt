@@ -4,7 +4,7 @@ import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 
 data class AppSettings(
-  val enablePeriodicBackups: Boolean,
+  val automaticBackups: Boolean,
   val backupPath: String?,
   val metadataLanguage: Language,
   val inAppUpdaterOptIn: Boolean,
@@ -13,7 +13,7 @@ data class AppSettings(
 ) {
   companion object {
     val initial = AppSettings(
-      enablePeriodicBackups = true,
+      automaticBackups = true,
       backupPath = null,
       metadataLanguage = Language.ENGLISH,
       inAppUpdaterOptIn = true,

@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.divinelink.core.data.preferences
 
 import com.divinelink.core.designsystem.theme.model.ColorSystem
@@ -52,9 +54,10 @@ interface PreferencesRepository {
   suspend fun setPureBlack(enabled: Boolean)
   suspend fun setAppLanguage(language: AppLanguage)
   suspend fun setMetadataLanguage(language: Language)
-
   suspend fun setRegion(country: Country)
   suspend fun setStreamingServicesVisible(visible: Boolean)
+  suspend fun setBackupPath(path: String)
+  suspend fun setAutomaticBackups(enabled: Boolean)
 
   suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
   suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>)
