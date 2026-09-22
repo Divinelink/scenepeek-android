@@ -46,7 +46,8 @@ WHERE showId = :showId;
 
 watchedEpisodesForSeason:
 SELECT
-  e.id AS episodeId
+  e.id AS episodeId,
+  ue.watchedAt
 FROM EpisodeEntity e
 INNER JOIN UserEpisodesEntity ue ON e.id = ue.episodeId
 WHERE e.showId = :showId

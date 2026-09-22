@@ -618,10 +618,13 @@ class ProdMediaDao(
   override fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<List<Long>> = episodeQueries
+  ): Flow<Map<Long, LocalDate?>> = episodeQueries
     .watchedEpisodesForSeason(showId = showId, seasonNumber = seasonNumber.toLong())
     .asFlow()
     .mapToList(dispatcher.io)
+    .map { watched ->
+      watched.associate { it.episodeId to LocalDate.parseOrNull(it.watchedAt) }
+    }
     .distinctUntilChanged()
 
   override fun addShow(showId: Long) = database.transaction {

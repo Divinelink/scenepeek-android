@@ -5,8 +5,11 @@ import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.data
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
+import com.divinelink.core.domain.track.MarkEpisodeParameters
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.tab.EpisodeTab
@@ -31,9 +34,11 @@ import kotlinx.coroutines.launch
 import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class EpisodeViewModel(
-  private val route: Navigation.EpisodeRoute,
+  route: Navigation.Episode,
   private val repository: MediaRepository,
   private val accountRepository: AccountRepository,
+  private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
+  private val clock: ClockProvider,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<EpisodeUiState> = MutableStateFlow(
@@ -62,16 +67,35 @@ class EpisodeViewModel(
         onFailure = {
         },
       )
+
+    repository.getWatchedEpisodesForSeason(
+      showId = route.showId,
+      seasonNumber = route.seasonNumber,
+    )
+      .distinctUntilChanged()
+      .onEach { episodes ->
+        _uiState.update { it.copy(watchedEpisodes = episodes) }
+      }
+      .launchIn(viewModelScope)
   }
 
   private fun fetchEpisode() {
-    val cachedEpisode = uiState.value.episodes[uiState.value.selectedIndex]
+    val currentIndex = uiState.value.selectedIndex
+    val currentEpisode = uiState.value.episode?.number ?: 1
+    val index = if (currentIndex == -1) {
+      uiState.value.tabs.indexOf(EpisodeTab(currentEpisode)).takeIf { it != -1 } ?: 0
+    } else {
+      currentIndex
+    }
+    _uiState.update { it.copy(selectedIndex = index) }
+
+    val cachedEpisode = uiState.value.episodes[index]
 
     if (cachedEpisode == null) {
       repository.fetchEpisode(
         showId = uiState.value.showId,
         season = uiState.value.seasonNumber,
-        number = uiState.value.tabs[uiState.value.selectedIndex].number,
+        number = uiState.value.tabs[index].number,
       )
         .distinctUntilChanged()
         .onEach {
@@ -80,7 +104,7 @@ class EpisodeViewModel(
 
             uiState.copy(
               episode = episode,
-              episodes = uiState.episodes.plus(uiState.selectedIndex to episode),
+              episodes = uiState.episodes.plus(index to episode),
             )
           }
         }
@@ -98,12 +122,15 @@ class EpisodeViewModel(
       EpisodeAction.OnClearRate -> handleOnClearRate()
       is EpisodeAction.OnSubmitRate -> handleOnSubmitRate(action)
       EpisodeAction.DismissSnackbar -> handleDismissSnackbar()
+      is EpisodeAction.MarkAsWatched -> handleMarkEpisodeAsWatched()
     }
   }
 
   private fun handleOnSelectEpisode(action: EpisodeAction.OnSelectEpisode) {
-    _uiState.update { uiState ->
-      uiState.copy(selectedIndex = action.index)
+    if (action.index != -1) {
+      _uiState.update { uiState ->
+        uiState.copy(selectedIndex = action.index)
+      }
     }
 
     fetchEpisode()
@@ -210,6 +237,19 @@ class EpisodeViewModel(
   private fun handleDismissSnackbar() {
     _uiState.update { uiState ->
       uiState.copy(snackbarMessage = null)
+    }
+  }
+
+  private fun handleMarkEpisodeAsWatched() {
+    val episode = uiState.value.episode ?: return
+
+    viewModelScope.launch {
+      markEpisodeAsWatchedUseCase(
+        parameters = MarkEpisodeParameters(
+          episode = episode,
+          watchedAt = clock.now,
+        ),
+      )
     }
   }
 

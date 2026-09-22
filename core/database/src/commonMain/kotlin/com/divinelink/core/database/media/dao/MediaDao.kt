@@ -18,6 +18,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.UserEpisodes
 import com.divinelink.core.model.track.UserShowStatus
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDate
 
 interface MediaDao {
 
@@ -150,7 +151,7 @@ interface MediaDao {
   fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<List<Long>>
+  ): Flow<Map<Long, LocalDate?>>
 
   fun getUserShowStatus(showId: Long): Flow<UserShowStatus?>
   fun addShow(showId: Long)

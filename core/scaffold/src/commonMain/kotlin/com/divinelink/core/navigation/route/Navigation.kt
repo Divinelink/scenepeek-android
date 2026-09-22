@@ -8,6 +8,8 @@ import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.serialization.Serializable
+import com.divinelink.core.model.details.Episode as DetailsEpisode
+
 
 sealed interface Navigation : NavKey {
   @Serializable
@@ -94,13 +96,28 @@ sealed interface Navigation : NavKey {
   ) : Navigation
 
   @Serializable
-  data class EpisodeRoute(
-    val showId: Long,
-    val showTitle: String,
-    val seasonTitle: String,
-    val seasonNumber: Int,
-    val episodeIndex: Int,
-  ) : Navigation
+  sealed interface Episode : Navigation {
+    val showId: Long
+    val seasonNumber: Int
+    val showTitle: String
+
+    @Serializable
+    data class FullScreenRoute(
+      override val showId: Long,
+      override val showTitle: String,
+      override val seasonNumber: Int,
+      val seasonTitle: String,
+      val episodeIndex: Int,
+    ) : Episode
+
+    @Serializable
+    data class ModalRoute(
+      override val showId: Long,
+      override val seasonNumber: Int,
+      override val showTitle: String,
+      val episode: DetailsEpisode,
+    ) : Episode
+  }
 
   @Serializable
   data object ProfileRoute : Navigation

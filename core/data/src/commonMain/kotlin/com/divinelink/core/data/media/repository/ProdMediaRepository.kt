@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDate
 
 class ProdMediaRepository(
   private val remote: MediaService,
@@ -508,7 +509,7 @@ class ProdMediaRepository(
   override fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<List<Long>> = dao
+  ): Flow<Map<Long, LocalDate?>> = dao
     .getWatchedEpisodesForSeason(
       showId = showId,
       seasonNumber = seasonNumber,

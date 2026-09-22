@@ -34,8 +34,8 @@ fun EpisodesFormContent(
   showTitle: String,
   seasonTitle: String,
   data: SeasonData.Episodes,
-  watchedEpisodes: List<Long>,
-  onNavigate: (Navigation.EpisodeRoute) -> Unit,
+  watchedEpisodes: Set<Long>,
+  onNavigate: (Navigation.Episode.FullScreenRoute) -> Unit,
   action: (SeasonAction) -> Unit,
 ) {
   ScenePeekLazyColumn(
@@ -51,7 +51,7 @@ fun EpisodesFormContent(
         watched = episode.id.toLong() in watchedEpisodes,
         onClick = {
           onNavigate(
-            Navigation.EpisodeRoute(
+            Navigation.Episode.FullScreenRoute(
               showId = episode.showId,
               showTitle = showTitle,
               seasonTitle = seasonTitle,

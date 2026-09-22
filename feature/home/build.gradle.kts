@@ -10,6 +10,7 @@ kotlin {
       implementation(projects.core.data)
       implementation(projects.core.domain)
 
+      implementation(projects.feature.episode)
       implementation(projects.feature.requests)
       implementation(projects.feature.requestMedia)
 

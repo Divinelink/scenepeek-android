@@ -24,6 +24,7 @@ import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDate
 
 /**
  * The data layer for any requests related to movies, tv and people.
@@ -143,7 +144,7 @@ interface MediaRepository {
   fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<List<Long>>
+  ): Flow<Map<Long, LocalDate?>>
 
   fun markSeasonAsWatched(
     episodeIds: List<Long>,

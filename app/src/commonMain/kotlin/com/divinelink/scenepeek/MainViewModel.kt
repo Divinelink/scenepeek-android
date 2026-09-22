@@ -167,7 +167,7 @@ class MainViewModel(
         backdropPath = null,
         posterPath = "",
       )
-      is DeeplinkPath.Episode -> Navigation.EpisodeRoute(
+      is DeeplinkPath.Episode -> Navigation.Episode.FullScreenRoute(
         showId = deeplink.showId,
         showTitle = "",
         seasonTitle = "",

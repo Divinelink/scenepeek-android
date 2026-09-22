@@ -4,31 +4,49 @@ import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.tab.EpisodeTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import kotlinx.datetime.LocalDate
 
 data class EpisodeUiState(
   val showId: Long,
   val showTitle: String,
   val seasonTitle: String,
   val seasonNumber: Int,
-  val selectedIndex: Int,
   val episode: Episode?,
   val episodes: Map<Int, Episode>,
+  val watchedEpisodes: Map<Long, LocalDate?>,
   val tabs: List<EpisodeTab>,
   val snackbarMessage: SnackbarMessage?,
   val ratingLoading: Boolean,
+  val selectedIndex: Int,
 ) {
   companion object {
-    fun initial(route: Navigation.EpisodeRoute) = EpisodeUiState(
-      showId = route.showId,
-      showTitle = route.showTitle,
-      seasonTitle = route.seasonTitle,
-      seasonNumber = route.seasonNumber,
-      selectedIndex = route.episodeIndex,
-      episodes = emptyMap(),
-      tabs = emptyList(),
-      episode = null,
-      snackbarMessage = null,
-      ratingLoading = false,
-    )
+    fun initial(route: Navigation.Episode): EpisodeUiState {
+      val (episodeIndex, seasonTitle, episode) = when (route) {
+        is Navigation.Episode.FullScreenRoute -> Triple(
+          route.episodeIndex,
+          route.seasonTitle,
+          null,
+        )
+        is Navigation.Episode.ModalRoute -> Triple(
+          -1,
+          "",
+          route.episode,
+        )
+      }
+
+      return EpisodeUiState(
+        showId = route.showId,
+        showTitle = route.showTitle,
+        seasonNumber = route.seasonNumber,
+        selectedIndex = episodeIndex,
+        seasonTitle = seasonTitle,
+        episodes = emptyMap(),
+        tabs = emptyList(),
+        episode = episode,
+        snackbarMessage = null,
+        watchedEpisodes = emptyMap(),
+        ratingLoading = false,
+      )
+    }
   }
 }
