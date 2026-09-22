@@ -33,7 +33,7 @@ class ProdAppInfoRepository(
   private val _announcement: MutableStateFlow<ConfigMessage?> = MutableStateFlow(null)
 
   override val updaterOptIn: Flow<Boolean>
-    get() = preferenceStorage.updaterOptIn
+    get() = preferenceStorage.appSettings.map { it.inAppUpdaterOptIn }
 
   override fun fetchLatestAppVersion(
     fetchRemote: Boolean,

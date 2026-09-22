@@ -3,6 +3,7 @@ package com.divinelink.core.network.client
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.commons.provider.SecretProvider
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.datastore.metadataLanguage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.defaultRequest

@@ -9,6 +9,7 @@ import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.preferences.AppSettings
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
@@ -25,7 +26,7 @@ class TestPreferencesRepository(
   uiPreferences: UiPreferences = UiPreferences.Initial,
   themePreferences: ThemePreferences = ThemePreferences.initial,
   detailPreferences: DetailPreferences = DetailPreferences.initial,
-  metadataLanguage: Language = Language.ENGLISH,
+  appSettings: AppSettings = AppSettings.initial,
   homeSections: HomeSectionsConfig = HomeSectionsConfig.initial,
 ) : PreferencesRepository {
 
@@ -38,11 +39,11 @@ class TestPreferencesRepository(
   private val _detailPreferences = MutableStateFlow(detailPreferences)
   override val detailPreferences: Flow<DetailPreferences> = _detailPreferences
 
-  private val _metadataLanguage = MutableStateFlow(metadataLanguage)
-  override val metadataLanguage: Flow<Language> = _metadataLanguage
-
   private val _homeSections = MutableStateFlow(homeSections)
   override val homeSections: Flow<HomeSectionsConfig> = _homeSections
+
+  private val _appSettings = MutableStateFlow(appSettings)
+  override val appSettings: Flow<AppSettings> = _appSettings
 
   override suspend fun switchViewMode(section: ViewableSection) {
     val currentViewMode = _uiPreferences.value.viewModes[section]
@@ -122,7 +123,9 @@ class TestPreferencesRepository(
   }
 
   override suspend fun setMetadataLanguage(language: Language) {
-    _metadataLanguage.value = language
+    _appSettings.value = _appSettings.value.copy(
+      metadataLanguage = language,
+    )
   }
 
   override fun listSortOption(listId: Int): Flow<SortOption?> = uiPreferences

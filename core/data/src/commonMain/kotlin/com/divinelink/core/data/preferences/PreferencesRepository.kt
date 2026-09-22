@@ -8,6 +8,7 @@ import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.preferences.AppSettings
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
@@ -22,9 +23,9 @@ interface PreferencesRepository {
 
   val themePreferences: Flow<ThemePreferences>
 
-  val detailPreferences: Flow<DetailPreferences>
+  val appSettings: Flow<AppSettings>
 
-  val metadataLanguage: Flow<Language>
+  val detailPreferences: Flow<DetailPreferences>
 
   val homeSections: Flow<HomeSectionsConfig>
 
