@@ -72,6 +72,8 @@ class BackupViewModel(
                     ),
                   )
                   appInfoRepository.updateLastBackup()
+                } else {
+                  _uiState.update { it.copy(loading = false) }
                 }
               },
               onFailure = {
