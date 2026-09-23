@@ -19,7 +19,6 @@ CREATE TABLE SavedMediaEntity (
   mediaId INTEGER NOT NULL,
   mediaType TEXT NOT NULL,
   savedAt TEXT NOT NULL,
-  FOREIGN KEY(mediaId, mediaType) REFERENCES MediaItemEntity(id, mediaType),
   UNIQUE(mediaId, mediaType)
 );
 

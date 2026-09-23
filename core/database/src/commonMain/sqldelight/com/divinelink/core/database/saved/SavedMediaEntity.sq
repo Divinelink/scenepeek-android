@@ -3,7 +3,6 @@ CREATE TABLE SavedMediaEntity (
   mediaId INTEGER NOT NULL,
   mediaType TEXT NOT NULL,
   savedAt TEXT NOT NULL, -- ISO timestamp when saved
-  FOREIGN KEY(mediaId, mediaType) REFERENCES MediaItemEntity(id, mediaType),
   UNIQUE(mediaId, mediaType)
 );
 
@@ -32,6 +31,7 @@ SELECT
     p.*
 FROM SavedMediaEntity s
 INNER JOIN PersonEntity p ON (s.mediaId = p.id)
+WHERE s.mediaType == "person"
 ORDER BY s.savedAt DESC;
 
 getFavoriteMediaIds:
