@@ -38,7 +38,7 @@ enum class InstallSource(
     source = emptyList(),
     versionCheckUrl = "https://apps.apple.com/us/app/scenepeek-tmdb-seerr/id6756810408",
     updateUrl = "https://apps.apple.com/us/app/scenepeek-tmdb-seerr/id6756810408",
-    versionRegex = """\[\["(\d+\.\d+[\d.]*)"]]""",
+    versionRegex = """Update\s+v?(\d+\.\d+\.\d+)"""
   ),
   ;
 
