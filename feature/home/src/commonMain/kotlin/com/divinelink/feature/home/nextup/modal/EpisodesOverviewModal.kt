@@ -22,7 +22,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -81,6 +83,10 @@ fun EpisodesOverviewModal(
 
   ModalBottomSheet(
     onDismissRequest = onDismissRequest,
+    sheetState = rememberBottomSheetState(
+      initialValue = SheetValue.Hidden,
+      enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
+    ),
     dragHandle = null,
   ) {
     BackdropImage(
@@ -101,7 +107,6 @@ fun EpisodesOverviewModal(
       state = pagerState,
     ) { page ->
       ScenePeekLazyColumn(
-        modifier = Modifier,
         contentPadding = PaddingValues(top = MaterialTheme.dimensions.keyline_16),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
@@ -127,9 +132,17 @@ fun EpisodesOverviewModal(
           }
 
           item {
+            val airDate = episode.airDate?.formatLocalized(DateFormatStyle.FULL)
+            val runtime = episode.runtime
             Text(
               modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
-              text = episode.airDate?.formatLocalized(DateFormatStyle.FULL) ?: "",
+              text = buildString {
+                airDate?.let {
+                  append(it)
+                  if (runtime != null) append(" • ")
+                }
+                runtime?.let { append(it) }
+              },
               style = MaterialTheme.typography.bodyMedium,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
