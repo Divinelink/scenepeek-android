@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.divinelink.core.data.preferences
 
 import com.divinelink.core.designsystem.theme.model.ColorSystem
@@ -8,6 +10,7 @@ import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.preferences.AppSettings
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
@@ -22,9 +25,9 @@ interface PreferencesRepository {
 
   val themePreferences: Flow<ThemePreferences>
 
-  val detailPreferences: Flow<DetailPreferences>
+  val appSettings: Flow<AppSettings>
 
-  val metadataLanguage: Flow<Language>
+  val detailPreferences: Flow<DetailPreferences>
 
   val homeSections: Flow<HomeSectionsConfig>
 
@@ -51,9 +54,10 @@ interface PreferencesRepository {
   suspend fun setPureBlack(enabled: Boolean)
   suspend fun setAppLanguage(language: AppLanguage)
   suspend fun setMetadataLanguage(language: Language)
-
   suspend fun setRegion(country: Country)
   suspend fun setStreamingServicesVisible(visible: Boolean)
+  suspend fun setBackupPath(path: String)
+  suspend fun setAutomaticBackups(enabled: Boolean)
 
   suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
   suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>)

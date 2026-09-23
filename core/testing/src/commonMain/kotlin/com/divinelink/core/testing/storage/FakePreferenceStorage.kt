@@ -9,6 +9,7 @@ import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.preferences.AppSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -22,12 +23,9 @@ class FakePreferenceStorage(
   seasonsRatingSource: RatingSource = RatingSource.TMDB,
   colorSystem: ColorSystem = ColorSystem.Dynamic,
   customColor: Long = seedLong,
-  region: Country = Country.UNITED_STATES,
-  streamingServicesVisible: Boolean = false,
-  updaterOptIn: Boolean = true,
   appLanguage: AppLanguage = AppLanguage.DEFAULT,
-  metadataLanguage: Language = Language.ENGLISH,
   homeSections: HomeSectionsConfig = HomeSectionsConfig.initial,
+  appSettings: AppSettings = AppSettings.initial,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -57,20 +55,11 @@ class FakePreferenceStorage(
   private val _seasonsRatingSource = MutableStateFlow(seasonsRatingSource)
   override val seasonsRatingSource: Flow<RatingSource> = _seasonsRatingSource
 
-  private val _region = MutableStateFlow(region)
-  override val region: Flow<Country> = _region
-
-  private val _streamingServicesVisible = MutableStateFlow(streamingServicesVisible)
-  override val streamingServicesVisible: Flow<Boolean> = _streamingServicesVisible
-
-  private val _updaterOptIn = MutableStateFlow(updaterOptIn)
-  override val updaterOptIn: Flow<Boolean> = _updaterOptIn
-
   private val _appLanguage = MutableStateFlow(appLanguage)
   override val appLanguage: Flow<AppLanguage> = _appLanguage
 
-  private val _metadataLanguage = MutableStateFlow(metadataLanguage)
-  override val metadataLanguage: Flow<Language> = _metadataLanguage
+  private val _appSettings = MutableStateFlow(appSettings)
+  override val appSettings: Flow<AppSettings> = _appSettings
 
   private val _homeSections = MutableStateFlow(homeSections)
   override val homeSections: Flow<HomeSectionsConfig> = _homeSections
@@ -112,15 +101,15 @@ class FakePreferenceStorage(
   }
 
   override suspend fun setRegion(country: Country) {
-    _region.value = country
+    _appSettings.value = _appSettings.value.copy(region = country)
   }
 
   override suspend fun setStreamingServicesVisible(visible: Boolean) {
-    _streamingServicesVisible.value = visible
+    _appSettings.value = _appSettings.value.copy(visibleStreamingServices = visible)
   }
 
   override suspend fun setUpdaterOptIn(checkForUpdates: Boolean) {
-    _updaterOptIn.value = checkForUpdates
+    _appSettings.value = _appSettings.value.copy(inAppUpdaterOptIn = checkForUpdates)
   }
 
   override suspend fun setAppLanguage(language: AppLanguage) {
@@ -128,7 +117,7 @@ class FakePreferenceStorage(
   }
 
   override suspend fun setMetadataLanguage(language: Language) {
-    _metadataLanguage.value = language
+    _appSettings.value = _appSettings.value.copy(metadataLanguage = language)
   }
 
   override suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home) {
@@ -146,6 +135,18 @@ class FakePreferenceStorage(
   override suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>) {
     _homeSections.value = _homeSections.value.copy(
       order = sections,
+    )
+  }
+
+  override suspend fun setAutomaticBackups(enabled: Boolean) {
+    _appSettings.value = _appSettings.value.copy(
+      automaticBackups = enabled,
+    )
+  }
+
+  override suspend fun setBackupPath(path: String) {
+    _appSettings.value = _appSettings.value.copy(
+      backupPath = path,
     )
   }
 }

@@ -2,6 +2,7 @@ package com.divinelink.core.database.app.dao
 
 import com.divinelink.core.database.AppVersionEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDateTime
 
 interface AppInfoDao {
 
@@ -16,4 +17,8 @@ interface AppInfoDao {
   fun dismissMessage(uuid: String)
 
   fun isDismissed(uuid: String): Flow<Boolean>
+
+  fun setLastBackupAt(currentEpochSeconds: String)
+  fun getBackupState(): Flow<Pair<LocalDateTime?, Boolean>>
+  fun setBackupError()
 }

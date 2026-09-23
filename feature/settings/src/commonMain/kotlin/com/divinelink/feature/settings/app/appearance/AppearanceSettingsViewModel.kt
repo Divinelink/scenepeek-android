@@ -43,7 +43,7 @@ class AppearanceSettingsViewModel(
       themePreferences = preferencesRepository.themePreferences.first(),
       availableThemes = getAvailableThemesUseCase(Unit).data,
       availableColorSystems = getAvailableColorPreferences(Unit).data,
-      metadataLanguage = preferencesRepository.metadataLanguage.first(),
+      metadataLanguage = preferencesRepository.appSettings.first().metadataLanguage,
       availableLanguages = AppLanguage.entries,
       availableMetadataLanguages = Language.entries,
     )

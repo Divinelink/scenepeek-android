@@ -2,31 +2,58 @@ package com.divinelink.feature.settings.app.backup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.util.encodeToString
+import com.divinelink.core.data.app.AppInfoRepository
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.data.track.TrackRepository
+import com.divinelink.core.domain.BackupManager
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.export.FileData
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.DialogState
+import com.divinelink.core.ui.resources.backup_completed
 import com.divinelink.core.ui.resources.backup_failed
 import com.divinelink.core.ui.resources.restore_failed
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BackupViewModel(
   private val trackRepository: TrackRepository,
+  private val preferencesRepository: PreferencesRepository,
+  private val appInfoRepository: AppInfoRepository,
+  private val backupManager: BackupManager,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(BackupUiState.initial)
   val uiState: StateFlow<BackupUiState> = _uiState
 
-  private val _exportFile = Channel<FileData>()
-  val exportFile: Flow<FileData> = _exportFile.receiveAsFlow()
+  init {
+    appInfoRepository
+      .backupInfo
+      .distinctUntilChanged()
+      .onEach { info ->
+        _uiState.update {
+          it.copy(backupInfo = info)
+        }
+      }
+      .launchIn(viewModelScope)
+  }
+
+  fun onAction(action: BackupAction) {
+    when (action) {
+      is BackupAction.SetBackupLocation -> viewModelScope.launch {
+        backupManager.getFolderPath()?.let { path ->
+          preferencesRepository.setBackupPath(path)
+        }
+      }
+      is BackupAction.UpdateAutomaticBackups -> viewModelScope.launch {
+        preferencesRepository.setAutomaticBackups(action.enabled)
+      }
+    }
+  }
 
   fun backupLibrary() {
     _uiState.update { it.copy(loading = true) }
@@ -34,18 +61,28 @@ class BackupViewModel(
       trackRepository
         .backupLibrary()
         .fold(
-          onSuccess = { export ->
-            val file = FileData(
-              extension = "json",
-              name = "scenepeek-export-${export.exportedAt}",
-              content = export.encodeToString(),
+          onSuccess = { backup ->
+            backupManager.saveFile(backup).fold(
+              onSuccess = { saved ->
+                if (saved) {
+                  setDialog(
+                    dialog = DialogState(
+                      message = UIText.ResourceText(UiString.backup_completed),
+                      error = null,
+                    ),
+                  )
+                  appInfoRepository.updateLastBackup()
+                }
+              },
+              onFailure = {
+                setDialog(
+                  DialogState(
+                    message = UIText.ResourceText(UiString.backup_failed),
+                    error = null,
+                  ),
+                )
+              },
             )
-            _exportFile.send(file)
-            _uiState.update { state ->
-              state.copy(
-                loading = false,
-              )
-            }
           },
           onFailure = { error ->
             _uiState.update {
@@ -62,12 +99,11 @@ class BackupViewModel(
     }
   }
 
-  fun restore(fileData: FileData?) {
-    fileData ?: return
-
-    _uiState.update { it.copy(loading = true) }
-
+  fun restore() {
     viewModelScope.launch {
+      val fileData = backupManager.readFile(setOf("json")) ?: return@launch
+      _uiState.update { it.copy(loading = true) }
+
       trackRepository
         .restoreLibrary(fileData.content)
         .fold(
@@ -99,6 +135,7 @@ class BackupViewModel(
     _uiState.update {
       it.copy(
         restoreProcess = null,
+        loading = false,
         dialog = dialog,
       )
     }

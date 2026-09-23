@@ -115,4 +115,12 @@
   <string name="backup_summary">Export your watch history to a backup file</string>
   <string name="restore">Restore</string>
   <string name="restore_summary">Import a previously created backup</string>
+
+  <string name="backup_location_title">Backup location</string>
+  <string name="backup_location_subtitle">Set the location for backups to be stored</string>
+  <string name="automatic_backups_title">Make backups automatically</string>
+  <string name="automatic_backups_subtitle">Periodically make backups in the background every other day.</string>
+  <string name="automatic_backups_disabled">Automatic backups are disabled because they require a Backup location.</string>
+  <string name="automatic_backups_error">There's an issue with the current Backup location. Please update it resume automatic backups.</string>
+  <string name="last_backup_text">Last backup: %1$s</string>
 </resources>

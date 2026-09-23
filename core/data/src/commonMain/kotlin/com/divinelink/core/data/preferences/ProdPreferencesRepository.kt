@@ -10,6 +10,7 @@ import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.preferences.AppSettings
 import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
@@ -17,6 +18,7 @@ import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 class ProdPreferencesRepository(
   private val storage: UiSettingsStorage,
@@ -43,22 +45,20 @@ class ProdPreferencesRepository(
     }
 
   override val detailPreferences: Flow<DetailPreferences>
-    get() =
-      combine(
-        preferenceStorage.region,
-        preferenceStorage.streamingServicesVisible,
-      ) { region, providerVisibility ->
+    get() = preferenceStorage
+      .appSettings
+      .map { settings ->
         DetailPreferences(
-          region = region,
-          streamingServicesVisible = providerVisibility,
+          region = settings.region,
+          streamingServicesVisible = settings.visibleStreamingServices,
         )
       }
 
-  override val metadataLanguage: Flow<Language>
-    get() = preferenceStorage.metadataLanguage
-
   override val homeSections: Flow<HomeSectionsConfig>
     get() = preferenceStorage.homeSections
+
+  override val appSettings: Flow<AppSettings>
+    get() = preferenceStorage.appSettings
 
   override suspend fun switchViewMode(section: ViewableSection) {
     storage.updateViewMode(
@@ -103,6 +103,14 @@ class ProdPreferencesRepository(
 
   override suspend fun setStreamingServicesVisible(visible: Boolean) {
     preferenceStorage.setStreamingServicesVisible(visible)
+  }
+
+  override suspend fun setBackupPath(path: String) {
+    preferenceStorage.setBackupPath(path)
+  }
+
+  override suspend fun setAutomaticBackups(enabled: Boolean) {
+    preferenceStorage.setAutomaticBackups(enabled)
   }
 
   override suspend fun setAppLanguage(language: AppLanguage) {

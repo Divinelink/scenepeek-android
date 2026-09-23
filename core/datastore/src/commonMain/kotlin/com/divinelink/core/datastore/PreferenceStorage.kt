@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.AUTOMATIC_BACKUPS
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.BACKUP_PATH
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_APP_LANGUAGE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_COLOR_PREFERENCE
@@ -32,6 +34,7 @@ import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.locale.AppLanguage
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.preferences.AppSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -66,23 +69,19 @@ interface PreferenceStorage {
   val seasonsRatingSource: Flow<RatingSource>
 
   suspend fun setRegion(country: Country)
-  val region: Flow<Country>
-
   suspend fun setStreamingServicesVisible(visible: Boolean)
-  val streamingServicesVisible: Flow<Boolean>
-
   suspend fun setUpdaterOptIn(checkForUpdates: Boolean)
-  val updaterOptIn: Flow<Boolean>
-
   suspend fun setMetadataLanguage(language: Language)
-  val metadataLanguage: Flow<Language>
-
   suspend fun setAppLanguage(language: AppLanguage)
+  suspend fun setBackupPath(path: String)
+  suspend fun setAutomaticBackups(enabled: Boolean)
   val appLanguage: Flow<AppLanguage>
 
   suspend fun toggleHomeSectionVisibility(section: MediaListSection.Home)
   suspend fun updateHomeSectionsOrder(sections: List<MediaListSection.Home>)
   val homeSections: Flow<HomeSectionsConfig>
+
+  val appSettings: Flow<AppSettings>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -115,7 +114,25 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
     val homeSectionHiddenKey = stringSetPreferencesKey("home_section_hidden")
     val homeSectionDisplayOrderKey = stringPreferencesKey("home_sections_display_order")
+
+    val AUTOMATIC_BACKUPS = booleanPreferencesKey("automatic_backups")
+    val BACKUP_PATH = stringPreferencesKey("backup_path")
   }
+
+  override val appSettings: Flow<AppSettings> = dataStore.data.map { preferences ->
+    AppSettings(
+      automaticBackups = preferences[AUTOMATIC_BACKUPS] ?: false,
+      backupPath = preferences[BACKUP_PATH],
+      visibleStreamingServices = preferences[PREF_STREAMING_SERVICES_VISIBLE] ?: true,
+      inAppUpdaterOptIn = preferences[PREF_UPDATER_OPT_IN] ?: true,
+      metadataLanguage = preferences[PREF_METADATA_LANGUAGE]
+        ?.let { code -> Language.fromCode(code) }
+        ?: Language.ENGLISH,
+      region = preferences[PREF_REGION_CODE]
+        ?.let { code -> Country.fromCode(code) }
+        ?: Country.UNITED_STATES,
+    )
+  }.distinctUntilChanged()
 
   override suspend fun selectTheme(theme: String) {
     dataStore.edit {
@@ -195,27 +212,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     it[PREF_CUSTOM_COLOR_ID] ?: seedLong
   }.distinctUntilChanged()
 
-  override val region: Flow<Country> = dataStore.data.map {
-    it[PREF_REGION_CODE]?.let { countryCode ->
-      Country.fromCode(countryCode)
-    } ?: Country.UNITED_STATES
-  }.distinctUntilChanged()
-
   override suspend fun setRegion(country: Country) {
     dataStore.edit { it[PREF_REGION_CODE] = country.code }
   }
 
-  override val streamingServicesVisible: Flow<Boolean> = dataStore.data.map {
-    it[PREF_STREAMING_SERVICES_VISIBLE] ?: true
-  }.distinctUntilChanged()
-
   override suspend fun setStreamingServicesVisible(visible: Boolean) {
     dataStore.edit { it[PREF_STREAMING_SERVICES_VISIBLE] = visible }
   }
-
-  override val updaterOptIn: Flow<Boolean> = dataStore.data.map {
-    it[PREF_UPDATER_OPT_IN] ?: true
-  }.distinctUntilChanged()
 
   override suspend fun setUpdaterOptIn(checkForUpdates: Boolean) {
     dataStore.edit { it[PREF_UPDATER_OPT_IN] = checkForUpdates }
@@ -224,10 +227,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   override suspend fun setMetadataLanguage(language: Language) {
     dataStore.edit { it[PREF_METADATA_LANGUAGE] = language.code }
   }
-
-  override val metadataLanguage: Flow<Language> = dataStore.data.map {
-    it[PREF_METADATA_LANGUAGE]?.let { code -> Language.fromCode(code) } ?: Language.ENGLISH
-  }.distinctUntilChanged()
 
   override val appLanguage: Flow<AppLanguage> = dataStore.data.map {
     it[PREF_APP_LANGUAGE]?.let { locale -> AppLanguage.from(locale) } ?: AppLanguage.DEFAULT
@@ -282,5 +281,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     dataStore.edit { preferences ->
       preferences[homeSectionDisplayOrderKey] = sections.joinToString(separator = ",") { it.key }
     }
+  }
+
+  override suspend fun setBackupPath(path: String) {
+    dataStore.edit { it[BACKUP_PATH] = path }
+  }
+
+  override suspend fun setAutomaticBackups(enabled: Boolean) {
+    dataStore.edit { it[AUTOMATIC_BACKUPS] = enabled }
   }
 }

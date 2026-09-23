@@ -7,6 +7,7 @@ import com.divinelink.core.data.di.sharedDataModule
 import com.divinelink.core.database.di.databaseModule
 import com.divinelink.core.database.di.sqlDriverModule
 import com.divinelink.core.datastore.di.storageModule
+import com.divinelink.core.domain.di.sharedDomainModule
 import com.divinelink.core.domain.di.useCaseModule
 import com.divinelink.core.network.di.ktorEngineModule
 import com.divinelink.core.network.di.remoteModule
@@ -48,6 +49,7 @@ fun KoinApplication.configKoinModules() {
     storageModule,
     navigationModule,
     sharedDataModule,
+    sharedDomainModule,
   )
 }
 

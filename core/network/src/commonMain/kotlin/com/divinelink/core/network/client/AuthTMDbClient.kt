@@ -5,6 +5,7 @@ import com.divinelink.core.commons.provider.SecretProvider
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.accessToken
+import com.divinelink.core.datastore.metadataLanguage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.defaultRequest

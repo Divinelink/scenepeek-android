@@ -10,7 +10,6 @@ import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.serialization.Serializable
 import com.divinelink.core.model.details.Episode as DetailsEpisode
 
-
 sealed interface Navigation : NavKey {
   @Serializable
   data object Back : Navigation

@@ -11,7 +11,9 @@ import com.divinelink.core.fixtures.shared.TestLocaleManager
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.Navigator
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestTrackRepository
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
+import com.divinelink.core.testing.usecase.TestBackupManager
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.testing.usecase.TestFindByIdUseCase
 import com.divinelink.core.ui.MainUiEvent
@@ -30,6 +32,8 @@ class MainViewModelRobot {
   private val createSessionUseCase = TestCreateSessionUseCase()
   private val findByIdUseCase = TestFindByIdUseCase()
   private val getJellyseerrProfileUseCase = FakeGetJellyseerrDetailsUseCase()
+  private val testBackupManager = TestBackupManager()
+  private val trackRepository = TestTrackRepository()
 
   fun buildViewModel() = apply {
     viewModel = MainViewModel(
@@ -43,6 +47,8 @@ class MainViewModelRobot {
       navigator = Navigator(),
       localeManager = TestLocaleManager(),
       openDataRepository = TestOpenDataRepository(),
+      trackRepository = trackRepository.mock,
+      backupManager = testBackupManager,
       clock = PreviewClockProvider(),
     )
   }
@@ -77,5 +83,8 @@ class MainViewModelRobot {
 
   fun verifyJellyseerrRefreshSession(numberOfTimes: Int) = apply {
     getJellyseerrProfileUseCase.verifyInteractions(numberOfTimes)
+  }
+
+  suspend fun mockBackupManager() = apply {
   }
 }

@@ -9,12 +9,14 @@ import com.divinelink.core.database.isOlderThanCurrentTime
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.app.AppVersion
 import com.divinelink.core.model.config.ConfigMessage
+import com.divinelink.core.model.preferences.BackupInfo
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.app.AppInfoService
 import com.divinelink.core.network.app.mapper.map
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
@@ -33,7 +35,20 @@ class ProdAppInfoRepository(
   private val _announcement: MutableStateFlow<ConfigMessage?> = MutableStateFlow(null)
 
   override val updaterOptIn: Flow<Boolean>
-    get() = preferenceStorage.updaterOptIn
+    get() = preferenceStorage.appSettings.map { it.inAppUpdaterOptIn }
+
+  override val backupInfo: Flow<BackupInfo>
+    get() = combine(
+      dao.getBackupState(),
+      preferenceStorage.appSettings,
+    ) { backupState, settings ->
+      BackupInfo(
+        lastBackupAt = backupState.first,
+        pathBackup = settings.backupPath,
+        automaticBackups = settings.automaticBackups,
+        automaticBackupError = backupState.second,
+      )
+    }
 
   override fun fetchLatestAppVersion(
     fetchRemote: Boolean,
@@ -121,4 +136,12 @@ class ProdAppInfoRepository(
   }
 
   override val announcement: Flow<ConfigMessage?> = _announcement
+
+  override suspend fun updateLastBackup() {
+    dao.setLastBackupAt(clock.currentEpochSeconds())
+  }
+
+  override suspend fun setBackupError() {
+    dao.setBackupError()
+  }
 }

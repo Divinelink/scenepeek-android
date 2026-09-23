@@ -12,6 +12,7 @@ kotlin {
 
       implementation(libs.napier)
       implementation(libs.kotlinx.datetime)
+      implementation(libs.filekit.dialogs)
     }
   }
 }

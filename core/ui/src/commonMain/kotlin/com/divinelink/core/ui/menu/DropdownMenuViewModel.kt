@@ -62,7 +62,7 @@ class DropdownMenuViewModel(
           .getWikiTitles(intent.title)
           .fold(
             onSuccess = { wikis ->
-              val preferredLocale = preferencesRepository.metadataLanguage.first().code
+              val preferredLocale = preferencesRepository.appSettings.first().metadataLanguage.code
               val resolvedLocale = if (wikis.containsKey(preferredLocale)) preferredLocale else "en"
               val wikiTitle = wikis[resolvedLocale]
 
