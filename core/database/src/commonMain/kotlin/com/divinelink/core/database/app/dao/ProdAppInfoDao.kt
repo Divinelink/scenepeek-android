@@ -7,7 +7,6 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.extensions.epochSecondsToLocalDateTime
 import com.divinelink.core.database.AppVersionEntity
 import com.divinelink.core.database.Database
-import com.divinelink.core.database.settings.BackupEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -51,22 +50,23 @@ class ProdAppInfoDao(
     .mapToOneOrDefault(context = dispatcher.io, defaultValue = false)
     .distinctUntilChanged()
 
-  override fun getLastBackupAt(): Flow<LocalDateTime?> = database
-    .backupEntityQueries
-    .fetchBackupInfo()
+  override fun getBackupState(): Flow<Pair<LocalDateTime?, Boolean>> = backupQueries
+    .fetchBackupState()
     .asFlow()
-    .mapToOneOrDefault(
-      context = dispatcher.io,
-      defaultValue = BackupEntity(
-        id = 1,
-        lastBackupAt = null,
-      ),
-    )
+    .mapToOneOrNull(dispatcher.io)
     .map { entity ->
-      entity.lastBackupAt?.epochSecondsToLocalDateTime()
+      val lastBackup = entity?.lastBackupAt?.epochSecondsToLocalDateTime()
+      val hasError = entity?.error != null
+
+      lastBackup to hasError
     }
+    .distinctUntilChanged()
 
   override fun setLastBackupAt(currentEpochSeconds: String) = database.transaction {
     backupQueries.updateLastBackupAt(currentEpochSeconds)
+  }
+
+  override fun setBackupError() = database.transaction {
+    backupQueries.setError()
   }
 }

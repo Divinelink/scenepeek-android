@@ -132,7 +132,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
         ?.let { code -> Country.fromCode(code) }
         ?: Country.UNITED_STATES,
     )
-  }
+  }.distinctUntilChanged()
+
   override suspend fun selectTheme(theme: String) {
     dataStore.edit {
       it[PREF_SELECTED_THEME] = theme

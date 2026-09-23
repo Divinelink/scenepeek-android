@@ -1,6 +1,7 @@
 CREATE TABLE BackupEntity (
   id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
-  lastBackupAt TEXT
+  lastBackupAt TEXT,
+  error INTEGER
 );
 
 INSERT OR ABORT INTO PersonEntity (id, name, originalName, profilePath, knownForDepartment, gender)

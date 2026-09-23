@@ -8,6 +8,7 @@ data class BackupInfo(
   val lastBackupAt: LocalDateTime?,
   val automaticBackups: Boolean,
   val pathBackup: String?,
+  val automaticBackupError: Boolean,
 ) {
   fun eligibleForAutoBackups(clock: ClockProvider) = automaticBackups &&
     pathBackup != null &&
@@ -21,6 +22,7 @@ data class BackupInfo(
       lastBackupAt = null,
       automaticBackups = false,
       pathBackup = null,
+      automaticBackupError = false,
     )
   }
 }

@@ -25,4 +25,5 @@ interface AppInfoRepository {
   suspend fun updateUpdaterOptIn(enabled: Boolean)
 
   suspend fun updateLastBackup()
+  suspend fun setBackupError()
 }

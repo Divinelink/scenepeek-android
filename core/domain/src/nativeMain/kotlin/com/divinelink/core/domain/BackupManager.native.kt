@@ -47,7 +47,5 @@ internal class NativeBackupManager : BackupManager {
   override suspend fun silentSave(
     fileData: FileData,
     path: String,
-  ): Result<Boolean> = runCatching {
-    writeToSavedDirectory(fileData, path)
-  }
+  ): Result<Boolean> = writeToSavedDirectory(fileData, path)
 }

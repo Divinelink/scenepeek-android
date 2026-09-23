@@ -39,13 +39,14 @@ class ProdAppInfoRepository(
 
   override val backupInfo: Flow<BackupInfo>
     get() = combine(
-      dao.getLastBackupAt(),
+      dao.getBackupState(),
       preferenceStorage.appSettings,
-    ) { lastBackup, settings ->
+    ) { backupState, settings ->
       BackupInfo(
-        lastBackupAt = lastBackup,
+        lastBackupAt = backupState.first,
         pathBackup = settings.backupPath,
         automaticBackups = settings.automaticBackups,
+        automaticBackupError = backupState.second,
       )
     }
 
@@ -138,5 +139,9 @@ class ProdAppInfoRepository(
 
   override suspend fun updateLastBackup() {
     dao.setLastBackupAt(clock.currentEpochSeconds())
+  }
+
+  override suspend fun setBackupError() {
+    dao.setBackupError()
   }
 }

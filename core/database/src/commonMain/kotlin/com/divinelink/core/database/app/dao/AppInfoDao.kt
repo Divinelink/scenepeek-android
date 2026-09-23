@@ -19,5 +19,6 @@ interface AppInfoDao {
   fun isDismissed(uuid: String): Flow<Boolean>
 
   fun setLastBackupAt(currentEpochSeconds: String)
-  fun getLastBackupAt(): Flow<LocalDateTime?>
+  fun getBackupState(): Flow<Pair<LocalDateTime?, Boolean>>
+  fun setBackupError()
 }

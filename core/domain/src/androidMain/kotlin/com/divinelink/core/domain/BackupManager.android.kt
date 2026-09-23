@@ -62,10 +62,8 @@ internal class AndroidBackupManager : BackupManager {
   override suspend fun silentSave(
     fileData: FileData,
     path: String,
-  ): Result<Boolean> = runCatching {
-    writeToSavedDirectory(
-      path = path,
-      fileData = fileData,
-    )
-  }
+  ): Result<Boolean> = writeToSavedDirectory(
+    path = path,
+    fileData = fileData,
+  )
 }

@@ -22,13 +22,13 @@ interface BackupManager {
 suspend fun writeToSavedDirectory(
   fileData: FileData,
   path: String,
-): Boolean = getSavedDirectory(path).fold(
+): Result<Boolean> = getSavedDirectory(path).fold(
   onSuccess = { directory ->
     val file = directory / "${fileData.name}.${fileData.extension}"
     file.writeString(fileData.content)
-    true
+    Result.success(true)
   },
-  onFailure = { false },
+  onFailure = { Result.failure(it) },
 )
 
 private fun getSavedDirectory(cachedPath: String): Result<PlatformFile> = runCatching {
@@ -36,10 +36,9 @@ private fun getSavedDirectory(cachedPath: String): Result<PlatformFile> = runCat
   val resolution = PlatformFile.resolveBookmarkData(bytes)
   val restored = resolution.file
 
-  // TODO handle the shouldRefresh case
-  // if (resolution.shouldRefresh) {
-  //   val refreshed = Base64.encode(restored.bookmarkData().bytes)
-  // }
+  if (resolution.shouldRefresh || resolution.isStale) {
+    error("Should refresh directory")
+  }
 
   if (restored.exists()) {
     restored

@@ -1,11 +1,15 @@
 CREATE TABLE BackupEntity (
   id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
-  lastBackupAt TEXT
+  lastBackupAt TEXT,
+  error INTEGER
 );
 
 updateLastBackupAt:
 INSERT OR REPLACE INTO BackupEntity (id, lastBackupAt)
 VALUES (1,?);
 
-fetchBackupInfo:
+setError:
+UPDATE BackupEntity SET error = 1 WHERE id = 1;
+
+fetchBackupState:
 SELECT * FROM BackupEntity;

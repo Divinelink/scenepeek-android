@@ -39,4 +39,8 @@ class TestAppInfoRepository : AppInfoRepository {
   override suspend fun updateLastBackup() {
     // Implement when needed
   }
+
+  override suspend fun setBackupError() {
+    // Implement when needed
+  }
 }

@@ -41,6 +41,7 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsSwitchItem
 import com.divinelink.feature.settings.resources.Res
 import com.divinelink.feature.settings.resources.automatic_backups_disabled
+import com.divinelink.feature.settings.resources.automatic_backups_error
 import com.divinelink.feature.settings.resources.automatic_backups_subtitle
 import com.divinelink.feature.settings.resources.automatic_backups_title
 import com.divinelink.feature.settings.resources.backup
@@ -146,7 +147,13 @@ fun AnimatedVisibilityScope.BackupScreen(
         )
       }
 
-      if (uiState.backupInfo.pathBackup == null) {
+      if (uiState.backupInfo.pathBackup == null || uiState.backupInfo.automaticBackupError) {
+        val text = if (uiState.backupInfo.automaticBackupError) {
+          Res.string.automatic_backups_error
+        } else {
+          Res.string.automatic_backups_disabled
+        }
+
         item {
           Row(
             modifier = Modifier.padding(
@@ -163,7 +170,7 @@ fun AnimatedVisibilityScope.BackupScreen(
             Text(
               color = MaterialTheme.colorScheme.error,
               style = MaterialTheme.typography.bodySmall,
-              text = stringResource(Res.string.automatic_backups_disabled),
+              text = stringResource(text),
             )
           }
         }

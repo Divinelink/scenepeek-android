@@ -251,11 +251,14 @@ class MainViewModel(
         backupManager.silentSave(
           fileData = backup,
           path = path,
-        ).onSuccess { saved ->
-          if (saved) {
-            appInfoRepository.updateLastBackup()
-          }
-        }
+        ).fold(
+          onSuccess = { saved ->
+            if (saved) {
+              appInfoRepository.updateLastBackup()
+            }
+          },
+          onFailure = { appInfoRepository.setBackupError() },
+        )
       }
   }
 }

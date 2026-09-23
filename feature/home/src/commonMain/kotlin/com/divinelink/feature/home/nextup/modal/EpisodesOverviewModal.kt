@@ -135,7 +135,6 @@ fun EpisodesOverviewModal(
             )
           }
 
-
           if (!episode.overview.isNullOrEmpty()) {
             item {
               Text(
