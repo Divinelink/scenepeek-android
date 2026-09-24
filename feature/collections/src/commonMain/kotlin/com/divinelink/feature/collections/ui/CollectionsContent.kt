@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.encodeToString
-import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.Previews
@@ -114,7 +114,7 @@ fun SharedTransitionScope.CollectionsContent(
           onLoadMore = { /* Do nothing */ },
           onSwitchPreferences = onSwitchPreferences,
           onClick = { it.toRoute()?.let { route -> onNavigate(route) } },
-          section = ViewableSection.SEARCH,
+          section = ViewableSection.Search,
           onLongClick = { media ->
             onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
           },

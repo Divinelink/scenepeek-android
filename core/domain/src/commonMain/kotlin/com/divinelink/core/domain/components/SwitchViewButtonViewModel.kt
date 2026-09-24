@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.ui.ExpandableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.launch
@@ -29,14 +30,14 @@ class SwitchViewButtonViewModel(private val repository: PreferencesRepository) :
     }
   }
 
-  private fun switchSortDirection(section: ViewableSection) {
+  private fun switchSortDirection(section: SortableSection) {
     viewModelScope.launch {
       repository.switchSortDirection(section)
     }
   }
 
   private fun switchSortBy(
-    section: ViewableSection,
+    section: SortableSection,
     sortBy: SortBy,
   ) {
     viewModelScope.launch {

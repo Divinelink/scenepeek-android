@@ -5,6 +5,7 @@ import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.sort.other
 import com.divinelink.core.model.ui.ExpandableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
@@ -29,7 +30,7 @@ class TestUiSettingsStorage(uiPreferences: UiPreferences = UiPreferences.Initial
   }
 
   override suspend fun updateSortBy(
-    section: ViewableSection,
+    section: SortableSection,
     sortBy: SortBy,
   ) {
     val currentSortBy = _uiPreferences.value.sortOption[section]
@@ -42,7 +43,7 @@ class TestUiSettingsStorage(uiPreferences: UiPreferences = UiPreferences.Initial
     }
   }
 
-  override suspend fun updateSortDirection(section: ViewableSection) {
+  override suspend fun updateSortDirection(section: SortableSection) {
     val currentSortBy = _uiPreferences.value.sortOption[section]
 
     currentSortBy?.let { option ->

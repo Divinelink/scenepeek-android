@@ -75,7 +75,7 @@ class ListsScreenTest : ComposeTest() {
     }
 
     switchViewButtonViewModel.onAction(
-      SwitchPreferencesAction.SwitchViewMode(ViewableSection.LISTS),
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.Lists),
     )
 
     onNodeWithTag(
@@ -161,7 +161,7 @@ class ListsScreenTest : ComposeTest() {
     setVisibilityScopeContent(
       preferencesRepository = TestPreferencesRepository(
         UiPreferences.Initial.copy(
-          viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+          viewModes = ViewableSection.defaultEntries.associateWith { ViewMode.GRID },
         ),
       ),
     ) {
@@ -246,7 +246,7 @@ class ListsScreenTest : ComposeTest() {
     }
 
     switchViewButtonViewModel.onAction(
-      SwitchPreferencesAction.SwitchViewMode(ViewableSection.LISTS),
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.Lists),
     )
 
     onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsNotDisplayed()

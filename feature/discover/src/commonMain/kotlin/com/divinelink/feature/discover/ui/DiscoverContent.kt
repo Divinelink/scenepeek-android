@@ -26,10 +26,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.SwitchPreferencesAction
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.Previews
@@ -225,11 +223,7 @@ fun DiscoverContent(
           } else {
             ScrollableMediaContent(
               items = it.media,
-              section = if (uiState.selectedMedia == MediaType.MOVIE) {
-                ViewableSection.DISCOVER_MOVIES
-              } else {
-                ViewableSection.DISCOVER_SHOWS
-              },
+              section = uiState.section,
               onLoadMore = { action(DiscoverAction.LoadMore) },
               onSwitchPreferences = onSwitchPreferences,
               onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },

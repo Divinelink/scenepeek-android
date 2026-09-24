@@ -63,7 +63,9 @@ fun ListsContentListPreview(
   @PreviewParameter(ListsUiStateParameterProvider::class) state: ListsUiState,
 ) {
   CompositionLocalProvider(
-    LocalUiPreferences provides UiPreferences.Initial,
+    LocalUiPreferences provides UiPreferences.Initial.copy(
+      viewModes = ViewableSection.allSections.associateWith { ViewMode.LIST },
+    ),
   ) {
     AppTheme {
       Surface {
@@ -80,9 +82,7 @@ fun ListsContentListPreview(
 @Previews
 fun ListsContentGridPreview() {
   CompositionLocalProvider(
-    LocalUiPreferences provides UiPreferences.Initial.copy(
-      viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
-    ),
+    LocalUiPreferences provides UiPreferences.Initial,
   ) {
     AppTheme {
       Surface {

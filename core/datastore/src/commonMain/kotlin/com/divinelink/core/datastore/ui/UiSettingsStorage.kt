@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.availableListsKey
+import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.discoverViewModeKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.expandedSection
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortBy
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.listSortDirection
@@ -15,10 +16,12 @@ import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.sortB
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.sortDirectionKey
 import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.viewModeKey
 import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortContext
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.sort.other
 import com.divinelink.core.model.ui.ExpandableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -38,11 +41,11 @@ interface UiSettingsStorage {
   suspend fun updateViewMode(section: ViewableSection)
 
   suspend fun updateSortBy(
-    section: ViewableSection,
+    section: SortableSection,
     sortBy: SortBy,
   )
 
-  suspend fun updateSortDirection(section: ViewableSection)
+  suspend fun updateSortDirection(section: SortableSection)
 
   suspend fun updateListSortBy(
     listId: Int,
@@ -63,9 +66,10 @@ class DatastoreUiStorage(
   }
 
   private object PreferencesKeys {
+    val discoverViewModeKey = stringPreferencesKey("discover_view_mode")
     fun viewModeKey(section: ViewableSection) = stringPreferencesKey("${section.key}_view_mode")
-    fun sortByKey(section: ViewableSection) = stringPreferencesKey("$${section.key}_sort_by")
-    fun sortDirectionKey(section: ViewableSection) = stringPreferencesKey(
+    fun sortByKey(section: SortableSection) = stringPreferencesKey("${section.key}_sort_by")
+    fun sortDirectionKey(section: SortableSection) = stringPreferencesKey(
       "${section.key}_sort_direction",
     )
     fun expandedSection(section: ExpandableSection) = booleanPreferencesKey(
@@ -77,36 +81,36 @@ class DatastoreUiStorage(
     val availableListsKey = stringSetPreferencesKey("available_lists")
   }
 
-  override val uiPreferences: Flow<UiPreferences> = dataStore.data.map {
+  override val uiPreferences: Flow<UiPreferences> = dataStore.data.map { preferences ->
     UiPreferences(
-      viewModes = ViewableSection.entries.associateWith { section ->
-        ViewMode.from(it[viewModeKey(section)])
+      viewModes = ViewableSection.allSections.associateWith { section ->
+        if (section is SortableSection.Discover) {
+          ViewMode.from(preferences[discoverViewModeKey])
+        } else {
+          ViewMode.from(preferences[viewModeKey(section)])
+        }
       },
-      sortOption = mapOf(
-        ViewableSection.DISCOVER_MOVIES to SortOption(
-          sortBy = SortBy.findDiscoverMovieOption(it[sortByKey(ViewableSection.DISCOVER_MOVIES)]),
-          direction = SortDirection.from(it[sortDirectionKey(ViewableSection.DISCOVER_MOVIES)]),
-        ),
-        ViewableSection.DISCOVER_SHOWS to SortOption(
-          sortBy = SortBy.findDiscoverShowOption(it[sortByKey(ViewableSection.DISCOVER_SHOWS)]),
-          direction = SortDirection.from(it[sortDirectionKey(ViewableSection.DISCOVER_SHOWS)]),
-        ),
-        ViewableSection.USER_DATA to SortOption(
-          sortBy = SortBy.findUserDataOption(it[sortByKey(ViewableSection.USER_DATA)]),
-          direction = SortDirection.from(it[sortDirectionKey(ViewableSection.USER_DATA)]),
-        ),
-      ),
-      listSortOptions = (it[availableListsKey]?.map { key -> key.toInt() } ?: emptyList())
+      sortOption = SortableSection.all.associateWith { section ->
+        val default = SortOption.default(section.sortContext)
+        val sortBy = SortBy.from(preferences[sortByKey(section)])
+        val direction = SortDirection.from(preferences[sortDirectionKey(section)])
+
+        SortOption(
+          sortBy = sortBy ?: default.sortBy,
+          direction = direction,
+        )
+      },
+      listSortOptions = (preferences[availableListsKey]?.map { key -> key.toInt() } ?: emptyList())
         .associateWith { listId -> listSortOption(listId).firstOrNull() },
       expanded = ExpandableSection.entries.associateWith { section ->
-        it[expandedSection(section)] == true
+        preferences[expandedSection(section)] == true
       },
     )
   }.distinctUntilChanged()
 
   override fun listSortOption(id: Int): Flow<SortOption?> = dataStore.data
     .map { prefs ->
-      val sortBy = SortBy.findListSortOption(prefs[listSortBy(id)]) ?: return@map null
+      val sortBy = SortContext.ListDetails.find(prefs[listSortBy(id)])
       val direction = SortDirection.from(prefs[listSortDirection(id)])
       SortOption(sortBy = sortBy, direction = direction)
     }
@@ -114,25 +118,26 @@ class DatastoreUiStorage(
 
   override suspend fun updateViewMode(section: ViewableSection) {
     dataStore.edit { preferences ->
-      val currentViewMode = ViewMode.from(preferences[viewModeKey(section)])
-
-      if (section == ViewableSection.DISCOVER_MOVIES || section == ViewableSection.DISCOVER_SHOWS) {
-        preferences[viewModeKey(ViewableSection.DISCOVER_SHOWS)] = currentViewMode.other().value
-        preferences[viewModeKey(ViewableSection.DISCOVER_MOVIES)] = currentViewMode.other().value
+      val key = if (section is SortableSection.Discover) {
+        discoverViewModeKey
       } else {
-        preferences[viewModeKey(section)] = currentViewMode.other().value
+        viewModeKey(section)
       }
+
+      val currentViewMode = ViewMode.from(preferences[key])
+
+      preferences[key] = currentViewMode.other().value
     }
   }
 
   override suspend fun updateSortBy(
-    section: ViewableSection,
+    section: SortableSection,
     sortBy: SortBy,
   ) {
     dataStore.edit { preferences -> preferences[sortByKey(section)] = sortBy.value }
   }
 
-  override suspend fun updateSortDirection(section: ViewableSection) {
+  override suspend fun updateSortDirection(section: SortableSection) {
     dataStore.edit { preferences ->
       val currentDirection = SortDirection.from(preferences[sortDirectionKey(section)])
 

@@ -7,12 +7,8 @@ data class SortOption(
   val sortValue: String = "${sortBy.value}.${direction.value}"
 
   companion object {
-    val defaultDiscoverSortOption = SortOption(
-      sortBy = SortBy.POPULARITY,
-      direction = SortDirection.DESC,
-    )
-    val defaultUserDataSortOption = SortOption(
-      sortBy = SortBy.CREATED_AT,
+    fun default(sort: SortContext) = SortOption(
+      sortBy = sort.defaultOption,
       direction = SortDirection.DESC,
     )
 

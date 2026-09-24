@@ -19,8 +19,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.list.ListData
-import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -113,7 +113,7 @@ fun AnimatedVisibilityScope.ListsScreen(
               )
 
               ListsAction.SwitchViewMode -> switchViewButtonViewModel.onAction(
-                SwitchPreferencesAction.SwitchViewMode(ViewableSection.LISTS),
+                SwitchPreferencesAction.SwitchViewMode(ViewableSection.Lists),
               )
             }
           },

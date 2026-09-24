@@ -15,8 +15,8 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.encodeToString
-import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.Previews
@@ -109,7 +109,7 @@ fun MediaListsContent(
             ScrollableMediaContent(
               modifier = Modifier,
               items = form.media,
-              section = ViewableSection.SEARCH,
+              section = ViewableSection.Search,
               onLoadMore = { action(MediaListsAction.LoadMore) },
               onSwitchPreferences = onSwitchPreferences,
               onClick = { it.toRoute()?.let { route -> onNavigate(route) } },

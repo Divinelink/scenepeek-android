@@ -45,9 +45,9 @@ import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.toStub
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewMode
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.ScreenSettingsRow
@@ -90,7 +90,7 @@ fun ListScrollableContent(
   val scrollState = rememberLazyGridState()
   val scope = rememberCoroutineScope()
   val density = LocalDensity.current
-  val viewMode = rememberViewModePreferences(ViewableSection.LIST_DETAILS)
+  val viewMode = rememberViewModePreferences(SortableSection.ListDetails)
 
   val columns = when (viewMode) {
     ViewMode.GRID -> GridCells.Adaptive(mediaCardSize())
@@ -232,7 +232,7 @@ fun ListScrollableContent(
       item(span = { GridItemSpan(maxLineSpan) }) {
         ScreenSettingsRow(
           enabled = (state.details as? ListDetailsData.Data)?.isEmpty == false,
-          section = ViewableSection.LIST_DETAILS,
+          section = SortableSection.ListDetails,
           listId = state.id,
           onSwitchPreferences = onSwitchPreferences,
         )

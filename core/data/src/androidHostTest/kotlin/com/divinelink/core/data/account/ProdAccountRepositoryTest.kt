@@ -1,6 +1,7 @@
 package com.divinelink.core.data.account
 
 import app.cash.turbine.test
+import com.divinelink.core.model.sort.SortContext
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.tv.map
@@ -41,7 +42,9 @@ class ProdAccountRepositoryTest {
     val result = repository.fetchMoviesWatchlist(
       accountId = "1",
       page = 1,
-      sortOption = SortOption.defaultUserDataSortOption,
+      sortOption = SortOption.default(
+        sort = SortContext.UserData,
+      ),
       sessionId = "sha33dfd2xEemCssDs",
     )
 
@@ -62,7 +65,9 @@ class ProdAccountRepositoryTest {
     val result = repository.fetchTvShowsWatchlist(
       accountId = "1",
       page = 1,
-      sortOption = SortOption.defaultUserDataSortOption,
+      sortOption = SortOption.default(
+        sort = SortContext.UserData,
+      ),
       sessionId = "sha33dfd2xEemCssDs",
     )
 
@@ -76,7 +81,9 @@ class ProdAccountRepositoryTest {
     repository.fetchMoviesWatchlist(
       accountId = "1",
       page = 1,
-      sortOption = SortOption.defaultUserDataSortOption,
+      sortOption = SortOption.default(
+        sort = SortContext.UserData,
+      ),
       sessionId = "sha33dfd2xEemCssDs",
     ).test {
       assertThat(awaitError()).isInstanceOf(Exception::class.java)

@@ -1029,7 +1029,7 @@ class ListDetailsViewModelTest : RoboTest() {
         ),
       )
       .mockListDetails(Resource.Success(ListDetailsFactory.page1()))
-      .updateSortBy(1, SortBy.TITLE)
+      .updateSortBy(1, SortBy.Title)
       .assertUiState(
         ListDetailsUiState(
           id = 1,
@@ -1048,7 +1048,7 @@ class ListDetailsViewModelTest : RoboTest() {
           multipleSelectMode = false,
           canEdit = true,
           sortOption = SortOption(
-            sortBy = SortBy.TITLE,
+            sortBy = SortBy.Title,
             direction = SortDirection.DESC,
           ),
           updatingSort = false,
@@ -1073,7 +1073,7 @@ class ListDetailsViewModelTest : RoboTest() {
           multipleSelectMode = false,
           canEdit = true,
           sortOption = SortOption(
-            sortBy = SortBy.TITLE,
+            sortBy = SortBy.Title,
             direction = SortDirection.ASC,
           ),
           updatingSort = false,
@@ -1089,7 +1089,7 @@ class ListDetailsViewModelTest : RoboTest() {
       .mockListDetails(Resource.Success(ListDetailsFactory.mustWatch()))
       .buildViewModel()
       .mockListDetails(Resource.Success(ListDetailsFactory.page1()))
-      .updateSortBy(1, SortBy.TITLE)
+      .updateSortBy(1, SortBy.Title)
       .updateSortDirection(1)
       .assertUiState(
         ListDetailsUiState(
@@ -1109,7 +1109,7 @@ class ListDetailsViewModelTest : RoboTest() {
           multipleSelectMode = false,
           canEdit = true,
           sortOption = SortOption(
-            sortBy = SortBy.TITLE,
+            sortBy = SortBy.Title,
             direction = SortDirection.ASC,
           ),
           updatingSort = false,

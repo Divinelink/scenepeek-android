@@ -1,7 +1,7 @@
 package com.divinelink.feature.user.data
 
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
-import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation.UserDataRoute
 import com.divinelink.core.testing.ViewModelTestRobot
@@ -55,6 +55,6 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
   }
 
   suspend fun switchSortDirection() = apply {
-    preferencesRepository.switchSortDirection(section = ViewableSection.USER_DATA)
+    preferencesRepository.switchSortDirection(section = SortableSection.UserData)
   }
 }

@@ -15,6 +15,7 @@ import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.sort.other
 import com.divinelink.core.model.ui.ExpandableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.other
@@ -55,7 +56,7 @@ class TestPreferencesRepository(
     }
   }
 
-  override suspend fun switchSortDirection(section: ViewableSection) {
+  override suspend fun switchSortDirection(section: SortableSection) {
     val currentSortBy = _uiPreferences.value.sortOption[section]
 
     currentSortBy?.let { option ->
@@ -67,7 +68,7 @@ class TestPreferencesRepository(
   }
 
   override suspend fun switchSortBy(
-    section: ViewableSection,
+    section: SortableSection,
     sortBy: SortBy,
   ) {
     val currentSortBy = _uiPreferences.value.sortOption[section]

@@ -13,64 +13,68 @@ import com.divinelink.core.model.resources.vote_average
 import com.divinelink.core.model.resources.vote_count
 import org.jetbrains.compose.resources.StringResource
 
-enum class SortBy(val value: String, val label: StringResource) {
-  NAME("name", Res.string.name),
-  POPULARITY("popularity", Res.string.popularity),
-  REVENUE("revenue", Res.string.revenue),
-  RELEASE_DATE("primary_release_date", Res.string.primary_release_date),
-  FIRST_AIR_DATE("first_air_date", Res.string.first_air_date),
-  TITLE("title", Res.string.title),
-  VOTE_AVERAGE("vote_average", Res.string.vote_average),
-  VOTE_COUNT("vote_count", Res.string.vote_count),
-  CREATED_AT("created_at", Res.string.created_at),
-  ORIGINAL_ORDER("original_order", Res.string.original_order_sorting_filter),
-  ;
+sealed interface SortBy {
+  val value: String
+  val label: StringResource
+
+  data object Popularity : SortBy {
+    override val value = "popularity"
+    override val label = Res.string.popularity
+  }
+
+  data object VoteAverage : SortBy {
+    override val value = "vote_average"
+    override val label = Res.string.vote_average
+  }
+
+  data object VoteCount : SortBy {
+    override val value = "vote_count"
+    override val label = Res.string.vote_count
+  }
+
+  data object Title : SortBy {
+    override val value = "original_title"
+    override val label = Res.string.title
+  }
+
+  data object Name : SortBy {
+    override val value = "name"
+    override val label = Res.string.name
+  }
+
+  data object ReleaseDate : SortBy {
+    override val value = "release_date"
+    override val label = Res.string.primary_release_date
+  }
+
+  data object FirstAirDate : SortBy {
+    override val value = "first_air_date"
+    override val label = Res.string.first_air_date
+  }
+
+  data object Revenue : SortBy {
+    override val value = "revenue"
+    override val label = Res.string.revenue
+  }
+
+  data object CreatedAt : SortBy {
+    override val value = "created_at"
+    override val label = Res.string.created_at
+  }
+
+  data object OriginalOrder : SortBy {
+    override val value = "original_order"
+    override val label = Res.string.original_order_sorting_filter
+  }
 
   companion object {
-    val discoverMovieEntries = listOf(
-      POPULARITY,
-      VOTE_AVERAGE,
-      VOTE_COUNT,
-      RELEASE_DATE,
-      REVENUE,
-      TITLE,
-    )
-
-    val discoverShowEntries = listOf(
-      POPULARITY,
-      VOTE_AVERAGE,
-      VOTE_COUNT,
-      FIRST_AIR_DATE,
-      NAME,
-    )
-
-    val userDataEntries = listOf(
-      CREATED_AT,
-    )
-
-    val listEntries = listOf(
-      ORIGINAL_ORDER,
-      RELEASE_DATE,
-      VOTE_AVERAGE,
-      TITLE,
-    )
-
-    fun findDiscoverMovieOption(value: String?): SortBy = discoverMovieEntries.find {
-      it.value == value
-    } ?: POPULARITY
-
-    fun findDiscoverShowOption(value: String?): SortBy = discoverShowEntries.find {
-      it.value == value
-    } ?: POPULARITY
-
-    fun findUserDataOption(value: String?): SortBy = userDataEntries.find {
-      it.value == value
-    } ?: CREATED_AT
-
-    fun findListSortOption(value: String?): SortBy? = listEntries.find {
-      it.value == value
+    private val allValues by lazy {
+      listOf(
+        Popularity, VoteAverage, VoteCount, Title, Name,
+        ReleaseDate, FirstAirDate, Revenue, CreatedAt, OriginalOrder,
+      ).associateBy { it.value }
     }
 
-    fun from(value: String): SortBy? = entries.find { it.value == value }
+    fun from(value: String?): SortBy? = value?.let { allValues[it] }
   }
 }

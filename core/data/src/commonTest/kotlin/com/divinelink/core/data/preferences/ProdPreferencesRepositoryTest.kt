@@ -5,10 +5,12 @@ import app.cash.turbine.test
 import com.divinelink.core.designsystem.theme.model.ColorSystem
 import com.divinelink.core.designsystem.theme.model.Theme
 import com.divinelink.core.designsystem.theme.model.ThemePreferences
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.ui.ExpandableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -29,32 +31,10 @@ class ProdPreferencesRepositoryTest {
   fun `test default view modes`() = runTest {
     repository.uiPreferences.test {
       awaitItem() shouldBe UiPreferences(
-        viewModes = ViewableSection.entries.associateWith {
-          when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
-          }
+        viewModes = ViewableSection.allSections.associateWith {
+          ViewMode.GRID
         },
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
+        sortOption = defaultSortOptions(),
         listSortOptions = mapOf(),
         expanded = ExpandableSection.entries.associateWith {
           false
@@ -67,32 +47,19 @@ class ProdPreferencesRepositoryTest {
   fun `test update ViewMode`() = runTest {
     repository.uiPreferences.test {
       awaitItem() shouldBe UiPreferences(
-        viewModes = ViewableSection.entries.associateWith {
+        viewModes = ViewableSection.allSections.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
+            is SortableSection.Discover.Movies -> ViewMode.GRID
+            is SortableSection.Discover.Shows -> ViewMode.GRID
+            SortableSection.ListDetails -> ViewMode.GRID
+            SortableSection.UserData -> ViewMode.GRID
+            ViewableSection.Lists -> ViewMode.GRID
+            ViewableSection.MediaDetails -> ViewMode.GRID
+            ViewableSection.PersonCredits -> ViewMode.GRID
+            ViewableSection.Search -> ViewMode.GRID
           }
         },
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
+        sortOption = defaultSortOptions(),
         listSortOptions = mapOf(),
         expanded = ExpandableSection.entries.associateWith {
           false
@@ -100,36 +67,23 @@ class ProdPreferencesRepositoryTest {
       )
 
       repository.switchViewMode(
-        section = ViewableSection.PERSON_CREDITS,
+        section = ViewableSection.PersonCredits,
       )
 
       awaitItem() shouldBe UiPreferences(
-        viewModes = ViewableSection.entries.associateWith {
+        viewModes = ViewableSection.allSections.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
+            is SortableSection.Discover.Movies -> ViewMode.GRID
+            is SortableSection.Discover.Shows -> ViewMode.GRID
+            SortableSection.ListDetails -> ViewMode.GRID
+            SortableSection.UserData -> ViewMode.GRID
+            ViewableSection.Lists -> ViewMode.GRID
+            ViewableSection.MediaDetails -> ViewMode.GRID
+            ViewableSection.PersonCredits -> ViewMode.LIST
+            ViewableSection.Search -> ViewMode.GRID
           }
         },
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
+        sortOption = defaultSortOptions(),
         listSortOptions = mapOf(),
         expanded = ExpandableSection.entries.associateWith {
           false
@@ -137,36 +91,23 @@ class ProdPreferencesRepositoryTest {
       )
 
       repository.switchViewMode(
-        section = ViewableSection.LISTS,
+        section = ViewableSection.Lists,
       )
 
       awaitItem() shouldBe UiPreferences(
-        viewModes = ViewableSection.entries.associateWith {
+        viewModes = ViewableSection.allSections.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.LIST
-            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
+            is SortableSection.Discover.Movies -> ViewMode.GRID
+            is SortableSection.Discover.Shows -> ViewMode.GRID
+            SortableSection.ListDetails -> ViewMode.GRID
+            SortableSection.UserData -> ViewMode.GRID
+            ViewableSection.Lists -> ViewMode.LIST
+            ViewableSection.MediaDetails -> ViewMode.GRID
+            ViewableSection.PersonCredits -> ViewMode.LIST
+            ViewableSection.Search -> ViewMode.GRID
           }
         },
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
+        sortOption = defaultSortOptions(),
         listSortOptions = mapOf(),
         expanded = ExpandableSection.entries.associateWith {
           false
@@ -249,4 +190,32 @@ class ProdPreferencesRepositoryTest {
       )
     }
   }
+
+  private fun defaultSortOptions() = mapOf(
+    SortableSection.UserData to SortOption(SortBy.CreatedAt, SortDirection.DESC),
+    SortableSection.Discover.Movies(DiscoverType.Discover) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Discover) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.Upcoming) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.Trending) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Trending) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+  )
 }

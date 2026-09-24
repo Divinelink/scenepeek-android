@@ -15,6 +15,7 @@ import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortContext
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
@@ -686,7 +687,9 @@ class ProdListRepositoryTest {
     repository.fetchListDetails(
       listId = listId,
       page = 1,
-      sortOption = SortOption.defaultDiscoverSortOption,
+      sortOption = SortOption.default(
+        sort = SortContext.ListDetails,
+      ),
     ).test {
       awaitItem() shouldBeEqual Resource.Loading(null)
 
