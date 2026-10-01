@@ -87,8 +87,7 @@ fun AboutFormContent(
           genres = genres,
           onClick = {
             onNavigate(
-              Navigation.DiscoverRoute(
-                entryPointUuid = Uuid.random().toHexString(),
+              Navigation.Discover.Default(
                 mediaType = aboutData.mediaType.value,
                 encodedGenre = it.encodeToString(),
               ),
@@ -164,8 +163,7 @@ fun AboutFormContent(
             keywords = keywords,
             onClick = {
               onNavigate(
-                Navigation.DiscoverRoute(
-                  entryPointUuid = Uuid.random().toHexString(),
+                Navigation.Discover.Default(
                   mediaType = aboutData.mediaType.value,
                   encodedKeyword = it.encodeToString(),
                 ),

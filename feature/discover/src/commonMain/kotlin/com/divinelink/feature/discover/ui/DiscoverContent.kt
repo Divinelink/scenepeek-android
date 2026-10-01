@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.discover.DiscoverFilterType
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.navigation.route.Navigation
@@ -130,14 +131,16 @@ fun DiscoverContent(
         )
       }
 
-      item {
-        DiscoverFilterChip.Year(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          filter = uiState.currentFilters.year,
-          onClick = { filterModal = FilterModal.Year },
-        )
+      if (uiState.availableFilters.contains(DiscoverFilterType.Year)) {
+        item {
+          DiscoverFilterChip.Year(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize(),
+            filter = uiState.currentFilters.year,
+            onClick = { filterModal = FilterModal.Year },
+          )
+        }
       }
 
       item {
@@ -160,15 +163,17 @@ fun DiscoverContent(
         )
       }
 
-      item {
-        DiscoverFilterChip.VoteAverage(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          votes = uiState.currentFilters.votes,
-          voteAverage = uiState.currentFilters.voteAverage,
-          onClick = { filterModal = FilterModal.VoteAverage },
-        )
+      if (uiState.availableFilters.contains(DiscoverFilterType.Rating)) {
+        item {
+          DiscoverFilterChip.VoteAverage(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize(),
+            votes = uiState.currentFilters.votes,
+            voteAverage = uiState.currentFilters.voteAverage,
+            onClick = { filterModal = FilterModal.VoteAverage },
+          )
+        }
       }
 
       item {

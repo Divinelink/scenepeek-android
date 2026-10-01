@@ -6,5 +6,4 @@ import kotlinx.serialization.Serializable
 enum class DiscoverType(val value: String) {
   Discover("discover"),
   Upcoming("upcoming"),
-  Trending("trending"),
 }

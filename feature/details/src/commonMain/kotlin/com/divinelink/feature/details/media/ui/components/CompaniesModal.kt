@@ -21,7 +21,6 @@ import com.divinelink.core.ui.components.details.CompanyItemCard
 import com.divinelink.core.ui.resources.core_ui_information_companies
 import org.jetbrains.compose.resources.pluralStringResource
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalUuidApi::class)
 @Composable
@@ -56,8 +55,7 @@ fun CompaniesModal(
           onClick = {
             onDismiss()
             onNavigate(
-              Navigation.DiscoverRoute(
-                entryPointUuid = Uuid.random().toHexString(),
+              Navigation.Discover.Default(
                 mediaType = mediaType.value,
                 encodedCompany = company.encodeToString(),
               ),

@@ -1,5 +1,7 @@
 package com.divinelink.core.model.discover
 
+import com.divinelink.core.model.media.MediaType
+
 sealed interface DiscoverFilter {
   data class Genres(val filters: List<Int>) : DiscoverFilter
   data class Language(val language: String) : DiscoverFilter
@@ -37,5 +39,14 @@ sealed interface DiscoverFilter {
       startDateTime = "${decade.startYear}-01-01",
       endDateTime = "${decade.endYear}-12-31",
     )
+  }
+
+  sealed interface Custom : DiscoverFilter {
+    data class Upcoming(
+      val mediaType: MediaType,
+      val minDate: String,
+    ) : Custom
+
+    data object Trending : Custom
   }
 }

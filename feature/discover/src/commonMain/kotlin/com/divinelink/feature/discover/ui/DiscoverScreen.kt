@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -27,6 +28,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.resources.core_ui_discover
+import com.divinelink.core.ui.resources.upcoming
 import com.divinelink.feature.discover.DiscoverViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -34,7 +36,7 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.DiscoverScreen(
-  route: Navigation.DiscoverRoute,
+  route: Navigation.Discover,
   onNavigate: (Navigation) -> Unit,
   viewModel: DiscoverViewModel = koinViewModel { parametersOf(route) },
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
@@ -66,7 +68,10 @@ fun AnimatedVisibilityScope.DiscoverScreen(
         }
 
         AppTopAppBar(
-          text = UIText.ResourceText(UiString.core_ui_discover),
+          text = when (uiState.entryPoint) {
+            DiscoverType.Upcoming -> UIText.ResourceText(UiString.upcoming)
+            DiscoverType.Discover -> UIText.ResourceText(UiString.core_ui_discover)
+          },
           scrollBehavior = scrollBehavior,
           topAppBarColors = topAppBarColor,
           onNavigateUp = { onNavigate(Navigation.Back) },

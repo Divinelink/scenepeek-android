@@ -108,6 +108,13 @@ fun buildDiscoverUrl(
         is DiscoverFilter.Companies -> if (filter.ids.isNotEmpty()) {
           append("with_companies", filter.ids.joinToString("|"))
         }
+        is DiscoverFilter.Custom.Upcoming -> when (filter.mediaType) {
+          MediaType.TV -> append("first_air_date.gte", filter.minDate)
+          MediaType.MOVIE -> append("primary_release_date.gte", filter.minDate)
+          MediaType.PERSON -> Unit
+          MediaType.UNKNOWN -> Unit
+        }
+        is DiscoverFilter.Custom.Trending -> Unit // TODO
       }
     }
   }

@@ -53,7 +53,6 @@ sealed interface SortableSection : ViewableSection {
       override val sortContext: SortContext = when (type) {
         DiscoverType.Discover -> SortContext.DiscoverMovie
         DiscoverType.Upcoming -> SortContext.UpcomingMovie
-        DiscoverType.Trending -> SortContext.UpcomingMovie // TODO()
       }
     }
 
@@ -62,7 +61,6 @@ sealed interface SortableSection : ViewableSection {
       override val sortContext: SortContext = when (type) {
         DiscoverType.Discover -> SortContext.DiscoverMovie
         DiscoverType.Upcoming -> SortContext.UpcomingMovie
-        DiscoverType.Trending -> SortContext.UpcomingMovie // TODO()
       }
     }
   }

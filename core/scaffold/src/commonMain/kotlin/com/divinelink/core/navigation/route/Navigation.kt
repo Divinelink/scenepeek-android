@@ -3,11 +3,13 @@ package com.divinelink.core.navigation.route
 import androidx.navigation3.runtime.NavKey
 import com.divinelink.core.model.awards.Ceremony
 import com.divinelink.core.model.awards.CeremonyCategory
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.serialization.Serializable
+import kotlin.uuid.Uuid
 import com.divinelink.core.model.details.Episode as DetailsEpisode
 
 sealed interface Navigation : NavKey {
@@ -187,13 +189,24 @@ sealed interface Navigation : NavKey {
   data class SeerrRequestsRoute(val filterValue: String) : Navigation
 
   @Serializable
-  data class DiscoverRoute(
-    val mediaType: String?,
-    val entryPointUuid: String,
-    val encodedGenre: String? = null,
-    val encodedKeyword: String? = null,
-    val encodedCompany: String? = null,
-  ) : Navigation
+  sealed interface Discover : Navigation {
+    val mediaType: String?
+
+    @Serializable
+    data class Default(
+      override val mediaType: String?,
+      val entryPointUuid: String = Uuid.random().toHexString(),
+      val encodedGenre: String? = null,
+      val encodedKeyword: String? = null,
+      val encodedCompany: String? = null,
+    ) : Discover
+
+    @Serializable
+    data class Custom(
+      override val mediaType: String?,
+      val entryPoint: DiscoverType,
+    ) : Discover
+  }
 
   @Serializable
   data class MediaPosterRoute(

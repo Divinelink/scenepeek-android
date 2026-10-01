@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSectionInfo
@@ -44,7 +45,10 @@ fun MediaRow(
       onClick = {
         val route = when (config.section) {
           MediaListSection.TrendingAll -> Navigation.MediaListsRoute(config.section)
-          is MediaListSection.Upcoming -> Navigation.MediaListsRoute(config.section)
+          is MediaListSection.Upcoming -> Navigation.Discover.Custom(
+            mediaType = (config.section as MediaListSection.Upcoming).mediaType.value,
+            entryPoint = DiscoverType.Upcoming,
+          )
           is MediaListSection.Popular -> Navigation.MediaListsRoute(config.section)
           MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
             filterValue = MediaRequestFilter.All.value,
