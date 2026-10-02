@@ -29,7 +29,6 @@ import com.divinelink.feature.details.media.ui.components.KeywordsSection
 import com.divinelink.feature.details.media.ui.components.MovieInformationSection
 import com.divinelink.feature.details.media.ui.components.TvInformationSection
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
@@ -88,7 +87,7 @@ fun AboutFormContent(
           onClick = {
             onNavigate(
               Navigation.Discover.Default(
-                mediaType = aboutData.mediaType.value,
+                mediaType = aboutData.mediaType,
                 encodedGenre = it.encodeToString(),
               ),
             )
@@ -164,7 +163,7 @@ fun AboutFormContent(
             onClick = {
               onNavigate(
                 Navigation.Discover.Default(
-                  mediaType = aboutData.mediaType.value,
+                  mediaType = aboutData.mediaType,
                   encodedKeyword = it.encodeToString(),
                 ),
               )

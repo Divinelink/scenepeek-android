@@ -56,7 +56,7 @@ fun CompaniesModal(
             onDismiss()
             onNavigate(
               Navigation.Discover.Default(
-                mediaType = mediaType.value,
+                mediaType = mediaType,
                 encodedCompany = company.encodeToString(),
               ),
             )

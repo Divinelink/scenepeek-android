@@ -46,7 +46,7 @@ fun MediaRow(
         val route = when (config.section) {
           MediaListSection.TrendingAll -> Navigation.MediaListsRoute(config.section)
           is MediaListSection.Upcoming -> Navigation.Discover.Custom(
-            mediaType = (config.section as MediaListSection.Upcoming).mediaType.value,
+            mediaType = (config.section as MediaListSection.Upcoming).mediaType,
             entryPoint = DiscoverType.Upcoming,
           )
           is MediaListSection.Popular -> Navigation.MediaListsRoute(config.section)

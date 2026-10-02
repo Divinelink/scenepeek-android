@@ -123,7 +123,7 @@ class SelectFilterViewModel(
             _uiState.update {
               it.copy(
                 filterType = (it.filterType as FilterType.VoteAverage).copy(
-                  minimumVotes = votes ?: 10,
+                  minimumVotes = votes ?: 0,
                 ),
               )
             }

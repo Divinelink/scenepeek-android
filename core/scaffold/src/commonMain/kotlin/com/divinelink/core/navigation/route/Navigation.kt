@@ -5,6 +5,7 @@ import com.divinelink.core.model.awards.Ceremony
 import com.divinelink.core.model.awards.CeremonyCategory
 import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataSection
@@ -190,11 +191,11 @@ sealed interface Navigation : NavKey {
 
   @Serializable
   sealed interface Discover : Navigation {
-    val mediaType: String?
+    val mediaType: MediaType?
 
     @Serializable
     data class Default(
-      override val mediaType: String?,
+      override val mediaType: MediaType,
       val entryPointUuid: String = Uuid.random().toHexString(),
       val encodedGenre: String? = null,
       val encodedKeyword: String? = null,
@@ -203,7 +204,7 @@ sealed interface Navigation : NavKey {
 
     @Serializable
     data class Custom(
-      override val mediaType: String?,
+      override val mediaType: MediaType,
       val entryPoint: DiscoverType,
     ) : Discover
   }

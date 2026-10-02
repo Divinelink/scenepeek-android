@@ -114,7 +114,6 @@ fun buildDiscoverUrl(
           MediaType.PERSON -> Unit
           MediaType.UNKNOWN -> Unit
         }
-        is DiscoverFilter.Custom.Trending -> Unit // TODO
       }
     }
   }

@@ -18,12 +18,6 @@ class DiscoverMediaUseCase(
   override fun execute(parameters: DiscoverParameters): Flow<Result<UserDataResponse>> = flow {
     val discoverFilters = with(parameters.filters) {
       buildList {
-        val defaultMinimumVotes = if (custom == null) {
-          10
-        } else {
-          0
-        }
-
         if (genres.isNotEmpty()) {
           add(DiscoverFilter.Genres(genres.map { it.id }))
         }
@@ -31,7 +25,7 @@ class DiscoverMediaUseCase(
         country?.let { add(DiscoverFilter.Country(it.code)) }
         voteAverage?.let { add(voteAverage) }
         year?.let { add(year) }
-        add(DiscoverFilter.MinimumVotes(votes ?: defaultMinimumVotes))
+        add(DiscoverFilter.MinimumVotes(votes ?: 0))
         if (keywords.isNotEmpty()) {
           add(DiscoverFilter.Keywords(keywords.map { it.id }))
         }

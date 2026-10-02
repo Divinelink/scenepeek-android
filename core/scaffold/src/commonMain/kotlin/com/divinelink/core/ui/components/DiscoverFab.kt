@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.SavedSearch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.ScaffoldState
@@ -28,7 +29,7 @@ fun ScaffoldState.DiscoverFab(
     onClick = {
       onNavigate(
         Navigation.Discover.Default(
-          mediaType = null,
+          mediaType = MediaType.MOVIE,
           encodedGenre = null,
           encodedKeyword = null,
         ),
