@@ -46,5 +46,7 @@ sealed interface DiscoverFilter {
       val mediaType: MediaType,
       val minDate: String,
     ) : Custom
+
+    data object Popular : Custom
   }
 }

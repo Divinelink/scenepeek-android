@@ -38,8 +38,21 @@ data class MediaTypeFilters(
           mediaType = mediaType,
           minDate = minDate,
         )
+        DiscoverType.Popular -> null
         DiscoverType.Discover -> null
       },
+    )
+
+    val empty = MediaTypeFilters(
+      genres = emptyList(),
+      keywords = emptyList(),
+      companies = emptyList(),
+      year = null,
+      language = null,
+      country = null,
+      voteAverage = null,
+      votes = null,
+      custom = null,
     )
   }
 

@@ -209,6 +209,7 @@
   <string name="show_progress_empty_state_title">Let's find something to watch!</string>
   <string name="show_progress_empty_state_subtitle">Add shows to your library to start tracking your progress.</string>
   <string name="upcoming">Upcoming</string>
+  <string name="popular">Popular</string>
   <plurals name="days_left_to_air">
     <item quantity="one">Airs tomorrow</item>
     <item quantity="other">Airs in %1$s days</item>

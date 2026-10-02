@@ -56,6 +56,7 @@ sealed interface SortableSection : ViewableSection {
       override val key: String = "${type.value}_movies"
       override val sortContext: SortContext = when (type) {
         DiscoverType.Discover -> SortContext.DiscoverMovie
+        DiscoverType.Popular -> SortContext.DiscoverMovie
         DiscoverType.Upcoming -> SortContext.UpcomingMovie
       }
     }
@@ -64,6 +65,7 @@ sealed interface SortableSection : ViewableSection {
       override val key: String = "${type.value}_shows"
       override val sortContext: SortContext = when (type) {
         DiscoverType.Discover -> SortContext.DiscoverShow
+        DiscoverType.Popular -> SortContext.DiscoverShow
         DiscoverType.Upcoming -> SortContext.UpcomingShow
       }
     }

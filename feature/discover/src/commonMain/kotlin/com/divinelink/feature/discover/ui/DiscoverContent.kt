@@ -145,7 +145,7 @@ private fun DiscoverContent(
 
   val filterState = rememberLazyListState()
   LaunchedEffect(Unit) {
-    filterState.scrollToItem(uiState.currentFilters.firstSelectedFilterIndex)
+    filterState.scrollToItem(uiState.filters.firstSelectedFilterIndex)
   }
 
   filterModal?.let { type ->
@@ -176,7 +176,7 @@ private fun DiscoverContent(
       state = filterState,
     ) {
       clearButton(
-        isVisible = uiState.currentFilters.hasSelectedFilters,
+        isVisible = uiState.filters.hasSelectedFilters,
         onClearClick = { viewModel.onAction(DiscoverAction.ClearFilters) },
       )
 
@@ -185,10 +185,10 @@ private fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          filters = uiState.currentFilters.genres,
+          filters = uiState.filters.genres,
           onClick = { filterModal = FilterModal.Genre },
           title = UIText.ResourceText(UiString.core_ui_genres),
-          name = uiState.currentFilters.genres.firstOrNull()?.name,
+          name = uiState.filters.genres.firstOrNull()?.name,
         )
       }
 
@@ -198,7 +198,7 @@ private fun DiscoverContent(
             modifier = Modifier
               .animateItem()
               .animateContentSize(),
-            filter = uiState.currentFilters.year,
+            filter = uiState.filters.year,
             onClick = { filterModal = FilterModal.Year },
           )
         }
@@ -209,7 +209,7 @@ private fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          language = uiState.currentFilters.language,
+          language = uiState.filters.language,
           onClick = { filterModal = FilterModal.Language },
         )
       }
@@ -219,7 +219,7 @@ private fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          country = uiState.currentFilters.country,
+          country = uiState.filters.country,
           onClick = { filterModal = FilterModal.Country },
         )
       }
@@ -230,8 +230,8 @@ private fun DiscoverContent(
             modifier = Modifier
               .animateItem()
               .animateContentSize(),
-            votes = uiState.currentFilters.votes,
-            voteAverage = uiState.currentFilters.voteAverage,
+            votes = uiState.filters.votes,
+            voteAverage = uiState.filters.voteAverage,
             onClick = { filterModal = FilterModal.VoteAverage },
           )
         }
@@ -242,10 +242,10 @@ private fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          filters = uiState.currentFilters.keywords,
+          filters = uiState.filters.keywords,
           onClick = { filterModal = FilterModal.Keywords },
           title = UIText.ResourceText(UiString.core_ui_keywords),
-          name = uiState.currentFilters.keywords.firstOrNull()?.name,
+          name = uiState.filters.keywords.firstOrNull()?.name,
         )
       }
 
@@ -254,10 +254,10 @@ private fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          filters = uiState.currentFilters.companies,
+          filters = uiState.filters.companies,
           onClick = { filterModal = FilterModal.Companies },
           title = UIText.PluralResource(UiPlurals.core_ui_information_companies, 2),
-          name = uiState.currentFilters.companies.firstOrNull()?.name,
+          name = uiState.filters.companies.firstOrNull()?.name,
         )
       }
     }

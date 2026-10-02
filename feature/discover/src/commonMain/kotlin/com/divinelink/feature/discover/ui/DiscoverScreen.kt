@@ -23,6 +23,7 @@ import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.resources.core_ui_discover
+import com.divinelink.core.ui.resources.popular
 import com.divinelink.core.ui.resources.upcoming
 import com.divinelink.feature.discover.DiscoverSectionsViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -56,6 +57,7 @@ fun AnimatedVisibilityScope.DiscoverScreen(
       AppTopAppBar(
         text = when (uiState.type) {
           DiscoverType.Upcoming -> UIText.ResourceText(UiString.upcoming)
+          DiscoverType.Popular -> UIText.ResourceText(UiString.popular)
           DiscoverType.Discover -> UIText.ResourceText(UiString.core_ui_discover)
         },
         scrollBehavior = scrollBehavior,

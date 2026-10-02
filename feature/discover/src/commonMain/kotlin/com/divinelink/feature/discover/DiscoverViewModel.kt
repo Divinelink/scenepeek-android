@@ -11,6 +11,7 @@ import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverParameters
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.discover.MediaTypeFilters
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
@@ -49,6 +50,8 @@ class DiscoverViewModel(
     val uuid = route.entryPointUuid
 
     viewModelScope.launch {
+      val entryPoint = (route as? Navigation.Discover.Custom)?.entryPoint
+
       val genre = (route as? Navigation.Discover.Default)
         ?.encodedGenre
         ?.decodeFromString<Genre>()
@@ -58,6 +61,11 @@ class DiscoverViewModel(
       val company = (route as? Navigation.Discover.Default)
         ?.encodedCompany
         ?.decodeFromString<Company>()
+      val minimumVotes = if (entryPoint == DiscoverType.Popular) {
+        50
+      } else {
+        null
+      }
 
       genre?.let { genre ->
         filterRepository.updateSelectedGenres(
@@ -80,6 +88,14 @@ class DiscoverViewModel(
           mediaType = mediaType,
           uuid = uuid,
           company = company,
+        )
+      }
+
+      minimumVotes?.let { votes ->
+        filterRepository.updateMinimumVotes(
+          uuid = uuid,
+          mediaType = mediaType,
+          votes = votes,
         )
       }
     }
@@ -248,8 +264,8 @@ class DiscoverViewModel(
     shouldFetch: Boolean,
   ) {
     val mediaType = _uiState.value.mediaType
-    val currentFilters = uiState.value.currentFilters
-    val lastFilters = uiState.value.currentLastFilters
+    val currentFilters = uiState.value.filters
+    val lastFilters = uiState.value.lastFilters
 
     if (currentFilters != lastFilters || shouldFetch) {
       if (reset) {

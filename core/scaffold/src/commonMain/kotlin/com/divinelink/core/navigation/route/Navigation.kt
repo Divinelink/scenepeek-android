@@ -206,7 +206,11 @@ sealed interface Navigation : NavKey {
     @Serializable
     data class Custom(
       override val mediaType: MediaType,
-      override val entryPointUuid: String = entryPoint.value + mediaType.value,
+      override val entryPointUuid: String = buildString {
+        append(entryPoint.value)
+        append("-")
+        append(mediaType.value)
+      },
       val entryPoint: DiscoverType,
     ) : Discover
   }

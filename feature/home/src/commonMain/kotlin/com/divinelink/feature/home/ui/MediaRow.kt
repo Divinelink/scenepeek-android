@@ -43,13 +43,16 @@ fun MediaRow(
   ) {
     TextButton(
       onClick = {
-        val route = when (config.section) {
+        val route = when (val section = config.section) {
           MediaListSection.TrendingAll -> Navigation.MediaListsRoute(config.section)
           is MediaListSection.Upcoming -> Navigation.Discover.Custom(
-            mediaType = (config.section as MediaListSection.Upcoming).mediaType,
+            mediaType = section.mediaType,
             entryPoint = DiscoverType.Upcoming,
           )
-          is MediaListSection.Popular -> Navigation.MediaListsRoute(config.section)
+          is MediaListSection.Popular -> Navigation.Discover.Custom(
+            mediaType = section.mediaType,
+            entryPoint = DiscoverType.Popular,
+          )
           MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
             filterValue = MediaRequestFilter.All.value,
           )

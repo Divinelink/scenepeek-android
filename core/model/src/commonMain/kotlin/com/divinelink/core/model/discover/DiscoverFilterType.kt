@@ -13,6 +13,7 @@ enum class DiscoverFilterType {
   companion object {
     fun availability(entryPoint: DiscoverType): List<DiscoverFilterType> = when (entryPoint) {
       DiscoverType.Discover -> entries
+      DiscoverType.Popular -> entries
       DiscoverType.Upcoming -> entries.minus(setOf(Year, Rating))
     }
   }

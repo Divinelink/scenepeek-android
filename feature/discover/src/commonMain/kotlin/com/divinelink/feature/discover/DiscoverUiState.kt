@@ -42,7 +42,7 @@ data class DiscoverUiState(
         form = DiscoverForm.Initial,
         canFetchMore = true,
         filters = MediaTypeFilters.initial(mediaType, entryPoint, minDate),
-        lastFilters = MediaTypeFilters.initial(mediaType, entryPoint, minDate),
+        lastFilters = MediaTypeFilters.empty,
         sortOption = null,
         loading = false,
         minDate = minDate,
@@ -56,6 +56,4 @@ data class DiscoverUiState(
   } else {
     SortableSection.Discover.Movies(entryPoint)
   }
-  val currentFilters = filters
-  val currentLastFilters = lastFilters
 }
