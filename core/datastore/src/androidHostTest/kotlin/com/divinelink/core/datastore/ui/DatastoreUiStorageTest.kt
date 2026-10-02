@@ -143,6 +143,22 @@ class DatastoreUiStorageTest : RoboTest() {
             SortBy.Popularity,
             SortDirection.DESC,
           ),
+          SortableSection.Discover.Movies(DiscoverType.Popular) to SortOption(
+            SortBy.Popularity,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Shows(DiscoverType.Popular) to SortOption(
+            SortBy.Popularity,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Movies(DiscoverType.TopRated) to SortOption(
+            SortBy.VoteAverage,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Shows(DiscoverType.TopRated) to SortOption(
+            SortBy.VoteAverage,
+            SortDirection.DESC,
+          ),
         ),
       )
     }
@@ -278,6 +294,22 @@ class DatastoreUiStorageTest : RoboTest() {
     ),
     SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
       SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.Popular) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Popular) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.TopRated) to SortOption(
+      SortBy.VoteAverage,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.TopRated) to SortOption(
+      SortBy.VoteAverage,
       SortDirection.DESC,
     ),
   )

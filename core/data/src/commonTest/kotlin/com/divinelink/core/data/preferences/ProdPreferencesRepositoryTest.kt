@@ -209,5 +209,21 @@ class ProdPreferencesRepositoryTest {
       SortBy.Popularity,
       SortDirection.DESC,
     ),
+    SortableSection.Discover.Movies(DiscoverType.Popular) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Popular) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.TopRated) to SortOption(
+      SortBy.VoteAverage,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.TopRated) to SortOption(
+      SortBy.VoteAverage,
+      SortDirection.DESC,
+    ),
   )
 }
