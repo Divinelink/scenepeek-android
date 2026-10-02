@@ -1,6 +1,7 @@
 package com.divinelink.core.model.locale
 
 import com.divinelink.core.commons.ExcludeFromKoverReport
+import com.divinelink.core.model.movieContentRatingsMap
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.country_afghanistan
 import com.divinelink.core.model.resources.country_albania
