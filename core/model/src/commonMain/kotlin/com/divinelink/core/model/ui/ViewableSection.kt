@@ -28,6 +28,7 @@ sealed interface ViewableSection {
       MediaDetails,
       Lists,
       Search,
+      SortableSection.ListDetails,
     )
     val allSections: List<ViewableSection> by lazy {
       defaultEntries + SortableSection.all
