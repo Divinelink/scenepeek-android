@@ -84,7 +84,6 @@ fun DiscoverSectionsContent(
     }
   }
 
-
   Column {
     ScenePeekSecondaryTabs(
       tabs = uiState.tabs,
@@ -130,7 +129,6 @@ fun DiscoverSectionsContentPreview(
 //    )
   }
 }
-
 
 @Composable
 private fun DiscoverContent(

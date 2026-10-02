@@ -23,8 +23,8 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.media.DetailSection
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState

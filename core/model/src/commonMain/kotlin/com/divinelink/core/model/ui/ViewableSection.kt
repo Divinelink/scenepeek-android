@@ -24,7 +24,10 @@ sealed interface ViewableSection {
 
   companion object {
     val defaultEntries: List<ViewableSection> = listOf(
-      PersonCredits, MediaDetails, Lists, Search,
+      PersonCredits,
+      MediaDetails,
+      Lists,
+      Search,
     )
     val allSections: List<ViewableSection> by lazy {
       defaultEntries + SortableSection.all
@@ -59,8 +62,8 @@ sealed interface SortableSection : ViewableSection {
     data class Shows(override val type: DiscoverType) : Discover {
       override val key: String = "${type.value}_shows"
       override val sortContext: SortContext = when (type) {
-        DiscoverType.Discover -> SortContext.DiscoverMovie
-        DiscoverType.Upcoming -> SortContext.UpcomingMovie
+        DiscoverType.Discover -> SortContext.DiscoverShow
+        DiscoverType.Upcoming -> SortContext.UpcomingShow
       }
     }
   }

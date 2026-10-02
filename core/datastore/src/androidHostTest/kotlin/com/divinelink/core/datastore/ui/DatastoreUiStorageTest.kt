@@ -128,7 +128,8 @@ class DatastoreUiStorageTest : RoboTest() {
         sortOption = mapOf(
           SortableSection.UserData to SortOption(SortBy.CreatedAt, SortDirection.DESC),
           SortableSection.Discover.Movies(DiscoverType.Discover) to SortOption(
-            SortBy.Popularity, SortDirection.DESC,
+            SortBy.Popularity,
+            SortDirection.DESC,
           ),
           SortableSection.Discover.Shows(DiscoverType.Discover) to SortOption(
             SortBy.Popularity,
@@ -139,14 +140,6 @@ class DatastoreUiStorageTest : RoboTest() {
             SortDirection.DESC,
           ),
           SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
-            SortBy.Popularity,
-            SortDirection.DESC,
-          ),
-          SortableSection.Discover.Movies(DiscoverType.Trending) to SortOption(
-            SortBy.Popularity,
-            SortDirection.DESC,
-          ),
-          SortableSection.Discover.Shows(DiscoverType.Trending) to SortOption(
             SortBy.Popularity,
             SortDirection.DESC,
           ),
@@ -284,14 +277,6 @@ class DatastoreUiStorageTest : RoboTest() {
       SortDirection.DESC,
     ),
     SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
-      SortBy.Popularity,
-      SortDirection.DESC,
-    ),
-    SortableSection.Discover.Movies(DiscoverType.Trending) to SortOption(
-      SortBy.Popularity,
-      SortDirection.DESC,
-    ),
-    SortableSection.Discover.Shows(DiscoverType.Trending) to SortOption(
       SortBy.Popularity,
       SortDirection.DESC,
     ),

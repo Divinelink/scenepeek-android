@@ -10,8 +10,8 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.tab.SearchTab
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.UiDrawable

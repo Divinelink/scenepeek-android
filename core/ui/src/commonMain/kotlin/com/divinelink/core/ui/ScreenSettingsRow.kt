@@ -28,23 +28,22 @@ fun ScreenSettingsRow(
     modifier = Modifier.fillMaxWidth(),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-
     when (section) {
       is SortableSection.Discover,
       is SortableSection.UserData,
         -> SortingButton(
-        enabled = enabled,
-        section = section,
-        onSwitchSortDirection = {
-          onSwitchPreferences(SwitchSortDirection(it))
-        },
-        onSwitchSortBy = { section, option ->
-          onSwitchPreferences(SwitchSortBy(section, option))
-        },
-        onClearListSortOption = {
-          // Do nothing
-        },
-      )
+          enabled = enabled,
+          section = section,
+          onSwitchSortDirection = {
+            onSwitchPreferences(SwitchSortDirection(it))
+          },
+          onSwitchSortBy = { section, option ->
+            onSwitchPreferences(SwitchSortBy(section, option))
+          },
+          onClearListSortOption = {
+            // Do nothing
+          },
+        )
       is SortableSection.ListDetails -> listId?.let { id ->
         SortingButton(
           enabled = enabled,

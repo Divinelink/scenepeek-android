@@ -841,7 +841,7 @@ class PersonScreenTest : ComposeTest() {
     }
 
     switchViewButtonViewModel.onAction(
-      SwitchPreferencesAction.SwitchViewMode(ViewableSection.PERSON_CREDITS),
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.PersonCredits),
     )
 
     channel.send(
@@ -1070,7 +1070,7 @@ class PersonScreenTest : ComposeTest() {
     }
 
     switchViewButtonViewModel.onAction(
-      SwitchPreferencesAction.SwitchViewMode(ViewableSection.PERSON_CREDITS),
+      SwitchPreferencesAction.SwitchViewMode(ViewableSection.PersonCredits),
     )
 
     channel.send(

@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.encodeToString
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.Previews
