@@ -29,13 +29,13 @@ data class DiscoverUiState(
       mediaType: MediaType,
       minDate: String,
     ): DiscoverUiState {
-      val (uuid, entryPoint) = when (route) {
-        is Navigation.Discover.Custom -> route.entryPoint.value to route.entryPoint
-        is Navigation.Discover.Default -> route.entryPointUuid to DiscoverType.Discover
+      val entryPoint = when (route) {
+        is Navigation.Discover.Custom -> route.entryPoint
+        is Navigation.Discover.Default -> DiscoverType.Discover
       }
 
       return DiscoverUiState(
-        uuid = uuid,
+        uuid = route.entryPointUuid,
         entryPoint = entryPoint,
         mediaType = mediaType,
         page = 1,

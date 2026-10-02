@@ -192,11 +192,12 @@ sealed interface Navigation : NavKey {
   @Serializable
   sealed interface Discover : Navigation {
     val mediaType: MediaType?
+    val entryPointUuid: String
 
     @Serializable
     data class Default(
       override val mediaType: MediaType,
-      val entryPointUuid: String = Uuid.random().toHexString(),
+      override val entryPointUuid: String = Uuid.random().toHexString(),
       val encodedGenre: String? = null,
       val encodedKeyword: String? = null,
       val encodedCompany: String? = null,
@@ -205,6 +206,7 @@ sealed interface Navigation : NavKey {
     @Serializable
     data class Custom(
       override val mediaType: MediaType,
+      override val entryPointUuid: String = entryPoint.value + mediaType.value,
       val entryPoint: DiscoverType,
     ) : Discover
   }

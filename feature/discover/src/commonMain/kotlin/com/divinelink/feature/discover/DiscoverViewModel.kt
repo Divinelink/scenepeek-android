@@ -46,10 +46,7 @@ class DiscoverViewModel(
   val uiState: StateFlow<DiscoverUiState> = _uiState
 
   init {
-    val uuid = when (route) {
-      is Navigation.Discover.Custom -> route.entryPoint.value + mediaType.value
-      is Navigation.Discover.Default -> route.entryPointUuid
-    }
+    val uuid = route.entryPointUuid
 
     viewModelScope.launch {
       val genre = (route as? Navigation.Discover.Default)
