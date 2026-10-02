@@ -168,7 +168,7 @@ class DatastoreUiStorage(
     dataStore.edit { preferences ->
       preferences.removeFromAvailableLists(listId)
       preferences.remove(listSortBy(listId))
-      preferences.remove(listSortBy(listId))
+      preferences.remove(listSortDirection(listId))
     }
   }
 
