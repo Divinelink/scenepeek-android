@@ -12,7 +12,7 @@ import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverParameters
 import com.divinelink.core.model.discover.DiscoverType
-import com.divinelink.core.model.discover.MediaTypeFilters
+import com.divinelink.core.model.discover.DiscoverFilterState
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortOption
@@ -323,7 +323,7 @@ class DiscoverViewModel(
   private fun updateUiOnSuccess(
     reset: Boolean,
     response: UserDataResponse,
-    filters: MediaTypeFilters,
+    filters: DiscoverFilterState,
   ) {
     _uiState.update { uiState ->
       val data = (uiState.form as? DiscoverForm.Data)?.paginationData ?: mapOf(
@@ -375,9 +375,9 @@ class DiscoverViewModel(
     filterRepository.clear(uuid = uiState.value.uuid, mediaType = MediaType.MOVIE)
   }
 
-  private fun MediaTypeFilters.updateFilters(
-    update: (MediaTypeFilters) -> MediaTypeFilters,
-  ): MediaTypeFilters {
+  private fun DiscoverFilterState.updateFilters(
+    update: (DiscoverFilterState) -> DiscoverFilterState,
+  ): DiscoverFilterState {
     val current = this
 
     return update(current)

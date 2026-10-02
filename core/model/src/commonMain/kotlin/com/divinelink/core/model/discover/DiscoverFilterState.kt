@@ -7,8 +7,7 @@ import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.media.MediaType
 
-data class MediaTypeFilters(
-  // TODO Rename to DiscoverFilterState
+data class DiscoverFilterState(
   val genres: List<Genre>,
   val language: Language?,
   val country: Country?,
@@ -24,7 +23,7 @@ data class MediaTypeFilters(
       mediaType: MediaType,
       entryPoint: DiscoverType,
       minDate: String,
-    ) = MediaTypeFilters(
+    ) = DiscoverFilterState(
       genres = emptyList(),
       keywords = emptyList(),
       companies = emptyList(),
@@ -44,7 +43,7 @@ data class MediaTypeFilters(
       },
     )
 
-    val empty = MediaTypeFilters(
+    val empty = DiscoverFilterState(
       genres = emptyList(),
       keywords = emptyList(),
       companies = emptyList(),
