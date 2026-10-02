@@ -61,10 +61,12 @@ class DiscoverViewModel(
       val company = (route as? Navigation.Discover.Default)
         ?.encodedCompany
         ?.decodeFromString<Company>()
-      val minimumVotes = if (entryPoint == DiscoverType.Popular) {
-        50
-      } else {
-        null
+      val minimumVotes = when (entryPoint) {
+        DiscoverType.Discover -> null
+        DiscoverType.Upcoming -> null
+        DiscoverType.Popular -> 50
+        DiscoverType.TopRated -> 250
+        null -> null
       }
 
       genre?.let { genre ->

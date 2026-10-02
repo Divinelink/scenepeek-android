@@ -58,6 +58,7 @@ sealed interface SortableSection : ViewableSection {
         DiscoverType.Discover -> SortContext.DiscoverMovie
         DiscoverType.Popular -> SortContext.DiscoverMovie
         DiscoverType.Upcoming -> SortContext.UpcomingMovie
+        DiscoverType.TopRated -> SortContext.TopRated
       }
     }
 
@@ -67,6 +68,7 @@ sealed interface SortableSection : ViewableSection {
         DiscoverType.Discover -> SortContext.DiscoverShow
         DiscoverType.Popular -> SortContext.DiscoverShow
         DiscoverType.Upcoming -> SortContext.UpcomingShow
+        DiscoverType.TopRated -> SortContext.TopRated
       }
     }
   }

@@ -14,6 +14,7 @@ enum class DiscoverFilterType {
     fun availability(entryPoint: DiscoverType): List<DiscoverFilterType> = when (entryPoint) {
       DiscoverType.Discover -> entries
       DiscoverType.Popular -> entries
+      DiscoverType.TopRated -> entries
       DiscoverType.Upcoming -> entries.minus(setOf(Year, Rating))
     }
   }

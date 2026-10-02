@@ -7,4 +7,5 @@ enum class DiscoverType(val value: String) {
   Discover("discover"),
   Upcoming("upcoming"),
   Popular("popular"),
+  TopRated("top-rated"),
 }

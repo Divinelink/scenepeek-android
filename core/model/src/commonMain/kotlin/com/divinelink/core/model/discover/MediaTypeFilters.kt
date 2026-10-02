@@ -38,6 +38,7 @@ data class MediaTypeFilters(
           mediaType = mediaType,
           minDate = minDate,
         )
+        DiscoverType.TopRated -> null
         DiscoverType.Popular -> null
         DiscoverType.Discover -> null
       },

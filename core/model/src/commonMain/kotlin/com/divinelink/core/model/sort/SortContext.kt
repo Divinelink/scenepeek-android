@@ -7,6 +7,13 @@ sealed interface SortContext {
   fun find(value: String?): SortBy = availableOptions
     .find { it.value == value } ?: defaultOption
 
+  data object TopRated : SortContext {
+    override val availableOptions: List<SortBy> = listOf(
+      SortBy.VoteAverage,
+    )
+    override val defaultOption: SortBy = SortBy.VoteAverage
+  }
+
   data object DiscoverMovie : SortContext {
     override val availableOptions = listOf(
       SortBy.Popularity,
