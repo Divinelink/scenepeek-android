@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
-import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.rememberListSortOption
@@ -42,11 +42,11 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SortingButton(
-  section: ViewableSection,
+  section: SortableSection,
   listId: Int? = null,
   enabled: Boolean,
-  onSwitchSortDirection: (ViewableSection) -> Unit,
-  onSwitchSortBy: (ViewableSection, SortBy) -> Unit,
+  onSwitchSortDirection: (SortableSection) -> Unit,
+  onSwitchSortBy: (SortableSection, SortBy) -> Unit,
   onClearListSortOption: (listId: Int) -> Unit,
 ) {
   val sortBy = if (listId == null) {
@@ -65,12 +65,7 @@ fun SortingButton(
   }
   val rotation by animateFloatAsState(targetValue = rotationState)
 
-  val options = when (section) {
-    ViewableSection.DISCOVER_SHOWS -> SortBy.discoverShowEntries
-    ViewableSection.DISCOVER_MOVIES -> SortBy.discoverMovieEntries
-    ViewableSection.LIST_DETAILS -> SortBy.listEntries
-    else -> emptyList()
-  }
+  val options = section.sortContext.availableOptions
 
   if (showDropdownSortByOptions) {
     DropdownMenu(

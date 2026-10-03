@@ -25,13 +25,14 @@ class DiscoverMediaUseCase(
         country?.let { add(DiscoverFilter.Country(it.code)) }
         voteAverage?.let { add(voteAverage) }
         year?.let { add(year) }
-        add(DiscoverFilter.MinimumVotes(votes ?: 10))
+        add(DiscoverFilter.MinimumVotes(votes ?: 0))
         if (keywords.isNotEmpty()) {
           add(DiscoverFilter.Keywords(keywords.map { it.id }))
         }
         if (companies.isNotEmpty()) {
           add(DiscoverFilter.Companies(companies.map { it.id }))
         }
+        custom?.let { add(it) }
       }
     }.mapNotNull { it }
 

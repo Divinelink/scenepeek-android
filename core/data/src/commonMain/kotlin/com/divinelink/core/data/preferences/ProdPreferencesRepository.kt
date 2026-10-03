@@ -15,6 +15,7 @@ import com.divinelink.core.model.preferences.DetailPreferences
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.ui.ExpandableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.ViewableSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -66,12 +67,12 @@ class ProdPreferencesRepository(
     )
   }
 
-  override suspend fun switchSortDirection(section: ViewableSection) {
+  override suspend fun switchSortDirection(section: SortableSection) {
     storage.updateSortDirection(section)
   }
 
   override suspend fun switchSortBy(
-    section: ViewableSection,
+    section: SortableSection,
     sortBy: SortBy,
   ) {
     storage.updateSortBy(section, sortBy)

@@ -113,7 +113,7 @@ fun AnimatedVisibilityScope.ListsScreen(
               )
 
               ListsAction.SwitchViewMode -> switchViewButtonViewModel.onAction(
-                SwitchPreferencesAction.SwitchViewMode(ViewableSection.LISTS),
+                SwitchPreferencesAction.SwitchViewMode(ViewableSection.Lists),
               )
             }
           },

@@ -12,6 +12,8 @@ kotlin {
       implementation(projects.core.data)
       implementation(projects.core.domain)
       implementation(projects.core.fixtures)
+
+      implementation(libs.kotlinx.datetime)
     }
   }
 }

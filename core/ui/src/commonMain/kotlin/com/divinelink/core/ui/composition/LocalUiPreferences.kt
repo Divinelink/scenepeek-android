@@ -6,6 +6,7 @@ import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.ui.ExpandableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -25,11 +26,11 @@ fun rememberViewModePreferences(section: ViewableSection): ViewMode {
 }
 
 @Composable
-fun rememberSortBy(section: ViewableSection): SortOption {
+fun rememberSortBy(section: SortableSection): SortOption {
   val uiPreferences = rememberUiPreferences()
 
   return uiPreferences.sortOption[section] ?: SortOption(
-    sortBy = SortBy.POPULARITY,
+    sortBy = SortBy.Popularity,
     direction = SortDirection.DESC,
   )
 }

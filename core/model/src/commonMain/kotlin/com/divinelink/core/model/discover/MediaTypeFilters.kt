@@ -5,8 +5,10 @@ import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.media.MediaType
 
 data class MediaTypeFilters(
+  // TODO Rename to DiscoverFilterState
   val genres: List<Genre>,
   val language: Language?,
   val country: Country?,
@@ -15,9 +17,14 @@ data class MediaTypeFilters(
   val votes: Int?,
   val keywords: List<Keyword>,
   val companies: List<Company>,
+  val custom: DiscoverFilter.Custom?,
 ) {
   companion object {
-    val initial = MediaTypeFilters(
+    fun initial(
+      mediaType: MediaType,
+      entryPoint: DiscoverType,
+      minDate: String,
+    ) = MediaTypeFilters(
       genres = emptyList(),
       keywords = emptyList(),
       companies = emptyList(),
@@ -26,6 +33,27 @@ data class MediaTypeFilters(
       country = null,
       voteAverage = null,
       votes = null,
+      custom = when (entryPoint) {
+        DiscoverType.Upcoming -> DiscoverFilter.Custom.Upcoming(
+          mediaType = mediaType,
+          minDate = minDate,
+        )
+        DiscoverType.TopRated -> null
+        DiscoverType.Popular -> null
+        DiscoverType.Discover -> null
+      },
+    )
+
+    val empty = MediaTypeFilters(
+      genres = emptyList(),
+      keywords = emptyList(),
+      companies = emptyList(),
+      year = null,
+      language = null,
+      country = null,
+      voteAverage = null,
+      votes = null,
+      custom = null,
     )
   }
 

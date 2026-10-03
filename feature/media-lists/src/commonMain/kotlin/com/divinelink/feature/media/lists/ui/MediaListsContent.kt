@@ -109,7 +109,7 @@ fun MediaListsContent(
             ScrollableMediaContent(
               modifier = Modifier,
               items = form.media,
-              section = ViewableSection.SEARCH,
+              section = ViewableSection.Search,
               onLoadMore = { action(MediaListsAction.LoadMore) },
               onSwitchPreferences = onSwitchPreferences,
               onClick = { it.toRoute()?.let { route -> onNavigate(route) } },

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.tab.MediaTab
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.feature.discover.resources.Res
 import com.divinelink.feature.discover.resources.feature_discover_description_first
 import com.divinelink.feature.discover.resources.feature_discover_description_second
@@ -21,7 +21,7 @@ import com.divinelink.feature.discover.resources.feature_discover_tv_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun DiscoverInitialContent(tab: MediaTab) {
+fun DiscoverInitialContent(mediaType: MediaType) {
   Column(
     modifier = Modifier
       .fillMaxSize()
@@ -33,9 +33,10 @@ fun DiscoverInitialContent(tab: MediaTab) {
     Text(
       textAlign = TextAlign.Center,
       style = MaterialTheme.typography.titleLarge,
-      text = when (tab) {
-        MediaTab.Movie -> stringResource(Res.string.feature_discover_movies_title)
-        MediaTab.TV -> stringResource(Res.string.feature_discover_tv_title)
+      text = if (mediaType == MediaType.MOVIE) {
+        stringResource(Res.string.feature_discover_movies_title)
+      } else {
+        stringResource(Res.string.feature_discover_tv_title)
       },
     )
 

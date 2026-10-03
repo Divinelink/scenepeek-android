@@ -12,6 +12,7 @@ import com.divinelink.feature.credits.ui.CreditsViewModel
 import com.divinelink.feature.details.media.ui.DetailsSectionViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
+import com.divinelink.feature.discover.DiscoverSectionsViewModel
 import com.divinelink.feature.discover.DiscoverViewModel
 import com.divinelink.feature.discover.filters.SelectFilterViewModel
 import com.divinelink.feature.episode.EpisodeViewModel
@@ -68,6 +69,7 @@ val appViewModelModule = module {
   viewModelOf(::RequestMediaViewModel)
   viewModelOf(::RequestsViewModel)
   viewModelOf(::DiscoverViewModel)
+  viewModelOf(::DiscoverSectionsViewModel)
   viewModelOf(::SelectFilterViewModel)
   viewModelOf(::MediaListsViewModel)
   viewModelOf(::SeasonViewModel)

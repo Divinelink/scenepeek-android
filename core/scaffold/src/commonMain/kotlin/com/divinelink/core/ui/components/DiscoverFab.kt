@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.SavedSearch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.ScaffoldState
@@ -13,7 +14,6 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_discover
 import org.jetbrains.compose.resources.stringResource
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
@@ -28,9 +28,8 @@ fun ScaffoldState.DiscoverFab(
     expanded = expanded,
     onClick = {
       onNavigate(
-        Navigation.DiscoverRoute(
-          entryPointUuid = Uuid.random().toHexString(),
-          mediaType = null,
+        Navigation.Discover.Default(
+          mediaType = MediaType.MOVIE,
           encodedGenre = null,
           encodedKeyword = null,
         ),

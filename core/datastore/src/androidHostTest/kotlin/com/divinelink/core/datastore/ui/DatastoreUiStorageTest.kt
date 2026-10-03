@@ -1,9 +1,11 @@
 package com.divinelink.core.datastore.ui
 
 import app.cash.turbine.test
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.sort.SortBy
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -25,17 +27,8 @@ class DatastoreUiStorageTest : RoboTest() {
 
     storage.uiPreferences.test {
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith { section ->
-          when (section) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
-          }
+        viewModes = ViewableSection.allSections.associateWith {
+          ViewMode.GRID
         },
       )
     }
@@ -47,54 +40,35 @@ class DatastoreUiStorageTest : RoboTest() {
 
     storage.uiPreferences.test {
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith { section ->
-          when (section) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
+        viewModes = ViewableSection.allSections.associateWith {
+          ViewMode.GRID
+        },
+      )
+
+      storage.updateViewMode(
+        section = ViewableSection.PersonCredits,
+      )
+
+      awaitItem() shouldBe UiPreferences.Initial.copy(
+        viewModes = ViewableSection.allSections.associateWith { section ->
+          if (section is ViewableSection.PersonCredits) {
+            ViewMode.LIST
+          } else {
+            ViewMode.GRID
           }
         },
       )
 
       storage.updateViewMode(
-        section = ViewableSection.PERSON_CREDITS,
+        section = ViewableSection.Lists,
       )
 
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith {
-          when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
-          }
-        },
-      )
-
-      storage.updateViewMode(
-        section = ViewableSection.LISTS,
-      )
-
-      awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith {
-          when (it) {
-            ViewableSection.LISTS -> ViewMode.LIST
-            ViewableSection.PERSON_CREDITS -> ViewMode.LIST
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
+        viewModes = ViewableSection.allSections.associateWith { section ->
+          if (section is ViewableSection.PersonCredits || section is ViewableSection.Lists) {
+            ViewMode.LIST
+          } else {
+            ViewMode.GRID
           }
         },
       )
@@ -107,54 +81,35 @@ class DatastoreUiStorageTest : RoboTest() {
 
     storage.uiPreferences.test {
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith { section ->
-          when (section) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
+        viewModes = ViewableSection.allSections.associateWith {
+          ViewMode.GRID
+        },
+      )
+
+      storage.updateViewMode(
+        section = SortableSection.Discover.Movies(DiscoverType.Discover),
+      )
+
+      awaitItem() shouldBe UiPreferences.Initial.copy(
+        viewModes = ViewableSection.allSections.associateWith {
+          when (it) {
+            is SortableSection.Discover.Movies,
+            is SortableSection.Discover.Shows,
+              -> ViewMode.LIST
+            else -> ViewMode.GRID
           }
         },
       )
 
       storage.updateViewMode(
-        section = ViewableSection.DISCOVER_MOVIES,
+        section = SortableSection.Discover.Shows(DiscoverType.Discover),
       )
 
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith {
+        viewModes = ViewableSection.allSections.associateWith {
           when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.LIST
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.LIST
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
-          }
-        },
-      )
-
-      storage.updateViewMode(
-        section = ViewableSection.DISCOVER_SHOWS,
-      )
-
-      awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith {
-          when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
+            is SortableSection.Discover -> ViewMode.GRID
+            else -> ViewMode.GRID
           }
         },
       )
@@ -167,29 +122,41 @@ class DatastoreUiStorageTest : RoboTest() {
 
     storage.uiPreferences.test {
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith {
-          when (it) {
-            ViewableSection.LISTS -> ViewMode.GRID
-            ViewableSection.PERSON_CREDITS -> ViewMode.GRID
-            ViewableSection.DISCOVER_MOVIES -> ViewMode.GRID
-            ViewableSection.DISCOVER_SHOWS -> ViewMode.GRID
-            ViewableSection.USER_DATA -> ViewMode.GRID
-            ViewableSection.MEDIA_DETAILS -> ViewMode.GRID
-            ViewableSection.LIST_DETAILS -> ViewMode.GRID
-            ViewableSection.SEARCH -> ViewMode.GRID
-          }
+        viewModes = ViewableSection.allSections.associateWith {
+          ViewMode.GRID
         },
         sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
+          SortableSection.UserData to SortOption(SortBy.CreatedAt, SortDirection.DESC),
+          SortableSection.Discover.Movies(DiscoverType.Discover) to SortOption(
+            SortBy.Popularity,
             SortDirection.DESC,
           ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
+          SortableSection.Discover.Shows(DiscoverType.Discover) to SortOption(
+            SortBy.Popularity,
             SortDirection.DESC,
           ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
+          SortableSection.Discover.Movies(DiscoverType.Upcoming) to SortOption(
+            SortBy.Popularity,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
+            SortBy.Popularity,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Movies(DiscoverType.Popular) to SortOption(
+            SortBy.Popularity,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Shows(DiscoverType.Popular) to SortOption(
+            SortBy.Popularity,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Movies(DiscoverType.TopRated) to SortOption(
+            SortBy.VoteAverage,
+            SortDirection.DESC,
+          ),
+          SortableSection.Discover.Shows(DiscoverType.TopRated) to SortOption(
+            SortBy.VoteAverage,
             SortDirection.DESC,
           ),
         ),
@@ -203,153 +170,147 @@ class DatastoreUiStorageTest : RoboTest() {
 
     storage.uiPreferences.test {
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
+        sortOption = defaultSortOptions(),
       )
 
-      storage.updateSortDirection(ViewableSection.DISCOVER_MOVIES)
+      storage.updateSortDirection(
+        SortableSection.Discover.Shows(type = DiscoverType.Upcoming),
+      )
 
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.ASC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
+        sortOption = defaultSortOptions().plus(
+          SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
+            sortBy = SortBy.Popularity,
+            direction = SortDirection.ASC,
           ),
         ),
       )
 
-      storage.updateSortDirection(ViewableSection.DISCOVER_SHOWS)
+      storage.updateSortDirection(
+        SortableSection.Discover.Movies(type = DiscoverType.Discover),
+      )
 
       awaitItem() shouldBe UiPreferences.Initial.copy(
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.ASC,
+        sortOption = defaultSortOptions()
+          .plus(
+            SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
+              sortBy = SortBy.Popularity,
+              direction = SortDirection.ASC,
+            ),
+          )
+          .plus(
+            SortableSection.Discover.Movies(DiscoverType.Discover) to SortOption(
+              sortBy = SortBy.Popularity,
+              direction = SortDirection.ASC,
+            ),
           ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.ASC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
       )
+    }
+
+    @Test
+    fun `test update discover sort by options for movies`() = runTest {
+      storage = DatastoreUiStorage(testDataStore)
+
+      storage.uiPreferences.test {
+        awaitItem() shouldBe UiPreferences.Initial
+
+        storage.updateSortBy(
+          section = SortableSection.Discover.Movies(DiscoverType.Discover),
+          sortBy = SortBy.ReleaseDate,
+        )
+
+        awaitItem() shouldBe UiPreferences.Initial.copy(
+          sortOption = defaultSortOptions(),
+        )
+
+        storage.updateSortBy(
+          section = SortableSection.Discover.Movies(DiscoverType.Discover),
+          sortBy = SortBy.VoteCount,
+        )
+
+        awaitItem() shouldBe UiPreferences.Initial.copy(
+          sortOption = defaultSortOptions()
+            .plus(
+              SortableSection.Discover.Movies(DiscoverType.Discover) to SortOption(
+                SortBy.VoteCount,
+                SortDirection.DESC,
+              ),
+            ),
+        )
+      }
+    }
+
+    @Test
+    fun `test update discover sort by options for shows`() = runTest {
+      storage = DatastoreUiStorage(testDataStore)
+
+      storage.uiPreferences.test {
+        awaitItem() shouldBe UiPreferences.Initial
+
+        storage.updateSortBy(
+          section = SortableSection.Discover.Shows(DiscoverType.Discover),
+          sortBy = SortBy.FirstAirDate,
+        )
+
+        awaitItem() shouldBe UiPreferences.Initial.copy(
+          sortOption = defaultSortOptions().plus(
+            SortableSection.Discover.Shows(DiscoverType.Discover) to SortOption(
+              SortBy.FirstAirDate,
+              SortDirection.DESC,
+            ),
+          ),
+        )
+
+        storage.updateSortBy(
+          section = SortableSection.Discover.Shows(DiscoverType.Discover),
+          sortBy = SortBy.VoteAverage,
+        )
+
+        awaitItem() shouldBe UiPreferences.Initial.copy(
+          sortOption = defaultSortOptions().plus(
+            SortableSection.Discover.Shows(DiscoverType.Discover) to SortOption(
+              SortBy.VoteAverage,
+              SortDirection.DESC,
+            ),
+          ),
+        )
+      }
     }
   }
 
-  @Test
-  fun `test update discover sort by options for movies`() = runTest {
-    storage = DatastoreUiStorage(testDataStore)
-
-    storage.uiPreferences.test {
-      awaitItem() shouldBe UiPreferences.Initial
-
-      storage.updateSortBy(ViewableSection.DISCOVER_MOVIES, sortBy = SortBy.RELEASE_DATE)
-
-      awaitItem() shouldBe UiPreferences.Initial.copy(
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.RELEASE_DATE,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
-      )
-
-      storage.updateSortBy(ViewableSection.DISCOVER_MOVIES, sortBy = SortBy.VOTE_AVERAGE)
-
-      awaitItem() shouldBe UiPreferences.Initial.copy(
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.VOTE_AVERAGE,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
-      )
-    }
-  }
-
-  @Test
-  fun `test update discover sort by options for shows`() = runTest {
-    storage = DatastoreUiStorage(testDataStore)
-
-    storage.uiPreferences.test {
-      awaitItem() shouldBe UiPreferences.Initial
-
-      storage.updateSortBy(ViewableSection.DISCOVER_SHOWS, sortBy = SortBy.FIRST_AIR_DATE)
-
-      awaitItem() shouldBe UiPreferences.Initial.copy(
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.FIRST_AIR_DATE,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
-      )
-
-      storage.updateSortBy(ViewableSection.DISCOVER_SHOWS, sortBy = SortBy.VOTE_AVERAGE)
-
-      awaitItem() shouldBe UiPreferences.Initial.copy(
-        sortOption = mapOf(
-          ViewableSection.DISCOVER_MOVIES to SortOption(
-            SortBy.POPULARITY,
-            SortDirection.DESC,
-          ),
-          ViewableSection.DISCOVER_SHOWS to SortOption(
-            SortBy.VOTE_AVERAGE,
-            SortDirection.DESC,
-          ),
-          ViewableSection.USER_DATA to SortOption(
-            SortBy.CREATED_AT,
-            SortDirection.DESC,
-          ),
-        ),
-      )
-    }
-  }
+  private fun defaultSortOptions() = mapOf(
+    SortableSection.UserData to SortOption(SortBy.CreatedAt, SortDirection.DESC),
+    SortableSection.Discover.Movies(DiscoverType.Discover) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Discover) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.Upcoming) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Upcoming) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.Popular) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.Popular) to SortOption(
+      SortBy.Popularity,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Movies(DiscoverType.TopRated) to SortOption(
+      SortBy.VoteAverage,
+      SortDirection.DESC,
+    ),
+    SortableSection.Discover.Shows(DiscoverType.TopRated) to SortOption(
+      SortBy.VoteAverage,
+      SortDirection.DESC,
+    ),
+  )
 }

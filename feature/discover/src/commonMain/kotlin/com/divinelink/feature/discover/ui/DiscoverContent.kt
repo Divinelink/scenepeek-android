@@ -23,13 +23,15 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.discover.DiscoverFilterType
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.ui.SwitchPreferencesAction
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.utilities.toRoute
 import com.divinelink.core.ui.Previews
@@ -50,6 +52,7 @@ import com.divinelink.core.ui.tab.ScenePeekSecondaryTabs
 import com.divinelink.feature.discover.DiscoverAction
 import com.divinelink.feature.discover.DiscoverForm
 import com.divinelink.feature.discover.DiscoverUiState
+import com.divinelink.feature.discover.DiscoverViewModel
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.chips.DiscoverFilterChip
 import com.divinelink.feature.discover.filters.SelectFilterModalBottomSheet
@@ -58,11 +61,14 @@ import com.divinelink.feature.discover.resources.feature_discover_empty_result_d
 import com.divinelink.feature.discover.resources.feature_discover_empty_result_title
 import com.divinelink.feature.discover.ui.provider.DiscoverUiStateParameterProvider
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
-fun DiscoverContent(
-  uiState: DiscoverUiState,
-  action: (DiscoverAction) -> Unit,
+fun DiscoverSectionsContent(
+  uiState: DiscoverSectionsUiState,
+  route: Navigation.Discover,
+  onSelectTab: (Int) -> Unit,
   onNavigate: (Navigation) -> Unit,
   onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
 ) {
@@ -71,29 +77,11 @@ fun DiscoverContent(
     initialPage = uiState.selectedTabIndex,
     pageCount = { uiState.tabs.size },
   )
-  var filterModal by remember { mutableStateOf<FilterModal?>(null) }
-  val filterState = rememberLazyListState()
 
   LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }.collect { page ->
-      action.invoke(DiscoverAction.OnSelectTab(page))
+      onSelectTab(page)
     }
-  }
-
-  LaunchedEffect(Unit) {
-    filterState.scrollToItem(uiState.currentFilters.firstSelectedFilterIndex)
-  }
-
-  filterModal?.let { type ->
-    SelectFilterModalBottomSheet(
-      type = type,
-      uuid = uiState.uuid,
-      mediaType = uiState.selectedTab.mediaType,
-      onDismissRequest = {
-        filterModal = null
-        action(DiscoverAction.DiscoverMedia)
-      },
-    )
   }
 
   Column {
@@ -103,6 +91,78 @@ fun DiscoverContent(
       onClick = { scope.launch { pagerState.animateScrollToPage(it) } },
     )
 
+    HorizontalPager(
+      modifier = Modifier.fillMaxSize(),
+      state = pagerState,
+    ) { page ->
+      uiState.tabs[page].let { tab ->
+        when (tab) {
+          MediaTab.Movie -> DiscoverContent(
+            mediaType = MediaType.MOVIE,
+            route = route,
+            onNavigate = onNavigate,
+            onSwitchPreferences = onSwitchPreferences,
+          )
+          MediaTab.TV -> DiscoverContent(
+            mediaType = MediaType.TV,
+            route = route,
+            onNavigate = onNavigate,
+            onSwitchPreferences = onSwitchPreferences,
+          )
+        }
+      }
+    }
+  }
+}
+
+@Composable
+@Previews
+fun DiscoverSectionsContentPreview(
+  @PreviewParameter(DiscoverUiStateParameterProvider::class) state: DiscoverUiState,
+) {
+  PreviewLocalProvider {
+//    DiscoverSectionsContent(
+//      uiState = state,
+//      action = {},
+//      onNavigate = {},
+//      onSwitchPreferences = {},
+//    )
+  }
+}
+
+@Composable
+private fun DiscoverContent(
+  mediaType: MediaType,
+  route: Navigation.Discover,
+  viewModel: DiscoverViewModel = koinViewModel(
+    key = "$route:${mediaType.value}",
+  ) { parametersOf(mediaType, route) },
+  onNavigate: (Navigation) -> Unit,
+  onSwitchPreferences: (SwitchPreferencesAction) -> Unit,
+) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  var filterModal by remember { mutableStateOf<FilterModal?>(null) }
+
+  val filterState = rememberLazyListState()
+  LaunchedEffect(Unit) {
+    filterState.scrollToItem(uiState.filters.firstSelectedFilterIndex)
+  }
+
+  filterModal?.let { type ->
+    SelectFilterModalBottomSheet(
+      type = type,
+      uuid = uiState.uuid,
+      mediaType = mediaType,
+      onDismissRequest = {
+        filterModal = null
+        viewModel.onAction(DiscoverAction.DiscoverMedia)
+      },
+    )
+  }
+
+  Column(
+    modifier = Modifier.fillMaxSize(),
+  ) {
     LazyRow(
       modifier = Modifier
         .animateContentSize()
@@ -116,8 +176,8 @@ fun DiscoverContent(
       state = filterState,
     ) {
       clearButton(
-        isVisible = uiState.currentFilters.hasSelectedFilters,
-        onClearClick = { action(DiscoverAction.ClearFilters) },
+        isVisible = uiState.filters.hasSelectedFilters,
+        onClearClick = { viewModel.onAction(DiscoverAction.ClearFilters) },
       )
 
       item {
@@ -125,21 +185,23 @@ fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          filters = uiState.currentFilters.genres,
+          filters = uiState.filters.genres,
           onClick = { filterModal = FilterModal.Genre },
           title = UIText.ResourceText(UiString.core_ui_genres),
-          name = uiState.currentFilters.genres.firstOrNull()?.name,
+          name = uiState.filters.genres.firstOrNull()?.name,
         )
       }
 
-      item {
-        DiscoverFilterChip.Year(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          filter = uiState.currentFilters.year,
-          onClick = { filterModal = FilterModal.Year },
-        )
+      if (uiState.availableFilters.contains(DiscoverFilterType.Year)) {
+        item {
+          DiscoverFilterChip.Year(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize(),
+            filter = uiState.filters.year,
+            onClick = { filterModal = FilterModal.Year },
+          )
+        }
       }
 
       item {
@@ -147,7 +209,7 @@ fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          language = uiState.currentFilters.language,
+          language = uiState.filters.language,
           onClick = { filterModal = FilterModal.Language },
         )
       }
@@ -157,105 +219,81 @@ fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
-          country = uiState.currentFilters.country,
+          country = uiState.filters.country,
           onClick = { filterModal = FilterModal.Country },
         )
       }
 
-      item {
-        DiscoverFilterChip.VoteAverage(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          votes = uiState.currentFilters.votes,
-          voteAverage = uiState.currentFilters.voteAverage,
-          onClick = { filterModal = FilterModal.VoteAverage },
-        )
-      }
-
-      item {
-        DiscoverFilterChip.MultiSelect(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          filters = uiState.currentFilters.keywords,
-          onClick = { filterModal = FilterModal.Keywords },
-          title = UIText.ResourceText(UiString.core_ui_keywords),
-          name = uiState.currentFilters.keywords.firstOrNull()?.name,
-        )
-      }
-
-      item {
-        DiscoverFilterChip.MultiSelect(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          filters = uiState.currentFilters.companies,
-          onClick = { filterModal = FilterModal.Companies },
-          title = UIText.PluralResource(UiPlurals.core_ui_information_companies, 2),
-          name = uiState.currentFilters.companies.firstOrNull()?.name,
-        )
-      }
-    }
-
-    HorizontalPager(
-      modifier = Modifier.fillMaxSize(),
-      state = pagerState,
-    ) { page ->
-      uiState.forms.values.elementAt(page).let {
-        when (it) {
-          is DiscoverForm.Initial -> DiscoverInitialContent(tab = uiState.selectedTab)
-          is DiscoverForm.Loading -> LoadingContent()
-          is DiscoverForm.Error -> BlankSlate(
-            modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
-            uiState = it.blankSlate,
-            onRetry = { action(DiscoverAction.DiscoverMedia) },
+      if (uiState.availableFilters.contains(DiscoverFilterType.Rating)) {
+        item {
+          DiscoverFilterChip.VoteAverage(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize(),
+            votes = uiState.filters.votes,
+            voteAverage = uiState.filters.voteAverage,
+            onClick = { filterModal = FilterModal.VoteAverage },
           )
-          is DiscoverForm.Data -> if (it.isEmpty) {
-            BlankSlate(
-              modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
-              uiState = BlankSlateState.Custom(
-                icon = UiDrawable.no_results,
-                title = UIText.ResourceText(Res.string.feature_discover_empty_result_title),
-                description = UIText.ResourceText(
-                  Res.string.feature_discover_empty_result_description,
-                ),
-              ),
-            )
-          } else {
-            ScrollableMediaContent(
-              items = it.media,
-              section = if (uiState.selectedMedia == MediaType.MOVIE) {
-                ViewableSection.DISCOVER_MOVIES
-              } else {
-                ViewableSection.DISCOVER_SHOWS
-              },
-              onLoadMore = { action(DiscoverAction.LoadMore) },
-              onSwitchPreferences = onSwitchPreferences,
-              onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
-              onLongClick = { media ->
-                onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
-              },
-              canLoadMore = uiState.canFetchMoreForSelectedTab,
-            )
-          }
         }
       }
-    }
-  }
-}
 
-@Composable
-@Previews
-fun DiscoverContentPreview(
-  @PreviewParameter(DiscoverUiStateParameterProvider::class) state: DiscoverUiState,
-) {
-  PreviewLocalProvider {
-    DiscoverContent(
-      uiState = state,
-      action = {},
-      onNavigate = {},
-      onSwitchPreferences = {},
-    )
+      item {
+        DiscoverFilterChip.MultiSelect(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
+          filters = uiState.filters.keywords,
+          onClick = { filterModal = FilterModal.Keywords },
+          title = UIText.ResourceText(UiString.core_ui_keywords),
+          name = uiState.filters.keywords.firstOrNull()?.name,
+        )
+      }
+
+      item {
+        DiscoverFilterChip.MultiSelect(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
+          filters = uiState.filters.companies,
+          onClick = { filterModal = FilterModal.Companies },
+          title = UIText.PluralResource(UiPlurals.core_ui_information_companies, 2),
+          name = uiState.filters.companies.firstOrNull()?.name,
+        )
+      }
+    }
+
+    when (val form = uiState.form) {
+      is DiscoverForm.Initial -> DiscoverInitialContent(mediaType)
+      is DiscoverForm.Loading -> LoadingContent()
+      is DiscoverForm.Error -> BlankSlate(
+        modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+        uiState = form.blankSlate,
+        onRetry = { viewModel.onAction(DiscoverAction.DiscoverMedia) },
+      )
+      is DiscoverForm.Data -> if (form.isEmpty) {
+        BlankSlate(
+          modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+          uiState = BlankSlateState.Custom(
+            icon = UiDrawable.no_results,
+            title = UIText.ResourceText(Res.string.feature_discover_empty_result_title),
+            description = UIText.ResourceText(
+              Res.string.feature_discover_empty_result_description,
+            ),
+          ),
+        )
+      } else {
+        ScrollableMediaContent(
+          items = form.media,
+          section = uiState.section,
+          onLoadMore = { viewModel.onAction(DiscoverAction.LoadMore) },
+          onSwitchPreferences = onSwitchPreferences,
+          onClick = { media -> media.toRoute()?.let { route -> onNavigate(route) } },
+          onLongClick = { media ->
+            onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
+          },
+          canLoadMore = uiState.canFetchMore,
+        )
+      }
+    }
   }
 }

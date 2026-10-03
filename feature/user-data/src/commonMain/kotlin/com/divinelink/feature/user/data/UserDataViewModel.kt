@@ -10,9 +10,10 @@ import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.sort.SortContext
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.tab.MediaTab
-import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.model.user.data.UserDataSection
@@ -54,7 +55,7 @@ class UserDataViewModel(
         MediaType.MOVIE to true,
         MediaType.TV to true,
       ),
-      sortOption = SortOption.defaultUserDataSortOption,
+      sortOption = SortOption.default(SortContext.UserData),
     ),
   )
   val uiState: StateFlow<UserDataUiState> = _uiState
@@ -75,7 +76,7 @@ class UserDataViewModel(
             is TMDBAccount.LoggedIn ->
               preferencesRepository
                 .uiPreferences
-                .mapNotNull { it.sortOption[ViewableSection.USER_DATA] }
+                .mapNotNull { it.sortOption[SortableSection.UserData] }
                 .distinctUntilChanged()
                 .onEach { sortOption ->
                   _uiState.update { uiState -> uiState.copy(sortOption = sortOption) }

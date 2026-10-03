@@ -4,9 +4,9 @@ import com.divinelink.core.model.sort.SortBy
 
 sealed interface SwitchPreferencesAction {
   data class SwitchViewMode(val section: ViewableSection) : SwitchPreferencesAction
-  data class SwitchSortDirection(val section: ViewableSection) : SwitchPreferencesAction
+  data class SwitchSortDirection(val section: SortableSection) : SwitchPreferencesAction
   data class SwitchSortBy(
-    val section: ViewableSection,
+    val section: SortableSection,
     val sortBy: SortBy,
   ) : SwitchPreferencesAction
 

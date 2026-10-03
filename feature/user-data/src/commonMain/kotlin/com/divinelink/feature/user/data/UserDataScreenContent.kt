@@ -24,8 +24,8 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.tab.MediaTab
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.model.user.data.UserDataSection.Ratings
 import com.divinelink.core.model.user.data.UserDataSection.Watchlist
@@ -133,7 +133,7 @@ fun UserDataScreenContent(
               },
               onSwitchPreferences = onSwitchPreferences,
               canLoadMore = uiState.canFetchMoreForSelectedTab,
-              section = ViewableSection.USER_DATA,
+              section = SortableSection.UserData,
             )
           }
         }

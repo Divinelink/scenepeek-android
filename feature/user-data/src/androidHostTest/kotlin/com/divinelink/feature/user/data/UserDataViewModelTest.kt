@@ -7,6 +7,7 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortContext
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.model.tab.MediaTab
@@ -553,7 +554,7 @@ class UserDataViewModelTest {
             MediaTab.TV to null,
           ),
           sortOption = SortOption(
-            sortBy = SortBy.CREATED_AT,
+            sortBy = SortBy.CreatedAt,
             direction = SortDirection.ASC,
           ),
         ),
@@ -579,7 +580,7 @@ class UserDataViewModelTest {
       MediaType.TV to true,
     ),
     section: UserDataSection,
-    sortOption: SortOption = SortOption.defaultUserDataSortOption,
+    sortOption: SortOption = SortOption.default(SortContext.UserData),
   ): UserDataUiState = UserDataUiState(
     selectedTabIndex = selectedTabIndex,
     tabs = tabs,

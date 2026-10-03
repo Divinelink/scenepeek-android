@@ -2,6 +2,7 @@ package com.divinelink.feature.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.commons.util.decodeFromString
 import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
@@ -10,11 +11,12 @@ import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverParameters
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.discover.MediaTypeFilters
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortOption
-import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.navigation.route.Navigation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,34 +24,55 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DiscoverViewModel(
-  private val route: Navigation.DiscoverRoute,
+  mediaType: MediaType,
+  private val route: Navigation.Discover,
   private val filterRepository: FilterRepository,
   private val discoverUseCase: DiscoverMediaUseCase,
   preferencesRepository: PreferencesRepository,
+  clock: ClockProvider,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<DiscoverUiState> = MutableStateFlow(
-    DiscoverUiState.initial(route),
+    DiscoverUiState.initial(
+      route = route,
+      mediaType = mediaType,
+      minDate = clock.nowDT.date.toString(),
+    ),
   )
   val uiState: StateFlow<DiscoverUiState> = _uiState
 
   init {
+    val uuid = route.entryPointUuid
+
     viewModelScope.launch {
-      val mediaType = MediaType.from(route.mediaType)
-      val genre = route.encodedGenre?.decodeFromString<Genre>()
-      val keyword = route.encodedKeyword?.decodeFromString<Keyword>()
-      val company = route.encodedCompany?.decodeFromString<Company>()
+      val entryPoint = (route as? Navigation.Discover.Custom)?.entryPoint
+
+      val genre = (route as? Navigation.Discover.Default)
+        ?.encodedGenre
+        ?.decodeFromString<Genre>()
+      val keyword = (route as? Navigation.Discover.Default)
+        ?.encodedKeyword
+        ?.decodeFromString<Keyword>()
+      val company = (route as? Navigation.Discover.Default)
+        ?.encodedCompany
+        ?.decodeFromString<Company>()
+      val minimumVotes = when (entryPoint) {
+        DiscoverType.Discover -> null
+        DiscoverType.Upcoming -> null
+        DiscoverType.Popular -> 50
+        DiscoverType.TopRated -> 250
+        null -> null
+      }
 
       genre?.let { genre ->
         filterRepository.updateSelectedGenres(
           mediaType = mediaType,
-          uuid = route.entryPointUuid,
+          uuid = uuid,
           genres = listOf(genre),
         )
       }
@@ -57,7 +80,7 @@ class DiscoverViewModel(
       keyword?.let { keyword ->
         filterRepository.updateKeyword(
           mediaType = mediaType,
-          uuid = route.entryPointUuid,
+          uuid = uuid,
           keyword = keyword,
         )
       }
@@ -65,20 +88,27 @@ class DiscoverViewModel(
       company?.let { company ->
         filterRepository.updateCompany(
           mediaType = mediaType,
-          uuid = route.entryPointUuid,
+          uuid = uuid,
           company = company,
+        )
+      }
+
+      minimumVotes?.let { votes ->
+        filterRepository.updateMinimumVotes(
+          uuid = uuid,
+          mediaType = mediaType,
+          votes = votes,
         )
       }
     }
 
     filterRepository
-      .selectedGenres(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] ?: emptyList() }
+      .selectedGenres(uuid)
+      .map { it[uiState.value.mediaType] ?: emptyList() }
       .onEach { genres ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(genres = genres) },
             ),
           )
@@ -87,13 +117,12 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .selectedLanguage(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] }
+      .selectedLanguage(uuid)
+      .map { it[_uiState.value.mediaType] }
       .onEach { language ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(language = language) },
             ),
           )
@@ -102,13 +131,12 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .selectedCountry(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] }
+      .selectedCountry(uuid)
+      .map { it[_uiState.value.mediaType] }
       .onEach { country ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(country = country) },
             ),
           )
@@ -117,13 +145,12 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .voteAverage(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] }
+      .voteAverage(uuid)
+      .map { it[_uiState.value.mediaType] }
       .onEach { voteAverage ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(voteAverage = voteAverage) },
             ),
           )
@@ -132,13 +159,12 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .minimumVotes(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] }
+      .minimumVotes(uuid)
+      .map { it[_uiState.value.mediaType] }
       .onEach { votes ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(votes = votes) },
             ),
           )
@@ -147,13 +173,12 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .year(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] }
+      .year(uuid)
+      .map { it[_uiState.value.mediaType] }
       .onEach { filter ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(year = filter) },
             ),
           )
@@ -162,13 +187,12 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .keywords(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] ?: emptyList() }
+      .keywords(uuid)
+      .map { it[_uiState.value.mediaType] ?: emptyList() }
       .onEach { keywords ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(keywords = keywords) },
             ),
           )
@@ -177,13 +201,12 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .companies(route.entryPointUuid)
-      .map { it[uiState.value.selectedMedia] ?: emptyList() }
+      .companies(uuid)
+      .map { it[_uiState.value.mediaType] ?: emptyList() }
       .onEach { companies ->
         _uiState.update { uiState ->
           uiState.copy(
             filters = uiState.filters.updateFilters(
-              mediaType = uiState.selectedTab.mediaType,
               update = { it.copy(companies = companies) },
             ),
           )
@@ -193,14 +216,17 @@ class DiscoverViewModel(
 
     preferencesRepository
       .uiPreferences
-      .mapNotNull { uiPreferences ->
-        uiPreferences.sortOption.mapNotNull { (key, value) ->
-          when (key) {
-            ViewableSection.DISCOVER_SHOWS -> MediaType.TV to value
-            ViewableSection.DISCOVER_MOVIES -> MediaType.MOVIE to value
-            else -> null
-          }
-        }.toMap()
+      .map { uiPreferences ->
+        val entryPoint = _uiState.value.entryPoint
+        val mediaType = _uiState.value.mediaType
+
+        if (mediaType == MediaType.MOVIE) {
+          val movieSection = SortableSection.Discover.Movies(entryPoint)
+          uiPreferences.sortOption[movieSection] ?: SortOption.default(movieSection.sortContext)
+        } else {
+          val tvSection = SortableSection.Discover.Shows(entryPoint)
+          uiPreferences.sortOption[tvSection] ?: SortOption.default(tvSection.sortContext)
+        }
       }
       .distinctUntilChanged()
       .onEach { sortMap ->
@@ -212,7 +238,6 @@ class DiscoverViewModel(
 
   fun onAction(action: DiscoverAction) {
     when (action) {
-      is DiscoverAction.OnSelectTab -> handleSelectTab(action)
       DiscoverAction.DiscoverMedia -> handleDiscoverMedia(reset = true, shouldFetch = false)
       DiscoverAction.LoadMore -> handleLoadMore()
       DiscoverAction.ClearFilters -> handleClearFilters()
@@ -221,22 +246,15 @@ class DiscoverViewModel(
 
   private fun handleClearFilters() {
     filterRepository.clear(
-      uuid = route.entryPointUuid,
-      mediaType = _uiState.value.selectedMedia,
+      uuid = _uiState.value.uuid,
+      mediaType = _uiState.value.mediaType,
     )
     handleDiscoverMedia(reset = true, shouldFetch = false)
   }
 
-  private fun handleSelectTab(action: DiscoverAction.OnSelectTab) {
-    _uiState.update {
-      it.copy(selectedTabIndex = action.index)
-    }
-  }
-
   private fun handleLoadMore() {
-    val selectedMedia = _uiState.value.selectedMedia
-    val form = _uiState.value.forms[selectedMedia]
-    val canFetchMore = _uiState.value.canFetchMore[selectedMedia] == true
+    val form = _uiState.value.form
+    val canFetchMore = _uiState.value.canFetchMore
 
     if (form is DiscoverForm.Data && canFetchMore) {
       handleDiscoverMedia(reset = false, shouldFetch = canFetchMore)
@@ -247,26 +265,27 @@ class DiscoverViewModel(
     reset: Boolean,
     shouldFetch: Boolean,
   ) {
-    val mediaType = uiState.value.selectedMedia
-    val currentFilters = uiState.value.currentFilters
-    val lastFilters = uiState.value.currentLastFilters
+    val mediaType = _uiState.value.mediaType
+    val currentFilters = uiState.value.filters
+    val lastFilters = uiState.value.lastFilters
 
     if (currentFilters != lastFilters || shouldFetch) {
       if (reset) {
         _uiState.update { uiState ->
           uiState.copy(
-            pages = uiState.pages + (uiState.selectedMedia to 1),
-            loadingMap = uiState.loadingMap + (uiState.selectedMedia to true),
+            page = 1,
+            loading = true,
           )
         }
       }
 
-      if (currentFilters.hasSelectedFilters) {
+      val sortOption = uiState.value.sortOption ?: return
+
+      if (currentFilters.hasSelectedFilters || currentFilters.custom != null) {
         discoverUseCase.invoke(
           parameters = DiscoverParameters(
-            page = uiState.value.pages[uiState.value.selectedMedia] ?: 1,
-            sortOption = uiState.value.sortOption[uiState.value.selectedMedia]
-              ?: SortOption.defaultDiscoverSortOption,
+            page = uiState.value.page,
+            sortOption = sortOption,
             mediaType = mediaType,
             filters = currentFilters,
           ),
@@ -283,7 +302,6 @@ class DiscoverViewModel(
               },
               onFailure = { error ->
                 updateUiOnFailure(
-                  type = mediaType,
                   error = error,
                   reset = reset,
                 )
@@ -294,8 +312,8 @@ class DiscoverViewModel(
       } else {
         _uiState.update { uiState ->
           uiState.copy(
-            forms = uiState.forms.plus(uiState.selectedMedia to DiscoverForm.Initial),
-            loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+            form = DiscoverForm.Initial,
+            loading = false,
           )
         }
       }
@@ -308,27 +326,24 @@ class DiscoverViewModel(
     filters: MediaTypeFilters,
   ) {
     _uiState.update { uiState ->
-      val data = (uiState.forms[response.type] as? DiscoverForm.Data)?.paginationData ?: mapOf(
+      val data = (uiState.form as? DiscoverForm.Data)?.paginationData ?: mapOf(
         1 to response.data,
       )
 
       uiState.copy(
-        forms = uiState.forms.plus(
-          response.type to DiscoverForm.Data(
-            mediaType = response.type,
-            paginationData = if (reset) {
-              mapOf(1 to response.data)
-            } else {
-              data.plus(response.page to response.data)
-            },
-            totalResults = response.totalResults,
-          ),
+        form = DiscoverForm.Data(
+          mediaType = response.type,
+          paginationData = if (reset) {
+            mapOf(1 to response.data)
+          } else {
+            data.plus(response.page to response.data)
+          },
+          totalResults = response.totalResults,
         ),
-        pages = uiState.pages + (response.type to response.page + 1),
-        canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
-        loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+        page = response.page + 1,
+        canFetchMore = response.canFetchMore,
+        loading = false,
         lastFilters = uiState.filters.updateFilters(
-          mediaType = uiState.selectedTab.mediaType,
           update = { filters },
         ),
       )
@@ -337,37 +352,34 @@ class DiscoverViewModel(
 
   private fun updateUiOnFailure(
     reset: Boolean,
-    type: MediaType,
     error: Throwable,
   ) {
     _uiState.update { uiState ->
       uiState.copy(
-        forms = if (uiState.forms[type] !is DiscoverForm.Data || reset) {
-          uiState.forms.plus(
-            type to when (error) {
-              is AppException.Offline -> DiscoverForm.Error.Network
-              else -> DiscoverForm.Error.Unknown
-            },
-          )
+        form = if (uiState.form !is DiscoverForm.Data || reset) {
+          when (error) {
+            is AppException.Offline -> DiscoverForm.Error.Network
+            else -> DiscoverForm.Error.Unknown
+          }
         } else {
-          uiState.forms
+          uiState.form
         },
-        loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+        loading = false,
       )
     }
   }
 
   override fun onCleared() {
     super.onCleared()
-    filterRepository.clear(uuid = route.entryPointUuid, mediaType = MediaType.TV)
-    filterRepository.clear(uuid = route.entryPointUuid, mediaType = MediaType.MOVIE)
+    filterRepository.clear(uuid = uiState.value.uuid, mediaType = MediaType.TV)
+    filterRepository.clear(uuid = uiState.value.uuid, mediaType = MediaType.MOVIE)
   }
 
-  private fun Map<MediaType, MediaTypeFilters>.updateFilters(
-    mediaType: MediaType,
+  private fun MediaTypeFilters.updateFilters(
     update: (MediaTypeFilters) -> MediaTypeFilters,
-  ): Map<MediaType, MediaTypeFilters> {
-    val current = this[mediaType] ?: MediaTypeFilters.initial
-    return this + (mediaType to update(current))
+  ): MediaTypeFilters {
+    val current = this
+
+    return update(current)
   }
 }

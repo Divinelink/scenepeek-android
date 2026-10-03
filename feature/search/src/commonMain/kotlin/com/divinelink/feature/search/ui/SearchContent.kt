@@ -128,7 +128,7 @@ private fun SearchScrollableContent(
     modifier = Modifier,
     state = scrollState,
     items = form.media,
-    section = ViewableSection.SEARCH,
+    section = ViewableSection.Search,
     onLoadMore = onLoadNextPage,
     onSwitchPreferences = onSwitchPreferences,
     onClick = { media -> media.toRoute()?.let { onNavigate(it) } },

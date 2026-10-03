@@ -6,7 +6,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
+import com.divinelink.core.model.ui.SwitchPreferencesAction.ClearSortOption
+import com.divinelink.core.model.ui.SwitchPreferencesAction.SwitchListSortBy
+import com.divinelink.core.model.ui.SwitchPreferencesAction.SwitchListSortDirection
+import com.divinelink.core.model.ui.SwitchPreferencesAction.SwitchSortBy
+import com.divinelink.core.model.ui.SwitchPreferencesAction.SwitchSortDirection
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.button.switchview.SortingButton
 import com.divinelink.core.ui.button.switchview.SwitchViewButton
@@ -23,39 +29,38 @@ fun ScreenSettingsRow(
     verticalAlignment = Alignment.CenterVertically,
   ) {
     when (section) {
-      ViewableSection.DISCOVER_SHOWS,
-      ViewableSection.DISCOVER_MOVIES,
-      ViewableSection.USER_DATA,
+      is SortableSection.Discover,
+      is SortableSection.UserData,
         -> SortingButton(
           enabled = enabled,
           section = section,
           onSwitchSortDirection = {
-            onSwitchPreferences(SwitchPreferencesAction.SwitchSortDirection(it))
+            onSwitchPreferences(SwitchSortDirection(it))
           },
           onSwitchSortBy = { section, option ->
-            onSwitchPreferences(SwitchPreferencesAction.SwitchSortBy(section, option))
+            onSwitchPreferences(SwitchSortBy(section, option))
           },
           onClearListSortOption = {
             // Do nothing
           },
         )
-      ViewableSection.LIST_DETAILS -> listId?.let { id ->
+      is SortableSection.ListDetails -> listId?.let { id ->
         SortingButton(
           enabled = enabled,
           section = section,
           listId = listId,
           onSwitchSortDirection = {
-            onSwitchPreferences(SwitchPreferencesAction.SwitchListSortDirection(id))
+            onSwitchPreferences(SwitchListSortDirection(id))
           },
           onSwitchSortBy = { _, option ->
-            onSwitchPreferences(SwitchPreferencesAction.SwitchListSortBy(id, option))
+            onSwitchPreferences(SwitchListSortBy(id, option))
           },
           onClearListSortOption = {
-            onSwitchPreferences(SwitchPreferencesAction.ClearSortOption(it))
+            onSwitchPreferences(ClearSortOption(it))
           },
         )
       }
-      else -> Unit
+      is ViewableSection -> Unit
     }
 
     Spacer(Modifier.weight(1f))

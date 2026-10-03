@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -65,11 +66,11 @@ fun SwitchViewButtonListPreviews() {
     ) {
       CompositionLocalProvider(
         LocalUiPreferences provides UiPreferences.Initial.copy(
-          viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+          viewModes = SortableSection.all.associateWith { ViewMode.GRID },
         ),
       ) {
         SwitchViewButton(
-          section = ViewableSection.LISTS,
+          section = SortableSection.ListDetails,
           onClick = {},
         )
       }
@@ -78,7 +79,7 @@ fun SwitchViewButtonListPreviews() {
         LocalUiPreferences provides UiPreferences.Initial,
       ) {
         SwitchViewButton(
-          section = ViewableSection.LISTS,
+          section = SortableSection.ListDetails,
           onClick = {},
         )
       }

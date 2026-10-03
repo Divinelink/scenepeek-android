@@ -117,7 +117,7 @@ fun SharedTransitionScope.PersonContent(
 ) {
   val density = LocalDensity.current
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
-  val isGrid = rememberViewModePreferences(ViewableSection.PERSON_CREDITS) == ViewMode.GRID
+  val isGrid = rememberViewModePreferences(ViewableSection.PersonCredits) == ViewMode.GRID
 
   val grid = if (isGrid) {
     GridCells.Adaptive(mediaCardSize())
@@ -285,7 +285,7 @@ fun SharedTransitionScope.PersonContent(
 
               SwitchViewButton(
                 onClick = { onSwitchPreferences(SwitchPreferencesAction.SwitchViewMode(it)) },
-                section = ViewableSection.PERSON_CREDITS,
+                section = ViewableSection.PersonCredits,
               )
             }
           }
@@ -451,7 +451,7 @@ fun PersonContentListPreview(
     onboardingManager = TestOnboardingManager(),
     preferencesRepository = TestPreferencesRepository(
       uiPreferences = UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+        viewModes = ViewableSection.defaultEntries.associateWith { ViewMode.GRID },
       ),
     ),
     appInfoRepository = TestAppInfoRepository(),
@@ -485,7 +485,7 @@ fun PersonContentGridPreview() {
     onboardingManager = TestOnboardingManager(),
     preferencesRepository = TestPreferencesRepository(
       uiPreferences = UiPreferences.Initial.copy(
-        viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+        viewModes = ViewableSection.defaultEntries.associateWith { ViewMode.GRID },
       ),
     ),
     appInfoRepository = TestAppInfoRepository(),

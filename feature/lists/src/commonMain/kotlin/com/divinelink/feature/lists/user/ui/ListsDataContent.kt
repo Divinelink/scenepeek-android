@@ -64,7 +64,7 @@ fun ListsDataContent(
   val isMediumScreenWidthOrWider = isMediumScreenWidthOrWider()
   var numberOfCells by rememberSaveable { mutableIntStateOf(1) }
 
-  val viewMode = rememberViewModePreferences(ViewableSection.LISTS)
+  val viewMode = rememberViewModePreferences(ViewableSection.Lists)
 
   val padding = when (viewMode) {
     ViewMode.GRID -> MaterialTheme.dimensions.keyline_16
@@ -115,7 +115,7 @@ fun ListsDataContent(
       ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
           ScreenSettingsRow(
-            section = ViewableSection.LISTS,
+            section = ViewableSection.Lists,
             onSwitchPreferences = { userInteraction.invoke(ListsAction.SwitchViewMode) },
           )
         }

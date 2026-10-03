@@ -16,8 +16,10 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.filter.HomeFilter
 import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.components.FilterBar
@@ -42,7 +44,10 @@ fun HomeContent(
       onFilterClick = {
         val route = when (it) {
           is HomeFilter.Saved -> Navigation.MediaListsRoute(MediaListSection.Saved)
-          is HomeFilter.TopRated -> Navigation.MediaListsRoute(MediaListSection.TopRated)
+          is HomeFilter.TopRated -> Navigation.Discover.Custom(
+            mediaType = MediaType.MOVIE,
+            entryPoint = DiscoverType.TopRated,
+          )
           HomeFilter.Awards -> Navigation.AwardsRoute
         }
 

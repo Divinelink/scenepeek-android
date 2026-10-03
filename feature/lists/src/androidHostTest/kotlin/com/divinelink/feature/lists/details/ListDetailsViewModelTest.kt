@@ -6,6 +6,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.model.sort.SortBy
+import com.divinelink.core.model.sort.SortContext
 import com.divinelink.core.model.sort.SortDirection
 import com.divinelink.core.model.sort.SortOption
 import com.divinelink.core.navigation.route.Navigation
@@ -62,7 +63,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -92,7 +93,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -119,7 +120,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -149,7 +150,7 @@ class ListDetailsViewModelTest : RoboTest() {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
-            sortOption = null,
+            sortOption = SortOption.default(SortContext.ListDetails),
             updatingSort = false,
           ),
           ListDetailsUiState(
@@ -169,7 +170,7 @@ class ListDetailsViewModelTest : RoboTest() {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
-            sortOption = null,
+            sortOption = SortOption.default(SortContext.ListDetails),
             updatingSort = false,
           ),
           ListDetailsUiState(
@@ -189,7 +190,7 @@ class ListDetailsViewModelTest : RoboTest() {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
-            sortOption = null,
+            sortOption = SortOption.default(SortContext.ListDetails),
             updatingSort = false,
           ),
         ),
@@ -220,7 +221,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -240,7 +241,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -270,7 +271,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -297,7 +298,7 @@ class ListDetailsViewModelTest : RoboTest() {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
-            sortOption = null,
+            sortOption = SortOption.default(SortContext.ListDetails),
             updatingSort = false,
           ),
           ListDetailsUiState(
@@ -314,7 +315,7 @@ class ListDetailsViewModelTest : RoboTest() {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
-            sortOption = null,
+            sortOption = SortOption.default(SortContext.ListDetails),
             updatingSort = false,
           ),
           ListDetailsUiState(
@@ -334,7 +335,7 @@ class ListDetailsViewModelTest : RoboTest() {
             selectedMedia = emptyList(),
             multipleSelectMode = false,
             canEdit = true,
-            sortOption = null,
+            sortOption = SortOption.default(SortContext.ListDetails),
             updatingSort = false,
           ),
         ),
@@ -363,7 +364,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -387,7 +388,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -419,7 +420,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = false,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -451,7 +452,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = false,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -481,7 +482,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -503,7 +504,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -523,7 +524,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -553,7 +554,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -573,7 +574,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -593,7 +594,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -625,7 +626,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -647,7 +648,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -674,7 +675,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -704,7 +705,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -726,7 +727,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = ListDetailsFactory.mustWatch().media,
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -753,7 +754,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -783,7 +784,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -805,7 +806,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -826,7 +827,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -856,7 +857,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -878,7 +879,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -899,7 +900,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -919,7 +920,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -949,7 +950,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -971,7 +972,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -996,7 +997,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = listOf(ListDetailsFactory.mustWatch().media.first()),
           multipleSelectMode = true,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
@@ -1024,12 +1025,12 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )
       .mockListDetails(Resource.Success(ListDetailsFactory.page1()))
-      .updateSortBy(1, SortBy.TITLE)
+      .updateSortBy(1, SortBy.Title)
       .assertUiState(
         ListDetailsUiState(
           id = 1,
@@ -1048,7 +1049,7 @@ class ListDetailsViewModelTest : RoboTest() {
           multipleSelectMode = false,
           canEdit = true,
           sortOption = SortOption(
-            sortBy = SortBy.TITLE,
+            sortBy = SortBy.Title,
             direction = SortDirection.DESC,
           ),
           updatingSort = false,
@@ -1073,7 +1074,7 @@ class ListDetailsViewModelTest : RoboTest() {
           multipleSelectMode = false,
           canEdit = true,
           sortOption = SortOption(
-            sortBy = SortBy.TITLE,
+            sortBy = SortBy.Title,
             direction = SortDirection.ASC,
           ),
           updatingSort = false,
@@ -1089,7 +1090,7 @@ class ListDetailsViewModelTest : RoboTest() {
       .mockListDetails(Resource.Success(ListDetailsFactory.mustWatch()))
       .buildViewModel()
       .mockListDetails(Resource.Success(ListDetailsFactory.page1()))
-      .updateSortBy(1, SortBy.TITLE)
+      .updateSortBy(1, SortBy.Title)
       .updateSortDirection(1)
       .assertUiState(
         ListDetailsUiState(
@@ -1109,7 +1110,7 @@ class ListDetailsViewModelTest : RoboTest() {
           multipleSelectMode = false,
           canEdit = true,
           sortOption = SortOption(
-            sortBy = SortBy.TITLE,
+            sortBy = SortBy.Title,
             direction = SortDirection.ASC,
           ),
           updatingSort = false,
@@ -1133,7 +1134,7 @@ class ListDetailsViewModelTest : RoboTest() {
           selectedMedia = emptyList(),
           multipleSelectMode = false,
           canEdit = true,
-          sortOption = null,
+          sortOption = SortOption.default(SortContext.ListDetails),
           updatingSort = false,
         ),
       )

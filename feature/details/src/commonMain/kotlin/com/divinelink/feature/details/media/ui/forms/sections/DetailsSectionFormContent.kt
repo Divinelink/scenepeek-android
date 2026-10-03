@@ -102,7 +102,7 @@ fun DetailsSectionFormContent(
     is DetailSectionData.Media -> ScrollableMediaContent(
       modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
       items = data.data,
-      section = ViewableSection.MEDIA_DETAILS,
+      section = ViewableSection.MediaDetails,
       onLoadMore = {},
       onSwitchPreferences = onSwitchPreferences,
       onClick = onItemClick,

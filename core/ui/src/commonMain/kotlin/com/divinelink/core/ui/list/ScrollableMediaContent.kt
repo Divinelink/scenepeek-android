@@ -24,6 +24,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.ui.SortableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
@@ -96,7 +97,7 @@ fun ScrollableMediaContent(
 
         items(
           items = items,
-          key = { "${section.name}-${it.uniqueIdentifier}" },
+          key = { "${section.key}-${it.uniqueIdentifier}" },
         ) { media ->
           when (media) {
             is MediaItem.Media -> when (viewMode) {
@@ -107,9 +108,8 @@ fun ScrollableMediaContent(
                 media = media,
                 onClick = onClick,
                 onLongClick = onLongClick,
-                showDate = section == ViewableSection.SEARCH ||
-                  section == ViewableSection.DISCOVER_SHOWS ||
-                  section == ViewableSection.DISCOVER_MOVIES,
+                showDate = section is ViewableSection.Search ||
+                  section is SortableSection.Discover,
               )
               ViewMode.LIST -> DetailedMediaItem(
                 modifier = Modifier

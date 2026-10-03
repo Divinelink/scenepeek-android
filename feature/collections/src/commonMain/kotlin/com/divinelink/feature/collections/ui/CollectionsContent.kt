@@ -114,7 +114,7 @@ fun SharedTransitionScope.CollectionsContent(
           onLoadMore = { /* Do nothing */ },
           onSwitchPreferences = onSwitchPreferences,
           onClick = { it.toRoute()?.let { route -> onNavigate(route) } },
-          section = ViewableSection.SEARCH,
+          section = ViewableSection.Search,
           onLongClick = { media ->
             onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
           },
