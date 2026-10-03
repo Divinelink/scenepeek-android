@@ -32,6 +32,9 @@ class DiscoverMediaUseCase(
         if (companies.isNotEmpty()) {
           add(DiscoverFilter.Companies(companies.map { it.id }))
         }
+        if (contentRating.isNotEmpty()) {
+          add(DiscoverFilter.ContentRatings(contentRating.map { it.certification }))
+        }
         custom?.let { add(it) }
       }
     }.mapNotNull { it }

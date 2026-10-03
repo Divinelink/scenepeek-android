@@ -77,6 +77,18 @@
     <string name="failed">Failed</string>
     <string name="deleted">Deleted</string>
     <string name="completed">Completed</string>
+    <string name="nr_content_rating">No rating information available.</string>
+    <string name="movie_g">Suitable for all ages.</string>
+    <string name="movie_pg">Some material may not be suitable for young children. Parental guidance suggested.</string>
+    <string name="movie_pg13">Recommended for ages 13 and up. Some material may be inappropriate for younger viewers.</string>
+    <string name="movie_r">Not recommended for under 17 without parental supervision. Contains adult themes.</string>
+    <string name="movie_nc17">Intended for mature audiences only. Not suitable for anyone under 17.</string>
+    <string name="tv_y">Designed for preschool children, including ages 2–6.</string>
+    <string name="tv_y7">Designed for children age 7 and above; may contain mild fantasy violence.</string>
+    <string name="tv_g">Suitable for all ages. Minimal or no violence, strong language, or sexual content.</string>
+    <string name="tv_pg">May contain material that parents could find unsuitable for younger children.</string>
+    <string name="tv_14">Some material is unsuitable for children under 14.</string>
+    <string name="tv_ma">Mature audiences only. Intended for viewers 17 and up.</string>
     <!-- Language Names -->
   <string name="language_english">English</string>
     <string name="language_spanish">Spanish</string>

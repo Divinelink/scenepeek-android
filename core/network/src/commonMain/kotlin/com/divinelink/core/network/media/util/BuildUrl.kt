@@ -115,6 +115,10 @@ fun buildDiscoverUrl(
           MediaType.UNKNOWN -> Unit
         }
         DiscoverFilter.Custom.Popular -> Unit
+        is DiscoverFilter.ContentRatings -> {
+          append("certification", filter.certs.joinToString("|"))
+          append("certification_country", "US")
+        }
       }
     }
   }

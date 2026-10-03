@@ -1,5 +1,6 @@
 package com.divinelink.feature.discover.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +46,7 @@ import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.clearButton
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.list.ScrollableMediaContent
+import com.divinelink.core.ui.resources.core_ui_content_rating
 import com.divinelink.core.ui.resources.core_ui_genres
 import com.divinelink.core.ui.resources.core_ui_information_companies
 import com.divinelink.core.ui.resources.core_ui_keywords
@@ -260,6 +263,24 @@ private fun DiscoverContent(
           name = uiState.filters.companies.firstOrNull()?.name,
         )
       }
+
+      item {
+        DiscoverFilterChip.MultiSelect(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
+          filters = uiState.filters.contentRating,
+          onClick = { filterModal = FilterModal.ContentRating },
+          title = UIText.ResourceText(UiString.core_ui_content_rating),
+          name = uiState.filters.contentRating.firstOrNull()?.certification,
+        )
+      }
+    }
+
+    AnimatedVisibility(uiState.loading) {
+      LinearProgressIndicator(
+        modifier = Modifier.fillMaxWidth(),
+      )
     }
 
     when (val form = uiState.form) {

@@ -2,6 +2,7 @@ package com.divinelink.feature.discover.filters
 
 import com.divinelink.core.model.Decade
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.certification.Certification
 import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverFilter
@@ -30,4 +31,5 @@ sealed interface SelectFilterAction {
   data class SearchKeywords(val query: String) : SelectFilterAction
   data class SelectCompany(val company: Company) : SelectFilterAction
   data class SearchCompanies(val query: String) : SelectFilterAction
+  data class SelectCertification(val cert: Certification) : SelectFilterAction
 }

@@ -1,9 +1,13 @@
 package com.divinelink.feature.discover.filters
 
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,10 +16,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_content_rating
 import com.divinelink.core.ui.resources.core_ui_country
 import com.divinelink.core.ui.resources.core_ui_language
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.FilterType
+import com.divinelink.feature.discover.filters.certification.CertificationFilterList
 import com.divinelink.feature.discover.filters.company.CompanyFiltersContent
 import com.divinelink.feature.discover.filters.keyword.KeywordsFiltersContent
 import com.divinelink.feature.discover.filters.year.YearFilterContent
@@ -36,7 +42,10 @@ fun SelectFilterModalBottomSheet(
 ) {
   val density = LocalDensity.current
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val sheetState = rememberBottomSheetState(
+    initialValue = Hidden,
+    enabledValues = setOf(Hidden, Expanded),
+  )
 
   ModalBottomSheet(
     modifier = Modifier.wrapContentSize(),
@@ -51,6 +60,7 @@ fun SelectFilterModalBottomSheet(
         onDismissRequest = onDismissRequest,
       )
       is FilterType.Searchable.Languages -> SelectableFilterList(
+        modifier = Modifier.fillMaxHeight(),
         titleRes = UiString.core_ui_language,
         items = filterType.visibleOptions(),
         key = { it.code },
@@ -65,6 +75,7 @@ fun SelectFilterModalBottomSheet(
         query = filterType.query,
       )
       is FilterType.Searchable.Countries -> SelectableFilterList(
+        modifier = Modifier.fillMaxHeight(),
         titleRes = UiString.core_ui_country,
         items = filterType.visibleOptions(),
         key = { it.code },
@@ -100,6 +111,16 @@ fun SelectFilterModalBottomSheet(
         companies = filterType,
         action = viewModel::onAction,
         onDismissRequest = onDismissRequest,
+      )
+      is FilterType.ContentRatings -> CertificationFilterList(
+        modifier = Modifier.wrapContentHeight(),
+        titleRes = UiString.core_ui_content_rating,
+        items = filterType.availableOptions,
+        isSelected = { it in filterType.selectedOptions },
+        onItemClick = {
+          viewModel.onAction(SelectFilterAction.SelectCertification(it))
+        },
+        selected = filterType.selectedOptions.firstOrNull(),
       )
     }
   }

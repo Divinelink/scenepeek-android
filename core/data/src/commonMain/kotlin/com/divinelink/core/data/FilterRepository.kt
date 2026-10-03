@@ -3,6 +3,7 @@
 package com.divinelink.core.data
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.certification.Certification
 import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.DiscoverFilter
@@ -66,6 +67,12 @@ class FilterRepository {
         MediaType.TV to emptyList(),
       ),
     ),
+    val contentRatings: MutableStateFlow<Map<MediaType, List<Certification>>> = MutableStateFlow(
+      mapOf(
+        MediaType.MOVIE to emptyList(),
+        MediaType.TV to emptyList(),
+      ),
+    ),
   )
 
   private fun getFilterState(uuid: String): FilterState = filterStates.getOrPut(uuid) {
@@ -95,6 +102,9 @@ class FilterRepository {
 
   fun companies(uuid: String): StateFlow<Map<MediaType, List<Company>>> =
     getFilterState(uuid).companies.asStateFlow()
+
+  fun contentRatings(uuid: String): StateFlow<Map<MediaType, List<Certification>>> =
+    getFilterState(uuid).contentRatings.asStateFlow()
 
   fun updateSelectedGenres(
     uuid: String,
@@ -178,6 +188,23 @@ class FilterRepository {
     filterState.companies.value += mediaType to companies
   }
 
+  fun updateContentRatings(
+    uuid: String,
+    mediaType: MediaType,
+    certification: Certification,
+  ) {
+    val filterState = getFilterState(uuid)
+    val currentContentRatings = filterState.contentRatings.value[mediaType] ?: emptyList()
+
+    val certifications = if (certification in currentContentRatings) {
+      currentContentRatings - certification
+    } else {
+      currentContentRatings + certification
+    }
+
+    filterState.contentRatings.value += mediaType to certifications
+  }
+
   fun clearKeywords(
     uuid: String,
     mediaType: MediaType,
@@ -208,6 +235,7 @@ class FilterRepository {
       selectedGenres.value += mediaType to emptyList()
       keywords.value += mediaType to emptyList()
       companies.value += mediaType to emptyList()
+      contentRatings.value += mediaType to emptyList()
       selectedLanguage.value += mediaType to null
       selectedCountry.value += mediaType to null
       voteAverage.value += mediaType to null

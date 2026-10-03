@@ -7,5 +7,5 @@ data class DiscoverParameters(
   val page: Int,
   val mediaType: MediaType,
   val sortOption: SortOption,
-  val filters: MediaTypeFilters,
+  val filters: DiscoverFilterState,
 )

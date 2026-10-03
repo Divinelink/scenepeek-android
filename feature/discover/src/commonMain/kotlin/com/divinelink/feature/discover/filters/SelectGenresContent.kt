@@ -3,6 +3,7 @@ package com.divinelink.feature.discover.filters
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -51,9 +52,11 @@ fun SelectGenresContent(
       val filterType = uiState.filterType as FilterType.Searchable.Genres
 
       SelectableFilterList(
-        modifier = Modifier.padding(
-          bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
-        ),
+        modifier = Modifier
+          .fillMaxHeight()
+          .padding(
+            bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
+          ),
         titleRes = UiString.core_ui_genres,
         items = filterType.visibleOptions(),
         key = { it.id },

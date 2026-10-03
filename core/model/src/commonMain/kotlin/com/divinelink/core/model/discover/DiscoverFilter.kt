@@ -17,6 +17,8 @@ sealed interface DiscoverFilter {
 
   data class Companies(val ids: List<Long>) : DiscoverFilter
 
+  data class ContentRatings(val certs: List<String>) : DiscoverFilter
+
   sealed interface Year : DiscoverFilter {
     data class Single(val year: Int) : Year
 

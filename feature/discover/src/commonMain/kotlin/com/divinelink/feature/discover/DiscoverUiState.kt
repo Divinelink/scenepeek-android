@@ -1,8 +1,8 @@
 package com.divinelink.feature.discover
 
+import com.divinelink.core.model.discover.DiscoverFilterState
 import com.divinelink.core.model.discover.DiscoverFilterType
 import com.divinelink.core.model.discover.DiscoverType
-import com.divinelink.core.model.discover.MediaTypeFilters
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortOption
@@ -17,8 +17,8 @@ data class DiscoverUiState(
   val form: DiscoverForm<MediaItem.Media>,
   val canFetchMore: Boolean,
   val sortOption: SortOption?,
-  val filters: MediaTypeFilters,
-  val lastFilters: MediaTypeFilters,
+  val filters: DiscoverFilterState,
+  val lastFilters: DiscoverFilterState,
   val loading: Boolean,
   val availableFilters: List<DiscoverFilterType>,
   val minDate: String,
@@ -41,8 +41,8 @@ data class DiscoverUiState(
         page = 1,
         form = DiscoverForm.Initial,
         canFetchMore = true,
-        filters = MediaTypeFilters.initial(mediaType, entryPoint, minDate),
-        lastFilters = MediaTypeFilters.empty,
+        filters = DiscoverFilterState.initial(mediaType, entryPoint, minDate),
+        lastFilters = DiscoverFilterState.empty,
         sortOption = null,
         loading = false,
         minDate = minDate,
