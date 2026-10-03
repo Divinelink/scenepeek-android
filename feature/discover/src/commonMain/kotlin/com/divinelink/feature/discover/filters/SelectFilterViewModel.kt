@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.Decade
+import com.divinelink.core.model.certification.MovieCertification
+import com.divinelink.core.model.certification.ShowCertification
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.discover.YearType
 import com.divinelink.core.model.exception.AppException
@@ -187,6 +189,30 @@ class SelectFilterViewModel(
             }
           }
           .launchIn(viewModelScope)
+
+      FilterModal.ContentRating -> {
+        val availableOptions = when (mediaType) {
+          MediaType.TV -> ShowCertification.US
+          MediaType.MOVIE -> MovieCertification.US
+          else -> emptyList()
+        }
+
+        filterRepository
+          .contentRatings(uuid = entryPointUuid)
+          .map { it[_uiState.value.mediaType] ?: emptyList() }
+          .distinctUntilChanged()
+          .onEach { certifications ->
+            _uiState.update {
+              it.copy(
+                filterType = (it.filterType as FilterType.ContentRatings).copy(
+                  availableOptions = availableOptions,
+                  selectedOptions = certifications,
+                ),
+              )
+            }
+          }
+          .launchIn(viewModelScope)
+      }
     }
   }
 
@@ -269,8 +295,18 @@ class SelectFilterViewModel(
       is SelectFilterAction.SelectKeyword -> handleSelectKeyword(action)
       is SelectFilterAction.SearchCompanies -> handleSearchCompany(action)
       is SelectFilterAction.SelectCompany -> handleSelectCompany(action)
+      is SelectFilterAction.SelectCertification -> handleSelectCertification(action)
     }
   }
+
+  private fun handleSelectCertification(action: SelectFilterAction.SelectCertification) {
+    filterRepository.updateContentRatings(
+      mediaType = _uiState.value.mediaType,
+      uuid = entryPointUuid,
+      certification = action.cert,
+    )
+  }
+
 
   private fun handleSelectCompany(action: SelectFilterAction.SelectCompany) {
     filterRepository.updateCompany(
@@ -363,6 +399,7 @@ class SelectFilterViewModel(
           is FilterType.Searchable.Languages -> uiState.filterType.copy(query = action.query)
           is FilterType.VoteAverage -> uiState.filterType
           is FilterType.Year -> uiState.filterType
+          is FilterType.ContentRatings -> uiState.filterType
           is FilterType.Keywords -> uiState.filterType.copy(query = action.query)
           is FilterType.Companies -> uiState.filterType.copy(query = action.query)
         },
@@ -405,6 +442,7 @@ class SelectFilterViewModel(
       FilterModal.Year -> Unit
       FilterModal.Keywords -> Unit
       FilterModal.Companies -> Unit
+      FilterModal.ContentRating -> Unit
     }
   }
 

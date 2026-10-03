@@ -2,6 +2,7 @@ package com.divinelink.feature.discover
 
 import androidx.compose.runtime.Composable
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.certification.Certification
 import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.discover.YearType
@@ -82,6 +83,11 @@ sealed interface FilterType {
       .plus(options)
       .distinctBy { it.id }
   }
+
+  data class ContentRatings(
+    val availableOptions: List<Certification>,
+    val selectedOptions: List<Certification>,
+  ) : FilterType
 
   data class VoteAverage(
     val greaterThan: Int,

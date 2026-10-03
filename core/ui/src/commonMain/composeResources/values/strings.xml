@@ -166,6 +166,7 @@
     <item quantity="one">Company</item>
     <item quantity="other">Companies</item>
   </plurals>
+  <string name="core_ui_content_rating">Content rating</string>
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

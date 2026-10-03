@@ -1,6 +1,7 @@
 package com.divinelink.core.model.discover
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.certification.Certification
 import com.divinelink.core.model.details.Company
 import com.divinelink.core.model.details.Keyword
 import com.divinelink.core.model.locale.Country
@@ -16,6 +17,7 @@ data class DiscoverFilterState(
   val votes: Int?,
   val keywords: List<Keyword>,
   val companies: List<Company>,
+  val contentRating: List<Certification>,
   val custom: DiscoverFilter.Custom?,
 ) {
   companion object {
@@ -32,6 +34,7 @@ data class DiscoverFilterState(
       country = null,
       voteAverage = null,
       votes = null,
+      contentRating = emptyList(),
       custom = when (entryPoint) {
         DiscoverType.Upcoming -> DiscoverFilter.Custom.Upcoming(
           mediaType = mediaType,
@@ -47,6 +50,7 @@ data class DiscoverFilterState(
       genres = emptyList(),
       keywords = emptyList(),
       companies = emptyList(),
+      contentRating = emptyList(),
       year = null,
       language = null,
       country = null,
@@ -60,6 +64,7 @@ data class DiscoverFilterState(
     get() = genres.isNotEmpty() ||
       keywords.isNotEmpty() ||
       companies.isNotEmpty() ||
+      contentRating.isNotEmpty() ||
       language != null ||
       country != null ||
       voteAverage != null ||
@@ -75,6 +80,7 @@ data class DiscoverFilterState(
     votes != null -> 5
     keywords.isNotEmpty() -> 6
     companies.isNotEmpty() -> 7
+    contentRating.isNotEmpty() -> 8
     else -> 0
   }
 }

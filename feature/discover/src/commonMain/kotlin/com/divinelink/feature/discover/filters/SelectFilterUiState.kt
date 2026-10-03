@@ -57,6 +57,10 @@ data class SelectFilterUiState(
           query = null,
           loading = false,
         )
+        is FilterModal.ContentRating -> FilterType.ContentRatings(
+          availableOptions = emptyList(),
+          selectedOptions = emptyList(),
+        )
       },
     )
   }
