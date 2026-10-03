@@ -307,7 +307,6 @@ class SelectFilterViewModel(
     )
   }
 
-
   private fun handleSelectCompany(action: SelectFilterAction.SelectCompany) {
     filterRepository.updateCompany(
       mediaType = _uiState.value.mediaType,

@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,7 +36,6 @@ import com.divinelink.core.ui.media.ContentRating
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
-
 @Composable
 fun CertificationFilterList(
   titleRes: StringResource,
@@ -62,9 +60,7 @@ fun CertificationFilterList(
 
   LazyColumn(
     state = state,
-    modifier = modifier
-      .fillMaxHeight()
-      .animateContentSize(),
+    modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     item {
@@ -93,7 +89,6 @@ fun CertificationFilterList(
           ),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-
         Box(
           modifier = Modifier.width(width),
         ) {
@@ -113,14 +108,16 @@ fun CertificationFilterList(
 
         AnimatedContent(isSelected(item)) { selected ->
           if (selected) {
-            Icon(
-              modifier = Modifier.size(MaterialTheme.dimensions.keyline_24),
-              imageVector = Icons.Default.Done,
-              tint = MaterialTheme.colorScheme.primary,
-              contentDescription = null,
-            )
+            Box(modifier = Modifier.size(MaterialTheme.dimensions.keyline_32)) {
+              Icon(
+                modifier = Modifier.align(Alignment.Center),
+                imageVector = Icons.Default.Done,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null,
+              )
+            }
           } else {
-            Spacer(modifier = Modifier.size(MaterialTheme.dimensions.keyline_24))
+            Spacer(modifier = Modifier.size(MaterialTheme.dimensions.keyline_32))
           }
         }
       }
@@ -132,16 +129,13 @@ fun CertificationFilterList(
 }
 
 @Composable
-private fun rememberMaxContentRatingWidth(
-  labels: List<Certification>,
-): Dp {
+private fun rememberMaxContentRatingWidth(labels: List<Certification>): Dp {
   val density = LocalDensity.current
   val fontSize = MaterialTheme.typography.bodySmall.fontSize
   val fontWeight = MaterialTheme.typography.titleSmall.fontWeight
   val textMeasurer = rememberTextMeasurer()
 
   return remember(labels, fontSize, fontWeight) {
-
     val textStyle = TextStyle(
       fontSize = fontSize,
       fontWeight = fontWeight,

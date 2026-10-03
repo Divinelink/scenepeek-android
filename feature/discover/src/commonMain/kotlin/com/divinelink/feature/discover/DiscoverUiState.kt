@@ -1,8 +1,8 @@
 package com.divinelink.feature.discover
 
+import com.divinelink.core.model.discover.DiscoverFilterState
 import com.divinelink.core.model.discover.DiscoverFilterType
 import com.divinelink.core.model.discover.DiscoverType
-import com.divinelink.core.model.discover.DiscoverFilterState
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.sort.SortOption
