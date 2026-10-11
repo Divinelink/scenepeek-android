@@ -24,9 +24,11 @@ class WatchHistoryViewModel(
       .getWatchHistory(uiState.value.offset)
       .distinctUntilChanged()
       .onEach { history ->
+        val historyByDay = history.groupBy { item -> item.watchedAt }
+
         _uiState.update { state ->
           state.copy(
-            history = history,
+            history = state.history.plus(historyByDay),
           )
         }
       }

@@ -1,21 +1,26 @@
 package com.divinelink.feature.home.history
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.commons.DateFormatStyle
+import com.divinelink.core.commons.formatLocalized
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -50,16 +55,29 @@ fun WatchHistoryContent(
 //      }
 //    }
 
-      items(
-        items = state.history,
-        key = { episode -> episode.episode.id },
-      ) { episode ->
-        WatchedEpisodeItem(
-          boxModifier = Modifier
-            .padding(horizontal = MaterialTheme.dimensions.keyline_8),
-          episode = episode,
-          onNavigate = onNavigate,
-        )
+      state.history.forEach { item ->
+        stickyHeader {
+          Text(
+            modifier = Modifier
+              .background(MaterialTheme.colorScheme.surface)
+              .fillMaxWidth()
+              .padding(MaterialTheme.dimensions.keyline_8),
+            text = item.key.formatLocalized(DateFormatStyle.LONG),
+            style = MaterialTheme.typography.titleMedium,
+          )
+        }
+
+        items(
+          items = item.value,
+          key = { episode -> episode.episode.id },
+        ) { episode ->
+          WatchedEpisodeItem(
+            boxModifier = Modifier
+              .padding(horizontal = MaterialTheme.dimensions.keyline_8),
+            episode = episode,
+            onNavigate = onNavigate,
+          )
+        }
       }
 
       item {
