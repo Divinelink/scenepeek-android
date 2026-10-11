@@ -125,7 +125,7 @@ class ProdTrackDao(
 
   override fun markEpisodeAsWatched(
     episodeId: Long,
-    watchedAt: String,
+    watchedAt: Long,
   ) = database.transaction {
     userEpisodeQueries.insertUserEpisode(
       episodeId = episodeId,
@@ -151,7 +151,7 @@ class ProdTrackDao(
 
   override fun getWatchHistory(
     lastId: Long,
-    lastWatchedAt: String?,
+    lastWatchedAt: Long?,
   ): List<WatchedEpisode> =
     userShowQueries
       .getWatchHistory(lastId = lastId, lastWatchedAt = lastWatchedAt)
@@ -209,7 +209,7 @@ class ProdTrackDao(
         .map { episode ->
           UserEpisodeExport(
             id = episode.episodeId,
-            watchedAt = episode.watchedAt,
+            watchedAt = episode.watchedAt.toString(), // TODO
           )
         }
 
@@ -282,7 +282,7 @@ class ProdTrackDao(
         episode.watchedAt?.let { watchedAt ->
           userEpisodeQueries.insertUserEpisode(
             episode.id,
-            watchedAt,
+            watchedAt.toLong(),
           )
         }
       }

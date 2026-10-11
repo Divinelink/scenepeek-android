@@ -247,7 +247,7 @@ class EpisodeViewModel(
       markEpisodeAsWatchedUseCase(
         parameters = MarkEpisodeParameters(
           episode = episode,
-          watchedAt = clock.now,
+          watchedAt = clock.epochSeconds,
         ),
       )
     }

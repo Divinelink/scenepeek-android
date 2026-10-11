@@ -37,7 +37,7 @@ interface TrackDao {
   fun isWatchedEpisode(episodeId: Long): Boolean
   fun markEpisodeAsWatched(
     episodeId: Long,
-    watchedAt: String,
+    watchedAt: Long,
   )
   fun unmarkEpisodeAsWatched(episodeId: Long)
 
@@ -45,5 +45,5 @@ interface TrackDao {
   fun restoreLibrary(encoded: String): Result<RestoreProcess>
 
   fun observeLatestWatchHistory(): Flow<List<WatchedEpisode>>
-  fun getWatchHistory(lastId: Long, lastWatchedAt: String?): List<WatchedEpisode>
+  fun getWatchHistory(lastId: Long, lastWatchedAt: Long?): List<WatchedEpisode>
 }

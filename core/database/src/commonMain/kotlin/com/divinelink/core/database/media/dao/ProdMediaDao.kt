@@ -7,6 +7,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.commons.extensions.epochSecondsToLocalDate
 import com.divinelink.core.commons.extensions.parseOrNull
 import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.database.Database
@@ -580,7 +581,7 @@ class ProdMediaDao(
 
   override fun markSeasonAsWatched(
     episodeIds: List<Long>,
-    watchedAt: String,
+    watchedAt: Long,
   ) {
     if (episodeIds.isEmpty()) return
 
@@ -618,12 +619,14 @@ class ProdMediaDao(
   override fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<Map<Long, LocalDate?>> = episodeQueries
+  ): Flow<Map<Long, LocalDate>> = episodeQueries
     .watchedEpisodesForSeason(showId = showId, seasonNumber = seasonNumber.toLong())
     .asFlow()
     .mapToList(dispatcher.io)
     .map { watched ->
-      watched.associate { it.episodeId to LocalDate.parseOrNull(it.watchedAt) }
+      watched.associate {
+        it.episodeId to it.watchedAt.epochSecondsToLocalDate(clockProvider.timezone)
+      }
     }
     .distinctUntilChanged()
 

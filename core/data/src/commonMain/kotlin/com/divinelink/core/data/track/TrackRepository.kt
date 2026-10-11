@@ -39,7 +39,7 @@ interface TrackRepository {
 
   fun markEpisodeAsWatched(
     episodeId: Long,
-    watchedAt: String,
+    watchedAt: Long,
   )
   suspend fun unmarkEpisodeAsWatched(episodeId: Long)
   fun isWatchedEpisode(episodeId: Long): Boolean
@@ -48,5 +48,5 @@ interface TrackRepository {
   fun restoreLibrary(encodedFile: String): Result<RestoreProcess>
 
   fun observeRecentHistory(): Flow<List<WatchedEpisode>>
-  fun getWatchHistory(lastId: Long, lastWatchedAt: String?): List<WatchedEpisode>
+  fun getWatchHistory(lastId: Long, lastWatchedAt: Long?): List<WatchedEpisode>
 }

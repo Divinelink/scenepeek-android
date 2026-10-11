@@ -122,7 +122,7 @@ class SeasonViewModel(
       markEpisodeAsWatchedUseCase(
         MarkEpisodeParameters(
           episode = action.episode,
-          watchedAt = clock.now,
+          watchedAt = clock.epochSeconds,
         ),
       ).onSuccess { added ->
         val resource = if (added) {

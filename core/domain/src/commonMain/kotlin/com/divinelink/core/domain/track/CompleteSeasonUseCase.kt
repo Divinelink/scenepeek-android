@@ -5,13 +5,12 @@ import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.first
-import kotlinx.datetime.LocalDate
 
 data class CompleteSeasonParameters(
   val showId: Long,
   val seasonNumber: Int,
   val seasonComplete: Boolean,
-  val watchedAt: LocalDate,
+  val watchedAt: Long,
 )
 
 class CompleteSeasonUseCase(
@@ -34,7 +33,7 @@ class CompleteSeasonUseCase(
     } else {
       repository.markSeasonAsWatched(
         episodeIds = episodeIds,
-        watchedAt = parameters.watchedAt.toString(),
+        watchedAt = parameters.watchedAt,
       )
     }
 

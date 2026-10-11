@@ -2,6 +2,8 @@ package com.divinelink.feature.home.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.extensions.epochSecondsToLocalDate
+import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.model.entity.EntityChange
 import com.divinelink.core.model.track.WatchedEpisode
@@ -16,6 +18,7 @@ import kotlinx.datetime.LocalDate
 
 class WatchHistoryViewModel(
   private val trackRepository: TrackRepository,
+  private val clockProvider: ClockProvider,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<WatchHistoryUiState> = MutableStateFlow(
@@ -29,8 +32,10 @@ class WatchHistoryViewModel(
       .distinctUntilChanged()
       .onEach { history ->
         val lastId = history.lastOrNull()?.watchedId
-        val lastWatchedAt = history.lastOrNull()?.watchedAt.toString()
-        val groupedHistory = history.groupBy { item -> item.watchedAt }
+        val lastWatchedAt = history.lastOrNull()?.watchedAt
+        val groupedHistory = history.groupBy { item ->
+          item.watchedAt.epochSecondsToLocalDate(clockProvider.timezone)
+        }
 
         _uiState.update { state ->
           state.copy(
@@ -99,9 +104,11 @@ class WatchHistoryViewModel(
           state.copy(
             history = mergeWatchHistory(
               current = state.history,
-              new = newItems.groupBy { it.watchedAt },
+              new = newItems.groupBy {
+                it.watchedAt.epochSecondsToLocalDate(clockProvider.timezone)
+              },
             ),
-            lastWatchedAt = newItems.last().watchedAt.toString(),
+            lastWatchedAt = newItems.last().watchedAt,
             lastId = newItems.last().watchedId,
             loading = false,
           )
