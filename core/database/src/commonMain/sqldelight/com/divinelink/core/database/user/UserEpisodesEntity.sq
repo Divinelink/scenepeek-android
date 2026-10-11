@@ -4,8 +4,8 @@ CREATE TABLE UserEpisodesEntity (
   watchedAt TEXT NOT NULL
 );
 
-upsertUserEpisode:
-INSERT OR REPLACE INTO UserEpisodesEntity (
+insertUserEpisode:
+INSERT OR IGNORE INTO UserEpisodesEntity (
   episodeId,
   watchedAt
 )

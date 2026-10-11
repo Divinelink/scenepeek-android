@@ -586,7 +586,7 @@ class ProdMediaDao(
 
     database.transaction {
       episodeIds.forEach { id ->
-        episodeQueries.upsertUserEpisode(episodeId = id, watchedAt = watchedAt)
+        episodeQueries.insertUserEpisode(episodeId = id, watchedAt = watchedAt)
       }
     }
   }

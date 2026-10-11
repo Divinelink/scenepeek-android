@@ -127,7 +127,7 @@ class ProdTrackDao(
     episodeId: Long,
     watchedAt: String,
   ) = database.transaction {
-    userEpisodeQueries.upsertUserEpisode(
+    userEpisodeQueries.insertUserEpisode(
       episodeId = episodeId,
       watchedAt = watchedAt,
     )
@@ -272,7 +272,7 @@ class ProdTrackDao(
 
       show.watched.forEach { episode ->
         episode.watchedAt?.let { watchedAt ->
-          userEpisodeQueries.upsertUserEpisode(
+          userEpisodeQueries.insertUserEpisode(
             episode.id,
             watchedAt,
           )
