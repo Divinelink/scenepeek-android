@@ -1,20 +1,28 @@
 package com.divinelink.feature.home.history
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.components.ScrollToTopButton
+import com.divinelink.core.ui.components.extensions.canScrollToTop
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -23,13 +31,17 @@ fun WatchHistoryContent(
   onNavigate: (Navigation) -> Unit,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
+  val scope = rememberCoroutineScope()
+  val scrollState = rememberLazyListState()
 
-  ScenePeekLazyColumn(
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-    contentPadding = PaddingValues(
-      vertical = MaterialTheme.dimensions.keyline_8,
-    ),
-  ) {
+  Box(Modifier.fillMaxSize()) {
+    ScenePeekLazyColumn(
+      state = scrollState,
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      contentPadding = PaddingValues(
+        vertical = MaterialTheme.dimensions.keyline_8,
+      ),
+    ) {
 //    if (state.available.isEmpty() && state.upcoming.isEmpty() && state.paused.isEmpty()) {
 //      item {
 //        NextUpEmptyContent(
@@ -38,20 +50,27 @@ fun WatchHistoryContent(
 //      }
 //    }
 
-    items(
-      items = state.history,
-      key = { episode -> episode.episode.id },
-    ) { episode ->
-      WatchedEpisodeItem(
-        boxModifier = Modifier
-          .padding(horizontal = MaterialTheme.dimensions.keyline_8),
-        episode = episode,
-        onNavigate = onNavigate,
-      )
+      items(
+        items = state.history,
+        key = { episode -> episode.episode.id },
+      ) { episode ->
+        WatchedEpisodeItem(
+          boxModifier = Modifier
+            .padding(horizontal = MaterialTheme.dimensions.keyline_8),
+          episode = episode,
+          onNavigate = onNavigate,
+        )
+      }
+
+      item {
+        Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
+      }
     }
 
-    item {
-      Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
-    }
+    ScrollToTopButton(
+      modifier = Modifier.align(Alignment.BottomCenter),
+      visible = scrollState.canScrollToTop(),
+      onClick = { scope.launch { scrollState.animateScrollToItem(0) } },
+    )
   }
 }
