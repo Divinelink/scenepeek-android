@@ -115,7 +115,6 @@ SELECT
   show.id AS showId,
   show.name AS showTitle,
   show.posterPath AS showPosterPath,
-  userShow.status AS showStatus,
   ep.id AS episodeId,
   ep.seasonNumber AS seasonNumber,
   ep.episodeNumber AS episodeNumber,
@@ -127,8 +126,9 @@ SELECT
 FROM UserEpisodesEntity ue
 JOIN EpisodeEntity ep ON ue.episodeId = ep.id
 JOIN MediaItemEntity show ON ep.showId = show.id
-JOIN UserShowsEntity userShow ON show.id = userShow.showId
-WHERE ue.id < :lastId
+WHERE (:lastWatchedAt IS NULL)
+   OR ue.watchedAt < :lastWatchedAt
+   OR (ue.watchedAt = :lastWatchedAt AND ue.id < :lastId)
 ORDER BY ue.watchedAt DESC, ue.id DESC
 LIMIT 20;
 

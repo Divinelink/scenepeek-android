@@ -45,5 +45,5 @@ interface TrackDao {
   fun restoreLibrary(encoded: String): Result<RestoreProcess>
 
   fun observeLatestWatchHistory(): Flow<List<WatchedEpisode>>
-  fun getWatchHistory(lastId: Long): List<WatchedEpisode>
+  fun getWatchHistory(lastId: Long, lastWatchedAt: String?): List<WatchedEpisode>
 }

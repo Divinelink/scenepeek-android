@@ -14,8 +14,8 @@ VALUES (?,?);
 deleteUserEpisode:
 DELETE FROM UserEpisodesEntity WHERE episodeId = ?;
 
-CREATE INDEX idx_user_episodes_episode_id
-ON UserEpisodesEntity(episodeId);
+CREATE INDEX idx_user_episodes_episode_id ON UserEpisodesEntity(episodeId);
+CREATE INDEX idx_user_episodes_watched_at ON UserEpisodesEntity(watchedAt DESC, id DESC);
 
 isWatchedEpisode:
 SELECT COUNT(*) > 0 AS watched

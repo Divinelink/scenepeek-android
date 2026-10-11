@@ -85,8 +85,8 @@ class ProdTrackRepository(
   override fun restoreLibrary(encodedFile: String): Result<RestoreProcess> = dao
     .restoreLibrary(encodedFile)
 
-  override fun getWatchHistory(lastId: Long): List<WatchedEpisode> = dao
-    .getWatchHistory(lastId)
+  override fun getWatchHistory(lastId: Long, lastWatchedAt: String?): List<WatchedEpisode> = dao
+    .getWatchHistory(lastId, lastWatchedAt)
 
   override fun observeRecentHistory(): Flow<List<WatchedEpisode>> = dao
     .observeLatestWatchHistory()

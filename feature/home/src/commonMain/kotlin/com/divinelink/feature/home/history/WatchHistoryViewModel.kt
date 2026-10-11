@@ -29,12 +29,13 @@ class WatchHistoryViewModel(
       .distinctUntilChanged()
       .onEach { history ->
         val lastId = history.lastOrNull()?.watchedId
-        val historyByDay = history.groupBy { item -> item.watchedAt }
+        val lastWatchedAt = history.lastOrNull()?.watchedAt.toString()
+        val groupedHistory = history.groupBy { item -> item.watchedAt }
 
         _uiState.update { state ->
           state.copy(
             history = mergeWatchHistory(
-              current = historyByDay,
+              current = groupedHistory,
               new = state.history,
             ),
             loading = false,
@@ -43,6 +44,11 @@ class WatchHistoryViewModel(
               lastId
             } else {
               state.lastId
+            },
+            lastWatchedAt = if (state.initialFetch) {
+              lastWatchedAt
+            } else {
+              state.lastWatchedAt
             },
           )
         }
@@ -80,7 +86,7 @@ class WatchHistoryViewModel(
       _uiState.update { it.copy(loading = true) }
       val id = state.lastId ?: Long.MAX_VALUE
 
-      val newItems = trackRepository.getWatchHistory(id)
+      val newItems = trackRepository.getWatchHistory(id, state.lastWatchedAt)
       if (newItems.isEmpty()) {
         _uiState.update {
           it.copy(
@@ -95,6 +101,7 @@ class WatchHistoryViewModel(
               current = state.history,
               new = newItems.groupBy { it.watchedAt },
             ),
+            lastWatchedAt = newItems.last().watchedAt.toString(),
             lastId = newItems.last().watchedId,
             loading = false,
           )
@@ -117,6 +124,9 @@ class WatchHistoryViewModel(
   fun Map<LocalDate, List<WatchedEpisode>>.removeIds(
     ids: Set<Long>,
   ): Map<LocalDate, List<WatchedEpisode>> =
-    mapValues { (_, items) -> items.filterNot { it.episode.id.toLong() in ids } }
-      .filterValues { it.isNotEmpty() }
+    mapValues { (_, items) ->
+      items
+        .filterNot { it.episode.id.toLong() in ids }
+        .distinctBy { it.watchedId }
+    }.filterValues { it.isNotEmpty() }
 }

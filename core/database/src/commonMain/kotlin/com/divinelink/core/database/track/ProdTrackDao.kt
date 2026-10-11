@@ -140,7 +140,7 @@ class ProdTrackDao(
   }
 
   override fun observeLatestWatchHistory(): Flow<List<WatchedEpisode>> = userShowQueries
-    .getWatchHistory(Long.MAX_VALUE)
+    .getWatchHistory(null, Long.MAX_VALUE)
     .asFlow()
     .mapToList(dispatcher.io)
     .map { entities ->
@@ -149,9 +149,12 @@ class ProdTrackDao(
       }
     }
 
-  override fun getWatchHistory(lastId: Long): List<WatchedEpisode> =
+  override fun getWatchHistory(
+    lastId: Long,
+    lastWatchedAt: String?,
+  ): List<WatchedEpisode> =
     userShowQueries
-      .getWatchHistory(lastId)
+      .getWatchHistory(lastId = lastId, lastWatchedAt = lastWatchedAt)
       .executeAsList()
       .map { entities ->
         entities.map()

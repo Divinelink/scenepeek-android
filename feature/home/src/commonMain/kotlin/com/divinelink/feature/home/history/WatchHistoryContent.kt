@@ -1,6 +1,5 @@
 package com.divinelink.feature.home.history
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -72,14 +72,15 @@ fun WatchHistoryContent(
       ) {
         state.history.forEach { item ->
           stickyHeader {
-            Text(
-              modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface)
-                .fillMaxWidth()
-                .padding(MaterialTheme.dimensions.keyline_8),
-              text = item.key.formatLocalized(DateFormatStyle.FULL),
-              style = MaterialTheme.typography.titleMedium,
-            )
+            Surface(modifier = Modifier.fillMaxWidth()) {
+              Text(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(MaterialTheme.dimensions.keyline_8),
+                text = item.key.formatLocalized(DateFormatStyle.FULL),
+                style = MaterialTheme.typography.titleMedium,
+              )
+            }
           }
 
           items(
