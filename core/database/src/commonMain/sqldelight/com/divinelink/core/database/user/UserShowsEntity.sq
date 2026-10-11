@@ -123,14 +123,14 @@ SELECT
   ep.stillPath AS episodeThumbnail,
   ep.airDate AS airDate,
   ue.watchedAt,
-  ue.episodeId AS userEpisodeId
+  ue.id AS userEpisodeId
 FROM UserEpisodesEntity ue
 JOIN EpisodeEntity ep ON ue.episodeId = ep.id
 JOIN MediaItemEntity show ON ep.showId = show.id
 JOIN UserShowsEntity userShow ON show.id = userShow.showId
-ORDER BY ue.watchedAt DESC, ue.id DESC;
--- LIMIT :limit;
--- OFFSET :offset;  -- Only if using offset pagination
+WHERE ue.id < :lastId
+ORDER BY ue.watchedAt DESC, ue.id DESC
+LIMIT 20;
 
 findCurrentWatchingSeason:
 SELECT episode.seasonNumber AS seasonNumber

@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WatchedEpisode(
   val episode: Episode,
+  val watchedId: Long,
   val showTitle: String,
   val showPosterPath: String?,
   val watchedAt: LocalDate,

@@ -26,8 +26,9 @@ fun GetWatchHistory.map(): WatchedEpisode {
 
   return WatchedEpisode(
     episode = episode,
+    watchedId = userEpisodeId,
     showTitle = showTitle,
     showPosterPath = showPosterPath,
-    watchedAt = LocalDate.parse(watchedAt ?: ""),
+    watchedAt = LocalDate.parse(watchedAt),
   )
 }

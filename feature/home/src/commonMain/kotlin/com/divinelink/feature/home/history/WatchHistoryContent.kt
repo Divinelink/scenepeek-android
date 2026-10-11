@@ -26,6 +26,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.components.ScrollToTopButton
+import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,6 +39,10 @@ fun WatchHistoryContent(
   val state by viewModel.uiState.collectAsStateWithLifecycle()
   val scope = rememberCoroutineScope()
   val scrollState = rememberLazyListState()
+
+  scrollState.EndlessScrollHandler {
+    viewModel.onAction(WatchHistoryAction.LoadMore)
+  }
 
   Box(Modifier.fillMaxSize()) {
     ScenePeekLazyColumn(

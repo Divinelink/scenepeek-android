@@ -6,15 +6,20 @@ import kotlinx.datetime.LocalDate
 
 data class WatchHistoryUiState(
   val history: Map<LocalDate, List<WatchedEpisode>>,
-  val offset: Long,
+  val lastId: Long?,
+  val canLoadMore: Boolean,
   val loading: Boolean,
+  val initialFetch: Boolean,
   val snackbarMessage: SnackbarMessage?,
 ) {
+
   companion object {
     val initial = WatchHistoryUiState(
       history = emptyMap(),
-      offset = 0,
+      lastId = null,
+      canLoadMore = true,
       loading = true,
+      initialFetch = true,
       snackbarMessage = null,
     )
   }

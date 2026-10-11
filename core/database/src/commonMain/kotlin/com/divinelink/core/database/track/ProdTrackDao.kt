@@ -139,17 +139,22 @@ class ProdTrackDao(
     )
   }
 
-  override fun getWatchHistory(offset: Long): Flow<List<WatchedEpisode>> =
-    userShowQueries
-      .getWatchHistory()
-      .asFlow()
-      .mapToList(dispatcher.io)
-      .map { entities ->
-        entities.mapNotNull { episode ->
-          if (episode.watchedAt == null) return@mapNotNull null
+  override fun observeLatestWatchHistory(): Flow<List<WatchedEpisode>> = userShowQueries
+    .getWatchHistory(Long.MAX_VALUE)
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { entities ->
+      entities.map { episode ->
+        episode.map()
+      }
+    }
 
-          episode.map()
-        }
+  override fun getWatchHistory(lastId: Long): List<WatchedEpisode> =
+    userShowQueries
+      .getWatchHistory(lastId)
+      .executeAsList()
+      .map { entities ->
+        entities.map()
       }
 
   override fun exportLibrary(): LibraryExport {
