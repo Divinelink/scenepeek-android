@@ -209,6 +209,8 @@
   <string name="next_up_syncing_issue">Couldn't load progress for some shows. Tap to retry.</string>
   <string name="show_progress_empty_state_title">Let's find something to watch!</string>
   <string name="show_progress_empty_state_subtitle">Add shows to your library to start tracking your progress.</string>
+  <string name="empty_history_title">There's nothing in your history</string>
+  <string name="empty_history_subtitle">Track a show and mark episodes as watched to see them here</string>
   <string name="upcoming">Upcoming</string>
   <string name="popular">Popular</string>
   <plurals name="days_left_to_air">
