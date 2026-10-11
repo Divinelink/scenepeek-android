@@ -128,7 +128,7 @@ FROM UserEpisodesEntity ue
 JOIN EpisodeEntity ep ON ue.episodeId = ep.id
 JOIN MediaItemEntity show ON ep.showId = show.id
 JOIN UserShowsEntity userShow ON show.id = userShow.showId
-ORDER BY ue.watchedAt DESC, ue.episodeId DESC; -- Newest first + tie-breaker
+ORDER BY ue.watchedAt DESC, ue.id DESC;
 -- LIMIT :limit;
 -- OFFSET :offset;  -- Only if using offset pagination
 

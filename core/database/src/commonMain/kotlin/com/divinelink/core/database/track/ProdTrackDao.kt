@@ -271,10 +271,12 @@ class ProdTrackDao(
       insertShow(show)
 
       show.watched.forEach { episode ->
-        userEpisodeQueries.upsertUserEpisode(
-          episode.id,
-          episode.watchedAt,
-        )
+        episode.watchedAt?.let { watchedAt ->
+          userEpisodeQueries.upsertUserEpisode(
+            episode.id,
+            watchedAt,
+          )
+        }
       }
       totalRestored += 1
     }
