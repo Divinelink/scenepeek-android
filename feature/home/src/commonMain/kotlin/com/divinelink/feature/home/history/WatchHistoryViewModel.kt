@@ -3,6 +3,7 @@ package com.divinelink.feature.home.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.track.TrackRepository
+import com.divinelink.core.model.entity.EntityChange
 import com.divinelink.core.model.track.WatchedEpisode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +25,7 @@ class WatchHistoryViewModel(
 
   init {
     trackRepository
-      .observeLatestWatchHistory()
+      .observeRecentHistory()
       .distinctUntilChanged()
       .onEach { history ->
         val lastId = history.lastOrNull()?.watchedId
@@ -44,6 +45,21 @@ class WatchHistoryViewModel(
               state.lastId
             },
           )
+        }
+      }
+      .launchIn(viewModelScope)
+
+    trackRepository
+      .historyEvents
+      .distinctUntilChanged()
+      .onEach { event ->
+        when (event) {
+          is EntityChange.Added -> Unit
+          is EntityChange.Removed -> _uiState.update { state ->
+            state.copy(
+              history = state.history.removeIds(event.ids),
+            )
+          }
         }
       }
       .launchIn(viewModelScope)
@@ -97,4 +113,10 @@ class WatchHistoryViewModel(
         listOfLists.flatten().distinctBy { it.episode.id }
       }
   }
+
+  fun Map<LocalDate, List<WatchedEpisode>>.removeIds(
+    ids: Set<Long>,
+  ): Map<LocalDate, List<WatchedEpisode>> =
+    mapValues { (_, items) -> items.filterNot { it.episode.id.toLong() in ids } }
+      .filterValues { it.isNotEmpty() }
 }

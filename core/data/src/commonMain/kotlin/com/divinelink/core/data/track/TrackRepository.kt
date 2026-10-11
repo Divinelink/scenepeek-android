@@ -1,13 +1,17 @@
 package com.divinelink.core.data.track
 
 import com.divinelink.core.database.show.ShowSyncError
+import com.divinelink.core.model.entity.EntityChange
 import com.divinelink.core.model.export.FileData
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.track.WatchedEpisode
 import com.divinelink.core.model.track.backup.RestoreProcess
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
 interface TrackRepository {
+  val historyEvents: SharedFlow<EntityChange>
+
   fun getUserShows(): Flow<List<Long>>
 
   fun updateShowStatus(
@@ -37,12 +41,12 @@ interface TrackRepository {
     episodeId: Long,
     watchedAt: String,
   )
-  fun unmarkEpisodeAsWatched(episodeId: Long)
+  suspend fun unmarkEpisodeAsWatched(episodeId: Long)
   fun isWatchedEpisode(episodeId: Long): Boolean
 
   fun backupLibrary(): Result<FileData>
   fun restoreLibrary(encodedFile: String): Result<RestoreProcess>
 
-  fun observeLatestWatchHistory(): Flow<List<WatchedEpisode>>
+  fun observeRecentHistory(): Flow<List<WatchedEpisode>>
   fun getWatchHistory(lastId: Long): List<WatchedEpisode>
 }

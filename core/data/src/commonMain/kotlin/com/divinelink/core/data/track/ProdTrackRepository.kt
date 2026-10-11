@@ -3,15 +3,20 @@ package com.divinelink.core.data.track
 import com.divinelink.core.commons.util.encodeToString
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.database.track.TrackDao
+import com.divinelink.core.model.entity.EntityChange
 import com.divinelink.core.model.export.FileData
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.track.WatchedEpisode
 import com.divinelink.core.model.track.backup.RestoreProcess
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 class ProdTrackRepository(
   val dao: TrackDao,
 ) : TrackRepository {
+  private val _historyEvents = MutableSharedFlow<EntityChange>(extraBufferCapacity = 64)
+  override val historyEvents: SharedFlow<EntityChange> = _historyEvents
 
   override fun getUserShows(): Flow<List<Long>> = dao.getUserShows()
 
@@ -59,9 +64,10 @@ class ProdTrackRepository(
     watchedAt = watchedAt,
   )
 
-  override fun unmarkEpisodeAsWatched(episodeId: Long) = dao.unmarkEpisodeAsWatched(
-    episodeId = episodeId,
-  )
+  override suspend fun unmarkEpisodeAsWatched(episodeId: Long) {
+    dao.unmarkEpisodeAsWatched(episodeId = episodeId)
+    _historyEvents.emit(EntityChange.Removed(ids = setOf(episodeId)))
+  }
 
   override fun isWatchedEpisode(episodeId: Long): Boolean = dao
     .isWatchedEpisode(episodeId)
@@ -82,6 +88,6 @@ class ProdTrackRepository(
   override fun getWatchHistory(lastId: Long): List<WatchedEpisode> = dao
     .getWatchHistory(lastId)
 
-  override fun observeLatestWatchHistory(): Flow<List<WatchedEpisode>> = dao
+  override fun observeRecentHistory(): Flow<List<WatchedEpisode>> = dao
     .observeLatestWatchHistory()
 }
