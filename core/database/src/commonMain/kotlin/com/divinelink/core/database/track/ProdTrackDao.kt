@@ -2,12 +2,14 @@ package com.divinelink.core.database.track
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import com.divinelink.core.commons.Constants
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.database.cast.PersonEntity
 import com.divinelink.core.database.media.mapper.map
+import com.divinelink.core.database.migration.LibraryMigrationManager
 import com.divinelink.core.database.season.EpisodeEntity
 import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.database.show.ShowSyncError
@@ -25,12 +27,12 @@ import com.divinelink.core.model.track.backup.ShowExport
 import com.divinelink.core.model.track.backup.UserEpisodeExport
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.json.Json
 
 class ProdTrackDao(
   private val database: Database,
   private val dispatcher: DispatcherProvider,
   private val clock: ClockProvider,
+  private val migrationManager: LibraryMigrationManager,
 ) : TrackDao {
   private val userEpisodeQueries = database.userEpisodesEntityQueries
   private val syncErrorQueries = database.showSyncErrorQueries
@@ -167,6 +169,7 @@ class ProdTrackDao(
     val saved = getSavedExport()
 
     return LibraryExport(
+      version = Constants.LIBRARY_EXPORT_VERSION,
       exportedAt = clock.clock.now().toString(),
       shows = shows,
       seasons = seasons,
@@ -177,8 +180,10 @@ class ProdTrackDao(
     )
   }
 
+
   override fun restoreLibrary(encoded: String): Result<RestoreProcess> = runCatching {
-    val library = Json.decodeFromString<LibraryExport>(encoded)
+    val library = migrationManager.migrateAndParse(encoded)
+
     var showsRestored = 0
     var episodesRestored = 0
     var seasonsRestored = 0
@@ -209,7 +214,7 @@ class ProdTrackDao(
         .map { episode ->
           UserEpisodeExport(
             id = episode.episodeId,
-            watchedAt = episode.watchedAt.toString(), // TODO
+            watchedAt = episode.watchedAt,
           )
         }
 
@@ -279,10 +284,10 @@ class ProdTrackDao(
       insertShow(show)
 
       show.watched.forEach { episode ->
-        episode.watchedAt?.let { watchedAt ->
+        episode.watchedAt.let { watchedAt ->
           userEpisodeQueries.insertUserEpisode(
             episode.id,
-            watchedAt.toLong(),
+            watchedAt,
           )
         }
       }

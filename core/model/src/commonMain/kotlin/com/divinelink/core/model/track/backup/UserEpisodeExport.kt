@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserEpisodeExport(
   val id: Long,
-  val watchedAt: String?,
+  val watchedAt: Long,
 )

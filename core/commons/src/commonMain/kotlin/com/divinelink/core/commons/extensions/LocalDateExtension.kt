@@ -5,6 +5,7 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.minus
 import kotlinx.datetime.parseOrNull
 import kotlinx.datetime.toInstant
@@ -13,6 +14,10 @@ import kotlin.time.Clock
 
 fun LocalDate.Companion.parseOrNull(input: CharSequence?) = LocalDate
   .parseOrNull(input ?: "")
+
+fun LocalDate.toEpochSeconds(timeZone: TimeZone): Long = this
+  .atStartOfDayIn(timeZone)
+  .epochSeconds
 
 fun LocalDate.isBeforeNowUtc(clock: Clock): Boolean = this < clock.todayIn(TimeZone.UTC)
 
