@@ -77,6 +77,8 @@
     <string name="failed">Failed</string>
     <string name="deleted">Deleted</string>
     <string name="completed">Completed</string>
+    <string name="progress">Progress</string>
+    <string name="history">History</string>
     <string name="nr_content_rating">No rating information available.</string>
     <string name="movie_g">Suitable for all ages.</string>
     <string name="movie_pg">Some material may not be suitable for young children. Parental guidance suggested.</string>

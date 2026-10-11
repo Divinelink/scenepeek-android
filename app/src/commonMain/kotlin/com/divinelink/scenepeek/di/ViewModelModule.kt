@@ -2,6 +2,7 @@ package com.divinelink.scenepeek.di
 
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.ui.menu.DropdownMenuViewModel
+import com.divinelink.core.ui.tabbed.TabsScreenViewModel
 import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import com.divinelink.feature.add.to.account.modal.ActionMenuViewModel
 import com.divinelink.feature.awards.category.AwardCategoryViewModel
@@ -18,6 +19,7 @@ import com.divinelink.feature.discover.filters.SelectFilterViewModel
 import com.divinelink.feature.episode.EpisodeViewModel
 import com.divinelink.feature.home.HomeViewModel
 import com.divinelink.feature.home.customize.CustomizeDashboardViewModel
+import com.divinelink.feature.home.history.WatchHistoryViewModel
 import com.divinelink.feature.home.nextup.NextUpViewModel
 import com.divinelink.feature.home.section.SectionViewModel
 import com.divinelink.feature.lists.create.CreateListViewModel
@@ -84,6 +86,7 @@ val appViewModelModule = module {
   viewModelOf(::NextUpViewModel)
   viewModelOf(::BackupViewModel)
   viewModelOf(::DetailsSectionViewModel)
+  viewModelOf(::TabsScreenViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)

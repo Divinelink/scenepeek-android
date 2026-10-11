@@ -19,6 +19,7 @@ import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSectionInfo
 import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.model.tab.ProgressTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.feature.home.section.HomeSectionAction
 import com.divinelink.feature.home.section.SectionViewModel
@@ -56,7 +57,9 @@ fun MediaRow(
           MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
             filterValue = MediaRequestFilter.All.value,
           )
-          MediaListSection.NextUpEpisodes -> Navigation.NextUpFullscreenRoute
+          MediaListSection.NextUpEpisodes -> Navigation.ProgressScreenRoute(
+            ProgressTab.NextUp.order,
+          )
         }
 
         onNavigate(route)
