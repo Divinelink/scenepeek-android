@@ -1,6 +1,6 @@
 CREATE TABLE UserEpisodesEntity_new (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    episodeId INTEGER NOT NULL,
+    episodeId INTEGER NOT NULL UNIQUE,
     watchedAt TEXT NOT NULL
 );
 

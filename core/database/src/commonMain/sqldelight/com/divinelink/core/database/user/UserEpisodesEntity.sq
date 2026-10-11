@@ -1,6 +1,6 @@
 CREATE TABLE UserEpisodesEntity (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  episodeId INTEGER NOT NULL,
+  episodeId INTEGER NOT NULL UNIQUE,
   watchedAt TEXT NOT NULL
 );
 
@@ -36,7 +36,7 @@ SELECT
 FROM EpisodeEntity e
 LEFT JOIN UserEpisodesEntity ue
   ON e.id = ue.episodeId
-WHERE e.showId = :showId
+WHERE e.showId = :showId AND ue.watchedAt IS NOT NULL
 GROUP BY e.seasonNumber
 ORDER BY e.seasonNumber;
 
