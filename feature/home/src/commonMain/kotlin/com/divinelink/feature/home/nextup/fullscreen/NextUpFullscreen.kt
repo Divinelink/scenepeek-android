@@ -21,6 +21,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.NextUpSection
 import com.divinelink.core.model.ui.ExpandableSection
@@ -65,7 +66,14 @@ fun NextUpContent(
         description = UIText.ResourceText(UiString.show_progress_empty_state_subtitle),
         retryText = UIText.ResourceText(UiString.core_ui_discover),
       ),
-      onRetry = { onNavigate(Navigation.Discover.Default(mediaType = MediaType.TV)) },
+      onRetry = {
+        onNavigate(
+          Navigation.Discover.Custom(
+            mediaType = MediaType.TV,
+            entryPoint = DiscoverType.TopRated,
+          ),
+        )
+      },
     )
   } else {
     ScenePeekLazyColumn(
