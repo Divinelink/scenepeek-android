@@ -13,6 +13,7 @@ import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.UserShowStatus
+import com.divinelink.core.model.track.WatchedEpisode
 import com.divinelink.core.model.track.backup.EpisodeExport
 import com.divinelink.core.model.track.backup.LibraryExport
 import com.divinelink.core.model.track.backup.MediaExport
@@ -137,6 +138,19 @@ class ProdTrackDao(
       episodeId = episodeId,
     )
   }
+
+  override fun getWatchHistory(offset: Long): Flow<List<WatchedEpisode>> =
+    userShowQueries
+      .getWatchHistory()
+      .asFlow()
+      .mapToList(dispatcher.io)
+      .map { entities ->
+        entities.mapNotNull { episode ->
+          if (episode.watchedAt == null) return@mapNotNull null
+
+          episode.map()
+        }
+      }
 
   override fun exportLibrary(): LibraryExport {
     val shows = getShowExports()

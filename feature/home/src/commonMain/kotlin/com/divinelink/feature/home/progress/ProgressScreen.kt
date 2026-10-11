@@ -115,7 +115,9 @@ fun AnimatedVisibilityScope.ProgressScreen(
               onNavigate = onNavigate,
             )
           } else {
-
+            WatchHistoryContent(
+              onNavigate = onNavigate,
+            )
           }
         }
       }

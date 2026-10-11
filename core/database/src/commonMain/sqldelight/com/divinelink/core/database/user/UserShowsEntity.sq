@@ -110,6 +110,28 @@ WHERE userShow.status != 'completed'
 GROUP BY show.id
 ORDER BY userShow.updatedAt DESC;
 
+getWatchHistory:
+SELECT
+  show.id AS showId,
+  show.name AS showTitle,
+  show.posterPath AS showPosterPath,
+  userShow.status AS showStatus,
+  ep.id AS episodeId,
+  ep.seasonNumber AS seasonNumber,
+  ep.episodeNumber AS episodeNumber,
+  ep.name AS episodeName,
+  ep.stillPath AS episodeThumbnail,
+  ep.airDate AS airDate,
+  ue.watchedAt,
+  ue.episodeId AS userEpisodeId
+FROM UserEpisodesEntity ue
+JOIN EpisodeEntity ep ON ue.episodeId = ep.id
+JOIN MediaItemEntity show ON ep.showId = show.id
+JOIN UserShowsEntity userShow ON show.id = userShow.showId
+ORDER BY ue.watchedAt DESC, ue.episodeId DESC; -- Newest first + tie-breaker
+-- LIMIT :limit;
+-- OFFSET :offset;  -- Only if using offset pagination
+
 findCurrentWatchingSeason:
 SELECT episode.seasonNumber AS seasonNumber
 FROM EpisodeEntity episode

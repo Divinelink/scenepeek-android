@@ -87,6 +87,7 @@ val appViewModelModule = module {
   viewModelOf(::BackupViewModel)
   viewModelOf(::DetailsSectionViewModel)
   viewModelOf(::TabsScreenViewModel)
+  viewModelOf(::WatchHistoryViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)
