@@ -1,0 +1,10 @@
+🎉 Update v0.40.2
+
+- Added Watch History! You can now see every episode you've watched
+- Added Automatic Backups that automatically saves your data every other day. Head to Settings > Backup & Restore to turn it on and never lose your progress
+- Backup & Restore now also covers your saved movies, shows, and people
+- Added Episode details modal in the Next Up section
+- Added filters on the Upcoming, Popular, and Top Rated screens
+- Added content rating filter on Discover
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

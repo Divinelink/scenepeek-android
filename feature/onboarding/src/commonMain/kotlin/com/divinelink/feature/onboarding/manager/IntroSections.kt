@@ -397,7 +397,7 @@ object IntroSections {
 
   val v64 = listOf(
     IntroSection.Header(UIText.ResourceText(UiString.changelog)),
-    IntroSection.WhatsNew("v0.40."),
+    IntroSection.WhatsNew("v0.40.2"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.v64_watch_history)),
     IntroSection.Text(UIText.ResourceText(R.string.v64_enhance_library_export)),
