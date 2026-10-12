@@ -4,7 +4,7 @@ CREATE TABLE BackupEntity (
   error INTEGER
 );
 
-INSERT OR ABORT INTO PersonEntity (id, name, originalName, profilePath, knownForDepartment, gender)
+INSERT OR IGNORE INTO PersonEntity (id, name, originalName, profilePath, knownForDepartment, gender)
 SELECT id, name, name, profilePath, knownForDepartment, gender
 FROM PersonDetailsEntity;
 
