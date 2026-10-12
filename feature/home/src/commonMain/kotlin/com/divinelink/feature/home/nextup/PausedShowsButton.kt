@@ -12,13 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.on_hold
 import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.rememberExpandState
 import com.divinelink.core.ui.resources.core_ui_collapse
 import com.divinelink.core.ui.resources.core_ui_expand
-import com.divinelink.core.ui.resources.on_hold
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -38,7 +39,7 @@ fun PausedShowsButton(
     },
   ) {
     Text(
-      text = stringResource(UiString.on_hold),
+      text = stringResource(Res.string.on_hold),
       style = MaterialTheme.typography.titleMedium,
     )
     Icon(

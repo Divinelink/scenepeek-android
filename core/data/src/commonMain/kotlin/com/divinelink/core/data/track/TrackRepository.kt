@@ -48,5 +48,8 @@ interface TrackRepository {
   fun restoreLibrary(encodedFile: String): Result<RestoreProcess>
 
   fun observeRecentHistory(): Flow<List<WatchedEpisode>>
-  fun getWatchHistory(lastId: Long, lastWatchedAt: Long?): List<WatchedEpisode>
+  fun getWatchHistory(
+    lastId: Long,
+    lastWatchedAt: Long?,
+  ): List<WatchedEpisode>
 }

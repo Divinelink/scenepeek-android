@@ -27,7 +27,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           isLoading = false,
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
-          tabs = emptyList(),
+          tabs = emptySet(),
           forms = emptyMap(),
         ),
         DetailsViewState.initial(

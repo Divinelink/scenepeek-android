@@ -211,7 +211,6 @@
   <string name="show_progress_empty_state_subtitle">Add shows to your library to start tracking your progress.</string>
   <string name="empty_history_title">There's nothing in your history</string>
   <string name="empty_history_subtitle">Track a show and mark episodes as watched to see them here</string>
-  <string name="upcoming">Upcoming</string>
   <string name="popular">Popular</string>
   <plurals name="days_left_to_air">
     <item quantity="one">Airs tomorrow</item>
@@ -229,7 +228,6 @@
   <string name="move_progress_show_to">Add to '%1$s'</string>
   <string name="watching">Watching</string>
   <string name="plan_to_watch">Plan to watch</string>
-  <string name="on_hold">On hold</string>
   <string name="dropped">Stopped watching</string>
   <string name="mark_as_watched">Mark as watched</string>
   <string name="watched">Watched</string>

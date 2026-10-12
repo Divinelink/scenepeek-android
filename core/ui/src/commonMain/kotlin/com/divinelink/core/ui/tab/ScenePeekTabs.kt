@@ -23,7 +23,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun ScenePeekTabs(
   modifier: Modifier = Modifier,
-  tabs: List<Tab>,
+  tabs: Set<Tab>,
   selectedIndex: Int,
   onClick: (Int) -> Unit,
 ) {

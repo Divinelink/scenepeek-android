@@ -45,7 +45,7 @@ sealed class TvTab(
 
   companion object {
     val entries
-      get() = listOf(
+      get() = setOf(
         About,
         Seasons,
         Cast,

@@ -2,9 +2,13 @@ package com.divinelink.feature.home.ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,13 +23,16 @@ import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.home.HomeForm
 import com.divinelink.core.model.home.HomeSectionInfo
 import com.divinelink.core.model.home.MediaListSection
+import com.divinelink.core.model.resources.history
 import com.divinelink.core.model.tab.ProgressTab
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.components.IconButtonWithTooltip
 import com.divinelink.feature.home.section.HomeSectionAction
 import com.divinelink.feature.home.section.SectionViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import com.divinelink.core.model.resources.Res as ModelRes
 
 @Composable
 fun MediaRow(
@@ -42,38 +49,55 @@ fun MediaRow(
   Column(
     modifier = modifier.animateContentSize(),
   ) {
-    TextButton(
-      onClick = {
-        val route = when (val section = config.section) {
-          MediaListSection.TrendingAll -> Navigation.MediaListsRoute(config.section)
-          is MediaListSection.Upcoming -> Navigation.Discover.Custom(
-            mediaType = section.mediaType,
-            entryPoint = DiscoverType.Upcoming,
-          )
-          is MediaListSection.Popular -> Navigation.Discover.Custom(
-            mediaType = section.mediaType,
-            entryPoint = DiscoverType.Popular,
-          )
-          MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
-            filterValue = MediaRequestFilter.All.value,
-          )
-          MediaListSection.NextUpEpisodes -> Navigation.ProgressScreenRoute(
-            ProgressTab.NextUp.order,
+    Row(modifier = Modifier.fillMaxWidth()) {
+      TextButton(
+        onClick = {
+          val route = when (val section = config.section) {
+            MediaListSection.TrendingAll -> Navigation.MediaListsRoute(config.section)
+            is MediaListSection.Upcoming -> Navigation.Discover.Custom(
+              mediaType = section.mediaType,
+              entryPoint = DiscoverType.Upcoming,
+            )
+            is MediaListSection.Popular -> Navigation.Discover.Custom(
+              mediaType = section.mediaType,
+              entryPoint = DiscoverType.Popular,
+            )
+            MediaListSection.RecentRequests -> Navigation.SeerrRequestsRoute(
+              filterValue = MediaRequestFilter.All.value,
+            )
+            MediaListSection.NextUpEpisodes -> Navigation.ProgressScreenRoute(
+              ProgressTab.Progress,
+            )
+          }
+
+          onNavigate(route)
+        },
+      ) {
+        Text(
+          text = stringResource(config.title),
+          style = MaterialTheme.typography.titleMedium,
+        )
+
+        Icon(
+          imageVector = Icons.Default.ChevronRight,
+          contentDescription = null,
+        )
+      }
+
+      if (config.section is MediaListSection.NextUpEpisodes) {
+        Spacer(modifier = Modifier.weight(1f))
+
+        IconButtonWithTooltip(
+          onClick = { onNavigate(Navigation.ProgressScreenRoute(ProgressTab.History)) },
+          tooltipText = ModelRes.string.history,
+        ) {
+          Icon(
+            imageVector = Icons.Default.History,
+            tint = MaterialTheme.colorScheme.primary,
+            contentDescription = stringResource(ModelRes.string.history),
           )
         }
-
-        onNavigate(route)
-      },
-    ) {
-      Text(
-        text = stringResource(config.title),
-        style = MaterialTheme.typography.titleMedium,
-      )
-
-      Icon(
-        imageVector = Icons.Default.ChevronRight,
-        contentDescription = null,
-      )
+      }
     }
 
     when (val form = uiState.form) {

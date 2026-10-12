@@ -14,10 +14,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +22,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.tab.ProgressTab
+import com.divinelink.core.model.tab.Tab
+import com.divinelink.core.model.tab.TabsScreenEntryPoint
+import com.divinelink.core.model.track.NextUpSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -36,20 +36,22 @@ import com.divinelink.core.ui.resources.next_up_episodes
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.core.ui.tabbed.TabsScreenViewModel
 import com.divinelink.feature.home.history.WatchHistoryContent
-import com.divinelink.feature.home.nextup.fullscreen.NextUpContent
+import com.divinelink.feature.home.nextup.fullscreen.NextUpFullscreen
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.ProgressScreen(
-  index: Int,
+  tab: Tab,
   viewModel: TabsScreenViewModel = koinViewModel {
-    parametersOf(index, ProgressTab.entries)
+    parametersOf(
+      TabsScreenEntryPoint.NextUp,
+      tab,
+      ProgressTab.entries,
+    )
   },
   onNavigate: (Navigation) -> Unit,
 ) {
@@ -57,18 +59,22 @@ fun AnimatedVisibilityScope.ProgressScreen(
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
   val scope = rememberCoroutineScope()
 
-  var selectedTab by rememberSaveable { mutableIntStateOf(state.selectedTabIndex) }
   val pagerState = rememberPagerState(
-    initialPage = selectedTab,
+    initialPage = state.selectedTabIndex,
     pageCount = { state.tabs.size },
   )
 
+  LaunchedEffect(state.selectedTabIndex) {
+    val target = state.selectedTabIndex
+    if (target in state.tabs.indices && target != pagerState.currentPage) {
+      pagerState.animateScrollToPage(target)
+    }
+  }
+
   LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }
-      .distinctUntilChanged()
-      .collectLatest { page ->
-        selectedTab = page
-        viewModel.onSelectTab(page)
+      .collectLatest {
+        viewModel.onSelectTab(it)
       }
   }
 
@@ -99,7 +105,7 @@ fun AnimatedVisibilityScope.ProgressScreen(
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
         ScenePeekTabs(
-          selectedIndex = selectedTab,
+          selectedIndex = state.selectedTabIndex,
           tabs = state.tabs,
           onClick = { index -> scope.launch { pagerState.animateScrollToPage(index) } },
         )
@@ -109,15 +115,27 @@ fun AnimatedVisibilityScope.ProgressScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
           state = pagerState,
+          key = { page -> state.tabs.elementAt(page).toString() },
         ) { page ->
-          if (page == ProgressTab.NextUp.order) {
-            NextUpContent(
+          val tab = state.tabs.elementAt(page)
+
+          when (tab) {
+            ProgressTab.Progress -> NextUpFullscreen(
+              section = NextUpSection.Available,
               onNavigate = onNavigate,
             )
-          } else {
-            WatchHistoryContent(
+            ProgressTab.Upcoming -> NextUpFullscreen(
+              section = NextUpSection.Upcoming,
               onNavigate = onNavigate,
             )
+            ProgressTab.History -> WatchHistoryContent(
+              onNavigate = onNavigate,
+            )
+            ProgressTab.OnHold -> NextUpFullscreen(
+              section = NextUpSection.Paused,
+              onNavigate = onNavigate,
+            )
+            else -> Unit
           }
         }
       }

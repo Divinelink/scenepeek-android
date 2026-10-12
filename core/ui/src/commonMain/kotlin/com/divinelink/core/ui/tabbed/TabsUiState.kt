@@ -3,18 +3,18 @@ package com.divinelink.core.ui.tabbed
 import com.divinelink.core.model.tab.Tab
 
 data class TabsUiState(
-  val selectedTabIndex: Int,
-  val tabs: List<Tab>,
+  val selectedTab: Tab,
+  val tabs: Set<Tab>,
 ) {
+  val selectedTabIndex = tabs.indexOf(selectedTab)
+
   companion object {
     fun initial(
-      index: Int,
-      tabs: List<Tab>,
-    ): TabsUiState {
-      return TabsUiState(
-        selectedTabIndex = index,
-        tabs = tabs,
-      )
-    }
+      selectedTab: Tab,
+      tabs: Set<Tab>,
+    ): TabsUiState = TabsUiState(
+      selectedTab = selectedTab,
+      tabs = tabs,
+    )
   }
 }

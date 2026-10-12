@@ -154,13 +154,12 @@ class ProdTrackDao(
   override fun getWatchHistory(
     lastId: Long,
     lastWatchedAt: Long?,
-  ): List<WatchedEpisode> =
-    userShowQueries
-      .getWatchHistory(lastId = lastId, lastWatchedAt = lastWatchedAt)
-      .executeAsList()
-      .map { entities ->
-        entities.map()
-      }
+  ): List<WatchedEpisode> = userShowQueries
+    .getWatchHistory(lastId = lastId, lastWatchedAt = lastWatchedAt)
+    .executeAsList()
+    .map { entities ->
+      entities.map()
+    }
 
   override fun exportLibrary(): LibraryExport {
     val shows = getShowExports()
@@ -179,7 +178,6 @@ class ProdTrackDao(
       people = saved.third,
     )
   }
-
 
   override fun restoreLibrary(encoded: String): Result<RestoreProcess> = runCatching {
     val library = migrationManager.migrateAndParse(encoded)

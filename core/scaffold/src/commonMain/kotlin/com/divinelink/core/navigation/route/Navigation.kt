@@ -7,8 +7,10 @@ import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.home.MediaListSection
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.SearchEntryPoint
+import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.model.track.UserShowStatus
 import com.divinelink.core.model.user.data.UserDataSection
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.uuid.Uuid
 import com.divinelink.core.model.details.Episode as DetailsEpisode
@@ -224,7 +226,7 @@ sealed interface Navigation : NavKey {
   data class MediaListsRoute(val section: MediaListSection) : Navigation
 
   @Serializable
-  data class ProgressScreenRoute(val index: Int) : Navigation
+  data class ProgressScreenRoute(@Contextual val tab: Tab) : Navigation
 
   @Serializable
   data class CollectionRoute(

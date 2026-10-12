@@ -1857,7 +1857,7 @@ class DetailsContentTest : ComposeTest() {
     userDetails: AccountMediaDetails = AccountMediaDetails.initial,
     error: UIText? = null,
     trailer: Video? = null,
-    tabs: List<Tab> = emptyList(),
+    tabs: Set<Tab> = emptySet(),
     forms: DetailsForms = emptyMap(),
     selectedTabIndex: Int = 0,
     ratingSource: RatingSource = RatingSource.TMDB,
