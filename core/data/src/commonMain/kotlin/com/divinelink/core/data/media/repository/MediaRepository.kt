@@ -144,11 +144,11 @@ interface MediaRepository {
   fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<Map<Long, LocalDate?>>
+  ): Flow<Map<Long, LocalDate>>
 
   fun markSeasonAsWatched(
     episodeIds: List<Long>,
-    watchedAt: String,
+    watchedAt: Long,
   )
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 

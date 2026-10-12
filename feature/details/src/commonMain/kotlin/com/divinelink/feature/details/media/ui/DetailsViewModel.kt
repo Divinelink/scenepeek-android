@@ -524,7 +524,7 @@ class DetailsViewModel(
           showId = viewState.value.mediaId,
           seasonNumber = action.seasonNumber,
           seasonComplete = action.isComplete,
-          watchedAt = clock.now,
+          watchedAt = clock.epochSeconds,
         ),
       ).onSuccess {
         val resource = if (!action.isComplete) {

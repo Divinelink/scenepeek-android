@@ -99,6 +99,10 @@ fun String.calculateFourteenDayRange(clock: Clock = Clock.System): List<Pair<Str
 fun String.epochSecondsToLocalDateTime(): LocalDateTime =
   Instant.fromEpochSeconds(this.toLong()).toLocalDateTime(TimeZone.currentSystemDefault())
 
+fun Long.epochSecondsToLocalDate(timeZone: TimeZone): LocalDate = Instant
+  .fromEpochSeconds(this)
+  .toLocalDateTime(timeZone).date
+
 /**
  * Check if the string in format "yyyy-MM-dd" is today's date
  */

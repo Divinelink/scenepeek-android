@@ -1,11 +1,15 @@
 CREATE TABLE UserEpisodesEntity_new (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     episodeId INTEGER NOT NULL UNIQUE,
-    watchedAt TEXT NOT NULL
+    watchedAt INTEGER NOT NULL
 );
 
 INSERT INTO UserEpisodesEntity_new (episodeId, watchedAt)
-SELECT episodeId, watchedAt FROM UserEpisodesEntity WHERE watchedAt IS NOT NULL;
+SELECT
+    episodeId,
+    CAST(strftime('%s', watchedAt || 'T00:00:00') AS INTEGER)
+FROM UserEpisodesEntity
+WHERE watchedAt IS NOT NULL;
 
 DROP TABLE UserEpisodesEntity;
 

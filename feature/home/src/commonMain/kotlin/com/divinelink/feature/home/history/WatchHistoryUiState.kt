@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDate
 data class WatchHistoryUiState(
   val history: Map<LocalDate, List<WatchedEpisode>>,
   val lastId: Long?,
-  val lastWatchedAt: String?,
+  val lastWatchedAt: Long?,
   val canLoadMore: Boolean,
   val loading: Boolean,
   val initialFetch: Boolean,

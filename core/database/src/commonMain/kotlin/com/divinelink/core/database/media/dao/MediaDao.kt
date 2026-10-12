@@ -143,7 +143,7 @@ interface MediaDao {
 
   fun markSeasonAsWatched(
     episodeIds: List<Long>,
-    watchedAt: String,
+    watchedAt: Long,
   )
   fun unmarkSeasonAsWatched(episodeIds: List<Long>)
 
@@ -151,7 +151,7 @@ interface MediaDao {
   fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<Map<Long, LocalDate?>>
+  ): Flow<Map<Long, LocalDate>>
 
   fun getUserShowStatus(showId: Long): Flow<UserShowStatus?>
   fun addShow(showId: Long)

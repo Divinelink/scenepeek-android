@@ -510,7 +510,7 @@ class ProdMediaRepository(
   override fun getWatchedEpisodesForSeason(
     showId: Long,
     seasonNumber: Int,
-  ): Flow<Map<Long, LocalDate?>> = dao
+  ): Flow<Map<Long, LocalDate>> = dao
     .getWatchedEpisodesForSeason(
       showId = showId,
       seasonNumber = seasonNumber,
@@ -518,7 +518,7 @@ class ProdMediaRepository(
 
   override fun markSeasonAsWatched(
     episodeIds: List<Long>,
-    watchedAt: String,
+    watchedAt: Long,
   ) = dao.markSeasonAsWatched(
     episodeIds = episodeIds,
     watchedAt = watchedAt,

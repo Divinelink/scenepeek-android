@@ -9,6 +9,7 @@ import com.divinelink.core.database.list.ListDao
 import com.divinelink.core.database.list.ProdListDao
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.database.media.dao.ProdMediaDao
+import com.divinelink.core.database.migration.LibraryMigrationManager
 import com.divinelink.core.database.opendata.OpenDataDao
 import com.divinelink.core.database.opendata.ProdOpenDataDao
 import com.divinelink.core.database.person.PersonDao
@@ -22,6 +23,8 @@ import org.koin.dsl.module
 val databaseModule = module {
 
   single<Database> { Database(get()) }
+
+  singleOf(::LibraryMigrationManager)
 
   singleOf(::ProdCreditsDao) { bind<CreditsDao>() }
   singleOf(::ProdPersonDao) { bind<PersonDao>() }

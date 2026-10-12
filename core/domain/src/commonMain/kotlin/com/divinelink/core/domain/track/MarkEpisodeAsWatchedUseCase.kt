@@ -4,11 +4,10 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.model.details.Episode
-import kotlinx.datetime.LocalDate
 
 data class MarkEpisodeParameters(
   val episode: Episode,
-  val watchedAt: LocalDate,
+  val watchedAt: Long,
 )
 
 class MarkEpisodeAsWatchedUseCase(
@@ -27,7 +26,7 @@ class MarkEpisodeAsWatchedUseCase(
     } else {
       repository.markEpisodeAsWatched(
         episodeId = episodeId.toLong(),
-        watchedAt = parameters.watchedAt.toString(),
+        watchedAt = parameters.watchedAt,
       )
     }
 

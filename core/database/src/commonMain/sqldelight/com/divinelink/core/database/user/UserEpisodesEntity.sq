@@ -1,7 +1,7 @@
 CREATE TABLE UserEpisodesEntity (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   episodeId INTEGER NOT NULL UNIQUE,
-  watchedAt TEXT NOT NULL
+  watchedAt INTEGER NOT NULL
 );
 
 insertUserEpisode:

@@ -16,4 +16,7 @@ interface ClockProvider {
 
   val nowDT: LocalDateTime
     get() = clock.now().toLocalDateTime(timezone)
+
+  val epochSeconds: Long
+    get() = clock.now().epochSeconds
 }

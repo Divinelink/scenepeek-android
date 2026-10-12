@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LibraryExport(
-  val version: Int = 1,
+  val version: Int,
   val exportedAt: String,
   val shows: List<ShowExport>,
   val seasons: List<SeasonExport>,

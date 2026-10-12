@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
 
 class NextUpViewModel(
   private val repository: MediaRepository,
@@ -93,7 +92,7 @@ class NextUpViewModel(
 
   private fun markEpisodeAsWatched(
     episode: Episode,
-    watchedAt: LocalDate,
+    watchedAt: Long,
   ) {
     viewModelScope.launch {
       markEpisodeAsWatchedUseCase(
@@ -121,7 +120,7 @@ class NextUpViewModel(
       NextUpAction.DismissSnackbarMessage -> setSnackbarMessage(null)
       is NextUpAction.MarkEpisodeAsWatched -> markEpisodeAsWatched(
         episode = action.episode,
-        watchedAt = clock.now,
+        watchedAt = clock.epochSeconds,
       )
     }
   }
