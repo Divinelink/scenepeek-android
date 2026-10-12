@@ -133,6 +133,8 @@ class NextUpViewModel(
     }
   }
 
-  private fun Set<ProgressTab>.toggle(tab: ProgressTab, present: Boolean): Set<ProgressTab> =
-    if (present) this + tab else this - tab
+  private fun Set<ProgressTab>.toggle(
+    tab: ProgressTab,
+    present: Boolean,
+  ): Set<ProgressTab> = if (present) this + tab else this - tab
 }

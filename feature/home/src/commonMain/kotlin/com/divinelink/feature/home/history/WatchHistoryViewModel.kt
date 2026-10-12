@@ -120,20 +120,17 @@ class WatchHistoryViewModel(
   private fun mergeWatchHistory(
     current: Map<LocalDate, List<WatchedEpisode>>,
     new: Map<LocalDate, List<WatchedEpisode>>,
-  ): Map<LocalDate, List<WatchedEpisode>> {
-    return (current.entries + new.entries)
-      .groupBy({ it.key }, { it.value })
-      .mapValues { (_, listOfLists) ->
-        listOfLists.flatten().distinctBy { it.episode.id }
-      }
-  }
+  ): Map<LocalDate, List<WatchedEpisode>> = (current.entries + new.entries)
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, listOfLists) ->
+      listOfLists.flatten().distinctBy { it.episode.id }
+    }
 
   fun Map<LocalDate, List<WatchedEpisode>>.removeIds(
     ids: Set<Long>,
-  ): Map<LocalDate, List<WatchedEpisode>> =
-    mapValues { (_, items) ->
-      items
-        .filterNot { it.episode.id.toLong() in ids }
-        .distinctBy { it.watchedId }
-    }.filterValues { it.isNotEmpty() }
+  ): Map<LocalDate, List<WatchedEpisode>> = mapValues { (_, items) ->
+    items
+      .filterNot { it.episode.id.toLong() in ids }
+      .distinctBy { it.watchedId }
+  }.filterValues { it.isNotEmpty() }
 }

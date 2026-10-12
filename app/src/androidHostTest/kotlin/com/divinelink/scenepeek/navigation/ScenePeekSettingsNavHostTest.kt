@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
+import com.divinelink.core.data.tabs.ProdTabsRepository
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
@@ -146,6 +147,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       NextUpViewModel(
         repository = mediaRepository.mock,
+        tabsRepository = ProdTabsRepository(),
         trackRepository = TestTrackRepository().mock,
         markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
         clock = PreviewClockProvider(),

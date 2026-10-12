@@ -11,9 +11,7 @@ class ProdTabsRepository : TabsRepository {
   )
   override val nextUpTabs: StateFlow<Set<ProgressTab>> = _nextUpTabs
 
-  override suspend fun setNextUpTabs(
-    tabs: Set<ProgressTab>,
-  ) {
+  override suspend fun setNextUpTabs(tabs: Set<ProgressTab>) {
     _nextUpTabs.emit(tabs)
   }
 }

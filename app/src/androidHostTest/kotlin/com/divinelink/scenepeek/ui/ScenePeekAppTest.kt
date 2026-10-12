@@ -16,6 +16,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.test.v2.runComposeUiTest
 import app.cash.turbine.test
+import com.divinelink.core.data.tabs.ProdTabsRepository
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
@@ -1027,6 +1028,7 @@ class ScenePeekAppTest : ComposeTest() {
     viewModel {
       NextUpViewModel(
         repository = mediaRepository.mock,
+        tabsRepository = ProdTabsRepository(),
         trackRepository = TestTrackRepository().mock,
         markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
         clock = clock,

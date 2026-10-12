@@ -463,7 +463,7 @@ class PersonViewModelTest {
     movies: GroupedPersonCredits = emptyMap(),
     tvShows: GroupedPersonCredits = emptyMap(),
     credits: List<PersonCredit>? = null,
-    tabs: List<Tab> = PersonTab.entries,
+    tabs: Set<Tab> = PersonTab.entries,
     filters: Map<Int, List<CreditFilter>> = mapOf(
       PersonTab.Movies.order to emptyList(),
       PersonTab.TVShows.order to emptyList(),

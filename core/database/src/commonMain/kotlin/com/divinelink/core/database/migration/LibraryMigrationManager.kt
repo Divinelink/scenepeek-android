@@ -1,3 +1,5 @@
+@file:Suppress("ComplexCondition")
+
 package com.divinelink.core.database.migration
 
 import com.divinelink.core.commons.Constants
@@ -41,8 +43,6 @@ class LibraryMigrationManager(private val clockProvider: ClockProvider) {
   private fun migrateV1ToV2(
     data: MutableMap<String, JsonElement>,
   ): MutableMap<String, JsonElement> {
-    println("Migrating data from V1 to V2...")
-
     val migratedRoot = migrateWatchedDates(
       rootJson = JsonObject(data),
     )

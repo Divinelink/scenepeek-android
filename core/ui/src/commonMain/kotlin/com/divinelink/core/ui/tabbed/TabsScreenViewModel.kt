@@ -25,23 +25,24 @@ class TabsScreenViewModel(
 
   init {
     when (entryPoint) {
-      TabsScreenEntryPoint.NextUp -> repository
-        .nextUpTabs
-        .onEach { newTabs ->
-          _uiState.update { state ->
-            val oldIndex = state.tabs.indexOf(state.selectedTab)
+      TabsScreenEntryPoint.NextUp ->
+        repository
+          .nextUpTabs
+          .onEach { newTabs ->
+            _uiState.update { state ->
+              val oldIndex = state.tabs.indexOf(state.selectedTab)
 
-            val newSelectedTab = when {
-              state.selectedTab in newTabs -> state.selectedTab
-              else -> newTabs.elementAt(oldIndex.coerceIn(0, newTabs.indices.last))
+              val newSelectedTab = when {
+                state.selectedTab in newTabs -> state.selectedTab
+                else -> newTabs.elementAt(oldIndex.coerceIn(0, newTabs.indices.last))
+              }
+
+              state.copy(
+                tabs = newTabs.sortedBy { it.order }.toSet(),
+                selectedTab = newSelectedTab,
+              )
             }
-
-            state.copy(
-              tabs = newTabs.sortedBy { it.order }.toSet(),
-              selectedTab = newSelectedTab,
-            )
-          }
-        }.launchIn(viewModelScope)
+          }.launchIn(viewModelScope)
     }
   }
 
