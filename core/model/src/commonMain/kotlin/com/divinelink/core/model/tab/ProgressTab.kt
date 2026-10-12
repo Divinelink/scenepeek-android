@@ -2,7 +2,7 @@ package com.divinelink.core.model.tab
 
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.history
-import com.divinelink.core.model.resources.on_hold_shows
+import com.divinelink.core.model.resources.on_hold
 import com.divinelink.core.model.resources.progress
 import com.divinelink.core.model.resources.upcoming
 import org.jetbrains.compose.resources.StringResource
@@ -33,7 +33,7 @@ sealed class ProgressTab(
   data object OnHold : ProgressTab(
     order = 3,
     value = "on_hold",
-    titleRes = Res.string.on_hold_shows,
+    titleRes = Res.string.on_hold,
   )
 
   companion object {

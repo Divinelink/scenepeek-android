@@ -11,17 +11,18 @@ import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.resources.on_hold
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.core_ui_select
 import com.divinelink.core.ui.resources.core_ui_share
 import com.divinelink.core.ui.resources.dropped
 import com.divinelink.core.ui.resources.move_progress_show_to
-import com.divinelink.core.ui.resources.on_hold
 import com.divinelink.core.ui.resources.plan_to_watch
 import com.divinelink.core.ui.resources.watching
 import com.divinelink.feature.add.to.account.resources.Res
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_action_remove_from_list
 import com.divinelink.feature.add.to.account.resources.feature_add_to_account_list_title
+import com.divinelink.core.model.resources.Res as ModelRes
 
 sealed interface ActionMenuSection {
 
@@ -55,7 +56,7 @@ sealed interface ActionMenuSection {
       icon = Icons.Default.PauseCircleOutline,
       textRes = UIText.MultiResourceText(
         UiString.move_progress_show_to,
-        arrayOf(UiString.on_hold),
+        arrayOf(ModelRes.string.on_hold),
       ),
     )
 

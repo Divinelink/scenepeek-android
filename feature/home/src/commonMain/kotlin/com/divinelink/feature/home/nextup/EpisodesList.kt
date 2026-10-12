@@ -18,16 +18,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.resources.Res
+import com.divinelink.core.model.resources.upcoming
 import com.divinelink.core.model.track.NextUpEpisode
 import com.divinelink.core.model.track.NextUpSection
 import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.model.ui.SwitchPreferencesAction
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.rememberExpandState
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.rememberIsLandscape
-import com.divinelink.core.ui.resources.upcoming
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -47,7 +47,7 @@ fun EpisodesList(
     NextUpSection.Available -> Unit
     NextUpSection.Upcoming -> Text(
       modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
-      text = stringResource(UiString.upcoming),
+      text = stringResource(Res.string.upcoming),
       style = MaterialTheme.typography.titleMedium,
     )
     NextUpSection.Paused -> PausedShowsButton(
