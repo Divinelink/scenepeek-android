@@ -92,6 +92,12 @@ import com.divinelink.feature.onboarding.resources.v60_add_show_tracking
 import com.divinelink.feature.onboarding.resources.v60_ios_dark_themed_icon
 import com.divinelink.feature.onboarding.resources.v60_redesign_media_action_menu
 import com.divinelink.feature.onboarding.resources.v61_fixed_issue_with_material3
+import com.divinelink.feature.onboarding.resources.v64_automatic_backups
+import com.divinelink.feature.onboarding.resources.v64_content_rating_filter
+import com.divinelink.feature.onboarding.resources.v64_enhance_library_export
+import com.divinelink.feature.onboarding.resources.v64_episode_detail_modal
+import com.divinelink.feature.onboarding.resources.v64_filters_on_media_sections
+import com.divinelink.feature.onboarding.resources.v64_watch_history
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -389,6 +395,19 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v61_fixed_issue_with_material3)),
   )
 
+  val v64 = listOf(
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
+    IntroSection.WhatsNew("v0.40."),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v64_watch_history)),
+    IntroSection.Text(UIText.ResourceText(R.string.v64_enhance_library_export)),
+    IntroSection.Text(UIText.ResourceText(R.string.v64_episode_detail_modal)),
+    IntroSection.Text(UIText.ResourceText(R.string.v64_filters_on_media_sections)),
+    IntroSection.Text(UIText.ResourceText(R.string.v64_content_rating_filter)),
+    IntroSection.SecondaryHeader.Features,
+    IntroSection.Text(UIText.ResourceText(R.string.v64_automatic_backups)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -419,5 +438,6 @@ object IntroSections {
     59 to v59,
     60 to v60,
     61 to v61,
+    64 to v64,
   )
 }

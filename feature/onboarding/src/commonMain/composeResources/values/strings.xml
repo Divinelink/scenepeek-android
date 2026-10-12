@@ -117,4 +117,11 @@
   <string name="v60_redesign_media_action_menu">- Updated the action menu for movies and shows. Just tap the FAB (bottom-right) to access the new look and quickly track your favorite series</string>
 
   <string name="v61_fixed_issue_with_material3">- Fixed an issue that made the app unresponsive due to an outdated library</string>
+
+  <string name="v64_watch_history">- Added Watch History! You can now see every episode you've watched</string>
+  <string name="v64_automatic_backups">- Added Automatic Backups that automatically saves your data every other day. Head to Settings > Backup &amp; Restore to turn it on and never lose your progress</string>
+  <string name="v64_enhance_library_export">- Backup &amp; Restore now also covers your saved movies, shows, and people</string>
+  <string name="v64_episode_detail_modal">- Added Episode details modal in the Next Up section</string>
+  <string name="v64_filters_on_media_sections">- Added filters on the Upcoming, Popular, and Top Rated screens</string>
+  <string name="v64_content_rating_filter">- Added content rating filter on Discover</string>
 </resources>
