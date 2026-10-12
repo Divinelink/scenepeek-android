@@ -45,12 +45,12 @@ data class ActionMenuUiState(
       when (entryPoint.status) {
         UserShowStatus.WATCHING -> {
           add(ActionMenuSection.Intent.PauseShow)
-          add(ActionMenuSection.Intent.DropShow)
+//          add(ActionMenuSection.Intent.DropShow)
         }
         UserShowStatus.COMPLETED -> Unit
         UserShowStatus.ON_HOLD -> {
           add(ActionMenuSection.Intent.ContinueWatching)
-          add(ActionMenuSection.Intent.DropShow)
+//          add(ActionMenuSection.Intent.DropShow)
         }
         UserShowStatus.DROPPED -> {
           add(ActionMenuSection.Intent.ContinueWatching)
@@ -59,7 +59,7 @@ data class ActionMenuUiState(
         UserShowStatus.PLAN_TO_WATCH -> {
           add(ActionMenuSection.Intent.ContinueWatching)
           add(ActionMenuSection.Intent.PauseShow)
-          add(ActionMenuSection.Intent.DropShow)
+//          add(ActionMenuSection.Intent.DropShow)
         }
       }
 

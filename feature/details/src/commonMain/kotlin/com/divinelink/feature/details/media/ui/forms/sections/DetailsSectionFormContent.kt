@@ -66,7 +66,7 @@ fun DetailsSectionFormContent(
     }
     DetailSectionData.Loading -> DetailFormLoading()
     is DetailSectionData.Reviews -> ScenePeekLazyColumn(
-      modifier = Modifier.fillMaxSize().testTag(TestTags.Details.Reviews.FORM),
+      modifier = modifier.fillMaxSize().testTag(TestTags.Details.Reviews.FORM),
       contentPadding = PaddingValues(
         top = MaterialTheme.dimensions.keyline_16,
         start = MaterialTheme.dimensions.keyline_16,

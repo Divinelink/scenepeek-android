@@ -33,8 +33,8 @@ import com.divinelink.feature.discover.ui.DiscoverScreen
 import com.divinelink.feature.episode.ui.EpisodeScreen
 import com.divinelink.feature.home.HomeScreen
 import com.divinelink.feature.home.customize.CustomizeDashboardModal
-import com.divinelink.feature.home.nextup.fullscreen.NextUpFullscreen
 import com.divinelink.feature.home.nextup.modal.EpisodesOverviewModal
+import com.divinelink.feature.home.progress.ProgressScreen
 import com.divinelink.feature.lists.create.ui.CreateListScreen
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
 import com.divinelink.feature.lists.user.ListsScreen
@@ -417,9 +417,10 @@ val navigationModule = module {
     )
   }
 
-  navigation<Navigation.NextUpFullscreenRoute> {
+  navigation<Navigation.ProgressScreenRoute> { route ->
     val navigator = get<Navigator>()
-    LocalNavAnimatedContentScope.current.NextUpFullscreen(
+    LocalNavAnimatedContentScope.current.ProgressScreen(
+      index = route.index,
       onNavigate = navigator::navigate,
     )
   }

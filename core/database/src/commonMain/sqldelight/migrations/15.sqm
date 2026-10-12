@@ -1,0 +1,15 @@
+CREATE TABLE UserEpisodesEntity_new (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    episodeId INTEGER NOT NULL UNIQUE,
+    watchedAt TEXT NOT NULL
+);
+
+INSERT INTO UserEpisodesEntity_new (episodeId, watchedAt)
+SELECT episodeId, watchedAt FROM UserEpisodesEntity WHERE watchedAt IS NOT NULL;
+
+DROP TABLE UserEpisodesEntity;
+
+ALTER TABLE UserEpisodesEntity_new RENAME TO UserEpisodesEntity;
+
+CREATE INDEX idx_user_episodes_episode_id ON UserEpisodesEntity(episodeId);
+CREATE INDEX idx_user_episodes_watched_at ON UserEpisodesEntity(watchedAt DESC, id DESC);

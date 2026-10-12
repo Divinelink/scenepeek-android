@@ -13,6 +13,7 @@ import com.divinelink.core.database.season.SeasonDetailsEntity
 import com.divinelink.core.database.show.ShowSyncError
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.UserShowStatus
+import com.divinelink.core.model.track.WatchedEpisode
 import com.divinelink.core.model.track.backup.EpisodeExport
 import com.divinelink.core.model.track.backup.LibraryExport
 import com.divinelink.core.model.track.backup.MediaExport
@@ -126,7 +127,7 @@ class ProdTrackDao(
     episodeId: Long,
     watchedAt: String,
   ) = database.transaction {
-    userEpisodeQueries.upsertUserEpisode(
+    userEpisodeQueries.insertUserEpisode(
       episodeId = episodeId,
       watchedAt = watchedAt,
     )
@@ -137,6 +138,27 @@ class ProdTrackDao(
       episodeId = episodeId,
     )
   }
+
+  override fun observeLatestWatchHistory(): Flow<List<WatchedEpisode>> = userShowQueries
+    .getWatchHistory(null, Long.MAX_VALUE)
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { entities ->
+      entities.map { episode ->
+        episode.map()
+      }
+    }
+
+  override fun getWatchHistory(
+    lastId: Long,
+    lastWatchedAt: String?,
+  ): List<WatchedEpisode> =
+    userShowQueries
+      .getWatchHistory(lastId = lastId, lastWatchedAt = lastWatchedAt)
+      .executeAsList()
+      .map { entities ->
+        entities.map()
+      }
 
   override fun exportLibrary(): LibraryExport {
     val shows = getShowExports()
@@ -257,10 +279,12 @@ class ProdTrackDao(
       insertShow(show)
 
       show.watched.forEach { episode ->
-        userEpisodeQueries.upsertUserEpisode(
-          episode.id,
-          episode.watchedAt,
-        )
+        episode.watchedAt?.let { watchedAt ->
+          userEpisodeQueries.insertUserEpisode(
+            episode.id,
+            watchedAt,
+          )
+        }
       }
       totalRestored += 1
     }
