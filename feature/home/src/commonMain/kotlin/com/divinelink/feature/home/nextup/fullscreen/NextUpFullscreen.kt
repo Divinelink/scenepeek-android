@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,142 +18,97 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.NextUpSection
-import com.divinelink.core.model.ui.ExpandableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.DisplayMessageDuration
 import com.divinelink.core.ui.components.DisplayMessageSection
-import com.divinelink.core.ui.composition.rememberExpandState
 import com.divinelink.core.ui.resources.core_ui_discover
 import com.divinelink.core.ui.resources.show_progress_empty_state_subtitle
 import com.divinelink.core.ui.resources.show_progress_empty_state_title
-import com.divinelink.core.ui.resources.upcoming
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.home.nextup.NextUpAction
 import com.divinelink.feature.home.nextup.NextUpEpisode
 import com.divinelink.feature.home.nextup.NextUpViewModel
-import com.divinelink.feature.home.nextup.PausedShowsButton
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun NextUpContent(
+fun NextUpFullscreen(
+  section: NextUpSection,
   viewModel: NextUpViewModel = koinViewModel(),
-  switchViewModel: SwitchViewButtonViewModel = koinViewModel(),
   onNavigate: (Navigation) -> Unit,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
-  val pausedExpanded = rememberExpandState(ExpandableSection.ON_HOLD_SHOWS)
 
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
     onDismissSnackbar = { viewModel.onAction(NextUpAction.DismissSnackbarMessage) },
   )
 
-  if (state.available.isEmpty() && state.upcoming.isEmpty() && state.paused.isEmpty()) {
-    BlankSlate(
-      modifier = Modifier.verticalScroll(rememberScrollState()),
-      uiState = BlankSlateState.Custom(
-        title = UIText.ResourceText(UiString.show_progress_empty_state_title),
-        description = UIText.ResourceText(UiString.show_progress_empty_state_subtitle),
-        retryText = UIText.ResourceText(UiString.core_ui_discover),
-      ),
-      onRetry = {
-        onNavigate(
-          Navigation.Discover.Custom(
-            mediaType = MediaType.TV,
-            entryPoint = DiscoverType.TopRated,
-          ),
+  when (section) {
+    NextUpSection.Available -> if (state.available.isEmpty()) {
+      BlankSlate(
+        modifier = Modifier.verticalScroll(rememberScrollState()),
+        uiState = BlankSlateState.Custom(
+          title = UIText.ResourceText(UiString.show_progress_empty_state_title),
+          description = UIText.ResourceText(UiString.show_progress_empty_state_subtitle),
+          retryText = UIText.ResourceText(UiString.core_ui_discover),
+        ),
+        onRetry = {
+          onNavigate(
+            Navigation.Discover.Custom(
+              mediaType = MediaType.TV,
+              entryPoint = DiscoverType.TopRated,
+            ),
+          )
+        },
+      )
+    }
+    NextUpSection.Upcoming -> Unit
+    NextUpSection.Paused -> Unit
+  }
+
+  ScenePeekLazyColumn(
+    modifier = Modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+  ) {
+    item {
+      AnimatedVisibility(
+        modifier = Modifier.fillMaxWidth(),
+        visible = state.displayMessage != null,
+      ) {
+        DisplayMessageSection(
+          message = state.displayMessage,
+          duration = DisplayMessageDuration.INDEFINITE,
+          onTimeout = { viewModel.onAction(NextUpAction.Retry) },
         )
+      }
+    }
+
+    items(
+      items = when (section) {
+        NextUpSection.Available -> state.available
+        NextUpSection.Upcoming -> state.upcoming
+        NextUpSection.Paused -> state.paused
       },
-    )
-  } else {
-    ScenePeekLazyColumn(
-      modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-    ) {
-      item {
-        AnimatedVisibility(
-          modifier = Modifier.fillMaxWidth(),
-          visible = state.displayMessage != null,
-        ) {
-          DisplayMessageSection(
-            message = state.displayMessage,
-            duration = DisplayMessageDuration.INDEFINITE,
-            onTimeout = { viewModel.onAction(NextUpAction.Retry) },
-          )
-        }
-      }
+      key = { episode -> episode.episode.showId },
+    ) { episode ->
+      NextUpEpisode(
+        boxModifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
+        nextUp = episode,
+        section = section,
+        action = viewModel::onAction,
+        onNavigate = onNavigate,
+      )
+    }
 
-      items(
-        items = state.available,
-        key = { episode -> episode.episode.showId },
-      ) { episode ->
-        NextUpEpisode(
-          boxModifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
-          nextUp = episode,
-          section = NextUpSection.Available,
-          action = viewModel::onAction,
-          onNavigate = onNavigate,
-        )
-      }
-
-      if (state.upcoming.isNotEmpty()) {
-        item {
-          Text(
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
-            text = stringResource(UiString.upcoming),
-            style = MaterialTheme.typography.titleMedium,
-          )
-        }
-        items(
-          items = state.upcoming,
-          key = { episode -> episode.episode.showId },
-        ) { episode ->
-          NextUpEpisode(
-            boxModifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
-            nextUp = episode,
-            section = NextUpSection.Upcoming,
-            action = viewModel::onAction,
-            onNavigate = onNavigate,
-          )
-        }
-      }
-
-      if (state.paused.isNotEmpty()) {
-        item {
-          PausedShowsButton(
-            expanded = pausedExpanded,
-            onSwitchAction = switchViewModel::onAction,
-          )
-        }
-
-        if (pausedExpanded) {
-          items(
-            items = state.paused,
-            key = { episode -> episode.episode.showId },
-          ) { episode ->
-            NextUpEpisode(
-              boxModifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_8),
-              nextUp = episode,
-              section = NextUpSection.Paused,
-              action = viewModel::onAction,
-              onNavigate = onNavigate,
-            )
-          }
-        }
-      }
-
-      item {
-        Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
-      }
+    item {
+      Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
     }
   }
 }

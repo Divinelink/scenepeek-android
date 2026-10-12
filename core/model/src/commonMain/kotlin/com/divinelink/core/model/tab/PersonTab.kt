@@ -25,8 +25,8 @@ sealed class PersonTab {
   )
 
   companion object {
-    val entries: List<Tab>
-      get() = listOf(
+    val entries: Set<Tab>
+      get() = setOf(
         About,
         Movies,
         TVShows,

@@ -66,7 +66,7 @@ fun MediaRow(
               filterValue = MediaRequestFilter.All.value,
             )
             MediaListSection.NextUpEpisodes -> Navigation.ProgressScreenRoute(
-              ProgressTab.NextUp.order,
+              ProgressTab.Progress,
             )
           }
 
@@ -88,7 +88,7 @@ fun MediaRow(
         Spacer(modifier = Modifier.weight(1f))
 
         IconButtonWithTooltip(
-          onClick = { onNavigate(Navigation.ProgressScreenRoute(ProgressTab.History.order)) },
+          onClick = { onNavigate(Navigation.ProgressScreenRoute(ProgressTab.History)) },
           tooltipText = ModelRes.string.history,
         ) {
           Icon(

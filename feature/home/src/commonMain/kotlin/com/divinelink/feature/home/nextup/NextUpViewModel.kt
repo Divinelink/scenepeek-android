@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.provider.ClockProvider
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.data.tabs.TabsRepository
 import com.divinelink.core.data.track.TrackRepository
 import com.divinelink.core.domain.track.MarkEpisodeAsWatchedUseCase
 import com.divinelink.core.domain.track.MarkEpisodeParameters
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.tab.ProgressTab
 import com.divinelink.core.network.Resource
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.resources.saved_to_history
@@ -25,6 +27,7 @@ import kotlinx.coroutines.launch
 class NextUpViewModel(
   private val repository: MediaRepository,
   private val trackRepository: TrackRepository,
+  private val tabsRepository: TabsRepository,
   private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
   private val clock: ClockProvider,
 ) : ViewModel() {
@@ -39,6 +42,11 @@ class NextUpViewModel(
       repository.getNextUpEpisodes(),
       trackRepository.getSyncErrors(),
     ) { episodes, errors ->
+      val newTabs = tabsRepository.nextUpTabs.value
+        .toggle(ProgressTab.OnHold, episodes.paused.isNotEmpty())
+        .toggle(ProgressTab.Upcoming, episodes.upcoming.isNotEmpty())
+      tabsRepository.setNextUpTabs(newTabs)
+
       _uiState.update { state ->
         state.copy(
           available = episodes.available,
@@ -124,4 +132,7 @@ class NextUpViewModel(
       )
     }
   }
+
+  private fun Set<ProgressTab>.toggle(tab: ProgressTab, present: Boolean): Set<ProgressTab> =
+    if (present) this + tab else this - tab
 }

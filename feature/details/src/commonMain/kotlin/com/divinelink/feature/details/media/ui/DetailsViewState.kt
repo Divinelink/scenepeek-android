@@ -42,7 +42,7 @@ data class DetailsViewState(
   val selectedTabIndex: Int,
   val jellyseerrMediaInfo: JellyseerrMediaInfo?,
   val permissions: List<ProfilePermission>,
-  val tabs: List<Tab>,
+  val tabs: Set<Tab>,
   val forms: DetailsForms,
   val seasonsProgress: List<SeasonProgress>,
   val userShowStatus: UserShowStatus?,
@@ -52,7 +52,7 @@ data class DetailsViewState(
       isLoading: Boolean,
       mediaId: Long,
       mediaType: MediaType,
-      tabs: List<Tab>,
+      tabs: Set<Tab>,
       forms: DetailsForms,
     ) = DetailsViewState(
       isLoading = isLoading,

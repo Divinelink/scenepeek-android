@@ -28,6 +28,8 @@ import com.divinelink.core.data.search.SearchRepository
 import com.divinelink.core.data.session.repository.ProdSessionRepository
 import com.divinelink.core.data.session.repository.RequestTokenManager
 import com.divinelink.core.data.session.repository.SessionRepository
+import com.divinelink.core.data.tabs.ProdTabsRepository
+import com.divinelink.core.data.tabs.TabsRepository
 import com.divinelink.core.data.track.ProdTrackRepository
 import com.divinelink.core.data.track.TrackRepository
 import org.koin.core.module.dsl.bind
@@ -51,5 +53,6 @@ val dataModule = module {
   singleOf(::ProdSearchRepository) { bind<SearchRepository>() }
   singleOf(::ProdOpenDataRepository) { bind<OpenDataRepository>() }
   singleOf(::ProdTrackRepository) { bind<TrackRepository>() }
+  singleOf(::ProdTabsRepository) { bind<TabsRepository>() }
   singleOf(::FilterRepository)
 }

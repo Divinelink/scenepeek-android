@@ -124,7 +124,7 @@ class DetailsViewModel(
       tabs = when (MediaType.from(route.mediaType)) {
         MediaType.TV -> TvTab.entries
         MediaType.MOVIE -> MovieTab.entries
-        else -> emptyList()
+        else -> emptySet()
       },
       forms = when (MediaType.from(route.mediaType)) {
         MediaType.TV -> TvTab.entries.associate { tab ->

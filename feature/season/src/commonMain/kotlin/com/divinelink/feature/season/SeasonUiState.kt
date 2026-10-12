@@ -12,7 +12,7 @@ data class SeasonUiState(
   val backdropPath: String?,
   val title: String,
   val season: Season?,
-  val tabs: List<Tab>,
+  val tabs: Set<Tab>,
   val selectedTab: Int,
   val forms: SeasonForms,
   val watchedEpisodes: Set<Long>,

@@ -10,7 +10,7 @@ data class PersonUiState(
   val selectedTabIndex: Int,
   val isLoading: Boolean = false,
   val isError: Boolean = false,
-  val tabs: List<Tab>,
+  val tabs: Set<Tab>,
   val forms: Map<Int, PersonForm> = mapOf(
     PersonTab.About.order to PersonForm.About(PersonDetailsUiState.Loading),
     PersonTab.Movies.order to PersonForm.Movies(emptyMap()),

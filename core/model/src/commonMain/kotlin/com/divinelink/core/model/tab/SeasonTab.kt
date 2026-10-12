@@ -39,7 +39,7 @@ sealed class SeasonTab(
 
   companion object {
     val entries
-      get() = listOf(
+      get() = setOf(
         Episodes,
         About,
         GuestStars,

@@ -420,7 +420,7 @@ val navigationModule = module {
   navigation<Navigation.ProgressScreenRoute> { route ->
     val navigator = get<Navigator>()
     LocalNavAnimatedContentScope.current.ProgressScreen(
-      index = route.index,
+      tab = route.tab,
       onNavigate = navigator::navigate,
     )
   }
