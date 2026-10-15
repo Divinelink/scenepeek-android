@@ -24,8 +24,8 @@ fun LocalDate.isBeforeNowUtc(clock: Clock): Boolean = this < clock.todayIn(TimeZ
 fun LocalDate.isAfterNowUtc(clock: Clock): Boolean = this > clock.todayIn(TimeZone.UTC)
 
 fun LocalDate.daysFromToday(clock: ClockProvider): Int {
-  val today = clock.now.dayOfYear
-  return dayOfYear - today
+  val today = clock.now.toEpochDays()
+  return toEpochDays().toInt() - today.toInt()
 }
 
 fun LocalDate.isAfterNow(clock: ClockProvider): Boolean = compareTo(clock.now) > 0
