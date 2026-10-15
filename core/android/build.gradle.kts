@@ -17,10 +17,10 @@ android {
 
     // NOTE: The 'flavor' property used below must be passed via the command line
     // (e.g., -Pflavor=fdroid) or through custom tasks like 'assembleDebugFdroid'.
-    // If no property is provided, it defaults to 'secrets.full.properties'.
+    // If no property is provided, it defaults to 'secrets.fdroid.properties'.
     val flavorFileName = project.findProperty("flavor")?.let {
       "secrets.$it.properties"
-    } ?: "secrets.full.properties"
+    } ?: "secrets.fdroid.properties"
 
     androidComponents {
       onVariants { variant ->
