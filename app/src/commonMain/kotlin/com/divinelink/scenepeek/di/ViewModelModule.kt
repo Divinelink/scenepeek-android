@@ -5,6 +5,7 @@ import com.divinelink.core.ui.menu.DropdownMenuViewModel
 import com.divinelink.core.ui.tabbed.TabsScreenViewModel
 import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import com.divinelink.feature.add.to.account.modal.ActionMenuViewModel
+import com.divinelink.feature.add.to.account.rate.ui.SubmitRatingViewModel
 import com.divinelink.feature.awards.category.AwardCategoryViewModel
 import com.divinelink.feature.awards.detail.AwardDetailsViewModel
 import com.divinelink.feature.awards.popular.AwardsViewModel
@@ -92,4 +93,5 @@ val appViewModelModule = module {
   // Components
   viewModelOf(::SwitchViewButtonViewModel)
   viewModelOf(::DropdownMenuViewModel)
+  viewModelOf(::SubmitRatingViewModel)
 }

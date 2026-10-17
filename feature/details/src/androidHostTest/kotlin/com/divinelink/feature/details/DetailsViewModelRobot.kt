@@ -135,11 +135,11 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   }
 
   fun onSubmitRate(rating: Int) = apply {
-    viewModel.onSubmitRate(rating)
+    viewModel.onSetRatingLoading(rating)
   }
 
   fun onDeleteRating() = apply {
-    viewModel.onClearRating()
+//    viewModel.onClearRating()
   }
 
   fun onAddToWatchlist(section: AccountDataSection = AccountDataSection.Watchlist) = apply {

@@ -1,8 +1,10 @@
 package com.divinelink.feature.home.nextup
 
+import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.provider.ClockProvider
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.tabs.TabsRepository
 import com.divinelink.core.data.track.TrackRepository
@@ -14,13 +16,18 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.tab.ProgressTab
 import com.divinelink.core.network.Resource
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.saved_to_history
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,6 +35,7 @@ class NextUpViewModel(
   private val repository: MediaRepository,
   private val trackRepository: TrackRepository,
   private val tabsRepository: TabsRepository,
+  private val authRepository: AuthRepository,
   private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
   private val clock: ClockProvider,
 ) : ViewModel() {
@@ -36,6 +44,9 @@ class NextUpViewModel(
     NextUpUiState.initial,
   )
   val uiState: StateFlow<NextUpUiState> = _uiState
+
+  private val _rateEpisodeModal = Channel<Episode>()
+  val rateEpisodeModal: Flow<Episode> = _rateEpisodeModal.receiveAsFlow()
 
   init {
     combine(
@@ -57,6 +68,13 @@ class NextUpViewModel(
         )
       }
     }
+      .launchIn(viewModelScope)
+
+    authRepository
+      .tmdbAccount
+      .onEach { account ->
+        _uiState.update { it.copy(loggedIn = account != null) }
+      }
       .launchIn(viewModelScope)
   }
 
@@ -112,6 +130,19 @@ class NextUpViewModel(
         setSnackbarMessage(
           SnackbarMessage.from(
             text = UIText.ResourceText(UiString.saved_to_history, episode.name),
+            actionLabelText = if (_uiState.value.loggedIn) {
+              UIText.ResourceText(UiString.core_ui_add_rating)
+            } else {
+              null
+            },
+            onSnackbarResult = { result ->
+              when (result) {
+                SnackbarResult.Dismissed -> Unit
+                SnackbarResult.ActionPerformed -> viewModelScope.launch {
+                  _rateEpisodeModal.send(episode)
+                }
+              }
+            },
           ),
         )
       }

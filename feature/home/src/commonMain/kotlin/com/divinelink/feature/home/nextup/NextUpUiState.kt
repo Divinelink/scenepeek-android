@@ -15,6 +15,7 @@ data class NextUpUiState(
   val errors: List<ShowSyncError>,
   val loading: Boolean,
   val snackbarMessage: SnackbarMessage?,
+  val loggedIn: Boolean,
 ) {
   val displayMessage = if (errors.isNotEmpty() && !loading) {
     DisplayMessage.Warning(message = UIText.ResourceText(UiString.next_up_syncing_issue))
@@ -30,6 +31,7 @@ data class NextUpUiState(
       errors = emptyList(),
       loading = true,
       snackbarMessage = null,
+      loggedIn = false,
     )
   }
 }
