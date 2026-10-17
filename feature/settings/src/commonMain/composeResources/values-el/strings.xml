@@ -99,4 +99,11 @@
     <string name="backup_summary">Εξαγωγή του ιστορικού προβολής σας σε αρχείο αντιγράφου ασφαλείας</string>
     <string name="backup_and_restore">Αντίγραφα ασφ. και επαναφορά</string>
     <string name="backup">Αντίγραφο ασφαλείας</string>
+    <string name="last_backup_text">Τελευταίο αντίγραφο ασφαλείας: %1$s</string>
+    <string name="automatic_backups_error">Υπάρχει πρόβλημα με την τρέχουσα τοποθεσία αντιγράφων ασφαλείας. Παρακαλώ ενημερώστε την για να συνεχιστούν τα αυτόματα αντίγραφα ασφαλείας.</string>
+    <string name="backup_location_title">Τοποθεσία αντιγράφων ασφαλείας</string>
+    <string name="backup_location_subtitle">Ορισμός τοποθεσίας αποθήκευσης αντιγράφων ασφαλείας</string>
+    <string name="automatic_backups_title">Αυτόματη δημιουργία αντιγράφων ασφαλείας</string>
+    <string name="automatic_backups_subtitle">Δημιουργία περιοδικών αντιγράφων ασφαλείας στο παρασκήνιο κάθε δύο ημέρες.</string>
+    <string name="automatic_backups_disabled">Τα αυτόματα αντίγραφα ασφαλείας είναι απενεργοποιημένα επειδή απαιτούν Τοποθεσία αντιγράφων ασφαλείας.</string>
 </resources>

@@ -304,4 +304,20 @@
     <string name="country_new_zealand">Uus-Meremaa</string>
     <string name="saved">Salvestatud</string>
     <string name="original_order_sorting_filter">Lisamise järjekord</string>
+    <string name="nr_content_rating">Hinnangute teavet pole saadaval.</string>
+    <string name="movie_g">Sobilik kõikidele vanusegruppidele.</string>
+    <string name="movie_pg">Osa sisu võib väikestele lastele sobimatu olla. Soovitatav on vanemate järelevalve.</string>
+    <string name="movie_pg13">Soovitatav alates 13. eluaastast. Mõned stseenid võivad olla noorematele vaatajatele sobimatud.</string>
+    <string name="movie_r">Ei soovitata alla 17-aastastele ilma vanemate järelevalveta. Sisaldab täiskasvanutele mõeldud sisu.</string>
+    <string name="movie_nc17">Mõeldud ainult täiskasvanud vaatajatele. Ei sobi alla 17-aastastele.</string>
+    <string name="tv_y">Mõeldud eelkooliealistele lastele, sealhulgas 2–6-aastastele.</string>
+    <string name="tv_y7">Mõeldud lastele alates 7. eluaastast; võib sisaldada kerget fantaasiavägivalda.</string>
+    <string name="tv_g">Sobib igas vanuses vaatajatele. Vägivalda, roppusi või seksuaalset sisu on vähe või üldse mitte.</string>
+    <string name="tv_pg">Võib sisaldada sisu, mida vanemad võivad pidada väiksematele lastele sobimatuks.</string>
+    <string name="tv_14">Osa sisu ei sobi alla 14-aastastele lastele.</string>
+    <string name="tv_ma">Ainult täiskasvanutele. Mõeldud vaatajatele alates 17. eluaastast.</string>
+    <string name="progress">Edenemine</string>
+    <string name="history">Ajalugu</string>
+    <string name="upcoming">Õige pea</string>
+    <string name="on_hold">Ootel</string>
 </resources>
