@@ -48,4 +48,5 @@
     <string name="feature_details_information_release_dates">Väljaandmise kuupäevad</string>
     <string name="feature_details_person_birthday">%1$s (%2$s aastat vana)</string>
     <string name="feature_details_information_seasons">Hooajad</string>
+    <string name="feature_details_request">Päring</string>
 </resources>

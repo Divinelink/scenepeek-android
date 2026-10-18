@@ -193,7 +193,6 @@
     <string name="error_at_least_one_section_visible">Πρέπει να είναι ορατή τουλάχιστον μία ενότητα</string>
     <string name="restore_to_default">Επαναφορά στις προεπιλογές</string>
     <string name="changelog">Αρχείο αλλαγών</string>
-    <string name="upcoming">Επερχόμενα</string>
     <string name="core_ui_auth_token">Auth token</string>
     <string name="track_show">Παρακολουθήστε αυτή τη σειρά</string>
     <string name="tracked_show">Παρακολουθείται</string>
@@ -214,4 +213,12 @@
     <string name="show_progress_empty_state_subtitle">Προσθέστε σειρές στη βιβλιοθήκη σας για να ξεκινήσετε να παρακολουθείτε την πρόοδό σας.</string>
     <string name="show_progress_empty_state_title">Ας βρούμε κάτι να δούμε!</string>
     <string name="next_up_syncing_issue">Δεν ήταν δυνατή η φόρτωση της προόδου για ορισμένες σειρές. Πατήστε για επανάληψη.</string>
+    <string name="move_progress_show_to">Προσθήκη στo '%1$s'</string>
+    <string name="watching">Παρακολούθηση</string>
+    <string name="plan_to_watch">Για παρακολούθηση</string>
+    <string name="dropped">Διακοπή παρακολούθησης</string>
+    <string name="watched">Ολοκληρωμένο</string>
+    <string name="mark_as_watched">Επισήμανση ως παρακολουθημένο</string>
+    <string name="watched_at">Παρακολουθήθηκε στις %1$s</string>
+    <string name="show_episode_details_content_description">Εμφάνιση λεπτομερειών επεισοδίου για %1$s</string>
 </resources>
