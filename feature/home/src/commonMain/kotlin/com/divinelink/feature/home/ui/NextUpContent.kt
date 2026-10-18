@@ -11,22 +11,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.track.NextUpSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.components.DisplayMessageDuration
 import com.divinelink.core.ui.components.DisplayMessageSection
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
+import com.divinelink.feature.add.to.account.rate.RateModalBottomSheet
 import com.divinelink.feature.home.nextup.EpisodesList
 import com.divinelink.feature.home.nextup.NextUpAction
 import com.divinelink.feature.home.nextup.NextUpEmptyContent
 import com.divinelink.feature.home.nextup.NextUpViewModel
 import com.valentinilk.shimmer.shimmer
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -38,6 +45,7 @@ fun NextUpContent(
   onNavigate: (Navigation) -> Unit,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
+  var showRateModal by rememberSaveable { mutableStateOf<Episode?>(null) }
 
   AnimatedVisibility(
     modifier = Modifier.fillMaxWidth(),
@@ -53,6 +61,26 @@ fun NextUpContent(
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
     onDismissSnackbar = { viewModel.onAction(NextUpAction.DismissSnackbarMessage) },
+  )
+
+  LaunchedEffect(Unit) {
+    viewModel.rateEpisodeModal.collectLatest { episode ->
+      showRateModal = episode
+    }
+  }
+
+  RateModalBottomSheet(
+    isVisible = showRateModal != null,
+    route = Navigation.SubmitRatingRoute.Episode(
+      mediaId = showRateModal?.showId ?: -1,
+      value = showRateModal?.accountRating?.toFloat(),
+      title = showRateModal?.name ?: "",
+      seasonNumber = showRateModal?.seasonNumber ?: 0,
+      episodeNumber = showRateModal?.number ?: 0,
+    ),
+    onSetLoading = { _, _ -> },
+    onDismissRequest = { showRateModal = null },
+    onNavigate = onNavigate,
   )
 
   if (state.loading) {

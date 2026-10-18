@@ -12,13 +12,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.details.Episode
 import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.track.NextUpSection
@@ -32,9 +37,11 @@ import com.divinelink.core.ui.resources.core_ui_discover
 import com.divinelink.core.ui.resources.show_progress_empty_state_subtitle
 import com.divinelink.core.ui.resources.show_progress_empty_state_title
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
+import com.divinelink.feature.add.to.account.rate.RateModalBottomSheet
 import com.divinelink.feature.home.nextup.NextUpAction
 import com.divinelink.feature.home.nextup.NextUpEpisode
 import com.divinelink.feature.home.nextup.NextUpViewModel
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -44,10 +51,31 @@ fun NextUpFullscreen(
   onNavigate: (Navigation) -> Unit,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
+  var showRateModal by rememberSaveable { mutableStateOf<Episode?>(null) }
 
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
     onDismissSnackbar = { viewModel.onAction(NextUpAction.DismissSnackbarMessage) },
+  )
+
+  LaunchedEffect(Unit) {
+    viewModel.rateEpisodeModal.collectLatest { episode ->
+      showRateModal = episode
+    }
+  }
+
+  RateModalBottomSheet(
+    isVisible = showRateModal != null,
+    route = Navigation.SubmitRatingRoute.Episode(
+      mediaId = showRateModal?.showId ?: -1,
+      value = showRateModal?.accountRating?.toFloat(),
+      title = showRateModal?.name ?: "",
+      seasonNumber = showRateModal?.seasonNumber ?: 0,
+      episodeNumber = showRateModal?.number ?: 0,
+    ),
+    onSetLoading = { _, _ -> },
+    onDismissRequest = { showRateModal = null },
+    onNavigate = onNavigate,
   )
 
   when (section) {

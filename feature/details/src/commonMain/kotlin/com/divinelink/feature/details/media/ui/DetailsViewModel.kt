@@ -17,12 +17,8 @@ import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.AddToAccountUseCase
 import com.divinelink.core.domain.details.media.AddToWatchlistParameters
-import com.divinelink.core.domain.details.media.DeleteRatingParameters
-import com.divinelink.core.domain.details.media.DeleteRatingUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.details.media.GetMediaDetailsUseCase
-import com.divinelink.core.domain.details.media.SubmitRatingParameters
-import com.divinelink.core.domain.details.media.SubmitRatingUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
@@ -64,9 +60,6 @@ import com.divinelink.core.ui.resources.core_ui_error_retry
 import com.divinelink.core.ui.resources.removed_from_history
 import com.divinelink.core.ui.resources.saved_to_history
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.add.to.account.resources.must_be_logged_in_to_rate
-import com.divinelink.feature.add.to.account.resources.rating_deleted_successfully
-import com.divinelink.feature.add.to.account.resources.rating_submitted_successfully
 import com.divinelink.feature.details.DetailsAction
 import com.divinelink.feature.details.resources.Res
 import com.divinelink.feature.details.resources.added_to_favorites_message
@@ -94,15 +87,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.divinelink.feature.add.to.account.resources.Res as AccountRes
 
 class DetailsViewModel(
   route: DetailsRoute,
   getMediaDetailsUseCase: GetMediaDetailsUseCase,
   private val fetchAllRatingsUseCase: FetchAllRatingsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
-  private val submitRatingUseCase: SubmitRatingUseCase,
-  private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToAccountUseCase: AddToAccountUseCase,
   private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
@@ -415,91 +405,14 @@ class DetailsViewModel(
     }
   }
 
-  fun onSubmitRate(rating: Int) {
-    setSectionState(AccountDataSection.Rating, true)
-    viewModelScope.launch {
-      submitRatingUseCase.invoke(
-        SubmitRatingParameters(
-          id = viewState.value.mediaId,
-          mediaType = viewState.value.mediaType,
-          rating = rating,
-        ),
-      ).fold(
-        onSuccess = {
-          _viewState.update { viewState ->
-            viewState.copy(
-              userDetails = viewState.userDetails.copy(rating = rating.toFloat()),
-              snackbarMessage = SnackbarMessage.from(
-                text = UIText.ResourceText(
-                  AccountRes.string.rating_submitted_successfully,
-                  viewState.mediaDetails?.title ?: "",
-                ),
-              ),
-            )
-          }
-          setSectionState(AccountDataSection.Rating, false)
-        },
-        onFailure = {
-          if (it is SessionException.Unauthenticated) {
-            _viewState.update { viewState ->
-              viewState.copy(
-                snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(AccountRes.string.must_be_logged_in_to_rate),
-                  actionLabelText = UIText.ResourceText(Res.string.login),
-                  onSnackbarResult = ::navigateToLogin,
-                ),
-              )
-            }
-          } else {
-            _viewState.update { viewState ->
-              viewState.copy(
-                snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(UiString.core_ui_error_retry),
-                ),
-              )
-            }
-          }
-          setSectionState(AccountDataSection.Rating, false)
-        },
-      )
+  fun onSetRatingState(
+    loading: Boolean,
+    rating: Float?,
+  ) {
+    _viewState.update {
+      it.copy(userDetails = it.userDetails.copy(rating = rating))
     }
-  }
-
-  fun onClearRating() {
-    setSectionState(AccountDataSection.Rating, true)
-    viewModelScope.launch {
-      deleteRatingUseCase.invoke(
-        DeleteRatingParameters(
-          id = viewState.value.mediaId,
-          mediaType = viewState.value.mediaType,
-        ),
-      ).fold(
-        onSuccess = {
-          _viewState.update { viewState ->
-            viewState.copy(
-              userDetails = viewState.userDetails.copy(rating = null),
-              snackbarMessage = SnackbarMessage.from(
-                text = UIText.ResourceText(
-                  AccountRes.string.rating_deleted_successfully,
-                  viewState.mediaDetails?.title ?: "",
-                ),
-              ),
-            )
-          }
-          setSectionState(AccountDataSection.Rating, false)
-        },
-        onFailure = {
-          _viewState.update { viewState ->
-            viewState.copy(
-              snackbarMessage = SnackbarMessage.from(
-                text = UIText.ResourceText(UiString.core_ui_error_retry),
-              ),
-            )
-          }
-          setSectionState(AccountDataSection.Rating, false)
-        },
-      )
-    }
+    setSectionState(AccountDataSection.Rating, loading)
   }
 
   fun onAction(action: DetailsAction) {

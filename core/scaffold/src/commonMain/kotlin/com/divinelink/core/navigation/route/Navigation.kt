@@ -252,4 +252,26 @@ sealed interface Navigation : NavKey {
     val category: CeremonyCategory,
     val ceremonyId: String,
   ) : Navigation
+
+  @Serializable
+  sealed interface SubmitRatingRoute {
+    val mediaId: Long
+    val value: Float?
+    val title: String
+
+    data class Episode(
+      val seasonNumber: Int,
+      val episodeNumber: Int,
+      override val mediaId: Long,
+      override val value: Float?,
+      override val title: String,
+    ) : SubmitRatingRoute
+
+    data class Media(
+      override val mediaId: Long,
+      override val value: Float?,
+      override val title: String,
+      val type: MediaType,
+    ) : SubmitRatingRoute
+  }
 }

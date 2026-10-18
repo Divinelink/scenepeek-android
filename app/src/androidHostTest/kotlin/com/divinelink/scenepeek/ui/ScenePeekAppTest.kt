@@ -47,6 +47,7 @@ import com.divinelink.core.scaffold.resources.top_level_navigation_content_descr
 import com.divinelink.core.scaffold.resources.top_level_navigation_content_description_unselected
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestAccountRepository
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
@@ -79,6 +80,7 @@ import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.core.ui.resources.core_ui_connected
 import com.divinelink.core.ui.resources.core_ui_not_connected
 import com.divinelink.core.ui.resources.core_ui_toolbar_search_placeholder
+import com.divinelink.feature.add.to.account.rate.ui.SubmitRatingViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.home.HomeViewModel
 import com.divinelink.feature.home.nextup.NextUpViewModel
@@ -116,6 +118,7 @@ class ScenePeekAppTest : ComposeTest() {
       hidden = setOf(MediaListSection.RecentRequests),
     ),
   )
+  private val accountRepository = TestAccountRepository()
   private val mediaRepository = TestMediaRepository()
   private val clockProvider = PreviewClockProvider()
   private lateinit var navigator: Navigator
@@ -137,8 +140,6 @@ class ScenePeekAppTest : ComposeTest() {
 
   // DETAILS use cases
   private lateinit var getMediaDetailsUseCase: FakeGetMediaDetailsUseCase
-  private lateinit var submitRatingUseCase: FakeSubmitRatingUseCase
-  private lateinit var deleteRatingUseCase: FakeDeleteRatingUseCase
   private lateinit var addToWatchlistUseCase: FakeAddToWatchlistUseCase
   private lateinit var requestMediaUseCase: FakeRequestMediaUseCase
   private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
@@ -168,11 +169,8 @@ class ScenePeekAppTest : ComposeTest() {
     markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
     getAccountDetailsUseCaseTest = FakeGetAccountDetailsUseCase()
-    authRepository = TestAuthRepository()
 
     getMediaDetailsUseCase = FakeGetMediaDetailsUseCase()
-    submitRatingUseCase = FakeSubmitRatingUseCase()
-    deleteRatingUseCase = FakeDeleteRatingUseCase()
     addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     requestMediaUseCase = FakeRequestMediaUseCase()
     fetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
@@ -186,12 +184,12 @@ class ScenePeekAppTest : ComposeTest() {
     completeSeasonUseCase = TestCompleteSeasonUseCase()
     addShowUseCase = TestAddShowUseCase()
 
+    authRepository.mockTMDBAccount(null)
+
     startKoin {
       modules(
         navigationModule,
-        sectionViewModelModule,
-        nextUpViewModel,
-        switchViewModel,
+        viewModelModule,
       )
     }
 
@@ -693,8 +691,6 @@ class ScenePeekAppTest : ComposeTest() {
       DetailsViewModel(
         getMediaDetailsUseCase = getMediaDetailsUseCase.mock,
         onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-        submitRatingUseCase = submitRatingUseCase.mock,
-        deleteRatingUseCase = deleteRatingUseCase.mock,
         addToAccountUseCase = addToWatchlistUseCase.mock,
         spoilersObfuscationUseCase = spoilersObfuscationUseCase,
         fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
@@ -1014,7 +1010,21 @@ class ScenePeekAppTest : ComposeTest() {
     )
   }
 
-  private val sectionViewModelModule = module {
+  private val viewModelModule = module {
+    viewModel {
+      SwitchViewButtonViewModel(
+        repository = preferencesRepository,
+      )
+    }
+    viewModel { params ->
+      SubmitRatingViewModel(
+        route = params.get(),
+        accountRepository = accountRepository.mock,
+        mediaRepository = mediaRepository.mock,
+        submitRatingUseCase = FakeSubmitRatingUseCase().mock,
+        deleteRatingUseCase = FakeDeleteRatingUseCase().mock,
+      )
+    }
     viewModel { params ->
       SectionViewModel(
         section = params.get(),
@@ -1022,24 +1032,14 @@ class ScenePeekAppTest : ComposeTest() {
         clock = clock.clock,
       )
     }
-  }
-
-  private val nextUpViewModel = module {
     viewModel {
       NextUpViewModel(
         repository = mediaRepository.mock,
+        authRepository = authRepository.mock,
         tabsRepository = ProdTabsRepository(),
         trackRepository = TestTrackRepository().mock,
         markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
         clock = clock,
-      )
-    }
-  }
-
-  private val switchViewModel = module {
-    viewModel {
-      SwitchViewButtonViewModel(
-        repository = preferencesRepository,
       )
     }
   }

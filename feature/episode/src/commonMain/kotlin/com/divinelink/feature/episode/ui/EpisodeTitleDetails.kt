@@ -41,11 +41,18 @@ fun EpisodeTitleDetails(
   RateModalBottomSheet(
     isVisible = showRateModal,
     modifier = modifier,
-    value = episode.accountRating,
-    mediaTitle = episode.name,
-    onSubmitRate = { action(EpisodeAction.OnSubmitRate(it)) },
-    onClearRate = { action(EpisodeAction.OnClearRate) },
+    route = Navigation.SubmitRatingRoute.Episode(
+      seasonNumber = episode.seasonNumber,
+      episodeNumber = episode.number,
+      mediaId = episode.showId,
+      value = episode.accountRating?.toFloat(),
+      title = episode.name,
+    ),
+    onSetLoading = { loading, _ ->
+      action(EpisodeAction.SetRatingState(loading))
+    },
     onDismissRequest = { showRateModal = false },
+    onNavigate = onNavigate,
   )
 
   Column(

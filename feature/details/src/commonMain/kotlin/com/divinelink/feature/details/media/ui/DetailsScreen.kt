@@ -84,14 +84,18 @@ fun DetailsScreen(
   RateModalBottomSheet(
     isVisible = openRateBottomSheet,
     modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
-    value = viewState.userDetails.beautifiedRating,
-    mediaTitle = viewState.mediaDetails?.title ?: "",
-    onSubmitRate = {
+    onSetLoading = { loading, rating ->
       openRateBottomSheet = false
-      viewModel.onSubmitRate(it)
+      viewModel.onSetRatingState(loading, rating)
     },
-    onClearRate = viewModel::onClearRating,
     onDismissRequest = { openRateBottomSheet = false },
+    route = Navigation.SubmitRatingRoute.Media(
+      type = viewState.mediaType,
+      mediaId = viewState.mediaId,
+      value = viewState.userDetails.beautifiedRating?.toFloat(),
+      title = viewState.mediaDetails?.title ?: "",
+    ),
+    onNavigate = onNavigate,
   )
 
   viewState.mediaDetails?.ratingCount?.let { ratingCount ->

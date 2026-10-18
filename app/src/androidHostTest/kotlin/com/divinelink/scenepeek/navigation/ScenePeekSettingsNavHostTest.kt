@@ -41,6 +41,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.domain.SystemThemeProviderFactory
 import com.divinelink.core.testing.domain.theme.material.you.MaterialYouProviderFactory
+import com.divinelink.core.testing.repository.TestAccountRepository
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.repository.TestTrackRepository
@@ -49,18 +50,21 @@ import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.uiTest
 import com.divinelink.core.testing.usecase.FakeAwaitSessionUseCase
 import com.divinelink.core.testing.usecase.FakeCreateRequestTokenUseCase
+import com.divinelink.core.testing.usecase.FakeDeleteRatingUseCase
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutUseCase
+import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.TestMarkEpisodeAsWatchedUseCase
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.PreviewLocalProvider
+import com.divinelink.feature.add.to.account.rate.ui.SubmitRatingViewModel
 import com.divinelink.feature.home.HomeViewModel
 import com.divinelink.feature.home.nextup.NextUpViewModel
 import com.divinelink.feature.home.section.SectionViewModel
@@ -102,6 +106,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   private lateinit var fakePreferenceStorage: FakePreferenceStorage
   private lateinit var preferencesRepository: TestPreferencesRepository
   private lateinit var mediaRepository: TestMediaRepository
+  private lateinit var authRepository: TestAuthRepository
   private lateinit var navigator: Navigator
 
   // HOME use cases
@@ -119,7 +124,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         appModule,
         navigationModule,
         sectionViewModelModule,
-        switchViewModelModule,
+        viewModelModule,
       )
     }
 
@@ -132,6 +137,9 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       ),
     )
     mediaRepository = TestMediaRepository()
+    authRepository = TestAuthRepository()
+
+    authRepository.mockTMDBAccount(null)
 
     fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
     markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
@@ -139,7 +147,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       HomeViewModel(
         preferencesRepository = preferencesRepository,
-        authRepository = TestAuthRepository().mock,
+        authRepository = authRepository.mock,
         searchStateManager = SearchStateManager(),
       )
     }
@@ -147,6 +155,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       NextUpViewModel(
         repository = mediaRepository.mock,
+        authRepository = authRepository.mock,
         tabsRepository = ProdTabsRepository(),
         trackRepository = TestTrackRepository().mock,
         markEpisodeAsWatchedUseCase = TestMarkEpisodeAsWatchedUseCase().mock,
@@ -406,10 +415,19 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     }
   }
 
-  private val switchViewModelModule = module {
+  private val viewModelModule = module {
     viewModel {
       SwitchViewButtonViewModel(
         repository = preferencesRepository,
+      )
+    }
+    viewModel { params ->
+      SubmitRatingViewModel(
+        route = params.get(),
+        accountRepository = TestAccountRepository().mock,
+        mediaRepository = mediaRepository.mock,
+        submitRatingUseCase = FakeSubmitRatingUseCase().mock,
+        deleteRatingUseCase = FakeDeleteRatingUseCase().mock,
       )
     }
   }

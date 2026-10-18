@@ -10,7 +10,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -77,12 +76,6 @@ fun AnimatedVisibilityScope.EpisodeScreen(
     systemUiController.setStatusBarColor(isLight = !isLight && !isDarkTheme)
     onDispose {
       systemUiController.setStatusBarColor(isLight = !isDarkTheme)
-    }
-  }
-
-  LaunchedEffect(Unit) {
-    viewModel.navigateToLogin.collect {
-      onNavigate(Navigation.TMDBAuthRoute)
     }
   }
 
