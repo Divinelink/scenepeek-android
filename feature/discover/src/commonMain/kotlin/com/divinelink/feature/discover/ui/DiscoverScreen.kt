@@ -17,6 +17,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.discover.DiscoverType
 import com.divinelink.core.model.resources.Res
 import com.divinelink.core.model.resources.top_rated
+import com.divinelink.core.model.resources.upcoming
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -26,7 +27,6 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.resources.core_ui_discover
 import com.divinelink.core.ui.resources.popular
-import com.divinelink.core.ui.resources.upcoming
 import com.divinelink.feature.discover.DiscoverSectionsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -58,7 +58,7 @@ fun AnimatedVisibilityScope.DiscoverScreen(
     topBar = {
       AppTopAppBar(
         text = when (uiState.type) {
-          DiscoverType.Upcoming -> UIText.ResourceText(UiString.upcoming)
+          DiscoverType.Upcoming -> UIText.ResourceText(Res.string.upcoming)
           DiscoverType.Popular -> UIText.ResourceText(UiString.popular)
           DiscoverType.Discover -> UIText.ResourceText(UiString.core_ui_discover)
           DiscoverType.TopRated -> UIText.ResourceText(Res.string.top_rated)
