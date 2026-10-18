@@ -98,6 +98,9 @@ import com.divinelink.feature.onboarding.resources.v64_enhance_library_export
 import com.divinelink.feature.onboarding.resources.v64_episode_detail_modal
 import com.divinelink.feature.onboarding.resources.v64_filters_on_media_sections
 import com.divinelink.feature.onboarding.resources.v64_watch_history
+import com.divinelink.feature.onboarding.resources.v67_fix_crash_upcoming
+import com.divinelink.feature.onboarding.resources.v67_fix_inaccurate_remaining_days
+import com.divinelink.feature.onboarding.resources.v67_rate_episode
 import com.divinelink.feature.onboarding.resources.Res as R
 
 object IntroSections {
@@ -408,6 +411,16 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.v64_automatic_backups)),
   )
 
+  val v67 = listOf(
+    IntroSection.Header(UIText.ResourceText(UiString.changelog)),
+    IntroSection.WhatsNew("v0.41.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.v67_rate_episode)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.v67_fix_inaccurate_remaining_days)),
+    IntroSection.Text(UIText.ResourceText(R.string.v67_fix_crash_upcoming)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -439,5 +452,6 @@ object IntroSections {
     60 to v60,
     61 to v61,
     64 to v64,
+    67 to v67,
   )
 }

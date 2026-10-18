@@ -1,0 +1,7 @@
+🎉 Update v0.41.0
+
+- Added the ability to rate episodes when marking them as watched for TMDB logged-in users
+- Fixes inaccurate remaining days for upcoming shows on different years from the current one
+- Fixes a crash when opening upcoming movies and shows screen
+
+We're constantly working on improvements and new features. Stay tuned for more updates!

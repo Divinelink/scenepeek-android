@@ -124,4 +124,8 @@
   <string name="v64_episode_detail_modal">- Added Episode details modal in the Next Up section</string>
   <string name="v64_filters_on_media_sections">- Added filters on the Upcoming, Popular, and Top Rated screens</string>
   <string name="v64_content_rating_filter">- Added content rating filter on Discover</string>
+
+  <string name="v67_rate_episode">- Added the ability to rate episodes when marking them as watched for TMDB logged-in users</string>
+  <string name="v67_fix_inaccurate_remaining_days">- Fixes inaccurate remaining days for upcoming shows on different years from the current one</string>
+  <string name="v67_fix_crash_upcoming">- Fixes a crash when opening upcoming movies and shows screen</string>
 </resources>
