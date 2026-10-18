@@ -86,7 +86,7 @@ fun DetailsScreen(
     modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
     onSetLoading = { loading, rating ->
       openRateBottomSheet = false
-      viewModel.onSetRatingLoading(loading, rating)
+      viewModel.onSetRatingState(loading, rating)
     },
     onDismissRequest = { openRateBottomSheet = false },
     route = Navigation.SubmitRatingRoute.Media(

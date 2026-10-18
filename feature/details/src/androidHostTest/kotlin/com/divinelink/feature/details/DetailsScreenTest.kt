@@ -52,6 +52,7 @@ import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
+import com.divinelink.core.testing.repository.TestAccountRepository
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
@@ -81,6 +82,7 @@ import com.divinelink.core.ui.resources.core_ui_add_rating
 import com.divinelink.core.ui.resources.core_ui_delete
 import com.divinelink.core.ui.resources.core_ui_navigate_up_button_content_description
 import com.divinelink.core.ui.resources.core_ui_view_all
+import com.divinelink.feature.add.to.account.rate.ui.SubmitRatingViewModel
 import com.divinelink.feature.add.to.account.resources.submit_rating_button
 import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsSectionViewModel
@@ -157,6 +159,21 @@ class DetailsScreenTest : ComposeTest() {
         ),
         preferencesRepository = TestPreferencesRepository(),
         openDataRepository = TestOpenDataRepository(),
+      )
+    }
+
+    declare {
+      SubmitRatingViewModel(
+        route = Navigation.SubmitRatingRoute.Media(
+          mediaId = MediaDetailsFactory.FightClub().id,
+          value = null,
+          title = MediaDetailsFactory.FightClub().title,
+          type = MediaType.MOVIE,
+        ),
+        accountRepository = TestAccountRepository().mock,
+        mediaRepository = TestMediaRepository().mock,
+        submitRatingUseCase = submitRateUseCase.mock,
+        deleteRatingUseCase = deleteRatingUseCase.mock,
       )
     }
   }
@@ -502,7 +519,7 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     val route = Navigation.DetailsRoute(
-      id = 0,
+      id = MediaDetailsFactory.FightClub().id,
       isFavorite = false,
       mediaType = MediaType.MOVIE.value,
     )
@@ -548,7 +565,7 @@ class DetailsScreenTest : ComposeTest() {
 
     val submitRatingText = getString(AccountRes.string.submit_rating_button)
 
-    onNodeWithText(submitRatingText).performClick()
+    onNodeWithText(submitRatingText).assertIsDisplayed().performClick()
 
     onNodeWithTag(
       TestTags.Details.YOUR_RATING.format("10"),
@@ -1068,8 +1085,6 @@ class DetailsScreenTest : ComposeTest() {
   private fun createViewModel(route: Navigation.DetailsRoute) = DetailsViewModel(
     getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
     onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-    submitRatingUseCase = submitRateUseCase.mock,
-    deleteRatingUseCase = deleteRatingUseCase.mock,
     addToAccountUseCase = addToWatchlistUseCase.mock,
     spoilersObfuscationUseCase = spoilersObfuscationUseCase,
     fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,

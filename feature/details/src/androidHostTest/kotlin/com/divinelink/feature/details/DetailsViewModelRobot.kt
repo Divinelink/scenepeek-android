@@ -26,9 +26,7 @@ import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeAddToWatchlistUseCase
-import com.divinelink.core.testing.usecase.FakeDeleteRatingUseCase
 import com.divinelink.core.testing.usecase.FakeGetMediaDetailsUseCase
-import com.divinelink.core.testing.usecase.FakeSubmitRatingUseCase
 import com.divinelink.core.testing.usecase.TestAddShowUseCase
 import com.divinelink.core.testing.usecase.TestCompleteSeasonUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
@@ -57,8 +55,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   private val fakeMarkAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   private val fakeGetMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
-  private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
-  private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
   private val testFetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val testDeleteRequestUseCase = TestDeleteRequestUseCase()
@@ -83,8 +79,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       route = navArgs,
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMediaDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
-      submitRatingUseCase = fakeSubmitRatingUseCase.mock,
-      deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
       addToAccountUseCase = fakeAddToWatchListUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
@@ -134,12 +128,11 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     mediaRepository.mockGetUserShowStatus(response)
   }
 
-  fun onSubmitRate(rating: Int) = apply {
-    viewModel.onSetRatingLoading(rating)
-  }
-
-  fun onDeleteRating() = apply {
-//    viewModel.onClearRating()
+  fun onSetRatingState(
+    loading: Boolean,
+    rating: Float?,
+  ) = apply {
+    viewModel.onSetRatingState(loading, rating)
   }
 
   fun onAddToWatchlist(section: AccountDataSection = AccountDataSection.Watchlist) = apply {
@@ -210,18 +203,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
       media = media,
       result = response,
-    )
-  }
-
-  suspend fun mockSubmitRate(response: Result<Unit>) = apply {
-    fakeSubmitRatingUseCase.mockSubmitRate(
-      response = response,
-    )
-  }
-
-  suspend fun mockDeleteRating(response: Result<Unit>) = apply {
-    fakeDeleteRatingUseCase.mockDeleteRating(
-      response = response,
     )
   }
 

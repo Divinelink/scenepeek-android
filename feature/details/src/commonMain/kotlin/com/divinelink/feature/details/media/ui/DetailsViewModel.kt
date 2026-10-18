@@ -405,7 +405,7 @@ class DetailsViewModel(
     }
   }
 
-  fun onSetRatingLoading(
+  fun onSetRatingState(
     loading: Boolean,
     rating: Float?,
   ) {

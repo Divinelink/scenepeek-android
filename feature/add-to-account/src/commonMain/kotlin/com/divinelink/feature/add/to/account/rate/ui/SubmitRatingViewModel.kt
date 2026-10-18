@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 
 class SubmitRatingViewModel(
   route: Navigation.SubmitRatingRoute,
-  private val repository: AccountRepository,
+  private val accountRepository: AccountRepository,
   private val mediaRepository: MediaRepository,
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
@@ -73,7 +73,7 @@ class SubmitRatingViewModel(
 
   private fun handleClearEpisode(route: Navigation.SubmitRatingRoute.Episode) {
     viewModelScope.launch {
-      repository.deleteEpisodeRating(
+      accountRepository.deleteEpisodeRating(
         showId = route.mediaId,
         season = route.seasonNumber,
         number = route.episodeNumber,
@@ -139,7 +139,7 @@ class SubmitRatingViewModel(
             rating = action.rating.toInt(),
           ),
         ).fold(
-          onSuccess = { handleSubmitSuccess(route.title) },
+          onSuccess = { handleSubmitSuccess(route.title, action.rating) },
           onFailure = { error -> handleSubmitError(error) },
         )
       }
@@ -165,14 +165,14 @@ class SubmitRatingViewModel(
     route: Navigation.SubmitRatingRoute.Episode,
     rating: Int,
   ) {
-    repository.submitEpisodeRating(
+    accountRepository.submitEpisodeRating(
       showId = route.mediaId,
       season = route.seasonNumber,
       number = route.episodeNumber,
       rating = rating,
     ).fold(
       onSuccess = {
-        handleSubmitSuccess(route.title)
+        handleSubmitSuccess(route.title, rating.toFloat())
 
         mediaRepository.insertEpisodeRating(
           showId = route.mediaId,
@@ -187,12 +187,16 @@ class SubmitRatingViewModel(
     )
   }
 
-  private fun handleSubmitSuccess(title: String) {
+  private fun handleSubmitSuccess(
+    title: String,
+    rating: Float,
+  ) {
     _uiState.update { state ->
       state.copy(
         snackbarMessage = SnackbarMessage.from(
           text = UIText.ResourceText(Res.string.rating_submitted_successfully, title),
         ),
+        value = rating,
       )
     }
   }

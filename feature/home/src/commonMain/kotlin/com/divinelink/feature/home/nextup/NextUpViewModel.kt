@@ -32,10 +32,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class NextUpViewModel(
+  authRepository: AuthRepository,
   private val repository: MediaRepository,
   private val trackRepository: TrackRepository,
   private val tabsRepository: TabsRepository,
-  private val authRepository: AuthRepository,
   private val markEpisodeAsWatchedUseCase: MarkEpisodeAsWatchedUseCase,
   private val clock: ClockProvider,
 ) : ViewModel() {
