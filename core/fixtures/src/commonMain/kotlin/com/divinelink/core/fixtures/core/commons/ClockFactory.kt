@@ -28,4 +28,8 @@ object ClockFactory {
   fun decemberFirst2021(): Clock = object : Clock {
     override fun now(): Instant = Instant.fromEpochSeconds(1638345600)
   }
+
+  fun maySecond2022(): Clock = object : Clock {
+    override fun now(): Instant = Instant.fromEpochSeconds(1651491400)
+  }
 }
